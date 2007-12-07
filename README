@@ -1,0 +1,21 @@
+https://wiki.ubuntu.com/UbuntuFirewall
+
+
+Basic Layout
+------------
+/usr/sbin/fw 			is the UI for people (have different backends)
+/etc/defaults/fw 		high level configuration
+/etc/fw/fw.rules 		for iptables-restore backend
+/etc/network/if-up.d/fw		integration into boot	
+
+Beginning implementation:
+fw enable|disable 		disable toggles /etc/default/fw
+fw logging on|off		updates backend logging (fw.rules)
+fw status			displays firewall status (start with ipt -Ln)
+fw stats			displays statistics (TODO)
+
+
+Language
+--------
+Because networking comes up after mounts, we can use python, and do. :)
+

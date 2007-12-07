@@ -1,0 +1,11 @@
+#!/bin/sh
+
+[ "x$IFACE" != "xlo" ] && exit 0
+
+[ -s /etc/default/fw ] || exit 0
+. /etc/default/fw
+
+if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+	/sbin/fw enable
+fi
+

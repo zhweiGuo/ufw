@@ -1,0 +1,194 @@
+#! /usr/bin/env python
+#
+# fw: front-end for Linux firewalling
+#
+# Copyright (C) 2007 Canonical <jamie@ubuntu.com>
+#
+#    fw is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published
+#    by the Free Software Foundation; either version 2 of the License,
+#    or (at your option) any later version.
+#
+#    fw is distributed in the hope that it will be useful, but
+#    WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#    General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with update-inetd; if not, write to the Free Software Foundation,
+#    Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+import os, re, sys
+
+version = "0.1"
+programName = os.path.basename(sys.argv[0])
+
+# make sure we are at least version 2.3
+if sys.version_info[0] < 2 or sys.version_info[1] < 3:
+    print >> sys.stderr, programName + ": Need at least python 2.3\n"
+    sys.exit(1)
+
+# default settings
+MaxFileSize = 10 * 1024 * 1024  # 10MB
+
+files = {'defaults': '#CONFIG_PREFIX#/defaults/fw'}
+debug = False
+
+# end default settings
+
+def process_args():
+    '''Process command line arguments'''
+    action = ""
+
+    if len(sys.argv) < 2:
+        printHelp()
+        sys.exit(1)
+
+    allowed_cmds = ['enable', 'disable', 'help', 'logging', 'status', 'version']
+
+    if not sys.argv[1].lower() in allowed_cmds:
+        printHelp()
+        sys.exit(1)
+    else:
+        action = sys.argv[1].lower()
+
+    if action == "logging":
+        if len(sys.argv) < 3:
+            printHelp()
+            sys.exit(1)
+        elif sys.argv[2].lower() == "off":
+            action = "logging-off"
+        elif sys.argv[2].lower() == "on":
+            action = "logging-on"
+        else:
+            printHelp()
+            sys.exit(1)
+
+    return action
+    
+
+#    for arg in sys.argv[1:]:
+#        print arg
+
+def printHelp():
+    '''Help message'''
+    print '''
+Usage: ''' + programName + ''' COMMAND
+
+Commands:
+  enable		Enables the firewall
+  disable		Disables the fireall
+  logging ARG		set logging to ON or OFF
+  status		show firewall status
+  version		display version information
+'''
+
+class fwError(Exception):
+    '''Represents fw exceptions'''
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+
+class fwBackend:
+    '''Interface for backends'''
+    def __init__(self, name):
+        self.name = name
+
+        self.doChecks()
+
+    def doChecks(self):
+        '''perform basic security checks'''
+        print "fwBackend.doChecks: TODO"
+
+    # API overrides
+    def getLogLevel(self):
+        raise fwError("fwBackend.getLogLevel: need to override getLogLevel")
+
+    def setLogLevel(self, level):
+        raise fwError("fwBackend.setLogLevel: need to override setLogLevel")
+
+    def getStatus(self):
+        raise fwError("fwBackend.getStatus: need to override getStatus")
+
+class iptBackend(fwBackend):
+    def __init__(self):
+        fwBackend.__init__(self, "iptables")
+    def getLogLevel(self):
+        '''show current log level'''
+        print "getLogLevel: TODO"
+
+    def setLogLevel(self, level):
+        '''set log level'''
+        print "setLogLevel: TODO"
+        if level == "off":
+            print "logging disabled"
+        else:
+            print "logging enabled"
+
+    def getStatus(self):
+        '''show current status'''
+        print "getStatus: TODO"
+
+class fwFrontend:
+    '''UI'''
+    def __init__(self, be):
+        self.backend = be
+
+    def getEnabled(self):
+        '''show status of #CONFIG_PREFIX#/defaults/fw'''
+        pass
+
+    def setEnabled(self, enabled):
+        '''set status of #CONFIG_PREFIX#/defaults/fw'''
+        print "setEnabled: TODO"
+        if enabled:
+            print "firewall enabled"
+        else:
+            print "firewall disabled"
+
+    def setLogLevel(self, level):
+        '''set log level'''
+        self.backend.setLogLevel(level)
+
+    def getStatus(self):
+        '''show status of firewall'''
+        self.backend.getStatus()
+
+
+#
+# MAIN SCRIPT STARTS HERE
+#
+action = ""
+try:
+    action = process_args()
+except fwError, e:
+    print >> sys.stderr, e.value + "\n"
+    sys.exit(1)
+
+fw = fwFrontend(iptBackend())
+
+# do action
+if action == "help":
+    printHelp()
+    sys.exit(0)
+elif action == "version":
+    print programName + " " + version
+    print "Copyright (C) 2007 Canonical Ltd."
+    print programName + " is free software, covered by the GNU General Public License, and you are"
+    print "welcome to change it and/or distribute copies of it under certain conditions."
+    sys.exit(0)
+elif action == "logging-on":
+    fw.setLogLevel("on")
+elif action == "logging-off":
+    fw.setLogLevel("off")
+elif action == "status":
+    fw.getStatus()
+elif action == "enable":
+    fw.setEnabled(True)
+elif action == "disable":
+    fw.setEnabled(False)
+
+sys.exit(0)
+
