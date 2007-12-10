@@ -1,15 +1,15 @@
 #! /usr/bin/env python
 #
-# fw: front-end for Linux firewalling
+# ufw: front-end for Linux firewalling
 #
 # Copyright (C) 2007 Canonical <jamie@ubuntu.com>
 #
-#    fw is free software; you can redistribute it and/or modify
+#    ufw is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published
 #    by the Free Software Foundation; either version 2 of the License,
 #    or (at your option) any later version.
 #
-#    fw is distributed in the hope that it will be useful, but
+#    ufw is distributed in the hope that it will be useful, but
 #    WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #    General Public License for more details.
@@ -19,20 +19,32 @@
 #    Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-import os, re, sys
+import os, re, shutil, stat, subprocess, sys
+from stat import *
+from tempfile import mkstemp
 
 version = "0.1"
 programName = os.path.basename(sys.argv[0])
 
-# make sure we are at least version 2.3
-if sys.version_info[0] < 2 or sys.version_info[1] < 3:
-    print >> sys.stderr, programName + ": Need at least python 2.3\n"
+# make sure we are at least version 2.4
+if sys.version_info[0] < 2 or sys.version_info[1] < 4:
+    print >> sys.stderr, programName + ": Need at least python 2.4\n"
     sys.exit(1)
 
 # default settings
 MaxFileSize = 10 * 1024 * 1024  # 10MB
 
-files = {'defaults': '#CONFIG_PREFIX#/defaults/fw'}
+#files = {'defaults': '/tmp/ufw/etc/default/ufw',
+#	'rules': '/tmp/ufw/etc/ufw/ufw.rules',
+#	'rules6': '/tmp/ufw/etc/ufw/ufw6.rules',
+#	'rules-open': '/tmp/ufw/etc/ufw/ufw-open.rules',
+#	'rules6-open': '/tmp/ufw/etc/ufw/ufw6-open.rules' }
+files = {'defaults': '#CONFIG_PREFIX#/default/ufw',
+	'rules': '#CONFIG_PREFIX#/ufw/ufw.rules',
+	'rules6': '#CONFIG_PREFIX#/ufw/ufw6.rules',
+	'rules-open': '#CONFIG_PREFIX#/ufw/ufw-open.rules',
+	'rules6-open': '#CONFIG_PREFIX#/ufw/ufw6-open.rules' }
+
 debug = False
 
 # end default settings
@@ -67,10 +79,6 @@ def process_args():
 
     return action
     
-
-#    for arg in sys.argv[1:]:
-#        print arg
-
 def printHelp():
     '''Help message'''
     print '''
@@ -84,14 +92,99 @@ Commands:
   version		display version information
 '''
 
-class fwError(Exception):
-    '''Represents fw exceptions'''
+def openFiles(f):
+    '''Opens the specified file and a temporary file'''
+    size = 0
+    try:
+        size = os.stat(f)[ST_SIZE]
+    except:
+        raise
+
+    if size > MaxFileSize:
+        raise ufwError("'" + f + "' is too big")
+
+    try:
+        orig = open(f, 'r')
+    except:
+        raise
+
+    try:
+        (tmp, tmpname) = mkstemp()
+    except:
+        orig.close()
+        raise
+
+    return { "orig": orig, "origname": f, "tmp": tmp, "tmpname": tmpname }
+
+def closeFiles(fns, update = True):
+    '''Closes the specified files (as returned by openFiles), and update
+       original file with the temporary file'''
+    fns['orig'].close()
+    os.close(fns['tmp'])
+
+    if update:
+        try:
+            shutil.copystat(fns['origname'], fns['tmpname'])
+            shutil.copy(fns['tmpname'], fns['origname'])
+        except:
+            raise
+
+    try:
+        os.unlink(fns['tmpname'])
+    except:
+        raise
+
+
+def changeDefaults(f, opt, value):
+    '''Change option in defaults file'''
+    try:
+        fns = openFiles(f)
+    except:
+        raise
+    fd = fns['tmp']
+
+    lines = fns['orig'].readlines()
+    pat = re.compile(r'^' + opt + '=')
+    for line in lines:
+        if pat.search(line):
+            os.write(fd, opt + "=" + value + "\n")
+        else:
+            os.write(fd, line)
+    
+    closeFiles(fns)
+
+def cmd(command):
+    '''Try to execute given command (array)'''
+    cmd = ' '.join(command)
+    try:
+        rc = subprocess.call(cmd, shell=True)
+    except OSError, e:
+        return [127, str(e)]
+
+    return rc
+
+def cmdPipe(command1, command2):
+    '''Try to pipe command1 (array) into command2 (array)'''
+    try:
+        sp1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
+        sp2 = subprocess.Popen(command2, stdin=sp1.stdout)
+    except OSError, e:
+        return [127, str(e)]
+
+    output = sp2.communicate()[0]
+    return sp2.returncode
+
+#
+# Classes
+#
+class ufwError(Exception):
+    '''Represents ufw exceptions'''
     def __init__(self, value):
         self.value = value
     def __str__(self):
         return repr(self.value)
 
-class fwBackend:
+class ufwBackend:
     '''Interface for backends'''
     def __init__(self, name):
         self.name = name
@@ -100,52 +193,107 @@ class fwBackend:
 
     def doChecks(self):
         '''perform basic security checks'''
-        print "fwBackend.doChecks: TODO"
+        print "ufwBackend.doChecks: TODO"
 
     # API overrides
     def getLogLevel(self):
-        raise fwError("fwBackend.getLogLevel: need to override getLogLevel")
+        raise ufwError("ufwBackend.getLogLevel: need to override getLogLevel")
 
     def setLogLevel(self, level):
-        raise fwError("fwBackend.setLogLevel: need to override setLogLevel")
+        raise ufwError("ufwBackend.setLogLevel: need to override setLogLevel")
 
     def getStatus(self):
-        raise fwError("fwBackend.getStatus: need to override getStatus")
+        raise ufwError("ufwBackend.getStatus: need to override getStatus")
 
-class iptBackend(fwBackend):
+    def startFirewall(self):
+        raise ufwError("ufwBackend.startFirewall: need to override startFirewall")
+
+    def stopFirewall(self):
+        raise ufwError("ufwBackend.stopFirewall: need to override stopFirewall")
+
+class iptBackend(ufwBackend):
     def __init__(self):
-        fwBackend.__init__(self, "iptables")
+        ufwBackend.__init__(self, "iptables")
     def getLogLevel(self):
         '''show current log level'''
         print "getLogLevel: TODO"
 
     def setLogLevel(self, level):
         '''set log level'''
-        print "setLogLevel: TODO"
+        commentStr = "# ufw_" + programName + " #"
+        try:
+            fns = openFiles(files['rules'])
+        except:
+            raise
+        fd = fns['tmp']
+
+        lines = fns['orig'].readlines()
+
+        pat = re.compile(r'^-.*\sLOG\s')
+        if level == "on":
+            pat = re.compile(r'^#.*\sLOG\s')
+
+        for line in lines:
+            if pat.search(line):
+                if level == "off":
+                    os.write(fd, commentStr + ' ' + line)
+                else:
+                    pat_comment = re.compile(r"^" + commentStr + "\s*")
+                    os.write(fd, pat_comment.sub('', line))
+            else:
+                os.write(fd, line)
+    
         if level == "off":
             print "logging disabled"
         else:
             print "logging enabled"
 
+        closeFiles(fns)
+
     def getStatus(self):
         '''show current status'''
-        print "getStatus: TODO"
+        rc = cmd(['iptables', '-L',  '-n'])
+        if rc != 0:
+            ufwError("ERROR: problem getting IPV4 status")
+        rc = cmd(['ip6tables', '-L',  '-n'])
+        if rc != 0:
+            ufwError("ERROR: problem getting IPV6 status")
 
-class fwFrontend:
+    def stopFirewall(self):
+        '''stop the firewall'''
+        rc = cmdPipe(['cat', files['rules-open']], ['iptables-restore'])
+        if rc != 0:
+            ufwError("ERROR: problem using '" + files['rules-open'] + "'")
+
+        rc = cmdPipe(['cat', files['rules6-open']], ['ip6tables-restore'])
+        if rc != 0:
+            ufwError("ERROR: problem using '" + files['rules6-open'] + "'")
+        
+    def startFirewall(self):
+        '''start the firewall'''
+        rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
+        if rc != 0:
+            ufwError("ERROR: problem using '" + files['rules'] + "'")
+
+        rc = cmdPipe(['cat', files['rules6']], ['ip6tables-restore'])
+        if rc != 0:
+            ufwError("ERROR: problem using '" + files['rules6'] + "'")
+
+
+class ufwFrontend:
     '''UI'''
     def __init__(self, be):
         self.backend = be
 
-    def getEnabled(self):
-        '''show status of #CONFIG_PREFIX#/defaults/fw'''
-        pass
-
     def setEnabled(self, enabled):
-        '''set status of #CONFIG_PREFIX#/defaults/fw'''
-        print "setEnabled: TODO"
+        '''set status of #CONFIG_PREFIX#/defaults/ufw'''
         if enabled:
+            changeDefaults(files['defaults'], "ENABLED", "yes")
+            self.backend.startFirewall()
             print "firewall enabled"
         else:
+            changeDefaults(files['defaults'], "ENABLED", "no")
+            self.backend.stopFirewall()
             print "firewall disabled"
 
     def setLogLevel(self, level):
@@ -163,11 +311,11 @@ class fwFrontend:
 action = ""
 try:
     action = process_args()
-except fwError, e:
+except ufwError, e:
     print >> sys.stderr, e.value + "\n"
     sys.exit(1)
 
-fw = fwFrontend(iptBackend())
+ufw = ufwFrontend(iptBackend())
 
 # do action
 if action == "help":
@@ -180,15 +328,15 @@ elif action == "version":
     print "welcome to change it and/or distribute copies of it under certain conditions."
     sys.exit(0)
 elif action == "logging-on":
-    fw.setLogLevel("on")
+    ufw.setLogLevel("on")
 elif action == "logging-off":
-    fw.setLogLevel("off")
+    ufw.setLogLevel("off")
 elif action == "status":
-    fw.getStatus()
+    ufw.getStatus()
 elif action == "enable":
-    fw.setEnabled(True)
+    ufw.setEnabled(True)
 elif action == "disable":
-    fw.setEnabled(False)
+    ufw.setEnabled(False)
 
 sys.exit(0)
 

@@ -1,0 +1,65 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+:drop-not-to-me - [0:0]
+
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j LOG
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+
+# ok icmp codes (Destination Unreachable, Source Quench, Time Exceeded and
+# Parameter Problem
+-A INPUT -p icmp  --icmp-type 3  -j ACCEPT
+-A INPUT -p icmp  --icmp-type 4  -j ACCEPT
+-A INPUT -p icmp  --icmp-type 11  -j ACCEPT
+-A INPUT -p icmp  --icmp-type 12  -j ACCEPT
+
+# allow ping in from local networks
+-A INPUT -s 10.0.0.0/255.0.0.0 -p icmp --icmp-type 8 -j ACCEPT
+-A INPUT -s 172.16.0.0/255.240.0.0 -p icmp --icmp-type 8 -j ACCEPT
+-A INPUT -s 192.168.0.0/255.255.0.0 -p icmp --icmp-type 8 -j ACCEPT
+
+# allow dhcp broadcast
+-I INPUT -p udp --sport 68 -d 255.255.255.255 --dport 67 -j ACCEPT
+
+
+#
+# drop-not-to-me
+#
+# All packets get blocked in the drop-not-to-me chain, therefore, RETURN from
+# the drop-not-to-me chain to have processing later on
+# see http://kindergarten.madduck.net/configs/iptables
+#
+
+# if LOCAL, RETURN
+-A drop-not-to-me -m addrtype --dst-type LOCAL -j RETURN
+
+# if MULTICAST, RETURN
+-A drop-not-to-me -m addrtype --dst-type MULTICAST -j RETURN
+
+# uncomment to allow broadcast (dhcp covered separately, see above)
+#-A drop-not-to-me -m addrtype --dst-type BROADCAST -j RETURN
+
+-A drop-not-to-me -j LOG
+-A drop-not-to-me -j DROP
+
+#
+# end drop-not-to-me
+#
+
+# allow MULTICAST, be sure to also uncomment the MULTICAST line above
+-A INPUT -s 224.0.0.0/4 -j ACCEPT
+-A INPUT -d 224.0.0.0/4 -j ACCEPT
+
+
+# connection tracking for outbound
+-A OUTPUT -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+-A OUTPUT -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+
+# catchall for logging
+-A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+
+COMMIT
