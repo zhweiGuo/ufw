@@ -1,18 +1,25 @@
 https://wiki.ubuntu.com/UbuntuFirewall
 
+Name: UFW
+
+What does it mean?  Nothing, or rather, it's up to you. :)  If you like it,
+you might pick 'Universal Firewall', 'Ultimate Firewall', 'Uncomplicated
+Firewall', or considering it current state, 'Unfinished Firewall'. If you are
+not a fan, perhaps 'Unbearable Firewall'.
+
 
 Basic Layout
 ------------
-/usr/sbin/fw 			is the UI for people (have different backends)
-/etc/defaults/fw 		high level configuration
-/etc/fw/fw.rules 		for iptables-restore backend
-/etc/network/if-up.d/fw		integration into boot	
+/usr/sbin/ufw 			is the UI for people (have different backends)
+/etc/defaults/ufw 		high level configuration
+/etc/ufw/ufw.rules 		for iptables-restore backend
+/etc/network/if-up.d/ufw	integration into boot	
 
 Beginning implementation:
-fw enable|disable 		disable toggles /etc/default/fw
-fw logging on|off		updates backend logging (fw.rules)
-fw status			displays firewall status (start with ipt -Ln)
-fw stats			displays statistics (TODO)
+ufw enable|disable 		disable toggles /etc/default/ufw
+ufw logging on|off		updates backend logging (ufw.rules)
+ufw status			displays firewall status (start with ipt -Ln)
+ufw stats			displays statistics (TODO)
 
 
 Language
