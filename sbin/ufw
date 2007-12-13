@@ -35,15 +35,9 @@ if sys.version_info[0] < 2 or sys.version_info[1] < 4:
 MaxFileSize = 10 * 1024 * 1024  # 10MB
 
 #files = {'defaults': '/tmp/ufw/etc/default/ufw',
-#	'rules': '/tmp/ufw/etc/ufw/ufw.rules',
-#	'rules6': '/tmp/ufw/etc/ufw/ufw6.rules',
-#	'rules-open': '/tmp/ufw/etc/ufw/ufw-open.rules',
-#	'rules6-open': '/tmp/ufw/etc/ufw/ufw6-open.rules' }
+#	'rules': '/tmp/ufw/etc/ufw/ufw.rules' }
 files = {'defaults': '#CONFIG_PREFIX#/default/ufw',
-	'rules': '#CONFIG_PREFIX#/ufw/ufw.rules',
-	'rules6': '#CONFIG_PREFIX#/ufw/ufw6.rules',
-	'rules-open': '#CONFIG_PREFIX#/ufw/ufw-open.rules',
-	'rules6-open': '#CONFIG_PREFIX#/ufw/ufw6-open.rules' }
+	'rules': '#CONFIG_PREFIX#/ufw/ufw.rules' }
 
 debug = False
 
@@ -92,8 +86,7 @@ Commands:
   version		display version information
 '''
 
-def openFiles(f):
-    '''Opens the specified file and a temporary file'''
+def openFileRead(f):
     size = 0
     try:
         size = os.stat(f)[ST_SIZE]
@@ -107,6 +100,12 @@ def openFiles(f):
         orig = open(f, 'r')
     except:
         raise
+
+    return orig
+
+def openFiles(f):
+    '''Opens the specified file read-only'''
+    orig = openFileRead(f)
 
     try:
         (tmp, tmpname) = mkstemp()
@@ -135,24 +134,6 @@ def closeFiles(fns, update = True):
         raise
 
 
-def changeDefaults(f, opt, value):
-    '''Change option in defaults file'''
-    try:
-        fns = openFiles(f)
-    except:
-        raise
-    fd = fns['tmp']
-
-    lines = fns['orig'].readlines()
-    pat = re.compile(r'^' + opt + '=')
-    for line in lines:
-        if pat.search(line):
-            os.write(fd, opt + "=" + value + "\n")
-        else:
-            os.write(fd, line)
-    
-    closeFiles(fns)
-
 def cmd(command):
     '''Try to execute given command (array)'''
     cmd = ' '.join(command)
@@ -174,6 +155,13 @@ def cmdPipe(command1, command2):
     output = sp2.communicate()[0]
     return sp2.returncode
 
+def error(msg):
+    print >> sys.stderr, "ERROR: " + msg
+    sys.exit(1)
+
+def warn(msg):
+    print >> sys.stderr, "WARN: " + msg
+
 #
 # Classes
 #
@@ -187,13 +175,54 @@ class ufwError(Exception):
 class ufwBackend:
     '''Interface for backends'''
     def __init__(self, name):
+        self.defaults = {}
         self.name = name
+        self._doChecks()
+        self._getDefaults()
 
-        self.doChecks()
+    def _useIPV6(self):
+        if self.defaults.has_key('ipv6') and self.defaults['ipv6'] == 'yes':
+            return True
+        return False
 
-    def doChecks(self):
+    def _doChecks(self):
         '''perform basic security checks'''
         print "ufwBackend.doChecks: TODO"
+        for f in files:
+            if not os.path.isfile(files[f]):
+                raise ufwError("'" + f + "' file '" + files[f] + "' does not exist")
+
+    def _getDefaults(self):
+        '''Get all settings from defaults file'''
+        orig = openFileRead(files['defaults'])
+
+        self.defaults = {}
+        lines = orig.readlines()
+        pat = re.compile(r'^\w+=\w+')
+        for line in lines:
+            if pat.search(line):
+                tmp = re.split(r'=', line.strip())
+                self.defaults[tmp[0].lower()] = tmp[1].lower()
+
+        orig.close()
+
+    def setDefault(self, f, opt, value):
+        '''Set option in defaults file'''
+        try:
+            fns = openFiles(f)
+        except:
+            raise
+        fd = fns['tmp']
+
+        lines = fns['orig'].readlines()
+        pat = re.compile(r'^' + opt + '=')
+        for line in lines:
+            if pat.search(line):
+                os.write(fd, opt + "=" + value + "\n")
+            else:
+                os.write(fd, line)
+    
+        closeFiles(fns)
 
     # API overrides
     def getLogLevel(self):
@@ -254,31 +283,69 @@ class iptBackend(ufwBackend):
         '''show current status'''
         rc = cmd(['iptables', '-L',  '-n'])
         if rc != 0:
-            ufwError("ERROR: problem getting IPV4 status")
-        rc = cmd(['ip6tables', '-L',  '-n'])
-        if rc != 0:
-            ufwError("ERROR: problem getting IPV6 status")
+            error("problem running iptables")
+        if self._useIPV6():
+            rc = cmd(['ip6tables', '-L',  '-n'])
+            if rc != 0:
+                error("problem running ip6tables")
 
     def stopFirewall(self):
         '''stop the firewall'''
-        rc = cmdPipe(['cat', files['rules-open']], ['iptables-restore'])
-        if rc != 0:
-            ufwError("ERROR: problem using '" + files['rules-open'] + "'")
+        openconf = '''*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+'''
+        try:
+            (tmp, tmpname) = mkstemp()
+        except:
+            raise
+        os.write(tmp, openconf)
+        os.close(tmp)
 
-        rc = cmdPipe(['cat', files['rules6-open']], ['ip6tables-restore'])
+        rc = cmdPipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
-            ufwError("ERROR: problem using '" + files['rules6-open'] + "'")
+            error("problem running iptables")
+
+        if self._useIPV6():
+            rc = cmdPipe(['cat', tmpname], ['ip6tables-restore'])
+            if rc != 0:
+                error("problem running ip6tables")
         
     def startFirewall(self):
         '''start the firewall'''
         rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
         if rc != 0:
-            ufwError("ERROR: problem using '" + files['rules'] + "'")
+            error("problem running iptables")
 
-        rc = cmdPipe(['cat', files['rules6']], ['ip6tables-restore'])
-        if rc != 0:
-            ufwError("ERROR: problem using '" + files['rules6'] + "'")
+        if self._useIPV6():
+            rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
+            if rc != 0:
+                error("problem running ip6tables")
+        else:
+            # just enable ipv6 on loopback
+            ipv6conf = '''*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
 
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+
+COMMIT
+'''
+            try:
+                (tmp, tmpname) = mkstemp()
+            except:
+                raise
+            os.write(tmp, ipv6conf)
+            os.close(tmp)
+            rc = cmdPipe(['cat', tmpname], ['ip6tables-restore'])
+            if rc != 0:
+                # don't error here, as the user may have disabled ipv6
+                # and doesn't have ipv6 support
+                warn("problem running ip6tables")
 
 class ufwFrontend:
     '''UI'''
@@ -288,11 +355,11 @@ class ufwFrontend:
     def setEnabled(self, enabled):
         '''set status of #CONFIG_PREFIX#/defaults/ufw'''
         if enabled:
-            changeDefaults(files['defaults'], "ENABLED", "yes")
+            self.backend.setDefault(files['defaults'], "ENABLED", "yes")
             self.backend.startFirewall()
             print "firewall enabled"
         else:
-            changeDefaults(files['defaults'], "ENABLED", "no")
+            self.backend.setDefault(files['defaults'], "ENABLED", "no")
             self.backend.stopFirewall()
             print "firewall disabled"
 
