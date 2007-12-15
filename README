@@ -12,8 +12,10 @@ not a fan, perhaps 'Unbearable Firewall'.
 
 Install
 -------
-For now, it is manual.  See the files in 'Basic Layout' and copy them over,
-adjusting /usr/sbin/ufw to point to where you put the files.
+./install.py --prefix=PREFIX --config-prefix=CONFIGDIR
+
+Eg:
+./install.py --prefix=/usr --config-prefix=/etc
 
 
 Basic Layout
@@ -31,4 +33,12 @@ ufw logging on|off		updates backend logging (ufw.rules)
 ufw status			displays firewall status (start with ipt -Ln)
 ufw stats			displays statistics (TODO)
 
+
+Testing
+-------
+$ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
+$ ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc
+
+Now do:
+$ /tmp/acc/usr/sbin/ufw --help
 
