@@ -40,5 +40,5 @@ $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
 $ ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc
 
 Now do:
-$ /tmp/acc/usr/sbin/ufw --help
+$ /tmp/ufw/usr/sbin/ufw --help
 
