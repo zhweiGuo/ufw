@@ -1,0 +1,63 @@
+TODO
+----
+Need an installer
+
+man page
+
+test scripts
+
+finish _doChecks() 
+
+separate out backend and frontend code and put into /usr/share
+Backend cleanup and configure in /etc/defaults/ufw
+make rules file configurable in /etc/defaults/ufw (eg IPT_RULES)
+
+implement default ACCEPT policy and 'ufw default allow|deny'
+
+packaging
+
+implement /etc/ufw/maps
+ufw <service> allow|deny [ip or network]
+ufw status should be much cleaner than iptables dump
+
+sysctl/proc support
+
+Provide a way out if it doesn't work
+
+IDEAS:
+section off the different areas that the tool will touch
+
+Eg:
+# ufwPolicyStart -- DO NOT DELETE THIS COMMENT
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+:drop-not-to-me - [0:0]
+# ufwPolicyEnd -- DO NOT DELETE THIS COMMENT
+
+# ufwFixedStart -- DO NOT DELETE THIS COMMENT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j LOG
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+...
+# ufwFixedEnd -- DO NOT DELETE THIS COMMENT
+
+# ufwUserStart -- DO NOT DELETE THIS COMMENT
+... rules added with 'ufw <service> allow|deny'
+# ufwUserEnd -- DO NOT DELETE THIS COMMENT
+
+# ufwCustomStart -- DO NOT DELETE THIS COMMENT
+# Any rules in this section will not be touched by ufw
+#
+...
+#
+# ufwCustomEnd -- DO NOT DELETE THIS COMMENT
+#
+
+# DO NOT DELETE THE BELOW LINE
+COMMIT
+
+
+For maximum flexibility, should allow custom comments to appear anywhere
