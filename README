@@ -1,11 +1,19 @@
+UFW
+---
 https://wiki.ubuntu.com/UbuntuFirewall
 
-Name: UFW
-
+What's in a name?
+-----------------
 What does it mean?  Nothing, or rather, it's up to you. :)  If you like it,
 you might pick 'Universal Firewall', 'Ultimate Firewall', 'Uncomplicated
 Firewall', or considering it current state, 'Unfinished Firewall'. If you are
 not a fan, perhaps 'Unbearable Firewall'.
+
+
+Install
+-------
+For now, it is manual.  See the files in 'Basic Layout' and copy them over,
+adjusting /usr/sbin/ufw to point to where you put the files.
 
 
 Basic Layout
@@ -15,19 +23,12 @@ Basic Layout
 /etc/ufw/ufw.rules 		for iptables-restore backend
 /etc/network/if-up.d/ufw	integration into boot	
 
-Beginning implementation:
+
+Usage
+-----
 ufw enable|disable 		disable toggles /etc/default/ufw
 ufw logging on|off		updates backend logging (ufw.rules)
 ufw status			displays firewall status (start with ipt -Ln)
 ufw stats			displays statistics (TODO)
 
 
-Language
---------
-Because networking comes up after mounts, we can use python, and do. :)
-
-
-TODO
-----
-Provide a way out if it doesn't work
-Need an installer
