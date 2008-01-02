@@ -187,7 +187,7 @@ class ufwBackend:
 
     def _doChecks(self):
         '''perform basic security checks'''
-        print "ufwBackend.doChecks: TODO"
+        #warn("ufwBackend.doChecks: TODO")
         for f in files:
             if not os.path.isfile(files[f]):
                 raise ufwError("'" + f + "' file '" + files[f] + "' does not exist")

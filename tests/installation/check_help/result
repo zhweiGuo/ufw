@@ -1,0 +1,10 @@
+
+Usage: ufw COMMAND
+
+Commands:
+  enable		Enables the firewall
+  disable		Disables the fireall
+  logging ARG		set logging to ON or OFF
+  status		show firewall status
+  version		display version information
+

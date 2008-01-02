@@ -2,7 +2,7 @@ TODO
 ----
 man page
 
-test scripts
+more test scripts
 
 finish _doChecks() 
 
@@ -20,7 +20,8 @@ ufw status should be much cleaner than iptables dump
 
 sysctl/proc support
 
-Provide a way out if it doesn't work
+Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
+question, and timeout if no response (maybe use the previous working policy?))
 
 IDEAS:
 section off the different areas that the tool will touch
