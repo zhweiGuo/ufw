@@ -6,6 +6,6 @@
 . /etc/default/ufw
 
 if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-	/sbin/ufw enable
+	/usr/sbin/ufw enable
 fi
 
