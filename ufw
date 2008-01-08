@@ -354,11 +354,13 @@ class ufwFrontend:
     def setEnabled(self, enabled):
         '''set status of #CONFIG_PREFIX#/defaults/ufw'''
         if enabled:
-            self.backend.setDefault(files['defaults'], "ENABLED", "yes")
+            if not self.backend._isEnabled():
+                self.backend.setDefault(files['defaults'], "ENABLED", "yes")
             self.backend.startFirewall()
             print "firewall enabled"
         else:
-            self.backend.setDefault(files['defaults'], "ENABLED", "no")
+            if self.backend._isEnabled():
+                self.backend.setDefault(files['defaults'], "ENABLED", "no")
             self.backend.stopFirewall()
             print "firewall disabled"
 
