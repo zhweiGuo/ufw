@@ -1,24 +1,5 @@
-ufw (0.0.bzr23-1) hardy; urgency=low
-
-  * New upstream version
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 08 Jan 2008 08:29:38 -0500
-
-ufw (0.0.bzr20-1) hardy; urgency=low
-
-  * New upstream version 
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 08 Jan 2008 07:44:17 -0500
-
-ufw (0.0bzr17-1) gutsy; urgency=low
-
-  * new upstream release
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jan 2008 20:44:16 -0500
-
-ufw (0.0bzr20080102-1) unstable; urgency=low
+ufw (0.0.bzr18-1) hardy; urgency=low
 
   * Initial release
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 02 Jan 2008 10:35:56 -0500
-
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jan 2008 20:44:16 -0500
