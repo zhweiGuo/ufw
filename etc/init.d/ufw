@@ -15,12 +15,18 @@ PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 
 . /lib/lsb/init-functions
 
+[ -s #CONFIG_PREFIX#/default/ufw ] || exit 1
+. #CONFIG_PREFIX#/default/ufw
 
 case "$1" in
 start)
-	log_action_begin_msg "Starting firewall"
-	ufw load >/dev/null 2>/dev/null
-	log_action_end_msg $?
+	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+		log_action_begin_msg "Starting firewall"
+		ufw enable >/dev/null 2>/dev/null
+		log_action_end_msg $?
+	else
+		log_warning_msg "Skipping firewall (not enabled)"
+	fi
 	;;
 stop)
 	log_warning_msg "Use 'ufw disable' to stop"
