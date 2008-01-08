@@ -1,0 +1,35 @@
+#!/bin/sh -e
+
+### BEGIN INIT INFO
+# Provides:          ufw
+# Required-Start:    mountall.sh
+# Required-Stop:     
+# Default-Start:     S
+# Default-Stop:      
+# Short-Description: start firewall
+### END INIT INFO
+
+PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+
+[ -x #PREFIX#/sbin/ufw ] || exit 0
+
+. /lib/lsb/init-functions
+
+
+case "$1" in
+start)
+	log_action_begin_msg "Starting firewall"
+	ufw enable >/dev/null 2>/dev/null
+	log_action_end_msg $?
+	;;
+stop)
+	log_warning_msg "Use 'ufw disable' to stop"
+	;;
+*)
+	echo "Usage: /etc/init.d/ufw {start|stop}"
+	exit 1
+	;;
+esac
+
+exit 0
+

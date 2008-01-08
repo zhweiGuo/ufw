@@ -159,6 +159,8 @@ def doInstall():
 	if destDir != "/":
 		installDir = os.path.join(destDir, os.path.basename(configDir))
         a = Popen3("cp -fR etc/*" + " " + installDir)
+        print "Updating init.d to use " + prefixDir
+        a = Popen3("sed -i 's%#PREFIX#%" + prefixDir + "%' " + os.path.join(installDir, "init.d/ufw"))
         while a.poll() == -1:
             pass
         if a.poll() > 0:
