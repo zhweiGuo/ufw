@@ -33,10 +33,26 @@ start)
 	fi
 	;;
 stop)
-	log_warning_msg "Use 'ufw disable' to stop"
+	log_warning_msg "Please use 'ufw disable' to stop"
+	;;
+restart)
+	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+		log_action_begin_msg "Restarting firewall"
+		ufw disable >/dev/null 2>/dev/null
+		ufw enable >/dev/null 2>/dev/null
+		log_action_end_msg $?
+	else
+		log_warning_msg "Skipping firewall (not enabled)"
+	fi
+	;;
+force-reload)
+	log_action_begin_msg "Forcibly re-loading firewall"
+	ufw disable >/dev/null 2>/dev/null
+	ufw enable >/dev/null 2>/dev/null
+	log_action_end_msg $?
 	;;
 *)
-	echo "Usage: /etc/init.d/ufw {start|stop}"
+	echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload}"
 	exit 1
 	;;
 esac

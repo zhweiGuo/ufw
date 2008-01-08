@@ -12,8 +12,6 @@ make rules file configurable in /etc/defaults/ufw (eg IPT_RULES)
 
 implement default ACCEPT policy and 'ufw default allow|deny'
 
-packaging
-
 implement /etc/ufw/maps
 ufw <service> allow|deny [ip or network]
 ufw status should be much cleaner than iptables dump
