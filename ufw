@@ -51,7 +51,7 @@ def process_args():
         printHelp()
         sys.exit(1)
 
-    allowed_cmds = ['enable', 'disable', 'help', 'load', 'logging', 'status', 'version']
+    allowed_cmds = ['enable', 'disable', 'help', 'logging', 'status', 'version']
 
     if not sys.argv[1].lower() in allowed_cmds:
         printHelp()
@@ -372,13 +372,6 @@ class ufwFrontend:
         '''show status of firewall'''
         self.backend.getStatus()
 
-    def load(self):
-        '''load the firewall'''
-        if self.backend._isEnabled():
-            self.backend.startFirewall()
-        else:
-            warn("Firewall not enabled. Exiting")
-
 #
 # MAIN SCRIPT STARTS HERE
 #
@@ -411,8 +404,6 @@ elif action == "enable":
     ufw.setEnabled(True)
 elif action == "disable":
     ufw.setEnabled(False)
-elif action == "load":
-    ufw.load()
 
 sys.exit(0)
 
