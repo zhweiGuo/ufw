@@ -15,8 +15,12 @@ PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 
 . /lib/lsb/init-functions
 
-[ -s #CONFIG_PREFIX#/default/ufw ] || exit 1
-. #CONFIG_PREFIX#/default/ufw
+if [ -s #CONFIG_PREFIX#/default/ufw ]; then
+	. #CONFIG_PREFIX#/default/ufw
+else
+	log_failure_msg "Could not find #CONFIG_PREFIX#/default/ufw (disabling)"
+	ENABLED="no"
+fi
 
 case "$1" in
 start)
