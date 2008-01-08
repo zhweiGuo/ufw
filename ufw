@@ -51,7 +51,7 @@ def process_args():
         printHelp()
         sys.exit(1)
 
-    allowed_cmds = ['enable', 'disable', 'help', 'logging', 'status', 'version']
+    allowed_cmds = ['enable', 'disable', 'help', 'load', 'logging', 'status', 'version']
 
     if not sys.argv[1].lower() in allowed_cmds:
         printHelp()
@@ -180,6 +180,11 @@ class ufwBackend:
         self._doChecks()
         self._getDefaults()
 
+    def _isEnabled(self):
+        if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
+            return True
+        return False
+
     def _useIPV6(self):
         if self.defaults.has_key('ipv6') and self.defaults['ipv6'] == 'yes':
             return True
@@ -281,11 +286,11 @@ class iptBackend(ufwBackend):
 
     def getStatus(self):
         '''show current status'''
-        rc = cmd(['iptables', '-L',  '-n'])
+        rc = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             error("problem running iptables")
         if self._useIPV6():
-            rc = cmd(['ip6tables', '-L',  '-n'])
+            rc = cmd(['ip6tables', '-L', '-n'])
             if rc != 0:
                 error("problem running ip6tables")
 
@@ -312,7 +317,7 @@ COMMIT
             rc = cmdPipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
                 error("problem running ip6tables")
-        
+
     def startFirewall(self):
         '''start the firewall'''
         rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
@@ -335,13 +340,7 @@ COMMIT
 
 COMMIT
 '''
-            try:
-                (tmp, tmpname) = mkstemp()
-            except:
-                raise
-            os.write(tmp, ipv6conf)
-            os.close(tmp)
-            rc = cmdPipe(['cat', tmpname], ['ip6tables-restore'])
+            rc = cmdPipe(['echo', ipv6conf], ['ip6tables-restore'])
             if rc != 0:
                 # don't error here, as the user may have disabled ipv6
                 # and doesn't have ipv6 support
@@ -371,6 +370,12 @@ class ufwFrontend:
         '''show status of firewall'''
         self.backend.getStatus()
 
+    def load(self):
+        '''load the firewall'''
+        if self.backend._isEnabled():
+            self.backend.startFirewall()
+        else:
+            warn("Firewall not enabled. Exiting")
 
 #
 # MAIN SCRIPT STARTS HERE
@@ -404,6 +409,8 @@ elif action == "enable":
     ufw.setEnabled(True)
 elif action == "disable":
     ufw.setEnabled(False)
+elif action == "load":
+    ufw.load()
 
 sys.exit(0)
 
