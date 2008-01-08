@@ -219,8 +219,8 @@ class ufwBackend:
 
         pat = re.compile(r'^\.')
         for path in files.values() + [ os.path.abspath(sys.argv[0]) ]:
-            debug("Checking " + path)
             while True:
+                debug("Checking " + path)
                 if pat.search(os.path.basename(path)):
                     error("found hidden directory in path: " + path)
 
