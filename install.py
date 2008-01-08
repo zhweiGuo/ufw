@@ -159,13 +159,25 @@ def doInstall():
 	if destDir != "/":
 		installDir = os.path.join(destDir, os.path.basename(configDir))
         a = Popen3("cp -fR etc/*" + " " + installDir)
-        print "Updating init.d to use " + prefixDir
-        a = Popen3("sed -i 's%#PREFIX#%" + prefixDir + "%' " + os.path.join(installDir, "init.d/ufw"))
         while a.poll() == -1:
             pass
         if a.poll() > 0:
             raise OSError("Error!!! Could not copy File. Maybe wrong permissions?")
 		
+        print "Updating init.d to use " + prefixDir
+        a = Popen3("sed -i 's%#PREFIX#%" + prefixDir + "%' " + os.path.join(installDir, "init.d/ufw"))
+        while a.poll() == -1:
+            pass
+        if a.poll() > 0:
+            raise OSError("Error!!! Could not update File. Maybe wrong permissions?")
+		
+        print "Updating init.d to use " + configDir
+        a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + configDir + "%' " + os.path.join(installDir, "init.d/ufw"))
+        while a.poll() == -1:
+            pass
+        if a.poll() > 0:
+            raise OSError("Error!!! Could not update File. Maybe wrong permissions?")
+
         print "Finished copying program files.\n"
         print "Installation successful! :)"
         recursive_rm(buildDir)

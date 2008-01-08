@@ -1,4 +1,4 @@
-# /etc/default/fw
+# /etc/default/ufw
 # 
 
 # set to yes to start on boot
