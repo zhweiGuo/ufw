@@ -26,7 +26,7 @@ case "$1" in
 start)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
 		log_action_begin_msg "Starting firewall"
-		ufw enable >/dev/null 2>/dev/null
+		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 		log_action_end_msg $?
 	else
 		log_warning_msg "Skipping firewall (not enabled)"
@@ -38,8 +38,8 @@ stop)
 restart)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
 		log_action_begin_msg "Restarting firewall"
-		ufw disable >/dev/null 2>/dev/null
-		ufw enable >/dev/null 2>/dev/null
+		#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
+		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 		log_action_end_msg $?
 	else
 		log_warning_msg "Skipping firewall (not enabled)"
@@ -47,8 +47,8 @@ restart)
 	;;
 force-reload)
 	log_action_begin_msg "Forcibly re-loading firewall"
-	ufw disable >/dev/null 2>/dev/null
-	ufw enable >/dev/null 2>/dev/null
+	#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
+	#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 	log_action_end_msg $?
 	;;
 *)
