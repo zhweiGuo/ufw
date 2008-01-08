@@ -32,12 +32,10 @@ if sys.version_info[0] < 2 or sys.version_info[1] < 4:
     sys.exit(1)
 
 # default settings
+
 MaxFileSize = 10 * 1024 * 1024  # 10MB
-
-files = {'defaults': '#CONFIG_PREFIX#/default/ufw',
-	'rules': '#CONFIG_PREFIX#/ufw/ufw.rules' }
-
-debug = False
+files = {'defaults': '#CONFIG_PREFIX#/default/ufw' }
+debugging = False
 
 # end default settings
 
@@ -160,6 +158,10 @@ def error(msg):
 def warn(msg):
     print >> sys.stderr, "WARN: " + msg
 
+def debug(msg):
+    if debugging:
+        print >> sys.stderr, "DEBUG: " + msg
+
 #
 # Classes
 #
@@ -194,8 +196,8 @@ class ufwBackend:
         # Does the following checks:
         #       is setuid or setgid (for non-Linux systems)
         #       checks that script is owned by root
-        #       checks that every component in absolute paths are owned by root
-        #       checks that every component of absolute paths are not a symlink
+        #       checks that every component in absolute path are owned by root
+        #       checks that every component of absolute path are not a symlink
         #       warn if script is group writable
         #       warn if part of script path is group writable
         #
@@ -215,47 +217,35 @@ class ufwBackend:
         if uid != 0:
             error("You need to be root to run this script")
 
-        try:
-            statinfo = os.stat(os.path.abspath(sys.argv[0]))
-            mode = statinfo[ST_MODE]
-        except:
-            raise
-
-        if statinfo.st_uid != 0:
-            error(os.path.abspath(sys.argv[0]) + " not owned by root!")
-        if mode & S_IWOTH:
-            error(os.path.abspath(sys.argv[0]) + " is world writable!")
-        if mode & S_IWGRP:
-            warn(os.path.abspath(sys.argv[0]) + " is group writable")
-
         pat = re.compile(r'^\.')
-        dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        while True:
-            if pat.search(os.path.basename(dir)):
-                error("found hidden directory in path: " + dir)
+        for path in files.values() + [ os.path.abspath(sys.argv[0]) ]:
+            debug("Checking " + path)
+            while True:
+                if pat.search(os.path.basename(path)):
+                    error("found hidden directory in path: " + path)
 
-            try:
-                statinfo = os.stat(dir)
-                mode = statinfo[ST_MODE]
-            except:
-                raise
+                try:
+                    statinfo = os.stat(path)
+                    mode = statinfo[ST_MODE]
+                except:
+                    raise
 
-            if os.path.islink(dir):
-                error("found symbolic link in path: " + dir)
-            if statinfo.st_uid != 0:
-                error("uid is " + str(uid) + " but '" + dir + "' is owned by " + str(statinfo.st_uid))
-            if mode & S_IWOTH:
-                error(dir + " is world writable!")
-            if mode & S_IWGRP:
-                warn(dir + " is group writable")
+                if os.path.islink(path):
+                    error("found symbolic link in path: " + path)
+                if statinfo.st_uid != 0:
+                    error("uid is " + str(uid) + " but '" + path + "' is owned by " + str(statinfo.st_uid))
+                if mode & S_IWOTH:
+                    error(path + " is world writable!")
+                if mode & S_IWGRP:
+                    warn(path + " is group writable")
 
-            # exit loop after processing '/'
-            if dir == "/":
-                break
+                # exit loop after processing '/'
+                if path == "/":
+                    break
 
-            dir = os.path.dirname(dir)
-            if not dir:
-                raise
+                path = os.path.dirname(path)
+                if not path:
+                    raise
 
         for f in files:
             if not os.path.isfile(files[f]):
@@ -311,7 +301,9 @@ class ufwBackend:
 
 class iptBackend(ufwBackend):
     def __init__(self):
+	files['rules'] = '#CONFIG_PREFIX#/ufw/ufw.rules'
         ufwBackend.__init__(self, "iptables")
+
     def getLogLevel(self):
         '''show current log level'''
         print "getLogLevel: TODO"
