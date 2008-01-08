@@ -34,8 +34,6 @@ if sys.version_info[0] < 2 or sys.version_info[1] < 4:
 # default settings
 MaxFileSize = 10 * 1024 * 1024  # 10MB
 
-#files = {'defaults': '/tmp/ufw/etc/default/ufw',
-#	'rules': '/tmp/ufw/etc/ufw/ufw.rules' }
 files = {'defaults': '#CONFIG_PREFIX#/default/ufw',
 	'rules': '#CONFIG_PREFIX#/ufw/ufw.rules' }
 
@@ -192,7 +190,73 @@ class ufwBackend:
 
     def _doChecks(self):
         '''perform basic security checks'''
-        #warn("ufwBackend.doChecks: TODO")
+        
+        # Does the following checks:
+        #       is setuid or setgid (for non-Linux systems)
+        #       checks that script is owned by root
+        #       checks that every component in absolute paths are owned by root
+        #       checks that every component of absolute paths are not a symlink
+        #       warn if script is group writable
+        #       warn if part of script path is group writable
+        #
+
+        # Doing this at the beginning causes a race condition with later
+        # operations that don't do these checks.  However, if the user running
+        # this script is root, then need to be root to exploit the race 
+        # condition (and you are hosed anyway...)
+
+        # not needed on Linux, but who knows the places we will go...
+        if os.getuid() != os.geteuid():
+            raise ufwError("ERROR: this script should not be SUID")
+        if os.getgid() != os.getegid():
+            raise ufwError("ERROR: this script should not be SGID")
+        uid = os.getuid()
+
+        if uid != 0:
+            error("You need to be root to run this script")
+
+        try:
+            statinfo = os.stat(os.path.abspath(sys.argv[0]))
+            mode = statinfo[ST_MODE]
+        except:
+            raise
+
+        if statinfo.st_uid != 0:
+            error(os.path.abspath(sys.argv[0]) + " not owned by root!")
+        if mode & S_IWOTH:
+            error(os.path.abspath(sys.argv[0]) + " is world writable!")
+        if mode & S_IWGRP:
+            warn(os.path.abspath(sys.argv[0]) + " is group writable")
+
+        pat = re.compile(r'^\.')
+        dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        while True:
+            if pat.search(os.path.basename(dir)):
+                error("found hidden directory in path: " + dir)
+
+            try:
+                statinfo = os.stat(dir)
+                mode = statinfo[ST_MODE]
+            except:
+                raise
+
+            if os.path.islink(dir):
+                error("found symbolic link in path: " + dir)
+            if statinfo.st_uid != 0:
+                error("uid is " + str(uid) + " but '" + dir + "' is owned by " + str(statinfo.st_uid))
+            if mode & S_IWOTH:
+                error(dir + " is world writable!")
+            if mode & S_IWGRP:
+                warn(dir + " is group writable")
+
+            # exit loop after processing '/'
+            if dir == "/":
+                break
+
+            dir = os.path.dirname(dir)
+            if not dir:
+                raise
+
         for f in files:
             if not os.path.isfile(files[f]):
                 raise ufwError("'" + f + "' file '" + files[f] + "' does not exist")
