@@ -44,6 +44,12 @@ def process_args():
     '''Process command line arguments'''
     action = ""
     service = ""
+    dryrun = False
+
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
+        dryrun = True
+        warn("Removing dry-run")
+        sys.argv.remove("--dry-run")
 
     if len(sys.argv) < 2:
         printHelp()
@@ -115,7 +121,7 @@ def process_args():
             printHelp()
             sys.exit(1)
 
-    return (action, service)
+    return (action, service, dryrun)
     
 def printHelp():
     '''Help message'''
@@ -271,11 +277,12 @@ class ufwService:
 
 class ufwBackend:
     '''Interface for backends'''
-    def __init__(self, name):
+    def __init__(self, name, d):
         self.defaults = {}
         self.name = name
         self._doChecks()
         self._getDefaults()
+        self.dryrun = d
 
     def _isEnabled(self):
         if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
@@ -399,9 +406,9 @@ class ufwBackend:
         raise ufwError("ufwBackend.stopFirewall: need to override stopFirewall")
 
 class iptBackend(ufwBackend):
-    def __init__(self):
+    def __init__(self, d):
 	files['rules'] = '#CONFIG_PREFIX#/ufw/ufw.rules'
-        ufwBackend.__init__(self, "iptables")
+        ufwBackend.__init__(self, "iptables", d)
 
     def getLogLevel(self):
         '''show current log level'''
@@ -422,15 +429,16 @@ class iptBackend(ufwBackend):
         if level == "on":
             pat = re.compile(r'^#.*\sLOG\s')
 
-        for line in lines:
-            if pat.search(line):
-                if level == "off":
-                    os.write(fd, commentStr + ' ' + line)
+        if not self.dryrun:
+            for line in lines:
+                if pat.search(line):
+                    if level == "off":
+                        os.write(fd, commentStr + ' ' + line)
+                    else:
+                        pat_comment = re.compile(r"^" + commentStr + "\s*")
+                        os.write(fd, pat_comment.sub('', line))
                 else:
-                    pat_comment = re.compile(r"^" + commentStr + "\s*")
-                    os.write(fd, pat_comment.sub('', line))
-            else:
-                os.write(fd, line)
+                    os.write(fd, line)
     
         if level == "off":
             print "logging disabled"
@@ -441,6 +449,12 @@ class iptBackend(ufwBackend):
 
     def getStatus(self):
         '''show current status'''
+        if dryrun:
+            print "> iptables -L -n"
+            if self._useIPV6():
+                print "> ip6tables -L -n"
+            return
+
         rc = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             error("problem running iptables")
@@ -457,6 +471,12 @@ class iptBackend(ufwBackend):
 :OUTPUT ACCEPT [0:0]
 COMMIT
 '''
+        if dryrun:
+            print "> echo\n" + openconf + "> | iptables-restore"
+            if self._useIPV6():
+                print "> echo\n" + openconf + "> | ip6tables-restore"
+            return
+
         try:
             (tmp, tmpname) = mkstemp()
         except:
@@ -475,14 +495,20 @@ COMMIT
 
     def startFirewall(self):
         '''start the firewall'''
-        rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
-        if rc != 0:
-            error("problem running iptables")
+        if dryrun:
+            print "> cat " + files['rules'] + " | iptables-restore"
+        else:
+            rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
+            if rc != 0:
+                error("problem running iptables")
 
         if self._useIPV6():
-            rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
-            if rc != 0:
-                error("problem running ip6tables")
+            if dryrun:
+                print "> cat " + files['rules'] + " | ip6tables-restore"
+            else:
+                rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
+                if rc != 0:
+                    error("problem running ip6tables")
         else:
             # just enable ipv6 on loopback
             ipv6conf = '''*filter
@@ -495,16 +521,20 @@ COMMIT
 
 COMMIT
 '''
-            rc = cmdPipe(['echo', ipv6conf], ['ip6tables-restore'])
-            if rc != 0:
-                # don't error here, as the user may have disabled ipv6
-                # and doesn't have ipv6 support
-                warn("problem running ip6tables")
+            if dryrun:
+                print "> echo\n" + ipv6conf + "> | ip6tables-restore"
+            else:
+                rc = cmdPipe(['echo', ipv6conf], ['ip6tables-restore'])
+                if rc != 0:
+                    # don't error here, as the user may have disabled ipv6
+                    # and doesn't have ipv6 support
+                    warn("problem running ip6tables")
 
 class ufwFrontend:
     '''UI'''
-    def __init__(self, be):
+    def __init__(self, be, d):
         self.backend = be
+        self.dryrun = d
 
     def setEnabled(self, enabled):
         '''set status of #CONFIG_PREFIX#/defaults/ufw'''
@@ -532,13 +562,14 @@ class ufwFrontend:
 #
 action = ""
 service = ""
+dryrun = False
 try:
-    (action, service) = process_args()
+    (action, service, dryrun) = process_args()
 except ufwError, e:
     print >> sys.stderr, e.value + "\n"
     sys.exit(1)
 
-ufw = ufwFrontend(iptBackend())
+ufw = ufwFrontend(iptBackend(dryrun))
 
 # do action
 if action == "help":
