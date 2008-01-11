@@ -2,6 +2,9 @@
 
 #set -x
 
+# disable checks for test run
+#sed -i 's/disableChecks = False/disableChecks = True/' $TESTPATH/usr/sbin/ufw
+
 # example usage for successful run
 #$TESTPATH/usr/sbin/ufw help >> $TESTTMP/result 2>&1 || exit 1
 

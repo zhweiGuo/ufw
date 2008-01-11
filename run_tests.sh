@@ -28,7 +28,7 @@ fi
 skipped=0
 errors=0
 numtests=0
-for class in installation bad
+for class in installation bad good ipv6
 do
 	for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
 	do

@@ -23,7 +23,7 @@ import os, re, shutil, stat, subprocess, sys
 from stat import *
 from tempfile import mkstemp
 
-version = "0.1"
+version = "0.0"
 programName = os.path.basename(sys.argv[0])
 
 # make sure we are at least version 2.4
@@ -43,12 +43,18 @@ disableChecks = False
 def process_args():
     '''Process command line arguments'''
     action = ""
+    service = ""
+    dryrun = False
+
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
+        dryrun = True
+        sys.argv.remove("--dry-run")
 
     if len(sys.argv) < 2:
         printHelp()
         sys.exit(1)
 
-    allowed_cmds = ['enable', 'disable', 'help', 'logging', 'status', 'version']
+    allowed_cmds = ['enable', 'disable', 'help', 'logging', 'status', 'version', 'allow', 'deny' ]
 
     if not sys.argv[1].lower() in allowed_cmds:
         printHelp()
@@ -68,7 +74,55 @@ def process_args():
             printHelp()
             sys.exit(1)
 
-    return action
+    if action == "allow" or action == "deny":
+        if len(sys.argv) < 3:
+            printHelp()
+            sys.exit(1)
+        
+        tmp = sys.argv[2].split(':')
+        if len(tmp) == 1:
+            service = ufwService(tmp[0], "any")
+        elif len(tmp) == 2:
+            service = ufwService(tmp[0], tmp[1])
+        else:
+            printHelp()
+            sys.exit(1)
+
+        if len(sys.argv) == 3:
+            pass
+        elif len(sys.argv) == 5:
+            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
+                printHelp()
+                sys.exit(1)
+            if sys.argv[3].lower() == "from":
+                service.addSrc(sys.argv[4])
+            else:
+                service.addDst(sys.argv[4])
+        elif len(sys.argv) == 7:
+            if sys.argv[3].lower() == sys.argv[5].lower():
+                printHelp()
+                sys.exit(1)
+            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
+                printHelp()
+                sys.exit(1)
+            if sys.argv[5].lower() != "from" and sys.argv[5].lower() != "to":
+                printHelp()
+                sys.exit(1)
+
+            if sys.argv[3].lower() == "from":
+                service.addSrc(sys.argv[4])
+            else:
+                service.addDst(sys.argv[4])
+
+            if sys.argv[5].lower() == "from":
+                service.addSrc(sys.argv[6])
+            else:
+                service.addDst(sys.argv[6])
+        else:
+            printHelp()
+            sys.exit(1)
+
+    return (action, service, dryrun)
     
 def printHelp():
     '''Help message'''
@@ -76,11 +130,13 @@ def printHelp():
 Usage: ''' + programName + ''' COMMAND
 
 Commands:
-  enable		Enables the firewall
-  disable		Disables the fireall
-  logging ARG		set logging to ON or OFF
-  status		show firewall status
-  version		display version information
+  enable			Enables the firewall
+  disable			Disables the fireall
+  logging ARG			set logging to ON or OFF
+  allow [from ADDR] [to ADDR]	allow packets to/from ADDR
+  deny [from ADDR] [to ADDR]	deny packets to/from ADDR
+  status			show firewall status
+  version			display version information
 '''
 
 def openFileRead(f):
@@ -173,13 +229,82 @@ class ufwError(Exception):
     def __str__(self):
         return repr(self.value)
 
+class ufwService:
+    '''Represents network services'''
+    def __init__(self, port, protocol):
+        self.setPort(port)
+        self.setProtocol(protocol)
+        self.src = []
+        self.dst = []
+
+    def _validAddress(self, addr):
+        # quick test
+        if not re.match('^[0-9./]+$', addr):
+            return False
+
+        net = addr.split('/')
+
+        if len(net) > 2:
+            return False
+        elif len(net) == 2:
+            # check netmask '/'
+            # TODO check 255.255.255.0 type netmasks
+            if int(net[1]) < 0 or int(net[1]) > 32:
+                return False
+
+        ip = net[0].split('.')
+        if len(ip) != 4:
+            return False
+        for i in ip:
+            if not i or int(i) < 0 or int(i) > 255:
+                return False
+        return True
+
+    def setPort(self, port):
+        # quick test
+        if not port or not re.match('^[0-9]+$', port):
+            error("Bad port")
+
+        p = int(port)
+        if p < 1 or p > 65535:
+            error("Bad port")
+        self.port = p
+
+    def setProtocol(self, protocol):
+        # for now, just tcp, udp and any
+        if protocol == "tcp" or protocol == "udp" or protocol == "any":
+            self.protocol = protocol
+        else:
+            error("Unsupported protocol" + protocol)
+
+    def addSrc(self, addr):
+        if not self._validAddress(addr):
+            error("Bad source address")
+        self.src.append(addr)
+
+    def removeSrc(self, addr):
+        if not self._validAddress(addr):
+            error("Bad source address")
+        self.src.remove(addr)
+
+    def addDst(self, addr):
+        if not self._validAddress(addr):
+            error("Bad destination address")
+        self.dst.append(addr)
+
+    def removeSrc(self, addr):
+        if not self._validAddress(addr):
+            error("Bad destination address")
+        self.dst.remove(addr)
+
 class ufwBackend:
     '''Interface for backends'''
-    def __init__(self, name):
+    def __init__(self, name, d):
         self.defaults = {}
         self.name = name
         self._doChecks()
         self._getDefaults()
+        self.dryrun = d
 
     def _isEnabled(self):
         if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
@@ -303,9 +428,9 @@ class ufwBackend:
         raise ufwError("ufwBackend.stopFirewall: need to override stopFirewall")
 
 class iptBackend(ufwBackend):
-    def __init__(self):
+    def __init__(self, d):
 	files['rules'] = '#CONFIG_PREFIX#/ufw/ufw.rules'
-        ufwBackend.__init__(self, "iptables")
+        ufwBackend.__init__(self, "iptables", d)
 
     def getLogLevel(self):
         '''show current log level'''
@@ -326,15 +451,16 @@ class iptBackend(ufwBackend):
         if level == "on":
             pat = re.compile(r'^#.*\sLOG\s')
 
-        for line in lines:
-            if pat.search(line):
-                if level == "off":
-                    os.write(fd, commentStr + ' ' + line)
+        if not self.dryrun:
+            for line in lines:
+                if pat.search(line):
+                    if level == "off":
+                        os.write(fd, commentStr + ' ' + line)
+                    else:
+                        pat_comment = re.compile(r"^" + commentStr + "\s*")
+                        os.write(fd, pat_comment.sub('', line))
                 else:
-                    pat_comment = re.compile(r"^" + commentStr + "\s*")
-                    os.write(fd, pat_comment.sub('', line))
-            else:
-                os.write(fd, line)
+                    os.write(fd, line)
     
         if level == "off":
             print "logging disabled"
@@ -345,6 +471,12 @@ class iptBackend(ufwBackend):
 
     def getStatus(self):
         '''show current status'''
+        if dryrun:
+            print "> iptables -L -n"
+            if self._useIPV6():
+                print "> ip6tables -L -n"
+            return
+
         rc = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             error("problem running iptables")
@@ -361,6 +493,12 @@ class iptBackend(ufwBackend):
 :OUTPUT ACCEPT [0:0]
 COMMIT
 '''
+        if dryrun:
+            print "> echo\n" + openconf + "> | iptables-restore"
+            if self._useIPV6():
+                print "> echo\n" + openconf + "> | ip6tables-restore"
+            return
+
         try:
             (tmp, tmpname) = mkstemp()
         except:
@@ -379,14 +517,20 @@ COMMIT
 
     def startFirewall(self):
         '''start the firewall'''
-        rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
-        if rc != 0:
-            error("problem running iptables")
+        if dryrun:
+            print "> cat " + files['rules'] + " | iptables-restore"
+        else:
+            rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
+            if rc != 0:
+                error("problem running iptables")
 
         if self._useIPV6():
-            rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
-            if rc != 0:
-                error("problem running ip6tables")
+            if dryrun:
+                print "> cat " + files['rules'] + " | ip6tables-restore"
+            else:
+                rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
+                if rc != 0:
+                    error("problem running ip6tables")
         else:
             # just enable ipv6 on loopback
             ipv6conf = '''*filter
@@ -399,11 +543,14 @@ COMMIT
 
 COMMIT
 '''
-            rc = cmdPipe(['echo', ipv6conf], ['ip6tables-restore'])
-            if rc != 0:
-                # don't error here, as the user may have disabled ipv6
-                # and doesn't have ipv6 support
-                warn("problem running ip6tables")
+            if dryrun:
+                print "> echo\n" + ipv6conf + "> | ip6tables-restore"
+            else:
+                rc = cmdPipe(['echo', ipv6conf], ['ip6tables-restore'])
+                if rc != 0:
+                    # don't error here, as the user may have disabled ipv6
+                    # and doesn't have ipv6 support
+                    warn("problem running ip6tables")
 
 class ufwFrontend:
     '''UI'''
@@ -435,13 +582,15 @@ class ufwFrontend:
 # MAIN SCRIPT STARTS HERE
 #
 action = ""
+service = ""
+dryrun = False
 try:
-    action = process_args()
+    (action, service, dryrun) = process_args()
 except ufwError, e:
     print >> sys.stderr, e.value + "\n"
     sys.exit(1)
 
-ufw = ufwFrontend(iptBackend())
+ufw = ufwFrontend(iptBackend(dryrun))
 
 # do action
 if action == "help":
