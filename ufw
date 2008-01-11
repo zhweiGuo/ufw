@@ -256,11 +256,15 @@ class ufwService:
         if len(ip) != 4:
             return False
         for i in ip:
-            if int(i) < 0 or int(i) > 255:
+            if not i or int(i) < 0 or int(i) > 255:
                 return False
         return True
 
     def setPort(self, port):
+        # quick test
+        if not port or not re.match('^[0-9]+$', port):
+            error("Bad port")
+
         p = int(port)
         if p < 1 or p > 65535:
             error("Bad port")
@@ -270,8 +274,8 @@ class ufwService:
         # for now, just tcp, udp and any
         if protocol == "tcp" or protocol == "udp" or protocol == "any":
             self.protocol = protocol
-            return
-        error("Unsupported protocol" + protocol)
+        else:
+            error("Unsupported protocol" + protocol)
 
     def addSrc(self, addr):
         if not self._validAddress(addr):
