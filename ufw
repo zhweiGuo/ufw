@@ -23,7 +23,7 @@ import os, re, shutil, stat, subprocess, sys
 from stat import *
 from tempfile import mkstemp
 
-version = "0.1"
+version = "0.0"
 programName = os.path.basename(sys.argv[0])
 
 # make sure we are at least version 2.4
