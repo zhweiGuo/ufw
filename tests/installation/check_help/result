@@ -2,9 +2,11 @@
 Usage: ufw COMMAND
 
 Commands:
-  enable		Enables the firewall
-  disable		Disables the fireall
-  logging ARG		set logging to ON or OFF
-  status		show firewall status
-  version		display version information
+  enable			Enables the firewall
+  disable			Disables the fireall
+  logging ARG			set logging to ON or OFF
+  allow [from ADDR] [to ADDR]	allow packets to/from ADDR
+  deny [from ADDR] [to ADDR]	deny packets to/from ADDR
+  status			show firewall status
+  version			display version information
 
