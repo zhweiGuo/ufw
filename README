@@ -45,3 +45,5 @@ disableChecks = True
 Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 
+Here is a command to do it all at once:
+$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc && sed -i 's/disableChecks = False/disableChecks = True/' /tmp/ufw/usr/sbin/ufw
