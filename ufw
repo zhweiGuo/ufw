@@ -88,8 +88,10 @@ def process_args():
             printHelp()
             sys.exit(1)
 
-        if len(sys.argv) == 5:
-            if sys.argv[3].lower() != "from" or sys.argv[3].lower() != "to":
+        if len(sys.argv) == 3:
+            pass
+        elif len(sys.argv) == 5:
+            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
                 printHelp()
                 sys.exit(1)
             if sys.argv[3].lower() == "from":
@@ -100,10 +102,10 @@ def process_args():
             if sys.argv[3].lower() == sys.argv[5].lower():
                 printHelp()
                 sys.exit(1)
-            if sys.argv[3].lower() != "from" or sys.argv[3].lower() != "to":
+            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
                 printHelp()
                 sys.exit(1)
-            if sys.argv[5].lower() != "from" or sys.argv[5].lower() != "to":
+            if sys.argv[5].lower() != "from" and sys.argv[5].lower() != "to":
                 printHelp()
                 sys.exit(1)
 
@@ -113,9 +115,9 @@ def process_args():
                 service.addDst(sys.argv[4])
 
             if sys.argv[5].lower() == "from":
-                service.addSrc(sys.argv[5])
+                service.addSrc(sys.argv[6])
             else:
-                service.addDst(sys.argv[5])
+                service.addDst(sys.argv[6])
         else:
             printHelp()
             sys.exit(1)
@@ -235,19 +237,34 @@ class ufwService:
         self.src = []
         self.dst = []
 
-    def _validAddres(self, addr):
-        ip = addr.split('.')
-        if len(found) != 4:
+    def _validAddress(self, addr):
+        # quick test
+        if not re.match('^[0-9./]+$', addr):
+            return False
+
+        net = addr.split('/')
+
+        if len(net) > 2:
+            return False
+        elif len(net) == 2:
+            # check netmask '/'
+            # TODO check 255.255.255.0 type netmasks
+            if int(net[1]) < 0 or int(net[1]) > 32:
+                return False
+
+        ip = net[0].split('.')
+        if len(ip) != 4:
             return False
         for i in ip:
-            if i < 0 or i > 255:
+            if int(i) < 0 or int(i) > 255:
                 return False
         return True
 
     def setPort(self, port):
-        if port < 1 or port > 65535:
+        p = int(port)
+        if p < 1 or p > 65535:
             error("Bad port")
-        self.port = port
+        self.port = p
 
     def setProtocol(self, protocol):
         # for now, just tcp, udp and any
@@ -257,22 +274,22 @@ class ufwService:
         error("Unsupported protocol" + protocol)
 
     def addSrc(self, addr):
-        if not _validAddress(addr):
+        if not self._validAddress(addr):
             error("Bad source address")
         self.src.append(addr)
 
     def removeSrc(self, addr):
-        if not _validAddress(addr):
+        if not self._validAddress(addr):
             error("Bad source address")
         self.src.remove(addr)
 
     def addDst(self, addr):
-        if not _validAddress(addr):
+        if not self._validAddress(addr):
             error("Bad destination address")
         self.dst.append(addr)
 
     def removeSrc(self, addr):
-        if not _validAddress(addr):
+        if not self._validAddress(addr):
             error("Bad destination address")
         self.dst.remove(addr)
 
