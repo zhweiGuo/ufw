@@ -48,7 +48,6 @@ def process_args():
 
     if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
         dryrun = True
-        warn("Removing dry-run")
         sys.argv.remove("--dry-run")
 
     if len(sys.argv) < 2:
