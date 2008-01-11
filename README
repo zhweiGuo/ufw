@@ -39,6 +39,9 @@ Testing
 $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
 $ ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc
 
+The edit /tmp/ufw/usr/sbin/ufw to have (since it's installed in /tmp):
+disableChecks = True
+
 Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 

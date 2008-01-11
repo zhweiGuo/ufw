@@ -36,6 +36,7 @@ if sys.version_info[0] < 2 or sys.version_info[1] < 4:
 MaxFileSize = 10 * 1024 * 1024  # 10MB
 files = {'defaults': '#CONFIG_PREFIX#/default/ufw' }
 debugging = False
+disableChecks = False
 
 # end default settings
 
@@ -192,7 +193,9 @@ class ufwBackend:
 
     def _doChecks(self):
         '''perform basic security checks'''
-        
+        if disableChecks:
+            warn("Checks disabled")
+            return True
         # Does the following checks:
         #       is setuid or setgid (for non-Linux systems)
         #       checks that script is owned by root
