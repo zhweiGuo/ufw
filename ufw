@@ -129,11 +129,13 @@ def printHelp():
 Usage: ''' + programName + ''' COMMAND
 
 Commands:
-  enable		Enables the firewall
-  disable		Disables the fireall
-  logging ARG		set logging to ON or OFF
-  status		show firewall status
-  version		display version information
+  enable			Enables the firewall
+  disable			Disables the fireall
+  logging ARG			set logging to ON or OFF
+  allow [from ADDR] [to ADDR]	allow packets to/from ADDR
+  deny [from ADDR] [to ADDR]	deny packets to/from ADDR
+  status			show firewall status
+  version			display version information
 '''
 
 def openFileRead(f):
@@ -532,9 +534,8 @@ COMMIT
 
 class ufwFrontend:
     '''UI'''
-    def __init__(self, be, d):
+    def __init__(self, be):
         self.backend = be
-        self.dryrun = d
 
     def setEnabled(self, enabled):
         '''set status of #CONFIG_PREFIX#/defaults/ufw'''
