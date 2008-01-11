@@ -1,0 +1,67 @@
+TESTING ARGS (logging)
+1
+WARN: Checks disabled
+logging enabled
+2
+WARN: Checks disabled
+logging disabled
+3
+WARN: Checks disabled
+logging enabled
+4
+WARN: Checks disabled
+logging disabled
+TESTING ARGS (enable/disable)
+5
+WARN: Checks disabled
+firewall enabled
+6
+WARN: Checks disabled
+firewall disabled
+7
+WARN: Checks disabled
+firewall enabled
+8
+WARN: Checks disabled
+firewall disabled
+TESTING ARGS (allow/deny port)
+WARN: Checks disabled
+9
+WARN: Checks disabled
+10
+WARN: Checks disabled
+11
+WARN: Checks disabled
+TESTING ARGS (allow/deny to/from)
+12
+WARN: Checks disabled
+WARN: Checks disabled
+13
+WARN: Checks disabled
+WARN: Checks disabled
+14
+WARN: Checks disabled
+WARN: Checks disabled
+15
+WARN: Checks disabled
+WARN: Checks disabled
+16
+WARN: Checks disabled
+WARN: Checks disabled
+17
+WARN: Checks disabled
+WARN: Checks disabled
+18
+WARN: Checks disabled
+WARN: Checks disabled
+TESTING ARGS (status)
+19
+WARN: Checks disabled
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         

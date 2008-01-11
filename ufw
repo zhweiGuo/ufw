@@ -590,9 +590,6 @@ except ufwError, e:
     print >> sys.stderr, e.value + "\n"
     sys.exit(1)
 
-ufw = ufwFrontend(iptBackend(dryrun))
-
-# do action
 if action == "help":
     printHelp()
     sys.exit(0)
@@ -602,7 +599,9 @@ elif action == "version":
     print programName + " is free software, covered by the GNU General Public License, and you are"
     print "welcome to change it and/or distribute copies of it under certain conditions."
     sys.exit(0)
-elif action == "logging-on":
+
+ufw = ufwFrontend(iptBackend(dryrun))
+if action == "logging-on":
     ufw.setLogLevel("on")
 elif action == "logging-off":
     ufw.setLogLevel("off")
