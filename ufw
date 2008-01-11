@@ -43,6 +43,7 @@ disableChecks = False
 def process_args():
     '''Process command line arguments'''
     action = ""
+    service = ""
 
     if len(sys.argv) < 2:
         printHelp()
@@ -72,11 +73,49 @@ def process_args():
         if len(sys.argv) < 3:
             printHelp()
             sys.exit(1)
+        
+        tmp = sys.argv[2].split(':')
+        if len(tmp) == 1:
+            service = ufwService(tmp[0], "any")
+        elif len(tmp) == 2:
+            service = ufwService(tmp[0], tmp[1])
         else:
             printHelp()
             sys.exit(1)
 
-    return action
+        if len(sys.argv) == 5:
+            if sys.argv[3].lower() != "from" or sys.argv[3].lower() != "to":
+                printHelp()
+                sys.exit(1)
+            if sys.argv[3].lower() == "from":
+                service.addSrc(sys.argv[4])
+            else:
+                service.addDst(sys.argv[4])
+        elif len(sys.argv) == 7:
+            if sys.argv[3].lower() == sys.argv[5].lower():
+                printHelp()
+                sys.exit(1)
+            if sys.argv[3].lower() != "from" or sys.argv[3].lower() != "to":
+                printHelp()
+                sys.exit(1)
+            if sys.argv[5].lower() != "from" or sys.argv[5].lower() != "to":
+                printHelp()
+                sys.exit(1)
+
+            if sys.argv[3].lower() == "from":
+                service.addSrc(sys.argv[4])
+            else:
+                service.addDst(sys.argv[4])
+
+            if sys.argv[5].lower() == "from":
+                service.addSrc(sys.argv[5])
+            else:
+                service.addDst(sys.argv[5])
+        else:
+            printHelp()
+            sys.exit(1)
+
+    return (action, service)
     
 def printHelp():
     '''Help message'''
@@ -493,9 +532,8 @@ class ufwFrontend:
 #
 action = ""
 service = ""
-net = "0.0.0.0/0"
 try:
-    action = process_args()
+    (action, service) = process_args()
 except ufwError, e:
     print >> sys.stderr, e.value + "\n"
     sys.exit(1)
