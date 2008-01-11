@@ -43,7 +43,7 @@ disableChecks = False
 def process_args():
     '''Process command line arguments'''
     action = ""
-    service = ""
+    rule = ""
     dryrun = False
 
     if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
@@ -79,25 +79,39 @@ def process_args():
             printHelp()
             sys.exit(1)
         
-        tmp = sys.argv[2].split(':')
-        if len(tmp) == 1:
-            service = ufwService(tmp[0], "any")
-        elif len(tmp) == 2:
-            service = ufwService(tmp[0], tmp[1])
-        else:
-            printHelp()
-            sys.exit(1)
-
         if len(sys.argv) == 3:
-            pass
-        elif len(sys.argv) == 5:
-            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
+            # simple rule
+            tmp = sys.argv[2].split(':')
+            if len(tmp) == 1:
+                rule = ufwRule(action, "any", tmp[0])
+            elif len(tmp) == 2:
+                rule = ufwRule(action, tmp[1], tmp[0])
+            else:
                 printHelp()
                 sys.exit(1)
-            if sys.argv[3].lower() == "from":
-                service.addSrc(sys.argv[4])
+        elif len(sys.argv) == 4:
+            if sys.argv[2].lower() != "from" and sys.argv[2].lower() != "to":
+                printHelp()
+                sys.exit(1)
+            tmp = sys.argv[3].split(':')
+            if len(tmp) == 1:
+                if sys.argv[2].lower() == "to":
+                    rule = ufwRule(action, "any", "any", tmp[0])
+                else:
+                    rule = ufwRule(action, "any", "any", "0.0.0.0/0", "any", tmp[0])
+            elif len(tmp) == 2:
+                if sys.argv[2].lower() == "to":
+                    rule = ufwRule(action, "any", tmp[1], tmp[0])
+                else:
+                    rule = ufwRule(action, "any", "any", "0.0.0.0/0", tmp[1], tmp[0])
+            elif len(tmp) == 3:
+                if sys.argv[2].lower() == "to":
+                    rule = ufwRule(action, tmp[2], tmp[1], tmp[0])
+                else:
+                    rule = ufwRule(action, tmp[2], "any", "0.0.0.0/0", tmp[1], tmp[0])
             else:
-                service.addDst(sys.argv[4])
+                printHelp()
+                sys.exit(1)
         elif len(sys.argv) == 7:
             if sys.argv[3].lower() == sys.argv[5].lower():
                 printHelp()
@@ -110,19 +124,19 @@ def process_args():
                 sys.exit(1)
 
             if sys.argv[3].lower() == "from":
-                service.addSrc(sys.argv[4])
+                rule.addSrc(sys.argv[4])
             else:
-                service.addDst(sys.argv[4])
+                rule.addDst(sys.argv[4])
 
             if sys.argv[5].lower() == "from":
-                service.addSrc(sys.argv[6])
+                rule.addSrc(sys.argv[6])
             else:
-                service.addDst(sys.argv[6])
+                rule.addDst(sys.argv[6])
         else:
             printHelp()
             sys.exit(1)
 
-    return (action, service, dryrun)
+    return (action, rule, dryrun)
     
 def printHelp():
     '''Help message'''
@@ -229,13 +243,15 @@ class ufwError(Exception):
     def __str__(self):
         return repr(self.value)
 
-class ufwService:
-    '''Represents network services'''
-    def __init__(self, port, protocol):
-        self.setPort(port)
+class ufwRule:
+    '''Represents network rules'''
+    def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0", sport="any", src="0.0.0.0/0"):
+        self.setAction(action)
         self.setProtocol(protocol)
-        self.src = []
-        self.dst = []
+        self.setPort(dport)
+        self.setPort(sport, "src")
+        self.setSrc(src)
+        self.setDst(dst)
 
     def _validAddress(self, addr):
         # quick test
@@ -260,15 +276,27 @@ class ufwService:
                 return False
         return True
 
-    def setPort(self, port):
-        # quick test
-        if not port or not re.match('^[0-9]+$', port):
-            error("Bad port")
+    def setAction(self, action):
+        if action == "allow":
+            self.action = action
+        else:
+            self.action = "deny"
 
-        p = int(port)
-        if p < 1 or p > 65535:
-            error("Bad port")
-        self.port = p
+    def setPort(self, port, loc="dst"):
+        # quick test
+        if port == "any" or re.match('^\d+$', port):
+            pass
+        else:
+            error("Bad port " + port)
+
+        if port != "any":
+            if int(port) < 1 or int(port) > 65535:
+                error("Bad port")
+
+        if loc == "src":
+            self.sport = port
+        else:
+            self.dport = port
 
     def setProtocol(self, protocol):
         # for now, just tcp, udp and any
@@ -277,25 +305,36 @@ class ufwService:
         else:
             error("Unsupported protocol" + protocol)
 
-    def addSrc(self, addr):
+    def setSrc(self, addr):
         if not self._validAddress(addr):
             error("Bad source address")
-        self.src.append(addr)
+        self.src = addr
 
-    def removeSrc(self, addr):
-        if not self._validAddress(addr):
-            error("Bad source address")
-        self.src.remove(addr)
-
-    def addDst(self, addr):
+    def setDst(self, addr):
         if not self._validAddress(addr):
             error("Bad destination address")
-        self.dst.append(addr)
+        self.dst = addr
 
-    def removeSrc(self, addr):
-        if not self._validAddress(addr):
-            error("Bad destination address")
-        self.dst.remove(addr)
+    def match(self, x, y):
+        '''Check if rules match'''
+        # Return codes:
+        #   0	match
+        #   1	no match
+        #  -1	match all but action
+        if x.dport != y.dport:
+            return 1
+        if x.sport != y.sport:
+            return 1
+        if x.protocol != y.protocol:
+            return 1
+        if x.src != y.src:
+            return 1
+        if x.dst != y.dst:
+            return 1
+        
+        if x.action == y.action:
+            return 0
+        return -1
 
 class ufwBackend:
     '''Interface for backends'''
@@ -305,6 +344,7 @@ class ufwBackend:
         self._doChecks()
         self._getDefaults()
         self.dryrun = d
+        self.rules = []
 
     def _isEnabled(self):
         if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
@@ -420,6 +460,9 @@ class ufwBackend:
 
     def getStatus(self):
         raise ufwError("ufwBackend.getStatus: need to override getStatus")
+
+    def setRule(self, rule):
+        raise ufwError("ufwBackend.setRule: need to override getStatus")
 
     def startFirewall(self):
         raise ufwError("ufwBackend.startFirewall: need to override startFirewall")
@@ -552,6 +595,47 @@ COMMIT
                     # and doesn't have ipv6 support
                     warn("problem running ip6tables")
 
+    def _readRules(self):
+        '''Read in rules add via ufw'''
+        print "TODO"
+
+    def _writeRules(self):
+        '''Write out new rules file'''
+        for r in self.rules:
+            print "-A INPUT",
+            if r.protocol != "any":
+                print "-p " + r.protocol,
+            if r.src != "0.0.0.0/0":
+                print "-s " + r.src,
+            if r.sport != "any":
+                print "--sport " + r.sport,
+            if r.dst != "0.0.0.0/0":
+                print "-d " + r.dst,
+            if r.dport != "any":
+                print "--dport " + r.dport,
+            if r.action == "allow":
+                print "-j ACCEPT"
+            else:
+                print "-j DENY"
+
+    def setRule(self, rule):
+        '''Update firewall with rule'''
+        self._readRules()
+        i = 0
+        for r in self.rules:
+            ret = ufwRule.match(r, rule)
+            if ret == 0:
+                # rule already exists, so do nothing
+                return
+            if ret < 0:
+                # matches all but action
+                self.rules[i] = rule
+                break
+            i += 1
+        # add rule to the end
+        self.rules.append(rule)
+        self._writeRules()
+
 class ufwFrontend:
     '''UI'''
     def __init__(self, be):
@@ -578,14 +662,18 @@ class ufwFrontend:
         '''show status of firewall'''
         self.backend.getStatus()
 
+    def setRule(self, rule):
+        '''set rule'''
+        self.backend.setRule(rule)
+
 #
 # MAIN SCRIPT STARTS HERE
 #
 action = ""
-service = ""
+rule = ""
 dryrun = False
 try:
-    (action, service, dryrun) = process_args()
+    (action, rule, dryrun) = process_args()
 except ufwError, e:
     print >> sys.stderr, e.value + "\n"
     sys.exit(1)
@@ -611,6 +699,8 @@ elif action == "enable":
     ufw.setEnabled(True)
 elif action == "disable":
     ufw.setEnabled(False)
+elif action == "allow" or action == "deny":
+    ufw.setRule(rule)
 
 sys.exit(0)
 
