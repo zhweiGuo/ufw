@@ -75,69 +75,129 @@ def process_args():
             sys.exit(1)
 
     if action == "allow" or action == "deny":
-        if len(sys.argv) < 3:
+        if len(sys.argv) < 3 or len(sys.argv) > 8:
             printHelp()
             sys.exit(1)
         
+        rule = ufwRule(action, "any", "any")
         if len(sys.argv) == 3:
-            # simple rule
-            tmp = sys.argv[2].split(':')
-            if len(tmp) == 1:
-                rule = ufwRule(action, "any", tmp[0])
-            elif len(tmp) == 2:
-                rule = ufwRule(action, tmp[1], tmp[0])
-            else:
-                printHelp()
-                sys.exit(1)
-        elif len(sys.argv) == 4:
-            if sys.argv[2].lower() != "from" and sys.argv[2].lower() != "to":
-                printHelp()
-                sys.exit(1)
-            tmp = sys.argv[3].split(':')
-            if len(tmp) == 1:
-                if sys.argv[2].lower() == "to":
-                    rule = ufwRule(action, "any", "any", tmp[0])
+            try:
+                if validAddress(sys.argv[2]):
+                    rule.setDst(sys.argv[2])
                 else:
-                    rule = ufwRule(action, "any", "any", "0.0.0.0/0", "any", tmp[0])
-            elif len(tmp) == 2:
-                if sys.argv[2].lower() == "to":
-                    rule = ufwRule(action, "any", tmp[1], tmp[0])
-                else:
-                    rule = ufwRule(action, "any", "any", "0.0.0.0/0", tmp[1], tmp[0])
-            elif len(tmp) == 3:
-                if sys.argv[2].lower() == "to":
-                    rule = ufwRule(action, tmp[2], tmp[1], tmp[0])
-                else:
-                    rule = ufwRule(action, tmp[2], "any", "0.0.0.0/0", tmp[1], tmp[0])
-            else:
-                printHelp()
-                sys.exit(1)
-        elif len(sys.argv) == 7:
-            if sys.argv[3].lower() == sys.argv[5].lower():
-                printHelp()
-                sys.exit(1)
-            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
-                printHelp()
-                sys.exit(1)
-            if sys.argv[5].lower() != "from" and sys.argv[5].lower() != "to":
-                printHelp()
-                sys.exit(1)
-
-            if sys.argv[3].lower() == "from":
-                rule.addSrc(sys.argv[4])
-            else:
-                rule.addDst(sys.argv[4])
-
-            if sys.argv[5].lower() == "from":
-                rule.addSrc(sys.argv[6])
-            else:
-                rule.addDst(sys.argv[6])
+                    (port, proto) = parsePortProtocol(sys.argv[2])
+                    rule.setProtocol(proto)
+                    rule.setPort(port, "dst")
+            except:
+                raise ufwError("Bad address or port")
         else:
-            printHelp()
-            sys.exit(1)
+            # position in argv of 'from' or 'to'
+            found_from = -1
+            found_to = -1
+            i = 0
+            for arg in sys.argv:
+                if re.match("from", arg.lower()):
+                     found_from = i
+                elif re.match("to", arg.lower()):
+                     found_to = i
+                i += 1
+            
+            # make sure have from and to
+            if len(sys.argv) >= 6:
+                if found_from < 0 or found_to < 0:
+                    printHelp()
+                    sys.exit(1)
+            else:
+                if found_from < 0 and found_to < 0:
+                    printHelp()
+                    sys.exit(1)
+
+            # process from
+            pos = found_from
+            if pos > 0:
+                if pos == len(sys.argv) - 1:
+                    raise ufwError("Bad address or port")
+                if pos < len(sys.argv) - 1:
+                    try:
+                        if validAddress(sys.argv[pos + 1]):
+                            rule.setSrc(sys.argv[pos + 1])
+                        else:
+                            (port, proto) = parsePortProtocol(sys.argv[pos + 1])
+                            rule.setProtocol(proto)
+                            rule.setPort(port, "src")
+                    except:
+                        raise
+                if pos < len(sys.argv) - 2 and pos + 2 != found_to:
+                    try:
+                        (port, proto) = parsePortProtocol(sys.argv[pos + 2])
+                        rule.setProtocol(proto)
+                        rule.setPort(port, "src")
+                    except:
+                        raise
+            # process to
+            pos = found_to
+            if pos > 0:
+                if pos == len(sys.argv) - 1:
+                    raise ufwError("Bad address or port")
+                if pos < len(sys.argv) - 1:
+                    try:
+                        if validAddress(sys.argv[pos + 1]):
+                            rule.setDst(sys.argv[pos + 1])
+                        else:
+                            (port, proto) = parsePortProtocol(sys.argv[pos + 1])
+                            rule.setProtocol(proto)
+                            rule.setPort(port, "dst")
+                    except:
+                        raise
+                if pos < len(sys.argv) - 2 and pos + 2 != found_from:
+                    try:
+                        (port, proto) = parsePortProtocol(sys.argv[pos + 2])
+                        rule.setProtocol(proto)
+                        rule.setPort(port, "dst")
+                    except:
+                        raise
+
 
     return (action, rule, dryrun)
     
+def parsePortProtocol(str):
+    '''Parse port or port and protocol'''
+    port = ""
+    proto = ""
+    tmp = str.split(':')
+    if len(tmp) == 1:
+        port = tmp[0]
+        proto = "any"
+    elif len(tmp) == 2:
+        port = tmp[0]
+        proto = tmp[1]
+    else:
+        raise ufwError("Bad port/protocol")
+    return (port, proto)
+
+def validAddress(addr):
+    # quick test
+    if not re.match('^[0-9./]+$', addr):
+        return False
+
+    net = addr.split('/')
+
+    if len(net) > 2:
+        return False
+    elif len(net) == 2:
+        # check netmask '/'
+        # TODO check 255.255.255.0 type netmasks
+        if int(net[1]) < 0 or int(net[1]) > 32:
+            return False
+
+    ip = net[0].split('.')
+    if len(ip) != 4:
+        return False
+    for i in ip:
+        if not i or int(i) < 0 or int(i) > 255:
+            return False
+    return True
+
 def printHelp():
     '''Help message'''
     print '''
@@ -256,28 +316,14 @@ class ufwRule:
         except:
             raise
 
-    def _validAddress(self, addr):
-        # quick test
-        if not re.match('^[0-9./]+$', addr):
-            return False
-
-        net = addr.split('/')
-
-        if len(net) > 2:
-            return False
-        elif len(net) == 2:
-            # check netmask '/'
-            # TODO check 255.255.255.0 type netmasks
-            if int(net[1]) < 0 or int(net[1]) > 32:
-                return False
-
-        ip = net[0].split('.')
-        if len(ip) != 4:
-            return False
-        for i in ip:
-            if not i or int(i) < 0 or int(i) > 255:
-                return False
-        return True
+    def __str__(self):
+        str = "action:   " + self.action
+        str = str + "\nprotocol: " + self.protocol
+        str = str + "\ndst:      " + self.dst
+        str = str + "\ndport:    " + self.dport
+        str = str + "\nsrc:      " + self.src
+        str = str + "\nsport:    " + self.sport
+        return str
 
     def setAction(self, action):
         if action == "allow":
@@ -290,7 +336,7 @@ class ufwRule:
         if port == "any" or re.match('^\d+$', port):
             pass
         else:
-            raise ufwError("Bad port " + port)
+            raise ufwError("Bad port '" + port + "'")
 
         if port != "any":
             if int(port) < 1 or int(port) > 65535:
@@ -309,12 +355,12 @@ class ufwRule:
             raise ufwError("Unsupported protocol" + protocol)
 
     def setSrc(self, addr):
-        if not self._validAddress(addr):
+        if not validAddress(addr):
             raise ufwError("Bad source address")
         self.src = addr
 
     def setDst(self, addr):
-        if not self._validAddress(addr):
+        if not validAddress(addr):
             raise ufwError("Bad destination address")
         self.dst = addr
 
@@ -338,6 +384,7 @@ class ufwRule:
         if x.action == y.action:
             return 0
         return -1
+
 
 class ufwBackend:
     '''Interface for backends'''
@@ -603,26 +650,37 @@ COMMIT
 
     def _readRules(self):
         '''Read in rules add via ufw'''
-        print "TODO"
+        print "TODO: _readRules"
 
     def _writeRules(self):
         '''Write out new rules file'''
         for r in self.rules:
-            print "-A INPUT",
-            if r.protocol != "any":
-                print "-p " + r.protocol,
+            str = "-A INPUT"
+
+            # protocol is handled below
+            str += " -p " + r.protocol
             if r.src != "0.0.0.0/0":
-                print "-s " + r.src,
+                str += " -s " + r.src
             if r.sport != "any":
-                print "--sport " + r.sport,
+                str += " --sport " + r.sport
             if r.dst != "0.0.0.0/0":
-                print "-d " + r.dst,
+                str += " -d " + r.dst
             if r.dport != "any":
-                print "--dport " + r.dport,
+                str += " --dport " + r.dport
             if r.action == "allow":
-                print "-j ACCEPT"
+                str += " -j ACCEPT"
             else:
-                print "-j DENY"
+                str += " -j DENY"
+
+            if r.protocol == "any":
+                pat = re.compile(r'-p any ')
+                if r.sport != "any" or r.dport != "any":
+                    print pat.sub('-p tcp ', str)
+                    print pat.sub('-p udp ', str)
+                else:
+                    print pat.sub('', str)
+            else:
+                print str
 
     def setRule(self, rule):
         '''Update firewall with rule'''
