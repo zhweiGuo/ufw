@@ -246,12 +246,15 @@ class ufwError(Exception):
 class ufwRule:
     '''Represents network rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0", sport="any", src="0.0.0.0/0"):
-        self.setAction(action)
-        self.setProtocol(protocol)
-        self.setPort(dport)
-        self.setPort(sport, "src")
-        self.setSrc(src)
-        self.setDst(dst)
+        try:
+            self.setAction(action)
+            self.setProtocol(protocol)
+            self.setPort(dport)
+            self.setPort(sport, "src")
+            self.setSrc(src)
+            self.setDst(dst)
+        except:
+            raise
 
     def _validAddress(self, addr):
         # quick test
@@ -287,11 +290,11 @@ class ufwRule:
         if port == "any" or re.match('^\d+$', port):
             pass
         else:
-            error("Bad port " + port)
+            raise ufwError("Bad port " + port)
 
         if port != "any":
             if int(port) < 1 or int(port) > 65535:
-                error("Bad port")
+                raise ufwError("Bad port")
 
         if loc == "src":
             self.sport = port
@@ -303,16 +306,16 @@ class ufwRule:
         if protocol == "tcp" or protocol == "udp" or protocol == "any":
             self.protocol = protocol
         else:
-            error("Unsupported protocol" + protocol)
+            raise ufwError("Unsupported protocol" + protocol)
 
     def setSrc(self, addr):
         if not self._validAddress(addr):
-            error("Bad source address")
+            raise ufwError("Bad source address")
         self.src = addr
 
     def setDst(self, addr):
         if not self._validAddress(addr):
-            error("Bad destination address")
+            raise ufwError("Bad destination address")
         self.dst = addr
 
     def match(self, x, y):
@@ -341,10 +344,13 @@ class ufwBackend:
     def __init__(self, name, d):
         self.defaults = {}
         self.name = name
-        self._doChecks()
-        self._getDefaults()
         self.dryrun = d
         self.rules = []
+        try:
+            self._doChecks()
+            self._getDefaults()
+        except:
+            raise
 
     def _isEnabled(self):
         if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
@@ -383,14 +389,14 @@ class ufwBackend:
         uid = os.getuid()
 
         if uid != 0:
-            error("You need to be root to run this script")
+            raise ufwError("You need to be root to run this script")
 
         pat = re.compile(r'^\.')
         for path in files.values() + [ os.path.abspath(sys.argv[0]) ]:
             while True:
                 debug("Checking " + path)
                 if pat.search(os.path.basename(path)):
-                    error("found hidden directory in path: " + path)
+                    raise ufwError("found hidden directory in path: " + path)
 
                 try:
                     statinfo = os.stat(path)
@@ -399,11 +405,11 @@ class ufwBackend:
                     raise
 
                 if os.path.islink(path):
-                    error("found symbolic link in path: " + path)
+                    raise ufwError("found symbolic link in path: " + path)
                 if statinfo.st_uid != 0:
-                    error("uid is " + str(uid) + " but '" + path + "' is owned by " + str(statinfo.st_uid))
+                    raise ufwError("uid is " + str(uid) + " but '" + path + "' is owned by " + str(statinfo.st_uid))
                 if mode & S_IWOTH:
-                    error(path + " is world writable!")
+                    raise ufwError(path + " is world writable!")
                 if mode & S_IWGRP:
                     warn(path + " is group writable")
 
@@ -522,11 +528,11 @@ class iptBackend(ufwBackend):
 
         rc = cmd(['iptables', '-L', '-n'])
         if rc != 0:
-            error("problem running iptables")
+            raise ufwError("problem running iptables")
         if self._useIPV6():
             rc = cmd(['ip6tables', '-L', '-n'])
             if rc != 0:
-                error("problem running ip6tables")
+                raise ufwError("problem running ip6tables")
 
     def stopFirewall(self):
         '''stop the firewall'''
@@ -551,12 +557,12 @@ COMMIT
 
         rc = cmdPipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
-            error("problem running iptables")
+            raise ufwError("problem running iptables")
 
         if self._useIPV6():
             rc = cmdPipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
-                error("problem running ip6tables")
+                raise ufwError("problem running ip6tables")
 
     def startFirewall(self):
         '''start the firewall'''
@@ -565,7 +571,7 @@ COMMIT
         else:
             rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
             if rc != 0:
-                error("problem running iptables")
+                raise ufwError("problem running iptables")
 
         if self._useIPV6():
             if dryrun:
@@ -573,7 +579,7 @@ COMMIT
             else:
                 rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
                 if rc != 0:
-                    error("problem running ip6tables")
+                    raise ufwError("problem running ip6tables")
         else:
             # just enable ipv6 on loopback
             ipv6conf = '''*filter
@@ -643,28 +649,40 @@ class ufwFrontend:
 
     def setEnabled(self, enabled):
         '''set status of #CONFIG_PREFIX#/defaults/ufw'''
-        if enabled:
-            if not self.backend._isEnabled():
-                self.backend.setDefault(files['defaults'], "ENABLED", "yes")
-            self.backend.startFirewall()
-            print "firewall enabled"
-        else:
-            if self.backend._isEnabled():
-                self.backend.setDefault(files['defaults'], "ENABLED", "no")
-            self.backend.stopFirewall()
-            print "firewall disabled"
+        try:
+            if enabled:
+                if not self.backend._isEnabled():
+                    self.backend.setDefault(files['defaults'], "ENABLED", "yes")
+                self.backend.startFirewall()
+                print "firewall enabled"
+            else:
+                if self.backend._isEnabled():
+                    self.backend.setDefault(files['defaults'], "ENABLED", "no")
+                self.backend.stopFirewall()
+                print "firewall disabled"
+        except ufwError, e:
+            error(e.value)
 
     def setLogLevel(self, level):
         '''set log level'''
-        self.backend.setLogLevel(level)
+        try:
+            self.backend.setLogLevel(level)
+        except ufwError, e:
+            error(e.value)
 
     def getStatus(self):
         '''show status of firewall'''
-        self.backend.getStatus()
+        try:
+            self.backend.getStatus()
+        except ufwError, e:
+            error(e.value)
 
     def setRule(self, rule):
         '''set rule'''
-        self.backend.setRule(rule)
+        try:
+            self.backend.setRule(rule)
+        except ufwError, e:
+            error(e.value)
 
 #
 # MAIN SCRIPT STARTS HERE
@@ -675,8 +693,7 @@ dryrun = False
 try:
     (action, rule, dryrun) = process_args()
 except ufwError, e:
-    print >> sys.stderr, e.value + "\n"
-    sys.exit(1)
+    error(e.value)
 
 if action == "help":
     printHelp()
@@ -688,7 +705,13 @@ elif action == "version":
     print "welcome to change it and/or distribute copies of it under certain conditions."
     sys.exit(0)
 
-ufw = ufwFrontend(iptBackend(dryrun))
+try:
+    ufw = ufwFrontend(iptBackend(dryrun))
+except ufwError, e:
+    error(e.value)
+except:
+    raise
+
 if action == "logging-on":
     ufw.setLogLevel("on")
 elif action == "logging-off":
