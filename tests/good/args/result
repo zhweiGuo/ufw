@@ -22,7 +22,7 @@ logging disabled
 TESTING ARGS (enable/disable)
 4: --dry-run enable
 WARN: Checks disabled
-> cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
+> cat ufw.rules | iptables-restore
 > echo
 *filter
 :INPUT DROP [0:0]
@@ -51,7 +51,7 @@ firewall disabled
 
 6: --dry-run ENABLE
 WARN: Checks disabled
-> cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
+> cat ufw.rules | iptables-restore
 > echo
 *filter
 :INPUT DROP [0:0]

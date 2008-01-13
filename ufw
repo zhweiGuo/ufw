@@ -630,7 +630,7 @@ COMMIT
     def startFirewall(self):
         '''start the firewall'''
         if dryrun:
-            print "> cat " + files['rules'] + " | iptables-restore"
+            print "> cat ufw.rules | iptables-restore"
         else:
             rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
             if rc != 0:
@@ -638,7 +638,7 @@ COMMIT
 
         if self._useIPV6():
             if dryrun:
-                print "> cat " + files['rules'] + " | ip6tables-restore"
+                print "> cat ufw.rules | ip6tables-restore"
             else:
                 rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
                 if rc != 0:

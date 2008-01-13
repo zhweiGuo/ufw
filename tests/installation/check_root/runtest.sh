@@ -1,5 +1,6 @@
 #!/bin/bash
 
-$TESTPATH/usr/sbin/ufw status >> $TESTTMP/result 2>&1 && exit 1
+sed -i 's/disableChecks = False/disableChecks = True/' $TESTPATH/usr/sbin/ufw
+$TESTPATH/usr/sbin/ufw --dry-run status >> $TESTTMP/result 2>&1 || exit 1
 
 exit 0

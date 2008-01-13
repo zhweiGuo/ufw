@@ -1,7 +1,7 @@
 TESTING ARGS (enable/disable)
 WARN: Checks disabled
-> cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
-> cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | ip6tables-restore
+> cat ufw.rules | iptables-restore
+> cat ufw.rules | ip6tables-restore
 firewall enabled
 WARN: Checks disabled
 > echo
