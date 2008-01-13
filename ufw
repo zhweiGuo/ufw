@@ -261,7 +261,6 @@ def closeFiles(fns, update = True):
     except:
         raise
 
-
 def cmd(command):
     '''Try to execute given command (array)'''
     cmd = ' '.join(command)
@@ -365,25 +364,32 @@ class ufwRule:
             raise ufwError("Bad destination address")
         self.dst = addr
 
-    def match(self, x, y):
+    def match(x, y):
         '''Check if rules match'''
         # Return codes:
         #   0	match
         #   1	no match
         #  -1	match all but action
         if x.dport != y.dport:
+            debug("No match")
             return 1
         if x.sport != y.sport:
+            debug("No match")
             return 1
         if x.protocol != y.protocol:
+            debug("No match")
             return 1
         if x.src != y.src:
+            debug("No match")
             return 1
         if x.dst != y.dst:
+            debug("No match")
             return 1
         
         if x.action == y.action:
+            debug("Found exact match")
             return 0
+        debug("Found opposite match")
         return -1
 
 
@@ -397,6 +403,7 @@ class ufwBackend:
         try:
             self._doChecks()
             self._getDefaults()
+            self._readRules()
         except:
             raise
 
@@ -651,7 +658,25 @@ COMMIT
 
     def _readRules(self):
         '''Read in rules add via ufw'''
-        print "TODO: _readRules"
+        orig = openFileRead(files['rules'])
+
+        lines = orig.readlines()
+        pat_tuple = re.compile(r'^### DO NOT DELETE OR MODIFY: tuple ###\s*')
+        for line in lines:
+            if pat_tuple.match(line):
+                tuple = pat_tuple.sub('', line)
+                tmp = re.split(r'\s+', tuple.strip())
+                if len(tmp) != 6:
+                    warn("Skipping malformed tuple (bad length): " + tuple)
+                else:
+                    try:
+                        rule = ufwRule(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5])
+                        self.rules.append(rule)
+                    except:
+                        warn("Skipping malformed tuple: " + tuple)
+
+        orig.close()
+
 
     def _writeRules(self):
         '''Write out new rules file'''
@@ -679,20 +704,20 @@ COMMIT
 
                     # protocol is handled below
                     str += " -p " + r.protocol
-                    if r.src != "0.0.0.0/0":
-                        str += " -s " + r.src
-                    if r.sport != "any":
-                        str += " --sport " + r.sport
                     if r.dst != "0.0.0.0/0":
                         str += " -d " + r.dst
                     if r.dport != "any":
                         str += " --dport " + r.dport
+                    if r.src != "0.0.0.0/0":
+                        str += " -s " + r.src
+                    if r.sport != "any":
+                        str += " --sport " + r.sport
                     if r.action == "allow":
                         str += " -j ACCEPT\n"
                     else:
                         str += " -j DENY\n"
 
-                    os.write(fd, "### DO NOT DELETE: tuple ### %s %s %s %s %s %s\n" % (r.protocol, r.src, r.sport, r.dst, r.dport, r.action))
+                    os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ### %s %s %s %s %s %s\n" % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
                     if r.protocol == "any":
                         pat = re.compile(r'-p any ')
                         if r.sport != "any" or r.dport != "any":
@@ -702,17 +727,20 @@ COMMIT
                             os.write(fd, pat.sub('', str))
                     else:
                         os.write(fd, str)
-                os.write(fd, "### DO NOT DELETE: rules end ###\n")
+                os.write(fd, "\n### DO NOT DELETE: rules end ###\n")
                 in_rules = False
             elif in_rules:
                 continue
             else:
                 if not self.dryrun:
                     os.write(fd, line)
+        if self.dryrun:
+            closeFiles(fns, False)
+        else:
+            closeFiles(fns)
 
     def setRule(self, rule):
         '''Update firewall with rule'''
-        self._readRules()
         i = 0
         for r in self.rules:
             ret = ufwRule.match(r, rule)
@@ -722,9 +750,10 @@ COMMIT
             if ret < 0:
                 # matches all but action
                 self.rules[i] = rule
-                break
+                self._writeRules()
+                return
             i += 1
-        # add rule to the end
+        # add rule to the end if no matches
         self.rules.append(rule)
         self._writeRules()
 
