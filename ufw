@@ -804,6 +804,12 @@ class ufwFrontend:
         '''set rule'''
         try:
             self.backend.setRule(rule)
+            if self.backend._isEnabled():
+                self.backend.startFirewall()
+                print "rules updated and firewall reloaded"
+            else:
+                print "rules updated"
+                
         except ufwError, e:
             error(e.value)
 
