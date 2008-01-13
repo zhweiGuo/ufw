@@ -112,6 +112,7 @@ def process_args():
                     printHelp()
                     sys.exit(1)
 
+            # TODO: parsing 'to' and 'from' could be prettier...
             # process from
             pos = found_from
             if pos > 0:
@@ -654,33 +655,60 @@ COMMIT
 
     def _writeRules(self):
         '''Write out new rules file'''
-        for r in self.rules:
-            str = "-A INPUT"
+        try:
+            fns = openFiles(files['rules'])
+        except:
+            raise
 
-            # protocol is handled below
-            str += " -p " + r.protocol
-            if r.src != "0.0.0.0/0":
-                str += " -s " + r.src
-            if r.sport != "any":
-                str += " --sport " + r.sport
-            if r.dst != "0.0.0.0/0":
-                str += " -d " + r.dst
-            if r.dport != "any":
-                str += " --dport " + r.dport
-            if r.action == "allow":
-                str += " -j ACCEPT"
-            else:
-                str += " -j DENY"
+        if self.dryrun:
+            fd = sys.stdout.fileno()
+        else:
+            fd = fns['tmp']
 
-            if r.protocol == "any":
-                pat = re.compile(r'-p any ')
-                if r.sport != "any" or r.dport != "any":
-                    print pat.sub('-p tcp ', str)
-                    print pat.sub('-p udp ', str)
-                else:
-                    print pat.sub('', str)
+        lines = fns['orig'].readlines()
+        pat_start = re.compile(r'^### DO NOT DELETE: rules start ###')
+        pat_end = re.compile(r'^### DO NOT DELETE: rules end ###')
+        in_rules = False
+        for line in lines:
+            if pat_start.match(line):
+                os.write(fd, line)
+                in_rules = True
+            elif in_rules and pat_end.match(line):
+                for r in self.rules:
+                    str = "-A INPUT"
+
+                    # protocol is handled below
+                    str += " -p " + r.protocol
+                    if r.src != "0.0.0.0/0":
+                        str += " -s " + r.src
+                    if r.sport != "any":
+                        str += " --sport " + r.sport
+                    if r.dst != "0.0.0.0/0":
+                        str += " -d " + r.dst
+                    if r.dport != "any":
+                        str += " --dport " + r.dport
+                    if r.action == "allow":
+                        str += " -j ACCEPT\n"
+                    else:
+                        str += " -j DENY\n"
+
+                    os.write(fd, "### DO NOT DELETE: tuple ### %s %s %s %s %s %s\n" % (r.protocol, r.src, r.sport, r.dst, r.dport, r.action))
+                    if r.protocol == "any":
+                        pat = re.compile(r'-p any ')
+                        if r.sport != "any" or r.dport != "any":
+                            os.write(fd, pat.sub('-p tcp ', str))
+                            os.write(fd, pat.sub('-p udp ', str))
+                        else:
+                            os.write(fd, pat.sub('', str))
+                    else:
+                        os.write(fd, str)
+                os.write(fd, "### DO NOT DELETE: rules end ###\n")
+                in_rules = False
+            elif in_rules:
+                continue
             else:
-                print str
+                if not self.dryrun:
+                    os.write(fd, line)
 
     def setRule(self, rule):
         '''Update firewall with rule'''
