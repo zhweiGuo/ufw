@@ -124,6 +124,8 @@ def process_args():
                             rule.setSrc(sys.argv[pos + 1])
                         else:
                             (port, proto) = parsePortProtocol(sys.argv[pos + 1])
+                            if rule.protocol != "any" and rule.protocol != proto:
+                                raise ufwError("from/to protocol mismatch")
                             rule.setProtocol(proto)
                             rule.setPort(port, "src")
                     except:
@@ -131,6 +133,8 @@ def process_args():
                 if pos < len(sys.argv) - 2 and pos + 2 != found_to:
                     try:
                         (port, proto) = parsePortProtocol(sys.argv[pos + 2])
+                        if rule.protocol != "any" and rule.protocol != proto:
+                            raise ufwError("from/to protocol mismatch")
                         rule.setProtocol(proto)
                         rule.setPort(port, "src")
                     except:
@@ -146,6 +150,8 @@ def process_args():
                             rule.setDst(sys.argv[pos + 1])
                         else:
                             (port, proto) = parsePortProtocol(sys.argv[pos + 1])
+                            if rule.protocol != "any" and rule.protocol != proto:
+                                raise ufwError("from/to protocol mismatch")
                             rule.setProtocol(proto)
                             rule.setPort(port, "dst")
                     except:
@@ -153,6 +159,8 @@ def process_args():
                 if pos < len(sys.argv) - 2 and pos + 2 != found_from:
                     try:
                         (port, proto) = parsePortProtocol(sys.argv[pos + 2])
+                        if rule.protocol != "any" and rule.protocol != proto:
+                            raise ufwError("from/to protocol mismatch")
                         rule.setProtocol(proto)
                         rule.setPort(port, "dst")
                     except:
