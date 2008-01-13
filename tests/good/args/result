@@ -1,26 +1,26 @@
 TESTING ARGS (logging)
-0: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run logging on
+0: --dry-run logging on
 WARN: Checks disabled
 logging enabled
 
 
-1: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run logging off
+1: --dry-run logging off
 WARN: Checks disabled
 logging disabled
 
 
-2: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run LOGGING ON
+2: --dry-run LOGGING ON
 WARN: Checks disabled
 logging enabled
 
 
-3: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run LOGGING OFF
+3: --dry-run LOGGING OFF
 WARN: Checks disabled
 logging disabled
 
 
 TESTING ARGS (enable/disable)
-4: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run enable
+4: --dry-run enable
 WARN: Checks disabled
 > cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
 > echo
@@ -37,7 +37,7 @@ COMMIT
 firewall enabled
 
 
-5: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run disable
+5: --dry-run disable
 WARN: Checks disabled
 > echo
 *filter
@@ -49,7 +49,7 @@ COMMIT
 firewall disabled
 
 
-6: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run ENABLE
+6: --dry-run ENABLE
 WARN: Checks disabled
 > cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
 > echo
@@ -66,7 +66,7 @@ COMMIT
 firewall enabled
 
 
-7: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run DISABLE
+7: --dry-run DISABLE
 WARN: Checks disabled
 > echo
 *filter
@@ -79,7 +79,7 @@ firewall disabled
 
 
 TESTING ARGS (status)
-8: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run status
+8: --dry-run status
 WARN: Checks disabled
 > iptables -L -n
 

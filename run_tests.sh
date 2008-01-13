@@ -29,9 +29,6 @@ skipped=0
 errors=0
 numtests=0
 tests="installation bad good ipv6"
-if whoami | grep -q 'root' ; then
-	tests="root"
-fi
 for class in $tests
 do
 	for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
