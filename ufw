@@ -43,7 +43,7 @@ disableChecks = False
 def process_args():
     '''Process command line arguments'''
     action = ""
-    service = ""
+    rule = ""
     dryrun = False
 
     if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
@@ -75,55 +75,138 @@ def process_args():
             sys.exit(1)
 
     if action == "allow" or action == "deny":
-        if len(sys.argv) < 3:
+        if len(sys.argv) < 3 or len(sys.argv) > 8:
             printHelp()
             sys.exit(1)
         
-        tmp = sys.argv[2].split(':')
-        if len(tmp) == 1:
-            service = ufwService(tmp[0], "any")
-        elif len(tmp) == 2:
-            service = ufwService(tmp[0], tmp[1])
-        else:
-            printHelp()
-            sys.exit(1)
-
+        rule = ufwRule(action, "any", "any")
         if len(sys.argv) == 3:
-            pass
-        elif len(sys.argv) == 5:
-            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
-                printHelp()
-                sys.exit(1)
-            if sys.argv[3].lower() == "from":
-                service.addSrc(sys.argv[4])
-            else:
-                service.addDst(sys.argv[4])
-        elif len(sys.argv) == 7:
-            if sys.argv[3].lower() == sys.argv[5].lower():
-                printHelp()
-                sys.exit(1)
-            if sys.argv[3].lower() != "from" and sys.argv[3].lower() != "to":
-                printHelp()
-                sys.exit(1)
-            if sys.argv[5].lower() != "from" and sys.argv[5].lower() != "to":
-                printHelp()
-                sys.exit(1)
-
-            if sys.argv[3].lower() == "from":
-                service.addSrc(sys.argv[4])
-            else:
-                service.addDst(sys.argv[4])
-
-            if sys.argv[5].lower() == "from":
-                service.addSrc(sys.argv[6])
-            else:
-                service.addDst(sys.argv[6])
+            try:
+                if validAddress(sys.argv[2]):
+                    rule.setDst(sys.argv[2])
+                else:
+                    (port, proto) = parsePortProtocol(sys.argv[2])
+                    rule.setProtocol(proto)
+                    rule.setPort(port, "dst")
+            except:
+                raise ufwError("Bad address or port")
         else:
-            printHelp()
-            sys.exit(1)
+            # position in argv of 'from' or 'to'
+            found_from = -1
+            found_to = -1
+            i = 0
+            for arg in sys.argv:
+                if re.match("from", arg.lower()):
+                     found_from = i
+                elif re.match("to", arg.lower()):
+                     found_to = i
+                i += 1
+            
+            # make sure have from and to
+            if len(sys.argv) >= 6:
+                if found_from < 0 or found_to < 0:
+                    printHelp()
+                    sys.exit(1)
+            else:
+                if found_from < 0 and found_to < 0:
+                    printHelp()
+                    sys.exit(1)
 
-    return (action, service, dryrun)
+            # TODO: parsing 'to' and 'from' could be prettier...
+            # process from
+            pos = found_from
+            if pos > 0:
+                if pos == len(sys.argv) - 1:
+                    raise ufwError("Bad address or port")
+                if pos < len(sys.argv) - 1:
+                    try:
+                        if validAddress(sys.argv[pos + 1]):
+                            rule.setSrc(sys.argv[pos + 1])
+                        else:
+                            (port, proto) = parsePortProtocol(sys.argv[pos + 1])
+                            if rule.protocol != "any" and rule.protocol != proto:
+                                raise ufwError("from/to protocol mismatch")
+                            rule.setProtocol(proto)
+                            rule.setPort(port, "src")
+                    except:
+                        raise
+                if pos < len(sys.argv) - 2 and pos + 2 != found_to:
+                    try:
+                        (port, proto) = parsePortProtocol(sys.argv[pos + 2])
+                        if rule.protocol != "any" and rule.protocol != proto:
+                            raise ufwError("from/to protocol mismatch")
+                        rule.setProtocol(proto)
+                        rule.setPort(port, "src")
+                    except:
+                        raise
+            # process to
+            pos = found_to
+            if pos > 0:
+                if pos == len(sys.argv) - 1:
+                    raise ufwError("Bad address or port")
+                if pos < len(sys.argv) - 1:
+                    try:
+                        if validAddress(sys.argv[pos + 1]):
+                            rule.setDst(sys.argv[pos + 1])
+                        else:
+                            (port, proto) = parsePortProtocol(sys.argv[pos + 1])
+                            if rule.protocol != "any" and rule.protocol != proto:
+                                raise ufwError("from/to protocol mismatch")
+                            rule.setProtocol(proto)
+                            rule.setPort(port, "dst")
+                    except:
+                        raise
+                if pos < len(sys.argv) - 2 and pos + 2 != found_from:
+                    try:
+                        (port, proto) = parsePortProtocol(sys.argv[pos + 2])
+                        if rule.protocol != "any" and rule.protocol != proto:
+                            raise ufwError("from/to protocol mismatch")
+                        rule.setProtocol(proto)
+                        rule.setPort(port, "dst")
+                    except:
+                        raise
+
+
+    return (action, rule, dryrun)
     
+def parsePortProtocol(str):
+    '''Parse port or port and protocol'''
+    port = ""
+    proto = ""
+    tmp = str.split(':')
+    if len(tmp) == 1:
+        port = tmp[0]
+        proto = "any"
+    elif len(tmp) == 2:
+        port = tmp[0]
+        proto = tmp[1]
+    else:
+        raise ufwError("Bad port/protocol")
+    return (port, proto)
+
+def validAddress(addr):
+    # quick test
+    if not re.match('^[0-9./]+$', addr):
+        return False
+
+    net = addr.split('/')
+
+    if len(net) > 2:
+        return False
+    elif len(net) == 2:
+        # check netmask '/'
+        # TODO check 255.255.255.0 type netmasks
+        if int(net[1]) < 0 or int(net[1]) > 32:
+            return False
+
+    ip = net[0].split('.')
+    if len(ip) != 4:
+        return False
+    for i in ip:
+        if not i or int(i) < 0 or int(i) > 255:
+            return False
+    return True
+
 def printHelp():
     '''Help message'''
     print '''
@@ -186,7 +269,6 @@ def closeFiles(fns, update = True):
     except:
         raise
 
-
 def cmd(command):
     '''Try to execute given command (array)'''
     cmd = ' '.join(command)
@@ -229,82 +311,109 @@ class ufwError(Exception):
     def __str__(self):
         return repr(self.value)
 
-class ufwService:
-    '''Represents network services'''
-    def __init__(self, port, protocol):
-        self.setPort(port)
-        self.setProtocol(protocol)
-        self.src = []
-        self.dst = []
+class ufwRule:
+    '''Represents network rules'''
+    def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0", sport="any", src="0.0.0.0/0"):
+        try:
+            self.setAction(action)
+            self.setProtocol(protocol)
+            self.setPort(dport)
+            self.setPort(sport, "src")
+            self.setSrc(src)
+            self.setDst(dst)
+        except:
+            raise
 
-    def _validAddress(self, addr):
+    def __str__(self):
+        str = "action:   " + self.action
+        str = str + "\nprotocol: " + self.protocol
+        str = str + "\ndst:      " + self.dst
+        str = str + "\ndport:    " + self.dport
+        str = str + "\nsrc:      " + self.src
+        str = str + "\nsport:    " + self.sport
+        return str
+
+    def setAction(self, action):
+        if action == "allow":
+            self.action = action
+        else:
+            self.action = "deny"
+
+    def setPort(self, port, loc="dst"):
         # quick test
-        if not re.match('^[0-9./]+$', addr):
-            return False
+        if port == "any" or re.match('^\d+$', port):
+            pass
+        else:
+            raise ufwError("Bad port '" + port + "'")
 
-        net = addr.split('/')
+        if port != "any":
+            if int(port) < 1 or int(port) > 65535:
+                raise ufwError("Bad port")
 
-        if len(net) > 2:
-            return False
-        elif len(net) == 2:
-            # check netmask '/'
-            # TODO check 255.255.255.0 type netmasks
-            if int(net[1]) < 0 or int(net[1]) > 32:
-                return False
-
-        ip = net[0].split('.')
-        if len(ip) != 4:
-            return False
-        for i in ip:
-            if not i or int(i) < 0 or int(i) > 255:
-                return False
-        return True
-
-    def setPort(self, port):
-        # quick test
-        if not port or not re.match('^[0-9]+$', port):
-            error("Bad port")
-
-        p = int(port)
-        if p < 1 or p > 65535:
-            error("Bad port")
-        self.port = p
+        if loc == "src":
+            self.sport = port
+        else:
+            self.dport = port
 
     def setProtocol(self, protocol):
         # for now, just tcp, udp and any
         if protocol == "tcp" or protocol == "udp" or protocol == "any":
             self.protocol = protocol
         else:
-            error("Unsupported protocol" + protocol)
+            raise ufwError("Unsupported protocol" + protocol)
 
-    def addSrc(self, addr):
-        if not self._validAddress(addr):
-            error("Bad source address")
-        self.src.append(addr)
+    def setSrc(self, addr):
+        if not validAddress(addr):
+            raise ufwError("Bad source address")
+        self.src = addr
 
-    def removeSrc(self, addr):
-        if not self._validAddress(addr):
-            error("Bad source address")
-        self.src.remove(addr)
+    def setDst(self, addr):
+        if not validAddress(addr):
+            raise ufwError("Bad destination address")
+        self.dst = addr
 
-    def addDst(self, addr):
-        if not self._validAddress(addr):
-            error("Bad destination address")
-        self.dst.append(addr)
+    def match(x, y):
+        '''Check if rules match'''
+        # Return codes:
+        #   0	match
+        #   1	no match
+        #  -1	match all but action
+        if x.dport != y.dport:
+            debug("No match")
+            return 1
+        if x.sport != y.sport:
+            debug("No match")
+            return 1
+        if x.protocol != y.protocol:
+            debug("No match")
+            return 1
+        if x.src != y.src:
+            debug("No match")
+            return 1
+        if x.dst != y.dst:
+            debug("No match")
+            return 1
+        
+        if x.action == y.action:
+            debug("Found exact match")
+            return 0
+        debug("Found opposite match")
+        return -1
 
-    def removeSrc(self, addr):
-        if not self._validAddress(addr):
-            error("Bad destination address")
-        self.dst.remove(addr)
 
 class ufwBackend:
     '''Interface for backends'''
     def __init__(self, name, d):
         self.defaults = {}
         self.name = name
-        self._doChecks()
-        self._getDefaults()
         self.dryrun = d
+        self.rules = []
+        try:
+            self._doChecks()
+            self._getDefaults()
+            self._readRules()
+        except:
+            raise
 
     def _isEnabled(self):
         if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
@@ -343,14 +452,14 @@ class ufwBackend:
         uid = os.getuid()
 
         if uid != 0:
-            error("You need to be root to run this script")
+            raise ufwError("You need to be root to run this script")
 
         pat = re.compile(r'^\.')
         for path in files.values() + [ os.path.abspath(sys.argv[0]) ]:
             while True:
                 debug("Checking " + path)
                 if pat.search(os.path.basename(path)):
-                    error("found hidden directory in path: " + path)
+                    raise ufwError("found hidden directory in path: " + path)
 
                 try:
                     statinfo = os.stat(path)
@@ -359,11 +468,11 @@ class ufwBackend:
                     raise
 
                 if os.path.islink(path):
-                    error("found symbolic link in path: " + path)
+                    raise ufwError("found symbolic link in path: " + path)
                 if statinfo.st_uid != 0:
-                    error("uid is " + str(uid) + " but '" + path + "' is owned by " + str(statinfo.st_uid))
+                    raise ufwError("uid is " + str(uid) + " but '" + path + "' is owned by " + str(statinfo.st_uid))
                 if mode & S_IWOTH:
-                    error(path + " is world writable!")
+                    raise ufwError(path + " is world writable!")
                 if mode & S_IWGRP:
                     warn(path + " is group writable")
 
@@ -420,6 +529,9 @@ class ufwBackend:
 
     def getStatus(self):
         raise ufwError("ufwBackend.getStatus: need to override getStatus")
+
+    def setRule(self, rule):
+        raise ufwError("ufwBackend.setRule: need to override getStatus")
 
     def startFirewall(self):
         raise ufwError("ufwBackend.startFirewall: need to override startFirewall")
@@ -479,11 +591,11 @@ class iptBackend(ufwBackend):
 
         rc = cmd(['iptables', '-L', '-n'])
         if rc != 0:
-            error("problem running iptables")
+            raise ufwError("problem running iptables")
         if self._useIPV6():
             rc = cmd(['ip6tables', '-L', '-n'])
             if rc != 0:
-                error("problem running ip6tables")
+                raise ufwError("problem running ip6tables")
 
     def stopFirewall(self):
         '''stop the firewall'''
@@ -508,12 +620,12 @@ COMMIT
 
         rc = cmdPipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
-            error("problem running iptables")
+            raise ufwError("problem running iptables")
 
         if self._useIPV6():
             rc = cmdPipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
-                error("problem running ip6tables")
+                raise ufwError("problem running ip6tables")
 
     def startFirewall(self):
         '''start the firewall'''
@@ -522,7 +634,7 @@ COMMIT
         else:
             rc = cmdPipe(['cat', files['rules']], ['iptables-restore'])
             if rc != 0:
-                error("problem running iptables")
+                raise ufwError("problem running iptables")
 
         if self._useIPV6():
             if dryrun:
@@ -530,7 +642,7 @@ COMMIT
             else:
                 rc = cmdPipe(['cat', files['rules']], ['ip6tables-restore'])
                 if rc != 0:
-                    error("problem running ip6tables")
+                    raise ufwError("problem running ip6tables")
         else:
             # just enable ipv6 on loopback
             ipv6conf = '''*filter
@@ -552,6 +664,107 @@ COMMIT
                     # and doesn't have ipv6 support
                     warn("problem running ip6tables")
 
+    def _readRules(self):
+        '''Read in rules add via ufw'''
+        orig = openFileRead(files['rules'])
+
+        lines = orig.readlines()
+        pat_tuple = re.compile(r'^### DO NOT DELETE OR MODIFY: tuple ###\s*')
+        for line in lines:
+            if pat_tuple.match(line):
+                tuple = pat_tuple.sub('', line)
+                tmp = re.split(r'\s+', tuple.strip())
+                if len(tmp) != 6:
+                    warn("Skipping malformed tuple (bad length): " + tuple)
+                else:
+                    try:
+                        rule = ufwRule(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5])
+                        self.rules.append(rule)
+                    except:
+                        warn("Skipping malformed tuple: " + tuple)
+
+        orig.close()
+
+
+    def _writeRules(self):
+        '''Write out new rules file'''
+        try:
+            fns = openFiles(files['rules'])
+        except:
+            raise
+
+        if self.dryrun:
+            fd = sys.stdout.fileno()
+        else:
+            fd = fns['tmp']
+
+        lines = fns['orig'].readlines()
+        pat_start = re.compile(r'^### DO NOT DELETE: rules start ###')
+        pat_end = re.compile(r'^### DO NOT DELETE: rules end ###')
+        in_rules = False
+        for line in lines:
+            if pat_start.match(line):
+                os.write(fd, line)
+                in_rules = True
+            elif in_rules and pat_end.match(line):
+                for r in self.rules:
+                    str = "-A INPUT"
+
+                    # protocol is handled below
+                    str += " -p " + r.protocol
+                    if r.dst != "0.0.0.0/0":
+                        str += " -d " + r.dst
+                    if r.dport != "any":
+                        str += " --dport " + r.dport
+                    if r.src != "0.0.0.0/0":
+                        str += " -s " + r.src
+                    if r.sport != "any":
+                        str += " --sport " + r.sport
+                    if r.action == "allow":
+                        str += " -j ACCEPT\n"
+                    else:
+                        str += " -j DENY\n"
+
+                    os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ### %s %s %s %s %s %s\n" % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+                    if r.protocol == "any":
+                        pat = re.compile(r'-p any ')
+                        if r.sport != "any" or r.dport != "any":
+                            os.write(fd, pat.sub('-p tcp ', str))
+                            os.write(fd, pat.sub('-p udp ', str))
+                        else:
+                            os.write(fd, pat.sub('', str))
+                    else:
+                        os.write(fd, str)
+                os.write(fd, "\n### DO NOT DELETE: rules end ###\n")
+                in_rules = False
+            elif in_rules:
+                continue
+            else:
+                if not self.dryrun:
+                    os.write(fd, line)
+        if self.dryrun:
+            closeFiles(fns, False)
+        else:
+            closeFiles(fns)
+
+    def setRule(self, rule):
+        '''Update firewall with rule'''
+        i = 0
+        for r in self.rules:
+            ret = ufwRule.match(r, rule)
+            if ret == 0:
+                # rule already exists, so do nothing
+                return
+            if ret < 0:
+                # matches all but action
+                self.rules[i] = rule
+                self._writeRules()
+                return
+            i += 1
+        # add rule to the end if no matches
+        self.rules.append(rule)
+        self._writeRules()
+
 class ufwFrontend:
     '''UI'''
     def __init__(self, be):
@@ -559,36 +772,51 @@ class ufwFrontend:
 
     def setEnabled(self, enabled):
         '''set status of #CONFIG_PREFIX#/defaults/ufw'''
-        if enabled:
-            if not self.backend._isEnabled():
-                self.backend.setDefault(files['defaults'], "ENABLED", "yes")
-            self.backend.startFirewall()
-            print "firewall enabled"
-        else:
-            if self.backend._isEnabled():
-                self.backend.setDefault(files['defaults'], "ENABLED", "no")
-            self.backend.stopFirewall()
-            print "firewall disabled"
+        try:
+            if enabled:
+                if not self.backend._isEnabled():
+                    self.backend.setDefault(files['defaults'], "ENABLED", "yes")
+                self.backend.startFirewall()
+                print "firewall enabled"
+            else:
+                if self.backend._isEnabled():
+                    self.backend.setDefault(files['defaults'], "ENABLED", "no")
+                self.backend.stopFirewall()
+                print "firewall disabled"
+        except ufwError, e:
+            error(e.value)
 
     def setLogLevel(self, level):
         '''set log level'''
-        self.backend.setLogLevel(level)
+        try:
+            self.backend.setLogLevel(level)
+        except ufwError, e:
+            error(e.value)
 
     def getStatus(self):
         '''show status of firewall'''
-        self.backend.getStatus()
+        try:
+            self.backend.getStatus()
+        except ufwError, e:
+            error(e.value)
+
+    def setRule(self, rule):
+        '''set rule'''
+        try:
+            self.backend.setRule(rule)
+        except ufwError, e:
+            error(e.value)
 
 #
 # MAIN SCRIPT STARTS HERE
 #
 action = ""
-service = ""
+rule = ""
 dryrun = False
 try:
-    (action, service, dryrun) = process_args()
+    (action, rule, dryrun) = process_args()
 except ufwError, e:
-    print >> sys.stderr, e.value + "\n"
-    sys.exit(1)
+    error(e.value)
 
 if action == "help":
     printHelp()
@@ -600,7 +828,13 @@ elif action == "version":
     print "welcome to change it and/or distribute copies of it under certain conditions."
     sys.exit(0)
 
-ufw = ufwFrontend(iptBackend(dryrun))
+try:
+    ufw = ufwFrontend(iptBackend(dryrun))
+except ufwError, e:
+    error(e.value)
+except:
+    raise
+
 if action == "logging-on":
     ufw.setLogLevel("on")
 elif action == "logging-off":
@@ -611,6 +845,8 @@ elif action == "enable":
     ufw.setEnabled(True)
 elif action == "disable":
     ufw.setEnabled(False)
+elif action == "allow" or action == "deny":
+    ufw.setRule(rule)
 
 sys.exit(0)
 

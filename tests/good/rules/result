@@ -1,0 +1,413 @@
+SIMPLE
+0: /tmp/ufw/usr/sbin/ufw --dry-run allow 25
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
+-A INPUT -p tcp --dport 25 -j ACCEPT
+-A INPUT -p udp --dport 25 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+1: /tmp/ufw/usr/sbin/ufw --dry-run allow 25:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A INPUT -p tcp --dport 25 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+2: /tmp/ufw/usr/sbin/ufw --dry-run allow 25:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
+-A INPUT -p udp --dport 25 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+3: /tmp/ufw/usr/sbin/ufw --dry-run allow 10.0.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
+-A INPUT -d 10.0.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+TO/FROM
+4: /tmp/ufw/usr/sbin/ufw --dry-run allow from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
+-A INPUT -s 192.168.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+5: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
+-A INPUT -d 10.0.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+6: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 192.168.0.1
+-A INPUT -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+7: /tmp/ufw/usr/sbin/ufw --dry-run allow from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 80 192.168.0.1
+-A INPUT -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+-A INPUT -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+8: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+9: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+10: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 any 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+11: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+12: /tmp/ufw/usr/sbin/ufw --dry-run allow from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1
+-A INPUT -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+13: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+14: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow udp any 10.0.0.1 80 192.168.0.1
+-A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+15: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25:udp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 any 192.168.0.1
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+16: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25:udp from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 80 192.168.0.1
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+17: /tmp/ufw/usr/sbin/ufw --dry-run allow from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1
+-A INPUT -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+18: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+19: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow tcp any 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+20: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25:tcp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+21: /tmp/ufw/usr/sbin/ufw --dry-run allow to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+### DO NOT DELETE: rules end ###
+
+
+22: /tmp/ufw/usr/sbin/ufw --dry-run deny from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
+-A INPUT -s 192.168.0.1 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+23: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
+-A INPUT -d 10.0.0.1 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+24: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 192.168.0.1
+-A INPUT -d 10.0.0.1 -s 192.168.0.1 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+25: /tmp/ufw/usr/sbin/ufw --dry-run deny from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
+-A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p udp -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+26: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DENY
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+27: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+28: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+29: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+30: /tmp/ufw/usr/sbin/ufw --dry-run deny from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
+-A INPUT -p udp -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+31: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+32: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny udp any 10.0.0.1 80 192.168.0.1
+-A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+33: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25:udp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+34: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+35: /tmp/ufw/usr/sbin/ufw --dry-run deny from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
+-A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+36: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+37: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+38: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25:tcp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+
+39: /tmp/ufw/usr/sbin/ufw --dry-run deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+
+

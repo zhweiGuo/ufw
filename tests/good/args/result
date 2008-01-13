@@ -1,18 +1,26 @@
 TESTING ARGS (logging)
-1
+0: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run logging on
 WARN: Checks disabled
 logging enabled
-2
+
+
+1: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run logging off
 WARN: Checks disabled
 logging disabled
-3
+
+
+2: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run LOGGING ON
 WARN: Checks disabled
 logging enabled
-4
+
+
+3: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run LOGGING OFF
 WARN: Checks disabled
 logging disabled
+
+
 TESTING ARGS (enable/disable)
-5
+4: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run enable
 WARN: Checks disabled
 > cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
 > echo
@@ -27,7 +35,9 @@ WARN: Checks disabled
 COMMIT
 > | ip6tables-restore
 firewall enabled
-6
+
+
+5: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run disable
 WARN: Checks disabled
 > echo
 *filter
@@ -37,7 +47,9 @@ WARN: Checks disabled
 COMMIT
 > | iptables-restore
 firewall disabled
-7
+
+
+6: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run ENABLE
 WARN: Checks disabled
 > cat /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/ufw.rules | iptables-restore
 > echo
@@ -52,7 +64,9 @@ WARN: Checks disabled
 COMMIT
 > | ip6tables-restore
 firewall enabled
-8
+
+
+7: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run DISABLE
 WARN: Checks disabled
 > echo
 *filter
@@ -62,30 +76,11 @@ WARN: Checks disabled
 COMMIT
 > | iptables-restore
 firewall disabled
-TESTING ARGS (allow/deny port)
-WARN: Checks disabled
-9
-WARN: Checks disabled
-10
-WARN: Checks disabled
-11
-WARN: Checks disabled
-TESTING ARGS (allow/deny to/from)
-12
-WARN: Checks disabled
-13
-WARN: Checks disabled
-14
-WARN: Checks disabled
-15
-WARN: Checks disabled
-16
-WARN: Checks disabled
-17
-WARN: Checks disabled
-18
-WARN: Checks disabled
+
+
 TESTING ARGS (status)
-19
+8: /home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/usr/sbin/ufw --dry-run status
 WARN: Checks disabled
 > iptables -L -n
+
+

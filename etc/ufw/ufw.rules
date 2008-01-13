@@ -55,6 +55,10 @@
 -A INPUT -s 224.0.0.0/4 -j ACCEPT
 -A INPUT -d 224.0.0.0/4 -j ACCEPT
 
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+
 
 # connection tracking for outbound
 -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
