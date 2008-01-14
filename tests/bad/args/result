@@ -8,143 +8,156 @@ TESTING ARGS (logging)
 2: --dry-run loggin on
 
 
+TESTING ARGS (default)
+3: --dry-run default
+
+
+4: --dry-run default foo
+
+
+5: --dry-run default accept
+
+
+6: --dry-run defaul allow
+
+
 TESTING ARGS (enable/disable)
-3: --dry-run enabled
+7: --dry-run enabled
 
 
-4: --dry-run disabled
+8: --dry-run disabled
 
 
 TESTING ARGS (allow/deny)
-5: --dry-run allow
+9: --dry-run allow
 
 
-6: --dry-run deny
+10: --dry-run deny
 
 
 TESTING ARGS (allow/deny bad port)
-7: --dry-run alow 25
+11: --dry-run alow 25
 
 
-8: --dry-run dny 25
+12: --dry-run dny 25
 
 
-9: --dry-run allow 25a
+13: --dry-run allow 25a
 
 
-10: --dry-run deny 25a
+14: --dry-run deny 25a
 
 
-11: --dry-run allow 65536
+15: --dry-run allow 65536
 
 
-12: --dry-run deny 65536
+16: --dry-run deny 65536
 
 
-13: --dry-run allow 0
+17: --dry-run allow 0
 
 
-14: --dry-run deny 0
+18: --dry-run deny 0
 
 
 TESTING ARGS (allow/deny bad to/from)
-15: --dry-run allow 25 to
+19: --dry-run allow 25 to
 
 
-16: --dry-run deny 25 to
+20: --dry-run deny 25 to
 
 
-17: --dry-run allow 25 from
+21: --dry-run allow 25 from
 
 
-18: --dry-run deny 25 from
+22: --dry-run deny 25 from
 
 
-19: --dry-run allow 25 from 192.168.0.1 to
+23: --dry-run allow 25 from 192.168.0.1 to
 
 
-20: --dry-run deny 25 from 192.168.0.1 to
+24: --dry-run deny 25 from 192.168.0.1 to
 
 
-21: --dry-run allow 25 from 192.168.0.1 from
+25: --dry-run allow 25 from 192.168.0.1 from
 
 
-22: --dry-run deny 25 from 192.168.0.1 from
+26: --dry-run deny 25 from 192.168.0.1 from
 
 
-23: --dry-run allow 25 to 192.168.0.1 from
+27: --dry-run allow 25 to 192.168.0.1 from
 
 
-24: --dry-run deny 25 to 192.168.0.1 from
+28: --dry-run deny 25 to 192.168.0.1 from
 
 
-25: --dry-run allow 25 to 192.168.0.1 to
+29: --dry-run allow 25 to 192.168.0.1 to
 
 
-26: --dry-run deny 25 to 192.168.0.1 to
+30: --dry-run deny 25 to 192.168.0.1 to
 
 
-27: --dry-run allow 25 to from 192.168.0.1
+31: --dry-run allow 25 to from 192.168.0.1
 
 
-28: --dry-run deny 25 to from 192.168.0.1
+32: --dry-run deny 25 to from 192.168.0.1
 
 
-29: --dry-run allow 25 from to 192.168.0.1
+33: --dry-run allow 25 from to 192.168.0.1
 
 
-30: --dry-run deny 25 from to 192.168.0.1
+34: --dry-run deny 25 from to 192.168.0.1
 
 
-31: --dry-run allow 25 from from 192.168.0.1
+35: --dry-run allow 25 from from 192.168.0.1
 
 
-32: --dry-run deny 25 from from 192.168.0.1
+36: --dry-run deny 25 from from 192.168.0.1
 
 
-33: --dry-run allow 25 to to 192.168.0.1
+37: --dry-run allow 25 to to 192.168.0.1
 
 
-34: --dry-run deny 25 to to 192.168.0.1
+38: --dry-run deny 25 to to 192.168.0.1
 
 
 TESTING ARGS (allow/deny bad ip)
-35: --dry-run allow 25 to 192.168.0.
+39: --dry-run allow 25 to 192.168.0.
 
 
-36: --dry-run allow 25 to 192.168.0.1.1
+40: --dry-run allow 25 to 192.168.0.1.1
 
 
-37: --dry-run allow 25 to foo
+41: --dry-run allow 25 to foo
 
 
-38: --dry-run allow 25 to xxx.xxx.xxx.xx
+42: --dry-run allow 25 to xxx.xxx.xxx.xx
 
 
-39: --dry-run allow 25 to 192a.168.0.1
+43: --dry-run allow 25 to 192a.168.0.1
 
 
-40: --dry-run allow 25 to 192.168a.0.1
+44: --dry-run allow 25 to 192.168a.0.1
 
 
-41: --dry-run allow 25 to 192.168.0a.1
+45: --dry-run allow 25 to 192.168.0a.1
 
 
-42: --dry-run allow 25 to 192.168.1.a1
+46: --dry-run allow 25 to 192.168.1.a1
 
 
-43: --dry-run allow 25 to 192.168.1..1
+47: --dry-run allow 25 to 192.168.1..1
 
 
-44: --dry-run allow 25 to 192.168.1..1/24
+48: --dry-run allow 25 to 192.168.1..1/24
 
 
-45: --dry-run allow 25 to 192.168.1.256
+49: --dry-run allow 25 to 192.168.1.256
 
 
-46: --dry-run allow 25 to 256.0.0.0
+50: --dry-run allow 25 to 256.0.0.0
 
 
-47: --dry-run allow 25 to 10.256.0.0
+51: --dry-run allow 25 to 10.256.0.0
 
 

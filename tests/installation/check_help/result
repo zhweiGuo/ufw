@@ -4,6 +4,7 @@ Usage: ufw COMMAND
 Commands:
   enable			Enables the firewall
   disable			Disables the fireall
+  default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
   allow [from ADDR] [to ADDR]	allow packets to/from ADDR
   deny [from ADDR] [to ADDR]	deny packets to/from ADDR

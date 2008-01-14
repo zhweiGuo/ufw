@@ -17,6 +17,12 @@ do_cmd --dry-run logging off
 do_cmd --dry-run LOGGING ON 
 do_cmd --dry-run LOGGING OFF 
 
+echo "TESTING ARGS (default)" >> $TESTTMP/result
+do_cmd --dry-run default allow
+do_cmd --dry-run default deny
+do_cmd --dry-run DEFAULT ALLOW
+do_cmd --dry-run DEFAULT DENY
+
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result || exit 1
 do_cmd --dry-run enable 
 do_cmd --dry-run disable 

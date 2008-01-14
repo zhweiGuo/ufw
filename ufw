@@ -54,7 +54,7 @@ def process_args():
         printHelp()
         sys.exit(1)
 
-    allowed_cmds = ['enable', 'disable', 'help', 'logging', 'status', 'version', 'allow', 'deny' ]
+    allowed_cmds = ['enable', 'disable', 'help', 'default', 'logging', 'status', 'version', 'allow', 'deny' ]
 
     if not sys.argv[1].lower() in allowed_cmds:
         printHelp()
@@ -70,6 +70,18 @@ def process_args():
             action = "logging-off"
         elif sys.argv[2].lower() == "on":
             action = "logging-on"
+        else:
+            printHelp()
+            sys.exit(1)
+
+    if action == "default":
+        if len(sys.argv) < 3:
+            printHelp()
+            sys.exit(1)
+        elif sys.argv[2].lower() == "deny":
+            action = "default-deny"
+        elif sys.argv[2].lower() == "allow":
+            action = "default-allow"
         else:
             printHelp()
             sys.exit(1)
@@ -212,6 +224,7 @@ Usage: ''' + programName + ''' COMMAND
 Commands:
   enable			Enables the firewall
   disable			Disables the fireall
+  default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
   allow [from ADDR] [to ADDR]	allow packets to/from ADDR
   deny [from ADDR] [to ADDR]	deny packets to/from ADDR
@@ -524,6 +537,9 @@ class ufwBackend:
     def setLogLevel(self, level):
         raise ufwError("ufwBackend.setLogLevel: need to override setLogLevel")
 
+    def setDefaultPolicy(self, policy):
+        raise ufwError("ufwBackend.setDefaultPolicy: need to override setDefaultPolicy")
+
     def getStatus(self):
         raise ufwError("ufwBackend.getStatus: need to override getStatus")
 
@@ -545,9 +561,41 @@ class iptBackend(ufwBackend):
         '''show current log level'''
         print "getLogLevel: TODO"
 
+    def setDefaultPolicy(self, policy):
+        '''set default policy'''
+        try:
+            fns = openFiles(files['rules'])
+        except:
+            raise
+        fd = fns['tmp']
+
+        lines = fns['orig'].readlines()
+
+        pat = re.compile(r'^:INPUT\s+ACCEPT\s+\[0:0\]')
+        if policy == "allow":
+            pat = re.compile(r'^:INPUT\s+DROP\s+\[0:0\]')
+
+        if not self.dryrun:
+            for line in lines:
+                if pat.search(line):
+                    if policy == "allow":
+                        os.write(fd, ":INPUT ACCEPT [0:0]\n")
+                    else:
+                        os.write(fd, ":INPUT DROP [0:0]\n")
+                else:
+                    os.write(fd, line)
+    
+        print "Default policy changed to '" + policy + "'"
+        print "(be sure to update your rules accordingly)"
+
+        if self.dryrun:
+            closeFiles(fns, False)
+        else:
+            closeFiles(fns)
+
     def setLogLevel(self, level):
         '''set log level'''
-        commentStr = "# ufw_" + programName + " #"
+        commentStr = "# " + programName + "_comment #"
         try:
             fns = openFiles(files['rules'])
         except:
@@ -576,7 +624,10 @@ class iptBackend(ufwBackend):
         else:
             print "logging enabled"
 
-        closeFiles(fns)
+        if self.dryrun:
+            closeFiles(fns, False)
+        else:
+            closeFiles(fns)
 
     def getStatus(self):
         '''show current status'''
@@ -783,6 +834,13 @@ class ufwFrontend:
         except ufwError, e:
             error(e.value)
 
+    def setDefaultPolicy(self, policy):
+        '''set default policy'''
+        try:
+            self.backend.setDefaultPolicy(policy)
+        except ufwError, e:
+            error(e.value)
+
     def setLogLevel(self, level):
         '''set log level'''
         try:
@@ -842,6 +900,10 @@ if action == "logging-on":
     ufw.setLogLevel("on")
 elif action == "logging-off":
     ufw.setLogLevel("off")
+elif action == "default-allow":
+    ufw.setDefaultPolicy("allow")
+elif action == "default-deny":
+    ufw.setDefaultPolicy("deny")
 elif action == "status":
     ufw.getStatus()
 elif action == "enable":

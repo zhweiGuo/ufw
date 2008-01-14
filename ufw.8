@@ -11,6 +11,8 @@ use interface for the user.
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBenable|disable\fR
 .TP
+ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny
+.TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBstatus\fR
@@ -36,7 +38,11 @@ reloads firewall and enables firewall on boot
 \fBdisable\fR
 unloads firewall and disables firewall on boot
 .TP
-\fBlogging\fR ON|OFF
+\fBdefault\fR allow|deny
+change the default policy for incoming traffic. Note that existing rules will
+have to be migrated manually when changing the default policy.
+.TP
+\fBlogging\fR on|off
 toggle logging
 .TP
 \fBstatus\fR

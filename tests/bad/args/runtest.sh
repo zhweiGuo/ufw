@@ -20,6 +20,12 @@ do_cmd --dry-run logging
 do_cmd --dry-run logging foo
 do_cmd --dry-run loggin on
 
+echo "TESTING ARGS (default)" >> $TESTTMP/result
+do_cmd --dry-run default
+do_cmd --dry-run default foo
+do_cmd --dry-run default accept
+do_cmd --dry-run defaul allow
+
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 # bad
 do_cmd --dry-run enabled
