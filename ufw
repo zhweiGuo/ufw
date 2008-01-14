@@ -853,6 +853,8 @@ class ufwFrontend:
         '''set default policy'''
         try:
             self.backend.setDefaultPolicy(policy)
+            if self.backend._isEnabled():
+                self.backend.startFirewall()
         except ufwError, e:
             error(e.value)
 
@@ -860,6 +862,8 @@ class ufwFrontend:
         '''set log level'''
         try:
             self.backend.setLogLevel(level)
+            if self.backend._isEnabled():
+                self.backend.startFirewall()
         except ufwError, e:
             error(e.value)
 
