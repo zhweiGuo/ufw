@@ -8,6 +8,11 @@ ENABLED=no
 IPV6=no
 
 #
+# IPT backend
+#
 # only enable if using iptables backend
-SYSCTL=#CONFIG_PREFIX#/ufw/sysctl.conf
+IPT_SYSCTL=#CONFIG_PREFIX#/ufw/sysctl.conf
+
+# extra connection tracking modules to load
+IPT_MODULES="nf_conntrack_ftp nf_conntrack_irc"
 

@@ -25,33 +25,39 @@ fi
 case "$1" in
 start)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-		if [ ! -z "$SYSCTL" ] && [ -s "$SYSCTL" ]; then
-			log_action_begin_msg "Loading $SYSCTL"
-			sysctl -q -p $SYSCTL
+		if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
+			log_action_begin_msg "ufw: Loading $IPT_SYSCTL"
+			sysctl -q -p $IPT_SYSCTL
 			log_action_end_msg $?
 		fi
-		log_action_begin_msg "Starting firewall"
+		for m in $IPT_MODULES
+		do
+			log_action_begin_msg "ufw: Loading $m"
+			modprobe $m
+			log_action_end_msg $?
+		done
+		log_action_begin_msg "ufw: Starting firewall"
 		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 		log_action_end_msg $?
 	else
-		log_warning_msg "Skipping firewall (not enabled)"
+		log_warning_msg "ufw: Skipping firewall (not enabled)"
 	fi
 	;;
 stop)
-	log_warning_msg "Please use 'ufw disable' to stop"
+	log_warning_msg "ufw: Please use 'ufw disable' to stop"
 	;;
 restart)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-		log_action_begin_msg "Restarting firewall"
+		log_action_begin_msg "ufw: Restarting firewall"
 		#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
 		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 		log_action_end_msg $?
 	else
-		log_warning_msg "Skipping firewall (not enabled)"
+		log_warning_msg "ufw: Skipping firewall (not enabled)"
 	fi
 	;;
 force-reload)
-	log_action_begin_msg "Forcibly re-loading firewall"
+	log_action_begin_msg "ufw: Forcibly re-loading firewall"
 	#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
 	#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 	log_action_end_msg $?
