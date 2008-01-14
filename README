@@ -23,16 +23,17 @@ Basic Layout
 /usr/sbin/ufw 			is the UI for people (have different backends)
 /etc/defaults/ufw 		high level configuration
 /etc/ufw/ufw.rules 		for iptables-restore backend
-/etc/network/if-up.d/ufw	integration into boot	
+/etc/ufw/sysctl.conf 		kernel network tunables
+/etc/init.d/ufw			boot start script
 
 
 Usage
 -----
 ufw enable|disable 		disable toggles /etc/default/ufw
+ufw default allow|deny		updates default policy
 ufw logging on|off		updates backend logging (ufw.rules)
 ufw status			displays firewall status (start with ipt -Ln)
-ufw stats			displays statistics (TODO)
-
+ufw allow|deny RULE		add RULE to firewall
 
 Testing
 -------
