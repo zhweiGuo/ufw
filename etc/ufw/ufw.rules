@@ -55,14 +55,17 @@
 -A INPUT -s 224.0.0.0/4 -j ACCEPT
 -A INPUT -d 224.0.0.0/4 -j ACCEPT
 
-### DO NOT DELETE: rules start ###
-
-### DO NOT DELETE: rules end ###
-
-
 # connection tracking for outbound
 -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 -A OUTPUT -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+
+#
+# These lines are managed by ufw allow/deny commands and should not be
+# modified manually
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+#
 
 # catchall for logging
 -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
