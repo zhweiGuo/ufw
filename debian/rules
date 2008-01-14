@@ -24,6 +24,7 @@ install: build
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs usr/share/
+	dh_installdirs usr/share/ufw
 	dh_installdirs etc/
 
 	./run_tests.sh
@@ -31,6 +32,8 @@ install: build
 		--destdir=$(CURDIR)/debian/ufw \
 		--prefix=/usr \
 		--config-prefix=/etc
+
+	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.rules $(CURDIR)/debian/ufw/usr/share/ufw
 
 
 binary-arch: build

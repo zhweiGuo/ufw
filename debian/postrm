@@ -6,6 +6,7 @@ case "$1" in
 
     purge)
         update-rc.d ufw remove > /dev/null
+        rm -f /etc/ufw/ufw.rules
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

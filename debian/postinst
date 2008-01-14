@@ -2,7 +2,10 @@
 
 case "$1" in
     configure)
-         update-rc.d ufw start 39 S . > /dev/null
+        update-rc.d ufw start 39 S . > /dev/null
+        if [ ! -e "/etc/ufw/ufw.rules" ]; then
+            cp /usr/share/ufw/ufw.rules /etc/ufw
+        fi
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
