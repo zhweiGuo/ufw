@@ -178,6 +178,13 @@ def doInstall():
         if a.poll() > 0:
             raise OSError("Error!!! Could not update File. Maybe wrong permissions?")
 
+        print "Updating default to use " + configDir
+        a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + configDir + "%' " + os.path.join(installDir, "default/ufw"))
+        while a.poll() == -1:
+            pass
+        if a.poll() > 0:
+            raise OSError("Error!!! Could not update File. Maybe wrong permissions?")
+
         print "Finished copying program files.\n"
         print "Installation successful! :)"
         recursive_rm(buildDir)
