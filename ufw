@@ -82,14 +82,11 @@ def process_args():
         rule = ufwRule(action, "any", "any")
         if len(sys.argv) == 3:
             try:
-                if validAddress(sys.argv[2]):
-                    rule.setDst(sys.argv[2])
-                else:
-                    (port, proto) = parsePortProtocol(sys.argv[2])
-                    rule.setProtocol(proto)
-                    rule.setPort(port, "dst")
+                (port, proto) = parsePortProtocol(sys.argv[2])
+                rule.setProtocol(proto)
+                rule.setPort(port, "dst")
             except:
-                raise ufwError("Bad address or port")
+                raise ufwError("Bad port")
         else:
             # position in argv of 'from' or 'to'
             found_from = -1
