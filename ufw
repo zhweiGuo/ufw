@@ -50,6 +50,11 @@ def process_args():
         dryrun = True
         sys.argv.remove("--dry-run")
 
+    remove = False
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "delete":
+        remove = True
+        sys.argv.remove("delete")
+
     if len(sys.argv) < 2:
         printHelp()
         sys.exit(1)
@@ -92,6 +97,8 @@ def process_args():
             sys.exit(1)
         
         rule = ufwRule(action, "any", "any")
+        if remove:
+            rule.remove = remove
         if len(sys.argv) == 3:
             try:
                 (port, proto) = parsePortProtocol(sys.argv[2])
@@ -226,8 +233,8 @@ Commands:
   disable			Disables the fireall
   default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
-  allow [from ADDR] [to ADDR]	allow packets to/from ADDR
-  deny [from ADDR] [to ADDR]	deny packets to/from ADDR
+  allow|deny RULE		allow or deny RULE
+  delete allow|deny RULE	delete the allow/deny RULE
   status			show firewall status
   version			display version information
 '''
@@ -331,6 +338,7 @@ class ufwRule:
             self.setPort(sport, "src")
             self.setSrc(src)
             self.setDst(dst)
+            self.remove = False
         except:
             raise
 
@@ -797,20 +805,27 @@ COMMIT
 
     def setRule(self, rule):
         '''Update firewall with rule'''
-        i = 0
+        newrules = []
+        added = False
         for r in self.rules:
             ret = ufwRule.match(r, rule)
-            if ret == 0:
-                # rule already exists, so do nothing
-                return
-            if ret < 0:
-                # matches all but action
-                self.rules[i] = rule
-                self._writeRules()
-                return
-            i += 1
-        # add rule to the end if no matches
-        self.rules.append(rule)
+            if ret == 0 and not added:
+                # if find rule, add it if not to remove, else skip it
+                added = True
+                if not rule.remove:
+                    newrules.append(rule)
+            elif ret < 0 and not rule.remove:
+                # matches all but action, replace rule if not to remove
+                added = True
+                newrules.append(rule)
+            else:
+                newrules.append(r)
+
+        # add rule to the end if not already added
+        if not added and not rule.remove:
+            newrules.append(rule)
+
+        self.rules = newrules
         self._writeRules()
 
 class ufwFrontend:

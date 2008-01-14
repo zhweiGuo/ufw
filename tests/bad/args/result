@@ -161,3 +161,7 @@ TESTING ARGS (allow/deny bad ip)
 51: --dry-run allow 25 to 10.256.0.0
 
 
+TESTING ARGS (delete allow/deny)
+52: --dry-run delete
+
+

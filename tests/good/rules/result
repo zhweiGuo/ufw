@@ -157,8 +157,32 @@ WARN: Checks disabled
 rules updated
 
 
+14: --dry-run delete allow 25
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+15: --dry-run delete allow 25:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+16: --dry-run delete allow 25:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
 TO/FROM
-14: --dry-run allow from 192.168.0.1
+17: --dry-run allow from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -169,7 +193,15 @@ WARN: Checks disabled
 rules updated
 
 
-15: --dry-run allow to 10.0.0.1
+18: --dry-run delete allow from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+19: --dry-run allow to 10.0.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -180,7 +212,15 @@ WARN: Checks disabled
 rules updated
 
 
-16: --dry-run allow to 10.0.0.1 from 192.168.0.1
+20: --dry-run delete allow to 10.0.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+21: --dry-run allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -191,7 +231,15 @@ WARN: Checks disabled
 rules updated
 
 
-17: --dry-run allow from 192.168.0.1 80
+22: --dry-run delete allow to 10.0.0.1 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+23: --dry-run allow from 192.168.0.1 80
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -203,7 +251,15 @@ WARN: Checks disabled
 rules updated
 
 
-18: --dry-run allow to 10.0.0.1 25
+24: --dry-run delete allow from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+25: --dry-run allow to 10.0.0.1 25
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -215,7 +271,15 @@ WARN: Checks disabled
 rules updated
 
 
-19: --dry-run allow to 10.0.0.1 from 192.168.0.1 80
+26: --dry-run delete allow to 10.0.0.1 25
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+27: --dry-run allow to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -227,7 +291,15 @@ WARN: Checks disabled
 rules updated
 
 
-20: --dry-run allow to 10.0.0.1 25 from 192.168.0.1
+28: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+29: --dry-run allow to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -239,7 +311,15 @@ WARN: Checks disabled
 rules updated
 
 
-21: --dry-run allow to 10.0.0.1 25 from 192.168.0.1 80
+30: --dry-run delete allow to 10.0.0.1 25 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+31: --dry-run allow to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -251,7 +331,15 @@ WARN: Checks disabled
 rules updated
 
 
-22: --dry-run allow from 192.168.0.1 80:udp
+32: --dry-run delete allow to 10.0.0.1 25 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+33: --dry-run allow from 192.168.0.1 80:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -262,7 +350,15 @@ WARN: Checks disabled
 rules updated
 
 
-23: --dry-run allow to 10.0.0.1 25:udp
+34: --dry-run delete allow from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+35: --dry-run allow to 10.0.0.1 25:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -273,7 +369,15 @@ WARN: Checks disabled
 rules updated
 
 
-24: --dry-run allow to 10.0.0.1 from 192.168.0.1 80:udp
+36: --dry-run delete allow to 10.0.0.1 25:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+37: --dry-run allow to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -284,7 +388,15 @@ WARN: Checks disabled
 rules updated
 
 
-25: --dry-run allow to 10.0.0.1 25:udp from 192.168.0.1
+38: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+39: --dry-run allow to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -295,7 +407,15 @@ WARN: Checks disabled
 rules updated
 
 
-26: --dry-run allow to 10.0.0.1 25:udp from 192.168.0.1 80:udp
+40: --dry-run delete allow to 10.0.0.1 25:udp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+41: --dry-run allow to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -306,7 +426,15 @@ WARN: Checks disabled
 rules updated
 
 
-27: --dry-run allow from 192.168.0.1 80:tcp
+42: --dry-run delete allow to 10.0.0.1 25:udp from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+43: --dry-run allow from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -317,7 +445,15 @@ WARN: Checks disabled
 rules updated
 
 
-28: --dry-run allow to 10.0.0.1 25:tcp
+44: --dry-run delete allow from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+45: --dry-run allow to 10.0.0.1 25:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -328,7 +464,15 @@ WARN: Checks disabled
 rules updated
 
 
-29: --dry-run allow to 10.0.0.1 from 192.168.0.1 80:tcp
+46: --dry-run delete allow to 10.0.0.1 25:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+47: --dry-run allow to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -339,7 +483,15 @@ WARN: Checks disabled
 rules updated
 
 
-30: --dry-run allow to 10.0.0.1 25:tcp from 192.168.0.1
+48: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+49: --dry-run allow to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -350,7 +502,15 @@ WARN: Checks disabled
 rules updated
 
 
-31: --dry-run allow to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
+50: --dry-run delete allow to 10.0.0.1 25:tcp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+51: --dry-run allow to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -361,7 +521,15 @@ WARN: Checks disabled
 rules updated
 
 
-32: --dry-run deny from 192.168.0.1
+52: --dry-run delete allow to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+53: --dry-run deny from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -372,7 +540,15 @@ WARN: Checks disabled
 rules updated
 
 
-33: --dry-run deny to 10.0.0.1
+54: --dry-run delete deny from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+55: --dry-run deny to 10.0.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -383,7 +559,15 @@ WARN: Checks disabled
 rules updated
 
 
-34: --dry-run deny to 10.0.0.1 from 192.168.0.1
+56: --dry-run delete deny to 10.0.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+57: --dry-run deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -394,7 +578,15 @@ WARN: Checks disabled
 rules updated
 
 
-35: --dry-run deny from 192.168.0.1 80
+58: --dry-run delete deny to 10.0.0.1 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+59: --dry-run deny from 192.168.0.1 80
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -406,7 +598,15 @@ WARN: Checks disabled
 rules updated
 
 
-36: --dry-run deny to 10.0.0.1 25
+60: --dry-run delete deny from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+61: --dry-run deny to 10.0.0.1 25
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -418,7 +618,15 @@ WARN: Checks disabled
 rules updated
 
 
-37: --dry-run deny to 10.0.0.1 from 192.168.0.1 80
+62: --dry-run delete deny to 10.0.0.1 25
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+63: --dry-run deny to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -430,7 +638,15 @@ WARN: Checks disabled
 rules updated
 
 
-38: --dry-run deny to 10.0.0.1 25 from 192.168.0.1
+64: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+65: --dry-run deny to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -442,7 +658,15 @@ WARN: Checks disabled
 rules updated
 
 
-39: --dry-run deny to 10.0.0.1 25 from 192.168.0.1 80
+66: --dry-run delete deny to 10.0.0.1 25 from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+67: --dry-run deny to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -454,7 +678,15 @@ WARN: Checks disabled
 rules updated
 
 
-40: --dry-run deny from 192.168.0.1 80:udp
+68: --dry-run delete deny to 10.0.0.1 25 from 192.168.0.1 80
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+69: --dry-run deny from 192.168.0.1 80:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -465,7 +697,15 @@ WARN: Checks disabled
 rules updated
 
 
-41: --dry-run deny to 10.0.0.1 25:udp
+70: --dry-run delete deny from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+71: --dry-run deny to 10.0.0.1 25:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -476,7 +716,15 @@ WARN: Checks disabled
 rules updated
 
 
-42: --dry-run deny to 10.0.0.1 from 192.168.0.1 80:udp
+72: --dry-run delete deny to 10.0.0.1 25:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+73: --dry-run deny to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -487,7 +735,15 @@ WARN: Checks disabled
 rules updated
 
 
-43: --dry-run deny to 10.0.0.1 25:udp from 192.168.0.1
+74: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+75: --dry-run deny to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -498,7 +754,15 @@ WARN: Checks disabled
 rules updated
 
 
-44: --dry-run deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
+76: --dry-run delete deny to 10.0.0.1 25:udp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+77: --dry-run deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -509,7 +773,15 @@ WARN: Checks disabled
 rules updated
 
 
-45: --dry-run deny from 192.168.0.1 80:tcp
+78: --dry-run delete deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+79: --dry-run deny from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -520,7 +792,15 @@ WARN: Checks disabled
 rules updated
 
 
-46: --dry-run deny to 10.0.0.1 25:tcp
+80: --dry-run delete deny from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+81: --dry-run deny to 10.0.0.1 25:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -531,7 +811,15 @@ WARN: Checks disabled
 rules updated
 
 
-47: --dry-run deny to 10.0.0.1 from 192.168.0.1 80:tcp
+82: --dry-run delete deny to 10.0.0.1 25:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+83: --dry-run deny to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -542,7 +830,15 @@ WARN: Checks disabled
 rules updated
 
 
-48: --dry-run deny to 10.0.0.1 25:tcp from 192.168.0.1
+84: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+85: --dry-run deny to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
@@ -553,12 +849,28 @@ WARN: Checks disabled
 rules updated
 
 
-49: --dry-run deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
+86: --dry-run delete deny to 10.0.0.1 25:tcp from 192.168.0.1
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+87: --dry-run deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
 -A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+
+### DO NOT DELETE: rules end ###
+rules updated
+
+
+88: --dry-run delete deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
+WARN: Checks disabled
+### DO NOT DELETE: rules start ###
 
 ### DO NOT DELETE: rules end ###
 rules updated

@@ -17,9 +17,9 @@ ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBstatus\fR
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBallow|deny\fR PORT
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny\fR PORT
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBallow|deny\fR [\fBfrom\fR ADDRESS [PORT]] [\fBto\fR ADDRESS [PORT]]
+ufw [\fB\-\-dry\-run\fR] \[\fBdelete\fR] fBallow|deny\fR [\fBfrom\fR ADDRESS [PORT]] [\fBto\fR ADDRESS [PORT]]
 
 .SH OPTIONS
 .TP
@@ -51,8 +51,11 @@ show status of firewall
 \fBallow\fR RULE
 allow RULE.  See \fBRULE SYNTAX\fR
 .TP
-\fBallow\fR RULE
+\fBdeny\fR RULE
 deny RULE.  See \fBRULE SYNTAX\fR
+.TP
+\fBdelete\fR allow|deny RULE
+deletes the corresponding allow/deny RULE
 
 .SH "RULE SYNTAX"
 .PP
@@ -80,6 +83,15 @@ This will deny all traffic to tcp port 80 on this host. Another example:
 
 This will deny all traffic from the RFC1918 Class A network to tcp port 25
 with the address 192.168.0.1.
+.PP
+To delete a rule, simply prefix the original rule with \fBdelete\fR. For
+example, if the original rule was:
+
+  ufw deny to 80:tcp
+
+Use this to delete it:
+
+  ufw delete deny to 80:tcp
 
 .SH EXAMPLES
 .PP

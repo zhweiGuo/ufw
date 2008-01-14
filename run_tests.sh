@@ -1,6 +1,7 @@
 #!/bin/sh
 
 testdir="tests"
+tests="installation bad good ipv6"
 CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
@@ -8,11 +9,15 @@ export TESTTMP="$CUR/$testdir/testarea/tmp"
 STOPONFAIL="no"
 STOPONSKIP="no"
 if [ "$1" = "-s" ]; then
+	shift
 	STOPONFAIL="yes"
-fi
-if [ "$1" = "-S" ]; then
+elif [ "$1" = "-S" ]; then
+	shift
 	STOPONFAIL="yes"
 	STOPONSKIP="yes"
+fi
+if [ ! -z "$1" ]; then
+	tests="$1"
 fi
 
 if [ ! -d "$testdir" ]; then
@@ -28,7 +33,6 @@ fi
 skipped=0
 errors=0
 numtests=0
-tests="installation bad good ipv6"
 for class in $tests
 do
 	for d in `ls -d -1 $testdir/$class/* 2>/dev/null`

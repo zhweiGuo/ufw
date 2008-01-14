@@ -28,6 +28,9 @@ echo "SIMPLE" >> $TESTTMP/result
 do_cmd --dry-run allow 25
 do_cmd --dry-run allow 25:tcp
 do_cmd --dry-run allow 25:udp
+do_cmd --dry-run delete allow 25
+do_cmd --dry-run delete allow 25:tcp
+do_cmd --dry-run delete allow 25:udp
 
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
@@ -35,21 +38,34 @@ to="10.0.0.1"
 for x in allow deny
 do
 	do_cmd --dry-run $x from $from
+	do_cmd --dry-run delete $x from $from
 	do_cmd --dry-run $x to $to
+	do_cmd --dry-run delete $x to $to
 	do_cmd --dry-run $x to $to from $from
+	do_cmd --dry-run delete $x to $to from $from
 
 	do_cmd --dry-run $x from $from 80
+	do_cmd --dry-run delete $x from $from 80
 	do_cmd --dry-run $x to $to 25
+	do_cmd --dry-run delete $x to $to 25
 	do_cmd --dry-run $x to $to from $from 80
+	do_cmd --dry-run delete $x to $to from $from 80
 	do_cmd --dry-run $x to $to 25 from $from
+	do_cmd --dry-run delete $x to $to 25 from $from
 	do_cmd --dry-run $x to $to 25 from $from 80
+	do_cmd --dry-run delete $x to $to 25 from $from 80
 	for y in udp tcp
 	do
 		do_cmd --dry-run $x from $from 80:$y
+		do_cmd --dry-run delete $x from $from 80:$y
 		do_cmd --dry-run $x to $to 25:$y
+		do_cmd --dry-run delete $x to $to 25:$y
 		do_cmd --dry-run $x to $to from $from 80:$y 
+		do_cmd --dry-run delete $x to $to from $from 80:$y 
 		do_cmd --dry-run $x to $to 25:$y from $from
+		do_cmd --dry-run delete $x to $to 25:$y from $from
 		do_cmd --dry-run $x to $to 25:$y from $from 80:$y
+		do_cmd --dry-run delete $x to $to 25:$y from $from 80:$y
 	done
 done
 

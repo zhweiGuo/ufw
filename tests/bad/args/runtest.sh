@@ -67,7 +67,7 @@ do_cmd --dry-run deny 25 from from 192.168.0.1
 do_cmd --dry-run allow 25 to to 192.168.0.1
 do_cmd --dry-run deny 25 to to 192.168.0.1
 
-echo "TESTING ARGS (allow/deny bad ip)" >> $TESTTMP/result || exit 1
+echo "TESTING ARGS (allow/deny bad ip)" >> $TESTTMP/result
 do_cmd --dry-run allow 25 to 192.168.0.
 do_cmd --dry-run allow 25 to 192.168.0.1.1
 do_cmd --dry-run allow 25 to foo
@@ -81,5 +81,9 @@ do_cmd --dry-run allow 25 to 192.168.1..1/24
 do_cmd --dry-run allow 25 to 192.168.1.256
 do_cmd --dry-run allow 25 to 256.0.0.0
 do_cmd --dry-run allow 25 to 10.256.0.0
+
+echo "TESTING ARGS (delete allow/deny)" >> $TESTTMP/result
+do_cmd --dry-run delete
+
 
 exit 0

@@ -52,5 +52,6 @@ Can also just run from the source directory:
 $ ./run_tests.sh -s
 
 Or for the root tests:
-$ for i in ./tests/root/* ; do sudo $i/runtest.sh -s ; done
+$ sudo ./run_tests.sh -s root
+
 

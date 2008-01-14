@@ -6,8 +6,8 @@ Commands:
   disable			Disables the fireall
   default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
-  allow [from ADDR] [to ADDR]	allow packets to/from ADDR
-  deny [from ADDR] [to ADDR]	deny packets to/from ADDR
+  allow|deny RULE		allow or deny RULE
+  delete allow|deny RULE	delete the allow/deny RULE
   status			show firewall status
   version			display version information
 
