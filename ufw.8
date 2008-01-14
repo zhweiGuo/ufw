@@ -134,10 +134,14 @@ Currently, \fBufw\fR is a front-end for \fBiptables-restore\fR, with its
 rules saved in #CONFIG_PREFIX#/ufw/ufw.rules. Administrators can customize
 #CONFIG_PREFIX#/ufw/ufw.rules as desired using the standard \fBiptables\fR and
 \fBip6tables\fR syntax.
+.PP
+\fBufw\fR will read in #CONFIG_PREFIX#/ufw/sysctl.conf on boot when enabled.
+To change this behavior, modify #CONFIG_PREFIX#/default/ufw.
 
 .SH SEE ALSO
 .PP
  \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables-restore\fR(8), \fBip6tables-restore\fR(8)
+\fBsysctl(8)\fR, \fBsysctl.conf(5)\fR
 
 .SH AUTHOR
 .PP

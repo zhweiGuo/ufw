@@ -7,3 +7,7 @@ ENABLED=no
 # set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
 
+#
+# only enable if using iptables backend
+SYSCTL=#CONFIG_PREFIX#/ufw/sysctl.conf
+

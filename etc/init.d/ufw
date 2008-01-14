@@ -25,6 +25,11 @@ fi
 case "$1" in
 start)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+		if [ ! -z "$SYSCTL" ] && [ -s "$SYSCTL" ]; then
+			log_action_begin_msg "Loading $SYSCTL"
+			sysctl -q -p $SYSCTL
+			log_action_end_msg $?
+		fi
 		log_action_begin_msg "Starting firewall"
 		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 		log_action_end_msg $?
