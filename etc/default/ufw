@@ -14,5 +14,5 @@ IPV6=no
 IPT_SYSCTL=#CONFIG_PREFIX#/ufw/sysctl.conf
 
 # extra connection tracking modules to load
-IPT_MODULES="nf_conntrack_ftp nf_conntrack_irc"
+IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 
