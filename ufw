@@ -779,7 +779,7 @@ COMMIT
                     if r.action == "allow":
                         str += " -j ACCEPT\n"
                     else:
-                        str += " -j DENY\n"
+                        str += " -j DROP\n"
 
                     os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ### %s %s %s %s %s %s\n" % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
                     if r.protocol == "any":

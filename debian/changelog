@@ -1,4 +1,11 @@
-ufw (0.1-1) hardy; urgency=low
+ufw (0.2) hardy; urgency=low
+
+  * ufw: actually use DROP instead of DENY
+  * typo in README.Debian
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Jan 2008 14:32:06 -0500
+
+ufw (0.1) hardy; urgency=low
 
   * Initial release
 
