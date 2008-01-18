@@ -4,9 +4,14 @@ separate out backend and frontend code and put into /usr/share
 Backend cleanup and configure in /etc/defaults/ufw
 make rules file configurable in /etc/defaults/ufw (eg IPT_RULES)
 
+implement integration with /etc/services
+
 implement /etc/ufw/maps
+
 ufw status should be much cleaner than iptables dump
 
 Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
 question, and timeout if no response (maybe use the previous working policy?))
 
+
+(C) 2008 Canonical Ltd.

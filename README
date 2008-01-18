@@ -56,3 +56,5 @@ Or for the root tests:
 $ sudo ./run_tests.sh -s root
 
 
+
+(C) 2008 Canonical Ltd.
