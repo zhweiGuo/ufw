@@ -60,7 +60,8 @@ def process_args():
         print_help()
         sys.exit(1)
 
-    allowed_cmds = ['enable', 'disable', 'help', 'default', 'logging', 'status', 'version', 'allow', 'deny' ]
+    allowed_cmds = ['enable', 'disable', 'help', 'default', 'logging', 
+                    'status', 'version', 'allow', 'deny' ]
 
     if not sys.argv[1].lower() in allowed_cmds:
         print_help()
@@ -102,7 +103,7 @@ def process_args():
             rule.remove = remove
         if len(sys.argv) == 3:
             try:
-                (port, proto) = parse_port_protocol(sys.argv[2])
+                (port, proto) = parse_port_proto(sys.argv[2])
                 rule.set_protocol(proto)
                 rule.set_port(port, "dst")
             except UFWError:
@@ -140,8 +141,9 @@ def process_args():
                         if valid_address(sys.argv[pos + 1]):
                             rule.set_src(sys.argv[pos + 1])
                         else:
-                            (port, proto) = parse_port_protocol(sys.argv[pos + 1])
-                            if rule.protocol != "any" and rule.protocol != proto:
+                            (port, proto) = parse_port_proto(sys.argv[pos + 1])
+                            if rule.protocol != "any" and \
+                               rule.protocol != proto:
                                 raise UFWError("from/to protocol mismatch")
                             rule.set_protocol(proto)
                             rule.set_port(port, "src")
@@ -149,7 +151,7 @@ def process_args():
                         raise
                 if pos < len(sys.argv) - 2 and pos + 2 != found_to:
                     try:
-                        (port, proto) = parse_port_protocol(sys.argv[pos + 2])
+                        (port, proto) = parse_port_proto(sys.argv[pos + 2])
                         if rule.protocol != "any" and rule.protocol != proto:
                             raise UFWError("from/to protocol mismatch")
                         rule.set_protocol(proto)
@@ -166,8 +168,9 @@ def process_args():
                         if valid_address(sys.argv[pos + 1]):
                             rule.set_dst(sys.argv[pos + 1])
                         else:
-                            (port, proto) = parse_port_protocol(sys.argv[pos + 1])
-                            if rule.protocol != "any" and rule.protocol != proto:
+                            (port, proto) = parse_port_proto(sys.argv[pos + 1])
+                            if rule.protocol != "any" and \
+                               rule.protocol != proto:
                                 raise UFWError("from/to protocol mismatch")
                             rule.set_protocol(proto)
                             rule.set_port(port, "dst")
@@ -175,7 +178,7 @@ def process_args():
                         raise
                 if pos < len(sys.argv) - 2 and pos + 2 != found_from:
                     try:
-                        (port, proto) = parse_port_protocol(sys.argv[pos + 2])
+                        (port, proto) = parse_port_proto(sys.argv[pos + 2])
                         if rule.protocol != "any" and rule.protocol != proto:
                             raise UFWError("from/to protocol mismatch")
                         rule.set_protocol(proto)
@@ -187,7 +190,7 @@ def process_args():
     return (action, rule, dryrun)
     
 
-def parse_port_protocol(str):
+def parse_port_proto(str):
     '''Parse port or port and protocol'''
     port = ""
     proto = ""
@@ -348,7 +351,8 @@ class UFWError(Exception):
 
 class UFWRule:
     '''This class represents network rules'''
-    def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0", sport="any", src="0.0.0.0/0"):
+    def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
+                 sport="any", src="0.0.0.0/0"):
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -456,7 +460,8 @@ class UFWBackend:
             raise
 
     def _is_enabled(self):
-        if self.defaults.has_key('enabled') and self.defaults['enabled'] == 'yes':
+        if self.defaults.has_key('enabled') and \
+           self.defaults['enabled'] == 'yes':
             return True
         return False
 
@@ -510,7 +515,8 @@ class UFWBackend:
                 if os.path.islink(path):
                     raise UFWError("found symbolic link in path: " + path)
                 if statinfo.st_uid != 0:
-                    raise UFWError("uid is " + str(uid) + " but '" + path + "' is owned by " + str(statinfo.st_uid))
+                    raise UFWError("uid is " + str(uid) + " but '" + path + \
+                                   "' is owned by " + str(statinfo.st_uid))
                 if mode & S_IWOTH:
                     raise UFWError(path + " is world writable!")
                 if mode & S_IWGRP:
@@ -525,7 +531,8 @@ class UFWBackend:
 
         for f in files:
             if not os.path.isfile(files[f]):
-                raise UFWError("'" + f + "' file '" + files[f] + "' does not exist")
+                raise UFWError("'" + f + "' file '" + files[f] + \
+                               "' does not exist")
 
     def _get_defaults(self):
         '''Get all settings from defaults file'''
@@ -561,25 +568,25 @@ class UFWBackend:
 
     # API overrides
     def get_loglevel(self):
-        raise UFWError("UFWBackend.get_loglevel: need to override get_loglevel")
+        raise UFWError("UFWBackend.get_loglevel: need to override")
 
     def set_loglevel(self, level):
-        raise UFWError("UFWBackend.set_loglevel: need to override set_loglevel")
+        raise UFWError("UFWBackend.set_loglevel: need to override")
 
     def set_default_policy(self, policy):
-        raise UFWError("UFWBackend.set_default_policy: need to override set_default_policy")
+        raise UFWError("UFWBackend.set_default_policy: need to override")
 
     def get_status(self):
-        raise UFWError("UFWBackend.get_status: need to override get_status")
+        raise UFWError("UFWBackend.get_status: need to override")
 
     def set_rule(self, rule):
-        raise UFWError("UFWBackend.set_rule: need to override get_status")
+        raise UFWError("UFWBackend.set_rule: need to override")
 
     def start_firewall(self):
-        raise UFWError("UFWBackend.start_firewall: need to override start_firewall")
+        raise UFWError("UFWBackend.start_firewall: need to override")
 
     def stop_firewall(self):
-        raise UFWError("UFWBackend.stop_firewall: need to override stop_firewall")
+        raise UFWError("UFWBackend.stop_firewall: need to override")
 
 
 class UFWBackendIptables(UFWBackend):
@@ -756,7 +763,8 @@ COMMIT
                     warn("Skipping malformed tuple (bad length): " + tuple)
                 else:
                     try:
-                        rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5])
+                        rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4],
+                                       tmp[5])
                         self.rules.append(rule)
                     except UFWError:
                         warn("Skipping malformed tuple: " + tuple)
@@ -802,7 +810,9 @@ COMMIT
                     else:
                         str += " -j DROP\n"
 
-                    os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ### %s %s %s %s %s %s\n" % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+                    os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ###" + \
+                                 " %s %s %s %s %s %s\n" % (r.action, \
+                                 r.protocol, r.dport, r.dst, r.sport, r.src))
                     if r.protocol == "any":
                         pat = re.compile(r'-p any ')
                         if r.sport != "any" or r.dport != "any":
@@ -862,12 +872,14 @@ class UFWFrontend:
         try:
             if enabled:
                 if not self.backend._is_enabled():
-                    self.backend.set_default(files['defaults'], "ENABLED", "yes")
+                    self.backend.set_default(files['defaults'], \
+                                             "ENABLED", "yes")
                 self.backend.start_firewall()
                 print "firewall enabled"
             else:
                 if self.backend._is_enabled():
-                    self.backend.set_default(files['defaults'], "ENABLED", "no")
+                    self.backend.set_default(files['defaults'], "ENABLED", \
+                                             "no")
                 self.backend.stop_firewall()
                 print "firewall disabled"
         except UFWError, e:
@@ -927,8 +939,6 @@ if action == "help":
 elif action == "version":
     print programName + " " + version
     print "Copyright (C) 2008 Canonical Ltd."
-    print programName + " is free software, covered by the GNU General Public License, and you are"
-    print "welcome to change it and/or distribute copies of it under certain conditions."
     sys.exit(0)
 
 try:
