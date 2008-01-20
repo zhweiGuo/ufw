@@ -41,13 +41,13 @@ $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
 $ ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc
 
 The edit /tmp/ufw/usr/sbin/ufw to have (since it's installed in /tmp):
-disableChecks = True
+disable_checks = True
 
 Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 
 Here is a command to do it all at once:
-$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc && sed -i 's/disableChecks = False/disableChecks = True/' /tmp/ufw/usr/sbin/ufw
+$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && ./install.py --prefix=/tmp/ufw/usr --config-prefix=/tmp/ufw/etc && sed -i 's/disable_checks = False/disable_checks = True/' /tmp/ufw/usr/sbin/ufw
 
 Can also just run from the source directory:
 $ ./run_tests.sh -s

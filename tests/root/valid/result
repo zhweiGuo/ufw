@@ -115,6 +115,15 @@ ENABLED=yes
 # set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
 
+#
+# IPT backend
+#
+# only enable if using iptables backend
+IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
+
+# extra connection tracking modules to load
+IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
+
 9: disable
 WARN: Checks disabled
 firewall disabled
@@ -128,6 +137,15 @@ ENABLED=no
 
 # set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
+
+#
+# IPT backend
+#
+# only enable if using iptables backend
+IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
+
+# extra connection tracking modules to load
+IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 
 10: ENABLE
 WARN: Checks disabled
@@ -143,6 +161,15 @@ ENABLED=yes
 # set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
 
+#
+# IPT backend
+#
+# only enable if using iptables backend
+IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
+
+# extra connection tracking modules to load
+IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
+
 11: DISABLE
 WARN: Checks disabled
 firewall disabled
@@ -156,6 +183,15 @@ ENABLED=no
 
 # set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
+
+#
+# IPT backend
+#
+# only enable if using iptables backend
+IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
+
+# extra connection tracking modules to load
+IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 
 TESTING ARGS (allow/deny port)
 12: allow 25
@@ -179,16 +215,16 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 25 -j DENY
--A INPUT -p udp --dport 25 -j DENY
+-A INPUT -p tcp --dport 25 -j DROP
+-A INPUT -p udp --dport 25 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 1 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 1 -j DENY
--A INPUT -p udp --dport 1 -j DENY
+-A INPUT -p tcp --dport 1 -j DROP
+-A INPUT -p udp --dport 1 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 65535 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 65535 -j DENY
--A INPUT -p udp --dport 65535 -j DENY
+-A INPUT -p tcp --dport 65535 -j DROP
+-A INPUT -p udp --dport 65535 -j DROP
 16: delete allow 25
 WARN: Checks disabled
 rules updated
@@ -244,7 +280,7 @@ rules updated
 -A INPUT -p tcp --dport 25 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 80 -j DENY
+-A INPUT -p tcp --dport 80 -j DROP
 
 23: deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
 WARN: Checks disabled
@@ -259,10 +295,10 @@ rules updated
 -A INPUT -p tcp --dport 25 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 80 -j DENY
+-A INPUT -p tcp --dport 80 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 24: deny 53
 WARN: Checks disabled
@@ -270,17 +306,17 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 80 -j DENY
+-A INPUT -p tcp --dport 80 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 25: allow 80:tcp
 WARN: Checks disabled
@@ -288,8 +324,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
@@ -298,7 +334,7 @@ rules updated
 -A INPUT -p tcp --dport 80 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 26: allow from 10.0.0.0/8
 WARN: Checks disabled
@@ -306,8 +342,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
@@ -316,7 +352,7 @@ rules updated
 -A INPUT -p tcp --dport 80 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
 -A INPUT -s 10.0.0.0/8 -j ACCEPT
@@ -327,8 +363,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
@@ -337,7 +373,7 @@ rules updated
 -A INPUT -p tcp --dport 80 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
 -A INPUT -s 10.0.0.0/8 -j ACCEPT
@@ -351,8 +387,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
@@ -361,7 +397,7 @@ rules updated
 -A INPUT -p tcp --dport 80 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
 -A INPUT -s 10.0.0.0/8 -j ACCEPT
@@ -378,8 +414,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
@@ -388,7 +424,7 @@ rules updated
 -A INPUT -p tcp --dport 80 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
 -A INPUT -s 10.0.0.0/8 -j ACCEPT
@@ -400,7 +436,7 @@ rules updated
 -A INPUT -s 192.168.0.0/16 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
--A INPUT -p udp --dport 514 -s 1.2.3.4 -j DENY
+-A INPUT -p udp --dport 514 -s 1.2.3.4 -j DROP
 
 30: allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
 WARN: Checks disabled
@@ -408,8 +444,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DENY
--A INPUT -p udp --dport 53 -j DENY
+-A INPUT -p tcp --dport 53 -j DROP
+-A INPUT -p udp --dport 53 -j DROP
 --
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
 -A INPUT -p tcp --dport 25 -j ACCEPT
@@ -418,7 +454,7 @@ rules updated
 -A INPUT -p tcp --dport 80 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DENY
+-A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
 -A INPUT -s 10.0.0.0/8 -j ACCEPT
@@ -430,7 +466,7 @@ rules updated
 -A INPUT -s 192.168.0.0/16 -j ACCEPT
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
--A INPUT -p udp --dport 514 -s 1.2.3.4 -j DENY
+-A INPUT -p udp --dport 514 -s 1.2.3.4 -j DROP
 
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
 -A INPUT -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
@@ -810,7 +846,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
--A INPUT -s 192.168.0.1 -j DENY
+-A INPUT -s 192.168.0.1 -j DROP
 
 91: delete deny from 192.168.0.1
 WARN: Checks disabled
@@ -823,7 +859,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
--A INPUT -d 10.0.0.1 -j DENY
+-A INPUT -d 10.0.0.1 -j DROP
 
 93: delete deny to 10.0.0.1
 WARN: Checks disabled
@@ -836,7 +872,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 192.168.0.1
--A INPUT -d 10.0.0.1 -s 192.168.0.1 -j DENY
+-A INPUT -d 10.0.0.1 -s 192.168.0.1 -j DROP
 
 95: delete deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
@@ -849,8 +885,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DENY
--A INPUT -p udp -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DROP
+-A INPUT -p udp -s 192.168.0.1 --sport 80 -j DROP
 97: delete deny from 192.168.0.1 80
 WARN: Checks disabled
 rules updated
@@ -862,8 +898,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DENY
--A INPUT -p udp -d 10.0.0.1 --dport 25 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DROP
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -j DROP
 99: delete deny to 10.0.0.1 25
 WARN: Checks disabled
 rules updated
@@ -875,8 +911,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
--A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+-A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 101: delete deny to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
 rules updated
@@ -888,8 +924,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 103: delete deny to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
 rules updated
@@ -901,8 +937,8 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 105: delete deny to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
 rules updated
@@ -914,7 +950,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p udp -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p udp -s 192.168.0.1 --sport 80 -j DROP
 
 107: delete deny from 192.168.0.1 80:udp
 WARN: Checks disabled
@@ -927,7 +963,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p udp -d 10.0.0.1 --dport 25 -j DENY
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -j DROP
 
 109: delete deny to 10.0.0.1 25:udp
 WARN: Checks disabled
@@ -940,7 +976,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp any 10.0.0.1 80 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 
 111: delete deny to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
@@ -953,7 +989,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 
 113: delete deny to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
@@ -966,7 +1002,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 
 115: delete deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
@@ -979,7 +1015,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DROP
 
 117: delete deny from 192.168.0.1 80:tcp
 WARN: Checks disabled
@@ -992,7 +1028,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DROP
 
 119: delete deny to 10.0.0.1 25:tcp
 WARN: Checks disabled
@@ -1005,7 +1041,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 
 121: delete deny to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
@@ -1018,7 +1054,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 
 123: delete deny to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
@@ -1031,7 +1067,7 @@ rules updated
 
 
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DENY
+-A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 
 125: delete deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled

@@ -15,7 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
-sed -i 's/disableChecks = False/disableChecks = True/' $TESTPATH/usr/sbin/ufw
+sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result || exit 1
 $TESTPATH/usr/sbin/ufw --dry-run enable >> $TESTTMP/result 2>&1 || exit 1

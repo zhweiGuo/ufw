@@ -14,7 +14,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sed -i 's/disableChecks = False/disableChecks = True/' $TESTPATH/usr/sbin/ufw
+sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
 
 let count=0
 do_cmd() {
