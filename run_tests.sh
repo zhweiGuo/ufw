@@ -39,8 +39,8 @@ if [ ! -d "$testdir" ]; then
 	exit 1
 fi
 
-if [ ! -x "./install.py" ]; then
-	echo "Couldn't find install.py"
+if [ ! -e "./setup.py" ]; then
+	echo "Couldn't find setup.py"
 	exit 1
 fi
 
@@ -74,7 +74,7 @@ do
 		fi
 
 		mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
-		./install.py --prefix="$CUR/$testdir/testarea/usr" --config-prefix="$CUR/$testdir/testarea/etc" > /dev/null
+		python ./setup.py install --root="$CUR/$testdir/testarea" > /dev/null
 		if [ "$?" != "0" ]; then
 			exit 1
 		fi
