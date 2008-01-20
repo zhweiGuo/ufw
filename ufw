@@ -30,8 +30,8 @@ version = "0.0"
 programName = os.path.basename(sys.argv[0])
 
 # Make sure we are at least version 2.4
-if sys.version_info[0] < 2 or sys.version_info[1] < 4:
-    print >> sys.stderr, programName + ": Need at least python 2.4\n"
+if sys.version_info[0] < 2 or sys.version_info[1] < 5:
+    print >> sys.stderr, programName + ": Need at least python 2.5\n"
     sys.exit(1)
 
 # These are default settings
@@ -251,7 +251,9 @@ def open_file_read(f):
     size = 0
     try:
         size = os.stat(f)[ST_SIZE]
-    except:
+    except OSError, e:
+        raise UFWError("Couldn't stat '" + f + "'")
+    except Exception:
         raise
 
     if size > max_file_size:
@@ -259,7 +261,9 @@ def open_file_read(f):
 
     try:
         orig = open(f, 'r')
-    except:
+    except OSError, e:
+        raise UFWError("Couldn't open '" + f + "' for reading")
+    except Exception:
         raise
 
     return orig
@@ -271,7 +275,7 @@ def open_files(f):
 
     try:
         (tmp, tmpname) = mkstemp()
-    except:
+    except Exception:
         orig.close()
         raise
 
@@ -289,7 +293,7 @@ def close_files(fns, update = True):
         try:
             shutil.copystat(fns['origname'], fns['tmpname'])
             shutil.copy(fns['tmpname'], fns['origname'])
-        except:
+        except Exception:
             raise
 
     try:
@@ -456,7 +460,7 @@ class UFWBackend:
             self._do_checks()
             self._get_defaults()
             self._read_rules()
-        except:
+        except Exception:
             raise
 
     def _is_enabled(self):
@@ -509,7 +513,9 @@ class UFWBackend:
                 try:
                     statinfo = os.stat(path)
                     mode = statinfo[ST_MODE]
-                except:
+                except OSError, e:
+                    raise UFWError("Couldn't stat '" + f + "'")
+                except Exception:
                     raise
 
                 if os.path.islink(path):
@@ -552,7 +558,7 @@ class UFWBackend:
         '''Sets option in defaults file'''
         try:
             fns = open_files(f)
-        except:
+        except Exception:
             raise
         fd = fns['tmp']
 
@@ -602,7 +608,7 @@ class UFWBackendIptables(UFWBackend):
         '''Sets default policy of firewall'''
         try:
             fns = open_files(files['rules'])
-        except:
+        except Exception:
             raise
         fd = fns['tmp']
 
@@ -635,7 +641,7 @@ class UFWBackendIptables(UFWBackend):
         comment_str = "# " + programName + "_comment #"
         try:
             fns = open_files(files['rules'])
-        except:
+        except Exception:
             raise
         fd = fns['tmp']
 
@@ -698,7 +704,7 @@ COMMIT
 
         try:
             (tmp, tmpname) = mkstemp()
-        except:
+        except Exception:
             raise
         os.write(tmp, openconf)
         os.close(tmp)
@@ -775,7 +781,7 @@ COMMIT
         '''Write out new rules'''
         try:
             fns = open_files(files['rules'])
-        except:
+        except Exception:
             raise
 
         if self.dryrun:
@@ -945,7 +951,7 @@ try:
     ufw = UFWFrontend(UFWBackendIptables(dryrun))
 except UFWError, e:
     error(e.value)
-except:
+except Exception:
     raise
 
 if action == "logging-on":
