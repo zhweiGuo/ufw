@@ -4,6 +4,7 @@ ufw (0.3) hardy; urgency=low
     - fix licensing
     - PEP8 compliant
     - uses distutils to install
+    - now supports /etc/services names
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 20 Jan 2008 17:43:03 -0500
 
