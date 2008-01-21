@@ -3,6 +3,9 @@
 :FORWARD DROP [0:0]
 :OUTPUT ACCEPT [0:0]
 :drop-not-to-me - [0:0]
+:ufw-in - [0:0]
+:ufw-forward - [0:0]
+:ufw-out - [0:0]
 
 -A INPUT -i lo -j ACCEPT
 -A OUTPUT -o lo -j ACCEPT
@@ -34,6 +37,7 @@
 # the drop-not-to-me chain to have processing later on
 # see http://kindergarten.madduck.net/configs/iptables
 #
+-A INPUT -j drop-not-to-me
 
 # if LOCAL, RETURN
 -A drop-not-to-me -m addrtype --dst-type LOCAL -j RETURN
@@ -41,10 +45,10 @@
 # if MULTICAST, RETURN
 -A drop-not-to-me -m addrtype --dst-type MULTICAST -j RETURN
 
-# uncomment to allow broadcast (dhcp covered separately, see above)
-#-A drop-not-to-me -m addrtype --dst-type BROADCAST -j RETURN
+# if BROADCAST, RETURN
+-A drop-not-to-me -m addrtype --dst-type BROADCAST -j RETURN
 
--A drop-not-to-me -j LOG
+-A drop-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 -A drop-not-to-me -j DROP
 
 #

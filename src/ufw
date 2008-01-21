@@ -803,6 +803,7 @@ COMMIT
                 os.write(fd, line)
                 in_rules = True
             elif in_rules and pat_end.match(line):
+                os.write(fd, "\n-A INPUT -j ufw-in\n")
                 for r in self.rules:
                     str = "-A INPUT"
 
@@ -833,6 +834,7 @@ COMMIT
                             os.write(fd, pat.sub('', str))
                     else:
                         os.write(fd, str)
+                os.write(fd, "\n-A ufw-in -j RETURN\n")
                 os.write(fd, "\n### DO NOT DELETE: rules end ###\n")
                 in_rules = False
             elif in_rules:
