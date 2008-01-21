@@ -20,6 +20,7 @@
 import os
 import re
 import shutil
+import socket
 import stat
 from stat import *
 import subprocess
@@ -386,19 +387,23 @@ class UFWRule:
 
     def set_port(self, port, loc="dst"):
         '''Sets port and location (destination or source) of the rule'''
-        if port == "any" or re.match('^\d+$', port):
+        if port == "any":
             pass
+        elif re.match('^\d+$', port):
+            if int(port) < 1 or int(port) > 65535:
+                raise UFWError("Bad port '" + port + "'")
+        elif re.match(r'^\w[\w\-]+', port):
+            try:
+                port = socket.getservbyname(port)
+            except Exception, (error):
+                raise UFWError("Bad port '" + port + "'")
         else:
             raise UFWError("Bad port '" + port + "'")
 
-        if port != "any":
-            if int(port) < 1 or int(port) > 65535:
-                raise UFWError("Bad port")
-
         if loc == "src":
-            self.sport = port
+            self.sport = str(port)
         else:
-            self.dport = port
+            self.dport = str(port)
 
     def set_protocol(self, protocol):
         '''Sets protocol of the rule'''
@@ -425,7 +430,7 @@ class UFWRule:
           0  match
           1  no match
          -1  match all but action
-	'''
+        '''
         if x.dport != y.dport:
             debug("No match")
             return 1

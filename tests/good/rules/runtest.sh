@@ -31,6 +31,7 @@ do_cmd --dry-run allow 25:tcp
 do_cmd --dry-run deny to 80:tcp
 do_cmd --dry-run deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
 do_cmd --dry-run deny 53
+do_cmd --dry-run deny smtp
 do_cmd --dry-run allow 80:tcp
 do_cmd --dry-run allow from 10.0.0.0/8
 do_cmd --dry-run allow from 172.16.0.0/12

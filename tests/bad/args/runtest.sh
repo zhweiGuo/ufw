@@ -58,6 +58,7 @@ do_cmd --dry-run allow 65536
 do_cmd --dry-run deny 65536
 do_cmd --dry-run allow 0
 do_cmd --dry-run deny 0
+do_cmd --dry-run deny XXX
 
 echo "TESTING ARGS (allow/deny bad to/from)" >> $TESTTMP/result
 do_cmd --dry-run allow 25 to
