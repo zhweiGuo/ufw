@@ -1,15 +1,27 @@
 TODO
 ----
 separate out backend and frontend code and put into /usr/share
+
 Backend cleanup and configure in /etc/defaults/ufw
+
 make rules file configurable in /etc/defaults/ufw (eg IPT_RULES)
 
 implement /etc/ufw/maps
 
-ufw status should be much cleaner than iptables dump
+
+Prettier status output
+
 
 Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
 question, and timeout if no response (maybe use the previous working policy?))
+
+
+Improve grub/menu.lst type of configuration.  Goals:
+1. need a config file for the user to edit (don't get in admin's way)
+2. don't (excessively) edit rules file
+3. don't flush on adding/removing rules
+4. turn on/off on boot
+
 
 Revamp the allow|deny acl syntax. Current implementation for a few rules:
 # ufw allow 25
@@ -48,6 +60,7 @@ PIX-style syntax:
 
 Pros: known syntax
 Cons: more to type, harder to learn, parser available?)
+
 
 
 (C) 2008 Canonical Ltd.

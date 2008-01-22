@@ -21,5 +21,6 @@ COMMIT
 firewall disabled
 TESTING ARGS (status)
 WARN: Checks disabled
-> iptables -L -n
-> ip6tables -L -n
+> Checking iptables
+> Checking ip6tables
+

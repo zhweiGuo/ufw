@@ -106,6 +106,7 @@ firewall disabled
 TESTING ARGS (status)
 12: --dry-run status
 WARN: Checks disabled
-> iptables -L -n
+> Checking iptables
+
 
 

@@ -3,9 +3,13 @@ Man page
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j ACCEPT
--A INPUT -p udp --dport 53 -j ACCEPT
+-A ufw-in -p tcp --dport 53 -j ACCEPT
+-A ufw-in -p udp --dport 53 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -15,8 +19,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 25 -j ACCEPT
+-A ufw-in -p tcp --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -26,8 +34,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 80 -j DROP
+-A ufw-in -p tcp --dport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -37,8 +49,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A INPUT -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+-A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -48,9 +64,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 53 -j DROP
--A INPUT -p udp --dport 53 -j DROP
+-A ufw-in -p tcp --dport 53 -j DROP
+-A ufw-in -p udp --dport 53 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -60,9 +80,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 25 -j DROP
--A INPUT -p udp --dport 25 -j DROP
+-A ufw-in -p tcp --dport 25 -j DROP
+-A ufw-in -p udp --dport 25 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -72,8 +96,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 80 -j ACCEPT
+-A ufw-in -p tcp --dport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -83,8 +111,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
--A INPUT -s 10.0.0.0/8 -j ACCEPT
+-A ufw-in -s 10.0.0.0/8 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -94,8 +126,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
--A INPUT -s 172.16.0.0/12 -j ACCEPT
+-A ufw-in -s 172.16.0.0/12 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -105,8 +141,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
--A INPUT -s 192.168.0.0/16 -j ACCEPT
+-A ufw-in -s 192.168.0.0/16 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -116,8 +156,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
--A INPUT -p udp --dport 514 -s 1.2.3.4 -j DROP
+-A ufw-in -p udp --dport 514 -s 1.2.3.4 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -127,8 +171,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
--A INPUT -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+-A ufw-in -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -139,9 +187,13 @@ SIMPLE
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 25 -j ACCEPT
--A INPUT -p udp --dport 25 -j ACCEPT
+-A ufw-in -p tcp --dport 25 -j ACCEPT
+-A ufw-in -p udp --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -151,8 +203,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p tcp --dport 25 -j ACCEPT
+-A ufw-in -p tcp --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -162,8 +218,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
--A INPUT -p udp --dport 25 -j ACCEPT
+-A ufw-in -p udp --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -173,6 +233,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -181,6 +245,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -188,6 +256,10 @@ rules updated
 17: --dry-run delete allow 25:udp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
+
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -198,8 +270,12 @@ TO/FROM
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
--A INPUT -s 192.168.0.1 -j ACCEPT
+-A ufw-in -s 192.168.0.1 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -209,6 +285,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -217,8 +297,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
--A INPUT -d 10.0.0.1 -j ACCEPT
+-A ufw-in -d 10.0.0.1 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -228,6 +312,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -236,8 +324,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 192.168.0.1
--A INPUT -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
+-A ufw-in -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -247,6 +339,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -255,9 +351,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
--A INPUT -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -267,6 +367,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -275,9 +379,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
--A INPUT -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -287,6 +395,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -295,9 +407,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
--A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -307,6 +423,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -315,9 +435,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 any 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -327,6 +451,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -335,9 +463,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -347,6 +479,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -355,8 +491,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -366,6 +506,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -374,8 +518,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -385,6 +533,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -393,8 +545,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp any 10.0.0.1 80 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -404,6 +560,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -412,8 +572,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 any 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -423,6 +587,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -431,8 +599,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 80 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -442,6 +614,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -450,8 +626,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -461,6 +641,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -469,8 +653,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -480,6 +668,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -488,8 +680,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp any 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -499,6 +695,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -507,8 +707,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -518,6 +722,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -526,8 +734,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -537,6 +749,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -545,8 +761,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
--A INPUT -s 192.168.0.1 -j DROP
+-A ufw-in -s 192.168.0.1 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -556,6 +776,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -564,8 +788,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
--A INPUT -d 10.0.0.1 -j DROP
+-A ufw-in -d 10.0.0.1 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -575,6 +803,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -583,8 +815,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 192.168.0.1
--A INPUT -d 10.0.0.1 -s 192.168.0.1 -j DROP
+-A ufw-in -d 10.0.0.1 -s 192.168.0.1 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -594,6 +830,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -602,9 +842,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DROP
--A INPUT -p udp -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p udp -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -614,6 +858,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -622,9 +870,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DROP
--A INPUT -p udp -d 10.0.0.1 --dport 25 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -634,6 +886,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -642,9 +898,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
--A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -654,6 +914,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -662,9 +926,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -674,6 +942,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -682,9 +954,13 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -694,6 +970,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -702,8 +982,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p udp -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p udp -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -713,6 +997,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -721,8 +1009,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p udp -d 10.0.0.1 --dport 25 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -732,6 +1024,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -740,8 +1036,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp any 10.0.0.1 80 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -751,6 +1051,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -759,8 +1063,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -770,6 +1078,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -778,8 +1090,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
--A INPUT -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -789,6 +1105,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -797,8 +1117,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
--A INPUT -p tcp -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -808,6 +1132,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -816,8 +1144,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -827,6 +1159,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -835,8 +1171,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -846,6 +1186,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -854,8 +1198,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -865,6 +1213,10 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
+
 ### DO NOT DELETE: rules end ###
 rules updated
 
@@ -873,8 +1225,12 @@ rules updated
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
 
+-A INPUT -j ufw-in
+
 ### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
--A INPUT -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated
@@ -883,6 +1239,10 @@ rules updated
 89: --dry-run delete deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
 ### DO NOT DELETE: rules start ###
+
+-A INPUT -j ufw-in
+
+-A ufw-in -j RETURN
 
 ### DO NOT DELETE: rules end ###
 rules updated

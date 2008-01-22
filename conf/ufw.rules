@@ -48,7 +48,7 @@
 # if BROADCAST, RETURN
 -A drop-not-to-me -m addrtype --dst-type BROADCAST -j RETURN
 
--A drop-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+-A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 -A drop-not-to-me -j DROP
 
 #
