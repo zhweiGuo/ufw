@@ -1,3 +1,15 @@
+ufw (0.4) gutsy; urgency=low
+
+  * new upstream version
+    - supports specifying service from /etc/services
+    - requires python 2.5
+    - put rules in ufw-* chains
+    - status is more user-friendly (but not complete)
+    - bug fixes
+    - ufw.rules fine-tuning
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Jan 2008 08:01:06 +0000
+
 ufw (0.3) hardy; urgency=low
 
   * new upstream version:

@@ -11,24 +11,18 @@
 -A OUTPUT -o lo -j ACCEPT
 
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A INPUT -m conntrack --ctstate INVALID -j LOG
+-A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A INPUT -m conntrack --ctstate INVALID -j DROP
 
-# ok icmp codes (Destination Unreachable, Source Quench, Time Exceeded and
-# Parameter Problem
--A INPUT -p icmp  --icmp-type 3  -j ACCEPT
--A INPUT -p icmp  --icmp-type 4  -j ACCEPT
--A INPUT -p icmp  --icmp-type 11  -j ACCEPT
--A INPUT -p icmp  --icmp-type 12  -j ACCEPT
+# ok icmp codes
+-A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A INPUT -p icmp --icmp-type source-quench -j ACCEPT
+-A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
+-A INPUT -p icmp --icmp-type parameter-problem -j ACCEPT
+-A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 
-# allow ping in from local networks
--A INPUT -s 10.0.0.0/255.0.0.0 -p icmp --icmp-type 8 -j ACCEPT
--A INPUT -s 172.16.0.0/255.240.0.0 -p icmp --icmp-type 8 -j ACCEPT
--A INPUT -s 192.168.0.0/255.255.0.0 -p icmp --icmp-type 8 -j ACCEPT
-
-# allow dhcp broadcast
--I INPUT -p udp --sport 68 -d 255.255.255.255 --dport 67 -j ACCEPT
-
+# allow dhcp client to work
+-A INPUT -p udp --sport 67 --dport 68 -j ACCEPT
 
 #
 # drop-not-to-me
