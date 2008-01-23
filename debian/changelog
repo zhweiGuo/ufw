@@ -1,4 +1,4 @@
-ufw (0.4) gutsy; urgency=low
+ufw (0.4) hardy; urgency=low
 
   * new upstream version
     - supports specifying service from /etc/services
