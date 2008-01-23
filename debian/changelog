@@ -1,3 +1,10 @@
+ufw (0.6) hardy; urgency=low
+
+  * debian/control: Build-Depends-Indep on netbase so tests can run in
+    buildds
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 23 Jan 2008 16:24:58 +0000
+
 ufw (0.5) hardy; urgency=low
 
   * update tests for better failure reporting and maintainability 
