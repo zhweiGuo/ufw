@@ -27,6 +27,7 @@ install: build
 	dh_installdirs usr/share/
 	dh_installdirs usr/share/ufw
 	dh_installdirs etc/
+	rmdir $(CURDIR)/debian/ufw/usr/lib
 
 	./run_tests.sh
 	python ./setup.py install \
