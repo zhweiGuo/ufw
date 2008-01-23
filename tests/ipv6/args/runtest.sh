@@ -14,14 +14,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+source "$TESTPATH/../testlib.sh"
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
-sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result || exit 1
-$TESTPATH/usr/sbin/ufw --dry-run enable >> $TESTTMP/result 2>&1 || exit 1
-$TESTPATH/usr/sbin/ufw --dry-run disable >> $TESTTMP/result 2>&1 || exit 1
+do_cmd "0" --dry-run enable
+do_cmd "0" --dry-run disable
 
 echo "TESTING ARGS (status)" >> $TESTTMP/result || exit 1
-$TESTPATH/usr/sbin/ufw --dry-run status >> $TESTTMP/result 2>&1 || exit 1
+do_cmd "0" --dry-run status
 
 exit 0

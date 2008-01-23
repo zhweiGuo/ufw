@@ -1,3 +1,4 @@
+0: help
 
 Usage: ufw COMMAND
 
@@ -10,4 +11,6 @@ Commands:
   delete allow|deny RULE	delete the allow/deny RULE
   status			show firewall status
   version			display version information
+
+
 

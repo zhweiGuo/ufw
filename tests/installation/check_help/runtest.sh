@@ -14,7 +14,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
-$TESTPATH/usr/sbin/ufw help >> $TESTTMP/result || exit 1
+source "$TESTPATH/../testlib.sh"
+
+do_cmd "0" help
 
 exit 0

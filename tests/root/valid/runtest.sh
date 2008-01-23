@@ -14,128 +14,119 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
-
-let count=0
-do_cmd() {
-        echo "$count: $@" >> $TESTTMP/result
-        $TESTPATH/usr/sbin/ufw $@ >> $TESTTMP/result 2>&1 || exit 1
-        let count=count+1
-        echo "" >> $TESTTMP/result
-        echo "" >> $TESTTMP/result
-}
+source "$TESTPATH/../testlib.sh"
 
 echo "TESTING ARGS (logging)" >> $TESTTMP/result
-do_cmd  logging on 
+do_cmd "0"  logging on 
 grep "LOG" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  logging off 
+do_cmd "0"  logging off 
 grep "LOG" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  LOGGING ON 
+do_cmd "0"  LOGGING ON 
 grep "LOG" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  LOGGING OFF 
+do_cmd "0"  LOGGING OFF 
 grep "LOG" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
-do_cmd  default allow
+do_cmd "0"  default allow
 head $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  default deny
+do_cmd "0"  default deny
 head $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  DEFAULT ALLOW
+do_cmd "0"  DEFAULT ALLOW
 head $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  DEFAULT DENY
+do_cmd "0"  DEFAULT DENY
 head $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
-do_cmd  enable 
+do_cmd "0"  enable 
 cat $TESTPATH/etc/default/ufw >> $TESTTMP/result
-do_cmd  disable 
+do_cmd "0"  disable 
 cat $TESTPATH/etc/default/ufw >> $TESTTMP/result
-do_cmd  ENABLE 
+do_cmd "0"  ENABLE 
 cat $TESTPATH/etc/default/ufw >> $TESTTMP/result
-do_cmd  DISABLE 
+do_cmd "0"  DISABLE 
 cat $TESTPATH/etc/default/ufw >> $TESTTMP/result
 
 echo "TESTING ARGS (allow/deny port)" >> $TESTTMP/result
-do_cmd  allow 25 
-do_cmd  deny 25 
-do_cmd  deny 1 
-do_cmd  deny 65535 
+do_cmd "0"  allow 25 
+do_cmd "0"  deny 25 
+do_cmd "0"  deny 1 
+do_cmd "0"  deny 65535 
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25 
-do_cmd  delete deny 25 
-do_cmd  delete deny 1 
-do_cmd  delete deny 65535 
+do_cmd "0"  delete allow 25 
+do_cmd "0"  delete deny 25 
+do_cmd "0"  delete deny 1 
+do_cmd "0"  delete deny 65535 
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
 
 echo "TESTING ARGS (allow/deny to/from)" >> $TESTTMP/result
 echo "Man page" >> $TESTTMP/result
-do_cmd  allow 53
+do_cmd "0"  allow 53
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  allow 25:tcp
+do_cmd "0"  allow 25:tcp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  deny to 80:tcp
+do_cmd "0"  deny to 80:tcp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
+do_cmd "0"  deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  deny 53
+do_cmd "0"  deny 53
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  allow 80:tcp
+do_cmd "0"  allow 80:tcp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  allow from 10.0.0.0/8
+do_cmd "0"  allow from 10.0.0.0/8
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  allow from 172.16.0.0/12
+do_cmd "0"  allow from 172.16.0.0/12
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  allow from 192.168.0.0/16
+do_cmd "0"  allow from 192.168.0.0/16
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  deny from 1.2.3.4 to 514:udp
+do_cmd "0"  deny from 1.2.3.4 to 514:udp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
+do_cmd "0"  allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
-do_cmd  delete allow 53
-do_cmd  delete allow 25:tcp
-do_cmd  delete deny to 80:tcp
-do_cmd  delete deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
-do_cmd  delete deny 53
-do_cmd  delete allow 80:tcp
-do_cmd  delete allow from 10.0.0.0/8
-do_cmd  delete allow from 172.16.0.0/12
-do_cmd  delete allow from 192.168.0.0/16
-do_cmd  delete deny from 1.2.3.4 to 514:udp
-do_cmd  delete allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
+do_cmd "0"  delete allow 53
+do_cmd "0"  delete allow 25:tcp
+do_cmd "0"  delete deny to 80:tcp
+do_cmd "0"  delete deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
+do_cmd "0"  delete deny 53
+do_cmd "0"  delete allow 80:tcp
+do_cmd "0"  delete allow from 10.0.0.0/8
+do_cmd "0"  delete allow from 172.16.0.0/12
+do_cmd "0"  delete allow from 192.168.0.0/16
+do_cmd "0"  delete deny from 1.2.3.4 to 514:udp
+do_cmd "0"  delete allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
 
 echo "SIMPLE" >> $TESTTMP/result
-do_cmd  allow 25
+do_cmd "0"  allow 25
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25
-grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-
-do_cmd  allow 25:tcp
-grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25:tcp
+do_cmd "0"  delete allow 25
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
-do_cmd  allow 25:udp
+do_cmd "0"  allow 25:tcp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25:udp
-grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-
-do_cmd  allow 25
-grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25
+do_cmd "0"  delete allow 25:tcp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
-do_cmd  allow 25:tcp
+do_cmd "0"  allow 25:udp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25:tcp
+do_cmd "0"  delete allow 25:udp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
-do_cmd  allow 25:udp
+do_cmd "0"  allow 25
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-do_cmd  delete allow 25:udp
+do_cmd "0"  delete allow 25
+grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
+
+do_cmd "0"  allow 25:tcp
+grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
+do_cmd "0"  delete allow 25:tcp
+grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
+
+do_cmd "0"  allow 25:udp
+grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
+do_cmd "0"  delete allow 25:udp
 grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
 echo "TO/FROM" >> $TESTTMP/result
@@ -143,65 +134,65 @@ from="192.168.0.1"
 to="10.0.0.1"
 for x in allow deny
 do
-        do_cmd  $x from $from
+        do_cmd "0"  $x from $from
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x from $from
+        do_cmd "0"  delete $x from $from
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  $x to $to
+        do_cmd "0"  $x to $to
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x to $to
+        do_cmd "0"  delete $x to $to
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  $x to $to from $from
+        do_cmd "0"  $x to $to from $from
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x to $to from $from
+        do_cmd "0"  delete $x to $to from $from
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
 
-        do_cmd  $x from $from 80
+        do_cmd "0"  $x from $from 80
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x from $from 80
+        do_cmd "0"  delete $x from $from 80
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  $x to $to 25
+        do_cmd "0"  $x to $to 25
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x to $to 25
+        do_cmd "0"  delete $x to $to 25
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  $x to $to from $from 80
+        do_cmd "0"  $x to $to from $from 80
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x to $to from $from 80
+        do_cmd "0"  delete $x to $to from $from 80
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  $x to $to 25 from $from
+        do_cmd "0"  $x to $to 25 from $from
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x to $to 25 from $from
+        do_cmd "0"  delete $x to $to 25 from $from
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  $x to $to 25 from $from 80
+        do_cmd "0"  $x to $to 25 from $from 80
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-        do_cmd  delete $x to $to 25 from $from 80
+        do_cmd "0"  delete $x to $to 25 from $from 80
 	grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
         for y in udp tcp
         do
-                do_cmd  $x from $from 80:$y
+                do_cmd "0"  $x from $from 80:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  delete $x from $from 80:$y
+                do_cmd "0"  delete $x from $from 80:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  $x to $to 25:$y
+                do_cmd "0"  $x to $to 25:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  delete $x to $to 25:$y
+                do_cmd "0"  delete $x to $to 25:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  $x to $to from $from 80:$y
+                do_cmd "0"  $x to $to from $from 80:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  delete $x to $to from $from 80:$y
+                do_cmd "0"  delete $x to $to from $from 80:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  $x to $to 25:$y from $from
+                do_cmd "0"  $x to $to 25:$y from $from
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  delete $x to $to 25:$y from $from
+                do_cmd "0"  delete $x to $to 25:$y from $from
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  $x to $to 25:$y from $from 80:$y
+                do_cmd "0"  $x to $to 25:$y from $from 80:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
-                do_cmd  delete $x to $to 25:$y from $from 80:$y
+                do_cmd "0"  delete $x to $to 25:$y from $from 80:$y
 		grep -A2 "tuple" $TESTPATH/etc/ufw/ufw.rules >> $TESTTMP/result
         done
 done
 
 echo "TESTING ARGS (status)" >> $TESTTMP/result
-do_cmd --dry-run status 
+do_cmd "0" --dry-run status 
 
 exit 0

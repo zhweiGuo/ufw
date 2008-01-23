@@ -14,7 +14,30 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-source "$TESTPATH/../testlib.sh"
-do_cmd "0" --dry-run status
+sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
 
-exit 0
+let count=0
+do_cmd() {
+	if [ "$1" = "0" ] || [ "$1" = "1" ]; then
+		expected="$1"
+		shift
+	fi
+
+	cmd_results_file="$TESTTMP/result"
+	if [ "$1" = "null" ]; then
+		cmd_results_file="/dev/null"
+		shift
+	fi
+
+        echo "$count: $@" >> $TESTTMP/result
+        $TESTPATH/usr/sbin/ufw $@ >> $cmd_results_file 2>&1
+	rc="$?"
+	if [ "$rc" != "$expected" ]; then
+		echo "Command '$@' exited with '$rc', but expected '$expected'"
+		exit 1
+	fi
+        let count=count+1
+        echo "" >> $TESTTMP/result
+        echo "" >> $TESTTMP/result
+}
+

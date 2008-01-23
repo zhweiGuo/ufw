@@ -4,7 +4,7 @@ WARN: Checks disabled
 logging enabled
 
 
--A INPUT -m conntrack --ctstate INVALID -j LOG
+-A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
@@ -13,7 +13,7 @@ WARN: Checks disabled
 logging disabled
 
 
-# ufw_comment # -A INPUT -m conntrack --ctstate INVALID -j LOG
+# ufw_comment # -A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 # ufw_comment # -A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 # ufw_comment # -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 # ufw_comment # -A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
@@ -22,7 +22,7 @@ WARN: Checks disabled
 logging enabled
 
 
--A INPUT -m conntrack --ctstate INVALID -j LOG
+-A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
@@ -31,7 +31,7 @@ WARN: Checks disabled
 logging disabled
 
 
-# ufw_comment # -A INPUT -m conntrack --ctstate INVALID -j LOG
+# ufw_comment # -A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 # ufw_comment # -A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 # ufw_comment # -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 # ufw_comment # -A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "

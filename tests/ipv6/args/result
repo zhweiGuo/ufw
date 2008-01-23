@@ -1,8 +1,12 @@
 TESTING ARGS (enable/disable)
+0: --dry-run enable
 WARN: Checks disabled
 > cat ufw.rules | iptables-restore
 > cat ufw.rules | ip6tables-restore
 firewall enabled
+
+
+1: --dry-run disable
 WARN: Checks disabled
 > echo
 *filter
@@ -19,8 +23,13 @@ COMMIT
 COMMIT
 > | ip6tables-restore
 firewall disabled
+
+
 TESTING ARGS (status)
+2: --dry-run status
 WARN: Checks disabled
 > Checking iptables
 > Checking ip6tables
+
+
 

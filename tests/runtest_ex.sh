@@ -16,14 +16,21 @@
 
 #set -x
 
-# disable checks for test run
-#sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
+source "$TESTPATH/../testlib.sh"
 
 # example usage for successful run
-#$TESTPATH/usr/sbin/ufw help >> $TESTTMP/result 2>&1 || exit 1
+#do_cmd "0" --dry-run allow 53
+
+# example usage for successful run, without putting the output into the
+# results file
+#do_cmd "0" null --dry-run allow 53
 
 # example usage for failed run
-#$TESTPATH/usr/sbin/ufw logging >> $TESTTMP/result 2>&1 && exit 1
+#do_cmd "1" --dry-run allow 53a
+
+# example usage for failed run, without putting the failure output into the
+# results file
+#do_cmd "1" null --dry-run allow 53a
 
 # remove this when implementing real test
 touch $TESTTMP/result || exit 1
