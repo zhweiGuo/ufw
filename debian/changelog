@@ -1,4 +1,4 @@
-ufw (0.7) gutsy; urgency=low
+ufw (0.7) hardy; urgency=low
 
   * new version
     - fix two lintian warnings
