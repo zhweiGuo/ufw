@@ -27,11 +27,11 @@ install: build
 	dh_installdirs usr/share/
 	dh_installdirs usr/share/ufw
 	dh_installdirs etc/
-	rmdir $(CURDIR)/debian/ufw/usr/lib
 
 	./run_tests.sh
 	python ./setup.py install \
 		--root=$(CURDIR)/debian/ufw
+	rmdir $(CURDIR)/debian/ufw/usr/lib
 
 	# don't make ufw.rules a conffile
 	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.rules $(CURDIR)/debian/ufw/usr/share/ufw
