@@ -383,7 +383,7 @@ class UFWRule:
 
     def set_action(self, action):
         '''Sets action of the rule'''
-        if action == "allow":
+        if action.lower() == "allow":
             self.action = action
         else:
             self.action = "deny"
@@ -751,8 +751,8 @@ class UFWBackendIptables(UFWBackend):
                     location['src'])
 
         if str != "":
-            tmp = "%-26s%-8s%s\n" % ("From", "Action", "To")
-            tmp += "%-26s%-8s%s\n" % ("----", "------", "--")
+            tmp = "%-26s%-8s%s\n" % ("To", "Action", "From")
+            tmp += "%-26s%-8s%s\n" % ("--", "------", "----")
             str = tmp + str
 
         return str
@@ -827,17 +827,16 @@ COMMIT
 
     def _parse_iptables_status(self, line):
         '''Parses a line from iptables -L -n'''
-        rule = UFWRule(action, "any", "any")
-
         fields = line.split()
         if len(fields) < 5:
-            debug("Couldn't parse line '" + line +"'")
+            debug("Couldn't parse line '" + line + "'")
             return None
-        
+
+        rule = UFWRule("ACCEPT", "any", "any")
         if fields[0] == 'ACCEPT':
-            rule.set_action('ALLOW')
+            rule.set_action('allow')
         elif fields[0] == 'DROP':
-            rule.set_action('DENY')
+            rule.set_action('deny')
         else:
             # RETURN and LOG are valid, but we skip them
             return None
@@ -854,13 +853,13 @@ COMMIT
 
         if len(fields) >= 7:
             if re.match('dpt', fields[6]):
-                rule.set_port(fields[6][4:])
+                rule.set_port(fields[6][4:], "dst")
             elif re.match('spt', fields[6]):
                 rule.set_port(fields[6][4:], "src")
         
         if len(fields) >= 8:
             if re.match('dpt', fields[7]):
-                rule.set_port(fields[7][4:])
+                rule.set_port(fields[7][4:], "dst")
             elif re.match('spt', fields[7]):
                 rule.set_port(fields[7][4:], "src")
         
