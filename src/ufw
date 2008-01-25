@@ -605,7 +605,15 @@ class UFWBackend:
 
 class UFWBackendIptables(UFWBackend):
     def __init__(self, d):
-        files['rules'] = '#CONFIG_PREFIX#/ufw/ufw.rules'
+        files['rules'] = '#STATE_PREFIX#/user.rules'
+        files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
+        if not os.path.isfile(files['rules']):
+            # touch the state file if it doesn't exist yet
+            try:
+                open(files['rules'], 'w')
+            except:
+                raise UFWError("Couldn't create file " + files['rules'])
+            
         UFWBackend.__init__(self, "iptables", d)
 
     def get_loglevel(self):
@@ -703,7 +711,7 @@ class UFWBackendIptables(UFWBackend):
         # make the output pretty
         str = ""
         pat_chain = re.compile(r'^Chain ')
-        pat_ufw = re.compile(r'^Chain ufw-in')
+        pat_ufw = re.compile(r'^Chain ufw-user-input')
         pat_target = re.compile(r'^target')
         in_ufw_input = False
         rules = []
@@ -766,10 +774,24 @@ class UFWBackendIptables(UFWBackend):
 COMMIT
 '''
         if dryrun:
+            print "> iptables -F"
+            print "> iptables -X"
             print "> echo\n" + openconf + "> | iptables-restore"
             if self._use_ipv6():
+                print "> ip6tables -F"
+                print "> ip6tables -X"
                 print "> echo\n" + openconf + "> | ip6tables-restore"
             return
+
+        # flush the firewall
+        (rc, out) = cmd(['iptables', '-F'])
+        if rc != 0:
+            raise UFWError("problem running iptables 'flush'")
+
+        # remove user chains
+        (rc, out) = cmd(['iptables', '-X'])
+        if rc != 0:
+            raise UFWError("problem running iptables 'delete'")
 
         try:
             (tmp, tmpname) = mkstemp()
@@ -778,11 +800,22 @@ COMMIT
         os.write(tmp, openconf)
         os.close(tmp)
 
+        # set default open
         (rc, out) = cmd_pipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
             raise UFWError("problem running iptables")
 
         if self._use_ipv6():
+            # flush the firewall
+            (rc, out) = cmd(['ip6tables', '-F'])
+            if rc != 0:
+                raise UFWError("problem running ip6tables 'flush'")
+
+            # remove user chains
+            (rc, out) = cmd(['ip6tables', '-X'])
+            if rc != 0:
+                raise UFWError("problem running ip6tables 'delete'")
+
             (rc, out) = cmd_pipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
                 raise UFWError("problem running ip6tables")
@@ -790,21 +823,13 @@ COMMIT
     def start_firewall(self):
         '''Starts the firewall'''
         if dryrun:
-            print "> cat ufw.rules | iptables-restore"
+            print "> running initscript"
         else:
-            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore'])
+            (rc, out) = cmd([files['init'], 'start'])
             if rc != 0:
-                raise UFWError("problem running iptables")
+                raise UFWError("problem running init script")
 
-        if self._use_ipv6():
-            if dryrun:
-                print "> cat ufw.rules | ip6tables-restore"
-            else:
-                (rc, out) = cmd_pipe(['cat', files['rules']], \
-                                     ['ip6tables-restore'])
-                if rc != 0:
-                    raise UFWError("problem running ip6tables")
-        else:
+        if not self._use_ipv6():
             # just enable ipv6 on loopback
             ipv6conf = '''*filter
 :INPUT DROP [0:0]

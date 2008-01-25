@@ -8,14 +8,27 @@
 #   ufw-before-forward
 #
 
+# Don't delete these required lines, otherwise there will be errors
+*filter
+:ufw-before-input - [0:0]
+:ufw-before-output - [0:0]
+:ufw-before-forward - [0:0]
+:ufw-not-local - [0:0]
+# End required lines
+
+
 # allow all on loopback
 -A ufw-before-input -i lo -j ACCEPT
--A ufw-before-input -o lo -j ACCEPT
+-A ufw-before-output -i lo -j ACCEPT
 
 # connection tracking rules
 -A ufw-before-input -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A ufw-before-input -m conntrack --ctstate INVALID -j DROP
+
+# connection tracking for outbound
+-A ufw-before-output -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+-A ufw-before-output -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 
 # ok icmp codes
 -A ufw-before-input -p icmp --icmp-type destination-unreachable -j ACCEPT
@@ -50,9 +63,6 @@
 -A ufw-before-input -s 224.0.0.0/4 -j ACCEPT
 -A ufw-before-input -d 224.0.0.0/4 -j ACCEPT
 
-# connection tracking for outbound
--A ufw-before-output -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
--A ufw-before-output -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT

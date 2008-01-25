@@ -9,7 +9,7 @@
 # Short-Description: start firewall
 ### END INIT INFO
 
-PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
 [ -x #PREFIX#/sbin/ufw ] || exit 0
 
@@ -18,32 +18,34 @@ PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
 if [ -s #CONFIG_PREFIX#/default/ufw ]; then
 	. #CONFIG_PREFIX#/default/ufw
 else
-	log_failure_msg "Could not find #CONFIG_PREFIX#/default/ufw (disabling)"
-	ENABLED="no"
+	log_failure_msg "Could not find #CONFIG_PREFIX#/default/ufw (aborting)"
+	exit 1
 fi
 
-BEFORE_RULES="#CONFIG_PREFIX#/ufw/rules.before"
-AFTER_RULES="#CONFIG_PREFIX#/ufw/rules.after"
-IN_RULES="/var/lib/ufw/ufw-in.rules"
+BEFORE_RULES="#CONFIG_PREFIX#/ufw/before.rules"
+AFTER_RULES="#CONFIG_PREFIX#/ufw/after.rules"
+IN_RULES="#STATE_PREFIX#/user.rules"
 
 case "$1" in
 start)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+		log_daemon_msg "Starting firewall:" "ufw"
 		if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
-			log_action_begin_msg "ufw: Loading $IPT_SYSCTL"
+			log_action_begin_msg "  Loading $IPT_SYSCTL"
 			sysctl -q -p $IPT_SYSCTL
 			log_action_end_msg $?
 		fi
 		for m in $IPT_MODULES
 		do
-			log_action_begin_msg "ufw: Loading $m"
+			log_action_begin_msg "  Loading $m"
 			modprobe $m
 			log_action_end_msg $?
 		done
-		log_action_begin_msg "ufw: Starting firewall"
+		log_action_begin_msg "  Loading rules"
 
 		# flush the chains
 		iptables -F
+		iptables -X
 
 		# setup built-in chains' default policy
 		iptables -P INPUT $DEFAULT_INPUT_POLICY
@@ -58,13 +60,16 @@ start)
 		iptables -N ufw-before-output
 		iptables -N ufw-before-forward
 		iptables -A INPUT -j ufw-before-input
-		iptables -A INPUT -j ufw-before-output
-		iptables -A INPUT -j ufw-before-forward
-		if [ -x "$RULES_BEFORE" ]; then
-			iptables-restore < $RULES_BEFORE > /dev/null 2>&1
-			if [ "$?" != "0" ]; then
-				log_warning_msg "    Problem running 'rules.before'"
+		iptables -A OUTPUT -j ufw-before-output
+		iptables -A FORWARD -j ufw-before-forward
+		if [ -s "$BEFORE_RULES" ]; then
+			if ! iptables-restore -n < $BEFORE_RULES ; then
+				log_warning_msg "   Problem running 'rules.before'"
+				error="yes"
 			fi
+		else
+			log_warning_msg "   Couldn't find '$BEFORE_RULES'"
+			
 		fi
 		iptables -A ufw-before-input -j RETURN
 		iptables -A ufw-before-output -j RETURN
@@ -74,11 +79,14 @@ start)
 		iptables -N ufw-user-input
 		iptables -N ufw-user-output
 		iptables -N ufw-user-forward
-		iptables -A INPUT -j ufw-user-input
-		iptables -A OUTPUT -j ufw-user-output
-		iptables -A FORWARD -j ufw-user-forward
+		iptables -A ufw-before-input -j ufw-user-input
+		iptables -A ufw-before-output -j ufw-user-output
+		iptables -A ufw-before-forward -j ufw-user-forward
 		if [ -s "$IN_RULES" ]; then
-			iptables-restore < $IN_RULES > /dev/null 2>&1
+			if ! iptables-restore -n < $IN_RULES ; then
+				log_warning_msg "   Problem running 'rules.before'"
+				error="yes"
+			fi
 		fi
 		iptables -A ufw-user-input -j RETURN
 		iptables -A ufw-user-output -j RETURN
@@ -89,21 +97,29 @@ start)
 		iptables -N ufw-after-output
 		iptables -N ufw-after-forward
 		iptables -A INPUT -j ufw-after-input
-		iptables -A INPUT -j ufw-after-output
-		iptables -A INPUT -j ufw-after-forward
-		if [ -x "$RULES_BEFORE" ]; then
-			iptables-restore < $RULES_BEFORE > /dev/null 2>&1
-			if [ "$?" != "0" ]; then
-				log_warning_msg "    Problem running 'rules.after'"
+		iptables -A OUTPUT -j ufw-after-output
+		iptables -A FORWARD -j ufw-after-forward
+		if [ -s "$AFTER_RULES" ]; then
+			if ! iptables-restore -n < $AFTER_RULES ; then
+				log_warning_msg "   Problem running 'rules.after'"
+				error="yes"
 			fi
+		else
+			log_warning_msg "    Couldn't find '$AFTER_RULES'"
 		fi
 		iptables -A ufw-after-input -j RETURN
 		iptables -A ufw-after-output -j RETURN
 		iptables -A ufw-after-forward -j RETURN
 
-		log_action_end_msg $?
+		if [ "$error" = "yes" ]; then
+			log_action_end_msg 1
+			log_failure_msg "   Error(s) in starting firewall"
+			exit 1
+		else
+			log_action_end_msg 0
+		fi
 	else
-		log_warning_msg "ufw: Skipping firewall (not enabled)"
+		log_warning_msg "    Skipping firewall (not enabled)"
 	fi
 	;;
 stop)

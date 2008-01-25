@@ -43,6 +43,10 @@ class Install(_install, object):
         self.copy_file('src/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
 
+        # Install state file
+        statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
+        self.mkpath(statedir)
+
         # Install configuration files
         confdir = os.path.join(self.root, 'etc')
         defaults = os.path.join(confdir, 'default', 'ufw')
@@ -56,8 +60,8 @@ class Install(_install, object):
         
         self.copy_file('conf/ufw.defaults', defaults)
         self.copy_file('conf/sysctl.conf', ufwconf)
-        self.copy_file('conf/rules.before', before_rules)
-        self.copy_file('conf/rules.after', after_rules)
+        self.copy_file('conf/before.rules', before_rules)
+        self.copy_file('conf/after.rules', after_rules)
         self.copy_file('conf/initscript', initscript)
 
         # Update the installed files' paths
@@ -72,6 +76,10 @@ class Install(_install, object):
             while a.poll() == -1:
                 pass
         
+            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%' " + file)
+            while a.poll() == -1:
+                pass
+
             a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%' " + file)
             while a.poll() == -1:
                 pass
