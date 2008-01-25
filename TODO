@@ -16,30 +16,13 @@ Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
 question, and timeout if no response (maybe use the previous working policy?))
 
 
-Improve grub/menu.lst type of configuration.  Goals:
-1. need a config file for the user to edit (don't get in admin's way)
-2. don't (excessively) edit rules file
-3. don't flush on adding/removing rules
-4. state is maintained for boot/power loss
-
-How to do this:
-1. all 'default' options that are in /etc/ufw/ufw.rules move out into ufw-*
-chains (still need something in /var for tracking what rules go with which
-ufw command
-2. ufw.rules goes away
-3. initscript will be more intelligent, and setup the default policy, the
-default chains (INPUT, OUTPUT, FORWARD), and hooks into the ufw chains (if
-/etc/defaults/ufw is ENABLED)
-4. everytime do an 'allow|deny' with ufw, we update an iptables-save file
-in /var
-5. enable will toggle ENABLED and use iptables to add the hooks to INPUT,
-whereas disable does the opposite
-
-'1' is achieved by the admin just modifying the initscript
-'2' is satisfied because don't edit any rules
-'3' we don't have to flush anything as we are just adding/removing the chain
-    hook
-'4' state is preserved, and not in a conffile
+Finish chains, initscript, state transition:
+update /var/lib
+restore from /var/lib
+tell to force-reload on start if rules loaded
+enable/disable should only start the firewall if it isn't already started
+enable/disable should add/remove the appropriate chains
+allow/deny should add to proper chain and update state
 
 
 Revamp the allow|deny acl syntax. Current implementation for a few rules:
