@@ -24,7 +24,8 @@ Improve grub/menu.lst type of configuration.  Goals:
 
 How to do this:
 1. all 'default' options that are in /etc/ufw/ufw.rules move out into ufw-*
-chains
+chains (still need something in /var for tracking what rules go with which
+ufw command
 2. ufw.rules goes away
 3. initscript will be more intelligent, and setup the default policy, the
 default chains (INPUT, OUTPUT, FORWARD), and hooks into the ufw chains (if
