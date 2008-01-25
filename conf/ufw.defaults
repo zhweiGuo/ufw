@@ -7,6 +7,10 @@ ENABLED=no
 # set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
 
+# set the default input policy to ACCEPT or DROP.  Please note that if you
+# change this you will most likely want to adjust your rules
+DEFAULT_INPUT_POLICY="DROP"
+
 #
 # IPT backend
 #

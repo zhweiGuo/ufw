@@ -22,6 +22,10 @@ else
 	ENABLED="no"
 fi
 
+BEFORE_RULES="#CONFIG_PREFIX#/ufw/rules.before"
+AFTER_RULES="#CONFIG_PREFIX#/ufw/rules.after"
+IN_RULES="/var/lib/ufw/ufw-in.rules"
+
 case "$1" in
 start)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
@@ -37,7 +41,44 @@ start)
 			log_action_end_msg $?
 		done
 		log_action_begin_msg "ufw: Starting firewall"
-		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
+
+		# flush the chains
+		iptables -F
+
+		# setup built-in chains' default policy
+		iptables -P INPUT $DEFAULT_INPUT_POLICY
+		iptables -P FORWARD ACCEPT
+		iptables -P OUTPUT ACCEPT
+
+		# setup custom-before chain
+		iptables -N custom-before
+		iptables -A INPUT -j custom-before
+		if [ -x "$RULES_BEFORE" ]; then
+			iptables-restore < $RULES_BEFORE > /dev/null 2>&1
+			if [ "$?" != "0" ]; then
+				log_warning_msg "    Problem running 'rules.before'"
+			fi
+		fi
+		iptables -A custom-before -j RETURN
+
+		# setup ufw-in chain
+		iptables -N ufw-in
+		iptables -A INPUT -j ufw-in
+		if [ -s "$IN_RULES" ]; then
+			iptables-restore < $IN_RULES > /dev/null 2>&1
+		fi
+		iptables -A ufw-in -j RETURN
+		
+		# setup custom-after chain
+		iptables -N custom-after
+		iptables -A INPUT -j custom-after
+		if [ -x "$RULES_AFTER" ]; then
+			iptables-restore < $RULES_AFTER > /dev/null 2>&1
+			if [ "$?" != "0" ]; then
+				log_warning_msg "    Problem running 'rules.after'"
+			fi
+		fi
+		iptables -A custom-after -j RETURN
 		log_action_end_msg $?
 	else
 		log_warning_msg "ufw: Skipping firewall (not enabled)"
