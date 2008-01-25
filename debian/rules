@@ -33,8 +33,8 @@ install: build
 		--root=$(CURDIR)/debian/ufw
 	rm -rf $(CURDIR)/debian/ufw/usr/lib
 
-	# don't make ufw.rules a conffile
-	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.rules $(CURDIR)/debian/ufw/usr/share/ufw
+	# don't make *.rules conffiles
+	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 
 	# strip out beginning of path since setup.py doens't support dest-dir
 	# yet
