@@ -47,38 +47,60 @@ start)
 
 		# setup built-in chains' default policy
 		iptables -P INPUT $DEFAULT_INPUT_POLICY
-		iptables -P FORWARD ACCEPT
-		iptables -P OUTPUT ACCEPT
+		iptables -P OUTPUT $DEFAULT_OUTPUT_POLICY
+		iptables -P FORWARD $DEFAULT_FORWARD_POLICY
 
-		# setup custom-before chain
-		iptables -N custom-before
-		iptables -A INPUT -j custom-before
+		# setup some other chains that can be used later
+		iptables -N ufw-not-local
+
+		# setup ufw-before-* chains
+		iptables -N ufw-before-input
+		iptables -N ufw-before-output
+		iptables -N ufw-before-forward
+		iptables -A INPUT -j ufw-before-input
+		iptables -A INPUT -j ufw-before-output
+		iptables -A INPUT -j ufw-before-forward
 		if [ -x "$RULES_BEFORE" ]; then
 			iptables-restore < $RULES_BEFORE > /dev/null 2>&1
 			if [ "$?" != "0" ]; then
 				log_warning_msg "    Problem running 'rules.before'"
 			fi
 		fi
-		iptables -A custom-before -j RETURN
+		iptables -A ufw-before-input -j RETURN
+		iptables -A ufw-before-output -j RETURN
+		iptables -A ufw-before-forward -j RETURN
 
-		# setup ufw-in chain
-		iptables -N ufw-in
-		iptables -A INPUT -j ufw-in
+		# setup ufw-user chain
+		iptables -N ufw-user-input
+		iptables -N ufw-user-output
+		iptables -N ufw-user-forward
+		iptables -A INPUT -j ufw-user-input
+		iptables -A OUTPUT -j ufw-user-output
+		iptables -A FORWARD -j ufw-user-forward
 		if [ -s "$IN_RULES" ]; then
 			iptables-restore < $IN_RULES > /dev/null 2>&1
 		fi
-		iptables -A ufw-in -j RETURN
+		iptables -A ufw-user-input -j RETURN
+		iptables -A ufw-user-output -j RETURN
+		iptables -A ufw-user-forward -j RETURN
 		
-		# setup custom-after chain
-		iptables -N custom-after
-		iptables -A INPUT -j custom-after
-		if [ -x "$RULES_AFTER" ]; then
-			iptables-restore < $RULES_AFTER > /dev/null 2>&1
+		# setup ufw-after-* chains
+		iptables -N ufw-after-input
+		iptables -N ufw-after-output
+		iptables -N ufw-after-forward
+		iptables -A INPUT -j ufw-after-input
+		iptables -A INPUT -j ufw-after-output
+		iptables -A INPUT -j ufw-after-forward
+		if [ -x "$RULES_BEFORE" ]; then
+			iptables-restore < $RULES_BEFORE > /dev/null 2>&1
 			if [ "$?" != "0" ]; then
 				log_warning_msg "    Problem running 'rules.after'"
 			fi
 		fi
-		iptables -A custom-after -j RETURN
+		iptables -A ufw-after-input -j RETURN
+		iptables -A ufw-after-output -j RETURN
+		iptables -A ufw-after-forward -j RETURN
+
 		log_action_end_msg $?
 	else
 		log_warning_msg "ufw: Skipping firewall (not enabled)"
