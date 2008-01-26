@@ -1,22 +1,22 @@
 TESTING ARGS (logging)
 0: --dry-run logging on
 WARN: Checks disabled
-logging enabled
+Logging enabled
 
 
 1: --dry-run logging off
 WARN: Checks disabled
-logging disabled
+Logging disabled
 
 
 2: --dry-run LOGGING ON
 WARN: Checks disabled
-logging enabled
+Logging enabled
 
 
 3: --dry-run LOGGING OFF
 WARN: Checks disabled
-logging disabled
+Logging disabled
 
 
 TESTING ARGS (default)
@@ -47,7 +47,7 @@ Default policy changed to 'deny'
 TESTING ARGS (enable/disable)
 8: --dry-run enable
 WARN: Checks disabled
-> cat ufw.rules | iptables-restore
+> running initscript
 > echo
 *filter
 :INPUT DROP [0:0]
@@ -59,11 +59,13 @@ WARN: Checks disabled
 
 COMMIT
 > | ip6tables-restore
-firewall enabled
+Firewall enabled
 
 
 9: --dry-run disable
 WARN: Checks disabled
+> iptables -F
+> iptables -X
 > echo
 *filter
 :INPUT ACCEPT [0:0]
@@ -71,12 +73,12 @@ WARN: Checks disabled
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | iptables-restore
-firewall disabled
+Firewall disabled
 
 
 10: --dry-run ENABLE
 WARN: Checks disabled
-> cat ufw.rules | iptables-restore
+> running initscript
 > echo
 *filter
 :INPUT DROP [0:0]
@@ -88,11 +90,13 @@ WARN: Checks disabled
 
 COMMIT
 > | ip6tables-restore
-firewall enabled
+Firewall enabled
 
 
 11: --dry-run DISABLE
 WARN: Checks disabled
+> iptables -F
+> iptables -X
 > echo
 *filter
 :INPUT ACCEPT [0:0]
@@ -100,7 +104,7 @@ WARN: Checks disabled
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | iptables-restore
-firewall disabled
+Firewall disabled
 
 
 TESTING ARGS (status)

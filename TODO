@@ -4,25 +4,15 @@ separate out backend and frontend code and put into /usr/share
 
 Backend cleanup and configure in /etc/defaults/ufw
 
-make rules file configurable in /etc/defaults/ufw (eg IPT_RULES)
-
 implement /etc/ufw/maps
 
-
 Prettier status output
-
 
 Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
 question, and timeout if no response (maybe use the previous working policy?))
 
-
 Finish chains, initscript, state transition:
 tell to force-reload on start if rules loaded
-enable/disable should only start the firewall if it isn't already started
-enable/disable should add/remove the appropriate chains
-
-Add rule with iptables? can't while preserving order, so just reload the
-chain
 
 
 Revamp the allow|deny acl syntax. Current implementation for a few rules:

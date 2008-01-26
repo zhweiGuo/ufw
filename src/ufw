@@ -659,13 +659,15 @@ class UFWBackendIptables(UFWBackend):
                 else:
                     os.write(fd, line)
     
-        str = "Default policy changed to '" + policy + "'\n" + \
+        rstr = "Default policy changed to '" + policy + "'\n" + \
               "(be sure to update your rules accordingly)"
 
         if self.dryrun:
             close_files(fns, False)
         else:
             close_files(fns)
+
+        return rstr
 
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
