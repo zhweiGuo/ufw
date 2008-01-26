@@ -110,7 +110,7 @@ def process_args():
             except UFWError:
                 raise UFWError("Bad port")
         else:
-            # position in argv of 'from' or 'to'
+            # Position in argv of 'from' or 'to'
             found_from = -1
             found_to = -1
             i = 0
@@ -121,7 +121,7 @@ def process_args():
                      found_to = i
                 i += 1
             
-            # make sure have from and to
+            # Make sure have from and to
             if len(sys.argv) >= 6:
                 if found_from < 0 or found_to < 0:
                     print_help()
@@ -132,7 +132,7 @@ def process_args():
                     sys.exit(1)
 
             # TODO: parsing 'to' and 'from' could be prettier...
-            # process from
+            # Process 'from'
             pos = found_from
             if pos > 0:
                 if pos == len(sys.argv) - 1:
@@ -160,7 +160,7 @@ def process_args():
                         rule.set_port(port, "src")
                     except UFWError:
                         raise
-            # process to
+            # Process 'to'
             pos = found_to
             if pos > 0:
                 if pos == len(sys.argv) - 1:
@@ -219,7 +219,7 @@ def valid_address(addr):
     if len(net) > 2:
         return False
     elif len(net) == 2:
-        # check netmask '/'
+        # Check netmask specified via '/'
         # TODO check 255.255.255.0 type netmasks
         if int(net[1]) < 0 or int(net[1]) > 32:
             return False
@@ -358,7 +358,7 @@ class UFWError(Exception):
 
 
 class UFWRule:
-    '''This class represents network rules'''
+    '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
                  sport="any", src="0.0.0.0/0"):
         try:
@@ -376,10 +376,10 @@ class UFWRule:
         print self.format_rule()
 
     def format_rule(self):
-        '''Format rule for use with iptables'''
+        '''Format rule for for later parsing'''
         str = ""
 
-        # protocol is handled below
+        # Protocol is handled below
         if self.protocol == "any":
             str = " -p all"
         else:
@@ -394,9 +394,9 @@ class UFWRule:
         if self.sport != "any":
             str += " --sport " + self.sport
         if self.action == "allow":
-            str += " -j ACCEPT\n"
+            str += " -j ACCEPT"
         else:
-            str += " -j DROP\n"
+            str += " -j DROP"
 
         return str
 
@@ -628,22 +628,7 @@ class UFWBackendIptables(UFWBackend):
         files['before_rules'] = '#CONFIG_PREFIX#/ufw/before.rules'
         files['after_rules'] = '#CONFIG_PREFIX#/ufw/after.rules'
         files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
-        if not os.path.isfile(files['rules']):
-            # touch the file
-            try:
-                open(files['rules'], 'w').close()
-                fns = open_files(files['rules'])
-            except Exception:
-                raise
-            fd = fns['tmp']
-            os.write(fd, "*filter\n")
-            os.write(fd, ":ufw-user-input - [0:0]\n")
-            os.write(fd, ":ufw-user-output - [0:0]\n")
-            os.write(fd, ":ufw-user-forward - [0:0]\n")
-            os.write(fd, "### RULES ###\n")
-            os.write(fd, "COMMIT\n")
-            close_files(fns)
-            
+
         UFWBackend.__init__(self, "iptables", d)
 
     def get_loglevel(self):
@@ -715,9 +700,9 @@ class UFWBackendIptables(UFWBackend):
                 close_files(fns)
     
         if level == "off":
-            return "logging disabled"
+            return "Logging disabled"
         else:
-            return "logging enabled"
+            return "Logging enabled"
 
     def get_status(self):
         '''Show current status of firewall'''
@@ -728,12 +713,12 @@ class UFWBackendIptables(UFWBackend):
                 out += "> Checking ip6tables\n"
             return out
 
-        # is the firewall loaded at all
+        # Is the firewall loaded at all?
         (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
         if rc != 0:
             return "Firewall not loaded"
 
-        # get the output of iptables for parsing
+        # Get the output of iptables for parsing
         (rc, out) = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             raise UFWError("problem running iptables")
@@ -745,7 +730,7 @@ class UFWBackendIptables(UFWBackend):
         if out == "":
             return out
 
-        # make the output pretty
+        # Make the output pretty
         str = ""
         pat_chain = re.compile(r'^Chain ')
         pat_ufw = re.compile(r'^Chain ufw-user-input')
@@ -820,12 +805,12 @@ COMMIT
                 print "> echo\n" + openconf + "> | ip6tables-restore"
             return
 
-        # flush the firewall
+        # Flush the firewall
         (rc, out) = cmd(['iptables', '-F'])
         if rc != 0:
             raise UFWError("problem running iptables 'flush'")
 
-        # remove user chains
+        # Remove user chains
         (rc, out) = cmd(['iptables', '-X'])
         if rc != 0:
             raise UFWError("problem running iptables 'delete'")
@@ -837,18 +822,18 @@ COMMIT
         os.write(tmp, openconf)
         os.close(tmp)
 
-        # set default open
+        # Set default open
         (rc, out) = cmd_pipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
             raise UFWError("problem running iptables")
 
         if self._use_ipv6():
-            # flush the firewall
+            # Flush the firewall
             (rc, out) = cmd(['ip6tables', '-F'])
             if rc != 0:
                 raise UFWError("problem running ip6tables 'flush'")
 
-            # remove user chains
+            # Remove user chains
             (rc, out) = cmd(['ip6tables', '-X'])
             if rc != 0:
                 raise UFWError("problem running ip6tables 'delete'")
@@ -867,7 +852,7 @@ COMMIT
                 raise UFWError("problem running init script")
 
         if not self._use_ipv6():
-            # just enable ipv6 on loopback
+            # Just enable ipv6 on loopback
             ipv6conf = '''*filter
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
@@ -883,7 +868,7 @@ COMMIT
             else:
                 (rc, out) = cmd_pipe(['echo', ipv6conf], ['ip6tables-restore'])
                 if rc != 0:
-                    # don't error here, as the user may have disabled ipv6
+                    # Don't error here, as the user may have disabled ipv6
                     # and doesn't have ipv6 support
                     warn("problem running ip6tables")
 
@@ -895,6 +880,22 @@ COMMIT
             (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore', '-n'])
             if rc != 0:
                 raise UFWError("problem running iptables")
+
+    def _get_rules_from_formatted(self, frule):
+        '''Return list of iptables rules appropriate for sending'''
+        snippets = []
+        pat_proto = re.compile(r'-p all ')
+        pat_port = re.compile(r'port ')
+        if pat_proto.search(frule):
+            if pat_port.search(frule):
+                snippets.append(pat_proto.sub('-p tcp ', frule))
+                snippets.append(pat_proto.sub('-p udp ', frule))
+            else:
+                snippets.append(pat_proto.sub('', frule))
+        else:
+            snippets.append(frule)
+
+        return snippets
 
     def _parse_iptables_status(self, line):
         '''Parses a line from iptables -L -n'''
@@ -958,8 +959,8 @@ COMMIT
 
         orig.close()
 
-    def _apply_rules(self):
-        '''Write out new rules to file, and insert into iptables chain'''
+    def _write_rules(self):
+        '''Write out new rules to file to user chain file'''
         try:
             fns = open_files(files['rules'])
         except Exception:
@@ -978,19 +979,16 @@ COMMIT
                 break
 
         for r in self.rules:
-            rule_str = "-A ufw-user-input " + r.format_rule()
+            rule_str = "-A ufw-user-input " + r.format_rule() + "\n"
             os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
                      (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+            for s in self._get_rules_from_formatted(rule_str):
+                os.write(fd, s)
 
-            if r.protocol == "any":
-                pat = re.compile(r'-p all ')
-                if r.sport != "any" or r.dport != "any":
-                    os.write(fd, pat.sub('-p tcp ', rule_str))
-                    os.write(fd, pat.sub('-p udp ', rule_str))
-                else:
-                    os.write(fd, pat.sub('', rule_str))
-            else:
-                os.write(fd, rule_str)
+        os.write(fd, "\n### END RULES ###\n")
+        os.write(fd, "-A ufw-user-input -j RETURN\n")
+        os.write(fd, "-A ufw-user-output -j RETURN\n")
+        os.write(fd, "-A ufw-user-forward -j RETURN\n")
         os.write(fd, "COMMIT\n")
 
         if self.dryrun:
@@ -999,40 +997,72 @@ COMMIT
             close_files(fns)
 
     def set_rule(self, rule):
-        '''Updates firewall with rule'''
+        '''Updates firewall with rule by:
+        * appending the rule to the chain if new rule and firewall enabled
+        * deleting the rule from the chain if found and firewall enabled
+        * updating user rules file
+        * reloading the user rules file if rule is modified
+        '''
         newrules = []
-        in_existing = False
+        found = False
+        modified = False
+        delete = False
+        # First construct the new rules list
         for r in self.rules:
             ret = UFWRule.match(r, rule)
-            if ret == 0 and not in_existing:
+            if ret == 0 and not found:
                 # If find the rule, add it if it's not to be removed, otherwise
                 # skip it.
+                found = True
                 if not rule.remove:
-                    in_existing = True
                     newrules.append(rule)
             elif ret < 0 and not rule.remove:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
-                in_existing = True
+                found = True
+                modified = True
                 newrules.append(rule)
             else:
                 newrules.append(r)
 
         # Add rule to the end if it was not already added.
-        if not in_existing and not rule.remove:
+        if not found and not rule.remove:
             newrules.append(rule)
-            if self._is_enabled():
-                (rc, out) = cmd(['iptables', '-A', 'ufw-user-input', \
-                                rule.format_rule()])
-                if rc != 0:
-                    UFWError("Could not append rule to firewall, nothing done")
 
         self.rules = newrules
-        self._apply_rules()
 
-        # reload the chain if a rule was modified
-        if in_existing and not rule.remove and self._is_enabled():
-            self._reload_user_rules()
+        # Update the user rules file
+        try:
+            self._write_rules()
+        except:
+            UFWError("Couldn't update rules file")
+
+        rstr = "Rules updated"
+        # Operate on the chains
+        if self._is_enabled():
+            flag = ""
+            if modified:
+                # Reload the chain
+                try:
+                    self._reload_user_rules()
+                except:
+                    raise
+                rstr = "Rule updated"
+            elif found and rule.remove:
+                flag = '-D'
+                rstr = "Rule deleted"
+            elif not found and not modified and not rule.remove:
+                flag = '-A'
+                rstr = "Rule added"
+
+            if flag != "":
+                for s in self._get_rules_from_formatted(rule.format_rule()):
+                    (rc, out) = cmd(['iptables', flag, 'ufw-user-input'] + \
+                                      s.split())
+                    if rc != 0:
+                        print out
+                        UFWError("Could not delete rule from running firewall")
+        return rstr
 
 
 class UFWFrontend:
@@ -1048,13 +1078,13 @@ class UFWFrontend:
                     self.backend.set_default(files['defaults'], \
                                              "ENABLED", "yes")
                 self.backend.start_firewall()
-                print "firewall enabled"
+                print "Firewall enabled"
             else:
                 if self.backend._is_enabled():
                     self.backend.set_default(files['defaults'], "ENABLED", \
                                              "no")
                 self.backend.stop_firewall()
-                print "firewall disabled"
+                print "Firewall disabled"
         except UFWError, e:
             error(e.value)
 
@@ -1096,15 +1126,12 @@ class UFWFrontend:
 
     def set_rule(self, rule):
         '''Updates firewall with rule'''
+        res = ""
         try:
-            self.backend.set_rule(rule)
-            if self.backend._is_enabled():
-                print "rules updated and firewall reloaded"
-            else:
-                print "rules updated"
-                
+            res = self.backend.set_rule(rule)
         except UFWError, e:
             error(e.value)
+        print res
 
 
 # Execution starts here

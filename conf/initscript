@@ -76,21 +76,20 @@ start)
 		iptables -A ufw-before-forward -j RETURN
 
 		# setup ufw-user chain
-		iptables -N ufw-user-input
-		iptables -N ufw-user-output
-		iptables -N ufw-user-forward
-		iptables -A ufw-before-input -j ufw-user-input
-		iptables -A ufw-before-output -j ufw-user-output
-		iptables -A ufw-before-forward -j ufw-user-forward
 		if [ -s "$IN_RULES" ]; then
+			iptables -N ufw-user-input
+			iptables -N ufw-user-output
+			iptables -N ufw-user-forward
+			iptables -A ufw-before-input -j ufw-user-input
+			iptables -A ufw-before-output -j ufw-user-output
+			iptables -A ufw-before-forward -j ufw-user-forward
 			if ! iptables-restore -n < $IN_RULES ; then
 				log_warning_msg "   Problem running 'rules.before'"
 				error="yes"
 			fi
+			# don't include the RETURN lines here, as they will
+			# be in the IN_RULES file
 		fi
-		iptables -A ufw-user-input -j RETURN
-		iptables -A ufw-user-output -j RETURN
-		iptables -A ufw-user-forward -j RETURN
 		
 		# setup ufw-after-* chains
 		iptables -N ufw-after-input

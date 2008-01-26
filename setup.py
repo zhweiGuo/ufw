@@ -45,7 +45,9 @@ class Install(_install, object):
 
         # Install state file
         statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
+        user_rules = os.path.join(statedir, 'user.rules')
         self.mkpath(statedir)
+        self.copy_file('conf/user.rules', user_rules)
 
         # Install configuration files
         confdir = os.path.join(self.root, 'etc')
