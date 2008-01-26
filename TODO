@@ -17,12 +17,9 @@ question, and timeout if no response (maybe use the previous working policy?))
 
 
 Finish chains, initscript, state transition:
-update /var/lib
-restore from /var/lib
 tell to force-reload on start if rules loaded
 enable/disable should only start the firewall if it isn't already started
 enable/disable should add/remove the appropriate chains
-allow/deny should add to proper chain and update state
 
 
 Revamp the allow|deny acl syntax. Current implementation for a few rules:

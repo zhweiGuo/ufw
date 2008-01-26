@@ -602,17 +602,29 @@ class UFWBackend:
     def stop_firewall(self):
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
+    def reload_rules(self):
+        raise UFWError("UFWBackend.reload_rules: need to override")
+
 
 class UFWBackendIptables(UFWBackend):
     def __init__(self, d):
         files['rules'] = '#STATE_PREFIX#/user.rules'
         files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
         if not os.path.isfile(files['rules']):
-            # touch the state file if it doesn't exist yet
+            # touch the file
             try:
-                open(files['rules'], 'w')
-            except:
-                raise UFWError("Couldn't create file " + files['rules'])
+                open(files['rules'], 'w').close()
+                fns = open_files(files['rules'])
+            except Exception:
+                raise
+            fd = fns['tmp']
+            os.write(fd, "*filter\n")
+            os.write(fd, ":ufw-user-input - [0:0]\n")
+            os.write(fd, ":ufw-user-output - [0:0]\n")
+            os.write(fd, ":ufw-user-forward - [0:0]\n")
+            os.write(fd, "### RULES ###\n")
+            os.write(fd, "COMMIT\n")
+            close_files(fns)
             
         UFWBackend.__init__(self, "iptables", d)
 
@@ -850,6 +862,15 @@ COMMIT
                     # and doesn't have ipv6 support
                     warn("problem running ip6tables")
 
+    def reload_rules(self):
+        '''Reload firewall rules file'''
+        if self.dryrun:
+            print "> iptables-restore < " + files['rules'] 
+        else:
+            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore'])
+            if rc != 0:
+                raise UFWError("problem running iptables")
+
     def _parse_iptables_status(self, line):
         '''Parses a line from iptables -L -n'''
         fields = line.split()
@@ -896,7 +917,7 @@ COMMIT
         orig = open_file_read(files['rules'])
 
         lines = orig.readlines()
-        pat_tuple = re.compile(r'^### DO NOT DELETE OR MODIFY: tuple ###\s*')
+        pat_tuple = re.compile(r'^### tuple ###\s*')
         for line in lines:
             if pat_tuple.match(line):
                 tuple = pat_tuple.sub('', line)
@@ -926,53 +947,43 @@ COMMIT
             fd = fns['tmp']
 
         lines = fns['orig'].readlines()
-        pat_start = re.compile(r'^### DO NOT DELETE: rules start ###')
-        pat_end = re.compile(r'^### DO NOT DELETE: rules end ###')
-        in_rules = False
+        pat_commit = re.compile(r'^### RULES ###')
         for line in lines:
-            if pat_start.match(line):
-                os.write(fd, line)
-                in_rules = True
-            elif in_rules and pat_end.match(line):
-                os.write(fd, "\n-A INPUT -j ufw-in\n")
-                for r in self.rules:
-                    str = "-A ufw-in"
+            os.write(fd, line)
+            if pat_commit.match(line):
+                break
 
-                    # protocol is handled below
-                    str += " -p " + r.protocol
-                    if r.dst != "0.0.0.0/0":
-                        str += " -d " + r.dst
-                    if r.dport != "any":
-                        str += " --dport " + r.dport
-                    if r.src != "0.0.0.0/0":
-                        str += " -s " + r.src
-                    if r.sport != "any":
-                        str += " --sport " + r.sport
-                    if r.action == "allow":
-                        str += " -j ACCEPT\n"
-                    else:
-                        str += " -j DROP\n"
+        for r in self.rules:
+            str = "-A ufw-user-input"
 
-                    os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ###" + \
-                                 " %s %s %s %s %s %s\n" % (r.action, \
-                                 r.protocol, r.dport, r.dst, r.sport, r.src))
-                    if r.protocol == "any":
-                        pat = re.compile(r'-p any ')
-                        if r.sport != "any" or r.dport != "any":
-                            os.write(fd, pat.sub('-p tcp ', str))
-                            os.write(fd, pat.sub('-p udp ', str))
-                        else:
-                            os.write(fd, pat.sub('', str))
-                    else:
-                        os.write(fd, str)
-                os.write(fd, "\n-A ufw-in -j RETURN\n")
-                os.write(fd, "\n### DO NOT DELETE: rules end ###\n")
-                in_rules = False
-            elif in_rules:
-                continue
+            # protocol is handled below
+            str += " -p " + r.protocol
+            if r.dst != "0.0.0.0/0":
+                str += " -d " + r.dst
+            if r.dport != "any":
+                str += " --dport " + r.dport
+            if r.src != "0.0.0.0/0":
+                str += " -s " + r.src
+            if r.sport != "any":
+                str += " --sport " + r.sport
+            if r.action == "allow":
+                str += " -j ACCEPT\n"
             else:
-                if not self.dryrun:
-                    os.write(fd, line)
+                str += " -j DROP\n"
+
+            os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
+                     (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+            if r.protocol == "any":
+                pat = re.compile(r'-p any ')
+                if r.sport != "any" or r.dport != "any":
+                    os.write(fd, pat.sub('-p tcp ', str))
+                    os.write(fd, pat.sub('-p udp ', str))
+                else:
+                    os.write(fd, pat.sub('', str))
+            else:
+                os.write(fd, str)
+        os.write(fd, "COMMIT\n")
+
         if self.dryrun:
             close_files(fns, False)
         else:
@@ -1064,7 +1075,7 @@ class UFWFrontend:
         try:
             self.backend.set_rule(rule)
             if self.backend._is_enabled():
-                self.backend.start_firewall()
+                self.backend.reload_rules()
                 print "rules updated and firewall reloaded"
             else:
                 print "rules updated"
