@@ -21,6 +21,9 @@ tell to force-reload on start if rules loaded
 enable/disable should only start the firewall if it isn't already started
 enable/disable should add/remove the appropriate chains
 
+Add rule with iptables? can't while preserving order, so just reload the
+chain
+
 
 Revamp the allow|deny acl syntax. Current implementation for a few rules:
 # ufw allow 25

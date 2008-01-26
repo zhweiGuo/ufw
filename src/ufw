@@ -309,7 +309,7 @@ def cmd(command):
     '''Try to execute the given command.'''
     cmd = ' '.join(command)
     try:
-        sp = subprocess.Popen(command, stdout=subprocess.PIPE)
+        sp = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     except OSError, e:
         return [127, str(e)]
 
@@ -602,13 +602,12 @@ class UFWBackend:
     def stop_firewall(self):
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
-    def reload_rules(self):
-        raise UFWError("UFWBackend.reload_rules: need to override")
-
 
 class UFWBackendIptables(UFWBackend):
     def __init__(self, d):
         files['rules'] = '#STATE_PREFIX#/user.rules'
+        files['before_rules'] = '#CONFIG_PREFIX#/ufw/before.rules'
+        files['after_rules'] = '#CONFIG_PREFIX#/ufw/after.rules'
         files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
         if not os.path.isfile(files['rules']):
             # touch the file
@@ -656,8 +655,8 @@ class UFWBackendIptables(UFWBackend):
                 else:
                     os.write(fd, line)
     
-        print "Default policy changed to '" + policy + "'"
-        print "(be sure to update your rules accordingly)"
+        str = "Default policy changed to '" + policy + "'\n" +
+              "(be sure to update your rules accordingly)"
 
         if self.dryrun:
             close_files(fns, False)
@@ -667,38 +666,39 @@ class UFWBackendIptables(UFWBackend):
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
         comment_str = "# " + programName + "_comment #"
-        try:
-            fns = open_files(files['rules'])
-        except Exception:
-            raise
-        fd = fns['tmp']
+        for f in [files['rules'], files['before_rules'], files['after_rules']]:
+            try:
+                fns = open_files(files['rules'])
+            except Exception:
+                raise
+            fd = fns['tmp']
 
-        lines = fns['orig'].readlines()
+            lines = fns['orig'].readlines()
 
-        pat = re.compile(r'^-.*\sLOG\s')
-        if level == "on":
-            pat = re.compile(r'^#.*\sLOG\s')
+            pat = re.compile(r'^-.*\sLOG\s')
+            if level == "on":
+                pat = re.compile(r'^#.*\sLOG\s')
 
-        if not self.dryrun:
-            for line in lines:
-                if pat.search(line):
-                    if level == "off":
-                        os.write(fd, comment_str + ' ' + line)
+            if not self.dryrun:
+                for line in lines:
+                    if pat.search(line):
+                        if level == "off":
+                            os.write(fd, comment_str + ' ' + line)
+                        else:
+                            pat_comment = re.compile(r"^" + comment_str + "\s*")
+                            os.write(fd, pat_comment.sub('', line))
                     else:
-                        pat_comment = re.compile(r"^" + comment_str + "\s*")
-                        os.write(fd, pat_comment.sub('', line))
-                else:
-                    os.write(fd, line)
+                        os.write(fd, line)
+
+            if self.dryrun:
+                close_files(fns, False)
+            else:
+                close_files(fns)
     
         if level == "off":
-            print "logging disabled"
+            return "logging disabled"
         else:
-            print "logging enabled"
-
-        if self.dryrun:
-            close_files(fns, False)
-        else:
-            close_files(fns)
+            return "logging enabled"
 
     def get_status(self):
         '''Show current status of firewall'''
@@ -709,6 +709,12 @@ class UFWBackendIptables(UFWBackend):
                 out += "> Checking ip6tables\n"
             return out
 
+        # is the firewall loaded at all
+        (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
+        if rc != 0:
+            return "Firewall not loaded"
+
+        # get the output of iptables for parsing
         (rc, out) = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             raise UFWError("problem running iptables")
@@ -862,12 +868,12 @@ COMMIT
                     # and doesn't have ipv6 support
                     warn("problem running ip6tables")
 
-    def reload_rules(self):
+    def _reload_user_rules(self):
         '''Reload firewall rules file'''
         if self.dryrun:
             print "> iptables-restore < " + files['rules'] 
         else:
-            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore'])
+            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore', '-n'])
             if rc != 0:
                 raise UFWError("problem running iptables")
 
@@ -934,8 +940,8 @@ COMMIT
 
         orig.close()
 
-    def _write_rules(self):
-        '''Write out new rules'''
+    def _apply_rules(self):
+        '''Write out new rules to file, and insert into iptables chain'''
         try:
             fns = open_files(files['rules'])
         except Exception:
@@ -1014,7 +1020,9 @@ COMMIT
             newrules.append(rule)
 
         self.rules = newrules
-        self._write_rules()
+        self._apply_rules()
+        if self._is_enabled():
+            self._reload_user_rules()
 
 
 class UFWFrontend:
@@ -1042,21 +1050,27 @@ class UFWFrontend:
 
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
+        str = ""
         try:
-            self.backend.set_default_policy(policy)
+            str = self.backend.set_default_policy(policy)
             if self.backend._is_enabled():
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
 
+        print str
+
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
+        str = ""
         try:
-            self.backend.set_loglevel(level)
+            str = self.backend.set_loglevel(level)
             if self.backend._is_enabled():
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
+
+        print str
 
     def get_status(self):
         '''Shows status of firewall'''
@@ -1075,7 +1089,6 @@ class UFWFrontend:
         try:
             self.backend.set_rule(rule)
             if self.backend._is_enabled():
-                self.backend.reload_rules()
                 print "rules updated and firewall reloaded"
             else:
                 print "rules updated"
