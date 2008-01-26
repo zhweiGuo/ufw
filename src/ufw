@@ -373,12 +373,31 @@ class UFWRule:
             raise
 
     def __str__(self):
-        str = "action:   " + self.action
-        str = str + "\nprotocol: " + self.protocol
-        str = str + "\ndst:      " + self.dst
-        str = str + "\ndport:    " + self.dport
-        str = str + "\nsrc:      " + self.src
-        str = str + "\nsport:    " + self.sport
+        print self.format_rule()
+
+    def format_rule(self):
+        '''Format rule for use with iptables'''
+        str = ""
+
+        # protocol is handled below
+        if self.protocol == "any":
+            str = " -p all"
+        else:
+            str = " -p " + self.protocol
+
+        if self.dst != "0.0.0.0/0":
+            str += " -d " + self.dst
+        if self.dport != "any":
+            str += " --dport " + self.dport
+        if self.src != "0.0.0.0/0":
+            str += " -s " + self.src
+        if self.sport != "any":
+            str += " --sport " + self.sport
+        if self.action == "allow":
+            str += " -j ACCEPT\n"
+        else:
+            str += " -j DROP\n"
+
         return str
 
     def set_action(self, action):
@@ -655,7 +674,7 @@ class UFWBackendIptables(UFWBackend):
                 else:
                     os.write(fd, line)
     
-        str = "Default policy changed to '" + policy + "'\n" +
+        str = "Default policy changed to '" + policy + "'\n" + \
               "(be sure to update your rules accordingly)"
 
         if self.dryrun:
@@ -917,7 +936,6 @@ COMMIT
         
         return rule
         
-
     def _read_rules(self):
         '''Read in rules that were added by ufw.'''
         orig = open_file_read(files['rules'])
@@ -960,34 +978,19 @@ COMMIT
                 break
 
         for r in self.rules:
-            str = "-A ufw-user-input"
-
-            # protocol is handled below
-            str += " -p " + r.protocol
-            if r.dst != "0.0.0.0/0":
-                str += " -d " + r.dst
-            if r.dport != "any":
-                str += " --dport " + r.dport
-            if r.src != "0.0.0.0/0":
-                str += " -s " + r.src
-            if r.sport != "any":
-                str += " --sport " + r.sport
-            if r.action == "allow":
-                str += " -j ACCEPT\n"
-            else:
-                str += " -j DROP\n"
-
+            rule_str = "-A ufw-user-input " + r.format_rule()
             os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
                      (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+
             if r.protocol == "any":
-                pat = re.compile(r'-p any ')
+                pat = re.compile(r'-p all ')
                 if r.sport != "any" or r.dport != "any":
-                    os.write(fd, pat.sub('-p tcp ', str))
-                    os.write(fd, pat.sub('-p udp ', str))
+                    os.write(fd, pat.sub('-p tcp ', rule_str))
+                    os.write(fd, pat.sub('-p udp ', rule_str))
                 else:
-                    os.write(fd, pat.sub('', str))
+                    os.write(fd, pat.sub('', rule_str))
             else:
-                os.write(fd, str)
+                os.write(fd, rule_str)
         os.write(fd, "COMMIT\n")
 
         if self.dryrun:
@@ -998,30 +1001,37 @@ COMMIT
     def set_rule(self, rule):
         '''Updates firewall with rule'''
         newrules = []
-        added = False
+        in_existing = False
         for r in self.rules:
             ret = UFWRule.match(r, rule)
-            if ret == 0 and not added:
+            if ret == 0 and not in_existing:
                 # If find the rule, add it if it's not to be removed, otherwise
                 # skip it.
-                added = True
                 if not rule.remove:
+                    in_existing = True
                     newrules.append(rule)
             elif ret < 0 and not rule.remove:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
-                added = True
+                in_existing = True
                 newrules.append(rule)
             else:
                 newrules.append(r)
 
         # Add rule to the end if it was not already added.
-        if not added and not rule.remove:
+        if not in_existing and not rule.remove:
             newrules.append(rule)
+            if self._is_enabled():
+                (rc, out) = cmd(['iptables', '-A', 'ufw-user-input', \
+                                rule.format_rule()])
+                if rc != 0:
+                    UFWError("Could not append rule to firewall, nothing done")
 
         self.rules = newrules
         self._apply_rules()
-        if self._is_enabled():
+
+        # reload the chain if a rule was modified
+        if in_existing and not rule.remove and self._is_enabled():
             self._reload_user_rules()
 
 
