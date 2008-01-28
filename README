@@ -2,6 +2,7 @@ UFW
 ---
 https://wiki.ubuntu.com/UbuntuFirewall
 
+
 What's in a name?
 -----------------
 What does it mean?  I like 'Uncomplicated Firewall', but really, it's up to
@@ -60,8 +61,7 @@ manpage for details.
 
 IPV6
 ----
-ufw has very limited support for IPV6 at this time and it should not be used at
-this time.
+ufw has very limited support for IPV6 and it should not be used at this time.
 
 
 Testing

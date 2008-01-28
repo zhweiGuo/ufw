@@ -11,6 +11,8 @@ Prettier status output
 Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
 question, and timeout if no response (maybe use the previous working policy?))
 
+finish ipv6 support
+
 Finish chains, initscript, state transition:
 tell to force-reload on start if rules loaded
 

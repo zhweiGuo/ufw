@@ -1,13 +1,14 @@
 TESTING ARGS (enable/disable)
 0: --dry-run enable
 WARN: Checks disabled
-> cat ufw.rules | iptables-restore
-> cat ufw.rules | ip6tables-restore
-firewall enabled
+> running initscript
+Firewall enabled
 
 
 1: --dry-run disable
 WARN: Checks disabled
+> iptables -F
+> iptables -X
 > echo
 *filter
 :INPUT ACCEPT [0:0]
@@ -15,6 +16,8 @@ WARN: Checks disabled
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | iptables-restore
+> ip6tables -F
+> ip6tables -X
 > echo
 *filter
 :INPUT ACCEPT [0:0]
@@ -22,7 +25,7 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | ip6tables-restore
-firewall disabled
+Firewall disabled
 
 
 TESTING ARGS (status)

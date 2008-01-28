@@ -398,7 +398,7 @@ class UFWRule:
         else:
             str += " -j DROP"
 
-        return str
+        return str.strip()
 
     def set_action(self, action):
         '''Sets action of the rule'''
