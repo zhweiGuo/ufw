@@ -9,8 +9,6 @@ AFTER_FILE_TEMPLATE="/usr/share/ufw/after.rules"
 case "$1" in
     configure)
 	if [ -e "/etc/ufw/ufw.rules" ]; then
-		db_get ufw/oldrules || true
-
 		# if migrating, then copy these over on upgrade
         	if [ ! -e "$BEFORE_FILE" ]; then
             		cp $BEFORE_FILE_TEMPLATE /etc/ufw
