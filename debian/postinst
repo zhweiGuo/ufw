@@ -2,8 +2,10 @@
 
 . /usr/share/debconf/confmodule
 
-BEFORE_FILE="/usr/share/ufw/before.rules"
-AFTER_FILE="/usr/share/ufw/after.rules"
+BEFORE_FILE="/etc/ufw/before.rules"
+BEFORE_FILE_TEMPLATE="/usr/share/ufw/before.rules"
+AFTER_FILE="/etc/ufw/after.rules"
+AFTER_FILE_TEMPLATE="/usr/share/ufw/after.rules"
 case "$1" in
     configure)
 	if [ -e "/etc/ufw/ufw.rules" ]; then
@@ -14,12 +16,12 @@ case "$1" in
 
         if [ ! -e "$BEFORE_FILE" ] && [ -z "$2" ]; then
             # if no config and fresh install copy the template
-            cp $BEFORE_FILE /etc/ufw
+            cp $BEFORE_FILE_TEMPLATE /etc/ufw
         fi
 
         if [ ! -e "$AFTER_FILE" ] && [ -z "$2" ]; then
             # if no config and fresh install copy the template
-            cp $AFTER_FILE /etc/ufw
+            cp $AFTER_FILE_TEMPLATE /etc/ufw
         fi
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
