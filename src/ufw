@@ -908,7 +908,7 @@ COMMIT
 
         if fields[1] == 'tcp' or fields[1] == 'udp':
             rule.set_protocol(fields[1])
-        elif fields[1] == "0":
+        elif fields[1] == "0" or fields[1] == "all":
             rule.set_protocol('any')
         else:
             rule.set_protocol('UNKNOWN')
