@@ -532,7 +532,7 @@ class UFWBackend:
                     statinfo = os.stat(path)
                     mode = statinfo[ST_MODE]
                 except OSError, e:
-                    raise UFWError("Couldn't stat '" + f + "'")
+                    raise UFWError("Couldn't stat '" + path + "'")
                 except Exception:
                     raise
 
