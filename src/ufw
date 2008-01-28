@@ -223,7 +223,7 @@ Usage: ''' + programName + ''' COMMAND
 
 Commands:
   enable			Enables the firewall
-  disable			Disables the fireall
+  disable			Disables the firewall
   default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
   allow|deny RULE		allow or deny RULE
@@ -1057,9 +1057,9 @@ COMMIT
                         UFWError("Could not delete rule from running firewall")
                     # delete the RETURN rule then add it back, so it is at the
                     # end
-                    (rc, out) = cmd(['iptables', '-D', 'ufw-user-input'] + \
+                    (rc, out) = cmd(['iptables', '-D', 'ufw-user-input' + \
                                      '-j', 'RETURN'])
-                    (rc, out) = cmd(['iptables', '-A', 'ufw-user-input'] + \
+                    (rc, out) = cmd(['iptables', '-A', 'ufw-user-input' + \
                                      '-j', 'RETURN'])
         return rstr
 
