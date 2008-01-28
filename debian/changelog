@@ -1,3 +1,12 @@
+ufw (0.8) hardy; urgency=low
+
+  * new upstream version:
+    - use PF-style syntax for extended rule syntax
+    - migrate ufw.rules to separate chains and files
+  * added debconf note about ufw.rules
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 28 Jan 2008 13:26:10 -0500
+
 ufw (0.7) hardy; urgency=low
 
   * new version

@@ -5,6 +5,10 @@ case "$1" in
         ;;
 
     purge)
+        if [ -e /usr/share/debconf/confmodule ]; then
+		. /usr/share/debconf/confmodule
+		db_purge
+	fi
         update-rc.d ufw remove > /dev/null
         rm -f /etc/ufw/before.rules
         rm -f /etc/ufw/after.rules

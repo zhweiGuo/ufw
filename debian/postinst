@@ -1,9 +1,15 @@
 #!/bin/sh -e
 
+. /usr/share/debconf/confmodule
+
 BEFORE_FILE="/usr/share/ufw/before.rules"
 AFTER_FILE="/usr/share/ufw/after.rules"
 case "$1" in
     configure)
+	if [ -e "/etc/ufw/ufw.rules" ]; then
+		db_get ufw/rules || true
+	fi
+
         update-rc.d ufw start 39 S . > /dev/null
 
         if [ ! -e "$BEFORE_FILE" ] && [ -z "$2" ]; then
