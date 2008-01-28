@@ -4,6 +4,7 @@
 . /usr/share/debconf/confmodule
 db_version 2.0
 
-db_input medium ufw/oldrules || true
+db_reset ufw/oldrules || true
+db_text high ufw/oldrules || true
 db_go
 
