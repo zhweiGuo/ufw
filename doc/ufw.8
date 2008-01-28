@@ -131,9 +131,10 @@ its command interface, but instead provides an easy way to add or remove
 simple rules. It is currently mainly used for host-based firewalls.
 .PP
 Currently, \fBufw\fR is a front-end for \fBiptables-restore\fR, with its
-rules saved in #CONFIG_PREFIX#/ufw/ufw.rules. Administrators can customize
-#CONFIG_PREFIX#/ufw/ufw.rules as desired using the standard \fBiptables\fR and
-\fBip6tables\fR syntax.
+rules saved in #CONFIG_PREFIX#/ufw/before.rules, #CONFIG_PREFIX/ufw/after.rules
+and #STATE_PREFIX#/user.rules. Administrators can customize \fBbefore.rules\fR
+and \fBafter.rules\fR as desired using the standard \fBiptables\fR and
+\fBip6tables\fR syntax. Rules are evaluated as follows: \fBbefore.rules\fR first, \fBufw.rules\fR next, and \fBafter.rules\fR last.
 .PP
 \fBufw\fR will read in #CONFIG_PREFIX#/ufw/sysctl.conf on boot when enabled.
 To change this behavior, modify #CONFIG_PREFIX#/default/ufw.
