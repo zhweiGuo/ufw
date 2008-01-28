@@ -1,40 +1,40 @@
 TESTING ARGS (logging)
 0: logging on
 WARN: Checks disabled
-logging enabled
+Logging enabled
 
 
--A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
--A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
--A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 1: logging off
 WARN: Checks disabled
-logging disabled
+Logging disabled
 
 
-# ufw_comment # -A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
-# ufw_comment # -A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
-# ufw_comment # -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
-# ufw_comment # -A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 2: LOGGING ON
 WARN: Checks disabled
-logging enabled
+Logging enabled
 
 
--A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
--A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
--A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 3: LOGGING OFF
 WARN: Checks disabled
-logging disabled
+Logging disabled
 
 
-# ufw_comment # -A INPUT -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
-# ufw_comment # -A drop-not-to-me -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
-# ufw_comment # -A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
-# ufw_comment # -A FORWARD -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 TESTING ARGS (default)
 4: default allow
 WARN: Checks disabled
@@ -43,15 +43,14 @@ Default policy changed to 'allow'
 
 
 *filter
-:INPUT ACCEPT [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT ACCEPT [0:0]
-:drop-not-to-me - [0:0]
-:ufw-in - [0:0]
-:ufw-forward - [0:0]
-:ufw-out - [0:0]
-
--A INPUT -i lo -j ACCEPT
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
 5: default deny
 WARN: Checks disabled
 Default policy changed to 'deny'
@@ -59,15 +58,14 @@ Default policy changed to 'deny'
 
 
 *filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT ACCEPT [0:0]
-:drop-not-to-me - [0:0]
-:ufw-in - [0:0]
-:ufw-forward - [0:0]
-:ufw-out - [0:0]
-
--A INPUT -i lo -j ACCEPT
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
 6: DEFAULT ALLOW
 WARN: Checks disabled
 Default policy changed to 'allow'
@@ -75,15 +73,14 @@ Default policy changed to 'allow'
 
 
 *filter
-:INPUT ACCEPT [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT ACCEPT [0:0]
-:drop-not-to-me - [0:0]
-:ufw-in - [0:0]
-:ufw-forward - [0:0]
-:ufw-out - [0:0]
-
--A INPUT -i lo -j ACCEPT
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
 7: DEFAULT DENY
 WARN: Checks disabled
 Default policy changed to 'deny'
@@ -91,987 +88,942 @@ Default policy changed to 'deny'
 
 
 *filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT ACCEPT [0:0]
-:drop-not-to-me - [0:0]
-:ufw-in - [0:0]
-:ufw-forward - [0:0]
-:ufw-out - [0:0]
-
--A INPUT -i lo -j ACCEPT
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
 TESTING ARGS (enable/disable)
 8: enable
 WARN: Checks disabled
-firewall enabled
+Firewall started and enabled on system startup
 
 
-# /etc/default/ufw
-# 
-
-# set to yes to start on boot
 ENABLED=yes
-
-# set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
-
-#
-# IPT backend
-#
-# only enable if using iptables backend
+DEFAULT_INPUT_POLICY="DROP"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
 IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-
-# extra connection tracking modules to load
 IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
-
 9: disable
 WARN: Checks disabled
-firewall disabled
+Firewall stopped and disabled on system startup
 
 
-# /etc/default/ufw
-# 
-
-# set to yes to start on boot
 ENABLED=no
-
-# set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
-
-#
-# IPT backend
-#
-# only enable if using iptables backend
+DEFAULT_INPUT_POLICY="DROP"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
 IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-
-# extra connection tracking modules to load
 IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
-
 10: ENABLE
 WARN: Checks disabled
-firewall enabled
+Firewall started and enabled on system startup
 
 
-# /etc/default/ufw
-# 
-
-# set to yes to start on boot
 ENABLED=yes
-
-# set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
-
-#
-# IPT backend
-#
-# only enable if using iptables backend
+DEFAULT_INPUT_POLICY="DROP"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
 IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-
-# extra connection tracking modules to load
 IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
-
 11: DISABLE
 WARN: Checks disabled
-firewall disabled
+Firewall stopped and disabled on system startup
 
 
-# /etc/default/ufw
-# 
-
-# set to yes to start on boot
 ENABLED=no
-
-# set to yes to apply rules to IPv6 (no means only IPv6 on loopback accepted)
 IPV6=no
-
-#
-# IPT backend
-#
-# only enable if using iptables backend
+DEFAULT_INPUT_POLICY="DROP"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
 IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-
-# extra connection tracking modules to load
 IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
-
 TESTING ARGS (allow/deny port)
 12: allow 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 13: deny 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 14: deny 1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 15: deny 65535
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j DROP
--A ufw-in -p udp --dport 25 -j DROP
+### tuple ### deny any 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j DROP
+-A ufw-user-input -p udp --dport 25 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### deny any 1 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 1 -j DROP
--A ufw-in -p udp --dport 1 -j DROP
+### tuple ### deny any 1 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 1 -j DROP
+-A ufw-user-input -p udp --dport 1 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### deny any 65535 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 65535 -j DROP
--A ufw-in -p udp --dport 65535 -j DROP
+### tuple ### deny any 65535 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 65535 -j DROP
+-A ufw-user-input -p udp --dport 65535 -j DROP
 16: delete allow 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 17: delete deny 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 18: delete deny 1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 19: delete deny 65535
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 TESTING ARGS (allow/deny to/from)
 Man page
 20: allow 53
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j ACCEPT
--A ufw-in -p udp --dport 53 -j ACCEPT
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
 21: allow 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j ACCEPT
--A ufw-in -p udp --dport 53 -j ACCEPT
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 22: deny to 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j ACCEPT
--A ufw-in -p udp --dport 53 -j ACCEPT
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j DROP
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
 
 23: deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j ACCEPT
--A ufw-in -p udp --dport 53 -j ACCEPT
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j DROP
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 24: deny 53
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j DROP
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 25: allow 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j ACCEPT
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 26: allow from 10.0.0.0/8
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j ACCEPT
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
--A ufw-in -s 10.0.0.0/8 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
 27: allow from 172.16.0.0/12
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j ACCEPT
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
--A ufw-in -s 10.0.0.0/8 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
--A ufw-in -s 172.16.0.0/12 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
 
 28: allow from 192.168.0.0/16
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j ACCEPT
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
--A ufw-in -s 10.0.0.0/8 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
--A ufw-in -s 172.16.0.0/12 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
--A ufw-in -s 192.168.0.0/16 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
 29: deny from 1.2.3.4 to 514:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j ACCEPT
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
--A ufw-in -s 10.0.0.0/8 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
--A ufw-in -s 172.16.0.0/12 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
--A ufw-in -s 192.168.0.0/16 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
--A ufw-in -p udp --dport 514 -s 1.2.3.4 -j DROP
+### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
+-A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
 
 30: allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 53 -j DROP
--A ufw-in -p udp --dport 53 -j DROP
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
 --
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 80 -j ACCEPT
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
--A ufw-in -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
--A ufw-in -s 10.0.0.0/8 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
--A ufw-in -s 172.16.0.0/12 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
--A ufw-in -s 192.168.0.0/16 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
--A ufw-in -p udp --dport 514 -s 1.2.3.4 -j DROP
+### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
+-A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
--A ufw-in -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
+-A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
 
 31: delete allow 53
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 32: delete allow 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 33: delete deny to 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 34: delete deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 35: delete deny 53
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 36: delete allow 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 37: delete allow from 10.0.0.0/8
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 38: delete allow from 172.16.0.0/12
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 39: delete allow from 192.168.0.0/16
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 40: delete deny from 1.2.3.4 to 514:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 41: delete allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 SIMPLE
 42: allow 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
--A ufw-in -p udp --dport 25 -j ACCEPT
+### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
 43: delete allow 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 44: allow 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 45: delete allow 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 46: allow 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p udp --dport 25 -j ACCEPT
+### tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
 
 47: delete allow 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 48: allow 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
--A ufw-in -p udp --dport 25 -j ACCEPT
+### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
 49: delete allow 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 50: allow 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p tcp --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 51: delete allow 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 52: allow 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-in -p udp --dport 25 -j ACCEPT
+### tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
 
 53: delete allow 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 TO/FROM
 54: allow from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
--A ufw-in -s 192.168.0.1 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
+-A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 55: delete allow from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 56: allow to 10.0.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
--A ufw-in -d 10.0.0.1 -j ACCEPT
+### tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -d 10.0.0.1 -j ACCEPT
 
 57: delete allow to 10.0.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 58: allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 any 192.168.0.1
--A ufw-in -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow any any 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
 
 59: delete allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 60: allow from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 0.0.0.0/0 80 192.168.0.1
--A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
--A ufw-in -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
 61: delete allow from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 62: allow to 10.0.0.1 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+### tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
 63: delete allow to 10.0.0.1 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 64: allow to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any any 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
--A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow any any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 65: delete allow to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 66: allow to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 any 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow any 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 67: delete allow to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 68: allow to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow any 25 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow any 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 69: delete allow to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 70: allow from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1
--A ufw-in -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
 
 71: delete allow from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 72: allow to 10.0.0.1 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
+### tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
 
 73: delete allow to 10.0.0.1 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 74: allow to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp any 10.0.0.1 80 192.168.0.1
--A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow udp any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 75: delete allow to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 76: allow to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 any 192.168.0.1
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow udp 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
 77: delete allow to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 78: allow to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow udp 25 10.0.0.1 80 192.168.0.1
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow udp 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 79: delete allow to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 80: allow from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1
--A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
 
 81: delete allow from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 82: allow to 10.0.0.1 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
+### tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
 
 83: delete allow to 10.0.0.1 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 84: allow to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp any 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow tcp any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 85: delete allow to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 86: allow to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
 87: delete allow to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 88: allow to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
+### tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 89: delete allow to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 90: deny from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
--A ufw-in -s 192.168.0.1 -j DROP
+### tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
+-A ufw-user-input -s 192.168.0.1 -j DROP
 
 91: delete deny from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 92: deny to 10.0.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
--A ufw-in -d 10.0.0.1 -j DROP
+### tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -d 10.0.0.1 -j DROP
 
 93: delete deny to 10.0.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 94: deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 any 192.168.0.1
--A ufw-in -d 10.0.0.1 -s 192.168.0.1 -j DROP
+### tuple ### deny any any 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j DROP
 
 95: delete deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 96: deny from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
--A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j DROP
--A ufw-in -p udp -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j DROP
 97: delete deny from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 98: deny to 10.0.0.1 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j DROP
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -j DROP
+### tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j DROP
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j DROP
 99: delete deny to 10.0.0.1 25
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 100: deny to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any any 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
--A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny any any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 101: delete deny to 10.0.0.1 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 102: deny to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 any 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+### tuple ### deny any 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 103: delete deny to 10.0.0.1 25 from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 104: deny to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny any 25 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny any 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 105: delete deny to 10.0.0.1 25 from 192.168.0.1 80
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 106: deny from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
--A ufw-in -p udp -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j DROP
 
 107: delete deny from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 108: deny to 10.0.0.1 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -j DROP
+### tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j DROP
 
 109: delete deny to 10.0.0.1 25:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 110: deny to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp any 10.0.0.1 80 192.168.0.1
--A ufw-in -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny udp any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 
 111: delete deny to 10.0.0.1 from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 112: deny to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+### tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 
 113: delete deny to 10.0.0.1 25:udp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 114: deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
--A ufw-in -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 
 115: delete deny to 10.0.0.1 25:udp from 192.168.0.1 80:udp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 116: deny from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
--A ufw-in -p tcp -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j DROP
 
 117: delete deny from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 118: deny to 10.0.0.1 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -j DROP
+### tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j DROP
 
 119: delete deny to 10.0.0.1 25:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 120: deny to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 
 121: delete deny to 10.0.0.1 from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 122: deny to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+### tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 
 123: delete deny to 10.0.0.1 25:tcp from 192.168.0.1
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 124: deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
-### DO NOT DELETE OR MODIFY: tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
--A ufw-in -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
+### tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 
 125: delete deny to 10.0.0.1 25:tcp from 192.168.0.1 80:tcp
 WARN: Checks disabled
-rules updated
+Rules updated
 
 
 TESTING ARGS (status)

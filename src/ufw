@@ -110,7 +110,7 @@ def process_args():
             except UFWError:
                 raise UFWError("Bad port")
         else:
-            # position in argv of 'from' or 'to'
+            # Position in argv of 'from' or 'to'
             found_from = -1
             found_to = -1
             i = 0
@@ -121,7 +121,7 @@ def process_args():
                      found_to = i
                 i += 1
             
-            # make sure have from and to
+            # Make sure have from and to
             if len(sys.argv) >= 6:
                 if found_from < 0 or found_to < 0:
                     print_help()
@@ -132,7 +132,7 @@ def process_args():
                     sys.exit(1)
 
             # TODO: parsing 'to' and 'from' could be prettier...
-            # process from
+            # Process 'from'
             pos = found_from
             if pos > 0:
                 if pos == len(sys.argv) - 1:
@@ -160,7 +160,7 @@ def process_args():
                         rule.set_port(port, "src")
                     except UFWError:
                         raise
-            # process to
+            # Process 'to'
             pos = found_to
             if pos > 0:
                 if pos == len(sys.argv) - 1:
@@ -219,7 +219,7 @@ def valid_address(addr):
     if len(net) > 2:
         return False
     elif len(net) == 2:
-        # check netmask '/'
+        # Check netmask specified via '/'
         # TODO check 255.255.255.0 type netmasks
         if int(net[1]) < 0 or int(net[1]) > 32:
             return False
@@ -309,7 +309,7 @@ def cmd(command):
     '''Try to execute the given command.'''
     cmd = ' '.join(command)
     try:
-        sp = subprocess.Popen(command, stdout=subprocess.PIPE)
+        sp = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     except OSError, e:
         return [127, str(e)]
 
@@ -358,7 +358,7 @@ class UFWError(Exception):
 
 
 class UFWRule:
-    '''This class represents network rules'''
+    '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
                  sport="any", src="0.0.0.0/0"):
         try:
@@ -373,13 +373,32 @@ class UFWRule:
             raise
 
     def __str__(self):
-        str = "action:   " + self.action
-        str = str + "\nprotocol: " + self.protocol
-        str = str + "\ndst:      " + self.dst
-        str = str + "\ndport:    " + self.dport
-        str = str + "\nsrc:      " + self.src
-        str = str + "\nsport:    " + self.sport
-        return str
+        print self.format_rule()
+
+    def format_rule(self):
+        '''Format rule for for later parsing'''
+        str = ""
+
+        # Protocol is handled below
+        if self.protocol == "any":
+            str = " -p all"
+        else:
+            str = " -p " + self.protocol
+
+        if self.dst != "0.0.0.0/0":
+            str += " -d " + self.dst
+        if self.dport != "any":
+            str += " --dport " + self.dport
+        if self.src != "0.0.0.0/0":
+            str += " -s " + self.src
+        if self.sport != "any":
+            str += " --sport " + self.sport
+        if self.action == "allow":
+            str += " -j ACCEPT"
+        else:
+            str += " -j DROP"
+
+        return str.strip()
 
     def set_action(self, action):
         '''Sets action of the rule'''
@@ -605,7 +624,11 @@ class UFWBackend:
 
 class UFWBackendIptables(UFWBackend):
     def __init__(self, d):
-        files['rules'] = '#CONFIG_PREFIX#/ufw/ufw.rules'
+        files['rules'] = '#STATE_PREFIX#/user.rules'
+        files['before_rules'] = '#CONFIG_PREFIX#/ufw/before.rules'
+        files['after_rules'] = '#CONFIG_PREFIX#/ufw/after.rules'
+        files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
+
         UFWBackend.__init__(self, "iptables", d)
 
     def get_loglevel(self):
@@ -636,49 +659,52 @@ class UFWBackendIptables(UFWBackend):
                 else:
                     os.write(fd, line)
     
-        print "Default policy changed to '" + policy + "'"
-        print "(be sure to update your rules accordingly)"
+        rstr = "Default policy changed to '" + policy + "'\n" + \
+              "(be sure to update your rules accordingly)"
 
         if self.dryrun:
             close_files(fns, False)
         else:
             close_files(fns)
+
+        return rstr
 
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
         comment_str = "# " + programName + "_comment #"
-        try:
-            fns = open_files(files['rules'])
-        except Exception:
-            raise
-        fd = fns['tmp']
+        for f in [files['rules'], files['before_rules'], files['after_rules']]:
+            try:
+                fns = open_files(files['rules'])
+            except Exception:
+                raise
+            fd = fns['tmp']
 
-        lines = fns['orig'].readlines()
+            lines = fns['orig'].readlines()
 
-        pat = re.compile(r'^-.*\sLOG\s')
-        if level == "on":
-            pat = re.compile(r'^#.*\sLOG\s')
+            pat = re.compile(r'^-.*\sLOG\s')
+            if level == "on":
+                pat = re.compile(r'^#.*\sLOG\s')
 
-        if not self.dryrun:
-            for line in lines:
-                if pat.search(line):
-                    if level == "off":
-                        os.write(fd, comment_str + ' ' + line)
+            if not self.dryrun:
+                for line in lines:
+                    if pat.search(line):
+                        if level == "off":
+                            os.write(fd, comment_str + ' ' + line)
+                        else:
+                            pat_comment = re.compile(r"^" + comment_str + "\s*")
+                            os.write(fd, pat_comment.sub('', line))
                     else:
-                        pat_comment = re.compile(r"^" + comment_str + "\s*")
-                        os.write(fd, pat_comment.sub('', line))
-                else:
-                    os.write(fd, line)
+                        os.write(fd, line)
+
+            if self.dryrun:
+                close_files(fns, False)
+            else:
+                close_files(fns)
     
         if level == "off":
-            print "logging disabled"
+            return "Logging disabled"
         else:
-            print "logging enabled"
-
-        if self.dryrun:
-            close_files(fns, False)
-        else:
-            close_files(fns)
+            return "Logging enabled"
 
     def get_status(self):
         '''Show current status of firewall'''
@@ -689,6 +715,12 @@ class UFWBackendIptables(UFWBackend):
                 out += "> Checking ip6tables\n"
             return out
 
+        # Is the firewall loaded at all?
+        (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
+        if rc != 0:
+            return "Firewall not loaded"
+
+        # Get the output of iptables for parsing
         (rc, out) = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             raise UFWError("problem running iptables")
@@ -700,10 +732,10 @@ class UFWBackendIptables(UFWBackend):
         if out == "":
             return out
 
-        # make the output pretty
+        # Make the output pretty
         str = ""
         pat_chain = re.compile(r'^Chain ')
-        pat_ufw = re.compile(r'^Chain ufw-in')
+        pat_ufw = re.compile(r'^Chain ufw-user-input')
         pat_target = re.compile(r'^target')
         in_ufw_input = False
         rules = []
@@ -766,10 +798,24 @@ class UFWBackendIptables(UFWBackend):
 COMMIT
 '''
         if dryrun:
+            print "> iptables -F"
+            print "> iptables -X"
             print "> echo\n" + openconf + "> | iptables-restore"
             if self._use_ipv6():
+                print "> ip6tables -F"
+                print "> ip6tables -X"
                 print "> echo\n" + openconf + "> | ip6tables-restore"
             return
+
+        # Flush the firewall
+        (rc, out) = cmd(['iptables', '-F'])
+        if rc != 0:
+            raise UFWError("problem running iptables 'flush'")
+
+        # Remove user chains
+        (rc, out) = cmd(['iptables', '-X'])
+        if rc != 0:
+            raise UFWError("problem running iptables 'delete'")
 
         try:
             (tmp, tmpname) = mkstemp()
@@ -778,11 +824,22 @@ COMMIT
         os.write(tmp, openconf)
         os.close(tmp)
 
+        # Set default open
         (rc, out) = cmd_pipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
             raise UFWError("problem running iptables")
 
         if self._use_ipv6():
+            # Flush the firewall
+            (rc, out) = cmd(['ip6tables', '-F'])
+            if rc != 0:
+                raise UFWError("problem running ip6tables 'flush'")
+
+            # Remove user chains
+            (rc, out) = cmd(['ip6tables', '-X'])
+            if rc != 0:
+                raise UFWError("problem running ip6tables 'delete'")
+
             (rc, out) = cmd_pipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
                 raise UFWError("problem running ip6tables")
@@ -790,22 +847,14 @@ COMMIT
     def start_firewall(self):
         '''Starts the firewall'''
         if dryrun:
-            print "> cat ufw.rules | iptables-restore"
+            print "> running initscript"
         else:
-            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore'])
+            (rc, out) = cmd([files['init'], 'start'])
             if rc != 0:
-                raise UFWError("problem running iptables")
+                raise UFWError("problem running init script")
 
-        if self._use_ipv6():
-            if dryrun:
-                print "> cat ufw.rules | ip6tables-restore"
-            else:
-                (rc, out) = cmd_pipe(['cat', files['rules']], \
-                                     ['ip6tables-restore'])
-                if rc != 0:
-                    raise UFWError("problem running ip6tables")
-        else:
-            # just enable ipv6 on loopback
+        if not self._use_ipv6():
+            # Just enable ipv6 on loopback
             ipv6conf = '''*filter
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
@@ -821,9 +870,34 @@ COMMIT
             else:
                 (rc, out) = cmd_pipe(['echo', ipv6conf], ['ip6tables-restore'])
                 if rc != 0:
-                    # don't error here, as the user may have disabled ipv6
+                    # Don't error here, as the user may have disabled ipv6
                     # and doesn't have ipv6 support
                     warn("problem running ip6tables")
+
+    def _reload_user_rules(self):
+        '''Reload firewall rules file'''
+        if self.dryrun:
+            print "> iptables-restore < " + files['rules'] 
+        else:
+            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore', '-n'])
+            if rc != 0:
+                raise UFWError("problem running iptables")
+
+    def _get_rules_from_formatted(self, frule):
+        '''Return list of iptables rules appropriate for sending'''
+        snippets = []
+        pat_proto = re.compile(r'-p all ')
+        pat_port = re.compile(r'port ')
+        if pat_proto.search(frule):
+            if pat_port.search(frule):
+                snippets.append(pat_proto.sub('-p tcp ', frule))
+                snippets.append(pat_proto.sub('-p udp ', frule))
+            else:
+                snippets.append(pat_proto.sub('', frule))
+        else:
+            snippets.append(frule)
+
+        return snippets
 
     def _parse_iptables_status(self, line):
         '''Parses a line from iptables -L -n'''
@@ -865,13 +939,12 @@ COMMIT
         
         return rule
         
-
     def _read_rules(self):
         '''Read in rules that were added by ufw.'''
         orig = open_file_read(files['rules'])
 
         lines = orig.readlines()
-        pat_tuple = re.compile(r'^### DO NOT DELETE OR MODIFY: tuple ###\s*')
+        pat_tuple = re.compile(r'^### tuple ###\s*')
         for line in lines:
             if pat_tuple.match(line):
                 tuple = pat_tuple.sub('', line)
@@ -889,7 +962,7 @@ COMMIT
         orig.close()
 
     def _write_rules(self):
-        '''Write out new rules'''
+        '''Write out new rules to file to user chain file'''
         try:
             fns = open_files(files['rules'])
         except Exception:
@@ -901,84 +974,97 @@ COMMIT
             fd = fns['tmp']
 
         lines = fns['orig'].readlines()
-        pat_start = re.compile(r'^### DO NOT DELETE: rules start ###')
-        pat_end = re.compile(r'^### DO NOT DELETE: rules end ###')
-        in_rules = False
+        pat_commit = re.compile(r'^### RULES ###')
         for line in lines:
-            if pat_start.match(line):
-                os.write(fd, line)
-                in_rules = True
-            elif in_rules and pat_end.match(line):
-                os.write(fd, "\n-A INPUT -j ufw-in\n")
-                for r in self.rules:
-                    str = "-A ufw-in"
+            os.write(fd, line)
+            if pat_commit.match(line):
+                break
 
-                    # protocol is handled below
-                    str += " -p " + r.protocol
-                    if r.dst != "0.0.0.0/0":
-                        str += " -d " + r.dst
-                    if r.dport != "any":
-                        str += " --dport " + r.dport
-                    if r.src != "0.0.0.0/0":
-                        str += " -s " + r.src
-                    if r.sport != "any":
-                        str += " --sport " + r.sport
-                    if r.action == "allow":
-                        str += " -j ACCEPT\n"
-                    else:
-                        str += " -j DROP\n"
+        for r in self.rules:
+            rule_str = "-A ufw-user-input " + r.format_rule() + "\n"
+            os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
+                     (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+            for s in self._get_rules_from_formatted(rule_str):
+                os.write(fd, s)
 
-                    os.write(fd, "\n### DO NOT DELETE OR MODIFY: tuple ###" + \
-                                 " %s %s %s %s %s %s\n" % (r.action, \
-                                 r.protocol, r.dport, r.dst, r.sport, r.src))
-                    if r.protocol == "any":
-                        pat = re.compile(r'-p any ')
-                        if r.sport != "any" or r.dport != "any":
-                            os.write(fd, pat.sub('-p tcp ', str))
-                            os.write(fd, pat.sub('-p udp ', str))
-                        else:
-                            os.write(fd, pat.sub('', str))
-                    else:
-                        os.write(fd, str)
-                os.write(fd, "\n-A ufw-in -j RETURN\n")
-                os.write(fd, "\n### DO NOT DELETE: rules end ###\n")
-                in_rules = False
-            elif in_rules:
-                continue
-            else:
-                if not self.dryrun:
-                    os.write(fd, line)
+        os.write(fd, "\n### END RULES ###\n")
+        os.write(fd, "-A ufw-user-input -j RETURN\n")
+        os.write(fd, "-A ufw-user-output -j RETURN\n")
+        os.write(fd, "-A ufw-user-forward -j RETURN\n")
+        os.write(fd, "COMMIT\n")
+
         if self.dryrun:
             close_files(fns, False)
         else:
             close_files(fns)
 
     def set_rule(self, rule):
-        '''Updates firewall with rule'''
+        '''Updates firewall with rule by:
+        * appending the rule to the chain if new rule and firewall enabled
+        * deleting the rule from the chain if found and firewall enabled
+        * updating user rules file
+        * reloading the user rules file if rule is modified
+        '''
         newrules = []
-        added = False
+        found = False
+        modified = False
+        delete = False
+        # First construct the new rules list
         for r in self.rules:
             ret = UFWRule.match(r, rule)
-            if ret == 0 and not added:
+            if ret == 0 and not found:
                 # If find the rule, add it if it's not to be removed, otherwise
                 # skip it.
-                added = True
+                found = True
                 if not rule.remove:
                     newrules.append(rule)
             elif ret < 0 and not rule.remove:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
-                added = True
+                found = True
+                modified = True
                 newrules.append(rule)
             else:
                 newrules.append(r)
 
         # Add rule to the end if it was not already added.
-        if not added and not rule.remove:
+        if not found and not rule.remove:
             newrules.append(rule)
 
         self.rules = newrules
-        self._write_rules()
+
+        # Update the user rules file
+        try:
+            self._write_rules()
+        except:
+            UFWError("Couldn't update rules file")
+
+        rstr = "Rules updated"
+        # Operate on the chains
+        if self._is_enabled():
+            flag = ""
+            if modified:
+                # Reload the chain
+                try:
+                    self._reload_user_rules()
+                except:
+                    raise
+                rstr = "Rule updated"
+            elif found and rule.remove:
+                flag = '-D'
+                rstr = "Rule deleted"
+            elif not found and not modified and not rule.remove:
+                flag = '-A'
+                rstr = "Rule added"
+
+            if flag != "":
+                for s in self._get_rules_from_formatted(rule.format_rule()):
+                    (rc, out) = cmd(['iptables', flag, 'ufw-user-input'] + \
+                                      s.split())
+                    if rc != 0:
+                        print out
+                        UFWError("Could not delete rule from running firewall")
+        return rstr
 
 
 class UFWFrontend:
@@ -994,33 +1080,39 @@ class UFWFrontend:
                     self.backend.set_default(files['defaults'], \
                                              "ENABLED", "yes")
                 self.backend.start_firewall()
-                print "firewall enabled"
+                print "Firewall started and enabled on system startup"
             else:
                 if self.backend._is_enabled():
                     self.backend.set_default(files['defaults'], "ENABLED", \
                                              "no")
                 self.backend.stop_firewall()
-                print "firewall disabled"
+                print "Firewall stopped and disabled on system startup"
         except UFWError, e:
             error(e.value)
 
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
+        str = ""
         try:
-            self.backend.set_default_policy(policy)
+            str = self.backend.set_default_policy(policy)
             if self.backend._is_enabled():
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
 
+        print str
+
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
+        str = ""
         try:
-            self.backend.set_loglevel(level)
+            str = self.backend.set_loglevel(level)
             if self.backend._is_enabled():
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
+
+        print str
 
     def get_status(self):
         '''Shows status of firewall'''
@@ -1036,16 +1128,12 @@ class UFWFrontend:
 
     def set_rule(self, rule):
         '''Updates firewall with rule'''
+        res = ""
         try:
-            self.backend.set_rule(rule)
-            if self.backend._is_enabled():
-                self.backend.start_firewall()
-                print "rules updated and firewall reloaded"
-            else:
-                print "rules updated"
-                
+            res = self.backend.set_rule(rule)
         except UFWError, e:
             error(e.value)
+        print res
 
 
 # Execution starts here

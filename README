@@ -2,6 +2,7 @@ UFW
 ---
 https://wiki.ubuntu.com/UbuntuFirewall
 
+
 What's in a name?
 -----------------
 What does it mean?  I like 'Uncomplicated Firewall', but really, it's up to
@@ -22,18 +23,46 @@ Basic Layout
 ------------
 /usr/sbin/ufw 			is the UI for people (have different backends)
 /etc/defaults/ufw 		high level configuration
-/etc/ufw/ufw.rules 		for iptables-restore backend
+/etc/ufw/before.rules 		rules evaluated before UI added rules
+/etc/ufw/after.rules 		rules evaluated after UI added rules
+/var/lib/ufw/user.rules		UI added rules (not to be modified)
 /etc/ufw/sysctl.conf 		kernel network tunables
-/etc/init.d/ufw			boot start script
+/etc/init.d/ufw			start script
 
 
 Usage
 -----
-ufw enable|disable 		disable toggles /etc/default/ufw
+ufw enable|disable 		turn firewall on and off (including at boot)
 ufw default allow|deny		updates default policy
-ufw logging on|off		updates backend logging (ufw.rules)
-ufw status			displays firewall status (start with ipt -Ln)
+ufw logging on|off		updates backend logging (*.rules)
+ufw status			displays firewall status (user.rules only)
 ufw allow|deny RULE		add RULE to firewall
+
+
+Chains
+------
+ufw uses several chains to allow ease of use and flexibility. The chains are
+organized as follows:
+
+INPUT -> ufw-before-input -> ufw-user-input -> ufw-after-input
+OUTPUT -> ufw-before-output -> ufw-user-output -> ufw-after-output
+FORWARD -> ufw-before-forward -> ufw-user-forward -> ufw-after-forward
+
+The 'before' chains are setup in 'before.rules', the 'after' chains in
+'after.rules' and the 'user' chains are maintained by ufw. If an administrator
+wants to add rules manually, the rules should be added to 'before.rules' and
+'after.rules'.
+
+There is some default configuration in both 'before.rules' and 'after.rules',
+and this configuration is not displayed with 'ufw status' (but can always
+be viewed with 'iptables -L -n' or 'iptables -L [chain] -n'. See the iptables
+manpage for details.
+
+
+IPV6
+----
+ufw has very limited support for IPV6 and it should not be used at this time.
+
 
 Testing
 -------

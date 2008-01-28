@@ -1,10 +1,19 @@
 #!/bin/sh -e
 
+BEFORE_FILE="/usr/share/ufw/before.rules"
+AFTER_FILE="/usr/share/ufw/after.rules"
 case "$1" in
     configure)
         update-rc.d ufw start 39 S . > /dev/null
-        if [ ! -e "/etc/ufw/ufw.rules" ]; then
-            cp /usr/share/ufw/ufw.rules /etc/ufw
+
+        if [ ! -e "$BEFORE_FILE" ] && [ -z "$2" ]; then
+            # if no config and fresh install copy the template
+            cp $BEFORE_FILE /etc/ufw
+        fi
+
+        if [ ! -e "$AFTER_FILE" ] && [ -z "$2" ]; then
+            # if no config and fresh install copy the template
+            cp $AFTER_FILE /etc/ufw
         fi
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -25,7 +25,7 @@ import os
 from popen2 import Popen3
 import sys
 
-ufw_version = "0.7"
+ufw_version = "0.8"
 
 class Install(_install, object):
     '''Override distutils to install the files where we want them.'''
@@ -43,11 +43,18 @@ class Install(_install, object):
         self.copy_file('src/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
 
+        # Install state file
+        statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
+        user_rules = os.path.join(statedir, 'user.rules')
+        self.mkpath(statedir)
+        self.copy_file('conf/user.rules', user_rules)
+
         # Install configuration files
         confdir = os.path.join(self.root, 'etc')
         defaults = os.path.join(confdir, 'default', 'ufw')
         ufwconf = os.path.join(confdir, 'ufw', 'sysctl.conf')
-        rules = os.path.join(confdir, 'ufw', 'ufw.rules')
+        before_rules = os.path.join(confdir, 'ufw', 'before.rules')
+        after_rules = os.path.join(confdir, 'ufw', 'after.rules')
         initscript = os.path.join(confdir, 'init.d', 'ufw')
 
         for dir in [ defaults, ufwconf, initscript ]:
@@ -55,11 +62,13 @@ class Install(_install, object):
         
         self.copy_file('conf/ufw.defaults', defaults)
         self.copy_file('conf/sysctl.conf', ufwconf)
-        self.copy_file('conf/ufw.rules', rules)
+        self.copy_file('conf/before.rules', before_rules)
+        self.copy_file('conf/after.rules', after_rules)
         self.copy_file('conf/initscript', initscript)
 
         # Update the installed files' paths
-        for file in [ defaults, ufwconf, rules, initscript, script, manpage ]:
+        for file in [ defaults, ufwconf, before_rules, after_rules, \
+                      initscript, script, manpage ]:
             print "Updating " + file
             a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%' " + file)
             while a.poll() == -1:
@@ -69,6 +78,10 @@ class Install(_install, object):
             while a.poll() == -1:
                 pass
         
+            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%' " + file)
+            while a.poll() == -1:
+                pass
+
             a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%' " + file)
             while a.poll() == -1:
                 pass
