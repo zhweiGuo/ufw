@@ -5,7 +5,6 @@
 db_version 2.0
 
 if [ -e "/etc/ufw/ufw.rules" ]; then
-	db_reset ufw/oldrules || true
 	db_text high ufw/oldrules || true
 	db_go
 fi
