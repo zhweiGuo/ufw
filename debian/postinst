@@ -15,7 +15,7 @@ case "$1" in
         	if [ ! -e "$BEFORE_FILE" ]; then
             		cp $BEFORE_FILE_TEMPLATE /etc/ufw
         	fi
-        	if [ ! -e "$AFTER_FILE" ] && [ -z "$2" ]; then
+        	if [ ! -e "$AFTER_FILE" ]; then
             		cp $AFTER_FILE_TEMPLATE /etc/ufw
         	fi
 	fi
