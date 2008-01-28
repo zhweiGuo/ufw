@@ -7,7 +7,7 @@ AFTER_FILE="/usr/share/ufw/after.rules"
 case "$1" in
     configure)
 	if [ -e "/etc/ufw/ufw.rules" ]; then
-		db_get ufw/rules || true
+		db_get ufw/oldrules || true
 	fi
 
         update-rc.d ufw start 39 S . > /dev/null

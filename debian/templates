@@ -1,0 +1,6 @@
+Template: ufw/oldrules
+Type: note
+_Description: Found old rules file
+ Detected /etc/ufw/ufw.rules. This file is obsoleted by
+ /etc/ufw/before.rules and /etc/ufw/after.rules. You will have to manually
+ migrate this file.
