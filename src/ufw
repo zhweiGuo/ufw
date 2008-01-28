@@ -1057,10 +1057,14 @@ COMMIT
                         UFWError("Could not delete rule from running firewall")
                     # delete the RETURN rule then add it back, so it is at the
                     # end
-                    (rc, out) = cmd(['iptables', '-D', 'ufw-user-input' + \
+                    (rc, out) = cmd(['iptables', '-D', 'ufw-user-input', \
                                      '-j', 'RETURN'])
-                    (rc, out) = cmd(['iptables', '-A', 'ufw-user-input' + \
+                    if rc != 0:
+                        print out
+                    (rc, out) = cmd(['iptables', '-A', 'ufw-user-input', \
                                      '-j', 'RETURN'])
+                    if rc != 0:
+                        print out
         return rstr
 
 
