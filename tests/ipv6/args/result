@@ -2,7 +2,7 @@ TESTING ARGS (enable/disable)
 0: --dry-run enable
 WARN: Checks disabled
 > running initscript
-Firewall enabled
+Firewall started and enabled on system startup
 
 
 1: --dry-run disable
@@ -25,7 +25,7 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | ip6tables-restore
-Firewall disabled
+Firewall stopped and disabled on system startup
 
 
 TESTING ARGS (status)
