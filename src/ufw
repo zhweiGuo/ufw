@@ -1080,13 +1080,13 @@ class UFWFrontend:
                     self.backend.set_default(files['defaults'], \
                                              "ENABLED", "yes")
                 self.backend.start_firewall()
-                print "Firewall enabled"
+                print "Firewall started and enabled on system startup"
             else:
                 if self.backend._is_enabled():
                     self.backend.set_default(files['defaults'], "ENABLED", \
                                              "no")
                 self.backend.stop_firewall()
-                print "Firewall disabled"
+                print "Firewall stopped and disabled on system startup"
         except UFWError, e:
             error(e.value)
 

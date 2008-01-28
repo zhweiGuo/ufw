@@ -59,7 +59,7 @@ WARN: Checks disabled
 
 COMMIT
 > | ip6tables-restore
-Firewall enabled
+Firewall started and enabled on system startup
 
 
 9: --dry-run disable
@@ -73,7 +73,7 @@ WARN: Checks disabled
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | iptables-restore
-Firewall disabled
+Firewall stopped and disabled on system startup
 
 
 10: --dry-run ENABLE
@@ -90,7 +90,7 @@ WARN: Checks disabled
 
 COMMIT
 > | ip6tables-restore
-Firewall enabled
+Firewall started and enabled on system startup
 
 
 11: --dry-run DISABLE
@@ -104,7 +104,7 @@ WARN: Checks disabled
 :OUTPUT ACCEPT [0:0]
 COMMIT
 > | iptables-restore
-Firewall disabled
+Firewall stopped and disabled on system startup
 
 
 TESTING ARGS (status)

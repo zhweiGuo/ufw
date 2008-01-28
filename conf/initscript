@@ -28,6 +28,11 @@ IN_RULES="#STATE_PREFIX#/user.rules"
 
 case "$1" in
 start)
+	if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
+		# if firewall loaded, tell to reload instead
+		log_warning_msg "Firewall already started, use 'force-reload'"
+		exit 0
+	fi
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
 		log_daemon_msg "Starting firewall:" "ufw"
 		if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
@@ -122,20 +127,20 @@ start)
 	fi
 	;;
 stop)
-	log_warning_msg "ufw: Please use 'ufw disable' to stop"
+	log_warning_msg "Please use 'ufw disable' to stop"
 	;;
 restart)
 	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-		log_action_begin_msg "ufw: Restarting firewall"
+		log_action_begin_msg "Restarting firewall"
 		#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
 		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 		log_action_end_msg $?
 	else
-		log_warning_msg "ufw: Skipping firewall (not enabled)"
+		log_warning_msg "Skipping restart (not enabled)"
 	fi
 	;;
 force-reload)
-	log_action_begin_msg "ufw: Forcibly re-loading firewall"
+	log_action_begin_msg "Forcibly reloading firewall"
 	#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
 	#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
 	log_action_end_msg $?
