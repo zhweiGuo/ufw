@@ -6,6 +6,8 @@ BEFORE_FILE="/etc/ufw/before.rules"
 BEFORE_FILE_TEMPLATE="/usr/share/ufw/before.rules"
 AFTER_FILE="/etc/ufw/after.rules"
 AFTER_FILE_TEMPLATE="/usr/share/ufw/after.rules"
+USER_FILE="/etc/ufw/user.rules"
+USER_FILE_TEMPLATE="/usr/share/ufw/user.rules"
 case "$1" in
     configure)
 	if [ -e "/etc/ufw/ufw.rules" ]; then
@@ -29,6 +31,12 @@ case "$1" in
             # if no config and fresh install copy the template
             cp $AFTER_FILE_TEMPLATE /etc/ufw
         fi
+
+        if [ ! -e "$USER_FILE" ]; then
+            # if no config and copy the template
+            cp $USER_FILE_TEMPLATE /var/lib/ufw
+        fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
