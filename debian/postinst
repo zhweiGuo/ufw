@@ -10,6 +10,14 @@ case "$1" in
     configure)
 	if [ -e "/etc/ufw/ufw.rules" ]; then
 		db_get ufw/oldrules || true
+
+		# if migrating, then copy these over on upgrade
+        	if [ ! -e "$BEFORE_FILE" ]; then
+            		cp $BEFORE_FILE_TEMPLATE /etc/ufw
+        	fi
+        	if [ ! -e "$AFTER_FILE" ] && [ -z "$2" ]; then
+            		cp $AFTER_FILE_TEMPLATE /etc/ufw
+        	fi
 	fi
 
         update-rc.d ufw start 39 S . > /dev/null
