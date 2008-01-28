@@ -13,9 +13,6 @@ question, and timeout if no response (maybe use the previous working policy?))
 
 finish ipv6 support
 
-Finish chains, initscript, state transition:
-tell to force-reload on start if rules loaded
-
 
 Revamp the allow|deny acl syntax. Current implementation for a few rules:
 # ufw allow 25
