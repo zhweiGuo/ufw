@@ -18,25 +18,27 @@ source "$TESTPATH/../testlib.sh"
 
 echo "Man page" >> $TESTTMP/result
 do_cmd "0" --dry-run allow 53
-do_cmd "0" --dry-run allow 25:tcp
-do_cmd "0" --dry-run deny to 80:tcp
-do_cmd "0" --dry-run deny from 10.0.0.0/8 to 192.168.0.1 25:tcp
+do_cmd "0" --dry-run allow 25/tcp
+do_cmd "0" --dry-run allow smtp
+do_cmd "0" --dry-run deny proto tcp to any port 80
+do_cmd "0" --dry-run deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+do_cmd "0" --dry-run allow 80/tcp
+do_cmd "0" --dry-run delete allow 80/tcp
 do_cmd "0" --dry-run deny 53
-do_cmd "0" --dry-run deny smtp
-do_cmd "0" --dry-run allow 80:tcp
+do_cmd "0" --dry-run allow 80/tcp
 do_cmd "0" --dry-run allow from 10.0.0.0/8
 do_cmd "0" --dry-run allow from 172.16.0.0/12
 do_cmd "0" --dry-run allow from 192.168.0.0/16
-do_cmd "0" --dry-run deny from 1.2.3.4 to 514:udp
-do_cmd "0" --dry-run allow from 1.2.3.5 5469:udp to 1.2.3.4 5469:udp
+do_cmd "0" --dry-run deny proto udp from 1.2.3.4 to any port 514
+do_cmd "0" --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 
 echo "SIMPLE" >> $TESTTMP/result
 do_cmd "0" --dry-run allow 25
-do_cmd "0" --dry-run allow 25:tcp
-do_cmd "0" --dry-run allow 25:udp
+do_cmd "0" --dry-run allow 25/tcp
+do_cmd "0" --dry-run allow 25/udp
 do_cmd "0" --dry-run delete allow 25
-do_cmd "0" --dry-run delete allow 25:tcp
-do_cmd "0" --dry-run delete allow 25:udp
+do_cmd "0" --dry-run delete allow 25/tcp
+do_cmd "0" --dry-run delete allow 25/udp
 
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
@@ -50,28 +52,28 @@ do
 	do_cmd "0" --dry-run $x to $to from $from
 	do_cmd "0" --dry-run delete $x to $to from $from
 
-	do_cmd "0" --dry-run $x from $from 80
-	do_cmd "0" --dry-run delete $x from $from 80
-	do_cmd "0" --dry-run $x to $to 25
-	do_cmd "0" --dry-run delete $x to $to 25
-	do_cmd "0" --dry-run $x to $to from $from 80
-	do_cmd "0" --dry-run delete $x to $to from $from 80
-	do_cmd "0" --dry-run $x to $to 25 from $from
-	do_cmd "0" --dry-run delete $x to $to 25 from $from
-	do_cmd "0" --dry-run $x to $to 25 from $from 80
-	do_cmd "0" --dry-run delete $x to $to 25 from $from 80
+	do_cmd "0" --dry-run $x from $from port 80
+	do_cmd "0" --dry-run delete $x from $from port 80
+	do_cmd "0" --dry-run $x to $to port 25
+	do_cmd "0" --dry-run delete $x to $to port 25
+	do_cmd "0" --dry-run $x to $to from $from port 80
+	do_cmd "0" --dry-run delete $x to $to from $from port 80
+	do_cmd "0" --dry-run $x to $to port 25 from $from
+	do_cmd "0" --dry-run delete $x to $to port 25 from $from
+	do_cmd "0" --dry-run $x to $to port 25 from $from port 80
+	do_cmd "0" --dry-run delete $x to $to port 25 from $from port 80
 	for y in udp tcp
 	do
-		do_cmd "0" --dry-run $x from $from 80:$y
-		do_cmd "0" --dry-run delete $x from $from 80:$y
-		do_cmd "0" --dry-run $x to $to 25:$y
-		do_cmd "0" --dry-run delete $x to $to 25:$y
-		do_cmd "0" --dry-run $x to $to from $from 80:$y 
-		do_cmd "0" --dry-run delete $x to $to from $from 80:$y 
-		do_cmd "0" --dry-run $x to $to 25:$y from $from
-		do_cmd "0" --dry-run delete $x to $to 25:$y from $from
-		do_cmd "0" --dry-run $x to $to 25:$y from $from 80:$y
-		do_cmd "0" --dry-run delete $x to $to 25:$y from $from 80:$y
+		do_cmd "0" --dry-run $x from $from port 80 proto $y
+		do_cmd "0" --dry-run delete $x from $from port 80 proto $y
+		do_cmd "0" --dry-run $x to $to port 25 proto $y
+		do_cmd "0" --dry-run delete $x to $to port 25 proto $y
+		do_cmd "0" --dry-run $x to $to from $from port 80 proto $y 
+		do_cmd "0" --dry-run delete $x to $to from $from port 80 proto $y 
+		do_cmd "0" --dry-run $x to $to port 25 proto $y from $from
+		do_cmd "0" --dry-run delete $x to $to port 25 proto $y from $from
+		do_cmd "0" --dry-run $x to $to port 25 proto $y from $from port 80
+		do_cmd "0" --dry-run delete $x to $to port 25 proto $y from $from port 80
 	done
 done
 

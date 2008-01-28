@@ -14,44 +14,5 @@ question, and timeout if no response (maybe use the previous working policy?))
 finish ipv6 support
 
 
-Revamp the allow|deny acl syntax. Current implementation for a few rules:
-# ufw allow 25
-# ufw allow from 192.168.0.1 to 25:tcp
-# ufw allow from 192.168.0.0/24 to 192.168.0.2 25:tcp
-
-Pros: natural language syntax
-Cons: non-standard, parser from scratch (but implemented)
-
-
-Possible alternatives are:
-
-pcap syntax, eg:
-# ufw allow port 25
-# ufw allow src 192.168.0.1 and dst port 25 and tcp
-# ufw allow src net 192.168.0.0/24 and dst port 25 and tcp
-
-Pros: standard syntax, parser (should be) available
-Cons: more to type, easy to mistake 'dst 25' (the 25.0.0.0 network) for 'dst
-port 25'
-
-
-pf-style syntax:
-# ufw allow from any to any port 25
-# ufw allow proto tcp from 192.168.0.1 to any port 25
-# ufw allow proto tcp from 192.168.0.0/24 to any port 25
-
-Pros: natural language syntax, known syntax
-Cons: more to type, parser from scratch
-
-
-PIX-style syntax:
-# ufw allow ip any any eq 25
-# ufw allow tcp host 192.168.0.1 any eq 25
-# ufw allow tcp 192.168.0.0 255.255.255.0 any eq 25
-
-Pros: known syntax
-Cons: more to type, harder to learn, parser available?)
-
-
 
 (C) 2008 Canonical Ltd.

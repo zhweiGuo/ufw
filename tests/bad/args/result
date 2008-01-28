@@ -63,108 +63,231 @@ TESTING ARGS (allow/deny bad port)
 19: --dry-run deny XXX
 
 
+20: --dry-run deny foobar
+
+
 TESTING ARGS (allow/deny bad to/from)
-20: --dry-run allow 25 to
+21: --dry-run allow prot tcp from any
 
 
-21: --dry-run deny 25 to
+22: --dry-run allow proto tcp fro any
 
 
-22: --dry-run allow 25 from
+23: --dry-run allow proto tcp top any
 
 
-23: --dry-run deny 25 from
+24: --dry-run allow proto tcp to any por 25
 
 
-24: --dry-run allow 25 from 192.168.0.1 to
+25: --dry-run allow port 25
 
 
-25: --dry-run deny 25 from 192.168.0.1 to
+26: --dry-run allow to anu
 
 
-26: --dry-run allow 25 from 192.168.0.1 from
+27: --dry-run allow proto tcq to any port 25
 
 
-27: --dry-run deny 25 from 192.168.0.1 from
+28: --dry-run allow proto tcp proto udp to any port 25
 
 
-28: --dry-run allow 25 to 192.168.0.1 from
+29: --dry-run allow to
 
 
-29: --dry-run deny 25 to 192.168.0.1 from
+30: --dry-run allow to port 25
 
 
-30: --dry-run allow 25 to 192.168.0.1 to
+31: --dry-run allow from
 
 
-31: --dry-run deny 25 to 192.168.0.1 to
+32: --dry-run allow from port 25
 
 
-32: --dry-run allow 25 to from 192.168.0.1
+33: --dry-run allow to any port
 
 
-33: --dry-run deny 25 to from 192.168.0.1
+34: --dry-run allow to port 25
 
 
-34: --dry-run allow 25 from to 192.168.0.1
+35: --dry-run allow from 192.168.0.1 to
 
 
-35: --dry-run deny 25 from to 192.168.0.1
+36: --dry-run allow from 192.168.0.1 from
 
 
-36: --dry-run allow 25 from from 192.168.0.1
+37: --dry-run allow from 192.168.0.1 port 25 to
 
 
-37: --dry-run deny 25 from from 192.168.0.1
+38: --dry-run allow from 192.168.0.1 port 25 from
 
 
-38: --dry-run allow 25 to to 192.168.0.1
+39: --dry-run allow to 192.168.0.1 from
 
 
-39: --dry-run deny 25 to to 192.168.0.1
+40: --dry-run allow to 192.168.0.1 to
+
+
+41: --dry-run allow to 192.168.0.1 port smtp from
+
+
+42: --dry-run allow to 192.168.0.1 port smtp to
+
+
+43: --dry-run allow to from 192.168.0.1
+
+
+44: --dry-run allow from to 192.168.0.1
+
+
+45: --dry-run allow to from 192.168.0.1 port 25
+
+
+46: --dry-run allow from to 192.168.0.1 port 25
+
+
+47: --dry-run allow from from 192.168.0.1
+
+
+48: --dry-run allow to to 192.168.0.1
+
+
+49: --dry-run allow from from 192.168.0.1 port smtp
+
+
+50: --dry-run allow to to 192.168.0.1 port smtp
+
+
+51: --dry-run deny prot tcp from any
+
+
+52: --dry-run deny proto tcp fro any
+
+
+53: --dry-run deny proto tcp top any
+
+
+54: --dry-run deny proto tcp to any por 25
+
+
+55: --dry-run deny port 25
+
+
+56: --dry-run deny to anu
+
+
+57: --dry-run deny proto tcq to any port 25
+
+
+58: --dry-run deny proto tcp proto udp to any port 25
+
+
+59: --dry-run deny to
+
+
+60: --dry-run deny to port 25
+
+
+61: --dry-run deny from
+
+
+62: --dry-run deny from port 25
+
+
+63: --dry-run deny to any port
+
+
+64: --dry-run deny to port 25
+
+
+65: --dry-run deny from 192.168.0.1 to
+
+
+66: --dry-run deny from 192.168.0.1 from
+
+
+67: --dry-run deny from 192.168.0.1 port 25 to
+
+
+68: --dry-run deny from 192.168.0.1 port 25 from
+
+
+69: --dry-run deny to 192.168.0.1 from
+
+
+70: --dry-run deny to 192.168.0.1 to
+
+
+71: --dry-run deny to 192.168.0.1 port smtp from
+
+
+72: --dry-run deny to 192.168.0.1 port smtp to
+
+
+73: --dry-run deny to from 192.168.0.1
+
+
+74: --dry-run deny from to 192.168.0.1
+
+
+75: --dry-run deny to from 192.168.0.1 port 25
+
+
+76: --dry-run deny from to 192.168.0.1 port 25
+
+
+77: --dry-run deny from from 192.168.0.1
+
+
+78: --dry-run deny to to 192.168.0.1
+
+
+79: --dry-run deny from from 192.168.0.1 port smtp
+
+
+80: --dry-run deny to to 192.168.0.1 port smtp
 
 
 TESTING ARGS (allow/deny bad ip)
-40: --dry-run allow 25 to 192.168.0.
+81: --dry-run allow to 192.168.0.
 
 
-41: --dry-run allow 25 to 192.168.0.1.1
+82: --dry-run allow to 192.168.0.1.1
 
 
-42: --dry-run allow 25 to foo
+83: --dry-run allow to foo
 
 
-43: --dry-run allow 25 to xxx.xxx.xxx.xx
+84: --dry-run allow to xxx.xxx.xxx.xx
 
 
-44: --dry-run allow 25 to 192a.168.0.1
+85: --dry-run allow to 192a.168.0.1
 
 
-45: --dry-run allow 25 to 192.168a.0.1
+86: --dry-run allow to 192.168a.0.1
 
 
-46: --dry-run allow 25 to 192.168.0a.1
+87: --dry-run allow to 192.168.0a.1
 
 
-47: --dry-run allow 25 to 192.168.1.a1
+88: --dry-run allow to 192.168.1.a1
 
 
-48: --dry-run allow 25 to 192.168.1..1
+89: --dry-run allow to 192.168.1..1
 
 
-49: --dry-run allow 25 to 192.168.1..1/24
+90: --dry-run allow to 192.168.1..1/24
 
 
-50: --dry-run allow 25 to 192.168.1.256
+91: --dry-run allow to 192.168.1.256
 
 
-51: --dry-run allow 25 to 256.0.0.0
+92: --dry-run allow to 256.0.0.0
 
 
-52: --dry-run allow 25 to 10.256.0.0
+93: --dry-run allow to 10.256.0.0
 
 
 TESTING ARGS (delete allow/deny)
-53: --dry-run delete
+94: --dry-run delete
 
 

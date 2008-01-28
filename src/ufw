@@ -56,7 +56,9 @@ def process_args():
         remove = True
         sys.argv.remove("delete")
 
-    if len(sys.argv) < 2:
+    nargs = len(sys.argv)
+
+    if nargs < 2:
         print_help()
         sys.exit(1)
 
@@ -71,7 +73,7 @@ def process_args():
         action = sys.argv[1].lower()
 
     if action == "logging":
-        if len(sys.argv) < 3:
+        if nargs < 3:
             print_help()
             sys.exit(1)
         elif sys.argv[2].lower() == "off":
@@ -83,7 +85,7 @@ def process_args():
             sys.exit(1)
 
     if action == "default":
-        if len(sys.argv) < 3:
+        if nargs < 3:
             print_help()
             sys.exit(1)
         elif sys.argv[2].lower() == "deny":
@@ -95,101 +97,79 @@ def process_args():
             sys.exit(1)
 
     if action == "allow" or action == "deny":
-        if len(sys.argv) < 3 or len(sys.argv) > 8:
+        if nargs < 3 or nargs > 12:
             print_help()
             sys.exit(1)
         
         rule = UFWRule(action, "any", "any")
         if remove:
             rule.remove = remove
-        if len(sys.argv) == 3:
+        if nargs == 3:
+            # Short form where only port/proto is given
             try:
                 (port, proto) = parse_port_proto(sys.argv[2])
                 rule.set_protocol(proto)
                 rule.set_port(port, "dst")
             except UFWError:
                 raise UFWError("Bad port")
+        elif nargs % 2 != 0:
+            raise UFWError("Wrong number of arguments")
+        elif not 'from' in sys.argv and not 'to' in sys.argv:
+            raise UFWError("Need 'to' or 'from' clause")
         else:
-            # Position in argv of 'from' or 'to'
-            found_from = -1
-            found_to = -1
-            i = 0
-            for arg in sys.argv:
-                if re.match("from", arg.lower()):
-                     found_from = i
-                elif re.match("to", arg.lower()):
-                     found_to = i
+            # Full form with PF-style syntax
+            keys = [ 'proto', 'from', 'to', 'port' ]
+
+            # quick check
+            if sys.argv.count("to") > 1 or \
+               sys.argv.count("from") > 1 or \
+               sys.argv.count("proto") > 1 or \
+               sys.argv.count("port") > 2:
+                raise UFWError("Improper rule syntax")
+
+            i = 1
+            loc = ""
+            for arg in sys.argv[1:]:
+                if i % 2 == 0 and sys.argv[i] not in keys:
+                    raise UFWError("Invalid token '" + sys.argv[i] + "'")
+                if arg == "proto":
+                    if i+1 < nargs:
+                        try:
+                            rule.set_protocol(sys.argv[i+1])
+                        except:
+                            raise
+                    else:
+                        raise UFWError("Invalid 'proto' clause")
+                elif arg == "from":
+                    if i+1 < nargs:
+                        try:
+                            rule.set_src(sys.argv[i+1])
+                        except:
+                            raise
+                        loc = "src"
+                    else:
+                        raise UFWError("Invalid 'from' clause")
+                elif arg == "to":
+                    if i+1 < nargs:
+                        try:
+                            rule.set_dst(sys.argv[i+1])
+                        except:
+                            raise
+                        loc = "dst"
+                    else:
+                        raise UFWError("Invalid 'to' clause")
+                elif arg == "port":
+                    if i+1 < nargs:
+                        if loc == "":
+                            raise UFWError("Need 'from' or 'to' with 'port'")
+                        try:
+                            rule.set_port(sys.argv[i+1], loc)
+                        except:
+                            raise
+                    else:
+                        raise UFWError("Invalid 'proto' clause")
                 i += 1
-            
-            # Make sure have from and to
-            if len(sys.argv) >= 6:
-                if found_from < 0 or found_to < 0:
-                    print_help()
-                    sys.exit(1)
-            else:
-                if found_from < 0 and found_to < 0:
-                    print_help()
-                    sys.exit(1)
-
-            # TODO: parsing 'to' and 'from' could be prettier...
-            # Process 'from'
-            pos = found_from
-            if pos > 0:
-                if pos == len(sys.argv) - 1:
-                    raise UFWError("Bad address or port")
-                if pos < len(sys.argv) - 1:
-                    try:
-                        if valid_address(sys.argv[pos + 1]):
-                            rule.set_src(sys.argv[pos + 1])
-                        else:
-                            (port, proto) = parse_port_proto(sys.argv[pos + 1])
-                            if rule.protocol != "any" and proto != "any" and \
-                               rule.protocol != proto:
-                                raise UFWError("from/to protocol mismatch")
-                            rule.set_protocol(proto)
-                            rule.set_port(port, "src")
-                    except UFWError:
-                        raise
-                if pos < len(sys.argv) - 2 and pos + 2 != found_to:
-                    try:
-                        (port, proto) = parse_port_proto(sys.argv[pos + 2])
-                        if rule.protocol != "any" and proto != "any" and \
-                           rule.protocol != proto:
-                            raise UFWError("from/to protocol mismatch")
-                        rule.set_protocol(proto)
-                        rule.set_port(port, "src")
-                    except UFWError:
-                        raise
-            # Process 'to'
-            pos = found_to
-            if pos > 0:
-                if pos == len(sys.argv) - 1:
-                    raise UFWError("Bad address or port")
-                if pos < len(sys.argv) - 1:
-                    try:
-                        if valid_address(sys.argv[pos + 1]):
-                            rule.set_dst(sys.argv[pos + 1])
-                        else:
-                            (port, proto) = parse_port_proto(sys.argv[pos + 1])
-                            if rule.protocol != "any" and proto != "any" and \
-                               rule.protocol != proto:
-                                raise UFWError("from/to protocol mismatch")
-                            rule.set_protocol(proto)
-                            rule.set_port(port, "dst")
-                    except UFWError:
-                        raise
-                if pos < len(sys.argv) - 2 and pos + 2 != found_from:
-                    try:
-                        (port, proto) = parse_port_proto(sys.argv[pos + 2])
-                        if rule.protocol != "any" and proto != "any" and \
-                           rule.protocol != proto:
-                            raise UFWError("from/to protocol mismatch")
-                        rule.set_protocol(proto)
-                        rule.set_port(port, "dst")
-                    except UFWError:
-                        raise
-
-
+                
     return (action, rule, dryrun)
     
 
@@ -197,7 +177,7 @@ def parse_port_proto(str):
     '''Parse port or port and protocol'''
     port = ""
     proto = ""
-    tmp = str.split(':')
+    tmp = str.split('/')
     if len(tmp) == 1:
         port = tmp[0]
         proto = "any"
@@ -211,6 +191,9 @@ def parse_port_proto(str):
 
 def valid_address(addr):
     '''Validate IPV4 address'''
+    if addr.lower() == "any":
+        addr = "0.0.0.0/0"
+ 
     if not re.match('^[0-9./]+$', addr):
         return False
 
@@ -436,15 +419,23 @@ class UFWRule:
 
     def set_src(self, addr):
         '''Sets source address of rule'''
-        if not valid_address(addr):
+        tmp = addr
+        if tmp.lower() == "any":
+            tmp = "0.0.0.0/0"
+
+        if not valid_address(tmp):
             raise UFWError("Bad source address")
-        self.src = addr
+        self.src = tmp
 
     def set_dst(self, addr):
         '''Sets destination address of rule'''
-        if not valid_address(addr):
+        tmp = addr
+        if tmp.lower() == "any":
+            tmp = "0.0.0.0/0"
+
+        if not valid_address(tmp):
             raise UFWError("Bad destination address")
-        self.dst = addr
+        self.dst = tmp
 
     def match(x, y):
         '''Check if rules match
