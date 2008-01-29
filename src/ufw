@@ -665,7 +665,7 @@ class UFWBackendIptables(UFWBackend):
         comment_str = "# " + programName + "_comment #"
         for f in [files['rules'], files['before_rules'], files['after_rules']]:
             try:
-                fns = open_files(files['rules'])
+                fns = open_files(f)
             except Exception:
                 raise
             fd = fns['tmp']
