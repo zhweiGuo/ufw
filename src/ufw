@@ -628,35 +628,18 @@ class UFWBackendIptables(UFWBackend):
 
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
-        try:
-            fns = open_files(files['rules'])
-        except Exception:
-            raise
-        fd = fns['tmp']
-
-        lines = fns['orig'].readlines()
-
-        pat = re.compile(r'^:INPUT\s+ACCEPT\s+\[0:0\]')
-        if policy == "allow":
-            pat = re.compile(r'^:INPUT\s+DROP\s+\[0:0\]')
-
         if not self.dryrun:
-            for line in lines:
-                if pat.search(line):
-                    if policy == "allow":
-                        os.write(fd, ":INPUT ACCEPT [0:0]\n")
-                    else:
-                        os.write(fd, ":INPUT DROP [0:0]\n")
-                else:
-                    os.write(fd, line)
-    
+            if policy == "allow":
+                self.set_default(files['defaults'], "DEFAULT_INPUT_POLICY", \
+                                 "\"ACCEPT\"")
+            elif policy == "deny":
+                self.set_default(files['defaults'], "DEFAULT_INPUT_POLICY", 
+                                "\"DROP\"")
+            else:
+                raise UFWError("Unsupported policy '" + policy + "'")
+
         rstr = "Default policy changed to '" + policy + "'\n" + \
               "(be sure to update your rules accordingly)"
-
-        if self.dryrun:
-            close_files(fns, False)
-        else:
-            close_files(fns)
 
         return rstr
 
@@ -1100,6 +1083,7 @@ class UFWFrontend:
         try:
             str = self.backend.set_default_policy(policy)
             if self.backend._is_enabled():
+                self.backend.stop_firewall()
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
@@ -1112,6 +1096,7 @@ class UFWFrontend:
         try:
             str = self.backend.set_loglevel(level)
             if self.backend._is_enabled():
+                self.backend.stop_firewall()
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
