@@ -1,4 +1,4 @@
-ufw (0.8ubuntu1) hardy; urgency=low
+ufw (0.9) hardy; urgency=low
 
   * new upstream version:
     - bugfix for logging
