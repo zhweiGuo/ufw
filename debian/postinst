@@ -2,25 +2,41 @@
 
 . /usr/share/debconf/confmodule
 
-BEFORE_FILE="/usr/share/ufw/before.rules"
-AFTER_FILE="/usr/share/ufw/after.rules"
+BEFORE_FILE="/etc/ufw/before.rules"
+BEFORE_FILE_TEMPLATE="/usr/share/ufw/before.rules"
+AFTER_FILE="/etc/ufw/after.rules"
+AFTER_FILE_TEMPLATE="/usr/share/ufw/after.rules"
+USER_FILE="/var/lib/ufw/user.rules"
+USER_FILE_TEMPLATE="/usr/share/ufw/user.rules"
 case "$1" in
     configure)
 	if [ -e "/etc/ufw/ufw.rules" ]; then
-		db_get ufw/oldrules || true
+		# if migrating, then copy these over on upgrade
+        	if [ ! -e "$BEFORE_FILE" ]; then
+            		cp $BEFORE_FILE_TEMPLATE /etc/ufw
+        	fi
+        	if [ ! -e "$AFTER_FILE" ]; then
+            		cp $AFTER_FILE_TEMPLATE /etc/ufw
+        	fi
 	fi
 
         update-rc.d ufw start 39 S . > /dev/null
 
         if [ ! -e "$BEFORE_FILE" ] && [ -z "$2" ]; then
             # if no config and fresh install copy the template
-            cp $BEFORE_FILE /etc/ufw
+            cp $BEFORE_FILE_TEMPLATE $BEFORE_FILE
         fi
 
         if [ ! -e "$AFTER_FILE" ] && [ -z "$2" ]; then
             # if no config and fresh install copy the template
-            cp $AFTER_FILE /etc/ufw
+            cp $AFTER_FILE_TEMPLATE $AFTER_FILE
         fi
+
+        if [ ! -e "$USER_FILE" ]; then
+            # if no config and copy the template
+            cp $USER_FILE_TEMPLATE $USER_FILE
+        fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

@@ -76,9 +76,6 @@ start)
 			log_warning_msg "   Couldn't find '$BEFORE_RULES'"
 			
 		fi
-		iptables -A ufw-before-input -j RETURN
-		iptables -A ufw-before-output -j RETURN
-		iptables -A ufw-before-forward -j RETURN
 
 		# setup ufw-user chain
 		if [ -s "$IN_RULES" ]; then
@@ -95,6 +92,11 @@ start)
 			# don't include the RETURN lines here, as they will
 			# be in the IN_RULES file
 		fi
+
+		# now return from the chain
+		iptables -A ufw-before-input -j RETURN
+		iptables -A ufw-before-output -j RETURN
+		iptables -A ufw-before-forward -j RETURN
 		
 		# setup ufw-after-* chains
 		iptables -N ufw-after-input

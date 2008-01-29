@@ -223,7 +223,7 @@ Usage: ''' + programName + ''' COMMAND
 
 Commands:
   enable			Enables the firewall
-  disable			Disables the fireall
+  disable			Disables the firewall
   default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
   allow|deny RULE		allow or deny RULE
@@ -532,7 +532,7 @@ class UFWBackend:
                     statinfo = os.stat(path)
                     mode = statinfo[ST_MODE]
                 except OSError, e:
-                    raise UFWError("Couldn't stat '" + f + "'")
+                    raise UFWError("Couldn't stat '" + path + "'")
                 except Exception:
                     raise
 
@@ -908,7 +908,7 @@ COMMIT
 
         if fields[1] == 'tcp' or fields[1] == 'udp':
             rule.set_protocol(fields[1])
-        elif fields[1] == "0":
+        elif fields[1] == "0" or fields[1] == "all":
             rule.set_protocol('any')
         else:
             rule.set_protocol('UNKNOWN')
@@ -1054,7 +1054,20 @@ COMMIT
                                       s.split())
                     if rc != 0:
                         print out
-                        UFWError("Could not delete rule from running firewall")
+                        UFWError("Could not update running firewall")
+
+                    # delete the RETURN rule then add it back, so it is at the
+                    # end
+                    if flag == "-A":
+                        (rc, out) = cmd(['iptables', '-D', 'ufw-user-input', \
+                                         '-j', 'RETURN'])
+                        if rc != 0:
+                            print out
+
+                        (rc, out) = cmd(['iptables', '-A', 'ufw-user-input', \
+                                         '-j', 'RETURN'])
+                        if rc != 0:
+                            print out
         return rstr
 
 

@@ -4,7 +4,8 @@
 . /usr/share/debconf/confmodule
 db_version 2.0
 
-db_reset ufw/oldrules || true
-db_text high ufw/oldrules || true
-db_go
+if [ -e "/etc/ufw/ufw.rules" ]; then
+	db_text high ufw/oldrules || true
+	db_go
+fi
 
