@@ -103,48 +103,24 @@ Firewall started and enabled on system startup
 
 
 ENABLED=yes
-IPV6=no
-DEFAULT_INPUT_POLICY="DROP"
-DEFAULT_OUTPUT_POLICY="ACCEPT"
-DEFAULT_FORWARD_POLICY="DROP"
-IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 9: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
 
 ENABLED=no
-IPV6=no
-DEFAULT_INPUT_POLICY="DROP"
-DEFAULT_OUTPUT_POLICY="ACCEPT"
-DEFAULT_FORWARD_POLICY="DROP"
-IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 10: ENABLE
 WARN: Checks disabled
 Firewall started and enabled on system startup
 
 
 ENABLED=yes
-IPV6=no
-DEFAULT_INPUT_POLICY="DROP"
-DEFAULT_OUTPUT_POLICY="ACCEPT"
-DEFAULT_FORWARD_POLICY="DROP"
-IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 11: DISABLE
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
 
 ENABLED=no
-IPV6=no
-DEFAULT_INPUT_POLICY="DROP"
-DEFAULT_OUTPUT_POLICY="ACCEPT"
-DEFAULT_FORWARD_POLICY="DROP"
-IPT_SYSCTL=/home/jamie/ubuntu/software/ufw/ufw-current/tests/testarea/etc/ufw/sysctl.conf
-IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_irc nf_nat_irc"
 TESTING ARGS (allow/deny port)
 12: allow 25
 WARN: Checks disabled

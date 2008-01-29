@@ -38,13 +38,13 @@ head $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 do_cmd "0"  enable 
-cat $TESTPATH/etc/default/ufw | egrep '^[a-zA-Z]' >> $TESTTMP/result
+cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
 do_cmd "0"  disable 
-cat $TESTPATH/etc/default/ufw | egrep '^[a-zA-Z]' >> $TESTTMP/result
+cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
 do_cmd "0"  ENABLE 
-cat $TESTPATH/etc/default/ufw | egrep '^[a-zA-Z]' >> $TESTTMP/result
+cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
 do_cmd "0"  DISABLE 
-cat $TESTPATH/etc/default/ufw | egrep '^[a-zA-Z]' >> $TESTTMP/result
+cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
 
 echo "TESTING ARGS (allow/deny port)" >> $TESTTMP/result
 do_cmd "0"  allow 25 
