@@ -16,141 +16,157 @@ PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 . /lib/lsb/init-functions
 
 if [ -s #CONFIG_PREFIX#/default/ufw ]; then
-	. #CONFIG_PREFIX#/default/ufw
+    . #CONFIG_PREFIX#/default/ufw
 else
-	log_failure_msg "Could not find #CONFIG_PREFIX#/default/ufw (aborting)"
-	exit 1
+    log_failure_msg "Could not find #CONFIG_PREFIX#/default/ufw (aborting)"
+    exit 1
 fi
 
-BEFORE_RULES="#CONFIG_PREFIX#/ufw/before.rules"
-AFTER_RULES="#CONFIG_PREFIX#/ufw/after.rules"
-IN_RULES="#STATE_PREFIX#/user.rules"
+RULES_PATH="#CONFIG_PREFIX#/ufw"
+USER_PATH="#STATE_PREFIX#"
 
 case "$1" in
 start)
-	if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
-		# if firewall loaded, tell to reload instead
-		log_warning_msg "Firewall already started, use 'force-reload'"
-		exit 0
-	fi
-	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-		log_daemon_msg "Starting firewall:" "ufw"
-		if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
-			log_action_begin_msg "  Loading $IPT_SYSCTL"
-			sysctl -q -p $IPT_SYSCTL
-			log_action_end_msg $?
-		fi
-		for m in $IPT_MODULES
-		do
-			log_action_begin_msg "  Loading $m"
-			modprobe $m
-			log_action_end_msg $?
-		done
-		log_action_begin_msg "  Loading rules"
+    if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
+        # if firewall loaded, tell to reload instead
+        log_warning_msg "Firewall already started, use 'force-reload'"
+        exit 0
+    fi
+    if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+        log_daemon_msg "Starting firewall:" "ufw"
+        if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
+            log_action_begin_msg "  Loading $IPT_SYSCTL"
+            sysctl -q -p $IPT_SYSCTL
+            log_action_end_msg $?
+        fi
+        for m in $IPT_MODULES
+        do
+            log_action_begin_msg "  Loading $m"
+            modprobe $m
+            log_action_end_msg $?
+        done
+        log_action_begin_msg "  Loading rules"
 
-		# flush the chains
-		iptables -F
-		iptables -X
+        execs="iptables"
+        if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
+            execs="$execs ip6tables"
+        fi
 
-		# setup built-in chains' default policy
-		iptables -P INPUT $DEFAULT_INPUT_POLICY
-		iptables -P OUTPUT $DEFAULT_OUTPUT_POLICY
-		iptables -P FORWARD $DEFAULT_FORWARD_POLICY
+        for exe in $execs
+        do
+            type=""
+            if [ "$exe" = "ip6tables" ]; then
+                type="6"
+            fi
+            BEFORE_RULES="$RULES_PATH/before${type}.rules"
+            AFTER_RULES="$RULES_PATH/after${type}.rules"
+            USER_RULES="$USER_PATH/user${type}.rules"
 
-		# setup some other chains that can be used later
-		iptables -N ufw-not-local
+            # flush the chains
+            $exe -F
+            $exe -X
 
-		# setup ufw-before-* chains
-		iptables -N ufw-before-input
-		iptables -N ufw-before-output
-		iptables -N ufw-before-forward
-		iptables -A INPUT -j ufw-before-input
-		iptables -A OUTPUT -j ufw-before-output
-		iptables -A FORWARD -j ufw-before-forward
-		if [ -s "$BEFORE_RULES" ]; then
-			if ! iptables-restore -n < $BEFORE_RULES ; then
-				log_warning_msg "   Problem running 'rules.before'"
-				error="yes"
-			fi
-		else
-			log_warning_msg "   Couldn't find '$BEFORE_RULES'"
-			
-		fi
+            # setup built-in chains' default policy
+            $exe -P INPUT $DEFAULT_INPUT_POLICY
+            $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY
+            $exe -P FORWARD $DEFAULT_FORWARD_POLICY
 
-		# setup ufw-user chain
-		if [ -s "$IN_RULES" ]; then
-			iptables -N ufw-user-input
-			iptables -N ufw-user-output
-			iptables -N ufw-user-forward
-			iptables -A ufw-before-input -j ufw-user-input
-			iptables -A ufw-before-output -j ufw-user-output
-			iptables -A ufw-before-forward -j ufw-user-forward
-			if ! iptables-restore -n < $IN_RULES ; then
-				log_warning_msg "   Problem running 'rules.before'"
-				error="yes"
-			fi
-			# don't include the RETURN lines here, as they will
-			# be in the IN_RULES file
-		fi
+            # setup some other chains that can be used later
+            if [ "$type" != "6" ]; then
+                $exe -N ufw${type}-not-local
+            fi
 
-		# now return from the chain
-		iptables -A ufw-before-input -j RETURN
-		iptables -A ufw-before-output -j RETURN
-		iptables -A ufw-before-forward -j RETURN
-		
-		# setup ufw-after-* chains
-		iptables -N ufw-after-input
-		iptables -N ufw-after-output
-		iptables -N ufw-after-forward
-		iptables -A INPUT -j ufw-after-input
-		iptables -A OUTPUT -j ufw-after-output
-		iptables -A FORWARD -j ufw-after-forward
-		if [ -s "$AFTER_RULES" ]; then
-			if ! iptables-restore -n < $AFTER_RULES ; then
-				log_warning_msg "   Problem running 'rules.after'"
-				error="yes"
-			fi
-		else
-			log_warning_msg "    Couldn't find '$AFTER_RULES'"
-		fi
-		iptables -A ufw-after-input -j RETURN
-		iptables -A ufw-after-output -j RETURN
-		iptables -A ufw-after-forward -j RETURN
+            # setup ufw${type}-before-* chains
+            $exe -N ufw${type}-before-input
+            $exe -N ufw${type}-before-output
+            $exe -N ufw${type}-before-forward
+            $exe -A INPUT -j ufw${type}-before-input
+            $exe -A OUTPUT -j ufw${type}-before-output
+            $exe -A FORWARD -j ufw${type}-before-forward
+            if [ -s "$RULES_PATH" ]; then
+                if ! $exe-restore -n < $BEFORE_RULES ; then
+                    log_warning_msg "   Problem running '$BEFORE_RULES'"
+                    error="yes"
+                fi
+            else
+                log_warning_msg "   Couldn't find '$BEFORE_RULES'"
+            fi
 
-		if [ "$error" = "yes" ]; then
-			log_action_end_msg 1
-			log_failure_msg "   Error(s) in starting firewall"
-			exit 1
-		else
-			log_action_end_msg 0
-		fi
-	else
-		log_warning_msg "    Skipping firewall (not enabled)"
-	fi
-	;;
+            # setup ufw${type}-user chain
+            if [ -s "$USER_PATH" ]; then
+                $exe -N ufw${type}-user-input
+                $exe -N ufw${type}-user-output
+                $exe -N ufw${type}-user-forward
+                $exe -A ufw${type}-before-input -j ufw${type}-user-input
+                $exe -A ufw${type}-before-output -j ufw${type}-user-output
+                $exe -A ufw${type}-before-forward -j ufw${type}-user-forward
+                if ! $exe-restore -n < $USER_RULES ; then
+                    log_warning_msg "   Problem running '$USER_RULES'"
+                    error="yes"
+                fi
+                # don't include the RETURN lines here, as they will
+                # be in the USER_PATH file
+            fi
+
+            # now return from the chain
+            $exe -A ufw${type}-before-input -j RETURN
+            $exe -A ufw${type}-before-output -j RETURN
+            $exe -A ufw${type}-before-forward -j RETURN
+        
+            # setup ufw${type}-after-* chains
+            $exe -N ufw${type}-after-input
+            $exe -N ufw${type}-after-output
+            $exe -N ufw${type}-after-forward
+            $exe -A INPUT -j ufw${type}-after-input
+            $exe -A OUTPUT -j ufw${type}-after-output
+            $exe -A FORWARD -j ufw${type}-after-forward
+            if [ -s "$AFTER_RULES" ]; then
+                if ! $exe-restore -n < $AFTER_RULES ; then
+                    log_warning_msg "   Problem running '$AFTER_RULES'"
+                    error="yes"
+                fi
+            else
+                log_warning_msg "    Couldn't find '$AFTER_RULES'"
+            fi
+            $exe -A ufw${type}-after-input -j RETURN
+            $exe -A ufw${type}-after-output -j RETURN
+            $exe -A ufw${type}-after-forward -j RETURN
+        done
+
+        if [ "$error" = "yes" ]; then
+            log_action_end_msg 1
+            log_failure_msg "   Error(s) in starting firewall"
+            exit 1
+        else
+            log_action_end_msg 0
+        fi
+    else
+        log_warning_msg "    Skipping firewall (not enabled)"
+    fi
+    ;;
 stop)
-	log_warning_msg "Please use 'ufw disable' to stop"
-	;;
+    log_warning_msg "Please use 'ufw disable' to stop"
+    ;;
 restart)
-	if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-		log_action_begin_msg "Restarting firewall"
-		#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
-		#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
-		log_action_end_msg $?
-	else
-		log_warning_msg "Skipping restart (not enabled)"
-	fi
-	;;
+    if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+        log_action_begin_msg "Restarting firewall"
+        #PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
+        #PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
+        log_action_end_msg $?
+    else
+        log_warning_msg "Skipping restart (not enabled)"
+    fi
+    ;;
 force-reload)
-	log_action_begin_msg "Forcibly reloading firewall"
-	#PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
-	#PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
-	log_action_end_msg $?
-	;;
+    log_action_begin_msg "Forcibly reloading firewall"
+    #PREFIX#/sbin/ufw disable >/dev/null 2>/dev/null
+    #PREFIX#/sbin/ufw enable >/dev/null 2>/dev/null
+    log_action_end_msg $?
+    ;;
 *)
-	echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload}"
-	exit 1
-	;;
+    echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload}"
+    exit 1
+    ;;
 esac
 
 exit 0

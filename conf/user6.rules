@@ -1,0 +1,9 @@
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT

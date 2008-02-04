@@ -11,7 +11,11 @@ case "$1" in
 	fi
         update-rc.d ufw remove > /dev/null
         rm -f /etc/ufw/before.rules
+        rm -f /etc/ufw/before6.rules
         rm -f /etc/ufw/after.rules
+        rm -f /etc/ufw/after6.rules
+        rm -f /var/lib/ufw/user.rules
+        rm -f /var/lib/ufw/user6.rules
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

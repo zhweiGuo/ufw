@@ -46,8 +46,10 @@ class Install(_install, object):
         # Install state file
         statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
         user_rules = os.path.join(statedir, 'user.rules')
+        user6_rules = os.path.join(statedir, 'user6.rules')
         self.mkpath(statedir)
         self.copy_file('conf/user.rules', user_rules)
+        self.copy_file('conf/user6.rules', user6_rules)
 
         # Install configuration files
         confdir = os.path.join(self.root, 'etc')
@@ -55,6 +57,8 @@ class Install(_install, object):
         ufwconf = os.path.join(confdir, 'ufw', 'sysctl.conf')
         before_rules = os.path.join(confdir, 'ufw', 'before.rules')
         after_rules = os.path.join(confdir, 'ufw', 'after.rules')
+        before6_rules = os.path.join(confdir, 'ufw', 'before6.rules')
+        after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
         initscript = os.path.join(confdir, 'init.d', 'ufw')
 
         for dir in [ defaults, ufwconf, initscript ]:
@@ -64,11 +68,14 @@ class Install(_install, object):
         self.copy_file('conf/sysctl.conf', ufwconf)
         self.copy_file('conf/before.rules', before_rules)
         self.copy_file('conf/after.rules', after_rules)
+        self.copy_file('conf/before6.rules', before6_rules)
+        self.copy_file('conf/after6.rules', after6_rules)
         self.copy_file('conf/initscript', initscript)
 
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
-                      initscript, script, manpage ]:
+                      before6_rules, after6_rules, initscript, script, \
+                      manpage ]:
             print "Updating " + file
             a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%' " + file)
             while a.poll() == -1:
