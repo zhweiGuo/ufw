@@ -10,6 +10,7 @@ case "$1" in
 		db_purge
 	fi
         update-rc.d ufw remove > /dev/null
+        rm -f /etc/ufw/ufw.rules
         rm -f /etc/ufw/before.rules
         rm -f /etc/ufw/before6.rules
         rm -f /etc/ufw/after.rules
