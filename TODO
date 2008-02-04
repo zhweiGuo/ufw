@@ -7,8 +7,7 @@ implement /var/lib/ufw/maps
 Provide a way out if it doesn't work (eg prompt user for 'Did it work?' type
 question, and timeout if no response (maybe use the previous working policy?))
 
-finish ipv6 support
-
+Finish ipv6 support (src/ufw)
 
 
 (C) 2008 Canonical Ltd.

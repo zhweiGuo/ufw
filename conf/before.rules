@@ -59,7 +59,7 @@
 # all other non-local packets are dropped
 -A ufw-not-local -j DROP
 
-# allow MULTICAST, be sure to also uncomment the MULTICAST line above
+# allow MULTICAST, be sure the MULTICAST line above is uncommented
 -A ufw-before-input -s 224.0.0.0/4 -j ACCEPT
 -A ufw-before-input -d 224.0.0.0/4 -j ACCEPT
 

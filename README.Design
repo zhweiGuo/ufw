@@ -22,6 +22,11 @@ Implementation
 The application is written in python, just because it is so easy to work with.
 :)
 
+IPV6
+----
+Preliminary IPv6 support is included in ufw. To keep IPv4 addressing easy to
+use, the IPv4 and IPv6 configuration are kept completely separate (ie there
+are no IPv4 mapped addresses).
 
 
 (C) 2008 Canonical Ltd.
