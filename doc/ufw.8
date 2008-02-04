@@ -124,6 +124,21 @@ Allow access to udp 1.2.3.4 port 5469 from 1.2.3.5 port 5469:
 
   ufw allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 
+.SH REMOTE MANAGEMENT
+.PP
+When running \fBufw enable\fR or starting \fBufw\fR via its initscript, 
+\fBufw\fR will flush its chains. This is required so \fBufw\fR can maintain a
+consistent state, but it will drop existing connections (eg ssh). \fBufw\fR
+does support adding rules before enabling the firewall, so administrators can
+do:
+
+  ufw allow proto tcp from any to any port 22
+
+before running '\fBufw enable\fR'. The rules will still be flushed, but the
+ssh port will be open after enabling the firewall. Please note that once the
+ufw is 'enabled' it will insert rules into the existing chains, and therefore
+not flush the chains.
+
 .SH NOTES
 .PP
 Rule ordering is important and the first match wins. Therefore when adding

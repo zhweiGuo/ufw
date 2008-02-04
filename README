@@ -56,7 +56,23 @@ wants to add rules manually, the rules should be added to 'before.rules' and
 There is some default configuration in both 'before.rules' and 'after.rules',
 and this configuration is not displayed with 'ufw status' (but can always
 be viewed with 'iptables -L -n' or 'iptables -L [chain] -n'. See the iptables
-manpage for details.
+man page for details.
+
+
+Remote Management
+-----------------
+On /etc/init.d/ufw start and 'ufw enable' the chains are flushed, so ssh will
+drop. This is needed so ufw is in a consistent state. Once the ufw is 'enabled'
+it will insert rules into the existing chains, and therefore not flush the
+chains.
+
+You can insert rules before enabling the firewall however, so it is often
+a good idea to to:
+$ sudo ufw allow proto tcp from any to any port 22
+$ sudo ufw enable
+
+In this case, the chains are still flushed, but the ssh port will be open
+after enabling the firewall.
 
 
 IPV6
