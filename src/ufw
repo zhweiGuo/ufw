@@ -1149,6 +1149,9 @@ COMMIT
             UFWError("Couldn't update rules file")
 
         rstr = "Rules updated"
+        if rule.v6:
+            rstr = "Rules updated (v6)"
+
         # Operate on the chains
         if self._is_enabled():
             flag = ""
@@ -1172,7 +1175,7 @@ COMMIT
                 if rule.v6:
                     exe = "ip6tables"
                     chain = "ufw6-user-input"
-                    rstr += "(v6)"
+                    rstr += " (v6)"
                 for s in self._get_rules_from_formatted(rule.format_rule()):
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
