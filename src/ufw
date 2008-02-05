@@ -1038,62 +1038,63 @@ COMMIT
                             rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
                                            tmp[4], tmp[5])
                             if f == files['rules6']:
+                                rule.set_v6(True)
                                 self.rules6.append(rule)
                             else:
+                                rule.set_v6(False)
                                 self.rules.append(rule)
                         except UFWError:
                             warn("Skipping malformed tuple: " + tuple)
 
             orig.close()
 
-    def _write_rules(self):
+    def _write_rules(self, v6=False):
         '''Write out new rules to file to user chain file'''
-        rfns = [files['rules']]
-        if self.use_ipv6():
-            rfns.append(files['rules6'])
+        rules_file = files['rules']
+        if v6:
+            rules_file = files['rules6']
 
-        for f in rfns:
-            try:
-                fns = open_files(f)
-            except Exception:
-                raise
+        try:
+            fns = open_files(rules_file)
+        except Exception:
+            raise
 
-            chain_prefix = "ufw"
-            rules = self.rules
-            if f == files['rules6']:
-                chain_prefix = "ufw6"
-                rules = self.rules6
+        chain_prefix = "ufw"
+        rules = self.rules
+        if v6:
+            chain_prefix = "ufw6"
+            rules = self.rules6
 
-            if self.dryrun:
-                fd = sys.stdout.fileno()
-            else:
-                fd = fns['tmp']
+        if self.dryrun:
+            fd = sys.stdout.fileno()
+        else:
+            fd = fns['tmp']
 
-            lines = fns['orig'].readlines()
-            pat_commit = re.compile(r'^### RULES ###')
-            for line in lines:
-                os.write(fd, line)
-                if pat_commit.match(line):
-                    break
+        lines = fns['orig'].readlines()
+        pat_commit = re.compile(r'^### RULES ###')
+        for line in lines:
+            os.write(fd, line)
+            if pat_commit.match(line):
+                break
 
-            for r in rules:
-                rule_str = "-A " + chain_prefix + "-user-input " + \
-                           r.format_rule() + "\n"
-                os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
-                         (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
-                for s in self._get_rules_from_formatted(rule_str):
-                    os.write(fd, s)
+        for r in rules:
+            rule_str = "-A " + chain_prefix + "-user-input " + \
+                       r.format_rule() + "\n"
+            os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
+                     (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+            for s in self._get_rules_from_formatted(rule_str):
+                os.write(fd, s)
 
-            os.write(fd, "\n### END RULES ###\n")
-            os.write(fd, "-A " + chain_prefix + "-user-input -j RETURN\n")
-            os.write(fd, "-A " + chain_prefix + "-user-output -j RETURN\n")
-            os.write(fd, "-A " + chain_prefix + "-user-forward -j RETURN\n")
-            os.write(fd, "COMMIT\n")
+        os.write(fd, "\n### END RULES ###\n")
+        os.write(fd, "-A " + chain_prefix + "-user-input -j RETURN\n")
+        os.write(fd, "-A " + chain_prefix + "-user-output -j RETURN\n")
+        os.write(fd, "-A " + chain_prefix + "-user-forward -j RETURN\n")
+        os.write(fd, "COMMIT\n")
 
-            if self.dryrun:
-                close_files(fns, False)
-            else:
-                close_files(fns)
+        if self.dryrun:
+            close_files(fns, False)
+        else:
+            close_files(fns)
 
     def set_rule(self, rule):
         '''Updates firewall with rule by:
@@ -1143,7 +1144,7 @@ COMMIT
 
         # Update the user rules file
         try:
-            self._write_rules()
+            self._write_rules(rule.v6)
         except:
             UFWError("Couldn't update rules file")
 
