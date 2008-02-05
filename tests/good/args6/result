@@ -1,0 +1,113 @@
+TESTING ARGS (logging)
+0: --dry-run logging on
+WARN: Checks disabled
+Logging enabled
+
+
+1: --dry-run logging off
+WARN: Checks disabled
+Logging disabled
+
+
+2: --dry-run LOGGING ON
+WARN: Checks disabled
+Logging enabled
+
+
+3: --dry-run LOGGING OFF
+WARN: Checks disabled
+Logging disabled
+
+
+TESTING ARGS (default)
+4: --dry-run default allow
+WARN: Checks disabled
+Default policy changed to 'allow'
+(be sure to update your rules accordingly)
+
+
+5: --dry-run default deny
+WARN: Checks disabled
+Default policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+
+6: --dry-run DEFAULT ALLOW
+WARN: Checks disabled
+Default policy changed to 'allow'
+(be sure to update your rules accordingly)
+
+
+7: --dry-run DEFAULT DENY
+WARN: Checks disabled
+Default policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+
+TESTING ARGS (enable/disable)
+8: --dry-run enable
+WARN: Checks disabled
+> running initscript
+Firewall started and enabled on system startup
+
+
+9: --dry-run disable
+WARN: Checks disabled
+> iptables -F
+> iptables -X
+> echo
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+> | iptables-restore
+> ip6tables -F
+> ip6tables -X
+> echo
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+> | ip6tables-restore
+Firewall stopped and disabled on system startup
+
+
+10: --dry-run ENABLE
+WARN: Checks disabled
+> running initscript
+Firewall started and enabled on system startup
+
+
+11: --dry-run DISABLE
+WARN: Checks disabled
+> iptables -F
+> iptables -X
+> echo
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+> | iptables-restore
+> ip6tables -F
+> ip6tables -X
+> echo
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+> | ip6tables-restore
+Firewall stopped and disabled on system startup
+
+
+TESTING ARGS (status)
+12: --dry-run status
+WARN: Checks disabled
+> Checking iptables
+> Checking ip6tables
+
+
+

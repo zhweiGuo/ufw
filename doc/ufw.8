@@ -86,6 +86,13 @@ This will deny all traffic to tcp port 80 on this host. Another example:
 
 This will deny all traffic from the RFC1918 Class A network to tcp port 25
 with the address 192.168.0.1.
+
+  ufw deny proto tcp from 2001:db8::/32 to any port 25
+
+This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 80 on this
+host. Note that IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6
+firewalling to work.
+
 .PP
 To delete a rule, simply prefix the original rule with \fBdelete\fR. For
 example, if the original rule was:

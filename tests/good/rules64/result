@@ -1,0 +1,406 @@
+Man page
+0: --dry-run allow 53
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 53 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw6-user-input -p udp --dport 53 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+1: --dry-run allow 25/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+2: --dry-run allow smtp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 25 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+3: --dry-run deny proto tcp to any port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 80 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+4: --dry-run deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+5: --dry-run deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 ::/0 any 2001:db8::/32
+-A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+6: --dry-run allow 80/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 80 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+7: --dry-run delete allow 80/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+8: --dry-run deny 53
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j DROP
+-A ufw-user-input -p udp --dport 53 -j DROP
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any 53 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 53 -j DROP
+-A ufw6-user-input -p udp --dport 53 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+9: --dry-run allow 80/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 80 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+10: --dry-run allow from 10.0.0.0/8
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+11: --dry-run allow from 172.16.0.0/12
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+12: --dry-run allow from 192.168.0.0/16
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+13: --dry-run deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
+-A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+14: --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
+-A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+

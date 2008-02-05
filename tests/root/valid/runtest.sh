@@ -27,14 +27,22 @@ do_cmd "0"  LOGGING OFF
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
+do_cmd "0"  enable
 do_cmd "0"  default allow
-head $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+iptables -L -n | grep policy >> $TESTTMP/result
+grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  default deny
-head $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+iptables -L -n | grep policy >> $TESTTMP/result
+grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT ALLOW
-head $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+iptables -L -n | grep policy >> $TESTTMP/result
+grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT DENY
-head $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+iptables -L -n | grep policy >> $TESTTMP/result
+grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
+
+do_cmd "0"  default deny
+do_cmd "0"  disable
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 do_cmd "0"  enable 
