@@ -189,32 +189,36 @@ def parse_port_proto(str):
     return (port, proto)
 
 
-def valid_address(addr):
-    '''Validate IPV4 address'''
-    if addr.lower() == "any":
-        addr = "0.0.0.0/0"
- 
-    if not re.match('^[0-9./]+$', addr):
+def valid_address(addr, v6=False):
+    '''Validate IP addresses'''
+    if v6 and not socket.has_ipv6:
+        warn("python does not have IPv6 support.")
         return False
 
+    if addr.lower() == "any":
+        if v6:
+            addr = "::/0"
+        else:
+            addr = "0.0.0.0/0"
+ 
     net = addr.split('/')
 
     if len(net) > 2:
         return False
     elif len(net) == 2:
         # Check netmask specified via '/'
-        # TODO check 255.255.255.0 type netmasks
         if int(net[1]) < 0 or int(net[1]) > 32:
             return False
 
-    ip = net[0].split('.')
-    if len(ip) != 4:
+    try:
+        if v6:
+            socket.inet_pton(socket.AF_INET6, net[0])
+        else:
+            socket.inet_pton(socket.AF_INET, net[0])
+    except:
         return False
-    for i in ip:
-        if not i or int(i) < 0 or int(i) > 255:
-            return False
+    
     return True
-
 
 def print_help():
     '''Print help message'''
@@ -352,6 +356,7 @@ class UFWRule:
             self.set_src(src)
             self.set_dst(dst)
             self.remove = False
+            self.v6 = False
         except UFWError:
             raise
 
@@ -368,11 +373,11 @@ class UFWRule:
         else:
             str = " -p " + self.protocol
 
-        if self.dst != "0.0.0.0/0":
+        if self.dst != "0.0.0.0/0" and self.dst != "::/0":
             str += " -d " + self.dst
         if self.dport != "any":
             str += " --dport " + self.dport
-        if self.src != "0.0.0.0/0":
+        if self.src != "0.0.0.0/0" and self.src != "::/0":
             str += " -s " + self.src
         if self.sport != "any":
             str += " --sport " + self.sport
@@ -417,25 +422,33 @@ class UFWRule:
         else:
             raise UFWError("Unsupported protocol '" + protocol + "'")
 
-    def set_src(self, addr):
+    def set_src(self, addr, v6=False):
         '''Sets source address of rule'''
         tmp = addr
         if tmp.lower() == "any":
-            tmp = "0.0.0.0/0"
+            if v6:
+                 tmp = "::/0"
+            else:
+                 tmp = "0.0.0.0/0"
 
-        if not valid_address(tmp):
+        if not valid_address(tmp) and not valid_address(tmp, True):
             raise UFWError("Bad source address")
         self.src = tmp
+        self.v6 = v6
 
-    def set_dst(self, addr):
+    def set_dst(self, addr, v6=False):
         '''Sets destination address of rule'''
         tmp = addr
         if tmp.lower() == "any":
-            tmp = "0.0.0.0/0"
+            if v6:
+                 tmp = "::/0"
+            else:
+                 tmp = "0.0.0.0/0"
 
-        if not valid_address(tmp):
+        if not valid_address(tmp) and not valid_address(tmp, True):
             raise UFWError("Bad destination address")
         self.dst = tmp
+        self.v6 = v6
 
     def match(x, y):
         '''Check if rules match
@@ -457,6 +470,9 @@ class UFWRule:
             debug("No match")
             return 1
         if x.dst != y.dst:
+            debug("No match")
+            return 1
+        if x.v6 != y.v6:
             debug("No match")
             return 1
         
@@ -618,6 +634,9 @@ class UFWBackendIptables(UFWBackend):
         files['rules'] = '#STATE_PREFIX#/user.rules'
         files['before_rules'] = '#CONFIG_PREFIX#/ufw/before.rules'
         files['after_rules'] = '#CONFIG_PREFIX#/ufw/after.rules'
+        files['rules6'] = '#STATE_PREFIX#/user6.rules'
+        files['before6_rules'] = '#CONFIG_PREFIX#/ufw/before6.rules'
+        files['after6_rules'] = '#CONFIG_PREFIX#/ufw/after6.rules'
         files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
 
         UFWBackend.__init__(self, "iptables", d)
@@ -646,7 +665,9 @@ class UFWBackendIptables(UFWBackend):
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
         comment_str = "# " + programName + "_comment #"
-        for f in [files['rules'], files['before_rules'], files['after_rules']]:
+        for f in [files['rules'], files['rules6'], \
+                  files['before_rules'], files['before6_rules'], \
+                  files['after_rules'], files['after6_rules']]:
             try:
                 fns = open_files(f)
             except Exception:
@@ -683,6 +704,7 @@ class UFWBackendIptables(UFWBackend):
     def get_status(self):
         '''Show current status of firewall'''
         out = ""
+        out6 = ""
         if dryrun:
             out = "> Checking iptables\n"
             if self._use_ipv6():
@@ -698,18 +720,22 @@ class UFWBackendIptables(UFWBackend):
         (rc, out) = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             raise UFWError("problem running iptables")
-        if self._use_ipv6():
-            (rc, out) = cmd(['ip6tables', '-L', '-n'])
-            if rc != 0:
-                raise UFWError("problem running ip6tables")
-
         if out == "":
             return out
+
+        if self._use_ipv6():
+            (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
+            if rc != 0:
+                raise UFWError("problem running ip6tables")
+            if out6 == "":
+                return out6
+
+        out += out6
 
         # Make the output pretty
         str = ""
         pat_chain = re.compile(r'^Chain ')
-        pat_ufw = re.compile(r'^Chain ufw-user-input')
+        pat_ufw = re.compile(r'^Chain ufw6?-user-input')
         pat_target = re.compile(r'^target')
         in_ufw_input = False
         rules = []
@@ -738,7 +764,7 @@ class UFWBackendIptables(UFWBackend):
                     port = r.sport
                     tmp = r.src
                 
-                if tmp != "0.0.0.0/0":
+                if tmp != "0.0.0.0/0" and tmp != "::/0":
                     location[loc] = tmp
                 
                 if port != "any":
@@ -750,8 +776,11 @@ class UFWBackendIptables(UFWBackend):
                     if r.protocol != "any":
                         location[loc] += ":" + r.protocol
 
-                if tmp == "0.0.0.0/0" and port == "any":
-                    location[loc] = "Anywhere"
+                if port == "any":
+                    if tmp == "0.0.0.0/0":
+                        location[loc] = "Anywhere"
+                    if tmp == "::/0":
+                        location[loc] = "Anywhere (v6)"
 
             str += "%-26s%-8s%s\n" % (location['dst'], r.action.upper(), \
                     location['src'])
@@ -781,6 +810,13 @@ COMMIT
                 print "> echo\n" + openconf + "> | ip6tables-restore"
             return
 
+        try:
+            (tmp, tmpname) = mkstemp()
+        except Exception:
+            raise
+        os.write(tmp, openconf)
+        os.close(tmp)
+
         # Flush the firewall
         (rc, out) = cmd(['iptables', '-F'])
         if rc != 0:
@@ -790,13 +826,6 @@ COMMIT
         (rc, out) = cmd(['iptables', '-X'])
         if rc != 0:
             raise UFWError("problem running iptables 'delete'")
-
-        try:
-            (tmp, tmpname) = mkstemp()
-        except Exception:
-            raise
-        os.write(tmp, openconf)
-        os.close(tmp)
 
         # Set default open
         (rc, out) = cmd_pipe(['cat', tmpname], ['iptables-restore'])
@@ -814,6 +843,7 @@ COMMIT
             if rc != 0:
                 raise UFWError("problem running ip6tables 'delete'")
 
+            # Set default open
             (rc, out) = cmd_pipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
                 raise UFWError("problem running ip6tables")
@@ -827,8 +857,8 @@ COMMIT
             if rc != 0:
                 raise UFWError("problem running init script")
 
+        # When ipv6 not enabled, just enable it on loopback
         if not self._use_ipv6():
-            # Just enable ipv6 on loopback
             ipv6conf = '''*filter
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
@@ -852,10 +882,19 @@ COMMIT
         '''Reload firewall rules file'''
         if self.dryrun:
             print "> iptables-restore < " + files['rules'] 
+            if self._use_ipv6():
+                print "> ip6tables-restore < " + files['rules6'] 
         else:
-            (rc, out) = cmd_pipe(['cat', files['rules']], ['iptables-restore', '-n'])
+            (rc, out) = cmd_pipe(['cat', files['rules']], \
+                                 ['iptables-restore', '-n'])
             if rc != 0:
                 raise UFWError("problem running iptables")
+
+            if self._use_ipv6():
+                (rc, out) = cmd_pipe(['cat', files['rules6']], \
+                                     ['ip6tables-restore', '-n'])
+                if rc != 0:
+                    raise UFWError("problem running ip6tables")
 
     def _get_rules_from_formatted(self, frule):
         '''Return list of iptables rules appropriate for sending'''
@@ -915,62 +954,83 @@ COMMIT
         
     def _read_rules(self):
         '''Read in rules that were added by ufw.'''
-        orig = open_file_read(files['rules'])
+        rfns = [files['rules']]
+        if self._use_ipv6():
+            rfns.append(files['rules6'])
 
-        lines = orig.readlines()
-        pat_tuple = re.compile(r'^### tuple ###\s*')
-        for line in lines:
-            if pat_tuple.match(line):
-                tuple = pat_tuple.sub('', line)
-                tmp = re.split(r'\s+', tuple.strip())
-                if len(tmp) != 6:
-                    warn("Skipping malformed tuple (bad length): " + tuple)
-                else:
-                    try:
-                        rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4],
-                                       tmp[5])
-                        self.rules.append(rule)
-                    except UFWError:
-                        warn("Skipping malformed tuple: " + tuple)
+        for f in rfns:
+            orig = open_file_read(f)
 
-        orig.close()
+            lines = orig.readlines()
+            pat_tuple = re.compile(r'^### tuple ###\s*')
+            for line in lines:
+                if pat_tuple.match(line):
+                    tuple = pat_tuple.sub('', line)
+                    tmp = re.split(r'\s+', tuple.strip())
+                    if len(tmp) != 6:
+                        warn("Skipping malformed tuple (bad length): " + tuple)
+                    else:
+                        try:
+                            rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
+                                           tmp[4], tmp[5])
+                            if f == files['rules6']:
+                                rule.v6 = True
+                            self.rules.append(rule)
+                        except UFWError:
+                            warn("Skipping malformed tuple: " + tuple)
+
+            orig.close()
 
     def _write_rules(self):
         '''Write out new rules to file to user chain file'''
-        try:
-            fns = open_files(files['rules'])
-        except Exception:
-            raise
+        rfns = [files['rules']]
+        if self._use_ipv6():
+            rfns.append(files['rules6'])
 
-        if self.dryrun:
-            fd = sys.stdout.fileno()
-        else:
-            fd = fns['tmp']
+        for f in rfns:
+            try:
+                fns = open_files(f)
+            except Exception:
+                raise
 
-        lines = fns['orig'].readlines()
-        pat_commit = re.compile(r'^### RULES ###')
-        for line in lines:
-            os.write(fd, line)
-            if pat_commit.match(line):
-                break
+            chain_prefix = "ufw"
+            if f == files['rules6']:
+                chain_prefix = "ufw6"
 
-        for r in self.rules:
-            rule_str = "-A ufw-user-input " + r.format_rule() + "\n"
-            os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
-                     (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
-            for s in self._get_rules_from_formatted(rule_str):
-                os.write(fd, s)
+            if self.dryrun:
+                fd = sys.stdout.fileno()
+            else:
+                fd = fns['tmp']
 
-        os.write(fd, "\n### END RULES ###\n")
-        os.write(fd, "-A ufw-user-input -j RETURN\n")
-        os.write(fd, "-A ufw-user-output -j RETURN\n")
-        os.write(fd, "-A ufw-user-forward -j RETURN\n")
-        os.write(fd, "COMMIT\n")
+            lines = fns['orig'].readlines()
+            pat_commit = re.compile(r'^### RULES ###')
+            for line in lines:
+                os.write(fd, line)
+                if pat_commit.match(line):
+                    break
 
-        if self.dryrun:
-            close_files(fns, False)
-        else:
-            close_files(fns)
+            for r in self.rules:
+                # Write rules to proper file
+                if (r.v6 and f == files['rules']) or \
+                   (not r.v6 and f == files['rules6']):
+                    continue
+                rule_str = "-A " + chain_prefix + "-user-input " + \
+                           r.format_rule() + "\n"
+                os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
+                         (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+                for s in self._get_rules_from_formatted(rule_str):
+                    os.write(fd, s)
+
+            os.write(fd, "\n### END RULES ###\n")
+            os.write(fd, "-A " + chain_prefix + "-user-input -j RETURN\n")
+            os.write(fd, "-A " + chain_prefix + "-user-output -j RETURN\n")
+            os.write(fd, "-A " + chain_prefix + "-user-forward -j RETURN\n")
+            os.write(fd, "COMMIT\n")
+
+            if self.dryrun:
+                close_files(fns, False)
+            else:
+                close_files(fns)
 
     def set_rule(self, rule):
         '''Updates firewall with rule by:
