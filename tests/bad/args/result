@@ -291,3 +291,16 @@ TESTING ARGS (delete allow/deny)
 94: --dry-run delete
 
 
+TESTING ARGS (allow/deny mixed ipv4/ipv6)
+95: --dry-run allow to 10.0.0.1 from 2001:db8::/32
+
+
+96: --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
+
+
+97: --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp
+
+
+98: --dry-run deny to 2001:db8::/32 from 10.0.0.1
+
+

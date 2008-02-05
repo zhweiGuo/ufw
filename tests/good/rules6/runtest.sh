@@ -15,7 +15,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 source "$TESTPATH/../testlib.sh"
-
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
 
 echo "Man page" >> $TESTTMP/result

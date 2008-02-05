@@ -1,0 +1,2094 @@
+Man page
+0: --dry-run deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 ::/0 any 2001:db8::/32
+-A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+TO/FROM
+1: --dry-run allow from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any ::/0 any 2001:db8::/32
+-A ufw6-user-input -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+2: --dry-run delete allow from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+3: --dry-run allow to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+4: --dry-run delete allow to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+5: --dry-run allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+6: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+7: --dry-run allow from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j ACCEPT
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+8: --dry-run delete allow from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+9: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+10: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+11: --dry-run allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+12: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+13: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+14: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+15: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+16: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+17: --dry-run allow from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+18: --dry-run delete allow from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+19: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+20: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+21: --dry-run allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+22: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+23: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+24: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+25: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+26: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+27: --dry-run allow from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+28: --dry-run delete allow from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+29: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+30: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+31: --dry-run allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+32: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+33: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+34: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+35: --dry-run allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+36: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+37: --dry-run deny from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any any ::/0 any 2001:db8::/32
+-A ufw6-user-input -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+38: --dry-run delete deny from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+39: --dry-run deny to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+40: --dry-run delete deny to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+41: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+42: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+43: --dry-run deny from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j DROP
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+44: --dry-run delete deny from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+45: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+46: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+47: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+48: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+49: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+50: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+51: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+52: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+53: --dry-run deny from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+54: --dry-run delete deny from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+55: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+56: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+57: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+58: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+59: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+60: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+61: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+62: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+63: --dry-run deny from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+64: --dry-run delete deny from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+65: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+66: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+67: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+68: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+69: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+70: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+71: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+72: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+
+

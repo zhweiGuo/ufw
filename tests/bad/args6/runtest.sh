@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 source "$TESTPATH/../testlib.sh"
+sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
 
 echo "TESTING ARGS (logging)" >> $TESTTMP/result
 do_cmd "1" null --dry-run logging
@@ -49,7 +50,7 @@ do_cmd "1" null --dry-run deny XXX
 do_cmd "1" null --dry-run deny foobar
 
 echo "TESTING ARGS (allow/deny bad to/from)" >> $TESTTMP/result
-ip="192.168.0.1"
+ip="2001:db8:3:4:5:6:7:8"
 for action in allow deny
 do
         do_cmd "1" null --dry-run $action prot tcp from any
@@ -93,19 +94,20 @@ do
 done
 
 echo "TESTING ARGS (allow/deny bad ip)" >> $TESTTMP/result
-do_cmd "1" null --dry-run allow to 192.168.0.
-do_cmd "1" null --dry-run allow to 192.168.0.1.1
+do_cmd "1" null --dry-run allow to 2001:db8:::/32
+do_cmd "1" null --dry-run allow to 2001:db8::/129
+do_cmd "1" null --dry-run allow to 2001:gb8::/32
+do_cmd "1" null --dry-run allow to 2001:db8:3:4:5:6:7:8:9
 do_cmd "1" null --dry-run allow to foo
-do_cmd "1" null --dry-run allow to xxx.xxx.xxx.xx
-do_cmd "1" null --dry-run allow to 192a.168.0.1
-do_cmd "1" null --dry-run allow to 192.168a.0.1
-do_cmd "1" null --dry-run allow to 192.168.0a.1
-do_cmd "1" null --dry-run allow to 192.168.1.a1
-do_cmd "1" null --dry-run allow to 192.168.1..1
-do_cmd "1" null --dry-run allow to 192.168.1..1/24
-do_cmd "1" null --dry-run allow to 192.168.1.256
-do_cmd "1" null --dry-run allow to 256.0.0.0
-do_cmd "1" null --dry-run allow to 10.256.0.0
+do_cmd "1" null --dry-run allow to xxx:xxx:xxx:xx:xxx:xxx:xxx:xxx
+do_cmd "1" null --dry-run allow to g001:db8:3:4:5:6:7:8
+do_cmd "1" null --dry-run allow to 2001:gb8:3:4:5:6:7:8
+do_cmd "1" null --dry-run allow to 2001:db8:g:4:5:6:7:8
+do_cmd "1" null --dry-run allow to 2001:db8:3:g:5:6:7:8
+do_cmd "1" null --dry-run allow to 2001:db8:3:4:g:6:7:8
+do_cmd "1" null --dry-run allow to 2001:db8:3:4:5:g:7:8
+do_cmd "1" null --dry-run allow to 2001:db8:3:4:5:6:g:8
+do_cmd "1" null --dry-run allow to 2001:db8:3:4:5:6:7:g
 
 echo "TESTING ARGS (delete allow/deny)" >> $TESTTMP/result
 do_cmd "1" null --dry-run delete
@@ -115,6 +117,5 @@ do_cmd "1" null --dry-run allow to 10.0.0.1 from 2001:db8::/32
 do_cmd "1" null --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
 do_cmd "1" null --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp
 do_cmd "1" null --dry-run deny to 2001:db8::/32 from 10.0.0.1
-
 
 exit 0
