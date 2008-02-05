@@ -766,8 +766,6 @@ class UFWBackendIptables(UFWBackend):
         (rc, out) = cmd(['iptables', '-L', '-n'])
         if rc != 0:
             raise UFWError("problem running iptables")
-        if out == "":
-            return out
 
         if self.use_ipv6():
             (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
@@ -775,6 +773,9 @@ class UFWBackendIptables(UFWBackend):
                 raise UFWError("problem running ip6tables")
             if out6 == "":
                 return out6
+
+        if out == "" and out6 == "":
+            return ""
 
         str = ""
         rules = []
