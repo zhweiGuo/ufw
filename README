@@ -23,9 +23,9 @@ Basic Layout
 ------------
 /usr/sbin/ufw 			is the UI for people (have different backends)
 /etc/defaults/ufw 		high level configuration
-/etc/ufw/before.rules 		rules evaluated before UI added rules
-/etc/ufw/after.rules 		rules evaluated after UI added rules
-/var/lib/ufw/user.rules		UI added rules (not to be modified)
+/etc/ufw/before[6].rules 	rules evaluated before UI added rules
+/etc/ufw/after[6].rules 	rules evaluated after UI added rules
+/var/lib/ufw/user[6].rules	UI added rules (not to be modified)
 /etc/ufw/sysctl.conf 		kernel network tunables
 /etc/init.d/ufw			start script
 
@@ -77,7 +77,14 @@ after enabling the firewall.
 
 IPV6
 ----
-ufw has very limited support for IPV6 and it should not be used at this time.
+ufw has support for IPv6, but it is disabled by default.  To enable, modify
+/etc/default/ufw (or wherever this is installed) to have:
+
+IPV6=yes
+
+Then do:
+# ufw disable
+# ufw enable
 
 
 Testing
@@ -99,7 +106,6 @@ $ ./run_tests.sh -s
 
 Or for the root tests:
 $ sudo ./run_tests.sh -s root
-
 
 
 (C) 2008 Canonical Ltd.
