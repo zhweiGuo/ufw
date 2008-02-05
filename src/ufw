@@ -1171,6 +1171,7 @@ COMMIT
                 if rule.v6:
                     exe = "ip6tables"
                     chain = "ufw6-user-input"
+                    rstr += "(v6)"
                 for s in self._get_rules_from_formatted(rule.format_rule()):
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
