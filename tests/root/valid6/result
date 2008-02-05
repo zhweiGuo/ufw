@@ -1,0 +1,643 @@
+TESTING ARGS (logging)
+0: logging on
+WARN: Checks disabled
+Logging enabled
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+1: logging off
+WARN: Checks disabled
+Logging disabled
+
+
+# ufw_comment # -A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+2: LOGGING ON
+WARN: Checks disabled
+Logging enabled
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+3: LOGGING OFF
+WARN: Checks disabled
+Logging disabled
+
+
+# ufw_comment # -A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+TESTING ARGS (default)
+4: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+5: default allow
+WARN: Checks disabled
+Default policy changed to 'allow'
+(be sure to update your rules accordingly)
+
+
+ipv4:
+Chain INPUT (policy ACCEPT)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+ipv6:
+Chain INPUT (policy ACCEPT)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+DEFAULT_INPUT_POLICY="ACCEPT"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
+6: default deny
+WARN: Checks disabled
+Default policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+
+ipv4:
+Chain INPUT (policy DROP)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+ipv6:
+Chain INPUT (policy DROP)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+DEFAULT_INPUT_POLICY="DROP"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
+7: DEFAULT ALLOW
+WARN: Checks disabled
+Default policy changed to 'allow'
+(be sure to update your rules accordingly)
+
+
+ipv4:
+Chain INPUT (policy ACCEPT)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+ipv6:
+Chain INPUT (policy ACCEPT)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+DEFAULT_INPUT_POLICY="ACCEPT"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
+8: DEFAULT DENY
+WARN: Checks disabled
+Default policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+
+ipv4:
+Chain INPUT (policy DROP)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+ipv6:
+Chain INPUT (policy DROP)
+Chain FORWARD (policy DROP)
+Chain OUTPUT (policy ACCEPT)
+DEFAULT_INPUT_POLICY="DROP"
+DEFAULT_OUTPUT_POLICY="ACCEPT"
+DEFAULT_FORWARD_POLICY="DROP"
+9: default deny
+WARN: Checks disabled
+Default policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+
+10: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+TESTING ARGS (enable/disable)
+11: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+ENABLED=yes
+12: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+ENABLED=no
+13: ENABLE
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+ENABLED=yes
+14: DISABLE
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+ENABLED=no
+TESTING ARGS (allow/deny to/from)
+Man page
+15: deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny tcp 25 ::/0 any 2001:db8::/32
+-A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
+
+16: delete deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+Rules updated (v6)
+
+
+TO/FROM
+17: allow from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::/0 any 2001:db8::/32
+-A ufw6-user-input -s 2001:db8::/32 -j ACCEPT
+
+18: delete allow from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+19: allow to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -j ACCEPT
+
+20: delete allow to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rules updated (v6)
+
+
+21: allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 -j ACCEPT
+
+22: delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+23: allow from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j ACCEPT
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j ACCEPT
+24: delete allow from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+25: allow to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+26: delete allow to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+Rules updated (v6)
+
+
+27: allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+28: delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+29: allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+30: delete allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+31: allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+32: delete allow to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+33: allow from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow udp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+34: delete allow from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+35: allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+
+36: delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+37: allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow udp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+38: delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+39: allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+
+40: delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+41: allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+42: delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+43: allow from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow tcp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+44: delete allow from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+45: allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j ACCEPT
+
+46: delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+47: allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow tcp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+48: delete allow to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+49: allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ACCEPT
+
+50: delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+51: allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j ACCEPT
+
+52: delete allow to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+53: deny from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any any ::/0 any 2001:db8::/32
+-A ufw6-user-input -s 2001:db8::/32 -j DROP
+
+54: delete deny from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+55: deny to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -j DROP
+
+56: delete deny to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rules updated (v6)
+
+
+57: deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 -j DROP
+
+58: delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+59: deny from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j DROP
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j DROP
+60: delete deny from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+61: deny to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+62: delete deny to 2001:db8:3:4:5:6:7:8 port 25
+WARN: Checks disabled
+Rules updated (v6)
+
+
+63: deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+64: delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+65: deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+66: delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+67: deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+68: delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+69: deny from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny udp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j DROP
+
+70: delete deny from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+71: deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+
+72: delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+73: deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny udp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+
+74: delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+75: deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+
+76: delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+77: deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+
+78: delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+79: deny from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny tcp any ::/0 80 2001:db8::/32
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j DROP
+
+80: delete deny from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+81: deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 any ::/0
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j DROP
+
+82: delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+83: deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny tcp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j DROP
+
+84: delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+85: deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+
+86: delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+87: deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j DROP
+
+88: delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+Rules updated (v6)
+
+
