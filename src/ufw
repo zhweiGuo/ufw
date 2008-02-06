@@ -227,6 +227,10 @@ def valid_address(addr, v6=False):
         warn("python does not have IPv6 support.")
         return False
 
+    # quick and dirty test
+    if len(addr) > 43 or not re.match(r'^[a-fA-F0-9:\./]+$', addr):
+        return False
+
     net = addr.split('/')
 
     if len(net) > 2:

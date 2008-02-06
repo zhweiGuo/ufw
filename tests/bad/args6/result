@@ -290,20 +290,26 @@ TESTING ARGS (allow/deny bad ip)
 94: --dry-run allow to 2001:db8:3:4:5:6:7:g
 
 
+95: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0000/129
+
+
+96: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/128
+
+
 TESTING ARGS (delete allow/deny)
-95: --dry-run delete
+97: --dry-run delete
 
 
 TESTING ARGS (allow/deny mixed ipv4/ipv6)
-96: --dry-run allow to 10.0.0.1 from 2001:db8::/32
+98: --dry-run allow to 10.0.0.1 from 2001:db8::/32
 
 
-97: --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
+99: --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
 
 
-98: --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp
+100: --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp
 
 
-99: --dry-run deny to 2001:db8::/32 from 10.0.0.1
+101: --dry-run deny to 2001:db8::/32 from 10.0.0.1
 
 

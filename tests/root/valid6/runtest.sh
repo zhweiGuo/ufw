@@ -139,4 +139,7 @@ do
         done
 done
 
+do_cmd "0" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0001/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
 exit 0

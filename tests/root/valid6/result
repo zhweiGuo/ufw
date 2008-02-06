@@ -641,3 +641,6 @@ WARN: Checks disabled
 Rules updated (v6)
 
 
+89: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0001/128
+
+
