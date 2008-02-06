@@ -23,7 +23,7 @@ case "$1" in
         done
         rm -f $RULES_PATH/ufw.rules $RULES_PATH/ufw.rules.dpkg-old
         rm -f $USER_PATH/user.rules $USER_PATH/user6.rules
-        rm -f /etc/default/ufw /etc/default/ufw.dpkg-old
+        rm -f /etc/ufw/ufw.conf
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

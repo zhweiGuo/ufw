@@ -35,10 +35,9 @@ install: build
 
 	# don't make *.rules conffiles
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
+	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.conf $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/var/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
-	mv $(CURDIR)/debian/ufw/etc/default/ufw $(CURDIR)/debian/ufw/usr/share/ufw/ufw.default
-	rmdir $(CURDIR)/debian/ufw/etc/default
 
 	# strip out beginning of path since setup.py doens't support dest-dir
 	# yet

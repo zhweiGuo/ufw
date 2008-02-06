@@ -26,8 +26,14 @@ case "$1" in
             fi
         done
 
-        if [ ! -e "/etc/default/ufw" ]; then
-            cp $TEMPLATE_PATH/ufw.default /etc/default/ufw
+        if [ ! -e "/etc/ufw/ufw.conf" ]; then
+            cp $TEMPLATE_PATH/ufw.conf /etc/ufw
+        fi
+
+        if dpkg --compare-versions "$2" le "0.10"; then
+            # strip out enabled stuff
+            sed -i 's/^# set to yes to start on boot.*//' /etc/default/ufw
+            sed -i 's/^ENABLED=.*//' /etc/default/ufw
         fi
 
         update-rc.d ufw start 39 S . > /dev/null
