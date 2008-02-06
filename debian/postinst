@@ -26,6 +26,10 @@ case "$1" in
             fi
         done
 
+        if [ ! -e "/etc/default/ufw" ]; then
+            cp $TEMPLATE_PATH/ufw.default /etc/default/ufw
+        fi
+
         update-rc.d ufw start 39 S . > /dev/null
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)

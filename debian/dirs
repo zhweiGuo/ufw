@@ -1,2 +1,3 @@
 etc/ufw
+usr/share/ufw
 var/lib/ufw
