@@ -9,12 +9,7 @@ case "$1" in
     configure)
         for f in before.rules before6.rules after.rules after6.rules
         do
-	    # if migration or upgrade, copy over the files if they don't exist
-            if [ -e "/etc/ufw/ufw.rules" ] || [ -z "$2" ]; then
-                if [ ! -e "$RULES_PATH/$f" ] && [ -z "$2" ]; then
-                    cp $TEMPLATE_PATH $RULES_PATH/$f
-                fi
-            fi
+            ucf --debconf-ok $TEMPLATE_PATH $RULES_PATH/$f
         done
 
         for f in user.rules user6.rules

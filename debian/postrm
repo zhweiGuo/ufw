@@ -10,11 +10,15 @@ case "$1" in
 		db_purge
 	fi
         update-rc.d ufw remove > /dev/null
+
+        for f in before.rules before6.rules after.rules after6.rules
+        do
+            if which ucf > /dev/null 2>&1; then
+                ucf -p /etc/ufw/$f
+            fi
+            rm -f /etc/ufw/$f
+        done
         rm -f /etc/ufw/ufw.rules
-        rm -f /etc/ufw/before.rules
-        rm -f /etc/ufw/before6.rules
-        rm -f /etc/ufw/after.rules
-        rm -f /etc/ufw/after6.rules
         rm -f /var/lib/ufw/user.rules
         rm -f /var/lib/ufw/user6.rules
         ;;

@@ -10,7 +10,7 @@ Standards-Version: 3.7.2
 
 Package: ufw
 Architecture: all
-Depends: debconf, ${python:Depends}, iptables (>= 1.3.3)
+Depends: debconf, ${python:Depends}, iptables (>= 1.3.3), ucf
 XB-Python-Version: ${python:Versions}
 Description: program for managing a netfilter firewall 
  Ufw is a tool to manage a local host-based firewall. It provides a command
