@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-set -x
-
 . /usr/share/debconf/confmodule
 
 RULES_PATH="/etc/ufw"
