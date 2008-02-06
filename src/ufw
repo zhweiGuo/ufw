@@ -889,6 +889,8 @@ COMMIT
             if rc != 0:
                 raise UFWError("problem running ip6tables")
 
+        os.unlink(tmpname)
+
     def start_firewall(self):
         '''Starts the firewall'''
         if dryrun:

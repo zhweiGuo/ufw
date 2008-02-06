@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+RULES_PATH="/etc/ufw"
+USER_PATH="/var/lib/ufw"
 case "$1" in
     remove)
         ;;
@@ -10,13 +12,19 @@ case "$1" in
 		db_purge
 	fi
         update-rc.d ufw remove > /dev/null
-        rm -f /etc/ufw/ufw.rules
-        rm -f /etc/ufw/before.rules
-        rm -f /etc/ufw/before6.rules
-        rm -f /etc/ufw/after.rules
-        rm -f /etc/ufw/after6.rules
-        rm -f /var/lib/ufw/user.rules
-        rm -f /var/lib/ufw/user6.rules
+
+        for f in before.rules before6.rules after.rules after6.rules
+        do
+            if which ucf > /dev/null 2>&1; then
+                ucf -p $RULES_PATH/$f
+            fi
+            rm -f $RULES_PATH/$f
+            rm -f $RULES_PATH/$f.ucf-old $RULES_PATH/$f.ucf-new $RULES_PATH/$f.ucf-dist
+        done
+        rm -f $RULES_PATH/ufw.rules
+        rm -f $RULES_PATH/ufw.rules.dpkg-old
+        rm -f $USER_PATH/user.rules
+        rm -f $USER_PATH/user6.rules
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

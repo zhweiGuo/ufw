@@ -3,25 +3,26 @@
 . /usr/share/debconf/confmodule
 
 RULES_PATH="/etc/ufw"
-USER_PATH="/etc/ufw"
+USER_PATH="/var/lib/ufw"
 TEMPLATE_PATH="/usr/share/ufw"
 case "$1" in
     configure)
+        # these files are required, but don't want to change them if
+        # the user modified them
         for f in before.rules before6.rules after.rules after6.rules
         do
-	    # if migration or upgrade, copy over the files if they don't exist
-            if [ -e "/etc/ufw/ufw.rules" ] || [ -z "$2" ]; then
-                if [ ! -e "$RULES_PATH/$f" ] && [ -z "$2" ]; then
-                    cp $TEMPLATE_PATH $RULES_PATH/$f
-                fi
-            fi
+            ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
         done
+
+        if [ -e "/etc/ufw/ufw.rules" ]; then
+            mv -f /etc/ufw/ufw.rules /etc/ufw/ufw.rules.dpkg-old
+        fi
 
         for f in user.rules user6.rules
         do
             if [ ! -e "$USER_PATH/$f" ]; then
                 # if no config, copy the template
-                cp $TEMPLATE_PATH $USER_PATH/$f
+                cp $TEMPLATE_PATH/$f $USER_PATH/$f
             fi
         done
 
