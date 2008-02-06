@@ -615,16 +615,16 @@ class UFWBackend:
 
     def _get_defaults(self):
         '''Get all settings from defaults file'''
-        orig = open_file_read(files['defaults'])
-
         self.defaults = {}
-        pat = re.compile(r'^\w+=\w+')
-        for line in orig:
-            if pat.search(line):
-                tmp = re.split(r'=', line.strip())
-                self.defaults[tmp[0].lower()] = tmp[1].lower()
+        for f in [files['defaults'], files['conf']]:
+            orig = open_file_read(f)
+            pat = re.compile(r'^\w+=\w+')
+            for line in orig:
+                if pat.search(line):
+                    tmp = re.split(r'=', line.strip())
+                    self.defaults[tmp[0].lower()] = tmp[1].lower()
 
-        orig.close()
+            orig.close()
 
     def set_default(self, f, opt, value):
         '''Sets option in defaults file'''
