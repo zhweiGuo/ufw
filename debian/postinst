@@ -9,8 +9,23 @@ case "$1" in
     configure)
         for f in before.rules before6.rules after.rules after6.rules
         do
-            ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+            if [ -e "/etc/ufw/ufw.rules" ]; then
+	        # if migration copy over the files
+                ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+            elif [ ! -z "$2" ]; then
+                # if upgrade and file exists, upgrade, otherwise do nothing
+                if [ -e "$RULES_PATH/$f" ]; then
+                    ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+                fi
+            else
+                # not a migration and not an upgrade
+                ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+            fi
         done
+
+        if [ -e "/etc/ufw/ufw.rules" ]; then
+            mv -f /etc/ufw/ufw.rules /etc/ufw/ufw.rules.dpkg-old
+        fi
 
         for f in user.rules user6.rules
         do
