@@ -104,8 +104,8 @@ $ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && python ./setup.py ins
 Can also just run from the source directory:
 $ ./run_tests.sh -s
 
-Or for the root tests (these will modify your existing firewall, so they
-require root privileges and aren't run by default):
+Or for the root tests (these will modify your existing firewall and insert
+kernel modules, so they require root privileges and aren't run by default):
 $ sudo ./run_tests.sh -s root
 
 

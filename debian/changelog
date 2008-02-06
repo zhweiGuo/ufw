@@ -7,6 +7,7 @@ ufw (0.10) hardy; urgency=low
   * updated packaging for ipv6 files
   * fixed email typo (LP: 189418)
   * use ucf for /etc/ufw/*.rules files
+  * move ENABLED to ufw.conf
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 05 Feb 2008 22:24:51 -0500
 

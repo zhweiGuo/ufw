@@ -21,6 +21,12 @@ else
     log_failure_msg "Could not find #CONFIG_PREFIX#/default/ufw (aborting)"
     exit 1
 fi
+if [ -s #CONFIG_PREFIX#/ufw/ufw.conf ]; then
+    . #CONFIG_PREFIX#/ufw/ufw.conf
+else
+    log_failure_msg "Could not find #CONFIG_PREFIX#/ufw/ufw.conf (aborting)"
+    exit 1
+fi
 
 RULES_PATH="#CONFIG_PREFIX#/ufw"
 USER_PATH="#STATE_PREFIX#"

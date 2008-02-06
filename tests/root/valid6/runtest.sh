@@ -59,13 +59,13 @@ do_cmd "0"  disable
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 do_cmd "0"  enable 
-cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
 do_cmd "0"  disable 
-cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
 do_cmd "0"  ENABLE 
-cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
 do_cmd "0"  DISABLE 
-cat $TESTPATH/etc/default/ufw | egrep '^ENABLED' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
 
 echo "TESTING ARGS (allow/deny to/from)" >> $TESTTMP/result
 echo "Man page" >> $TESTTMP/result

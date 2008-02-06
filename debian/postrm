@@ -21,10 +21,9 @@ case "$1" in
             rm -f $RULES_PATH/$f
             rm -f $RULES_PATH/$f.ucf-old $RULES_PATH/$f.ucf-new $RULES_PATH/$f.ucf-dist
         done
-        rm -f $RULES_PATH/ufw.rules
-        rm -f $RULES_PATH/ufw.rules.dpkg-old
-        rm -f $USER_PATH/user.rules
-        rm -f $USER_PATH/user6.rules
+        rm -f $RULES_PATH/ufw.rules $RULES_PATH/ufw.rules.dpkg-old
+        rm -f $USER_PATH/user.rules $USER_PATH/user6.rules
+        rm -f /etc/ufw/ufw.conf
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

@@ -1,9 +1,6 @@
 # /etc/default/ufw
 # 
 
-# set to yes to start on boot
-ENABLED=no
-
 # set to yes to apply rules to support IPv6 (no means only IPv6 on loopback
 # accepted). You will need to 'disable' and then 'enable' the firewall for
 # the changes to take affect.
