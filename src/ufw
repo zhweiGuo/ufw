@@ -28,14 +28,13 @@ import sys
 from tempfile import mkstemp
 
 version = "#VERSION#"
-programName = os.path.basename(sys.argv[0])
+programName = "ufw"
 
 if sys.version_info[0] < 2 or sys.version_info[1] < 5:
     print >> sys.stderr, programName + ": Need at least python 2.5\n"
     sys.exit(1)
 
 # These are default settings
-max_file_size = 10 * 1024 * 1024  # 10MB
 files = {'defaults': '#CONFIG_PREFIX#/default/ufw' }
 debugging = False
 disable_checks = False
@@ -269,17 +268,6 @@ Commands:
 
 def open_file_read(f):
     '''Opens the specified file read-only'''
-    size = 0
-    try:
-        size = os.stat(f)[ST_SIZE]
-    except OSError, e:
-        raise UFWError("Couldn't stat '" + f + "'")
-    except Exception:
-        raise
-
-    if size > max_file_size:
-        raise UFWError("'" + f + "' is too big")
-
     try:
         orig = open(f, 'r')
     except OSError, e:
@@ -625,9 +613,8 @@ class UFWBackend:
         orig = open_file_read(files['defaults'])
 
         self.defaults = {}
-        lines = orig.readlines()
         pat = re.compile(r'^\w+=\w+')
-        for line in lines:
+        for line in orig:
             if pat.search(line):
                 tmp = re.split(r'=', line.strip())
                 self.defaults[tmp[0].lower()] = tmp[1].lower()
@@ -636,15 +623,17 @@ class UFWBackend:
 
     def set_default(self, f, opt, value):
         '''Sets option in defaults file'''
+        if not re.match(r'^[\w_]+$', opt):
+            raise UFWError("Invalid option")
+
         try:
             fns = open_files(f)
         except Exception:
             raise
         fd = fns['tmp']
 
-        lines = fns['orig'].readlines()
         pat = re.compile(r'^' + opt + '=')
-        for line in lines:
+        for line in fns['orig']:
             if pat.search(line):
                 os.write(fd, opt + "=" + value + "\n")
             else:
@@ -720,14 +709,12 @@ class UFWBackendIptables(UFWBackend):
                 raise
             fd = fns['tmp']
 
-            lines = fns['orig'].readlines()
-
             pat = re.compile(r'^-.*\sLOG\s')
             if level == "on":
                 pat = re.compile(r'^#.*\sLOG\s')
 
             if not self.dryrun:
-                for line in lines:
+                for line in fns['orig']:
                     if pat.search(line):
                         if level == "off":
                             os.write(fd, comment_str + ' ' + line)
@@ -1034,9 +1021,8 @@ COMMIT
         for f in rfns:
             orig = open_file_read(f)
 
-            lines = orig.readlines()
             pat_tuple = re.compile(r'^### tuple ###\s*')
-            for line in lines:
+            for line in orig:
                 if pat_tuple.match(line):
                     tuple = pat_tuple.sub('', line)
                     tmp = re.split(r'\s+', tuple.strip())
@@ -1079,9 +1065,8 @@ COMMIT
         else:
             fd = fns['tmp']
 
-        lines = fns['orig'].readlines()
         pat_commit = re.compile(r'^### RULES ###')
-        for line in lines:
+        for line in fns['orig']:
             os.write(fd, line)
             if pat_commit.match(line):
                 break
