@@ -832,12 +832,12 @@ class UFWBackendIptables(UFWBackend):
                     if tmp == "::/0":
                         location[loc] = "Anywhere (v6)"
 
-            str += "%-26s%-8s%s\n" % (location['dst'], r.action.upper(), \
+            str += "%-26s %-8s%s\n" % (location['dst'], r.action.upper(), \
                     location['src'])
 
         if str != "":
-            tmp = "%-26s%-8s%s\n" % ("To", "Action", "From")
-            tmp += "%-26s%-8s%s\n" % ("--", "------", "----")
+            tmp = "%-26s %-8s%s\n" % ("To", "Action", "From")
+            tmp += "%-26s %-8s%s\n" % ("--", "------", "----")
             str = tmp + str
 
         return str
@@ -966,8 +966,8 @@ COMMIT
         '''Parses a line from iptables -L -n'''
         fields = line.split()
 
-        # ip6tables hack since it's different than iptables
         if type == "v6":
+            # ip6tables hack since its opt field is blank (unlike iptables)
             fields.insert(2, '--')
 
         if len(fields) < 5:
@@ -989,6 +989,15 @@ COMMIT
             rule.set_protocol('any')
         else:
             rule.set_protocol('UNKNOWN')
+
+        if type == "v6":
+            # ip6tables hack since it doesn't have a space between the 
+            # destination address and the protocol on a large destination
+            # address (see Debian bug #464244).
+            mashed = fields[4][(len(fields[4]) - 3):]
+            if mashed == 'tcp' or mashed == 'udp':
+                fields.insert(5, mashed)
+                fields[4] = fields[4][:(len(fields[4]) - 3)]
 
         try:
             rule.set_src(fields[3])
