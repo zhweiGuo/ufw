@@ -19,6 +19,7 @@ case "$1" in
                 ucf -p $RULES_PATH/$f
             fi
             rm -f $RULES_PATH/$f
+            rm -f $RULES_PATH/$f.ucf-old $RULES_PATH/$f.ucf-new $RULES_PATH/$f.ucf-dist
         done
         rm -f $RULES_PATH/ufw.rules
         rm -f $USER_PATH/user.rules
