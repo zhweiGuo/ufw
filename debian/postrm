@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+RULES_PATH="/etc/ufw"
+USER_PATH="/var/lib/ufw"
 case "$1" in
     remove)
         ;;
@@ -14,13 +16,13 @@ case "$1" in
         for f in before.rules before6.rules after.rules after6.rules
         do
             if which ucf > /dev/null 2>&1; then
-                ucf -p /etc/ufw/$f
+                ucf -p $RULES_PATH/$f
             fi
-            rm -f /etc/ufw/$f
+            rm -f $RULES_PATH/$f
         done
-        rm -f /etc/ufw/ufw.rules
-        rm -f /var/lib/ufw/user.rules
-        rm -f /var/lib/ufw/user6.rules
+        rm -f $RULES_PATH/ufw.rules
+        rm -f $USER_PATH/ufw/user.rules
+        rm -f $USER_PATH/ufw/user6.rules
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

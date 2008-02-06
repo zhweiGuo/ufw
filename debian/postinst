@@ -3,7 +3,7 @@
 . /usr/share/debconf/confmodule
 
 RULES_PATH="/etc/ufw"
-USER_PATH="/etc/ufw"
+USER_PATH="/var/lib/ufw"
 TEMPLATE_PATH="/usr/share/ufw"
 case "$1" in
     configure)
