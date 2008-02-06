@@ -1177,6 +1177,12 @@ COMMIT
                     exe = "ip6tables"
                     chain = "ufw6-user-input"
                     rstr += " (v6)"
+
+                # Is the firewall running?
+                (rc, out) = cmd([exe, '-L', chain, '-n'])
+                if rc != 0:
+                    raise UFWError("Could not update running firewall")
+
                 for s in self._get_rules_from_formatted(rule.format_rule()):
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
@@ -1277,10 +1283,16 @@ class UFWFrontend:
                 else:
                     raise UFWError("Invalid type '" + type + "'")
             else:
-                rule.set_v6(False)
-                res = self.backend.set_rule(rule)
+                if type == "v4" or type == "both":
+                    rule.set_v6(False)
+                    res = self.backend.set_rule(rule)
+                elif type == "v6":
+                    raise UFWError("IPv6 support not enabled")
+                else:
+                    raise UFWError("Invalid type '" + type + "'")
         except UFWError, e:
             error(e.value)
+
         print res
 
 

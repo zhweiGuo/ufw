@@ -304,3 +304,16 @@ TESTING ARGS (allow/deny mixed ipv4/ipv6)
 98: --dry-run deny to 2001:db8::/32 from 10.0.0.1
 
 
+TESTING ARGS (allow/deny ipv6 when not enabled)
+99: --dry-run deny proto tcp from 2001:db8::/32 to any port 25
+
+
+100: --dry-run allow proto tcp from 2001:db8::/32 port 25 to any
+
+
+101: --dry-run deny proto udp to 2001:db8::/32 from any port 25
+
+
+102: --dry-run allow proto udp to 2001:db8::/32 port 25 from any
+
+

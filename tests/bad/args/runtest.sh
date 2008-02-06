@@ -116,5 +116,10 @@ do_cmd "1" null --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
 do_cmd "1" null --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp
 do_cmd "1" null --dry-run deny to 2001:db8::/32 from 10.0.0.1
 
+echo "TESTING ARGS (allow/deny ipv6 when not enabled)" >> $TESTTMP/result
+do_cmd "1" null --dry-run deny proto tcp from 2001:db8::/32 to any port 25
+do_cmd "1" null --dry-run allow proto tcp from 2001:db8::/32 port 25 to any
+do_cmd "1" null --dry-run deny proto udp to 2001:db8::/32 from any port 25
+do_cmd "1" null --dry-run allow proto udp to 2001:db8::/32 port 25 from any
 
 exit 0

@@ -336,26 +336,7 @@ WARN: Checks disabled
 Rule added
 
 
-44: deny proto tcp from 2001:db8::/32 to any port 25
-WARN: Checks disabled
-iptables v1.3.6: host/network `2001:db8::' not found
-Try `iptables -h' or 'iptables --help' for more information.
-
-Rule added
-
-
-45: deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
-WARN: Checks disabled
-iptables v1.3.6: host/network `2001:db8::' not found
-Try `iptables -h' or 'iptables --help' for more information.
-
-iptables v1.3.6: host/network `2001:db8::' not found
-Try `iptables -h' or 'iptables --help' for more information.
-
-Rule added
-
-
-46: status
+44: status
 WARN: Checks disabled
 To                         Action  From
 --                         ------  ----
@@ -406,88 +387,63 @@ Anywhere                   ALLOW   192.168.0.0/16
 ### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
 -A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
 
-### tuple ### deny tcp 25 0.0.0.0/0 any 2001:db8::/32
--A ufw-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
-
-### tuple ### deny any any 2001:db8:3:4:5:6:7:8 26 2001:db8::/32
--A ufw-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 26 -j DROP
--A ufw-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 26 -j DROP
 TESTING ARGS (delete allow/deny to/from)
-47: delete allow 53
+45: delete allow 53
 WARN: Checks disabled
 Rule deleted
 
 
-48: delete allow 23/tcp
+46: delete allow 23/tcp
 WARN: Checks disabled
 Rule deleted
 
 
-49: delete allow smtp
+47: delete allow smtp
 WARN: Checks disabled
 Rule deleted
 
 
-50: delete deny proto tcp to any port 80
+48: delete deny proto tcp to any port 80
 WARN: Checks disabled
 Rule deleted
 
 
-51: delete deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+49: delete deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
 WARN: Checks disabled
 Rule deleted
 
 
-52: delete allow from 10.0.0.0/8
+50: delete allow from 10.0.0.0/8
 WARN: Checks disabled
 Rule deleted
 
 
-53: delete allow from 172.16.0.0/12
+51: delete allow from 172.16.0.0/12
 WARN: Checks disabled
 Rule deleted
 
 
-54: delete allow from 192.168.0.0/16
+52: delete allow from 192.168.0.0/16
 WARN: Checks disabled
 Rule deleted
 
 
-55: delete deny proto udp from 1.2.3.4 to any port 514
+53: delete deny proto udp from 1.2.3.4 to any port 514
 WARN: Checks disabled
 Rule deleted
 
 
-56: delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+54: delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 WARN: Checks disabled
 Rule deleted
 
 
-57: delete deny proto tcp from 2001:db8::/32 to any port 25
-WARN: Checks disabled
-iptables v1.3.6: host/network `2001:db8::' not found
-Try `iptables -h' or 'iptables --help' for more information.
-
-Rule deleted
-
-
-58: delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
-WARN: Checks disabled
-iptables v1.3.6: host/network `2001:db8::' not found
-Try `iptables -h' or 'iptables --help' for more information.
-
-iptables v1.3.6: host/network `2001:db8::' not found
-Try `iptables -h' or 'iptables --help' for more information.
-
-Rule deleted
-
-
-59: status
+55: status
 WARN: Checks disabled
 No rules
 
 
-60: disable
+56: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
