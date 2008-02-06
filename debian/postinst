@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+set -x
+
 . /usr/share/debconf/confmodule
 
 RULES_PATH="/etc/ufw"
@@ -7,20 +9,11 @@ USER_PATH="/var/lib/ufw"
 TEMPLATE_PATH="/usr/share/ufw"
 case "$1" in
     configure)
+        # these files are required, but don't want to change them if
+        # the user modified them
         for f in before.rules before6.rules after.rules after6.rules
         do
-            if [ -e "/etc/ufw/ufw.rules" ]; then
-	        # if migration copy over the files
-                ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
-            elif [ ! -z "$2" ]; then
-                # if upgrade and file exists, upgrade, otherwise do nothing
-                if [ -e "$RULES_PATH/$f" ]; then
-                    ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
-                fi
-            else
-                # not a migration and not an upgrade
-                ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
-            fi
+            ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
         done
 
         if [ -e "/etc/ufw/ufw.rules" ]; then
