@@ -1,0 +1,494 @@
+Setting IPV6 to yes
+0: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+1: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+TESTING ARGS (logging)
+2: logging on
+WARN: Checks disabled
+Logging enabled
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+3: logging off
+WARN: Checks disabled
+Logging disabled
+
+
+# ufw_comment # -A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+TESTING ARGS (allow/deny to/from)
+4: allow 53
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+5: allow 23/tcp
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+6: allow smtp
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+7: deny proto tcp to any port 80
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+8: deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule added
+
+
+9: allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule added
+
+
+10: allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule added
+
+
+11: allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule added
+
+
+12: deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule added
+
+
+13: allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule added
+
+
+14: deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+Rule added (v6)
+
+
+15: deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rule added (v6)
+
+
+16: status
+WARN: Checks disabled
+To                         Action  From
+--                         ------  ----
+53:tcp                     ALLOW   Anywhere
+53:udp                     ALLOW   Anywhere
+23:tcp                     ALLOW   Anywhere
+25:tcp                     ALLOW   Anywhere
+25:udp                     ALLOW   Anywhere
+80:tcp                     DENY    Anywhere
+192.168.0.1 25:tcp         DENY    10.0.0.0/8
+Anywhere                   ALLOW   10.0.0.0/8
+Anywhere                   ALLOW   172.16.0.0/12
+Anywhere                   ALLOW   192.168.0.0/16
+514:udp                    DENY    1.2.3.4
+1.2.3.4 5469:udp           ALLOW   1.2.3.5 5469:udp
+53:tcp                     ALLOW   Anywhere (v6)
+53:udp                     ALLOW   Anywhere (v6)
+23:tcp                     ALLOW   Anywhere (v6)
+25:tcp                     ALLOW   Anywhere (v6)
+25:udp                     ALLOW   Anywhere (v6)
+80:tcp                     DENY    Anywhere (v6)
+25:tcp                     DENY    2001:db8::/32
+2001:db8:3:4:5:6:7:8/128   DENY    2001:db8::/32 26:tcp
+2001:db8:3:4:5:6:7:8/128   DENY    2001:db8::/32 26:udp
+
+
+
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
+--
+### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 -j ACCEPT
+
+### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
+--
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
+
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
+
+### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
+-A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
+
+### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
+-A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+
+### tuple ### allow any 53 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw6-user-input -p udp --dport 53 -j ACCEPT
+--
+### tuple ### allow tcp 23 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 23 -j ACCEPT
+
+### tuple ### allow any 25 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp --dport 25 -j ACCEPT
+--
+### tuple ### deny tcp 80 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 80 -j DROP
+
+### tuple ### deny tcp 25 ::/0 any 2001:db8::/32
+-A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 26 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 26 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 26 -j DROP
+TESTING ARGS (delete allow/deny to/from)
+17: delete allow 53
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+18: delete allow 23/tcp
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+19: delete allow smtp
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+20: delete deny proto tcp to any port 80
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+21: delete deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule deleted
+
+
+22: delete allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule deleted
+
+
+23: delete allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule deleted
+
+
+24: delete allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule deleted
+
+
+25: delete deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule deleted
+
+
+26: delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule deleted
+
+
+27: delete deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+28: delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+29: status
+WARN: Checks disabled
+No rules
+
+
+Setting IPV6 to no
+30: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+31: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+TESTING ARGS (logging)
+32: logging on
+WARN: Checks disabled
+Logging enabled
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+33: logging off
+WARN: Checks disabled
+Logging disabled
+
+
+# ufw_comment # -A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+# ufw_comment # -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+# ufw_comment # -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# ufw_comment # -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
+TESTING ARGS (allow/deny to/from)
+34: allow 53
+WARN: Checks disabled
+Rule added
+
+
+35: allow 23/tcp
+WARN: Checks disabled
+Rule added
+
+
+36: allow smtp
+WARN: Checks disabled
+Rule added
+
+
+37: deny proto tcp to any port 80
+WARN: Checks disabled
+Rule added
+
+
+38: deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule added
+
+
+39: allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule added
+
+
+40: allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule added
+
+
+41: allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule added
+
+
+42: deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule added
+
+
+43: allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule added
+
+
+44: deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+iptables v1.3.6: host/network `2001:db8::' not found
+Try `iptables -h' or 'iptables --help' for more information.
+
+Rule added
+
+
+45: deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+iptables v1.3.6: host/network `2001:db8::' not found
+Try `iptables -h' or 'iptables --help' for more information.
+
+iptables v1.3.6: host/network `2001:db8::' not found
+Try `iptables -h' or 'iptables --help' for more information.
+
+Rule added
+
+
+46: status
+WARN: Checks disabled
+To                         Action  From
+--                         ------  ----
+53:tcp                     ALLOW   Anywhere
+53:udp                     ALLOW   Anywhere
+23:tcp                     ALLOW   Anywhere
+25:tcp                     ALLOW   Anywhere
+25:udp                     ALLOW   Anywhere
+80:tcp                     DENY    Anywhere
+192.168.0.1 25:tcp         DENY    10.0.0.0/8
+Anywhere                   ALLOW   10.0.0.0/8
+Anywhere                   ALLOW   172.16.0.0/12
+Anywhere                   ALLOW   192.168.0.0/16
+514:udp                    DENY    1.2.3.4
+1.2.3.4 5469:udp           ALLOW   1.2.3.5 5469:udp
+
+
+
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 53 -j ACCEPT
+--
+### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 -j ACCEPT
+
+### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+-A ufw-user-input -p udp --dport 25 -j ACCEPT
+--
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
+
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+-A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
+
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+-A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+-A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
+
+### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
+-A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
+
+### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
+-A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
+
+### tuple ### deny tcp 25 0.0.0.0/0 any 2001:db8::/32
+-A ufw-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
+
+### tuple ### deny any any 2001:db8:3:4:5:6:7:8 26 2001:db8::/32
+-A ufw-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 26 -j DROP
+-A ufw-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 26 -j DROP
+TESTING ARGS (delete allow/deny to/from)
+47: delete allow 53
+WARN: Checks disabled
+Rule deleted
+
+
+48: delete allow 23/tcp
+WARN: Checks disabled
+Rule deleted
+
+
+49: delete allow smtp
+WARN: Checks disabled
+Rule deleted
+
+
+50: delete deny proto tcp to any port 80
+WARN: Checks disabled
+Rule deleted
+
+
+51: delete deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule deleted
+
+
+52: delete allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule deleted
+
+
+53: delete allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule deleted
+
+
+54: delete allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule deleted
+
+
+55: delete deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule deleted
+
+
+56: delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule deleted
+
+
+57: delete deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+iptables v1.3.6: host/network `2001:db8::' not found
+Try `iptables -h' or 'iptables --help' for more information.
+
+Rule deleted
+
+
+58: delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+iptables v1.3.6: host/network `2001:db8::' not found
+Try `iptables -h' or 'iptables --help' for more information.
+
+iptables v1.3.6: host/network `2001:db8::' not found
+Try `iptables -h' or 'iptables --help' for more information.
+
+Rule deleted
+
+
+59: status
+WARN: Checks disabled
+No rules
+
+
+60: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
