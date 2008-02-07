@@ -30,7 +30,7 @@ case "$1" in
             cp $TEMPLATE_PATH/ufw.conf /etc/ufw
         fi
 
-        update-rc.d ufw start 39 S . > /dev/null
+        update-rc.d ufw start 39 S . stop 39 0 1 6 . > /dev/null
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

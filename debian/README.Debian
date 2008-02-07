@@ -1,6 +1,21 @@
 ufw
 ---
+On installation, ufw is not automatically enabled. To load the firewall and
+enable it on boot, run:
+
+# ufw enable
 
 See 'man ufw' and README for more information.
+
+Upgrading
+---------
+It is important to note that to properly support remote users, the firewall
+will not be automatically restarted during upgrades. After an upgrade, either
+reboot or perform:
+
+# /etc/init.d/ufw restart
+
+Please note that the above command will briefly open the firewall before
+reloading the rules.
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 02 Jan 2008 10:35:56 -0500
