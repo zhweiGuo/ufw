@@ -1,3 +1,14 @@
+ufw (0.12) hardy; urgency=low
+
+  * new upstream version:
+    - initscript implements 'stop' as default ACCEPT
+    - initscript restart and force-reload now use 'stop' and 'start'
+  * debian/postinst: stop on runlevels 0, 1 and 6
+  * debian/postrm: default ACCEPT on purge
+  * debian/README.Debian: provide useful notes
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 07 Feb 2008 09:47:10 -0500
+
 ufw (0.11) hardy; urgency=low
 
   * comply with Ubuntu policy of syncookies off (LP: 189565) 
