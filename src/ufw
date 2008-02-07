@@ -318,7 +318,6 @@ def close_files(fns, update = True):
 
 def cmd(command):
     '''Try to execute the given command.'''
-    cmd = ' '.join(command)
     try:
         sp = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     except OSError, e:
