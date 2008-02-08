@@ -1,5 +1,11 @@
 TODO
 ----
+improve manpage with talk of *.rules
+
+update sysctl.conf with ipv6
+
+add commented out ip_forward line to sysctl.conf
+
 separate out backend and frontend code and put into /usr/share
 
 implement /var/lib/ufw/maps
