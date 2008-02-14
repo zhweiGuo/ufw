@@ -1,7 +1,6 @@
 ufw (0.13) hardy; urgency=low
 
   * added ipv6 and (commented out) forwarding entries in sysctl.conf
-  * updated TODO
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 13 Feb 2008 22:31:47 -0500
 
