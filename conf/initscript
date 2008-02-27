@@ -40,13 +40,6 @@ start)
     fi
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
         log_daemon_msg "Starting firewall:" "ufw"
-        if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
-            log_action_begin_msg "  Loading $IPT_SYSCTL"
-            set +e
-            sysctl -q -p $IPT_SYSCTL
-            log_action_end_msg $?
-            set -e
-        fi
         for m in $IPT_MODULES
         do
             log_action_begin_msg "  Loading $m"
@@ -140,6 +133,14 @@ start)
             $exe -A ufw${type}-after-output -j RETURN
             $exe -A ufw${type}-after-forward -j RETURN
         done
+
+        if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
+            log_action_begin_msg "  Loading $IPT_SYSCTL"
+            set +e
+            sysctl -q -p $IPT_SYSCTL
+            log_action_end_msg $?
+            set -e
+        fi
 
         if [ "$error" = "yes" ]; then
             log_action_end_msg 1
