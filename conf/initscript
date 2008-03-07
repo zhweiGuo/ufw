@@ -39,14 +39,13 @@ start)
         exit 0
     fi
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
-        log_daemon_msg "Starting firewall:" "ufw"
+        log_action_begin_msg "Starting firewall:" "ufw"
+        set +e
         for m in $IPT_MODULES
         do
-            log_action_begin_msg "  Loading $m"
             modprobe $m
-            log_action_end_msg $?
         done
-        log_action_begin_msg "  Loading rules"
+        set -e
 
         execs="iptables"
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
@@ -64,45 +63,45 @@ start)
             USER_RULES="$USER_PATH/user${type}.rules"
 
             # flush the chains
-            $exe -F
-            $exe -X
+            $exe -F || error="yes"
+            $exe -X || error="yes"
 
             # setup built-in chains' default policy
-            $exe -P INPUT $DEFAULT_INPUT_POLICY
-            $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY
-            $exe -P FORWARD $DEFAULT_FORWARD_POLICY
+            $exe -P INPUT $DEFAULT_INPUT_POLICY || error="yes"
+            $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY || error="yes"
+            $exe -P FORWARD $DEFAULT_FORWARD_POLICY || error="yes"
 
             # setup some other chains that can be used later
             if [ "$type" != "6" ]; then
-                $exe -N ufw${type}-not-local
+                $exe -N ufw${type}-not-local || error="yes"
             fi
 
             # setup ufw${type}-before-* chains
-            $exe -N ufw${type}-before-input
-            $exe -N ufw${type}-before-output
-            $exe -N ufw${type}-before-forward
-            $exe -A INPUT -j ufw${type}-before-input
-            $exe -A OUTPUT -j ufw${type}-before-output
-            $exe -A FORWARD -j ufw${type}-before-forward
+            $exe -N ufw${type}-before-input || error="yes"
+            $exe -N ufw${type}-before-output || error="yes"
+            $exe -N ufw${type}-before-forward || error="yes"
+            $exe -A INPUT -j ufw${type}-before-input || error="yes"
+            $exe -A OUTPUT -j ufw${type}-before-output || error="yes"
+            $exe -A FORWARD -j ufw${type}-before-forward || error="yes"
             if [ -s "$RULES_PATH" ]; then
                 if ! $exe-restore -n < $BEFORE_RULES ; then
-                    log_warning_msg "   Problem running '$BEFORE_RULES'"
+                    log_warning_msg "Problem running '$BEFORE_RULES'"
                     error="yes"
                 fi
             else
-                log_warning_msg "   Couldn't find '$BEFORE_RULES'"
+                log_warning_msg "Couldn't find '$BEFORE_RULES'"
             fi
 
             # setup ufw${type}-user chain
             if [ -s "$USER_PATH" ]; then
-                $exe -N ufw${type}-user-input
-                $exe -N ufw${type}-user-output
-                $exe -N ufw${type}-user-forward
-                $exe -A ufw${type}-before-input -j ufw${type}-user-input
-                $exe -A ufw${type}-before-output -j ufw${type}-user-output
-                $exe -A ufw${type}-before-forward -j ufw${type}-user-forward
+                $exe -N ufw${type}-user-input || error="yes"
+                $exe -N ufw${type}-user-output || error="yes"
+                $exe -N ufw${type}-user-forward || error="yes"
+                $exe -A ufw${type}-before-input -j ufw${type}-user-input || error="yes"
+                $exe -A ufw${type}-before-output -j ufw${type}-user-output || error="yes"
+                $exe -A ufw${type}-before-forward -j ufw${type}-user-forward || error="yes"
                 if ! $exe-restore -n < $USER_RULES ; then
-                    log_warning_msg "   Problem running '$USER_RULES'"
+                    log_warning_msg "Problem running '$USER_RULES'"
                     error="yes"
                 fi
                 # don't include the RETURN lines here, as they will
@@ -110,47 +109,44 @@ start)
             fi
 
             # now return from the chain
-            $exe -A ufw${type}-before-input -j RETURN
-            $exe -A ufw${type}-before-output -j RETURN
-            $exe -A ufw${type}-before-forward -j RETURN
+            $exe -A ufw${type}-before-input -j RETURN || error="yes"
+            $exe -A ufw${type}-before-output -j RETURN || error="yes"
+            $exe -A ufw${type}-before-forward -j RETURN || error="yes"
         
             # setup ufw${type}-after-* chains
-            $exe -N ufw${type}-after-input
-            $exe -N ufw${type}-after-output
-            $exe -N ufw${type}-after-forward
-            $exe -A INPUT -j ufw${type}-after-input
-            $exe -A OUTPUT -j ufw${type}-after-output
-            $exe -A FORWARD -j ufw${type}-after-forward
+            $exe -N ufw${type}-after-input || error="yes"
+            $exe -N ufw${type}-after-output || error="yes"
+            $exe -N ufw${type}-after-forward || error="yes"
+            $exe -A INPUT -j ufw${type}-after-input || error="yes"
+            $exe -A OUTPUT -j ufw${type}-after-output || error="yes"
+            $exe -A FORWARD -j ufw${type}-after-forward || error="yes"
             if [ -s "$AFTER_RULES" ]; then
                 if ! $exe-restore -n < $AFTER_RULES ; then
-                    log_warning_msg "   Problem running '$AFTER_RULES'"
+                    log_warning_msg "Problem running '$AFTER_RULES'"
                     error="yes"
                 fi
             else
-                log_warning_msg "    Couldn't find '$AFTER_RULES'"
+                log_warning_msg "Couldn't find '$AFTER_RULES'"
             fi
-            $exe -A ufw${type}-after-input -j RETURN
-            $exe -A ufw${type}-after-output -j RETURN
-            $exe -A ufw${type}-after-forward -j RETURN
+            $exe -A ufw${type}-after-input -j RETURN || error="yes"
+            $exe -A ufw${type}-after-output -j RETURN || error="yes"
+            $exe -A ufw${type}-after-forward -j RETURN || error="yes"
         done
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
-            log_action_begin_msg "  Loading $IPT_SYSCTL"
             set +e
             sysctl -q -p $IPT_SYSCTL
-            log_action_end_msg $?
             set -e
         fi
 
         if [ "$error" = "yes" ]; then
             log_action_end_msg 1
-            log_failure_msg "   Error(s) in starting firewall"
             exit 1
         else
             log_action_end_msg 0
         fi
     else
-        log_warning_msg "    Skipping firewall (not enabled)"
+        log_warning_msg "Skipping firewall (not enabled)"
     fi
     ;;
 stop)
