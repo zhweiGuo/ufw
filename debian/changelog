@@ -1,7 +1,10 @@
-ufw (0.14) hardy; urgency=low
+ufw (0.14) UNRELEASED; urgency=low
 
-  * initscript: move sysctl to after rules load and don't make sysctl failing
-    fatal (Fixes LP: #192123)
+  * conf/initscript
+    - move sysctl to after rules load (LP: #192123)
+    - don't make sysctl and modprobe failures fatal (LP: #197285)
+    - make output less verbose and fix formatting (LP: #198211)
+  * debian/rules: update setup.py version with changelog version
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 15 Feb 2008 08:56:24 -0500
 
