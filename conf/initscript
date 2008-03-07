@@ -35,7 +35,7 @@ case "$1" in
 start)
     if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
         # if firewall loaded, tell to reload instead
-        log_warning_msg "Firewall already started, use 'force-reload'"
+        log_action_msg "Firewall already started, use 'force-reload'"
         exit 0
     fi
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
@@ -85,11 +85,11 @@ start)
             $exe -A FORWARD -j ufw${type}-before-forward || error="yes"
             if [ -s "$RULES_PATH" ]; then
                 if ! $exe-restore -n < $BEFORE_RULES ; then
-                    log_warning_msg "Problem running '$BEFORE_RULES'"
+                    log_action_cont_msg "Problem running '$BEFORE_RULES'"
                     error="yes"
                 fi
             else
-                log_warning_msg "Couldn't find '$BEFORE_RULES'"
+                log_action_cont_msg "Couldn't find '$BEFORE_RULES'"
             fi
 
             # setup ufw${type}-user chain
@@ -101,7 +101,7 @@ start)
                 $exe -A ufw${type}-before-output -j ufw${type}-user-output || error="yes"
                 $exe -A ufw${type}-before-forward -j ufw${type}-user-forward || error="yes"
                 if ! $exe-restore -n < $USER_RULES ; then
-                    log_warning_msg "Problem running '$USER_RULES'"
+                    log_action_cont_msg "Problem running '$USER_RULES'"
                     error="yes"
                 fi
                 # don't include the RETURN lines here, as they will
@@ -122,11 +122,11 @@ start)
             $exe -A FORWARD -j ufw${type}-after-forward || error="yes"
             if [ -s "$AFTER_RULES" ]; then
                 if ! $exe-restore -n < $AFTER_RULES ; then
-                    log_warning_msg "Problem running '$AFTER_RULES'"
+                    log_action_cont_msg "Problem running '$AFTER_RULES'"
                     error="yes"
                 fi
             else
-                log_warning_msg "Couldn't find '$AFTER_RULES'"
+                log_action_cont_msg "Couldn't find '$AFTER_RULES'"
             fi
             $exe -A ufw${type}-after-input -j RETURN || error="yes"
             $exe -A ufw${type}-after-output -j RETURN || error="yes"
@@ -135,7 +135,7 @@ start)
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
             set +e
-            sysctl -q -p $IPT_SYSCTL
+            sysctl -e -q -p $IPT_SYSCTL
             set -e
         fi
 
@@ -146,7 +146,8 @@ start)
             log_action_end_msg 0
         fi
     else
-        log_warning_msg "Skipping firewall (not enabled)"
+        log_action_begin_msg "Skipping firewall:" "ufw (not enabled)"
+        log_action_end_msg 0
     fi
     ;;
 stop)
