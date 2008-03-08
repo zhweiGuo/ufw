@@ -4,6 +4,8 @@ ufw (0.15) hardy; urgency=low
   * debian/control: added Homepage (LP: #199722)
   * fix python version check (upstream #199790)
   * properly handle when ipv6 is not loaded or blacklisted (LP: #199724)
+  * man page fixes
+  * clarify 'status' output (LP: #199873)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 08 Mar 2008 07:36:04 -0500
 
