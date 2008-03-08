@@ -904,7 +904,7 @@ COMMIT
                 raise UFWError("problem running init script")
 
         # When ipv6 not enabled, just enable it on loopback
-        if not self.use_ipv6():
+        if not self.use_ipv6() and os.path.exists("/proc/sys/net/ipv6"):
             ipv6conf = '''*filter
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
