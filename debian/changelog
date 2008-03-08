@@ -1,4 +1,4 @@
-ufw (0.15) UNRELEASED; urgency=low
+ufw (0.15) hardy; urgency=low
 
   * fix man page typo
   * debian/control: added Homepage (LP: #199722)
