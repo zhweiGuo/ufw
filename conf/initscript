@@ -157,7 +157,7 @@ start)
     fi
     ;;
 stop)
-    log_action_begin_msg "Stopping firewall"
+    log_action_begin_msg "Stopping firewall:" "ufw"
     error=""
 
     execs="iptables"
