@@ -79,19 +79,19 @@ class Install(_install, object):
                       before6_rules, after6_rules, initscript, script, \
                       manpage, sysctl ]:
             print "Updating " + file
-            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%' " + file)
+            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%g' " + file)
             while a.poll() == -1:
                 pass
 
-            a = Popen3("sed -i 's%#PREFIX#%" + prefix + "%' " + file)
+            a = Popen3("sed -i 's%#PREFIX#%" + prefix + "%g' " + file)
             while a.poll() == -1:
                 pass
         
-            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%' " + file)
+            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%g' " + file)
             while a.poll() == -1:
                 pass
 
-            a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%' " + file)
+            a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%g' " + file)
             while a.poll() == -1:
                 pass
         

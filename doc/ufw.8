@@ -46,7 +46,7 @@ have to be migrated manually when changing the default policy.
 toggle logging
 .TP
 \fBstatus\fR
-show status of firewall
+show status of firewall and ufw managed rules
 .TP
 \fBallow\fR RULE
 allow RULE.  See \fBRULE SYNTAX\fR
@@ -158,16 +158,20 @@ simple rules. It is currently mainly used for host-based firewalls.
 Currently, \fBufw\fR is a front-end for \fBiptables-restore\fR, with its
 rules saved in #CONFIG_PREFIX#/ufw/before.rules, #CONFIG_PREFIX#/ufw/after.rules
 and #STATE_PREFIX#/user.rules. Administrators can customize \fBbefore.rules\fR
-and \fBafter.rules\fR as desired using the standard \fBiptables\fR and
-\fBip6tables\fR syntax. Rules are evaluated as follows: \fBbefore.rules\fR first, \fBufw.rules\fR next, and \fBafter.rules\fR last.
+and \fBafter.rules\fR as desired using the standard \fBiptables-restore\fR
+syntax. Rules are evaluated as follows: \fBbefore.rules\fR first,
+\fBuser.rules\fR next, and \fBafter.rules\fR last. IPv6 rules are evaluated in
+the same way, with the rules files named \fBbefore6.rules\fR, \fBuser6.rules\fR
+and \fBafter6.rules\fR. Please note that \fBufw status\fR only shows rules
+added with \fBufw\fR and not the rules found in the #CONFIG_PREFIX#/ufw rules
+files.
 .PP
 \fBufw\fR will read in #CONFIG_PREFIX#/ufw/sysctl.conf on boot when enabled.
 To change this behavior, modify #CONFIG_PREFIX#/default/ufw.
 
 .SH SEE ALSO
 .PP
- \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables-restore\fR(8), \fBip6tables-restore\fR(8)
-\fBsysctl(8)\fR, \fBsysctl.conf(5)\fR
+\fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables-restore\fR(8), \fBip6tables-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
 
 .SH AUTHOR
 .PP

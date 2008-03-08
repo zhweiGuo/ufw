@@ -769,7 +769,7 @@ class UFWBackendIptables(UFWBackend):
                 return out6
 
         if out == "" and out6 == "":
-            return ""
+            return "Firewall loaded"
 
         str = ""
         rules = []
@@ -830,11 +830,11 @@ class UFWBackendIptables(UFWBackend):
                     location['src'])
 
         if str != "":
-            tmp = "%-26s %-8s%s\n" % ("To", "Action", "From")
+            tmp = "\n\n%-26s %-8s%s\n" % ("To", "Action", "From")
             tmp += "%-26s %-8s%s\n" % ("--", "------", "----")
             str = tmp + str
 
-        return str
+        return "Firewall loaded" + str
 
     def stop_firewall(self):
         '''Stops the firewall'''
@@ -1261,10 +1261,7 @@ class UFWFrontend:
         except UFWError, e:
             error(e.value)
 
-        if out == "":
-            print "No rules"
-        else:
-            print out
+        print out
 
     def set_rule(self, rule, type):
         '''Updates firewall with rule'''
