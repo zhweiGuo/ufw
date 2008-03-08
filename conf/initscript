@@ -49,7 +49,13 @@ start)
 
         execs="iptables"
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
-            execs="$execs ip6tables"
+            if [ -e "/proc/sys/net/ipv6" ]; then
+                execs="$execs ip6tables"
+            elif modprobe ipv6 ; then
+                execs="$execs ip6tables"
+            else
+                log_action_cont_msg "Problem loading ipv6 (skipping)"
+            fi
         fi
 
         for exe in $execs
@@ -153,7 +159,13 @@ start)
 stop)
     log_action_begin_msg "Stopping firewall"
     error=""
-    for exe in iptables ip6tables
+
+    execs="iptables"
+    if [ -e "/proc/sys/net/ipv6" ]; then
+        execs="$execs ip6tables"
+    fi
+
+    for exe in $execs
     do
         $exe -F || error="yes"
         $exe -X || error="yes"
@@ -161,6 +173,7 @@ stop)
         $exe -P OUTPUT ACCEPT || error="yes"
         $exe -P FORWARD ACCEPT || error="yes"
     done
+
     if [ "$error" = "yes" ]; then
         log_action_end_msg 1
         exit 1

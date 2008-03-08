@@ -543,7 +543,9 @@ class UFWBackend:
         return False
 
     def use_ipv6(self):
-        if self.defaults.has_key('ipv6') and self.defaults['ipv6'] == 'yes':
+        if self.defaults.has_key('ipv6') and \
+           self.defaults['ipv6'] == 'yes' and \
+           os.path.exists("/proc/sys/net/ipv6"):
             return True
         return False
 
