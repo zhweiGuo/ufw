@@ -40,12 +40,10 @@ start)
     fi
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
         log_action_begin_msg "Starting firewall:" "ufw"
-        set +e
         for m in $IPT_MODULES
         do
-            modprobe $m
+            modprobe $m || true
         done
-        set -e
 
         execs="iptables"
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
@@ -140,9 +138,7 @@ start)
         done
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
-            set +e
-            sysctl -e -q -p $IPT_SYSCTL
-            set -e
+            sysctl -e -q -p $IPT_SYSCTL || true
         fi
 
         if [ "$error" = "yes" ]; then
