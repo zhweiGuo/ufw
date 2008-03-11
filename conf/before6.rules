@@ -20,6 +20,12 @@
 -A ufw6-before-input -i lo -j ACCEPT
 -A ufw6-before-output -i lo -j ACCEPT
 
+# for stateless autoconfiguration
+-A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-solicitation -j ACCEPT
+-A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-advertisement -j ACCEPT
+-A ufw6-before-input -p icmpv6 --icmpv6-type router-solicitation -j ACCEPT
+-A ufw6-before-input -p icmpv6 --icmpv6-type router-advertisement -j ACCEPT
+
 # connection tracking rules
 -A ufw6-before-input -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "

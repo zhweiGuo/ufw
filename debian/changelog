@@ -6,6 +6,7 @@ ufw (0.15) hardy; urgency=low
   * properly handle when ipv6 is not loaded or blacklisted (LP: #199724)
   * man page fixes
   * clarify 'status' output (LP: #199873)
+  * fix ipv6 stateless autoconfiguration (upstream #200921)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 08 Mar 2008 07:36:04 -0500
 
