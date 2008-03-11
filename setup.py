@@ -25,7 +25,7 @@ import os
 from popen2 import Popen3
 import sys
 
-ufw_version = '0.15'
+ufw_version = '0.16'
 
 class Install(_install, object):
     '''Override distutils to install the files where we want them.'''
