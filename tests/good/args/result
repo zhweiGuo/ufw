@@ -48,17 +48,6 @@ TESTING ARGS (enable/disable)
 8: --dry-run enable
 WARN: Checks disabled
 > running initscript
-> echo
-*filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT DROP [0:0]
-
--A INPUT -i lo -j ACCEPT
--A OUTPUT -o lo -j ACCEPT
-
-COMMIT
-> | ip6tables-restore
 Firewall started and enabled on system startup
 
 
@@ -79,17 +68,6 @@ Firewall stopped and disabled on system startup
 10: --dry-run ENABLE
 WARN: Checks disabled
 > running initscript
-> echo
-*filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT DROP [0:0]
-
--A INPUT -i lo -j ACCEPT
--A OUTPUT -o lo -j ACCEPT
-
-COMMIT
-> | ip6tables-restore
 Firewall started and enabled on system startup
 
 

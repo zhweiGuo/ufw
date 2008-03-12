@@ -915,9 +915,7 @@ COMMIT
 
 COMMIT
 '''
-            if dryrun:
-                print "> echo\n" + ipv6conf + "> | ip6tables-restore"
-            else:
+            if not dryrun:
                 (rc, out) = cmd_pipe(['echo', ipv6conf], ['ip6tables-restore'])
                 if rc != 0:
                     # Don't error here, as the user may have disabled ipv6

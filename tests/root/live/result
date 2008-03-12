@@ -101,6 +101,8 @@ Rule added (v6)
 
 16: status
 WARN: Checks disabled
+Firewall loaded
+
 To                         Action  From
 --                         ------  ----
 53:tcp                     ALLOW   Anywhere
@@ -246,7 +248,7 @@ Rule deleted (v6)
 
 29: status
 WARN: Checks disabled
-No rules
+Firewall loaded
 
 
 Setting IPV6 to no
@@ -338,6 +340,8 @@ Rule added
 
 44: status
 WARN: Checks disabled
+Firewall loaded
+
 To                         Action  From
 --                         ------  ----
 53:tcp                     ALLOW   Anywhere
@@ -440,7 +444,7 @@ Rule deleted
 
 55: status
 WARN: Checks disabled
-No rules
+Firewall loaded
 
 
 56: disable

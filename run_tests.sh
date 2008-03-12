@@ -30,6 +30,11 @@ elif [ "$1" = "-S" ]; then
 	STOPONFAIL="yes"
 	STOPONSKIP="yes"
 fi
+
+if [ -e "/proc/sys/net/ipv6" ]; then
+	tests="$tests ipv6"
+fi
+
 if [ ! -z "$1" ]; then
 	tests="$1"
 fi

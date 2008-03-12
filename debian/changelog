@@ -1,6 +1,7 @@
 ufw (0.16) UNRELEASED; urgency=low
 
   * bump version
+  * fix tests for when ipv6 is blacklisted (fix FTBFS on Ubuntu buildd)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 11 Mar 2008 16:11:59 -0400
 
