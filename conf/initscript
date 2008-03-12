@@ -185,8 +185,11 @@ restart|force-reload)
         log_warning_msg "Skipping $1 (not enabled)"
     fi
     ;;
+status)
+    ufw status
+    ;;
 *)
-    echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload}"
+    echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload|status}"
     exit 1
     ;;
 esac
