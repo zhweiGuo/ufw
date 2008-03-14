@@ -186,7 +186,21 @@ restart|force-reload)
     fi
     ;;
 status)
-    ufw status
+    err=""
+    iptables -L ufw-user-input -n >/dev/null 2>&1 || {
+        log_failure_msg "Firewall is not running"
+        exit 3
+    }
+
+    if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
+        ip6tables -L ufw6-user-input -n >/dev/null 2>&1 || {
+            # unknown state: ipv4 ok, but ipv6 isn't
+            log_failure_msg "Firewall in inconsistent state (IPv6 enabled but not running)"
+            exit 4
+        }
+    fi
+
+    log_success_msg "Firewall is running"
     ;;
 *)
     echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload|status}"

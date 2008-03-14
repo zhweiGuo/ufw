@@ -1,6 +1,6 @@
 ufw (0.17) UNRELEASED; urgency=low
 
-  * bump version 
+  * implement status in initscript
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Mar 2008 16:11:22 -0400
 
