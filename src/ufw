@@ -531,6 +531,10 @@ class UFWBackend:
         self.rules6 = []
         try:
             self._do_checks()
+        except Exception, (error):
+            warn(str(error))
+            
+        try:
             self._get_defaults()
             self._read_rules()
         except Exception:
