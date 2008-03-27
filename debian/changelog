@@ -1,7 +1,7 @@
 ufw (0.17) UNRELEASED; urgency=low
 
   * implement status in initscript
-  * warn on _do_checks() failure
+  * warn on group/world writable and wrong owner files in _do_checks()
   * debian/rules: use 'g' with sed when stripping paths (LP: #207476)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Mar 2008 16:11:22 -0400

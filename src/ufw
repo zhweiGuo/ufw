@@ -531,10 +531,6 @@ class UFWBackend:
         self.rules6 = []
         try:
             self._do_checks()
-        except Exception, (error):
-            warn(str(error))
-            
-        try:
             self._get_defaults()
             self._read_rules()
         except Exception:
@@ -582,6 +578,11 @@ class UFWBackend:
         if uid != 0:
             raise UFWError("You need to be root to run this script")
 
+        # Use these so we only warn once
+        warned_world_write = {}
+        warned_group_write = {}
+        warned_owner = {}
+
         pat = re.compile(r'^\.')
         for path in files.values() + [ os.path.abspath(sys.argv[0]) ]:
             while True:
@@ -599,13 +600,16 @@ class UFWBackend:
 
                 if os.path.islink(path):
                     raise UFWError("found symbolic link in path: " + path)
-                if statinfo.st_uid != 0:
-                    raise UFWError("uid is " + str(uid) + " but '" + path + \
+                if statinfo.st_uid != 0 and not warned_owner.has_key(path):
+                    warn("uid is " + str(uid) + " but '" + path + \
                                    "' is owned by " + str(statinfo.st_uid))
-                if mode & S_IWOTH:
-                    raise UFWError(path + " is world writable!")
-                if mode & S_IWGRP:
+                    warned_owner[path] = True
+                if mode & S_IWOTH and not warned_world_write.has_key(path):
+                    warn(path + " is world writable!")
+                    warned_world_write[path] = True
+                if mode & S_IWGRP and not warned_group_write.has_key(path):
                     warn(path + " is group writable")
+                    warned_group_write[path] = True
 
                 if path == "/":
                     break
