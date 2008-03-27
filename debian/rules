@@ -45,7 +45,7 @@ install: build
 
 	# strip out beginning of path since setup.py doens't support dest-dir
 	# yet
-	find $(CURDIR)/debian/ufw -type f -exec sed "s#$(CURDIR)/debian/ufw##" -i {} \;
+	find $(CURDIR)/debian/ufw -type f -exec sed "s#$(CURDIR)/debian/ufw##g" -i {} \;
 
 binary-arch: build
 
