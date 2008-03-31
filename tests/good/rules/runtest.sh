@@ -39,6 +39,20 @@ do_cmd "0" --dry-run allow 25/udp
 do_cmd "0" --dry-run delete allow 25
 do_cmd "0" --dry-run delete allow 25/tcp
 do_cmd "0" --dry-run delete allow 25/udp
+do_cmd "0" --dry-run allow smtp
+do_cmd "0" --dry-run delete allow smtp
+do_cmd "0" --dry-run allow smtp/tcp
+do_cmd "0" --dry-run delete allow smtp/tcp
+do_cmd "0" --dry-run allow tftp
+do_cmd "0" --dry-run delete allow tftp
+do_cmd "0" --dry-run allow tftp/udp
+do_cmd "0" --dry-run delete allow tftp/udp
+do_cmd "0" --dry-run allow ssh
+do_cmd "0" --dry-run delete allow ssh
+do_cmd "0" --dry-run allow ssh/tcp
+do_cmd "0" --dry-run delete allow ssh/tcp
+do_cmd "0" --dry-run allow ssh/udp
+do_cmd "0" --dry-run delete allow ssh/udp
 
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
@@ -62,6 +76,7 @@ do
 	do_cmd "0" --dry-run delete $x to $to port 25 from $from
 	do_cmd "0" --dry-run $x to $to port 25 from $from port 80
 	do_cmd "0" --dry-run delete $x to $to port 25 from $from port 80
+
 	for y in udp tcp
 	do
 		do_cmd "0" --dry-run $x from $from port 80 proto $y
@@ -76,5 +91,66 @@ do
 		do_cmd "0" --dry-run delete $x to $to port 25 proto $y from $from port 80
 	done
 done
+
+echo "Services" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to any port smtp from any port smtp
+do_cmd "0" --dry-run delete allow to any port smtp from any port smtp
+do_cmd "0" --dry-run allow to any port smtp from any port ssh
+do_cmd "0" --dry-run delete allow to any port smtp from any port ssh
+do_cmd "0" --dry-run allow to any port ssh from any port smtp
+do_cmd "0" --dry-run delete allow to any port ssh from any port smtp
+do_cmd "0" --dry-run allow to any port smtp from any port 23
+do_cmd "0" --dry-run delete allow to any port smtp from any port 23
+do_cmd "0" --dry-run allow to any port 23 from any port smtp
+do_cmd "0" --dry-run delete allow to any port 23 from any port smtp
+do_cmd "0" --dry-run allow to any port tftp from any port tftp
+do_cmd "0" --dry-run delete allow to any port tftp from any port tftp
+do_cmd "0" --dry-run allow to any port tftp from any port ssh
+do_cmd "0" --dry-run delete allow to any port tftp from any port ssh
+do_cmd "0" --dry-run allow to any port ssh from any port tftp
+do_cmd "0" --dry-run delete allow to any port ssh from any port tftp
+do_cmd "0" --dry-run allow to any port tftp from any port 23
+do_cmd "0" --dry-run delete allow to any port tftp from any port 23
+do_cmd "0" --dry-run allow to any port 23 from any port tftp
+do_cmd "0" --dry-run delete allow to any port 23 from any port tftp
+do_cmd "0" --dry-run allow to any port ssh from any port 23
+do_cmd "0" --dry-run delete allow to any port ssh from any port 23
+do_cmd "0" --dry-run allow to any port 23 from any port ssh
+do_cmd "0" --dry-run delete allow to any port 23 from any port ssh
+do_cmd "0" --dry-run allow to any port ssh from any port domain
+do_cmd "0" --dry-run delete allow to any port ssh from any port domain
+
+do_cmd "0" --dry-run allow to any port smtp from any port smtp proto tcp
+do_cmd "0" --dry-run delete allow to any port smtp from any port smtp proto tcp
+do_cmd "0" --dry-run allow to any port smtp from any port ssh proto tcp
+do_cmd "0" --dry-run delete allow to any port smtp from any port ssh proto tcp
+do_cmd "0" --dry-run allow to any port ssh from any port smtp proto tcp
+do_cmd "0" --dry-run delete allow to any port ssh from any port smtp proto tcp
+do_cmd "0" --dry-run allow to any port smtp from any port 23 proto tcp
+do_cmd "0" --dry-run delete allow to any port smtp from any port 23 proto tcp
+do_cmd "0" --dry-run allow to any port 23 from any port smtp proto tcp
+do_cmd "0" --dry-run delete allow to any port 23 from any port smtp proto tcp
+do_cmd "0" --dry-run allow to any port tftp from any port tftp proto udp
+do_cmd "0" --dry-run delete allow to any port tftp from any port tftp proto udp
+do_cmd "0" --dry-run allow to any port tftp from any port ssh proto udp
+do_cmd "0" --dry-run delete allow to any port tftp from any port ssh proto udp
+do_cmd "0" --dry-run allow to any port ssh from any port tftp proto udp
+do_cmd "0" --dry-run delete allow to any port ssh from any port tftp proto udp
+do_cmd "0" --dry-run allow to any port tftp from any port 23 proto udp
+do_cmd "0" --dry-run delete allow to any port tftp from any port 23 proto udp
+do_cmd "0" --dry-run allow to any port 23 from any port tftp proto udp
+do_cmd "0" --dry-run delete allow to any port 23 from any port tftp proto udp
+do_cmd "0" --dry-run allow to any port ssh from any port 23 proto tcp
+do_cmd "0" --dry-run delete allow to any port ssh from any port 23 proto tcp
+do_cmd "0" --dry-run allow to any port 23 from any port ssh proto tcp
+do_cmd "0" --dry-run delete allow to any port 23 from any port ssh proto tcp
+do_cmd "0" --dry-run allow to any port ssh from any port domain proto tcp
+do_cmd "0" --dry-run delete allow to any port ssh from any port domain proto tcp
+do_cmd "0" --dry-run allow to any port ssh from any port 23 proto udp
+do_cmd "0" --dry-run delete allow to any port ssh from any port 23 proto udp
+do_cmd "0" --dry-run allow to any port 23 from any port ssh proto udp
+do_cmd "0" --dry-run delete allow to any port 23 from any port ssh proto udp
+do_cmd "0" --dry-run allow to any port ssh from any port domain proto udp
+do_cmd "0" --dry-run delete allow to any port ssh from any port domain proto udp
 
 exit 0

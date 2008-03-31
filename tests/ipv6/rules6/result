@@ -654,7 +654,113 @@ COMMIT
 Rules updated (v6)
 
 
-37: --dry-run deny from 2001:db8::/32
+37: --dry-run allow to 2001:db8:3:4:5:6:7:8 port smtp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 22 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+38: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port smtp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+39: --dry-run allow to 2001:db8:3:4:5:6:7:8 port tftp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 69 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 69 -s 2001:db8::/32 --sport 22 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+40: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port tftp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+41: --dry-run allow to 2001:db8:3:4:5:6:7:8 port ssh from 2001:db8::/32 port domain
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 22 2001:db8:3:4:5:6:7:8 53 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 22 -s 2001:db8::/32 --sport 53 -j ACCEPT
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 22 -s 2001:db8::/32 --sport 53 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+42: --dry-run delete allow to 2001:db8:3:4:5:6:7:8 port ssh from 2001:db8::/32 port domain
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+43: --dry-run deny from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -673,7 +779,7 @@ COMMIT
 Rules updated (v6)
 
 
-38: --dry-run delete deny from 2001:db8::/32
+44: --dry-run delete deny from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -689,7 +795,7 @@ COMMIT
 Rules updated (v6)
 
 
-39: --dry-run deny to 2001:db8:3:4:5:6:7:8
+45: --dry-run deny to 2001:db8:3:4:5:6:7:8
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -708,7 +814,7 @@ COMMIT
 Rules updated (v6)
 
 
-40: --dry-run delete deny to 2001:db8:3:4:5:6:7:8
+46: --dry-run delete deny to 2001:db8:3:4:5:6:7:8
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -724,7 +830,7 @@ COMMIT
 Rules updated (v6)
 
 
-41: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+47: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -743,7 +849,7 @@ COMMIT
 Rules updated (v6)
 
 
-42: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
+48: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -759,7 +865,7 @@ COMMIT
 Rules updated (v6)
 
 
-43: --dry-run deny from 2001:db8::/32 port 80
+49: --dry-run deny from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -779,7 +885,7 @@ COMMIT
 Rules updated (v6)
 
 
-44: --dry-run delete deny from 2001:db8::/32 port 80
+50: --dry-run delete deny from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -795,7 +901,7 @@ COMMIT
 Rules updated (v6)
 
 
-45: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25
+51: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -815,7 +921,7 @@ COMMIT
 Rules updated (v6)
 
 
-46: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25
+52: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -831,7 +937,7 @@ COMMIT
 Rules updated (v6)
 
 
-47: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+53: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -851,7 +957,7 @@ COMMIT
 Rules updated (v6)
 
 
-48: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
+54: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -867,7 +973,7 @@ COMMIT
 Rules updated (v6)
 
 
-49: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+55: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -887,7 +993,7 @@ COMMIT
 Rules updated (v6)
 
 
-50: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
+56: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -903,7 +1009,7 @@ COMMIT
 Rules updated (v6)
 
 
-51: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+57: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -923,7 +1029,7 @@ COMMIT
 Rules updated (v6)
 
 
-52: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
+58: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -939,7 +1045,7 @@ COMMIT
 Rules updated (v6)
 
 
-53: --dry-run deny from 2001:db8::/32 port 80 proto udp
+59: --dry-run deny from 2001:db8::/32 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -958,7 +1064,7 @@ COMMIT
 Rules updated (v6)
 
 
-54: --dry-run delete deny from 2001:db8::/32 port 80 proto udp
+60: --dry-run delete deny from 2001:db8::/32 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -974,7 +1080,7 @@ COMMIT
 Rules updated (v6)
 
 
-55: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+61: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -993,7 +1099,7 @@ COMMIT
 Rules updated (v6)
 
 
-56: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
+62: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1009,7 +1115,7 @@ COMMIT
 Rules updated (v6)
 
 
-57: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+63: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1028,7 +1134,7 @@ COMMIT
 Rules updated (v6)
 
 
-58: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
+64: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1044,7 +1150,7 @@ COMMIT
 Rules updated (v6)
 
 
-59: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+65: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1063,7 +1169,7 @@ COMMIT
 Rules updated (v6)
 
 
-60: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
+66: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1079,7 +1185,7 @@ COMMIT
 Rules updated (v6)
 
 
-61: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+67: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1098,7 +1204,7 @@ COMMIT
 Rules updated (v6)
 
 
-62: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
+68: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto udp from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1114,7 +1220,7 @@ COMMIT
 Rules updated (v6)
 
 
-63: --dry-run deny from 2001:db8::/32 port 80 proto tcp
+69: --dry-run deny from 2001:db8::/32 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1133,7 +1239,7 @@ COMMIT
 Rules updated (v6)
 
 
-64: --dry-run delete deny from 2001:db8::/32 port 80 proto tcp
+70: --dry-run delete deny from 2001:db8::/32 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1149,7 +1255,7 @@ COMMIT
 Rules updated (v6)
 
 
-65: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+71: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1168,7 +1274,7 @@ COMMIT
 Rules updated (v6)
 
 
-66: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+72: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1184,7 +1290,7 @@ COMMIT
 Rules updated (v6)
 
 
-67: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+73: --dry-run deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1203,7 +1309,7 @@ COMMIT
 Rules updated (v6)
 
 
-68: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
+74: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1219,7 +1325,7 @@ COMMIT
 Rules updated (v6)
 
 
-69: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+75: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1238,7 +1344,7 @@ COMMIT
 Rules updated (v6)
 
 
-70: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
+76: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1254,7 +1360,7 @@ COMMIT
 Rules updated (v6)
 
 
-71: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+77: --dry-run deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -1273,7 +1379,113 @@ COMMIT
 Rules updated (v6)
 
 
-72: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+78: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port 25 proto tcp from 2001:db8::/32 port 80
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+79: --dry-run deny to 2001:db8:3:4:5:6:7:8 port smtp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 22 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+80: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port smtp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+81: --dry-run deny to 2001:db8:3:4:5:6:7:8 port tftp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny udp 69 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 69 -s 2001:db8::/32 --sport 22 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+82: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port tftp from 2001:db8::/32 port ssh
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+83: --dry-run deny to 2001:db8:3:4:5:6:7:8 port ssh from 2001:db8::/32 port domain
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### deny any 22 2001:db8:3:4:5:6:7:8 53 2001:db8::/32
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 22 -s 2001:db8::/32 --sport 53 -j DROP
+-A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 22 -s 2001:db8::/32 --sport 53 -j DROP
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+84: --dry-run delete deny to 2001:db8:3:4:5:6:7:8 port ssh from 2001:db8::/32 port domain
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]

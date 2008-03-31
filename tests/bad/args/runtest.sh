@@ -122,4 +122,16 @@ do_cmd "1" null --dry-run allow proto tcp from 2001:db8::/32 port 25 to any
 do_cmd "1" null --dry-run deny proto udp to 2001:db8::/32 from any port 25
 do_cmd "1" null --dry-run allow proto udp to 2001:db8::/32 port 25 from any
 
+echo "TESTING BAD SERVICES" >> $TESTTMP/result
+do_cmd "1" null --dry-run allow smtp/udp
+do_cmd "1" null --dry-run allow tftp/tcp
+do_cmd "1" null --dry-run allow to any port smtp from any port tftp
+do_cmd "1" null --dry-run allow to any port tftp from any port smtp
+do_cmd "1" null --dry-run allow to any port smtp from any port 23 proto udp
+do_cmd "1" null --dry-run allow to any port 23 from any port smtp proto udp
+do_cmd "1" null --dry-run allow to any port tftp from any port 23 proto tcp
+do_cmd "1" null --dry-run allow to any port 23 from any port tftp proto tcp
+do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto udp
+do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
+
 exit 0

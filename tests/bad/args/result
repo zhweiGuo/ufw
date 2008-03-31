@@ -317,3 +317,34 @@ TESTING ARGS (allow/deny ipv6 when not enabled)
 102: --dry-run allow proto udp to 2001:db8::/32 port 25 from any
 
 
+TESTING BAD SERVICES
+103: --dry-run allow smtp/udp
+
+
+104: --dry-run allow tftp/tcp
+
+
+105: --dry-run allow to any port smtp from any port tftp
+
+
+106: --dry-run allow to any port tftp from any port smtp
+
+
+107: --dry-run allow to any port smtp from any port 23 proto udp
+
+
+108: --dry-run allow to any port 23 from any port smtp proto udp
+
+
+109: --dry-run allow to any port tftp from any port 23 proto tcp
+
+
+110: --dry-run allow to any port 23 from any port tftp proto tcp
+
+
+111: --dry-run allow to any port smtp from any port ssh proto udp
+
+
+112: --dry-run allow to any port tftp from any port ssh proto tcp
+
+

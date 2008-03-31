@@ -142,4 +142,124 @@ done
 do_cmd "0" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0001/128
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
+
+do_cmd "0"  allow to any port smtp from any port smtp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port smtp from any port smtp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port smtp from any port ssh
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port smtp from any port ssh
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port smtp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port smtp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port smtp from any port 23
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port smtp from any port 23
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port smtp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port smtp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port tftp from any port tftp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port tftp from any port tftp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port tftp from any port ssh
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port tftp from any port ssh
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port tftp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port tftp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port tftp from any port 23
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port tftp from any port 23
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port tftp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port tftp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port 23
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port 23
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port ssh
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port ssh
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port domain
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port domain
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+do_cmd "0"  allow to any port smtp from any port smtp proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port smtp from any port smtp proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port smtp from any port ssh proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port smtp from any port ssh proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port smtp proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port smtp proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port smtp from any port 23 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port smtp from any port 23 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port smtp proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port smtp proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port tftp from any port tftp proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port tftp from any port tftp proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port tftp from any port ssh proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port tftp from any port ssh proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port tftp proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port tftp proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port tftp from any port 23 proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port tftp from any port 23 proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port tftp proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port tftp proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port 23 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port 23 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port ssh proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port ssh proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port domain proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port domain proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port 23 proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port 23 proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port 23 from any port ssh proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port 23 from any port ssh proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  allow to any port ssh from any port domain proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0"  delete allow to any port ssh from any port domain proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+
 exit 0

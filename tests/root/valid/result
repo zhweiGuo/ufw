@@ -559,8 +559,99 @@ WARN: Checks disabled
 Rules updated
 
 
+59: allow smtp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+
+60: delete allow smtp
+WARN: Checks disabled
+Rules updated
+
+
+61: allow smtp/tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+
+62: delete allow smtp/tcp
+WARN: Checks disabled
+Rules updated
+
+
+63: allow tftp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 -j ACCEPT
+
+64: delete allow tftp
+WARN: Checks disabled
+Rules updated
+
+
+65: allow tftp/udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 -j ACCEPT
+
+66: delete allow tftp/udp
+WARN: Checks disabled
+Rules updated
+
+
+67: allow ssh
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+-A ufw-user-input -p udp --dport 22 -j ACCEPT
+68: delete allow ssh
+WARN: Checks disabled
+Rules updated
+
+
+69: allow ssh/tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+70: delete allow ssh/tcp
+WARN: Checks disabled
+Rules updated
+
+
+71: allow ssh/udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 22 -j ACCEPT
+
+72: delete allow ssh/udp
+WARN: Checks disabled
+Rules updated
+
+
 TO/FROM
-59: allow from 192.168.0.1
+73: allow from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -568,12 +659,12 @@ Rules updated
 ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
 -A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
-60: delete allow from 192.168.0.1
+74: delete allow from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-61: allow to 10.0.0.1
+75: allow to 10.0.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -581,12 +672,12 @@ Rules updated
 ### tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -d 10.0.0.1 -j ACCEPT
 
-62: delete allow to 10.0.0.1
+76: delete allow to 10.0.0.1
 WARN: Checks disabled
 Rules updated
 
 
-63: allow to 10.0.0.1 from 192.168.0.1
+77: allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -594,12 +685,12 @@ Rules updated
 ### tuple ### allow any any 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
 
-64: delete allow to 10.0.0.1 from 192.168.0.1
+78: delete allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-65: allow from 192.168.0.1 port 80
+79: allow from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -607,12 +698,12 @@ Rules updated
 ### tuple ### allow any any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
-66: delete allow from 192.168.0.1 port 80
+80: delete allow from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-67: allow to 10.0.0.1 port 25
+81: allow to 10.0.0.1 port 25
 WARN: Checks disabled
 Rules updated
 
@@ -620,12 +711,12 @@ Rules updated
 ### tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
-68: delete allow to 10.0.0.1 port 25
+82: delete allow to 10.0.0.1 port 25
 WARN: Checks disabled
 Rules updated
 
 
-69: allow to 10.0.0.1 from 192.168.0.1 port 80
+83: allow to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -633,12 +724,12 @@ Rules updated
 ### tuple ### allow any any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
-70: delete allow to 10.0.0.1 from 192.168.0.1 port 80
+84: delete allow to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-71: allow to 10.0.0.1 port 25 from 192.168.0.1
+85: allow to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -646,12 +737,12 @@ Rules updated
 ### tuple ### allow any 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
-72: delete allow to 10.0.0.1 port 25 from 192.168.0.1
+86: delete allow to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-73: allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
+87: allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -659,12 +750,12 @@ Rules updated
 ### tuple ### allow any 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
-74: delete allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
+88: delete allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-75: allow from 192.168.0.1 port 80 proto udp
+89: allow from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
@@ -672,12 +763,12 @@ Rules updated
 ### tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
 
-76: delete allow from 192.168.0.1 port 80 proto udp
+90: delete allow from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
 
-77: allow to 10.0.0.1 port 25 proto udp
+91: allow to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 Rules updated
 
@@ -685,12 +776,12 @@ Rules updated
 ### tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
 
-78: delete allow to 10.0.0.1 port 25 proto udp
+92: delete allow to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 Rules updated
 
 
-79: allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+93: allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
@@ -698,12 +789,12 @@ Rules updated
 ### tuple ### allow udp any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
-80: delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+94: delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
 
-81: allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
+95: allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -711,12 +802,12 @@ Rules updated
 ### tuple ### allow udp 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
-82: delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
+96: delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-83: allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+97: allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -724,12 +815,12 @@ Rules updated
 ### tuple ### allow udp 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
-84: delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+98: delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-85: allow from 192.168.0.1 port 80 proto tcp
+99: allow from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
@@ -737,12 +828,12 @@ Rules updated
 ### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
 
-86: delete allow from 192.168.0.1 port 80 proto tcp
+100: delete allow from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
 
-87: allow to 10.0.0.1 port 25 proto tcp
+101: allow to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rules updated
 
@@ -750,12 +841,12 @@ Rules updated
 ### tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
 
-88: delete allow to 10.0.0.1 port 25 proto tcp
+102: delete allow to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rules updated
 
 
-89: allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+103: allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
@@ -763,12 +854,12 @@ Rules updated
 ### tuple ### allow tcp any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
-90: delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+104: delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
 
-91: allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+105: allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -776,12 +867,12 @@ Rules updated
 ### tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
-92: delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+106: delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-93: allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+107: allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -789,12 +880,12 @@ Rules updated
 ### tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
-94: delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+108: delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-95: deny from 192.168.0.1
+109: deny from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -802,12 +893,12 @@ Rules updated
 ### tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
 -A ufw-user-input -s 192.168.0.1 -j DROP
 
-96: delete deny from 192.168.0.1
+110: delete deny from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-97: deny to 10.0.0.1
+111: deny to 10.0.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -815,12 +906,12 @@ Rules updated
 ### tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -d 10.0.0.1 -j DROP
 
-98: delete deny to 10.0.0.1
+112: delete deny to 10.0.0.1
 WARN: Checks disabled
 Rules updated
 
 
-99: deny to 10.0.0.1 from 192.168.0.1
+113: deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -828,12 +919,12 @@ Rules updated
 ### tuple ### deny any any 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j DROP
 
-100: delete deny to 10.0.0.1 from 192.168.0.1
+114: delete deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-101: deny from 192.168.0.1 port 80
+115: deny from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -841,12 +932,12 @@ Rules updated
 ### tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j DROP
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j DROP
-102: delete deny from 192.168.0.1 port 80
+116: delete deny from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-103: deny to 10.0.0.1 port 25
+117: deny to 10.0.0.1 port 25
 WARN: Checks disabled
 Rules updated
 
@@ -854,12 +945,12 @@ Rules updated
 ### tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j DROP
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j DROP
-104: delete deny to 10.0.0.1 port 25
+118: delete deny to 10.0.0.1 port 25
 WARN: Checks disabled
 Rules updated
 
 
-105: deny to 10.0.0.1 from 192.168.0.1 port 80
+119: deny to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -867,12 +958,12 @@ Rules updated
 ### tuple ### deny any any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
-106: delete deny to 10.0.0.1 from 192.168.0.1 port 80
+120: delete deny to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-107: deny to 10.0.0.1 port 25 from 192.168.0.1
+121: deny to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -880,12 +971,12 @@ Rules updated
 ### tuple ### deny any 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
-108: delete deny to 10.0.0.1 port 25 from 192.168.0.1
+122: delete deny to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-109: deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
+123: deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -893,12 +984,12 @@ Rules updated
 ### tuple ### deny any 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
-110: delete deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
+124: delete deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-111: deny from 192.168.0.1 port 80 proto udp
+125: deny from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
@@ -906,12 +997,12 @@ Rules updated
 ### tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j DROP
 
-112: delete deny from 192.168.0.1 port 80 proto udp
+126: delete deny from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
 
-113: deny to 10.0.0.1 port 25 proto udp
+127: deny to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 Rules updated
 
@@ -919,12 +1010,12 @@ Rules updated
 ### tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j DROP
 
-114: delete deny to 10.0.0.1 port 25 proto udp
+128: delete deny to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 Rules updated
 
 
-115: deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+129: deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
@@ -932,12 +1023,12 @@ Rules updated
 ### tuple ### deny udp any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 
-116: delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+130: delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
 
 
-117: deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
+131: deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -945,12 +1036,12 @@ Rules updated
 ### tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 
-118: delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
+132: delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-119: deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+133: deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -958,12 +1049,12 @@ Rules updated
 ### tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 
-120: delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+134: delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
-121: deny from 192.168.0.1 port 80 proto tcp
+135: deny from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
@@ -971,12 +1062,12 @@ Rules updated
 ### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j DROP
 
-122: delete deny from 192.168.0.1 port 80 proto tcp
+136: delete deny from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
 
-123: deny to 10.0.0.1 port 25 proto tcp
+137: deny to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rules updated
 
@@ -984,12 +1075,12 @@ Rules updated
 ### tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j DROP
 
-124: delete deny to 10.0.0.1 port 25 proto tcp
+138: delete deny to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rules updated
 
 
-125: deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+139: deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
@@ -997,12 +1088,12 @@ Rules updated
 ### tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j DROP
 
-126: delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+140: delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
 
 
-127: deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+141: deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
@@ -1010,12 +1101,12 @@ Rules updated
 ### tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
 
-128: delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+142: delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
 
 
-129: deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+143: deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
@@ -1023,15 +1114,392 @@ Rules updated
 ### tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j DROP
 
-130: delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+144: delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
 
 
 TESTING ARGS (status)
-131: --dry-run status
+145: --dry-run status
 WARN: Checks disabled
 > Checking iptables
 
+
+
+146: allow to any port smtp from any port smtp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 25 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 --sport 25 -j ACCEPT
+
+147: delete allow to any port smtp from any port smtp
+WARN: Checks disabled
+Rules updated
+
+
+148: allow to any port smtp from any port ssh
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
+
+149: delete allow to any port smtp from any port ssh
+WARN: Checks disabled
+Rules updated
+
+
+150: allow to any port ssh from any port smtp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22 0.0.0.0/0 25 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 --sport 25 -j ACCEPT
+
+151: delete allow to any port ssh from any port smtp
+WARN: Checks disabled
+Rules updated
+
+
+152: allow to any port smtp from any port 23
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 --sport 23 -j ACCEPT
+
+153: delete allow to any port smtp from any port 23
+WARN: Checks disabled
+Rules updated
+
+
+154: allow to any port 23 from any port smtp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 23 0.0.0.0/0 25 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 --sport 25 -j ACCEPT
+
+155: delete allow to any port 23 from any port smtp
+WARN: Checks disabled
+Rules updated
+
+
+156: allow to any port tftp from any port tftp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 69 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 --sport 69 -j ACCEPT
+
+157: delete allow to any port tftp from any port tftp
+WARN: Checks disabled
+Rules updated
+
+
+158: allow to any port tftp from any port ssh
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 --sport 22 -j ACCEPT
+
+159: delete allow to any port tftp from any port ssh
+WARN: Checks disabled
+Rules updated
+
+
+160: allow to any port ssh from any port tftp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 22 0.0.0.0/0 69 0.0.0.0/0
+-A ufw-user-input -p udp --dport 22 --sport 69 -j ACCEPT
+
+161: delete allow to any port ssh from any port tftp
+WARN: Checks disabled
+Rules updated
+
+
+162: allow to any port tftp from any port 23
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 --sport 23 -j ACCEPT
+
+163: delete allow to any port tftp from any port 23
+WARN: Checks disabled
+Rules updated
+
+
+164: allow to any port 23 from any port tftp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 23 0.0.0.0/0 69 0.0.0.0/0
+-A ufw-user-input -p udp --dport 23 --sport 69 -j ACCEPT
+
+165: delete allow to any port 23 from any port tftp
+WARN: Checks disabled
+Rules updated
+
+
+166: allow to any port ssh from any port 23
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow any 22 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 --sport 23 -j ACCEPT
+-A ufw-user-input -p udp --dport 22 --sport 23 -j ACCEPT
+167: delete allow to any port ssh from any port 23
+WARN: Checks disabled
+Rules updated
+
+
+168: allow to any port 23 from any port ssh
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow any 23 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 --sport 22 -j ACCEPT
+-A ufw-user-input -p udp --dport 23 --sport 22 -j ACCEPT
+169: delete allow to any port 23 from any port ssh
+WARN: Checks disabled
+Rules updated
+
+
+170: allow to any port ssh from any port domain
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow any 22 0.0.0.0/0 53 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 22 --sport 53 -j ACCEPT
+171: delete allow to any port ssh from any port domain
+WARN: Checks disabled
+Rules updated
+
+
+172: allow to any port smtp from any port smtp proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 25 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 --sport 25 -j ACCEPT
+
+173: delete allow to any port smtp from any port smtp proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+174: allow to any port smtp from any port ssh proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
+
+175: delete allow to any port smtp from any port ssh proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+176: allow to any port ssh from any port smtp proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22 0.0.0.0/0 25 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 --sport 25 -j ACCEPT
+
+177: delete allow to any port ssh from any port smtp proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+178: allow to any port smtp from any port 23 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 25 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 --sport 23 -j ACCEPT
+
+179: delete allow to any port smtp from any port 23 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+180: allow to any port 23 from any port smtp proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 23 0.0.0.0/0 25 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 --sport 25 -j ACCEPT
+
+181: delete allow to any port 23 from any port smtp proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+182: allow to any port tftp from any port tftp proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 69 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 --sport 69 -j ACCEPT
+
+183: delete allow to any port tftp from any port tftp proto udp
+WARN: Checks disabled
+Rules updated
+
+
+184: allow to any port tftp from any port ssh proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 --sport 22 -j ACCEPT
+
+185: delete allow to any port tftp from any port ssh proto udp
+WARN: Checks disabled
+Rules updated
+
+
+186: allow to any port ssh from any port tftp proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 22 0.0.0.0/0 69 0.0.0.0/0
+-A ufw-user-input -p udp --dport 22 --sport 69 -j ACCEPT
+
+187: delete allow to any port ssh from any port tftp proto udp
+WARN: Checks disabled
+Rules updated
+
+
+188: allow to any port tftp from any port 23 proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 69 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p udp --dport 69 --sport 23 -j ACCEPT
+
+189: delete allow to any port tftp from any port 23 proto udp
+WARN: Checks disabled
+Rules updated
+
+
+190: allow to any port 23 from any port tftp proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 23 0.0.0.0/0 69 0.0.0.0/0
+-A ufw-user-input -p udp --dport 23 --sport 69 -j ACCEPT
+
+191: delete allow to any port 23 from any port tftp proto udp
+WARN: Checks disabled
+Rules updated
+
+
+192: allow to any port ssh from any port 23 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 --sport 23 -j ACCEPT
+
+193: delete allow to any port ssh from any port 23 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+194: allow to any port 23 from any port ssh proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 23 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 --sport 22 -j ACCEPT
+
+195: delete allow to any port 23 from any port ssh proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+196: allow to any port ssh from any port domain proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22 0.0.0.0/0 53 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
+
+197: delete allow to any port ssh from any port domain proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+198: allow to any port ssh from any port 23 proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 22 0.0.0.0/0 23 0.0.0.0/0
+-A ufw-user-input -p udp --dport 22 --sport 23 -j ACCEPT
+
+199: delete allow to any port ssh from any port 23 proto udp
+WARN: Checks disabled
+Rules updated
+
+
+200: allow to any port 23 from any port ssh proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 23 0.0.0.0/0 22 0.0.0.0/0
+-A ufw-user-input -p udp --dport 23 --sport 22 -j ACCEPT
+
+201: delete allow to any port 23 from any port ssh proto udp
+WARN: Checks disabled
+Rules updated
+
+
+202: allow to any port ssh from any port domain proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 22 0.0.0.0/0 53 0.0.0.0/0
+-A ufw-user-input -p udp --dport 22 --sport 53 -j ACCEPT
+
+203: delete allow to any port ssh from any port domain proto udp
+WARN: Checks disabled
+Rules updated
 
 

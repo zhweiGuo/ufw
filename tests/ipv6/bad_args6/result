@@ -313,3 +313,34 @@ TESTING ARGS (allow/deny mixed ipv4/ipv6)
 101: --dry-run deny to 2001:db8::/32 from 10.0.0.1
 
 
+TESTING BAD SERVICES
+102: --dry-run allow smtp/udp
+
+
+103: --dry-run allow tftp/tcp
+
+
+104: --dry-run allow to any port smtp from any port tftp
+
+
+105: --dry-run allow to any port tftp from any port smtp
+
+
+106: --dry-run allow to any port smtp from any port 23 proto udp
+
+
+107: --dry-run allow to any port 23 from any port smtp proto udp
+
+
+108: --dry-run allow to any port tftp from any port 23 proto tcp
+
+
+109: --dry-run allow to any port 23 from any port tftp proto tcp
+
+
+110: --dry-run allow to any port smtp from any port ssh proto udp
+
+
+111: --dry-run allow to any port tftp from any port ssh proto tcp
+
+

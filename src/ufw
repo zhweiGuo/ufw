@@ -49,6 +49,8 @@ def process_args():
     type = ""
     from_type = "any"
     to_type = "any"
+    from_service = ""
+    to_service = ""
     dryrun = False
 
     if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
@@ -112,6 +114,8 @@ def process_args():
             # Short form where only port/proto is given
             try:
                 (port, proto) = parse_port_proto(sys.argv[2])
+                if not re.match('^\d+$', port):
+                    to_service = port
                 rule.set_protocol(proto)
                 rule.set_port(port, "dst")
                 type = "both"
@@ -185,12 +189,20 @@ def process_args():
                     if i+1 < nargs:
                         if loc == "":
                             raise UFWError("Need 'from' or 'to' with 'port'")
+
+                        tmp = sys.argv[i+1]
+                        if not re.match('^\d+$', tmp):
+                            if loc == "src":
+                                from_service = tmp
+                            else:
+                                to_service = tmp
+
                         try:
-                            rule.set_port(sys.argv[i+1], loc)
+                            rule.set_port(tmp, loc)
                         except:
                             raise
                     else:
-                        raise UFWError("Invalid 'proto' clause")
+                        raise UFWError("Invalid 'port' clause")
                 i += 1
 
             # Figure out the type of rule (IPv4, IPv6, or both) this is
@@ -204,8 +216,57 @@ def process_args():
             elif to_type != "any":
                 type = to_type
 
+    # Adjust protocol
+    if to_service != "" or from_service != "":
+        proto = ""
+        if to_service != "":
+            proto = get_services_proto(to_service)
+        if from_service != "":
+            if proto == "any" or proto == "":
+                proto = get_services_proto(from_service)
+            else:
+                tmp = get_services_proto(from_service)
+                if proto == "any" or proto == tmp:
+                    proto = tmp
+                elif tmp == "any":
+                    pass
+                else:
+                    raise UFWError("Protocol mismatch (from/to)")
+        
+        # Verify found proto with specified proto
+        if rule.protocol == "any":
+            rule.set_protocol(proto) 
+        elif proto != "any" and rule.protocol != proto:
+            raise UFWError("Protocol mismatch with specified protocol " + \
+                           rule.protocol)
+
     return (action, rule, type, dryrun)
 
+
+def get_services_proto(port):
+    '''Get the protocol for a specified port from /etc/services'''
+    proto = ""
+    try:
+        socket.getservbyname(port)
+    except:
+        raise
+
+    try:
+        socket.getservbyname(port, "tcp")
+        proto = "tcp"
+    except:
+        pass
+
+    try:
+        socket.getservbyname(port, "udp")
+        if proto == "tcp":
+            proto = "any"
+        else:
+            proto = "udp"
+    except:
+        pass
+
+    return proto
 
 def parse_port_proto(str):
     '''Parse port or port and protocol'''

@@ -71,7 +71,8 @@ specify a protocol, append '/protocol' to the port. For example:
   ufw allow 25/tcp
 
 This will allow tcp port 25 to any address on this host. \fBufw\fR will also
-check /etc/services if specifying a service by name. Eg:
+check /etc/services for the port and protocol if specifying a service by name.
+Eg:
 
   ufw allow smtp
 .PP

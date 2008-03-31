@@ -55,6 +55,13 @@ do
 		do_cmd "0" --dry-run $x to $to port 25 proto $y from $from port 80
 		do_cmd "0" --dry-run delete $x to $to port 25 proto $y from $from port 80
 	done
+
+	do_cmd "0" --dry-run $x to $to port smtp from $from port ssh
+	do_cmd "0" --dry-run delete $x to $to port smtp from $from port ssh
+	do_cmd "0" --dry-run $x to $to port tftp from $from port ssh
+	do_cmd "0" --dry-run delete $x to $to port tftp from $from port ssh
+	do_cmd "0" --dry-run $x to $to port ssh from $from port domain
+	do_cmd "0" --dry-run delete $x to $to port ssh from $from port domain
 done
 
 exit 0

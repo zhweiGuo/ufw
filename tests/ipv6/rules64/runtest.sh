@@ -34,4 +34,28 @@ do_cmd "0" --dry-run allow from 192.168.0.0/16
 do_cmd "0" --dry-run deny proto udp from 1.2.3.4 to any port 514
 do_cmd "0" --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 
+echo "Services SIMPLE" >> $TESTTMP/result
+do_cmd "0" --dry-run allow smtp
+do_cmd "0" --dry-run delete allow smtp
+do_cmd "0" --dry-run allow smtp/tcp
+do_cmd "0" --dry-run delete allow smtp/tcp
+do_cmd "0" --dry-run allow tftp
+do_cmd "0" --dry-run delete allow tftp
+do_cmd "0" --dry-run allow tftp/udp
+do_cmd "0" --dry-run delete allow tftp/udp
+do_cmd "0" --dry-run allow ssh
+do_cmd "0" --dry-run delete allow ssh
+do_cmd "0" --dry-run allow ssh/tcp
+do_cmd "0" --dry-run delete allow ssh/tcp
+do_cmd "0" --dry-run allow ssh/udp
+do_cmd "0" --dry-run delete allow ssh/udp
+
+echo "Services EXTENDED" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to any port smtp from any port ssh
+do_cmd "0" --dry-run delete allow to any port smtp from any port ssh
+do_cmd "0" --dry-run allow to any port tftp from any port ssh
+do_cmd "0" --dry-run delete allow to any port tftp from any port ssh
+do_cmd "0" --dry-run allow to any port ssh from any port domain
+do_cmd "0" --dry-run delete allow to any port ssh from any port domain
+
 exit 0
