@@ -6,6 +6,7 @@ ufw (0.17) UNRELEASED; urgency=low
   * debian/control: Standards-Version: 3.7.3
   * don't log INVALID packets by default (LP: #207156)
   * don't log noisy services by default (LP: #209709)
+  * consult /etc/services for protocol (LP: #209845)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Mar 2008 16:11:22 -0400
 
