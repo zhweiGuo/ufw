@@ -15,6 +15,16 @@
 :ufw6-after-forward - [0:0]
 # End required lines
 
+# don't log noisy services by default
+-A ufw6-after-input -p tcp --dport 137 -j RETURN
+-A ufw6-after-input -p udp --dport 137 -j RETURN
+-A ufw6-after-input -p tcp --dport 138 -j RETURN
+-A ufw6-after-input -p udp --dport 138 -j RETURN
+-A ufw6-after-input -p tcp --dport 445 -j RETURN
+-A ufw6-after-input -p udp --dport 445 -j RETURN
+-A ufw6-after-input -p udp --dport 67 -j RETURN
+-A ufw6-after-input -p udp --dport 68 -j RETURN
+
 # catchall for logging
 -A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
