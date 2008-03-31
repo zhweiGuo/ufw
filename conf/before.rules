@@ -23,7 +23,10 @@
 
 # connection tracking rules
 -A ufw-before-input -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
--A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+
+# drop INVALID packets
+# uncomment to log INVALID packets
+#-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A ufw-before-input -m conntrack --ctstate INVALID -j DROP
 
 # connection tracking for outbound

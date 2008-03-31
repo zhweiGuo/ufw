@@ -19,8 +19,8 @@ Logging enabled
 -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
--A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
--A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 3: logging off
 WARN: Checks disabled
@@ -31,8 +31,8 @@ Logging disabled
 # ufw_comment # -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 # ufw_comment # -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 # ufw_comment # -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
-# ufw_comment # -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
-# ufw_comment # -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 # ufw_comment # -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 TESTING ARGS (allow/deny to/from)
 4: allow 53
@@ -272,8 +272,8 @@ Logging enabled
 -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
--A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
--A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 33: logging off
 WARN: Checks disabled
@@ -284,8 +284,8 @@ Logging disabled
 # ufw_comment # -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 # ufw_comment # -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 # ufw_comment # -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
-# ufw_comment # -A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
-# ufw_comment # -A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+#-A ufw-before-input -m conntrack --ctstate INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 # ufw_comment # -A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
 TESTING ARGS (allow/deny to/from)
 34: allow 53

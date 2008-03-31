@@ -28,7 +28,10 @@
 
 # connection tracking rules
 -A ufw6-before-input -m state --state RELATED,ESTABLISHED -j ACCEPT
--A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+
+# drop INVALID packets
+# uncomment to log INVALID packets
+#-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
 -A ufw6-before-input -m state --state INVALID -j DROP
 
 # connection tracking for outbound
