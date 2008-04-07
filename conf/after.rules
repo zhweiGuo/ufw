@@ -16,12 +16,10 @@
 # End required lines
 
 # don't log noisy services by default
--A ufw-after-input -p tcp --dport 137 -j RETURN
 -A ufw-after-input -p udp --dport 137 -j RETURN
--A ufw-after-input -p tcp --dport 138 -j RETURN
 -A ufw-after-input -p udp --dport 138 -j RETURN
+-A ufw-after-input -p tcp --dport 139 -j RETURN
 -A ufw-after-input -p tcp --dport 445 -j RETURN
--A ufw-after-input -p udp --dport 445 -j RETURN
 -A ufw-after-input -p udp --dport 67 -j RETURN
 -A ufw-after-input -p udp --dport 68 -j RETURN
 
