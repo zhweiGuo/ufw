@@ -7,6 +7,7 @@ ufw (0.17) UNRELEASED; urgency=low
   * don't log INVALID packets by default (LP: #207156)
   * don't log noisy services by default (LP: #209709)
   * consult /etc/services for protocol (LP: #209845)
+  * fix man page typo
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Mar 2008 16:11:22 -0400
 
