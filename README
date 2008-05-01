@@ -38,6 +38,8 @@ ufw logging on|off		updates backend logging (*.rules)
 ufw status			displays firewall status (user.rules only)
 ufw allow|deny RULE		add RULE to firewall
 
+See 'man ufw' and also Ubuntu's tutorial at:
+http://doc.ubuntu.com/ubuntu/serverguide/C/firewall.html
 
 Chains
 ------
