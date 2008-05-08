@@ -948,7 +948,7 @@ class UFWBackendIptables(UFWBackend):
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str 
 
-        return _("Firewall loaded %s") % (str)
+        return _("Firewall loaded%s") % (str)
 
     def stop_firewall(self):
         '''Stops the firewall'''
