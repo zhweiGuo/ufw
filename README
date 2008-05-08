@@ -41,6 +41,7 @@ ufw allow|deny RULE		add RULE to firewall
 See 'man ufw' and also Ubuntu's tutorial at:
 http://doc.ubuntu.com/ubuntu/serverguide/C/firewall.html
 
+
 Chains
 ------
 ufw uses several chains to allow ease of use and flexibility. The chains are
@@ -110,13 +111,6 @@ Or for the root tests (these will modify your existing firewall and insert
 kernel modules, so they require root privileges and aren't run by default):
 $ sudo ./run_tests.sh -s root
 
-
-Internationalization
---------------------
-i18n files are placed in messages/. To update the main .pot file, do:
-$ pygettext -d ufw -p messages -S GNU src/ufw
-
-and adjust messages/ufw.pot accordingly.
 
 
 (C) 2008 Canonical Ltd.
