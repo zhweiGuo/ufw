@@ -1,0 +1,330 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2008-05-08 10:45+EDT\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: src/ufw:42
+msgid ""
+": Need at least python 2.5)\n"
+msgstr ""
+
+#: src/ufw:130
+msgid "Bad port"
+msgstr ""
+
+#: src/ufw:133
+msgid "Wrong number of arguments"
+msgstr ""
+
+#: src/ufw:136
+msgid "Need 'to' or 'from' clause"
+msgstr ""
+
+#: src/ufw:147
+msgid "Improper rule syntax"
+msgstr ""
+
+#: src/ufw:154
+msgid "Invalid token '%s'"
+msgstr ""
+
+#: src/ufw:163
+msgid "Invalid 'proto' clause"
+msgstr ""
+
+#: src/ufw:182
+msgid "Invalid 'from' clause"
+msgstr ""
+
+#: src/ufw:201
+msgid "Invalid 'to' clause"
+msgstr ""
+
+#: src/ufw:206
+msgid "Need 'from' or 'to' with 'port'"
+msgstr ""
+
+#: src/ufw:221
+msgid "Invalid 'port' clause"
+msgstr ""
+
+#: src/ufw:230
+msgid "Mixed IP versions for 'from' and 'to'"
+msgstr ""
+
+#: src/ufw:252
+msgid "Protocol mismatch (from/to)"
+msgstr ""
+
+#: src/ufw:259
+msgid "Protocol mismatch with specified protocol %s"
+msgstr ""
+
+#: src/ufw:303
+msgid "Bad port/protocol"
+msgstr ""
+
+#: src/ufw:311
+msgid "python does not have IPv6 support."
+msgstr ""
+
+#: src/ufw:344
+msgid ""
+"\n"
+"Usage: "
+msgstr ""
+
+#: src/ufw:345
+msgid ""
+" COMMAND\n"
+"\n"
+"Commands:\n"
+"  enable\t\t\tEnables the firewall\n"
+"  disable\t\t\tDisables the firewall\n"
+"  default ARG\t\t\tset default policy to ALLOW or DENY\n"
+"  logging ARG\t\t\tset logging to ON or OFF\n"
+"  allow|deny RULE\t\tallow or deny RULE\n"
+"  delete allow|deny RULE\tdelete the allow/deny RULE\n"
+"  status\t\t\tshow firewall status\n"
+"  version\t\t\tdisplay version information\n"
+msgstr ""
+
+#: src/ufw:364
+msgid "Couldn't open '%s' for reading"
+msgstr ""
+
+#: src/ufw:430
+msgid "ERROR: %s"
+msgstr ""
+
+#: src/ufw:436
+msgid "WARN: %s"
+msgstr ""
+
+#: src/ufw:442
+msgid "DEBUG: %s"
+msgstr ""
+
+#: src/ufw:511
+msgid "Bad port '%s'"
+msgstr ""
+
+#: src/ufw:535
+msgid "Unsupported protocol '%s'"
+msgstr ""
+
+#: src/ufw:564
+msgid "Bad source address"
+msgstr ""
+
+#: src/ufw:575
+msgid "Bad destination address"
+msgstr ""
+
+#: src/ufw:587
+msgid "No match"
+msgstr ""
+
+#: src/ufw:608
+msgid "Found exact match"
+msgstr ""
+
+#: src/ufw:611
+msgid "Found opposite match"
+msgstr ""
+
+#: src/ufw:660
+msgid "Checks disabled"
+msgstr ""
+
+#: src/ufw:666
+msgid "ERROR: this script should not be SUID"
+msgstr ""
+
+#: src/ufw:669
+msgid "ERROR: this script should not be SGID"
+msgstr ""
+
+#: src/ufw:674
+msgid "You need to be root to run this script"
+msgstr ""
+
+#: src/ufw:687
+msgid "found hidden directory in path: %s"
+msgstr ""
+
+#: src/ufw:694
+msgid "Couldn't stat '%s'"
+msgstr ""
+
+#: src/ufw:700
+msgid "found symbolic link in path: %s"
+msgstr ""
+
+#: src/ufw:703
+msgid "uid is %s but '%s' is owned by %s"
+msgstr ""
+
+#: src/ufw:708
+msgid "%s is world writable!"
+msgstr ""
+
+#: src/ufw:712
+msgid "%s is group writable!"
+msgstr ""
+
+#: src/ufw:725
+msgid "'%s' file '%s' does not exist"
+msgstr ""
+
+#: src/ufw:744
+msgid "Invalid option"
+msgstr ""
+
+#: src/ufw:811
+msgid "Unsupported policy '%s'"
+msgstr ""
+
+#: src/ufw:814
+msgid ""
+"Default policy changed to '%s'\n"
+msgstr ""
+
+#: src/ufw:815
+msgid "(be sure to update your rules accordingly)"
+msgstr ""
+
+#: src/ufw:852
+msgid "Logging disabled"
+msgstr ""
+
+#: src/ufw:854
+msgid "Logging enabled"
+msgstr ""
+
+#: src/ufw:861
+msgid ""
+"Checking iptables\n"
+msgstr ""
+
+#: src/ufw:863
+msgid ""
+"Checking ip6tables\n"
+msgstr ""
+
+#: src/ufw:869
+msgid "Firewall not loaded"
+msgstr ""
+
+#: src/ufw:871 src/ufw:978 src/ufw:1015 src/ufw:1044
+msgid "problem running"
+msgstr ""
+
+#: src/ufw:886
+msgid "Firewall loaded"
+msgstr ""
+
+#: src/ufw:947
+msgid "Action"
+msgstr ""
+
+#: src/ufw:947
+msgid "From"
+msgstr ""
+
+#: src/ufw:947
+msgid "To"
+msgstr ""
+
+#: src/ufw:948
+msgid "--"
+msgstr ""
+
+#: src/ufw:948
+msgid "----"
+msgstr ""
+
+#: src/ufw:948
+msgid "------"
+msgstr ""
+
+#: src/ufw:951
+msgid "Firewall loaded %s"
+msgstr ""
+
+#: src/ufw:1017
+msgid "running initscript"
+msgstr ""
+
+#: src/ufw:1086 src/ufw:1119
+msgid "Couldn't parse line '%s'"
+msgstr ""
+
+#: src/ufw:1157
+msgid "Skipping malformed tuple (bad length): %s"
+msgstr ""
+
+#: src/ufw:1170
+msgid "Skipping malformed tuple: %s"
+msgstr ""
+
+#: src/ufw:1231
+msgid "Adding IPv6 rule failed: IPv6 not enabled"
+msgstr ""
+
+#: src/ufw:1274
+msgid "Couldn't update rules file"
+msgstr ""
+
+#: src/ufw:1277
+msgid "Rules updated"
+msgstr ""
+
+#: src/ufw:1279
+msgid "Rules updated (v6)"
+msgstr ""
+
+#: src/ufw:1290
+msgid "Rule updated"
+msgstr ""
+
+#: src/ufw:1293
+msgid "Rule deleted"
+msgstr ""
+
+#: src/ufw:1296
+msgid "Rule added"
+msgstr ""
+
+#: src/ufw:1307
+msgid "Could not update running firewall"
+msgstr ""
+
+#: src/ufw:1344
+msgid "Firewall started and enabled on system startup"
+msgstr ""
+
+#: src/ufw:1350
+msgid "Firewall stopped and disabled on system startup"
+msgstr ""
+
+#: src/ufw:1407 src/ufw:1417
+msgid "Invalid type '%s'"
+msgstr ""
+
+#: src/ufw:1414
+msgid "IPv6 support not enabled"
+msgstr ""
+

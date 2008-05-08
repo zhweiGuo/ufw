@@ -111,4 +111,12 @@ kernel modules, so they require root privileges and aren't run by default):
 $ sudo ./run_tests.sh -s root
 
 
+Internationalization
+--------------------
+i18n files are placed in messages/. To update the main .pot file, do:
+$ pygettext -d ufw -p messages -S GNU src/ufw
+
+and adjust messages/ufw.pot accordingly.
+
+
 (C) 2008 Canonical Ltd.
