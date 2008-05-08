@@ -27,12 +27,19 @@ import subprocess
 import sys
 from tempfile import mkstemp
 
+import gettext
+
 version = "#VERSION#"
 programName = "ufw"
 
+# Internationalization
+gettext.bindtextdomain(programName, '#STATE_PREFIX#/messages')
+gettext.textdomain(programName)
+_ = gettext.gettext
+
 if sys.version_info[0] < 2 or \
    (sys.version_info[0] == 2 and sys.version_info[1] < 5):
-    print >> sys.stderr, programName + ": Need at least python 2.5\n"
+    print >> sys.stderr, programName + _(": Need at least python 2.5)\n")
     sys.exit(1)
 
 # These are default settings
@@ -120,11 +127,14 @@ def process_args():
                 rule.set_port(port, "dst")
                 type = "both"
             except UFWError:
-                raise UFWError("Bad port")
+                err_msg = _("Bad port")
+                raise UFWError(err_msg)
         elif nargs % 2 != 0:
-            raise UFWError("Wrong number of arguments")
+            err_msg = _("Wrong number of arguments")
+            raise UFWError(err_msg)
         elif not 'from' in sys.argv and not 'to' in sys.argv:
-            raise UFWError("Need 'to' or 'from' clause")
+            err_msg = _("Need 'to' or 'from' clause")
+            raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
             keys = [ 'proto', 'from', 'to', 'port' ]
@@ -134,13 +144,15 @@ def process_args():
                sys.argv.count("from") > 1 or \
                sys.argv.count("proto") > 1 or \
                sys.argv.count("port") > 2:
-                raise UFWError("Improper rule syntax")
+                err_msg = _("Improper rule syntax")
+                raise UFWError(err_msg)
 
             i = 1
             loc = ""
             for arg in sys.argv[1:]:
                 if i % 2 == 0 and sys.argv[i] not in keys:
-                    raise UFWError("Invalid token '" + sys.argv[i] + "'")
+                    err_msg = _("Invalid token '%s'") % (sys.argv[i])
+                    raise UFWError(err_msg)
                 if arg == "proto":
                     if i+1 < nargs:
                         try:
@@ -148,7 +160,8 @@ def process_args():
                         except:
                             raise
                     else:
-                        raise UFWError("Invalid 'proto' clause")
+                        err_msg = _("Invalid 'proto' clause")
+                        raise UFWError(err_msg)
                 elif arg == "from":
                     if i+1 < nargs:
                         try:
@@ -166,7 +179,8 @@ def process_args():
                             raise
                         loc = "src"
                     else:
-                        raise UFWError("Invalid 'from' clause")
+                        err_msg = _("Invalid 'from' clause")
+                        raise UFWError(err_msg)
                 elif arg == "to":
                     if i+1 < nargs:
                         try:
@@ -184,11 +198,13 @@ def process_args():
                             raise
                         loc = "dst"
                     else:
-                        raise UFWError("Invalid 'to' clause")
+                        err_msg = _("Invalid 'to' clause")
+                        raise UFWError(err_msg)
                 elif arg == "port":
                     if i+1 < nargs:
                         if loc == "":
-                            raise UFWError("Need 'from' or 'to' with 'port'")
+                            err_msg = _("Need 'from' or 'to' with 'port'")
+                            raise UFWError(err_msg)
 
                         tmp = sys.argv[i+1]
                         if not re.match('^\d+$', tmp):
@@ -202,7 +218,8 @@ def process_args():
                         except:
                             raise
                     else:
-                        raise UFWError("Invalid 'port' clause")
+                        err_msg = _("Invalid 'port' clause")
+                        raise UFWError(err_msg)
                 i += 1
 
             # Figure out the type of rule (IPv4, IPv6, or both) this is
@@ -210,7 +227,8 @@ def process_args():
                 type = "both"
             elif from_type != "any" and to_type != "any" and \
                  from_type != to_type:
-                raise UFWError("Mixed IP versions for 'from' and 'to'")
+                err_msg = _("Mixed IP versions for 'from' and 'to'")
+                raise UFWError(err_msg)
             elif from_type != "any":
                 type = from_type
             elif to_type != "any":
@@ -231,14 +249,16 @@ def process_args():
                 elif tmp == "any":
                     pass
                 else:
-                    raise UFWError("Protocol mismatch (from/to)")
+                    err_msg = _("Protocol mismatch (from/to)")
+                    raise UFWError(err_msg)
         
         # Verify found proto with specified proto
         if rule.protocol == "any":
             rule.set_protocol(proto) 
         elif proto != "any" and rule.protocol != proto:
-            raise UFWError("Protocol mismatch with specified protocol " + \
-                           rule.protocol)
+            err_msg = _("Protocol mismatch with specified protocol %s") % \
+                        (rule.protocol)
+            raise UFWError(err_msg)
 
     return (action, rule, type, dryrun)
 
@@ -280,14 +300,16 @@ def parse_port_proto(str):
         port = tmp[0]
         proto = tmp[1]
     else:
-        raise UFWError("Bad port/protocol")
+        err_msg = _("Bad port/protocol")
+        raise UFWError(err_msg)
     return (port, proto)
 
 
 def valid_address(addr, v6=False):
     '''Validate IP addresses'''
     if v6 and not socket.has_ipv6:
-        warn("python does not have IPv6 support.")
+        warn_msg = _("python does not have IPv6 support.")
+        warn(warn_msg)
         return False
 
     # quick and dirty test
@@ -319,8 +341,8 @@ def valid_address(addr, v6=False):
 
 def print_help():
     '''Print help message'''
-    print '''
-Usage: ''' + programName + ''' COMMAND
+    msg = _('''
+Usage: ''') + programName + _(''' COMMAND
 
 Commands:
   enable			Enables the firewall
@@ -331,14 +353,16 @@ Commands:
   delete allow|deny RULE	delete the allow/deny RULE
   status			show firewall status
   version			display version information
-'''
+''')
+    print (msg)
 
 def open_file_read(f):
     '''Opens the specified file read-only'''
     try:
         orig = open(f, 'r')
     except OSError, e:
-        raise UFWError("Couldn't open '" + f + "' for reading")
+        err_msg = _("Couldn't open '%s' for reading") % (f)
+        raise UFWError(err_msg)
     except Exception:
         raise
 
@@ -403,19 +427,19 @@ def cmd_pipe(command1, command2):
 
 def error(msg):
     '''Print error message and exit'''
-    print >> sys.stderr, "ERROR: " + msg
+    print >> sys.stderr, _("ERROR: %s") % (msg)
     sys.exit(1)
 
 
 def warn(msg):
     '''Print warning message'''
-    print >> sys.stderr, "WARN: " + msg
+    print >> sys.stderr, _("WARN: %s") % (msg)
 
 
 def debug(msg):
     '''Print debug message'''
     if debugging:
-        print >> sys.stderr, "DEBUG: " + msg
+        print >> sys.stderr, _("DEBUG: %s") % (msg)
 
 #
 # Classes
@@ -484,18 +508,19 @@ class UFWRule:
 
     def set_port(self, port, loc="dst"):
         '''Sets port and location (destination or source) of the rule'''
+        err_msg = _("Bad port '%s'") % (port)
         if port == "any":
             pass
         elif re.match('^\d+$', port):
             if int(port) < 1 or int(port) > 65535:
-                raise UFWError("Bad port '" + port + "'")
+                raise UFWError(err_msg)
         elif re.match(r'^\w[\w\-]+', port):
             try:
                 port = socket.getservbyname(port)
             except Exception, (error):
-                raise UFWError("Bad port '" + port + "'")
+                raise UFWError(err_msg)
         else:
-            raise UFWError("Bad port '" + port + "'")
+            raise UFWError(err_msg)
 
         if loc == "src":
             self.sport = str(port)
@@ -507,7 +532,8 @@ class UFWRule:
         if protocol == "tcp" or protocol == "udp" or protocol == "any":
             self.protocol = protocol
         else:
-            raise UFWError("Unsupported protocol '" + protocol + "'")
+            err_msg = _("Unsupported protocol '%s'") % (protocol)
+            raise UFWError(err_msg)
 
     def _fix_anywhere(self):
         '''Adjusts src and dst based on v6'''
@@ -535,7 +561,8 @@ class UFWRule:
 
         if tmp != "any" and not valid_address(tmp) and \
            not valid_address(tmp, True):
-            raise UFWError("Bad source address")
+            err_msg = _("Bad source address")
+            raise UFWError(err_msg)
         self.src = tmp
         self._fix_anywhere()
 
@@ -545,7 +572,8 @@ class UFWRule:
 
         if tmp != "any" and not valid_address(tmp) and \
            not valid_address(tmp, True):
-            raise UFWError("Bad destination address")
+            err_msg = _("Bad destination address")
+            raise UFWError(err_msg)
         self.dst = tmp
         self._fix_anywhere()
 
@@ -556,29 +584,32 @@ class UFWRule:
           1  no match
          -1  match all but action
         '''
+        dbg_msg = _("No match")
         if x.dport != y.dport:
-            debug("No match")
+            debug(dbg_msg)
             return 1
         if x.sport != y.sport:
-            debug("No match")
+            debug(dbg_msg)
             return 1
         if x.protocol != y.protocol:
-            debug("No match")
+            debug(dbg_msg)
             return 1
         if x.src != y.src:
-            debug("No match")
+            debug(dbg_msg)
             return 1
         if x.dst != y.dst:
-            debug("No match")
+            debug(dbg_msg)
             return 1
         if x.v6 != y.v6:
-            debug("No match")
+            debug(dbg_msg)
             return 1
         
         if x.action == y.action:
-            debug("Found exact match")
+            dbg_msg = _("Found exact match")
+            debug(dbg_msg)
             return 0
-        debug("Found opposite match")
+        dbg_msg = _("Found opposite match")
+        debug(dbg_msg)
         return -1
 
 
@@ -626,18 +657,22 @@ class UFWBackend:
         '''
 
         if disable_checks:
-            warn("Checks disabled")
+            err_msg = _("Checks disabled")
+            warn(err_msg)
             return True
 
         # Not needed on Linux, but who knows the places we will go...
         if os.getuid() != os.geteuid():
-            raise UFWError("ERROR: this script should not be SUID")
+            err_msg = _("ERROR: this script should not be SUID")
+            raise UFWError(err_msg)
         if os.getgid() != os.getegid():
-            raise UFWError("ERROR: this script should not be SGID")
+            err_msg = _("ERROR: this script should not be SGID")
+            raise UFWError(err_msg)
         uid = os.getuid()
 
         if uid != 0:
-            raise UFWError("You need to be root to run this script")
+            err_msg = _("You need to be root to run this script")
+            raise UFWError(err_msg)
 
         # Use these so we only warn once
         warned_world_write = {}
@@ -649,27 +684,33 @@ class UFWBackend:
             while True:
                 debug("Checking " + path)
                 if pat.search(os.path.basename(path)):
-                    raise UFWError("found hidden directory in path: " + path)
+                    err_msg = _("found hidden directory in path: %s") % (path)
+                    raise UFWError(err_msg)
 
                 try:
                     statinfo = os.stat(path)
                     mode = statinfo[ST_MODE]
                 except OSError, e:
-                    raise UFWError("Couldn't stat '" + path + "'")
+                    err_msg = _("Couldn't stat '%s'") % (path)
+                    raise UFWError(err_msg)
                 except Exception:
                     raise
 
                 if os.path.islink(path):
-                    raise UFWError("found symbolic link in path: " + path)
+                    err_msg = _("found symbolic link in path: %s") % (path)
+                    raise UFWError(err_msg)
                 if statinfo.st_uid != 0 and not warned_owner.has_key(path):
-                    warn("uid is " + str(uid) + " but '" + path + \
-                                   "' is owned by " + str(statinfo.st_uid))
+                    warn_msg = _("uid is %s but '%s' is owned by %s") % \
+                                (str(uid), path, str(statinfo.st_uid))
+                    warn(warn_msg)
                     warned_owner[path] = True
                 if mode & S_IWOTH and not warned_world_write.has_key(path):
-                    warn(path + " is world writable!")
+                    warn_msg = _("%s is world writable!") % (path)
+                    warn(warn_msg)
                     warned_world_write[path] = True
                 if mode & S_IWGRP and not warned_group_write.has_key(path):
-                    warn(path + " is group writable")
+                    warn_msg = _("%s is group writable!") % (path)
+                    warn(warn_msg)
                     warned_group_write[path] = True
 
                 if path == "/":
@@ -681,8 +722,8 @@ class UFWBackend:
 
         for f in files:
             if not os.path.isfile(files[f]):
-                raise UFWError("'" + f + "' file '" + files[f] + \
-                               "' does not exist")
+                err_msg = _("'%s' file '%s' does not exist") % (f, files[f])
+                raise UFWError(err_msg)
 
     def _get_defaults(self):
         '''Get all settings from defaults file'''
@@ -700,7 +741,8 @@ class UFWBackend:
     def set_default(self, f, opt, value):
         '''Sets option in defaults file'''
         if not re.match(r'^[\w_]+$', opt):
-            raise UFWError("Invalid option")
+            err_msg = _("Invalid option")
+            raise UFWError(err_msg)
 
         try:
             fns = open_files(f)
@@ -766,10 +808,11 @@ class UFWBackendIptables(UFWBackend):
                 self.set_default(files['defaults'], "DEFAULT_INPUT_POLICY", 
                                 "\"DROP\"")
             else:
-                raise UFWError("Unsupported policy '" + policy + "'")
+                err_msg = _("Unsupported policy '%s'") % (policy)
+                raise UFWError(err_msg)
 
-        rstr = "Default policy changed to '" + policy + "'\n" + \
-              "(be sure to update your rules accordingly)"
+        rstr = _("Default policy changed to '%s'\n") % (policy)
+        rstr += _("(be sure to update your rules accordingly)")
 
         return rstr
 
@@ -806,39 +849,41 @@ class UFWBackendIptables(UFWBackend):
                 close_files(fns)
     
         if level == "off":
-            return "Logging disabled"
+            return _("Logging disabled")
         else:
-            return "Logging enabled"
+            return _("Logging enabled")
 
     def get_status(self):
         '''Show current status of firewall'''
         out = ""
         out6 = ""
         if dryrun:
-            out = "> Checking iptables\n"
+            out = "> " + _("Checking iptables\n")
             if self.use_ipv6():
-                out += "> Checking ip6tables\n"
+                out += "> " + _("Checking ip6tables\n")
             return out
 
         # Is the firewall loaded at all?
         (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
         if rc != 0:
-            return "Firewall not loaded"
+            return _("Firewall not loaded")
+
+        err_msg = _("problem running")
 
         # Get the output of iptables for parsing
         (rc, out) = cmd(['iptables', '-L', '-n'])
         if rc != 0:
-            raise UFWError("problem running iptables")
+            raise UFWError(err_msg + " iptables")
 
         if self.use_ipv6():
             (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
             if rc != 0:
-                raise UFWError("problem running ip6tables")
+                raise UFWError(err_msg + " ip6tables")
             if out6 == "":
                 return out6
 
         if out == "" and out6 == "":
-            return "Firewall loaded"
+            return _("Firewall loaded")
 
         str = ""
         rules = []
@@ -899,11 +944,11 @@ class UFWBackendIptables(UFWBackend):
                     location['src'])
 
         if str != "":
-            tmp = "\n\n%-26s %-8s%s\n" % ("To", "Action", "From")
-            tmp += "%-26s %-8s%s\n" % ("--", "------", "----")
-            str = tmp + str
+            header = "\n\n%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
+            header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
+            str = header + str 
 
-        return "Firewall loaded" + str
+        return _("Firewall loaded%s") % (str)
 
     def stop_firewall(self):
         '''Stops the firewall'''
@@ -930,47 +975,50 @@ COMMIT
         os.write(tmp, openconf)
         os.close(tmp)
 
+        err_msg = _("problem running")
+
         # Flush the firewall
         (rc, out) = cmd(['iptables', '-F'])
         if rc != 0:
-            raise UFWError("problem running iptables 'flush'")
+            raise UFWError(err_msg + " iptables 'flush'")
 
         # Remove user chains
         (rc, out) = cmd(['iptables', '-X'])
         if rc != 0:
-            raise UFWError("problem running iptables 'delete'")
+            raise UFWError(err_msg + " iptables 'delete'")
 
         # Set default open
         (rc, out) = cmd_pipe(['cat', tmpname], ['iptables-restore'])
         if rc != 0:
-            raise UFWError("problem running iptables")
+            raise UFWError(err_msg + " iptables")
 
         if self.use_ipv6():
             # Flush the firewall
             (rc, out) = cmd(['ip6tables', '-F'])
             if rc != 0:
-                raise UFWError("problem running ip6tables 'flush'")
+                raise UFWError(err_msg + " ip6tables 'flush'")
 
             # Remove user chains
             (rc, out) = cmd(['ip6tables', '-X'])
             if rc != 0:
-                raise UFWError("problem running ip6tables 'delete'")
+                raise UFWError(err_msg + " ip6tables 'delete'")
 
             # Set default open
             (rc, out) = cmd_pipe(['cat', tmpname], ['ip6tables-restore'])
             if rc != 0:
-                raise UFWError("problem running ip6tables")
+                raise UFWError(err_msg + " ip6tables")
 
         os.unlink(tmpname)
 
     def start_firewall(self):
         '''Starts the firewall'''
+        err_msg = _("problem running")
         if dryrun:
-            print "> running initscript"
+            print "> " + _("running initscript")
         else:
             (rc, out) = cmd([files['init'], 'start'])
             if rc != 0:
-                raise UFWError("problem running init script")
+                raise UFWError(err_msg + " init script")
 
         # When ipv6 not enabled, just enable it on loopback
         if not self.use_ipv6() and os.path.exists("/proc/sys/net/ipv6"):
@@ -989,10 +1037,11 @@ COMMIT
                 if rc != 0:
                     # Don't error here, as the user may have disabled ipv6
                     # and doesn't have ipv6 support
-                    warn("problem running ip6tables")
+                    warn(err_msg + " ip6tables")
 
     def _reload_user_rules(self):
         '''Reload firewall rules file'''
+        err_msg = _("problem running")
         if self.dryrun:
             print "> iptables-restore < " + files['rules'] 
             if self.use_ipv6():
@@ -1001,13 +1050,13 @@ COMMIT
             (rc, out) = cmd_pipe(['cat', files['rules']], \
                                  ['iptables-restore', '-n'])
             if rc != 0:
-                raise UFWError("problem running iptables")
+                raise UFWError(err_msg + " iptables")
 
             if self.use_ipv6():
                 (rc, out) = cmd_pipe(['cat', files['rules6']], \
                                      ['ip6tables-restore', '-n'])
                 if rc != 0:
-                    raise UFWError("problem running ip6tables")
+                    raise UFWError(err_msg + " ip6tables")
 
     def _get_rules_from_formatted(self, frule):
         '''Return list of iptables rules appropriate for sending'''
@@ -1034,7 +1083,8 @@ COMMIT
             fields.insert(2, '--')
 
         if len(fields) < 5:
-            debug("Couldn't parse line '" + line + "'")
+            dbg_msg = _("Couldn't parse line '%s'") % (line)
+            debug(dbg_msg)
             return None
 
         rule = UFWRule("ACCEPT", "any", "any")
@@ -1066,7 +1116,8 @@ COMMIT
             rule.set_src(fields[3])
             rule.set_dst(fields[4])
         except:
-            warn("Couldn't parse line '" + line + "'")
+            warn_msg = _("Couldn't parse line '%s'") % (line)
+            warn(warn_msg)
             return None
 
         if len(fields) >= 7:
@@ -1103,7 +1154,8 @@ COMMIT
                     tuple = pat_tuple.sub('', line)
                     tmp = re.split(r'\s+', tuple.strip())
                     if len(tmp) != 6:
-                        warn("Skipping malformed tuple (bad length): " + tuple)
+                        warn_msg = _("Skipping malformed tuple (bad length): %s") % (tuple)
+                        warn(warn_msg)
                     else:
                         try:
                             rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
@@ -1115,7 +1167,9 @@ COMMIT
                                 rule.set_v6(False)
                                 self.rules.append(rule)
                         except UFWError:
-                            warn("Skipping malformed tuple: " + tuple)
+                            warn_msg = _("Skipping malformed tuple: %s") % \
+                                        (tuple)
+                            warn(warn_msg)
 
             orig.close()
 
@@ -1174,7 +1228,8 @@ COMMIT
         * reloading the user rules file if rule is modified
         '''
         if rule.v6 and not self.use_ipv6():
-            raise UFWError("Adding IPv6 rule failed: IPv6 not enabled")
+            err_msg = _("Adding IPv6 rule failed: IPv6 not enabled")
+            raise UFWError(err_msg)
 
         newrules = []
         found = False
@@ -1216,11 +1271,12 @@ COMMIT
         try:
             self._write_rules(rule.v6)
         except:
-            UFWError("Couldn't update rules file")
+            err_msg = _("Couldn't update rules file")
+            UFWError(err_msg)
 
-        rstr = "Rules updated"
+        rstr = _("Rules updated")
         if rule.v6:
-            rstr = "Rules updated (v6)"
+            rstr = _("Rules updated (v6)")
 
         # Operate on the chains
         if self._is_enabled():
@@ -1231,13 +1287,13 @@ COMMIT
                     self._reload_user_rules()
                 except:
                     raise
-                rstr = "Rule updated"
+                rstr = _("Rule updated")
             elif found and rule.remove:
                 flag = '-D'
-                rstr = "Rule deleted"
+                rstr = _("Rule deleted")
             elif not found and not modified and not rule.remove:
                 flag = '-A'
-                rstr = "Rule added"
+                rstr = _("Rule added")
 
             if flag != "":
                 exe = "iptables"
@@ -1248,15 +1304,16 @@ COMMIT
                     rstr += " (v6)"
 
                 # Is the firewall running?
+                err_msg = _("Could not update running firewall")
                 (rc, out) = cmd([exe, '-L', chain, '-n'])
                 if rc != 0:
-                    raise UFWError("Could not update running firewall")
+                    raise UFWError(err_msg)
 
                 for s in self._get_rules_from_formatted(rule.format_rule()):
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
                         print out
-                        UFWError("Could not update running firewall")
+                        UFWError(err_msg)
 
                     # delete the RETURN rule then add it back, so it is at the
                     # end
@@ -1284,13 +1341,13 @@ class UFWFrontend:
                     self.backend.set_default(files['conf'], \
                                              "ENABLED", "yes")
                 self.backend.start_firewall()
-                print "Firewall started and enabled on system startup"
+                print _("Firewall started and enabled on system startup")
             else:
                 if self.backend._is_enabled():
                     self.backend.set_default(files['conf'], "ENABLED", \
                                              "no")
                 self.backend.stop_firewall()
-                print "Firewall stopped and disabled on system startup"
+                print _("Firewall stopped and disabled on system startup")
         except UFWError, e:
             error(e.value)
 
@@ -1347,15 +1404,18 @@ class UFWFrontend:
                     rule.set_v6(True)
                     res += "\n" + str(self.backend.set_rule(rule))
                 else:
-                    raise UFWError("Invalid type '" + type + "'")
+                    err_msg = _("Invalid type '%s'") % (type)
+                    raise UFWError(err_msg)
             else:
                 if type == "v4" or type == "both":
                     rule.set_v6(False)
                     res = self.backend.set_rule(rule)
                 elif type == "v6":
-                    raise UFWError("IPv6 support not enabled")
+                    err_msg = _("IPv6 support not enabled")
+                    raise UFWError(err_msg)
                 else:
-                    raise UFWError("Invalid type '" + type + "'")
+                    err_msg = _("Invalid type '%s'") % (type)
+                    raise UFWError(err_msg)
         except UFWError, e:
             error(e.value)
 

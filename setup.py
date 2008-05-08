@@ -43,13 +43,18 @@ class Install(_install, object):
         self.copy_file('src/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
 
-        # Install state file
+        # Install state files
         statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
         user_rules = os.path.join(statedir, 'user.rules')
         user6_rules = os.path.join(statedir, 'user6.rules')
         self.mkpath(statedir)
         self.copy_file('conf/user.rules', user_rules)
         self.copy_file('conf/user6.rules', user6_rules)
+
+        # Install translations
+        i18ndir = os.path.join(statedir, 'messages')
+        self.mkpath(i18ndir)
+        self.copy_tree('messages', i18ndir)
 
         # Install configuration files
         confdir = os.path.join(self.root, 'etc')
