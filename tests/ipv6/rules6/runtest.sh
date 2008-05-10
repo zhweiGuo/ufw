@@ -64,4 +64,13 @@ do
 	do_cmd "0" --dry-run delete $x to $to port ssh from $from port domain
 done
 
+echo "Netmasks" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to ::1/0
+do_cmd "0" --dry-run allow to ::1/32
+do_cmd "0" --dry-run allow to ::1/128
+do_cmd "0" --dry-run allow from ::1/0
+do_cmd "0" --dry-run allow from ::1/32
+do_cmd "0" --dry-run allow from ::1/128
+do_cmd "0" --dry-run allow from ::1/32 to ::1/128
+
 exit 0

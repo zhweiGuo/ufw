@@ -2907,3 +2907,137 @@ COMMIT
 Rules updated
 
 
+Netmasks
+164: --dry-run allow to 192.168.0.0/0
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 192.168.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -d 192.168.0.0/0 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+165: --dry-run allow to 192.168.0.0/16
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 192.168.0.0/16 any 0.0.0.0/0
+-A ufw-user-input -d 192.168.0.0/16 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+166: --dry-run allow to 192.168.0.1/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 192.168.0.1/32 any 0.0.0.0/0
+-A ufw-user-input -d 192.168.0.1/32 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+167: --dry-run allow from 192.168.0.0/0
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/0
+-A ufw-user-input -s 192.168.0.0/0 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+168: --dry-run allow from 192.168.0.0/16
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+-A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+169: --dry-run allow from 192.168.0.1/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1/32
+-A ufw-user-input -s 192.168.0.1/32 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+
+170: --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any 192.168.0.2/32 any 192.168.0.1/32
+-A ufw-user-input -d 192.168.0.2/32 -s 192.168.0.1/32 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+COMMIT
+Rules updated
+
+

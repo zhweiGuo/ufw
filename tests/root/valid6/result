@@ -1079,3 +1079,95 @@ Rules updated
 Rules updated (v6)
 
 
+TESTING NETMASK
+148: allow to ::1/0
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::1/0 any ::/0
+-A ufw6-user-input -d ::1/0 -j ACCEPT
+
+149: delete allow to ::1/0
+WARN: Checks disabled
+Rules updated (v6)
+
+
+150: allow to ::1/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::1/32 any ::/0
+-A ufw6-user-input -d ::1/32 -j ACCEPT
+
+151: delete allow to ::1/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+152: allow to ::1/128
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::1/128 any ::/0
+-A ufw6-user-input -d ::1/128 -j ACCEPT
+
+153: delete allow to ::1/128
+WARN: Checks disabled
+Rules updated (v6)
+
+
+154: allow from ::1/0
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::/0 any ::1/0
+-A ufw6-user-input -s ::1/0 -j ACCEPT
+
+155: delete allow from ::1/0
+WARN: Checks disabled
+Rules updated (v6)
+
+
+156: allow from ::1/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::/0 any ::1/32
+-A ufw6-user-input -s ::1/32 -j ACCEPT
+
+157: delete allow from ::1/32
+WARN: Checks disabled
+Rules updated (v6)
+
+
+158: allow from ::1/128
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::/0 any ::1/128
+-A ufw6-user-input -s ::1/128 -j ACCEPT
+
+159: delete allow from ::1/128
+WARN: Checks disabled
+Rules updated (v6)
+
+
+160: allow from ::1/32 to ::1/128
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow any any ::1/128 any ::1/32
+-A ufw6-user-input -d ::1/128 -s ::1/32 -j ACCEPT
+
+161: delete allow from ::1/32 to ::1/128
+WARN: Checks disabled
+Rules updated (v6)
+
+

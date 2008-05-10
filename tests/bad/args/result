@@ -348,3 +348,55 @@ TESTING BAD SERVICES
 112: --dry-run allow to any port tftp from any port ssh proto tcp
 
 
+TESTING BAD NETMASKS
+113: --dry-run allow to 192.168.0.0/16a
+
+
+114: --dry-run allow to 192.168.0.0/33
+
+
+115: --dry-run allow to 192.168.0.0/-1
+
+
+116: --dry-run allow from 192.168.0.0/16a
+
+
+117: --dry-run allow from 192.168.0.0/33
+
+
+118: --dry-run allow from 192.168.0.0/-1
+
+
+119: --dry-run allow from 192.168.0.0/16 to 192.168.0.1/33
+
+
+120: --dry-run allow from 192.168.0.1/33 to 192.168.0.0/16
+
+
+121: --dry-run allow to 10.0.0.0/255.0.0.0
+
+
+122: --dry-run allow to 10.10.0.0/255.255.0.0
+
+
+123: --dry-run allow to 10.10.10.0/255.255.255.0
+
+
+124: --dry-run allow to 10.10.10.10/255.255.255.255
+
+
+125: --dry-run allow from 10.0.0.0/255.0.0.0
+
+
+126: --dry-run allow from 10.10.0.0/255.255.0.0
+
+
+127: --dry-run allow from 10.10.10.0/255.255.255.0
+
+
+128: --dry-run allow from 10.10.10.10/255.255.255.255
+
+
+129: --dry-run allow from 10.10.10.10/255.255.255.255 to 10.10.10.10/255.255.255.255
+
+

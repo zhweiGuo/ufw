@@ -134,4 +134,25 @@ do_cmd "1" null --dry-run allow to any port 23 from any port tftp proto tcp
 do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto udp
 do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
 
+echo "TESTING BAD NETMASKS" >> $TESTTMP/result
+do_cmd "1" null --dry-run allow to 192.168.0.0/16a
+do_cmd "1" null --dry-run allow to 192.168.0.0/33
+do_cmd "1" null --dry-run allow to 192.168.0.0/-1
+do_cmd "1" null --dry-run allow from 192.168.0.0/16a
+do_cmd "1" null --dry-run allow from 192.168.0.0/33
+do_cmd "1" null --dry-run allow from 192.168.0.0/-1
+do_cmd "1" null --dry-run allow from 192.168.0.0/16 to 192.168.0.1/33
+do_cmd "1" null --dry-run allow from 192.168.0.1/33 to 192.168.0.0/16
+
+# this may be allowed sometime, but currently not
+do_cmd "1" null --dry-run allow to 10.0.0.0/255.0.0.0
+do_cmd "1" null --dry-run allow to 10.10.0.0/255.255.0.0
+do_cmd "1" null --dry-run allow to 10.10.10.0/255.255.255.0
+do_cmd "1" null --dry-run allow to 10.10.10.10/255.255.255.255
+do_cmd "1" null --dry-run allow from 10.0.0.0/255.0.0.0
+do_cmd "1" null --dry-run allow from 10.10.0.0/255.255.0.0
+do_cmd "1" null --dry-run allow from 10.10.10.0/255.255.255.0
+do_cmd "1" null --dry-run allow from 10.10.10.10/255.255.255.255
+do_cmd "1" null --dry-run allow from 10.10.10.10/255.255.255.255 to 10.10.10.10/255.255.255.255
+
 exit 0

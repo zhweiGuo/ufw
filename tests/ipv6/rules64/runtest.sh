@@ -58,4 +58,21 @@ do_cmd "0" --dry-run delete allow to any port tftp from any port ssh
 do_cmd "0" --dry-run allow to any port ssh from any port domain
 do_cmd "0" --dry-run delete allow to any port ssh from any port domain
 
+echo "Netmasks" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to 192.168.0.0/0
+do_cmd "0" --dry-run allow to 192.168.0.0/16
+do_cmd "0" --dry-run allow to 192.168.0.1/32
+do_cmd "0" --dry-run allow from 192.168.0.0/0
+do_cmd "0" --dry-run allow from 192.168.0.0/16
+do_cmd "0" --dry-run allow from 192.168.0.1/32
+do_cmd "0" --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
+
+do_cmd "0" --dry-run allow to ::1/0
+do_cmd "0" --dry-run allow to ::1/32
+do_cmd "0" --dry-run allow to ::1/128
+do_cmd "0" --dry-run allow from ::1/0
+do_cmd "0" --dry-run allow from ::1/32
+do_cmd "0" --dry-run allow from ::1/128
+do_cmd "0" --dry-run allow from ::1/32 to ::1/16
+
 exit 0

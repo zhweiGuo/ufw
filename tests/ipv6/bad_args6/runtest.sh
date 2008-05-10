@@ -110,6 +110,7 @@ do_cmd "1" null --dry-run allow to 2001:db8:3:4:5:6:g:8
 do_cmd "1" null --dry-run allow to 2001:db8:3:4:5:6:7:g
 do_cmd "1" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0000/129
 do_cmd "1" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/128
+do_cmd "1" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/12a
 
 echo "TESTING ARGS (delete allow/deny)" >> $TESTTMP/result
 do_cmd "1" null --dry-run delete

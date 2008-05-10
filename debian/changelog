@@ -9,6 +9,8 @@ ufw (0.17) UNRELEASED; urgency=low
   * consult /etc/services for protocol (LP: #209845)
   * fix man page typo
   * add internationalization support
+  * prevent traceback with dotted decimal netmasks (LP: #224842)
+  * update tests to test for more valid and invalid netmasks
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Mar 2008 16:11:22 -0400
 

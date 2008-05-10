@@ -153,4 +153,13 @@ do_cmd "0" --dry-run delete allow to any port 23 from any port ssh proto udp
 do_cmd "0" --dry-run allow to any port ssh from any port domain proto udp
 do_cmd "0" --dry-run delete allow to any port ssh from any port domain proto udp
 
+echo "Netmasks" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to 192.168.0.0/0
+do_cmd "0" --dry-run allow to 192.168.0.0/16
+do_cmd "0" --dry-run allow to 192.168.0.1/32
+do_cmd "0" --dry-run allow from 192.168.0.0/0
+do_cmd "0" --dry-run allow from 192.168.0.0/16
+do_cmd "0" --dry-run allow from 192.168.0.1/32
+do_cmd "0" --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
+
 exit 0

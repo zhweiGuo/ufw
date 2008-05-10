@@ -261,5 +261,34 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port ssh from any port domain proto udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
+echo "TESTING NETMASK" >> $TESTTMP/result
+do_cmd "0" allow to ::1/0
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow to ::1/0
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow to ::1/32
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow to ::1/32
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow to ::1/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow to ::1/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow from ::1/0
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow from ::1/0
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow from ::1/32
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow from ::1/32
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow from ::1/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow from ::1/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow from ::1/32 to ::1/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow from ::1/32 to ::1/128
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
 exit 0
