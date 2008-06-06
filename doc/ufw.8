@@ -1,4 +1,4 @@
-.TH UFW: "8" "January 2008" "" ""
+.TH UFW: "8" "June 2008" "" ""
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -43,7 +43,7 @@ change the default policy for incoming traffic. Note that existing rules will
 have to be migrated manually when changing the default policy.
 .TP
 \fBlogging\fR on|off
-toggle logging
+toggle logging. Logged packets use the LOG_KERN syslog facility.
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules
@@ -143,11 +143,13 @@ do:
   ufw allow proto tcp from any to any port 22
 
 before running '\fBufw enable\fR'. The rules will still be flushed, but the
-ssh port will be open after enabling the firewall. Please note that once the
+ssh port will be open after enabling the firewall. Please note that once
 ufw is 'enabled', \fBufw\fR will not flush the chains when adding or removing
 rules (but will when modifying a rule or changing the default policy).
 
 .SH NOTES
+.PP
+On installation, \fBufw\fR is disabled with a default policy of deny.
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
 rules, add the more specific rules first with more general rules later.
@@ -168,7 +170,9 @@ added with \fBufw\fR and not the rules found in the #CONFIG_PREFIX#/ufw rules
 files.
 .PP
 \fBufw\fR will read in #CONFIG_PREFIX#/ufw/sysctl.conf on boot when enabled.
-To change this behavior, modify #CONFIG_PREFIX#/default/ufw.
+Please note that #CONFIG_PREFIX#/ufw/sysctl.conf overrides values in the
+system systcl.conf (usually #CONFIG_PREFIX#/sysctl.conf).  To change this
+behavior, modify #CONFIG_PREFIX#/default/ufw.
 
 .SH SEE ALSO
 .PP
