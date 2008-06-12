@@ -1,3 +1,9 @@
+ufw (0.18) UNRELEASED; urgency=low
+
+  * bump version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 12 Jun 2008 10:28:36 -0400
+
 ufw (0.17) intrepid; urgency=low
 
   * implement status in initscript
