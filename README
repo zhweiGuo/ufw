@@ -101,8 +101,14 @@ disable_checks = True
 Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 
-Here is a command to do it all at once:
-$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && python ./setup.py install --root=/tmp/ufw && sed -i 's/disable_checks = False/disable_checks = True/' /tmp/ufw/usr/sbin/ufw
+Here is a command to do it all at once (adjust python2.5 to your python
+version):
+$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && python ./setup.py install --root=/tmp/ufw && sed -i 's/self.do_checks = True/self.do_checks = False/' /tmp/ufw/`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'`/ufw/backend.py
+
+Then test with:
+$ PYTHONPATH=$PYTHONPATH:/tmp/ufw/`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'` /tmp/ufw/usr/sbin/ufw ...
+
+$ sudo sh -c "PYTHONPATH=$PYTHONPATH:/tmp/ufw/`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'` /tmp/ufw/usr/sbin/ufw ..."
 
 Can also just run from the source directory:
 $ ./run_tests.sh -s

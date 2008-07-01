@@ -20,6 +20,8 @@ CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
 
+system_moddir=`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'`
+
 STOPONFAIL="no"
 STOPONSKIP="no"
 if [ "$1" = "-s" ]; then
@@ -79,14 +81,16 @@ do
 		fi
 
 		mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
-		python ./setup.py install --root="$CUR/$testdir/testarea" > /dev/null
+
+		install_dir="$CUR/$testdir/testarea"
+		python ./setup.py install --root="$install_dir" > /dev/null
 		if [ "$?" != "0" ]; then
 			exit 1
 		fi
 
 		# this is to allow root to run the tests without error.  I don't
 		# like building things as root, but some people do...
-		sed -i 's/^insecure = False$/insecure = True/' $testdir/testarea/usr/sbin/ufw
+		sed -i 's/self.do_checks = True/self.do_checks = False/' $testdir/testarea/$system_moddir/ufw/backend.py
 
 		cp -rL $testdir/$class/$thistest/orig/* $testdir/testarea/etc || exit 1
 		cp -f $testdir/$class/$thistest/runtest.sh $testdir/testarea || exit 1
@@ -94,7 +98,7 @@ do
 		echo "- result: "
 		numtests=$(($numtests + 1))
 		# now run the test
-		$CUR/$testdir/testarea/runtest.sh
+		PYTHONPATH="$PYTHONPATH:$install_dir/$system_moddir" $CUR/$testdir/testarea/runtest.sh
 		if [ "$?" != "0" ];then
 			echo "    ** FAIL **"
 			errors=$(($errors + 1))

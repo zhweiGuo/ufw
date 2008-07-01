@@ -24,12 +24,30 @@ from distutils.core import setup
 import os
 from popen2 import Popen3
 import sys
+import shutil
 
-ufw_version = '0.17'
+ufw_version = '0.18'
 
 class Install(_install, object):
     '''Override distutils to install the files where we want them.'''
     def run(self):
+        confdir = os.path.join(self.root, 'etc')
+        statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
+
+        # Update the modules' paths
+        for file in [ 'common.py' ]:
+            print "Updating " + file
+            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%g' " + \
+                       os.path.join('staging', file))
+            while a.poll() == -1:
+                pass
+
+            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%g' " + \
+                       os.path.join('staging', file))
+            while a.poll() == -1:
+                pass
+
+        # Now byte-compile everything
         super(Install, self).run()
 
         # Install script and data files
@@ -40,11 +58,10 @@ class Install(_install, object):
         for dir in [ script, manpage ]:
             self.mkpath(os.path.dirname(dir))
         
-        self.copy_file('src/ufw', script)
+        self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
 
         # Install state files
-        statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
         user_rules = os.path.join(statedir, 'user.rules')
         user6_rules = os.path.join(statedir, 'user6.rules')
         self.mkpath(statedir)
@@ -57,7 +74,6 @@ class Install(_install, object):
         self.copy_tree('messages', i18ndir)
 
         # Install configuration files
-        confdir = os.path.join(self.root, 'etc')
         defaults = os.path.join(confdir, 'default', 'ufw')
         ufwconf = os.path.join(confdir, 'ufw', 'ufw.conf')
         sysctl = os.path.join(confdir, 'ufw', 'sysctl.conf')
@@ -99,7 +115,11 @@ class Install(_install, object):
             a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%g' " + file)
             while a.poll() == -1:
                 pass
-        
+
+
+if os.path.exists('staging'):
+    shutil.rmtree('staging')
+shutil.copytree('src', 'staging')
 
 setup (name='ufw',
       version=ufw_version,
@@ -109,6 +129,9 @@ setup (name='ufw',
       author_email='jamie@canonical.com',
       url='https://launchpad.net/ufw',
       license='GPL-3',
-      cmdclass={'install': Install}
+      cmdclass={'install': Install},
+      package_dir={'ufw': 'staging'},
+      py_modules=['ufw.backend', 'ufw.backend_iptables', 'ufw.common', 'ufw.frontend', 'ufw.util']
 )
 
+shutil.rmtree('staging')

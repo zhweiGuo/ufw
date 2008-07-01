@@ -1,8 +1,14 @@
 ufw (0.18) UNRELEASED; urgency=low
 
-  * src/ufw: show default policy and logging in 'status' (LP: #240271)
-  * src/ufw: make reusable
   * bump version
+  * src/ufw: make reusable
+  * src/ufw: show default policy and logging in 'status' (LP: #240271)
+  * refactor code and split out into modules:
+    - updated src/*
+    - updated setup.py
+    - updated run_tests.sh
+    - updated README
+    - updated README.translations and messages/ufw.pot
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 12 Jun 2008 10:28:36 -0400
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-07-01 09:53+EDT\n"
+"POT-Creation-Date: 2008-07-01 15:43+EDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,78 +15,276 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: src/ufw:42
-msgid ""
-": Need at least python 2.5)\n"
+#: src/backend.py:78
+msgid "Checks disabled"
 msgstr ""
 
-#: src/ufw:130
+#: src/backend.py:84
+msgid "ERROR: this script should not be SUID"
+msgstr ""
+
+#: src/backend.py:87
+msgid "ERROR: this script should not be SGID"
+msgstr ""
+
+#: src/backend.py:92
+msgid "You need to be root to run this script"
+msgstr ""
+
+#: src/backend.py:105
+msgid "found hidden directory in path: %s"
+msgstr ""
+
+#: src/backend.py:112
+msgid "Couldn't stat '%s'"
+msgstr ""
+
+#: src/backend.py:118
+msgid "found symbolic link in path: %s"
+msgstr ""
+
+#: src/backend.py:121
+msgid "uid is %s but '%s' is owned by %s"
+msgstr ""
+
+#: src/backend.py:126
+msgid "%s is world writable!"
+msgstr ""
+
+#: src/backend.py:130
+msgid "%s is group writable!"
+msgstr ""
+
+#: src/backend.py:143
+msgid "'%s' file '%s' does not exist"
+msgstr ""
+
+#: src/backend.py:163
+msgid "Invalid option"
+msgstr ""
+
+#: src/backend_iptables.py:46
+msgid "Logging: on"
+msgstr ""
+
+#: src/backend_iptables.py:55
+msgid "Logging: off"
+msgstr ""
+
+#: src/backend_iptables.py:65
+msgid "Default:"
+msgstr ""
+
+#: src/backend_iptables.py:85
+msgid "Unsupported policy '%s'"
+msgstr ""
+
+#: src/backend_iptables.py:88
+msgid ""
+"Default policy changed to '%s'\n"
+msgstr ""
+
+#: src/backend_iptables.py:89
+msgid "(be sure to update your rules accordingly)"
+msgstr ""
+
+#: src/backend_iptables.py:126
+msgid "Logging disabled"
+msgstr ""
+
+#: src/backend_iptables.py:128
+msgid "Logging enabled"
+msgstr ""
+
+#: src/backend_iptables.py:135
+msgid ""
+"Checking iptables\n"
+msgstr ""
+
+#: src/backend_iptables.py:137
+msgid ""
+"Checking ip6tables\n"
+msgstr ""
+
+#: src/backend_iptables.py:143
+msgid "Status: not loaded"
+msgstr ""
+
+#: src/backend_iptables.py:145 src/backend_iptables.py:254
+#: src/backend_iptables.py:291 src/backend_iptables.py:320
+msgid "problem running"
+msgstr ""
+
+#: src/backend_iptables.py:160
+msgid "Status: loaded"
+msgstr ""
+
+#: src/backend_iptables.py:221
+msgid "Action"
+msgstr ""
+
+#: src/backend_iptables.py:221
+msgid "From"
+msgstr ""
+
+#: src/backend_iptables.py:221
+msgid "To"
+msgstr ""
+
+#: src/backend_iptables.py:222
+msgid "--"
+msgstr ""
+
+#: src/backend_iptables.py:222
+msgid "----"
+msgstr ""
+
+#: src/backend_iptables.py:222
+msgid "------"
+msgstr ""
+
+#: src/backend_iptables.py:227
+msgid ""
+"Status: loaded\n"
+"%s\n"
+"%s%s"
+msgstr ""
+
+#: src/backend_iptables.py:293
+msgid "running initscript"
+msgstr ""
+
+#: src/backend_iptables.py:362 src/backend_iptables.py:395
+msgid "Couldn't parse line '%s'"
+msgstr ""
+
+#: src/backend_iptables.py:433
+msgid "Skipping malformed tuple (bad length): %s"
+msgstr ""
+
+#: src/backend_iptables.py:446
+msgid "Skipping malformed tuple: %s"
+msgstr ""
+
+#: src/backend_iptables.py:507
+msgid "Adding IPv6 rule failed: IPv6 not enabled"
+msgstr ""
+
+#: src/backend_iptables.py:550
+msgid "Couldn't update rules file"
+msgstr ""
+
+#: src/backend_iptables.py:553
+msgid "Rules updated"
+msgstr ""
+
+#: src/backend_iptables.py:555
+msgid "Rules updated (v6)"
+msgstr ""
+
+#: src/backend_iptables.py:566
+msgid "Rule updated"
+msgstr ""
+
+#: src/backend_iptables.py:569
+msgid "Rule deleted"
+msgstr ""
+
+#: src/backend_iptables.py:572
+msgid "Rule added"
+msgstr ""
+
+#: src/backend_iptables.py:583
+msgid "Could not update running firewall"
+msgstr ""
+
+#: src/common.py:92
+msgid "Bad port '%s'"
+msgstr ""
+
+#: src/common.py:116
+msgid "Unsupported protocol '%s'"
+msgstr ""
+
+#: src/common.py:145
+msgid "Bad source address"
+msgstr ""
+
+#: src/common.py:156
+msgid "Bad destination address"
+msgstr ""
+
+#: src/common.py:168
+msgid "No match"
+msgstr ""
+
+#: src/common.py:189
+msgid "Found exact match"
+msgstr ""
+
+#: src/common.py:192
+msgid "Found opposite match"
+msgstr ""
+
+#: src/frontend.py:103
 msgid "Bad port"
 msgstr ""
 
-#: src/ufw:133
+#: src/frontend.py:106
 msgid "Wrong number of arguments"
 msgstr ""
 
-#: src/ufw:136
+#: src/frontend.py:109
 msgid "Need 'to' or 'from' clause"
 msgstr ""
 
-#: src/ufw:147
+#: src/frontend.py:120
 msgid "Improper rule syntax"
 msgstr ""
 
-#: src/ufw:154
+#: src/frontend.py:127
 msgid "Invalid token '%s'"
 msgstr ""
 
-#: src/ufw:163
+#: src/frontend.py:136
 msgid "Invalid 'proto' clause"
 msgstr ""
 
-#: src/ufw:182
+#: src/frontend.py:155
 msgid "Invalid 'from' clause"
 msgstr ""
 
-#: src/ufw:201
+#: src/frontend.py:174
 msgid "Invalid 'to' clause"
 msgstr ""
 
-#: src/ufw:206
+#: src/frontend.py:179
 msgid "Need 'from' or 'to' with 'port'"
 msgstr ""
 
-#: src/ufw:221
+#: src/frontend.py:194
 msgid "Invalid 'port' clause"
 msgstr ""
 
-#: src/ufw:230
+#: src/frontend.py:203
 msgid "Mixed IP versions for 'from' and 'to'"
 msgstr ""
 
-#: src/ufw:252
+#: src/frontend.py:225
 msgid "Protocol mismatch (from/to)"
 msgstr ""
 
-#: src/ufw:259
+#: src/frontend.py:232
 msgid "Protocol mismatch with specified protocol %s"
 msgstr ""
 
-#: src/ufw:303
-msgid "Bad port/protocol"
-msgstr ""
-
-#: src/ufw:311
-msgid "python does not have IPv6 support."
-msgstr ""
-
-#: src/ufw:349
+#: src/frontend.py:241
 msgid ""
 "\n"
 "Usage: "
 msgstr ""
 
-#: src/ufw:350
+#: src/frontend.py:242
 msgid ""
 " COMMAND\n"
 "\n"
@@ -101,245 +299,48 @@ msgid ""
 "  version\t\t\tdisplay version information\n"
 msgstr ""
 
-#: src/ufw:369
-msgid "Couldn't open '%s' for reading"
-msgstr ""
-
-#: src/ufw:435
-msgid "ERROR: %s"
-msgstr ""
-
-#: src/ufw:441
-msgid "WARN: %s"
-msgstr ""
-
-#: src/ufw:447
-msgid "DEBUG: %s"
-msgstr ""
-
-#: src/ufw:516
-msgid "Bad port '%s'"
-msgstr ""
-
-#: src/ufw:540
-msgid "Unsupported protocol '%s'"
-msgstr ""
-
-#: src/ufw:569
-msgid "Bad source address"
-msgstr ""
-
-#: src/ufw:580
-msgid "Bad destination address"
-msgstr ""
-
-#: src/ufw:592
-msgid "No match"
-msgstr ""
-
-#: src/ufw:613
-msgid "Found exact match"
-msgstr ""
-
-#: src/ufw:616
-msgid "Found opposite match"
-msgstr ""
-
-#: src/ufw:665
-msgid "Checks disabled"
-msgstr ""
-
-#: src/ufw:671
-msgid "ERROR: this script should not be SUID"
-msgstr ""
-
-#: src/ufw:674
-msgid "ERROR: this script should not be SGID"
-msgstr ""
-
-#: src/ufw:679
-msgid "You need to be root to run this script"
-msgstr ""
-
-#: src/ufw:692
-msgid "found hidden directory in path: %s"
-msgstr ""
-
-#: src/ufw:699
-msgid "Couldn't stat '%s'"
-msgstr ""
-
-#: src/ufw:705
-msgid "found symbolic link in path: %s"
-msgstr ""
-
-#: src/ufw:708
-msgid "uid is %s but '%s' is owned by %s"
-msgstr ""
-
-#: src/ufw:713
-msgid "%s is world writable!"
-msgstr ""
-
-#: src/ufw:717
-msgid "%s is group writable!"
-msgstr ""
-
-#: src/ufw:730
-msgid "'%s' file '%s' does not exist"
-msgstr ""
-
-#: src/ufw:749
-msgid "Invalid option"
-msgstr ""
-
-#: src/ufw:809
-msgid "Logging: on"
-msgstr ""
-
-#: src/ufw:818
-msgid "Logging: off"
-msgstr ""
-
-#: src/ufw:828
-msgid "Default:"
-msgstr ""
-
-#: src/ufw:846
-msgid "Unsupported policy '%s'"
-msgstr ""
-
-#: src/ufw:849
-msgid ""
-"Default policy changed to '%s'\n"
-msgstr ""
-
-#: src/ufw:850
-msgid "(be sure to update your rules accordingly)"
-msgstr ""
-
-#: src/ufw:887
-msgid "Logging disabled"
-msgstr ""
-
-#: src/ufw:889
-msgid "Logging enabled"
-msgstr ""
-
-#: src/ufw:896
-msgid ""
-"Checking iptables\n"
-msgstr ""
-
-#: src/ufw:898
-msgid ""
-"Checking ip6tables\n"
-msgstr ""
-
-#: src/ufw:904
-msgid "Status: not loaded"
-msgstr ""
-
-#: src/ufw:906 src/ufw:1015 src/ufw:1052 src/ufw:1081
-msgid "problem running"
-msgstr ""
-
-#: src/ufw:921
-msgid "Status: loaded"
-msgstr ""
-
-#: src/ufw:982
-msgid "Action"
-msgstr ""
-
-#: src/ufw:982
-msgid "From"
-msgstr ""
-
-#: src/ufw:982
-msgid "To"
-msgstr ""
-
-#: src/ufw:983
-msgid "--"
-msgstr ""
-
-#: src/ufw:983
-msgid "----"
-msgstr ""
-
-#: src/ufw:983
-msgid "------"
-msgstr ""
-
-#: src/ufw:988
-msgid ""
-"Status: loaded\n"
-"%s\n"
-"%s%s"
-msgstr ""
-
-#: src/ufw:1054
-msgid "running initscript"
-msgstr ""
-
-#: src/ufw:1123 src/ufw:1156
-msgid "Couldn't parse line '%s'"
-msgstr ""
-
-#: src/ufw:1194
-msgid "Skipping malformed tuple (bad length): %s"
-msgstr ""
-
-#: src/ufw:1207
-msgid "Skipping malformed tuple: %s"
-msgstr ""
-
-#: src/ufw:1268
-msgid "Adding IPv6 rule failed: IPv6 not enabled"
-msgstr ""
-
-#: src/ufw:1311
-msgid "Couldn't update rules file"
-msgstr ""
-
-#: src/ufw:1314
-msgid "Rules updated"
-msgstr ""
-
-#: src/ufw:1316
-msgid "Rules updated (v6)"
-msgstr ""
-
-#: src/ufw:1327
-msgid "Rule updated"
-msgstr ""
-
-#: src/ufw:1330
-msgid "Rule deleted"
-msgstr ""
-
-#: src/ufw:1333
-msgid "Rule added"
-msgstr ""
-
-#: src/ufw:1344
-msgid "Could not update running firewall"
-msgstr ""
-
-#: src/ufw:1381
+#: src/frontend.py:270
 msgid "Firewall started and enabled on system startup"
 msgstr ""
 
-#: src/ufw:1387
+#: src/frontend.py:276
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
 
-#: src/ufw:1444 src/ufw:1454
+#: src/frontend.py:333 src/frontend.py:343
 msgid "Invalid type '%s'"
 msgstr ""
 
-#: src/ufw:1451
+#: src/frontend.py:340
 msgid "IPv6 support not enabled"
+msgstr ""
+
+#: src/ufw:43
+msgid ""
+": Need at least python 2.5)\n"
+msgstr ""
+
+#: src/util.py:69
+msgid "Bad port/protocol"
+msgstr ""
+
+#: src/util.py:77
+msgid "python does not have IPv6 support."
+msgstr ""
+
+#: src/util.py:118
+msgid "Couldn't open '%s' for reading"
+msgstr ""
+
+#: src/util.py:184
+msgid "ERROR: %s"
+msgstr ""
+
+#: src/util.py:190
+msgid "WARN: %s"
+msgstr ""
+
+#: src/util.py:196
+msgid "DEBUG: %s"
 msgstr ""
 

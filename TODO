@@ -1,7 +1,5 @@
 TODO
 ----
-separate out backend and frontend code and put into /usr/share
-
 Possibly, provide a way out if it doesn't work (eg prompt user for 'Did it
 work?' type question, and timeout if no response (maybe use the previous
 working policy?))

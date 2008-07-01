@@ -1,7 +1,7 @@
 Internationalization
 --------------------
 gettext files are placed in messages/. To update the main .pot file, do:
-$ pygettext -d ufw -p messages -S GNU src/ufw
+$ pygettext -d ufw -p messages -S GNU src/ufw src/[a-z]*.py
 
 and adjust messages/ufw.pot accordingly.
 
