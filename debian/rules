@@ -19,6 +19,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 	rm -rf $(CURDIR)/build
+	-find . -name '*.py[co]' | xargs rm -f
 	dh_clean 
 
 install: build
@@ -35,7 +36,6 @@ install: build
 	./run_tests.sh
 	python ./setup.py install \
 		--root=$(CURDIR)/debian/ufw
-	rm -rf $(CURDIR)/debian/ufw/usr/lib
 
 	# don't make *.rules conffiles
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
