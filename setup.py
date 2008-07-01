@@ -31,18 +31,27 @@ ufw_version = '0.18'
 class Install(_install, object):
     '''Override distutils to install the files where we want them.'''
     def run(self):
-        confdir = os.path.join(self.root, 'etc')
-        statedir = os.path.join(self.root, 'var', 'lib', 'ufw')
+        if self.home != None and self.root != None:
+            print "Don't specify --home and --root at same time"
+            return
+
+        real_confdir = os.path.join('/etc')
+        real_statedir = os.path.join('/var', 'lib', 'ufw')
+        real_prefix = self.prefix
+        if self.home != None:
+            real_confdir = self.home + real_confdir
+            real_statedir = self.home + real_statedir
+            real_prefix = self.home + '/usr'
 
         # Update the modules' paths
         for file in [ 'common.py' ]:
             print "Updating " + file
-            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%g' " + \
+            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + real_confdir + "%g' " + \
                        os.path.join('staging', file))
             while a.poll() == -1:
                 pass
 
-            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%g' " + \
+            a = Popen3("sed -i 's%#STATE_PREFIX#%" + real_statedir + "%g' " + \
                        os.path.join('staging', file))
             while a.poll() == -1:
                 pass
@@ -51,7 +60,10 @@ class Install(_install, object):
         super(Install, self).run()
 
         # Install script and data files
-        prefix = os.path.join(self.root, 'usr')
+        prefix = real_prefix
+        if self.root != None:
+            prefix = self.root + real_prefix
+
         script = os.path.join(prefix, 'sbin', 'ufw')
         manpage = os.path.join(prefix, 'share', 'man', 'man8', 'ufw.8')
 
@@ -62,6 +74,10 @@ class Install(_install, object):
         self.copy_file('doc/ufw.8', manpage)
 
         # Install state files
+        statedir = real_statedir
+        if self.root != None:
+            statedir = self.root + real_statedir
+
         user_rules = os.path.join(statedir, 'user.rules')
         user6_rules = os.path.join(statedir, 'user6.rules')
         self.mkpath(statedir)
@@ -74,6 +90,10 @@ class Install(_install, object):
         self.copy_tree('messages', i18ndir)
 
         # Install configuration files
+        confdir = real_confdir
+        if self.root != None:
+            confdir = self.root + real_confdir
+
         defaults = os.path.join(confdir, 'default', 'ufw')
         ufwconf = os.path.join(confdir, 'ufw', 'ufw.conf')
         sysctl = os.path.join(confdir, 'ufw', 'sysctl.conf')
@@ -100,15 +120,15 @@ class Install(_install, object):
                       before6_rules, after6_rules, initscript, script, \
                       manpage, sysctl ]:
             print "Updating " + file
-            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + confdir + "%g' " + file)
+            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + real_confdir + "%g' " + file)
             while a.poll() == -1:
                 pass
 
-            a = Popen3("sed -i 's%#PREFIX#%" + prefix + "%g' " + file)
+            a = Popen3("sed -i 's%#PREFIX#%" + real_prefix + "%g' " + file)
             while a.poll() == -1:
                 pass
         
-            a = Popen3("sed -i 's%#STATE_PREFIX#%" + statedir + "%g' " + file)
+            a = Popen3("sed -i 's%#STATE_PREFIX#%" + real_statedir + "%g' " + file)
             while a.poll() == -1:
                 pass
 

@@ -13,10 +13,17 @@ not a fan, perhaps 'Unbearable Firewall'.
 
 Install
 -------
-python ./setup.py install --root=PREFIX
+Users can install with:
+# python ./setup.py install
+$ python ./setup.py install --home=PREFIX
+
+
+Distributions which install to a build directory for packaging can install
+with:
+$ python ./setup.py install --root=PREFIX
 
 Eg:
-python ./setup.py install --root=/
+python ./setup.py install --root=/tmp/ufw
 
 
 Basic Layout
@@ -93,22 +100,22 @@ Then do:
 Testing
 -------
 $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
-$ python ./setup.py install --root=/tmp/ufw
+$ python ./setup.py install --home=/tmp/ufw
 
-The edit /tmp/ufw/usr/sbin/ufw to have (since it's installed in /tmp):
-disable_checks = True
+The edit /tmp/ufw/lib/python/ufw/backend.py to have (since it's installed in
+/tmp):
+        self.do_checks = False
 
 Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 
-Here is a command to do it all at once (adjust python2.5 to your python
-version):
-$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && python ./setup.py install --root=/tmp/ufw && sed -i 's/self.do_checks = True/self.do_checks = False/' /tmp/ufw/`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'`/ufw/backend.py
+Here is a command to do it all at once:
+$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && python ./setup.py install --home=/tmp/ufw && sed -i 's/self.do_checks = True/self.do_checks = False/' /tmp/ufw/lib/python/ufw/backend.py
 
 Then test with:
-$ PYTHONPATH=$PYTHONPATH:/tmp/ufw/`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'` /tmp/ufw/usr/sbin/ufw ...
+$ PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw ...
 
-$ sudo sh -c "PYTHONPATH=$PYTHONPATH:/tmp/ufw/`python -c 'from distutils.sysconfig import get_python_lib ; print get_python_lib();'` /tmp/ufw/usr/sbin/ufw ..."
+$ sudo sh -c "PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw ..."
 
 Can also just run from the source directory:
 $ ./run_tests.sh -s

@@ -43,10 +43,6 @@ install: build
 	mv $(CURDIR)/debian/ufw/var/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
 
-	# strip out beginning of path since setup.py doens't support dest-dir
-	# yet
-	find $(CURDIR)/debian/ufw -type f -exec sed "s#$(CURDIR)/debian/ufw##g" -i {} \;
-
 binary-arch: build
 
 binary-indep: build install
