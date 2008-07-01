@@ -1428,45 +1428,46 @@ class UFWFrontend:
 
 
 # Execution starts here
-action = ""
-rule = ""
-dryrun = False
-try:
-    (action, rule, type, dryrun) = process_args()
-except UFWError, e:
-    error(e.value)
+if __name__ == "__main__":
+    action = ""
+    rule = ""
+    dryrun = False
+    try:
+        (action, rule, type, dryrun) = process_args()
+    except UFWError, e:
+        error(e.value)
 
-if action == "help" or action == "--help":
-    print_help()
+    if action == "help" or action == "--help":
+        print_help()
+        sys.exit(0)
+    elif action == "version" or action == "--version":
+        print programName + " " + version
+        print "Copyright (C) 2008 Canonical Ltd."
+        sys.exit(0)
+
+    try:
+        ufw = UFWFrontend(UFWBackendIptables(dryrun))
+    except UFWError, e:
+        error(e.value)
+    except Exception:
+        raise
+
+    if action == "logging-on":
+        ufw.set_loglevel("on")
+    elif action == "logging-off":
+        ufw.set_loglevel("off")
+    elif action == "default-allow":
+        ufw.set_default_policy("allow")
+    elif action == "default-deny":
+        ufw.set_default_policy("deny")
+    elif action == "status":
+        ufw.get_status()
+    elif action == "enable":
+        ufw.set_enabled(True)
+    elif action == "disable":
+        ufw.set_enabled(False)
+    elif action == "allow" or action == "deny":
+        ufw.set_rule(rule, type)
+
     sys.exit(0)
-elif action == "version" or action == "--version":
-    print programName + " " + version
-    print "Copyright (C) 2008 Canonical Ltd."
-    sys.exit(0)
-
-try:
-    ufw = UFWFrontend(UFWBackendIptables(dryrun))
-except UFWError, e:
-    error(e.value)
-except Exception:
-    raise
-
-if action == "logging-on":
-    ufw.set_loglevel("on")
-elif action == "logging-off":
-    ufw.set_loglevel("off")
-elif action == "default-allow":
-    ufw.set_default_policy("allow")
-elif action == "default-deny":
-    ufw.set_default_policy("deny")
-elif action == "status":
-    ufw.get_status()
-elif action == "enable":
-    ufw.set_enabled(True)
-elif action == "disable":
-    ufw.set_enabled(False)
-elif action == "allow" or action == "deny":
-    ufw.set_rule(rule, type)
-
-sys.exit(0)
 
