@@ -735,11 +735,11 @@ class UFWBackend:
         self.defaults = {}
         for f in [files['defaults'], files['conf']]:
             orig = open_file_read(f)
-            pat = re.compile(r'^\w+=\w+')
+            pat = re.compile(r'^\w+="?\w+"?')
             for line in orig:
                 if pat.search(line):
                     tmp = re.split(r'=', line.strip())
-                    self.defaults[tmp[0].lower()] = tmp[1].lower()
+                    self.defaults[tmp[0].lower()] = tmp[1].lower().strip('"\'')
 
             orig.close()
 
@@ -771,6 +771,9 @@ class UFWBackend:
     def set_loglevel(self, level):
         raise UFWError("UFWBackend.set_loglevel: need to override")
 
+    def get_default_policy(self):
+        raise UFWError("UFWBackend.get_default_policy: need to override")
+
     def set_default_policy(self, policy):
         raise UFWError("UFWBackend.set_default_policy: need to override")
 
@@ -797,11 +800,38 @@ class UFWBackendIptables(UFWBackend):
         files['after6_rules'] = '#CONFIG_PREFIX#/ufw/after6.rules'
         files['init'] = '#CONFIG_PREFIX#/init.d/ufw'
 
+        self.comment_str = "# " + programName + "_comment #"
+
         UFWBackend.__init__(self, "iptables", d)
 
     def get_loglevel(self):
-        '''Show current log level of firewall'''
-        print "get_loglevel: TODO"
+        '''Gets current log level of firewall'''
+        rstr = _("Logging: on")
+        for f in [files['rules'], files['rules6'], \
+                  files['before_rules'], files['before6_rules'], \
+                  files['after_rules'], files['after6_rules']]:
+            orig = open_file_read(f)
+            for line in orig:
+                # If find one occurence of the comment_str, we know the user
+                # ran "logging off"
+                if self.comment_str in line:
+                    rstr = _("Logging: off")
+                    orig.close()
+                    break
+
+            orig.close()
+
+        return rstr
+
+    def get_default_policy(self):
+        '''Get current policy'''
+        rstr = _("Default policy:") 
+        if self.defaults['default_input_policy'] == "accept":
+            rstr += " allow"
+        else:
+            rstr += " deny"
+
+        return rstr
 
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
@@ -823,7 +853,6 @@ class UFWBackendIptables(UFWBackend):
 
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
-        comment_str = "# " + programName + "_comment #"
         for f in [files['rules'], files['rules6'], \
                   files['before_rules'], files['before6_rules'], \
                   files['after_rules'], files['after6_rules']]:
@@ -841,9 +870,10 @@ class UFWBackendIptables(UFWBackend):
                 for line in fns['orig']:
                     if pat.search(line):
                         if level == "off":
-                            os.write(fd, comment_str + ' ' + line)
+                            os.write(fd, self.comment_str + ' ' + line)
                         else:
-                            pat_comment = re.compile(r"^" + comment_str + "\s*")
+                            pat_comment = re.compile(r"^" + \
+                                                     self.comment_str + "\s*")
                             os.write(fd, pat_comment.sub('', line))
                     else:
                         os.write(fd, line)
@@ -953,7 +983,9 @@ class UFWBackendIptables(UFWBackend):
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str 
 
-        return _("Firewall loaded%s") % (str)
+        policy_str = self.get_default_policy()
+        logging_str = self.get_loglevel()
+        return _("Firewall loaded\n%s\n%s%s") % (policy_str, logging_str, str)
 
     def stop_firewall(self):
         '''Stops the firewall'''

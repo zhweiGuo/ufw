@@ -1,5 +1,7 @@
 ufw (0.18) UNRELEASED; urgency=low
 
+  * src/ufw: show default policy and logging in 'status' (LP: #240271)
+  * src/ufw: make reusable
   * bump version
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 12 Jun 2008 10:28:36 -0400
