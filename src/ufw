@@ -825,7 +825,7 @@ class UFWBackendIptables(UFWBackend):
 
     def get_default_policy(self):
         '''Get current policy'''
-        rstr = _("Default policy:") 
+        rstr = _("Default:") 
         if self.defaults['default_input_policy'] == "accept":
             rstr += " allow"
         else:
@@ -901,7 +901,7 @@ class UFWBackendIptables(UFWBackend):
         # Is the firewall loaded at all?
         (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
         if rc != 0:
-            return _("Firewall not loaded")
+            return _("Status: not loaded")
 
         err_msg = _("problem running")
 
@@ -918,7 +918,7 @@ class UFWBackendIptables(UFWBackend):
                 return out6
 
         if out == "" and out6 == "":
-            return _("Firewall loaded")
+            return _("Status: loaded")
 
         str = ""
         rules = []
@@ -983,9 +983,9 @@ class UFWBackendIptables(UFWBackend):
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str 
 
-        policy_str = self.get_default_policy()
         logging_str = self.get_loglevel()
-        return _("Firewall loaded\n%s\n%s%s") % (policy_str, logging_str, str)
+        policy_str = self.get_default_policy()
+        return _("Status: loaded\n%s\n%s%s") % (logging_str, policy_str, str)
 
     def stop_firewall(self):
         '''Stops the firewall'''

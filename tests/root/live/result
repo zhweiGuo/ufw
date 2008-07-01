@@ -101,7 +101,9 @@ Rule added (v6)
 
 16: status
 WARN: Checks disabled
-Firewall loaded
+Status: loaded
+Logging: off
+Default: deny
 
 To                         Action  From
 --                         ------  ----
@@ -244,7 +246,9 @@ Rule deleted (v6)
 
 29: status
 WARN: Checks disabled
-Firewall loaded
+Status: loaded
+Logging: off
+Default: deny
 
 
 Setting IPV6 to no
@@ -336,7 +340,9 @@ Rule added
 
 44: status
 WARN: Checks disabled
-Firewall loaded
+Status: loaded
+Logging: off
+Default: deny
 
 To                         Action  From
 --                         ------  ----
@@ -438,7 +444,9 @@ Rule deleted
 
 55: status
 WARN: Checks disabled
-Firewall loaded
+Status: loaded
+Logging: off
+Default: deny
 
 
 56: disable
