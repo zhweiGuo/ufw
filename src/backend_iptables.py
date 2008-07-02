@@ -43,6 +43,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def get_loglevel(self):
         '''Gets current log level of firewall'''
+        level = 1
         rstr = _("Logging: on")
         for f in [self.files['rules'], self.files['rules6'], \
                   self.files['before_rules'], self.files['before6_rules'], \
@@ -53,12 +54,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 # ran "logging off"
                 if self.comment_str in line:
                     rstr = _("Logging: off")
+                    level = 0
                     orig.close()
                     break
 
             orig.close()
 
-        return rstr
+        return (level, rstr)
 
     def get_default_policy(self):
         '''Get current policy'''
@@ -222,7 +224,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str 
 
-        logging_str = self.get_loglevel()
+        (level, logging_str) = self.get_loglevel()
         policy_str = self.get_default_policy()
         return _("Status: loaded\n%s\n%s%s") % (logging_str, policy_str, str)
 
@@ -337,6 +339,7 @@ COMMIT
     def _get_rules_from_formatted(self, frule):
         '''Return list of iptables rules appropriate for sending'''
         snippets = []
+
         pat_proto = re.compile(r'-p all ')
         pat_port = re.compile(r'port ')
         if pat_proto.search(frule):
@@ -347,6 +350,14 @@ COMMIT
                 snippets.append(pat_proto.sub('', frule))
         else:
             snippets.append(frule)
+
+        pat_limit = re.compile(r' -j LIMIT')
+        for i, s in enumerate(snippets):
+            if pat_limit.search(s):
+                tmp1 = pat_limit.sub(' -m state --state NEW -m recent --set', s)
+                tmp2 = pat_limit.sub(' -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit', s)
+                snippets[i] = tmp2
+                snippets.insert(i, tmp1)
 
         return snippets
 
@@ -368,6 +379,8 @@ COMMIT
             rule.set_action('allow')
         elif fields[0] == 'DROP':
             rule.set_action('deny')
+        elif fields[0] == "ufw-user-limit":
+            rule.set_action('limit')
         else:
             # RETURN and LOG are valid, but we skip them
             return None
@@ -489,6 +502,9 @@ COMMIT
         os.write(fd, "-A " + chain_prefix + "-user-input -j RETURN\n")
         os.write(fd, "-A " + chain_prefix + "-user-output -j RETURN\n")
         os.write(fd, "-A " + chain_prefix + "-user-forward -j RETURN\n")
+
+        os.write(fd, "-A " + chain_prefix + "-user-limit -m limit --limit 3/minute -j LOG --log-prefix \"[UFW LIMIT]: \"\n")
+        os.write(fd, "-A " + chain_prefix + "-user-limit -j DROP\n")
         os.write(fd, "COMMIT\n")
 
         if self.dryrun:
@@ -503,9 +519,13 @@ COMMIT
         * updating user rules file
         * reloading the user rules file if rule is modified
         '''
-        if rule.v6 and not self.use_ipv6():
-            err_msg = _("Adding IPv6 rule failed: IPv6 not enabled")
-            raise UFWError(err_msg)
+        if rule.v6:
+            if not self.use_ipv6():
+                err_msg = _("Adding IPv6 rule failed: IPv6 not enabled")
+                raise UFWError(err_msg)
+            if rule.action == 'limit':
+                # Netfilter doesn't have ip6t_recent yet, so skip
+                return _("Skipping unsupported IPv6 '%s' rule") % (rule.action)
 
         newrules = []
         found = False

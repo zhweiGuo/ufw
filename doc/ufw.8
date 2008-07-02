@@ -17,9 +17,9 @@ ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBstatus\fR
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny\fR PORT[/protocol]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 
 .SH OPTIONS
 .TP
@@ -54,8 +54,11 @@ allow RULE.  See \fBRULE SYNTAX\fR
 \fBdeny\fR RULE
 deny RULE.  See \fBRULE SYNTAX\fR
 .TP
-\fBdelete\fR allow|deny RULE
-deletes the corresponding allow/deny RULE
+\fBlimit\fR RULE
+limit RULE.  Currently only IPv4 is supported.  See \fBRULE SYNTAX\fR
+.TP
+\fBdelete\fR allow|deny|limit RULE
+deletes the corresponding allow/deny/limit RULE
 
 .SH "RULE SYNTAX"
 .PP
@@ -93,6 +96,14 @@ with the address 192.168.0.1.
 This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 25 on this
 host. Note that IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6
 firewalling to work.
+.PP
+\fBufw\fR supports connection rate limiting, which is useful for protecting
+against brute-force login attacks. \fBufw\fR will deny connections if an IP
+address has attempted to initiate 6 or more connections in the last 30 seconds.
+See http://www.debian-administration.org/articles/187 for details.  Typical
+usage is:
+
+  ufw limit ssh/tcp
 
 .PP
 To delete a rule, simply prefix the original rule with \fBdelete\fR. For

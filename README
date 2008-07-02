@@ -43,7 +43,7 @@ ufw enable|disable 		turn firewall on and off (including at boot)
 ufw default allow|deny		updates default policy
 ufw logging on|off		updates backend logging (*.rules)
 ufw status			displays firewall status (user.rules only)
-ufw allow|deny RULE		add RULE to firewall
+ufw allow|deny|limit RULE	add RULE to firewall
 
 See 'man ufw' and also Ubuntu's tutorial at:
 http://doc.ubuntu.com/ubuntu/serverguide/C/firewall.html
@@ -95,6 +95,23 @@ IPV6=yes
 Then do:
 # ufw disable
 # ufw enable
+
+
+Upgrading
+---------
+If upgrading from 0.17 or below to 0.18, if your distrubtion doesn't do it
+for you, be sure to add to /var/lib/ufw/user.rules:
+:ufw-user-limit - [0:0]
+...
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+
+
+and to /var/lib/ufw/user6.rules:
+:ufw6-user-limit - [0:0]
+...
+-A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw6-user-limit -j DROP
 
 
 Testing

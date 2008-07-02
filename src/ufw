@@ -81,7 +81,7 @@ if __name__ == "__main__":
         ufw.set_enabled(True)
     elif action == "disable":
         ufw.set_enabled(False)
-    elif action == "allow" or action == "deny":
+    elif action == "allow" or action == "deny" or action == "limit":
         ufw.set_rule(rule, type)
 
     sys.exit(0)

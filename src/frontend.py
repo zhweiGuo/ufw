@@ -51,7 +51,7 @@ def process_args(argv):
 
     allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
                     'logging', 'status', 'version', '--version', 'allow', \
-                    'deny' ]
+                    'deny', 'limit' ]
 
     if not argv[1].lower() in allowed_cmds:
         print_help()
@@ -83,7 +83,7 @@ def process_args(argv):
             print_help()
             sys.exit(1)
 
-    if action == "allow" or action == "deny":
+    if action == "allow" or action == "deny" or action == "limit":
         if nargs < 3 or nargs > 12:
             print_help()
             sys.exit(1)

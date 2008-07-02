@@ -75,6 +75,9 @@ class UFWRule:
             str += " --sport " + self.sport
         if self.action == "allow":
             str += " -j ACCEPT"
+        elif self.action == "limit":
+            # Caller needs to change this
+            str += " -j LIMIT"
         else:
             str += " -j DROP"
 
@@ -84,6 +87,8 @@ class UFWRule:
         '''Sets action of the rule'''
         if action.lower() == "allow":
             self.action = action
+        elif action.lower() == "limit":
+            self.action = "limit"
         else:
             self.action = "deny"
 
@@ -189,7 +194,7 @@ class UFWRule:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
-        dbg_msg = _("Found opposite match")
+        dbg_msg = _("Found non-action match")
         debug(dbg_msg)
         return -1
 

@@ -4,13 +4,13 @@ Possibly, provide a way out if it doesn't work (eg prompt user for 'Did it
 work?' type question, and timeout if no response (maybe use the previous
 working policy?))
 
-Add 'limit' RULE for rate limiting
-
 Support dotted netmasks
 
 Package integration
 
 Support port ranges
+
+Support upgrades with rate-limiting
 
 
 (C) 2008 Canonical Ltd.
