@@ -17,6 +17,7 @@
 #
 
 import re
+import sys
 
 from ufw.common import UFWError
 import ufw.util
