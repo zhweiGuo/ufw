@@ -79,6 +79,8 @@ do_cmd "0"  deny to any port 80 proto tcp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0"  deny from 10.0.0.0/8 to 192.168.0.1 port 25 proto tcp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0"  limit 22/tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0"  deny 53
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0"  allow 80/tcp
@@ -98,6 +100,7 @@ do_cmd "0"  delete allow 53
 do_cmd "0"  delete allow 25/tcp
 do_cmd "0"  delete deny to any port 80 proto tcp
 do_cmd "0"  delete deny from 10.0.0.0/8 to 192.168.0.1 port 25 proto tcp
+do_cmd "0"  delete limit 22/tcp
 do_cmd "0"  delete deny 53
 do_cmd "0"  delete allow 80/tcp
 do_cmd "0"  delete allow from 10.0.0.0/8
@@ -178,41 +181,45 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
 to="10.0.0.1"
-for x in allow deny
+for x in allow deny limit
 do
+        context="2"
+        if [ "$x" = "limit" ]; then
+                context="4"
+        fi
         do_cmd "0"  $x from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
         do_cmd "0"  $x from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to port 25
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to port 25
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to port 25 from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to port 25 from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to port 25 from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to port 25 from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         for y in udp tcp
         do
                 do_cmd "0"  $x from $from port 80 proto $y

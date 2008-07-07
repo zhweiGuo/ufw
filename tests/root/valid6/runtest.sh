@@ -79,41 +79,45 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 echo "TO/FROM" >> $TESTTMP/result
 from="2001:db8::/32"
 to="2001:db8:3:4:5:6:7:8"
-for x in allow deny
+for x in allow deny limit
 do
+        context="2"
+        if [ "$x" = "limit" ]; then
+                context="4"
+        fi
         do_cmd "0"  $x from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
         do_cmd "0"  $x from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to port 25
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to port 25
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to port 25 from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to port 25 from $from
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  $x to $to port 25 from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         do_cmd "0"  delete $x to $to port 25 from $from port 80
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
         for y in udp tcp
         do
                 do_cmd "0"  $x from $from port 80 proto $y

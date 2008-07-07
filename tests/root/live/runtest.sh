@@ -40,6 +40,7 @@ do
 	do_cmd "0" allow from 192.168.0.0/16
 	do_cmd "0" deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+	do_cmd "0" limit 22/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -59,6 +60,7 @@ do
 	do_cmd "0" delete allow from 192.168.0.0/16
 	do_cmd "0" delete deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+	do_cmd "0" delete limit 22/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" delete deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
