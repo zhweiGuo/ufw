@@ -9,6 +9,7 @@ ufw (0.18) UNRELEASED; urgency=low
     - updated run_tests.sh
     - updated README
     - updated README.translations and messages/ufw.pot
+    - updated README.Design
   * properly implement --root and --home (LP: #231771):
     - setup.py: --root works as expected now (eg as DESTDIR in Debian)
     - updated run_test.sh for new setup.py
