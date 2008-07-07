@@ -185,7 +185,7 @@ for x in allow deny limit
 do
         context="2"
         if [ "$x" = "limit" ]; then
-                context="4"
+                context="5"
         fi
         do_cmd "0"  $x from $from
 	grep -A$context "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result

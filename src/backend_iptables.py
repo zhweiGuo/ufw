@@ -358,7 +358,7 @@ COMMIT
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
-    def _get_rules_from_formatted(self, frule):
+    def _get_rules_from_formatted(self, frule, prefix):
         '''Return list of iptables rules appropriate for sending'''
         snippets = []
 
@@ -376,9 +376,12 @@ COMMIT
         pat_limit = re.compile(r' -j LIMIT')
         for i, s in enumerate(snippets):
             if pat_limit.search(s):
-                tmp1 = pat_limit.sub(' -m state --state NEW -m recent --set', s)
-                tmp2 = pat_limit.sub(' -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit', s)
-                tmp3 = pat_limit.sub(' -j ACCEPT', s)
+                tmp1 = pat_limit.sub(' -m state --state NEW -m recent --set', \
+                                     s)
+                tmp2 = pat_limit.sub(' -m state --state NEW -m recent' + \
+                                     ' --update --seconds 30 --hitcount 6' + \
+                                     ' -j ' + prefix + '-user-limit', s)
+                tmp3 = pat_limit.sub(' -j ' + prefix + '-user-limit-accept', s)
                 snippets[i] = tmp3
                 snippets.insert(i, tmp2)
                 snippets.insert(i, tmp1)
@@ -403,7 +406,7 @@ COMMIT
             rule.set_action('allow')
         elif fields[0] == 'DROP':
             rule.set_action('deny')
-        elif fields[0] == "ufw-user-limit":
+        elif fields[0] == "ufw-user-limit-accept":
             rule.set_action('limit')
         else:
             # RETURN and LOG are valid, but we skip them
@@ -517,6 +520,7 @@ COMMIT
         if chain_prefix == "ufw":
             # Rate limiting only supported with IPv4
             os.write(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
+            os.write(fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n")
 
         os.write(fd, "### RULES ###\n")
 
@@ -526,7 +530,7 @@ COMMIT
                        r.format_rule() + "\n"
             os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
                      (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
-            for s in self._get_rules_from_formatted(rule_str):
+            for s in self._get_rules_from_formatted(rule_str, chain_prefix):
                 os.write(fd, s)
 
         # Write footer
@@ -540,7 +544,8 @@ COMMIT
             os.write(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
                          "--limit 3/minute -j LOG --log-prefix " + \
                          "\"[UFW LIMIT]: \"\n")
-            os.write(fd, "-A " + chain_prefix + "-user-limit -j DROP\n")
+            os.write(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
+            os.write(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
 
         os.write(fd, "COMMIT\n")
 
@@ -630,11 +635,12 @@ COMMIT
 
             if flag != "":
                 exe = "iptables"
-                chain = "ufw-user-input"
+                chain_prefix = "ufw"
                 if rule.v6:
                     exe = "ip6tables"
-                    chain = "ufw6-user-input"
+                    chain_prefix = "ufw6"
                     rstr += " (v6)"
+                chain = chain_prefix + "-user-input"
 
                 # Is the firewall running?
                 err_msg = _("Could not update running firewall")
@@ -642,7 +648,8 @@ COMMIT
                 if rc != 0:
                     raise UFWError(err_msg)
 
-                for s in self._get_rules_from_formatted(rule.format_rule()):
+                for s in self._get_rules_from_formatted(rule.format_rule(), \
+                                                        chain_prefix):
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
                         print >> sys.stderr, out
