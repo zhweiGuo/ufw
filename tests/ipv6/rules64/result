@@ -270,6 +270,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0
 -A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN

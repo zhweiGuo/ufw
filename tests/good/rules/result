@@ -163,6 +163,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0
 -A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2241,6 +2242,7 @@ WARN: Checks disabled
 ### tuple ### limit any any 0.0.0.0/0 any 192.168.0.1
 -A ufw-user-input -s 192.168.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2283,6 +2285,7 @@ WARN: Checks disabled
 ### tuple ### limit any any 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -d 10.0.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -d 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -d 10.0.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2325,6 +2328,7 @@ WARN: Checks disabled
 ### tuple ### limit any any 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2367,8 +2371,10 @@ WARN: Checks disabled
 ### tuple ### limit any any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2411,8 +2417,10 @@ WARN: Checks disabled
 ### tuple ### limit any 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2455,8 +2463,10 @@ WARN: Checks disabled
 ### tuple ### limit any any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2499,8 +2509,10 @@ WARN: Checks disabled
 ### tuple ### limit any 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2543,8 +2555,10 @@ WARN: Checks disabled
 ### tuple ### limit any 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2587,6 +2601,7 @@ WARN: Checks disabled
 ### tuple ### limit udp any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2629,6 +2644,7 @@ WARN: Checks disabled
 ### tuple ### limit udp 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2671,6 +2687,7 @@ WARN: Checks disabled
 ### tuple ### limit udp any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2713,6 +2730,7 @@ WARN: Checks disabled
 ### tuple ### limit udp 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2755,6 +2773,7 @@ WARN: Checks disabled
 ### tuple ### limit udp 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2797,6 +2816,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.1
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2839,6 +2859,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp 25 10.0.0.1 any 0.0.0.0/0
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2881,6 +2902,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp any 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2923,6 +2945,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp 25 10.0.0.1 any 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2965,6 +2988,7 @@ WARN: Checks disabled
 ### tuple ### limit tcp 25 10.0.0.1 80 192.168.0.1
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
