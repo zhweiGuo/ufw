@@ -23,7 +23,7 @@ do_cmd "0" --dry-run deny proto tcp from 2001:db8::/32 to any port 25
 echo "TO/FROM" >> $TESTTMP/result
 from="2001:db8::/32"
 to="2001:db8:3:4:5:6:7:8"
-for x in allow deny
+for x in allow deny limit
 do
 	do_cmd "0" --dry-run $x from $from
 	do_cmd "0" --dry-run delete $x from $from

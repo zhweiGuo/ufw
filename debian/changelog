@@ -17,6 +17,7 @@ ufw (0.18) UNRELEASED; urgency=low
     - updated src/*
     - updated README and ufw.8
     - updated messages/ufw.pot
+    - updated tests for limit
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 12 Jun 2008 10:28:36 -0400
 

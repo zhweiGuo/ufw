@@ -22,8 +22,9 @@ do_cmd "0" --dry-run allow 25/tcp
 do_cmd "0" --dry-run allow smtp
 do_cmd "0" --dry-run deny proto tcp to any port 80
 do_cmd "0" --dry-run deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
-do_cmd "0" --dry-run allow 80/tcp
-do_cmd "0" --dry-run delete allow 80/tcp
+do_cmd "0" --dry-run deny 80/tcp
+do_cmd "0" --dry-run delete deny 80/tcp
+do_cmd "0" --dry-run limit ssh/tcp
 do_cmd "0" --dry-run deny 53
 do_cmd "0" --dry-run allow 80/tcp
 do_cmd "0" --dry-run allow from 10.0.0.0/8
@@ -57,7 +58,7 @@ do_cmd "0" --dry-run delete allow ssh/udp
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
 to="10.0.0.1"
-for x in allow deny
+for x in allow deny limit
 do
 	do_cmd "0" --dry-run $x from $from
 	do_cmd "0" --dry-run delete $x from $from

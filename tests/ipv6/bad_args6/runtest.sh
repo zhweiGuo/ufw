@@ -27,31 +27,37 @@ do_cmd "1" null --dry-run default
 do_cmd "1" null --dry-run default foo
 do_cmd "1" null --dry-run default accept
 do_cmd "1" null --dry-run defaul allow
+do_cmd "1" null --dry-run default limit
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 # bad
 do_cmd "1" null --dry-run enabled
 do_cmd "1" null --dry-run disabled
 
-echo "TESTING ARGS (allow/deny)" >> $TESTTMP/result
+echo "TESTING ARGS (allow/deny/limit)" >> $TESTTMP/result
 do_cmd "1" null --dry-run allow
 do_cmd "1" null --dry-run deny
+do_cmd "1" null --dry-run limit
 
-echo "TESTING ARGS (allow/deny bad port)" >> $TESTTMP/result
+echo "TESTING ARGS (allow/deny/limit bad port)" >> $TESTTMP/result
 do_cmd "1" null --dry-run alow 25
 do_cmd "1" null --dry-run dny 25
+do_cmd "1" null --dry-run limt 25
 do_cmd "1" null --dry-run allow 25a
 do_cmd "1" null --dry-run deny 25a
+do_cmd "1" null --dry-run limit 25a
 do_cmd "1" null --dry-run allow 65536
 do_cmd "1" null --dry-run deny 65536
+do_cmd "1" null --dry-run limit 65536
 do_cmd "1" null --dry-run allow 0
 do_cmd "1" null --dry-run deny 0
+do_cmd "1" null --dry-run limit 0
 do_cmd "1" null --dry-run deny XXX
 do_cmd "1" null --dry-run deny foobar
 
-echo "TESTING ARGS (allow/deny bad to/from)" >> $TESTTMP/result
+echo "TESTING ARGS (allow/deny/limit bad to/from)" >> $TESTTMP/result
 ip="2001:db8:3:4:5:6:7:8"
-for action in allow deny
+for action in allow deny limit
 do
         do_cmd "1" null --dry-run $action prot tcp from any
         do_cmd "1" null --dry-run $action proto tcp fro any
@@ -93,7 +99,7 @@ do
 	do_cmd "1" null --dry-run $action to to $ip port smtp
 done
 
-echo "TESTING ARGS (allow/deny bad ip)" >> $TESTTMP/result
+echo "TESTING ARGS (bad ip)" >> $TESTTMP/result
 do_cmd "1" null --dry-run allow to 2001:db8:::/32
 do_cmd "1" null --dry-run allow to 2001:db8::/129
 do_cmd "1" null --dry-run allow to 2001:gb8::/32
@@ -112,14 +118,16 @@ do_cmd "1" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0000/129
 do_cmd "1" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/128
 do_cmd "1" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:00000/12a
 
-echo "TESTING ARGS (delete allow/deny)" >> $TESTTMP/result
+echo "TESTING ARGS (delete)" >> $TESTTMP/result
 do_cmd "1" null --dry-run delete
 
-echo "TESTING ARGS (allow/deny mixed ipv4/ipv6)" >> $TESTTMP/result
+echo "TESTING ARGS (allow/deny/limit mixed ipv4/ipv6)" >> $TESTTMP/result
 do_cmd "1" null --dry-run allow to 10.0.0.1 from 2001:db8::/32
 do_cmd "1" null --dry-run deny to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
+do_cmd "1" null --dry-run limit to 10.0.0.1 port 25 from 2001:db8::/32 proto tcp
 do_cmd "1" null --dry-run allow to 2001:db8::/32 port 25 from 10.0.0.1 proto udp
 do_cmd "1" null --dry-run deny to 2001:db8::/32 from 10.0.0.1
+do_cmd "1" null --dry-run limit to 2001:db8::/32 from 10.0.0.1
 
 echo "TESTING BAD SERVICES" >> $TESTTMP/result
 do_cmd "1" null --dry-run allow smtp/udp

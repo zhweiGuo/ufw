@@ -5,6 +5,7 @@ WARN: Checks disabled
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
@@ -15,6 +16,8 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
@@ -25,6 +28,7 @@ WARN: Checks disabled
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
@@ -34,6 +38,8 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
@@ -44,6 +50,7 @@ WARN: Checks disabled
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
@@ -53,6 +60,8 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
@@ -63,6 +72,7 @@ WARN: Checks disabled
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
@@ -72,6 +82,8 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
@@ -82,6 +94,7 @@ WARN: Checks disabled
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
@@ -91,51 +104,83 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-5: --dry-run allow 80/tcp
+5: --dry-run deny 80/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p tcp --dport 80 -j ACCEPT
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-6: --dry-run delete allow 80/tcp
+6: --dry-run delete deny 80/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-7: --dry-run deny 53
+7: --dry-run limit ssh/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+8: --dry-run deny 53
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
@@ -146,16 +191,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-8: --dry-run allow 80/tcp
+9: --dry-run allow 80/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
@@ -165,16 +213,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-9: --dry-run allow from 10.0.0.0/8
+10: --dry-run allow from 10.0.0.0/8
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
@@ -184,16 +235,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-10: --dry-run allow from 172.16.0.0/12
+11: --dry-run allow from 172.16.0.0/12
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
@@ -203,16 +257,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-11: --dry-run allow from 192.168.0.0/16
+12: --dry-run allow from 192.168.0.0/16
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
@@ -222,16 +279,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-12: --dry-run deny proto udp from 1.2.3.4 to any port 514
+13: --dry-run deny proto udp from 1.2.3.4 to any port 514
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
@@ -241,16 +301,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-13: --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+14: --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
@@ -260,17 +323,20 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
 SIMPLE
-14: --dry-run allow 25
+15: --dry-run allow 25
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 0.0.0.0/0 any 0.0.0.0/0
@@ -281,16 +347,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-15: --dry-run allow 25/tcp
+16: --dry-run allow 25/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
@@ -300,16 +369,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-16: --dry-run allow 25/udp
+17: --dry-run allow 25/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 0.0.0.0/0 any 0.0.0.0/0
@@ -319,99 +391,76 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-17: --dry-run delete allow 25
+18: --dry-run delete allow 25
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-18: --dry-run delete allow 25/tcp
+19: --dry-run delete allow 25/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-19: --dry-run delete allow 25/udp
+20: --dry-run delete allow 25/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-20: --dry-run allow smtp
+21: --dry-run allow smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
-### RULES ###
-
-### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p tcp --dport 25 -j ACCEPT
-
-### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
-COMMIT
-Rules updated
-
-
-21: --dry-run delete allow smtp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-### RULES ###
-
-### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
-COMMIT
-Rules updated
-
-
-22: --dry-run allow smtp/tcp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
@@ -421,32 +470,79 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-23: --dry-run delete allow smtp/tcp
+22: --dry-run delete allow smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-24: --dry-run allow tftp
+23: --dry-run allow smtp/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 25 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+24: --dry-run delete allow smtp/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+25: --dry-run allow tftp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0
@@ -456,32 +552,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-25: --dry-run delete allow tftp
+26: --dry-run delete allow tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-26: --dry-run allow tftp/udp
+27: --dry-run allow tftp/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0
@@ -491,32 +593,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-27: --dry-run delete allow tftp/udp
+28: --dry-run delete allow tftp/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-28: --dry-run allow ssh
+29: --dry-run allow ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
@@ -527,32 +635,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-29: --dry-run delete allow ssh
+30: --dry-run delete allow ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-30: --dry-run allow ssh/tcp
+31: --dry-run allow ssh/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0
@@ -562,32 +676,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-31: --dry-run delete allow ssh/tcp
+32: --dry-run delete allow ssh/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-32: --dry-run allow ssh/udp
+33: --dry-run allow ssh/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 22 0.0.0.0/0 any 0.0.0.0/0
@@ -597,33 +717,39 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-33: --dry-run delete allow ssh/udp
+34: --dry-run delete allow ssh/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
 TO/FROM
-34: --dry-run allow from 192.168.0.1
+35: --dry-run allow from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
@@ -633,32 +759,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-35: --dry-run delete allow from 192.168.0.1
+36: --dry-run delete allow from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-36: --dry-run allow to 10.0.0.1
+37: --dry-run allow to 10.0.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 10.0.0.1 any 0.0.0.0/0
@@ -668,32 +800,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-37: --dry-run delete allow to 10.0.0.1
+38: --dry-run delete allow to 10.0.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-38: --dry-run allow to 10.0.0.1 from 192.168.0.1
+39: --dry-run allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 10.0.0.1 any 192.168.0.1
@@ -703,32 +841,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-39: --dry-run delete allow to 10.0.0.1 from 192.168.0.1
+40: --dry-run delete allow to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-40: --dry-run allow from 192.168.0.1 port 80
+41: --dry-run allow from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 80 192.168.0.1
@@ -739,32 +883,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-41: --dry-run delete allow from 192.168.0.1 port 80
+42: --dry-run delete allow from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-42: --dry-run allow to 10.0.0.1 port 25
+43: --dry-run allow to 10.0.0.1 port 25
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 10.0.0.1 any 0.0.0.0/0
@@ -775,32 +925,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-43: --dry-run delete allow to 10.0.0.1 port 25
+44: --dry-run delete allow to 10.0.0.1 port 25
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-44: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80
+45: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 10.0.0.1 80 192.168.0.1
@@ -811,32 +967,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-45: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80
+46: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-46: --dry-run allow to 10.0.0.1 port 25 from 192.168.0.1
+47: --dry-run allow to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 10.0.0.1 any 192.168.0.1
@@ -847,32 +1009,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-47: --dry-run delete allow to 10.0.0.1 port 25 from 192.168.0.1
+48: --dry-run delete allow to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-48: --dry-run allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
+49: --dry-run allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 10.0.0.1 80 192.168.0.1
@@ -883,32 +1051,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-49: --dry-run delete allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
+50: --dry-run delete allow to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-50: --dry-run allow from 192.168.0.1 port 80 proto udp
+51: --dry-run allow from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 80 192.168.0.1
@@ -918,32 +1092,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-51: --dry-run delete allow from 192.168.0.1 port 80 proto udp
+52: --dry-run delete allow from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-52: --dry-run allow to 10.0.0.1 port 25 proto udp
+53: --dry-run allow to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 10.0.0.1 any 0.0.0.0/0
@@ -953,32 +1133,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-53: --dry-run delete allow to 10.0.0.1 port 25 proto udp
+54: --dry-run delete allow to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-54: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+55: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp any 10.0.0.1 80 192.168.0.1
@@ -988,32 +1174,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-55: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+56: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-56: --dry-run allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
+57: --dry-run allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 10.0.0.1 any 192.168.0.1
@@ -1023,32 +1215,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-57: --dry-run delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
+58: --dry-run delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-58: --dry-run allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+59: --dry-run allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 10.0.0.1 80 192.168.0.1
@@ -1058,32 +1256,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-59: --dry-run delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+60: --dry-run delete allow to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-60: --dry-run allow from 192.168.0.1 port 80 proto tcp
+61: --dry-run allow from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.1
@@ -1093,32 +1297,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-61: --dry-run delete allow from 192.168.0.1 port 80 proto tcp
+62: --dry-run delete allow from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-62: --dry-run allow to 10.0.0.1 port 25 proto tcp
+63: --dry-run allow to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 10.0.0.1 any 0.0.0.0/0
@@ -1128,32 +1338,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-63: --dry-run delete allow to 10.0.0.1 port 25 proto tcp
+64: --dry-run delete allow to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-64: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+65: --dry-run allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp any 10.0.0.1 80 192.168.0.1
@@ -1163,32 +1379,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-65: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+66: --dry-run delete allow to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-66: --dry-run allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+67: --dry-run allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 10.0.0.1 any 192.168.0.1
@@ -1198,32 +1420,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-67: --dry-run delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+68: --dry-run delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-68: --dry-run allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+69: --dry-run allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 10.0.0.1 80 192.168.0.1
@@ -1233,32 +1461,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-69: --dry-run delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+70: --dry-run delete allow to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-70: --dry-run deny from 192.168.0.1
+71: --dry-run deny from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 0.0.0.0/0 any 192.168.0.1
@@ -1268,32 +1502,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-71: --dry-run delete deny from 192.168.0.1
+72: --dry-run delete deny from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-72: --dry-run deny to 10.0.0.1
+73: --dry-run deny to 10.0.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 10.0.0.1 any 0.0.0.0/0
@@ -1303,32 +1543,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-73: --dry-run delete deny to 10.0.0.1
+74: --dry-run delete deny to 10.0.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-74: --dry-run deny to 10.0.0.1 from 192.168.0.1
+75: --dry-run deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 10.0.0.1 any 192.168.0.1
@@ -1338,32 +1584,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-75: --dry-run delete deny to 10.0.0.1 from 192.168.0.1
+76: --dry-run delete deny to 10.0.0.1 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-76: --dry-run deny from 192.168.0.1 port 80
+77: --dry-run deny from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 0.0.0.0/0 80 192.168.0.1
@@ -1374,32 +1626,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-77: --dry-run delete deny from 192.168.0.1 port 80
+78: --dry-run delete deny from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-78: --dry-run deny to 10.0.0.1 port 25
+79: --dry-run deny to 10.0.0.1 port 25
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 25 10.0.0.1 any 0.0.0.0/0
@@ -1410,32 +1668,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-79: --dry-run delete deny to 10.0.0.1 port 25
+80: --dry-run delete deny to 10.0.0.1 port 25
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-80: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80
+81: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 10.0.0.1 80 192.168.0.1
@@ -1446,32 +1710,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-81: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80
+82: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-82: --dry-run deny to 10.0.0.1 port 25 from 192.168.0.1
+83: --dry-run deny to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 25 10.0.0.1 any 192.168.0.1
@@ -1482,32 +1752,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-83: --dry-run delete deny to 10.0.0.1 port 25 from 192.168.0.1
+84: --dry-run delete deny to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-84: --dry-run deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
+85: --dry-run deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 25 10.0.0.1 80 192.168.0.1
@@ -1518,32 +1794,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-85: --dry-run delete deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
+86: --dry-run delete deny to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-86: --dry-run deny from 192.168.0.1 port 80 proto udp
+87: --dry-run deny from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp any 0.0.0.0/0 80 192.168.0.1
@@ -1553,32 +1835,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-87: --dry-run delete deny from 192.168.0.1 port 80 proto udp
+88: --dry-run delete deny from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-88: --dry-run deny to 10.0.0.1 port 25 proto udp
+89: --dry-run deny to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 25 10.0.0.1 any 0.0.0.0/0
@@ -1588,32 +1876,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-89: --dry-run delete deny to 10.0.0.1 port 25 proto udp
+90: --dry-run delete deny to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-90: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+91: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp any 10.0.0.1 80 192.168.0.1
@@ -1623,32 +1917,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-91: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+92: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-92: --dry-run deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
+93: --dry-run deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 25 10.0.0.1 any 192.168.0.1
@@ -1658,32 +1958,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-93: --dry-run delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
+94: --dry-run delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-94: --dry-run deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+95: --dry-run deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 25 10.0.0.1 80 192.168.0.1
@@ -1693,32 +1999,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-95: --dry-run delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+96: --dry-run delete deny to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-96: --dry-run deny from 192.168.0.1 port 80 proto tcp
+97: --dry-run deny from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.1
@@ -1728,32 +2040,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-97: --dry-run delete deny from 192.168.0.1 port 80 proto tcp
+98: --dry-run delete deny from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-98: --dry-run deny to 10.0.0.1 port 25 proto tcp
+99: --dry-run deny to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 10.0.0.1 any 0.0.0.0/0
@@ -1763,32 +2081,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-99: --dry-run delete deny to 10.0.0.1 port 25 proto tcp
+100: --dry-run delete deny to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-100: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+101: --dry-run deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp any 10.0.0.1 80 192.168.0.1
@@ -1798,32 +2122,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-101: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+102: --dry-run delete deny to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-102: --dry-run deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+103: --dry-run deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 10.0.0.1 any 192.168.0.1
@@ -1833,32 +2163,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-103: --dry-run delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+104: --dry-run delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-104: --dry-run deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+105: --dry-run deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 10.0.0.1 80 192.168.0.1
@@ -1868,33 +2204,805 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-105: --dry-run delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+106: --dry-run delete deny to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-Services
-106: --dry-run allow to any port smtp from any port smtp
+107: --dry-run limit from 192.168.0.1
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any any 0.0.0.0/0 any 192.168.0.1
+-A ufw-user-input -s 192.168.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+108: --dry-run delete limit from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+109: --dry-run limit to 10.0.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any any 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -d 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -d 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+110: --dry-run delete limit to 10.0.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+111: --dry-run limit to 10.0.0.1 from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any any 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+112: --dry-run delete limit to 10.0.0.1 from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+113: --dry-run limit from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+114: --dry-run delete limit from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+115: --dry-run limit to 10.0.0.1 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+116: --dry-run delete limit to 10.0.0.1 port 25
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+117: --dry-run limit to 10.0.0.1 from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+118: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+119: --dry-run limit to 10.0.0.1 port 25 from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+120: --dry-run delete limit to 10.0.0.1 port 25 from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+121: --dry-run limit to 10.0.0.1 port 25 from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit any 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+122: --dry-run delete limit to 10.0.0.1 port 25 from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+123: --dry-run limit from 192.168.0.1 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit udp any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+124: --dry-run delete limit from 192.168.0.1 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+125: --dry-run limit to 10.0.0.1 port 25 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit udp 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+126: --dry-run delete limit to 10.0.0.1 port 25 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+127: --dry-run limit to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit udp any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+128: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 port 80 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+129: --dry-run limit to 10.0.0.1 port 25 proto udp from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit udp 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+130: --dry-run delete limit to 10.0.0.1 port 25 proto udp from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+131: --dry-run limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit udp 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+132: --dry-run delete limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+133: --dry-run limit from 192.168.0.1 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.1
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+134: --dry-run delete limit from 192.168.0.1 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+135: --dry-run limit to 10.0.0.1 port 25 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit tcp 25 10.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+136: --dry-run delete limit to 10.0.0.1 port 25 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+137: --dry-run limit to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit tcp any 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+138: --dry-run delete limit to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+139: --dry-run limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit tcp 25 10.0.0.1 any 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+140: --dry-run delete limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+141: --dry-run limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### tuple ### limit tcp 25 10.0.0.1 80 192.168.0.1
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+142: --dry-run delete limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
+COMMIT
+Rules updated
+
+
+Services
+143: --dry-run allow to any port smtp from any port smtp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 25 0.0.0.0/0
@@ -1904,32 +3012,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-107: --dry-run delete allow to any port smtp from any port smtp
+144: --dry-run delete allow to any port smtp from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-108: --dry-run allow to any port smtp from any port ssh
+145: --dry-run allow to any port smtp from any port ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0
@@ -1939,32 +3053,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-109: --dry-run delete allow to any port smtp from any port ssh
+146: --dry-run delete allow to any port smtp from any port ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-110: --dry-run allow to any port ssh from any port smtp
+147: --dry-run allow to any port ssh from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 22 0.0.0.0/0 25 0.0.0.0/0
@@ -1974,32 +3094,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-111: --dry-run delete allow to any port ssh from any port smtp
+148: --dry-run delete allow to any port ssh from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-112: --dry-run allow to any port smtp from any port 23
+149: --dry-run allow to any port smtp from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 23 0.0.0.0/0
@@ -2009,32 +3135,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-113: --dry-run delete allow to any port smtp from any port 23
+150: --dry-run delete allow to any port smtp from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-114: --dry-run allow to any port 23 from any port smtp
+151: --dry-run allow to any port 23 from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 23 0.0.0.0/0 25 0.0.0.0/0
@@ -2044,32 +3176,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-115: --dry-run delete allow to any port 23 from any port smtp
+152: --dry-run delete allow to any port 23 from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-116: --dry-run allow to any port tftp from any port tftp
+153: --dry-run allow to any port tftp from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 69 0.0.0.0/0
@@ -2079,32 +3217,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-117: --dry-run delete allow to any port tftp from any port tftp
+154: --dry-run delete allow to any port tftp from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-118: --dry-run allow to any port tftp from any port ssh
+155: --dry-run allow to any port tftp from any port ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0
@@ -2114,32 +3258,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-119: --dry-run delete allow to any port tftp from any port ssh
+156: --dry-run delete allow to any port tftp from any port ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-120: --dry-run allow to any port ssh from any port tftp
+157: --dry-run allow to any port ssh from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 22 0.0.0.0/0 69 0.0.0.0/0
@@ -2149,32 +3299,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-121: --dry-run delete allow to any port ssh from any port tftp
+158: --dry-run delete allow to any port ssh from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-122: --dry-run allow to any port tftp from any port 23
+159: --dry-run allow to any port tftp from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 23 0.0.0.0/0
@@ -2184,32 +3340,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-123: --dry-run delete allow to any port tftp from any port 23
+160: --dry-run delete allow to any port tftp from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-124: --dry-run allow to any port 23 from any port tftp
+161: --dry-run allow to any port 23 from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 23 0.0.0.0/0 69 0.0.0.0/0
@@ -2219,32 +3381,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-125: --dry-run delete allow to any port 23 from any port tftp
+162: --dry-run delete allow to any port 23 from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-126: --dry-run allow to any port ssh from any port 23
+163: --dry-run allow to any port ssh from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 22 0.0.0.0/0 23 0.0.0.0/0
@@ -2255,32 +3423,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-127: --dry-run delete allow to any port ssh from any port 23
+164: --dry-run delete allow to any port ssh from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-128: --dry-run allow to any port 23 from any port ssh
+165: --dry-run allow to any port 23 from any port ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 23 0.0.0.0/0 22 0.0.0.0/0
@@ -2291,32 +3465,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-129: --dry-run delete allow to any port 23 from any port ssh
+166: --dry-run delete allow to any port 23 from any port ssh
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-130: --dry-run allow to any port ssh from any port domain
+167: --dry-run allow to any port ssh from any port domain
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 22 0.0.0.0/0 53 0.0.0.0/0
@@ -2327,32 +3507,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-131: --dry-run delete allow to any port ssh from any port domain
+168: --dry-run delete allow to any port ssh from any port domain
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-132: --dry-run allow to any port smtp from any port smtp proto tcp
+169: --dry-run allow to any port smtp from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 25 0.0.0.0/0
@@ -2362,32 +3548,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-133: --dry-run delete allow to any port smtp from any port smtp proto tcp
+170: --dry-run delete allow to any port smtp from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-134: --dry-run allow to any port smtp from any port ssh proto tcp
+171: --dry-run allow to any port smtp from any port ssh proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0
@@ -2397,32 +3589,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-135: --dry-run delete allow to any port smtp from any port ssh proto tcp
+172: --dry-run delete allow to any port smtp from any port ssh proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-136: --dry-run allow to any port ssh from any port smtp proto tcp
+173: --dry-run allow to any port ssh from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 22 0.0.0.0/0 25 0.0.0.0/0
@@ -2432,32 +3630,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-137: --dry-run delete allow to any port ssh from any port smtp proto tcp
+174: --dry-run delete allow to any port ssh from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-138: --dry-run allow to any port smtp from any port 23 proto tcp
+175: --dry-run allow to any port smtp from any port 23 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 0.0.0.0/0 23 0.0.0.0/0
@@ -2467,32 +3671,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-139: --dry-run delete allow to any port smtp from any port 23 proto tcp
+176: --dry-run delete allow to any port smtp from any port 23 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-140: --dry-run allow to any port 23 from any port smtp proto tcp
+177: --dry-run allow to any port 23 from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 23 0.0.0.0/0 25 0.0.0.0/0
@@ -2502,32 +3712,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-141: --dry-run delete allow to any port 23 from any port smtp proto tcp
+178: --dry-run delete allow to any port 23 from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-142: --dry-run allow to any port tftp from any port tftp proto udp
+179: --dry-run allow to any port tftp from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 69 0.0.0.0/0
@@ -2537,32 +3753,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-143: --dry-run delete allow to any port tftp from any port tftp proto udp
+180: --dry-run delete allow to any port tftp from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-144: --dry-run allow to any port tftp from any port ssh proto udp
+181: --dry-run allow to any port tftp from any port ssh proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0
@@ -2572,32 +3794,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-145: --dry-run delete allow to any port tftp from any port ssh proto udp
+182: --dry-run delete allow to any port tftp from any port ssh proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-146: --dry-run allow to any port ssh from any port tftp proto udp
+183: --dry-run allow to any port ssh from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 22 0.0.0.0/0 69 0.0.0.0/0
@@ -2607,32 +3835,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-147: --dry-run delete allow to any port ssh from any port tftp proto udp
+184: --dry-run delete allow to any port ssh from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-148: --dry-run allow to any port tftp from any port 23 proto udp
+185: --dry-run allow to any port tftp from any port 23 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 0.0.0.0/0 23 0.0.0.0/0
@@ -2642,32 +3876,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-149: --dry-run delete allow to any port tftp from any port 23 proto udp
+186: --dry-run delete allow to any port tftp from any port 23 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-150: --dry-run allow to any port 23 from any port tftp proto udp
+187: --dry-run allow to any port 23 from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 23 0.0.0.0/0 69 0.0.0.0/0
@@ -2677,32 +3917,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-151: --dry-run delete allow to any port 23 from any port tftp proto udp
+188: --dry-run delete allow to any port 23 from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-152: --dry-run allow to any port ssh from any port 23 proto tcp
+189: --dry-run allow to any port ssh from any port 23 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 22 0.0.0.0/0 23 0.0.0.0/0
@@ -2712,32 +3958,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-153: --dry-run delete allow to any port ssh from any port 23 proto tcp
+190: --dry-run delete allow to any port ssh from any port 23 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-154: --dry-run allow to any port 23 from any port ssh proto tcp
+191: --dry-run allow to any port 23 from any port ssh proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 23 0.0.0.0/0 22 0.0.0.0/0
@@ -2747,32 +3999,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-155: --dry-run delete allow to any port 23 from any port ssh proto tcp
+192: --dry-run delete allow to any port 23 from any port ssh proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-156: --dry-run allow to any port ssh from any port domain proto tcp
+193: --dry-run allow to any port ssh from any port domain proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 22 0.0.0.0/0 53 0.0.0.0/0
@@ -2782,32 +4040,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-157: --dry-run delete allow to any port ssh from any port domain proto tcp
+194: --dry-run delete allow to any port ssh from any port domain proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-158: --dry-run allow to any port ssh from any port 23 proto udp
+195: --dry-run allow to any port ssh from any port 23 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 22 0.0.0.0/0 23 0.0.0.0/0
@@ -2817,32 +4081,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-159: --dry-run delete allow to any port ssh from any port 23 proto udp
+196: --dry-run delete allow to any port ssh from any port 23 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-160: --dry-run allow to any port 23 from any port ssh proto udp
+197: --dry-run allow to any port 23 from any port ssh proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 23 0.0.0.0/0 22 0.0.0.0/0
@@ -2852,32 +4122,38 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-161: --dry-run delete allow to any port 23 from any port ssh proto udp
+198: --dry-run delete allow to any port 23 from any port ssh proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-162: --dry-run allow to any port ssh from any port domain proto udp
+199: --dry-run allow to any port ssh from any port domain proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 22 0.0.0.0/0 53 0.0.0.0/0
@@ -2887,33 +4163,39 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-163: --dry-run delete allow to any port ssh from any port domain proto udp
+200: --dry-run delete allow to any port ssh from any port domain proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
 Netmasks
-164: --dry-run allow to 192.168.0.0/0
+201: --dry-run allow to 192.168.0.0/0
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 192.168.0.0/0 any 0.0.0.0/0
@@ -2923,16 +4205,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-165: --dry-run allow to 192.168.0.0/16
+202: --dry-run allow to 192.168.0.0/16
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 192.168.0.0/16 any 0.0.0.0/0
@@ -2942,16 +4227,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-166: --dry-run allow to 192.168.0.1/32
+203: --dry-run allow to 192.168.0.1/32
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 192.168.0.1/32 any 0.0.0.0/0
@@ -2961,16 +4249,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-167: --dry-run allow from 192.168.0.0/0
+204: --dry-run allow from 192.168.0.0/0
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/0
@@ -2980,16 +4271,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-168: --dry-run allow from 192.168.0.0/16
+205: --dry-run allow from 192.168.0.0/16
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
@@ -2999,16 +4293,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-169: --dry-run allow from 192.168.0.1/32
+206: --dry-run allow from 192.168.0.1/32
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1/32
@@ -3018,16 +4315,19 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
 
-170: --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
+207: --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
 :ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 192.168.0.2/32 any 192.168.0.1/32
@@ -3037,6 +4337,8 @@ WARN: Checks disabled
 -A ufw-user-input -j RETURN
 -A ufw-user-output -j RETURN
 -A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j DROP
 COMMIT
 Rules updated
 
