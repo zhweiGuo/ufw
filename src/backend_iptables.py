@@ -328,8 +328,8 @@ COMMIT
             prefix = "ufw6"
             exe = "ip6tables"
 
-        for chain in [ 'input', 'output', 'forward', 'limit' ]:
-            if v6 and chain == "limit":
+        for chain in [ 'input', 'output', 'forward', 'limit', 'limit-accept' ]:
+            if v6 and (chain == "limit" or chain == "limit-accept"):
                 continue
 
             (rc, out) = cmd([exe, '-n', '-L', prefix + "-user-" + chain])
