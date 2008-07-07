@@ -24,10 +24,8 @@ import ufw.util
 from ufw.util import error
 from ufw.backend_iptables import UFWBackendIptables
 
-def process_args(argv):
-    '''Process command line arguments. Returns tuple for action, rule,
-       ip_version and dryrun.
-    '''
+def parse_command(argv):
+    '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
     action = ""
     rule = ""
     type = ""
@@ -49,47 +47,40 @@ def process_args(argv):
     nargs = len(argv)
 
     if nargs < 2:
-        print_help()
-        sys.exit(1)
+        raise ValueError()
 
     allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
                     'logging', 'status', 'version', '--version', 'allow', \
                     'deny', 'limit' ]
 
     if not argv[1].lower() in allowed_cmds:
-        print_help()
-        sys.exit(1)
+        raise ValueError()
     else:
         action = argv[1].lower()
 
     if action == "logging":
         if nargs < 3:
-            print_help()
-            sys.exit(1)
+            raise ValueError()
         elif argv[2].lower() == "off":
             action = "logging-off"
         elif argv[2].lower() == "on":
             action = "logging-on"
         else:
-            print_help()
-            sys.exit(1)
+            raise ValueError()
 
     if action == "default":
         if nargs < 3:
-            print_help()
-            sys.exit(1)
+            raise ValueError()
         elif argv[2].lower() == "deny":
             action = "default-deny"
         elif argv[2].lower() == "allow":
             action = "default-allow"
         else:
-            print_help()
-            sys.exit(1)
+            raise ValueError()
 
     if action == "allow" or action == "deny" or action == "limit":
         if nargs < 3 or nargs > 12:
-            print_help()
-            sys.exit(1)
+            raise ValueError()
         
         rule = ufw.common.UFWRule(action, "any", "any")
         if remove:
@@ -240,7 +231,7 @@ def process_args(argv):
     return (action, rule, type, dryrun)
 
 
-def print_help():
+def get_command_help():
     '''Print help message'''
     msg = _('''
 Usage: ''') + ufw.common.programName + _(''' COMMAND
@@ -255,7 +246,7 @@ Commands:
   status			show firewall status
   version			display version information
 ''')
-    print (msg)
+    return (msg)
 
 
 class UFWFrontend:
@@ -271,40 +262,43 @@ class UFWFrontend:
 
     def set_enabled(self, enabled):
         '''Toggles ENABLED state in of <config_dir>/ufw/ufw.conf'''
+        res = ""
         try:
             if enabled:
                 if not self.backend._is_enabled():
                     self.backend.set_default(self.backend.files['conf'], \
                                              "ENABLED", "yes")
                 self.backend.start_firewall()
-                print _("Firewall started and enabled on system startup")
+                res = _("Firewall started and enabled on system startup")
             else:
                 if self.backend._is_enabled():
                     self.backend.set_default(self.backend.files['conf'], \
                                              "ENABLED", "no")
                 self.backend.stop_firewall()
-                print _("Firewall stopped and disabled on system startup")
+                res = _("Firewall stopped and disabled on system startup")
         except UFWError, e:
             error(e.value)
 
+        return res
+
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
-        str = ""
+        res = ""
         try:
-            str = self.backend.set_default_policy(policy)
+            res = self.backend.set_default_policy(policy)
             if self.backend._is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
 
-        print str
+        return res
 
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
-        str = ""
+        res = ""
         try:
-            str = self.backend.set_loglevel(level)
+            res = self.backend.set_loglevel(level)
             if self.backend._is_enabled():
                 # have to just restart because of ordering of LOG rules
                 self.backend.stop_firewall()
@@ -312,7 +306,7 @@ class UFWFrontend:
         except UFWError, e:
             error(e.value)
 
-        print str
+        return res
 
     def get_status(self):
         '''Shows status of firewall'''
@@ -321,7 +315,7 @@ class UFWFrontend:
         except UFWError, e:
             error(e.value)
 
-        print out
+        return out
 
     def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
@@ -355,27 +349,31 @@ class UFWFrontend:
         except UFWError, e:
             error(e.value)
 
-        print res
+        return res
 
     def do_action(self, action, rule, ip_version):
         '''Perform action on rule. action, rule and ip_version are usually
-           based on results of process_args().
+           based on return values from parse_command().
         '''
+        res = ""
         if action == "logging-on":
-            self.set_loglevel("on")
+            res = self.set_loglevel("on")
         elif action == "logging-off":
-            self.set_loglevel("off")
+            res = self.set_loglevel("off")
         elif action == "default-allow":
-            self.set_default_policy("allow")
+            res = self.set_default_policy("allow")
         elif action == "default-deny":
-            self.set_default_policy("deny")
+            res = self.set_default_policy("deny")
         elif action == "status":
-            self.get_status()
+            res = self.get_status()
         elif action == "enable":
-            self.set_enabled(True)
+            res = self.set_enabled(True)
         elif action == "disable":
-            self.set_enabled(False)
+            res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
-            self.set_rule(rule, ip_version)
+            res = self.set_rule(rule, ip_version)
         else:
             raise UFWError("Unsupported action '%s'" % (action))
+
+        return res
+

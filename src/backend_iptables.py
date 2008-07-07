@@ -608,7 +608,7 @@ COMMIT
                 for s in self._get_rules_from_formatted(rule.format_rule()):
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
-                        print out
+                        print >> sys.stderr, out
                         UFWError(err_msg)
 
                     # delete the RETURN rule then add it back, so it is at the
@@ -616,11 +616,11 @@ COMMIT
                     if flag == "-A":
                         (rc, out) = cmd([exe, '-D', chain, '-j', 'RETURN'])
                         if rc != 0:
-                            print out
+                            print >> sys.stderr, out
 
                         (rc, out) = cmd([exe, '-A', chain, '-j', 'RETURN'])
                         if rc != 0:
-                            print out
+                            print >> sys.stderr, out
         return rstr
 
 

@@ -48,12 +48,17 @@ if __name__ == "__main__":
     dryrun = False
     try:
         (action, rule, ip_version, dryrun) = \
-            ufw.frontend.process_args(sys.argv)
+            ufw.frontend.parse_command(sys.argv)
+    except ValueError:
+        print ufw.frontend.get_command_help()
+        sys.exit(1)
     except UFWError, e:
         error(e.value)
+    except Exception:
+        raise
 
     if action == "help" or action == "--help":
-        ufw.frontend.print_help()
+        print ufw.frontend.get_command_help()
         sys.exit(0)
     elif action == "version" or action == "--version":
         print ufw.common.programName + " " + version
@@ -68,7 +73,8 @@ if __name__ == "__main__":
         raise
 
     try:
-        ufw.do_action(action, rule, ip_version)
+        res = ufw.do_action(action, rule, ip_version)
+        print res
     except UFWError, e:
         error(e.value)
     except Exception:
