@@ -2,11 +2,8 @@
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT

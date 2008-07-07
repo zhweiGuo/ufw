@@ -317,6 +317,27 @@ COMMIT
                     # and doesn't have ipv6 support
                     warn(err_msg + " ip6tables")
 
+    def _need_reload(self, v6):
+        '''Check if loaded rules are consistent with written rules'''
+        if self.dryrun:
+            return False
+
+        prefix = "ufw"
+        exe = "iptables"
+        if v6:
+            prefix = "ufw6"
+            exe = "ip6tables"
+
+        for chain in [ 'input', 'output', 'forward', 'limit' ]:
+            if v6 and chain == "limit":
+                continue
+
+            (rc, out) = cmd([exe, '-n', '-L', prefix + "-user-" + chain])
+            if rc != 0:
+                return True
+            
+        return False
+
     def _reload_user_rules(self):
         '''Reload firewall rules file'''
         err_msg = _("problem running")
@@ -484,12 +505,19 @@ COMMIT
         else:
             fd = fns['tmp']
 
-        pat_commit = re.compile(r'^### RULES ###')
-        for line in fns['orig']:
-            os.write(fd, line)
-            if pat_commit.match(line):
-                break
+        # Write header
+        os.write(fd, "*filter\n")
+        os.write(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
+        os.write(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
+        os.write(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
 
+        if chain_prefix == "ufw":
+            # Rate limiting only supported with IPv4
+            os.write(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
+
+        os.write(fd, "### RULES ###\n")
+
+        # Write rules
         for r in rules:
             rule_str = "-A " + chain_prefix + "-user-input " + \
                        r.format_rule() + "\n"
@@ -498,13 +526,19 @@ COMMIT
             for s in self._get_rules_from_formatted(rule_str):
                 os.write(fd, s)
 
+        # Write footer
         os.write(fd, "\n### END RULES ###\n")
         os.write(fd, "-A " + chain_prefix + "-user-input -j RETURN\n")
         os.write(fd, "-A " + chain_prefix + "-user-output -j RETURN\n")
         os.write(fd, "-A " + chain_prefix + "-user-forward -j RETURN\n")
 
-        os.write(fd, "-A " + chain_prefix + "-user-limit -m limit --limit 3/minute -j LOG --log-prefix \"[UFW LIMIT]: \"\n")
-        os.write(fd, "-A " + chain_prefix + "-user-limit -j DROP\n")
+        if chain_prefix == "ufw":
+            # Rate limiting only supported with IPv4
+            os.write(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
+                         "--limit 3/minute -j LOG --log-prefix " + \
+                         "\"[UFW LIMIT]: \"\n")
+            os.write(fd, "-A " + chain_prefix + "-user-limit -j DROP\n")
+
         os.write(fd, "COMMIT\n")
 
         if self.dryrun:
@@ -577,7 +611,7 @@ COMMIT
         # Operate on the chains
         if self._is_enabled():
             flag = ""
-            if modified:
+            if modified or self._need_reload(rule.v6):
                 # Reload the chain
                 try:
                     self._reload_user_rules()

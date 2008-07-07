@@ -5,7 +5,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 ::/0 any 2001:db8::/32
@@ -15,8 +14,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -28,7 +25,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::/0 any 2001:db8::/32
@@ -38,8 +34,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -50,15 +44,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -69,7 +60,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 2001:db8:3:4:5:6:7:8 any ::/0
@@ -79,8 +69,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -91,15 +79,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -110,7 +95,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -120,8 +104,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -132,15 +114,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -151,7 +130,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::/0 80 2001:db8::/32
@@ -162,8 +140,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -174,15 +150,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -193,7 +166,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 any ::/0
@@ -204,8 +176,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -216,15 +186,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -235,7 +202,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -246,8 +212,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -258,15 +222,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -277,7 +238,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -288,8 +248,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -300,15 +258,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -319,7 +274,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -330,8 +284,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -342,15 +294,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -361,7 +310,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp any ::/0 80 2001:db8::/32
@@ -371,8 +319,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -383,15 +329,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -402,7 +345,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 any ::/0
@@ -412,8 +354,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -424,15 +364,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -443,7 +380,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -453,8 +389,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -465,15 +399,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -484,7 +415,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -494,8 +424,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -506,15 +434,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -525,7 +450,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -535,8 +459,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -547,15 +469,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -566,7 +485,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp any ::/0 80 2001:db8::/32
@@ -576,8 +494,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -588,15 +504,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -607,7 +520,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 any ::/0
@@ -617,8 +529,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -629,15 +539,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -648,7 +555,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -658,8 +564,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -670,15 +574,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -689,7 +590,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -699,8 +599,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -711,15 +609,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -730,7 +625,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -740,8 +634,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -752,15 +644,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -771,7 +660,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow tcp 25 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
@@ -781,8 +669,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -793,15 +679,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -812,7 +695,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow udp 69 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
@@ -822,8 +704,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -834,15 +714,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -853,7 +730,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any 22 2001:db8:3:4:5:6:7:8 53 2001:db8::/32
@@ -864,8 +740,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -876,15 +750,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -895,7 +766,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any ::/0 any 2001:db8::/32
@@ -905,8 +775,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -917,15 +785,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -936,7 +801,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 2001:db8:3:4:5:6:7:8 any ::/0
@@ -946,8 +810,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -958,15 +820,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -977,7 +836,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -987,8 +845,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -999,15 +855,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1018,7 +871,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any ::/0 80 2001:db8::/32
@@ -1029,8 +881,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1041,15 +891,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1060,7 +907,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 any ::/0
@@ -1071,8 +917,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1083,15 +927,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1102,7 +943,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -1113,8 +953,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1125,15 +963,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1144,7 +979,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -1155,8 +989,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1167,15 +999,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1186,7 +1015,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -1197,8 +1025,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1209,15 +1035,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1228,7 +1051,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp any ::/0 80 2001:db8::/32
@@ -1238,8 +1060,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1250,15 +1070,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1269,7 +1086,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 any ::/0
@@ -1279,8 +1095,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1291,15 +1105,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1310,7 +1121,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -1320,8 +1130,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1332,15 +1140,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1351,7 +1156,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -1361,8 +1165,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1373,15 +1175,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1392,7 +1191,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -1402,8 +1200,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1414,15 +1210,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1433,7 +1226,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp any ::/0 80 2001:db8::/32
@@ -1443,8 +1235,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1455,15 +1245,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1474,7 +1261,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 any ::/0
@@ -1484,8 +1270,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1496,15 +1280,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1515,7 +1296,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -1525,8 +1305,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1537,15 +1315,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1556,7 +1331,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32
@@ -1566,8 +1340,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1578,15 +1350,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1597,7 +1366,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32
@@ -1607,8 +1375,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1619,15 +1385,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1638,7 +1401,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny tcp 25 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
@@ -1648,8 +1410,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1660,15 +1420,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1679,7 +1436,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny udp 69 2001:db8:3:4:5:6:7:8 22 2001:db8::/32
@@ -1689,8 +1445,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1701,15 +1455,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1720,7 +1471,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### deny any 22 2001:db8:3:4:5:6:7:8 53 2001:db8::/32
@@ -1731,8 +1481,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1743,15 +1491,12 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1973,7 +1718,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::1/0 any ::/0
@@ -1983,8 +1727,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -1995,7 +1737,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::1/32 any ::/0
@@ -2005,8 +1746,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -2017,7 +1756,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::1/128 any ::/0
@@ -2027,8 +1765,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -2039,7 +1775,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::/0 any ::1/0
@@ -2049,8 +1784,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -2061,7 +1794,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::/0 any ::1/32
@@ -2071,8 +1803,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -2083,7 +1813,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::/0 any ::1/128
@@ -2093,8 +1822,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
@@ -2105,7 +1832,6 @@ WARN: Checks disabled
 :ufw6-user-input - [0:0]
 :ufw6-user-output - [0:0]
 :ufw6-user-forward - [0:0]
-:ufw6-user-limit - [0:0]
 ### RULES ###
 
 ### tuple ### allow any any ::1/128 any ::1/32
@@ -2115,8 +1841,6 @@ WARN: Checks disabled
 -A ufw6-user-input -j RETURN
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
--A ufw6-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw6-user-limit -j DROP
 COMMIT
 Rules updated (v6)
 
