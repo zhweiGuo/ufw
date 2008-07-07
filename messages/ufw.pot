@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-07-01 15:43+EDT\n"
+"POT-Creation-Date: 2008-07-07 04:48+EDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,228 +63,232 @@ msgstr ""
 msgid "Invalid option"
 msgstr ""
 
-#: src/backend_iptables.py:46
+#: src/backend_iptables.py:47
 msgid "Logging: on"
 msgstr ""
 
-#: src/backend_iptables.py:55
+#: src/backend_iptables.py:56
 msgid "Logging: off"
 msgstr ""
 
-#: src/backend_iptables.py:65
+#: src/backend_iptables.py:67
 msgid "Default:"
 msgstr ""
 
-#: src/backend_iptables.py:85
+#: src/backend_iptables.py:87
 msgid "Unsupported policy '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:88
+#: src/backend_iptables.py:90
 msgid ""
 "Default policy changed to '%s'\n"
 msgstr ""
 
-#: src/backend_iptables.py:89
+#: src/backend_iptables.py:91
 msgid "(be sure to update your rules accordingly)"
 msgstr ""
 
-#: src/backend_iptables.py:126
+#: src/backend_iptables.py:128
 msgid "Logging disabled"
 msgstr ""
 
-#: src/backend_iptables.py:128
+#: src/backend_iptables.py:130
 msgid "Logging enabled"
-msgstr ""
-
-#: src/backend_iptables.py:135
-msgid ""
-"Checking iptables\n"
 msgstr ""
 
 #: src/backend_iptables.py:137
 msgid ""
+"Checking iptables\n"
+msgstr ""
+
+#: src/backend_iptables.py:139
+msgid ""
 "Checking ip6tables\n"
 msgstr ""
 
-#: src/backend_iptables.py:143
+#: src/backend_iptables.py:145
 msgid "Status: not loaded"
 msgstr ""
 
-#: src/backend_iptables.py:145 src/backend_iptables.py:254
-#: src/backend_iptables.py:291 src/backend_iptables.py:320
+#: src/backend_iptables.py:147 src/backend_iptables.py:256
+#: src/backend_iptables.py:293 src/backend_iptables.py:322
 msgid "problem running"
 msgstr ""
 
-#: src/backend_iptables.py:160
+#: src/backend_iptables.py:162
 msgid "Status: loaded"
 msgstr ""
 
-#: src/backend_iptables.py:221
+#: src/backend_iptables.py:223
 msgid "Action"
 msgstr ""
 
-#: src/backend_iptables.py:221
+#: src/backend_iptables.py:223
 msgid "From"
 msgstr ""
 
-#: src/backend_iptables.py:221
+#: src/backend_iptables.py:223
 msgid "To"
 msgstr ""
 
-#: src/backend_iptables.py:222
+#: src/backend_iptables.py:224
 msgid "--"
 msgstr ""
 
-#: src/backend_iptables.py:222
+#: src/backend_iptables.py:224
 msgid "----"
 msgstr ""
 
-#: src/backend_iptables.py:222
+#: src/backend_iptables.py:224
 msgid "------"
 msgstr ""
 
-#: src/backend_iptables.py:227
+#: src/backend_iptables.py:229
 msgid ""
 "Status: loaded\n"
 "%s\n"
 "%s%s"
 msgstr ""
 
-#: src/backend_iptables.py:293
+#: src/backend_iptables.py:295
 msgid "running initscript"
 msgstr ""
 
-#: src/backend_iptables.py:362 src/backend_iptables.py:395
+#: src/backend_iptables.py:373 src/backend_iptables.py:408
 msgid "Couldn't parse line '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:433
+#: src/backend_iptables.py:446
 msgid "Skipping malformed tuple (bad length): %s"
 msgstr ""
 
-#: src/backend_iptables.py:446
+#: src/backend_iptables.py:459
 msgid "Skipping malformed tuple: %s"
 msgstr ""
 
-#: src/backend_iptables.py:507
+#: src/backend_iptables.py:524
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
 msgstr ""
 
-#: src/backend_iptables.py:550
+#: src/backend_iptables.py:528
+msgid "Skipping unsupported IPv6 '%s' rule"
+msgstr ""
+
+#: src/backend_iptables.py:570
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:553
+#: src/backend_iptables.py:573
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:555
+#: src/backend_iptables.py:575
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:566
+#: src/backend_iptables.py:586
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:569
+#: src/backend_iptables.py:589
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:572
+#: src/backend_iptables.py:592
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:583
+#: src/backend_iptables.py:603
 msgid "Could not update running firewall"
 msgstr ""
 
-#: src/common.py:92
+#: src/common.py:97
 msgid "Bad port '%s'"
 msgstr ""
 
-#: src/common.py:116
+#: src/common.py:121
 msgid "Unsupported protocol '%s'"
 msgstr ""
 
-#: src/common.py:145
+#: src/common.py:150
 msgid "Bad source address"
 msgstr ""
 
-#: src/common.py:156
+#: src/common.py:161
 msgid "Bad destination address"
 msgstr ""
 
-#: src/common.py:168
+#: src/common.py:173
 msgid "No match"
 msgstr ""
 
-#: src/common.py:189
+#: src/common.py:194
 msgid "Found exact match"
 msgstr ""
 
-#: src/common.py:192
-msgid "Found opposite match"
+#: src/common.py:197
+msgid "Found non-action match"
 msgstr ""
 
-#: src/frontend.py:103
+#: src/frontend.py:107
 msgid "Bad port"
 msgstr ""
 
-#: src/frontend.py:106
+#: src/frontend.py:110
 msgid "Wrong number of arguments"
 msgstr ""
 
-#: src/frontend.py:109
+#: src/frontend.py:113
 msgid "Need 'to' or 'from' clause"
 msgstr ""
 
-#: src/frontend.py:120
+#: src/frontend.py:124
 msgid "Improper rule syntax"
 msgstr ""
 
-#: src/frontend.py:127
+#: src/frontend.py:131
 msgid "Invalid token '%s'"
 msgstr ""
 
-#: src/frontend.py:136
+#: src/frontend.py:140
 msgid "Invalid 'proto' clause"
 msgstr ""
 
-#: src/frontend.py:155
+#: src/frontend.py:159
 msgid "Invalid 'from' clause"
 msgstr ""
 
-#: src/frontend.py:174
+#: src/frontend.py:178
 msgid "Invalid 'to' clause"
 msgstr ""
 
-#: src/frontend.py:179
+#: src/frontend.py:183
 msgid "Need 'from' or 'to' with 'port'"
 msgstr ""
 
-#: src/frontend.py:194
+#: src/frontend.py:198
 msgid "Invalid 'port' clause"
 msgstr ""
 
-#: src/frontend.py:203
+#: src/frontend.py:207
 msgid "Mixed IP versions for 'from' and 'to'"
 msgstr ""
 
-#: src/frontend.py:225
+#: src/frontend.py:229
 msgid "Protocol mismatch (from/to)"
 msgstr ""
 
-#: src/frontend.py:232
+#: src/frontend.py:236
 msgid "Protocol mismatch with specified protocol %s"
 msgstr ""
 
-#: src/frontend.py:241
+#: src/frontend.py:245
 msgid ""
 "\n"
 "Usage: "
 msgstr ""
 
-#: src/frontend.py:242
+#: src/frontend.py:246
 msgid ""
 " COMMAND\n"
 "\n"
@@ -299,23 +303,23 @@ msgid ""
 "  version\t\t\tdisplay version information\n"
 msgstr ""
 
-#: src/frontend.py:270
+#: src/frontend.py:280
 msgid "Firewall started and enabled on system startup"
 msgstr ""
 
-#: src/frontend.py:276
+#: src/frontend.py:286
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
 
-#: src/frontend.py:333 src/frontend.py:343
-msgid "Invalid type '%s'"
+#: src/frontend.py:343 src/frontend.py:353
+msgid "Invalid IP version '%s'"
 msgstr ""
 
-#: src/frontend.py:340
+#: src/frontend.py:350
 msgid "IPv6 support not enabled"
 msgstr ""
 
-#: src/ufw:43
+#: src/ufw:42
 msgid ""
 ": Need at least python 2.5)\n"
 msgstr ""
