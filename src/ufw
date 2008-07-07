@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# ufw: front-end for Linux firewalling
+# ufw: front-end for Linux firewalling (cli)
 #
 # Copyright (C) 2008 Canonical Ltd.
 #
@@ -24,7 +24,6 @@ import sys
 import ufw.frontend
 from ufw.common import UFWError
 from ufw.util import error
-from ufw.backend_iptables import UFWBackendIptables
 
 import gettext
 gettext.install(ufw.common.programName)
@@ -48,7 +47,8 @@ if __name__ == "__main__":
     rule = ""
     dryrun = False
     try:
-        (action, rule, type, dryrun) = ufw.frontend.process_args(sys.argv)
+        (action, rule, ip_version, dryrun) = \
+            ufw.frontend.process_args(sys.argv)
     except UFWError, e:
         error(e.value)
 
@@ -61,28 +61,18 @@ if __name__ == "__main__":
         sys.exit(0)
 
     try:
-        ufw = ufw.frontend.UFWFrontend(UFWBackendIptables(dryrun))
+        ufw = ufw.frontend.UFWFrontend(dryrun)
     except UFWError, e:
         error(e.value)
     except Exception:
         raise
 
-    if action == "logging-on":
-        ufw.set_loglevel("on")
-    elif action == "logging-off":
-        ufw.set_loglevel("off")
-    elif action == "default-allow":
-        ufw.set_default_policy("allow")
-    elif action == "default-deny":
-        ufw.set_default_policy("deny")
-    elif action == "status":
-        ufw.get_status()
-    elif action == "enable":
-        ufw.set_enabled(True)
-    elif action == "disable":
-        ufw.set_enabled(False)
-    elif action == "allow" or action == "deny" or action == "limit":
-        ufw.set_rule(rule, type)
+    try:
+        ufw.do_action(action, rule, ip_version)
+    except UFWError, e:
+        error(e.value)
+    except Exception:
+        raise
 
     sys.exit(0)
 

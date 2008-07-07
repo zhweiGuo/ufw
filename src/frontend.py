@@ -22,9 +22,12 @@ import sys
 from ufw.common import UFWError
 import ufw.util
 from ufw.util import error
+from ufw.backend_iptables import UFWBackendIptables
 
 def process_args(argv):
-    '''Process command line arguments'''
+    '''Process command line arguments. Returns tuple for action, rule,
+       ip_version and dryrun.
+    '''
     action = ""
     rule = ""
     type = ""
@@ -257,8 +260,14 @@ Commands:
 
 class UFWFrontend:
     '''UI'''
-    def __init__(self, be):
-        self.backend = be
+    def __init__(self, dryrun, backend_type="iptables"):
+        if backend_type == "iptables":
+            try:
+                self.backend = UFWBackendIptables(dryrun)
+            except:
+                raise
+        else:
+            raise UFWError("Unsupported backend type '%s'" % (backend_type))
 
     def set_enabled(self, enabled):
         '''Toggles ENABLED state in of <config_dir>/ufw/ufw.conf'''
@@ -314,37 +323,59 @@ class UFWFrontend:
 
         print out
 
-    def set_rule(self, rule, type):
+    def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
         res = ""
         try:
             if self.backend.use_ipv6():
-                if type == "v4":
+                if ip_version == "v4":
                     rule.set_v6(False)
                     res = self.backend.set_rule(rule)
-                elif type == "v6":
+                elif ip_version == "v6":
                     rule.set_v6(True)
                     res = self.backend.set_rule(rule)
-                elif type == "both":
+                elif ip_version == "both":
                     rule.set_v6(False)
                     res = self.backend.set_rule(rule)
                     rule.set_v6(True)
                     res += "\n" + str(self.backend.set_rule(rule))
                 else:
-                    err_msg = _("Invalid type '%s'") % (type)
+                    err_msg = _("Invalid IP version '%s'") % (ip_version)
                     raise UFWError(err_msg)
             else:
-                if type == "v4" or type == "both":
+                if ip_version == "v4" or ip_version == "both":
                     rule.set_v6(False)
                     res = self.backend.set_rule(rule)
-                elif type == "v6":
+                elif ip_version == "v6":
                     err_msg = _("IPv6 support not enabled")
                     raise UFWError(err_msg)
                 else:
-                    err_msg = _("Invalid type '%s'") % (type)
+                    err_msg = _("Invalid IP version '%s'") % (ip_version)
                     raise UFWError(err_msg)
         except UFWError, e:
             error(e.value)
 
         print res
 
+    def do_action(self, action, rule, ip_version):
+        '''Perform action on rule. action, rule and ip_version are usually
+           based on results of process_args().
+        '''
+        if action == "logging-on":
+            self.set_loglevel("on")
+        elif action == "logging-off":
+            self.set_loglevel("off")
+        elif action == "default-allow":
+            self.set_default_policy("allow")
+        elif action == "default-deny":
+            self.set_default_policy("deny")
+        elif action == "status":
+            self.get_status()
+        elif action == "enable":
+            self.set_enabled(True)
+        elif action == "disable":
+            self.set_enabled(False)
+        elif action == "allow" or action == "deny" or action == "limit":
+            self.set_rule(rule, ip_version)
+        else:
+            raise UFWError("Unsupported action '%s'" % (action))
