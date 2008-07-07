@@ -334,6 +334,7 @@ COMMIT
 
             (rc, out) = cmd([exe, '-n', '-L', prefix + "-user-" + chain])
             if rc != 0:
+                debug("_need_reload: forcing reload")
                 return True
             
         return False
