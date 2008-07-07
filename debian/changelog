@@ -1,4 +1,4 @@
-ufw (0.18) UNRELEASED; urgency=low
+ufw (0.18) intrepid; urgency=low
 
   * bump version
   * src/ufw: make reusable

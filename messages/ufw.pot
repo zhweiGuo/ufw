@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-07-07 04:48+EDT\n"
+"POT-Creation-Date: 2008-07-07 15:54+EDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,7 @@ msgid "Status: not loaded"
 msgstr ""
 
 #: src/backend_iptables.py:147 src/backend_iptables.py:256
-#: src/backend_iptables.py:293 src/backend_iptables.py:322
+#: src/backend_iptables.py:293 src/backend_iptables.py:344
 msgid "problem running"
 msgstr ""
 
@@ -154,51 +154,51 @@ msgstr ""
 msgid "running initscript"
 msgstr ""
 
-#: src/backend_iptables.py:373 src/backend_iptables.py:408
+#: src/backend_iptables.py:400 src/backend_iptables.py:435
 msgid "Couldn't parse line '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:446
+#: src/backend_iptables.py:473
 msgid "Skipping malformed tuple (bad length): %s"
 msgstr ""
 
-#: src/backend_iptables.py:459
+#: src/backend_iptables.py:486
 msgid "Skipping malformed tuple: %s"
 msgstr ""
 
-#: src/backend_iptables.py:524
+#: src/backend_iptables.py:566
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
 msgstr ""
 
-#: src/backend_iptables.py:528
+#: src/backend_iptables.py:570
 msgid "Skipping unsupported IPv6 '%s' rule"
 msgstr ""
 
-#: src/backend_iptables.py:570
+#: src/backend_iptables.py:612
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:573
+#: src/backend_iptables.py:615
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:575
+#: src/backend_iptables.py:617
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:586
+#: src/backend_iptables.py:628
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:589
+#: src/backend_iptables.py:631
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:592
+#: src/backend_iptables.py:634
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:603
+#: src/backend_iptables.py:646
 msgid "Could not update running firewall"
 msgstr ""
 
@@ -230,65 +230,65 @@ msgstr ""
 msgid "Found non-action match"
 msgstr ""
 
-#: src/frontend.py:107
+#: src/frontend.py:98
 msgid "Bad port"
 msgstr ""
 
-#: src/frontend.py:110
+#: src/frontend.py:101
 msgid "Wrong number of arguments"
 msgstr ""
 
-#: src/frontend.py:113
+#: src/frontend.py:104
 msgid "Need 'to' or 'from' clause"
 msgstr ""
 
-#: src/frontend.py:124
+#: src/frontend.py:115
 msgid "Improper rule syntax"
 msgstr ""
 
-#: src/frontend.py:131
+#: src/frontend.py:122
 msgid "Invalid token '%s'"
 msgstr ""
 
-#: src/frontend.py:140
+#: src/frontend.py:131
 msgid "Invalid 'proto' clause"
 msgstr ""
 
-#: src/frontend.py:159
+#: src/frontend.py:150
 msgid "Invalid 'from' clause"
 msgstr ""
 
-#: src/frontend.py:178
+#: src/frontend.py:169
 msgid "Invalid 'to' clause"
 msgstr ""
 
-#: src/frontend.py:183
+#: src/frontend.py:174
 msgid "Need 'from' or 'to' with 'port'"
 msgstr ""
 
-#: src/frontend.py:198
+#: src/frontend.py:189
 msgid "Invalid 'port' clause"
 msgstr ""
 
-#: src/frontend.py:207
+#: src/frontend.py:198
 msgid "Mixed IP versions for 'from' and 'to'"
 msgstr ""
 
-#: src/frontend.py:229
+#: src/frontend.py:220
 msgid "Protocol mismatch (from/to)"
 msgstr ""
 
-#: src/frontend.py:236
+#: src/frontend.py:227
 msgid "Protocol mismatch with specified protocol %s"
 msgstr ""
 
-#: src/frontend.py:245
+#: src/frontend.py:236
 msgid ""
 "\n"
 "Usage: "
 msgstr ""
 
-#: src/frontend.py:246
+#: src/frontend.py:237
 msgid ""
 " COMMAND\n"
 "\n"
@@ -303,19 +303,19 @@ msgid ""
 "  version\t\t\tdisplay version information\n"
 msgstr ""
 
-#: src/frontend.py:280
+#: src/frontend.py:272
 msgid "Firewall started and enabled on system startup"
 msgstr ""
 
-#: src/frontend.py:286
+#: src/frontend.py:278
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
 
-#: src/frontend.py:343 src/frontend.py:353
+#: src/frontend.py:337 src/frontend.py:347
 msgid "Invalid IP version '%s'"
 msgstr ""
 
-#: src/frontend.py:350
+#: src/frontend.py:344
 msgid "IPv6 support not enabled"
 msgstr ""
 
