@@ -378,7 +378,9 @@ COMMIT
             if pat_limit.search(s):
                 tmp1 = pat_limit.sub(' -m state --state NEW -m recent --set', s)
                 tmp2 = pat_limit.sub(' -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit', s)
-                snippets[i] = tmp2
+                tmp3 = pat_limit.sub(' -j ACCEPT', s)
+                snippets[i] = tmp3
+                snippets.insert(i, tmp2)
                 snippets.insert(i, tmp1)
 
         return snippets
