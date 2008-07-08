@@ -23,6 +23,9 @@
 -A ufw-after-input -p udp --dport 67 -j RETURN
 -A ufw-after-input -p udp --dport 68 -j RETURN
 
+# don't log noisy broadcast
+-A ufw-after-input -m addrtype --dst-type BROADCAST -j RETURN
+
 # catchall for logging
 -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "

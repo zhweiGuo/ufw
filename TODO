@@ -10,5 +10,7 @@ Package integration
 
 Support port ranges
 
+Default allow logging messages aren't correct in after*.rules
+
 
 (C) 2008 Canonical Ltd.
