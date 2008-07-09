@@ -76,4 +76,20 @@ do_cmd "0" --dry-run allow from ::1/32
 do_cmd "0" --dry-run allow from ::1/128
 do_cmd "0" --dry-run allow from ::1/32 to ::1/16
 
+echo "Netmasks (CIDR)" >> $TESTTMP/result
+for i in $(seq 0 32); do
+    do_cmd "0" null --dry-run allow to 192.168.0.1/$i
+    do_cmd "0" null --dry-run allow from 192.168.0.1/$i
+    do_cmd "0" null --dry-run allow from 192.168.0.1/$i to 192.168.0.2/$i
+done
+
+echo "TESTING VALID DOTTED" >> $TESTTMP/result
+for i in $(seq 0 16 255); do
+    do_cmd "0" null --dry-run allow from 10.0.0.1/255.255.255.$i
+    do_cmd "0" null --dry-run allow from 10.0.0.1/255.255.$i.255
+    do_cmd "0" null --dry-run allow from 10.0.0.1/255.$i.255.255
+    do_cmd "0" null --dry-run allow from 10.0.0.1/$i.255.255.255
+    do_cmd "0" null --dry-run allow from 10.0.0.1/$i.$i.$i.$i
+done
+
 exit 0

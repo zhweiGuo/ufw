@@ -1,6 +1,11 @@
 ufw (0.19) UNRELEASED; urgency=low
 
   * bump version
+  * don't modify the chains when --dry-run is specified
+  * add dotted netmask support
+  * don't have util.py import common.py
+  * normalize rules so user can specify CIDR or dotted netmasks when adding
+    or deleting
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jul 2008 16:22:45 -0400
 

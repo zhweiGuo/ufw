@@ -1284,8 +1284,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.1/32 any 0.0.0.0/0
--A ufw-user-input -d 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0
+-A ufw-user-input -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -1356,8 +1356,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1/32
--A ufw-user-input -s 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
+-A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -1380,8 +1380,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.2/32 any 192.168.0.1/32
--A ufw-user-input -d 192.168.0.2/32 -s 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 192.168.0.2 any 192.168.0.1
+-A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -1440,8 +1440,8 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1/128 any ::/0
--A ufw6-user-input -d ::1/128 -j ACCEPT
+### tuple ### allow any any ::1 any ::/0
+-A ufw6-user-input -d ::1 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1497,8 +1497,8 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::/0 any ::1/128
--A ufw6-user-input -s ::1/128 -j ACCEPT
+### tuple ### allow any any ::/0 any ::1
+-A ufw6-user-input -s ::1 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1525,5 +1525,544 @@ WARN: Checks disabled
 -A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
+
+
+Netmasks (CIDR)
+50: --dry-run allow to 192.168.0.1/0
+
+
+51: --dry-run allow from 192.168.0.1/0
+
+
+52: --dry-run allow from 192.168.0.1/0 to 192.168.0.2/0
+
+
+53: --dry-run allow to 192.168.0.1/1
+
+
+54: --dry-run allow from 192.168.0.1/1
+
+
+55: --dry-run allow from 192.168.0.1/1 to 192.168.0.2/1
+
+
+56: --dry-run allow to 192.168.0.1/2
+
+
+57: --dry-run allow from 192.168.0.1/2
+
+
+58: --dry-run allow from 192.168.0.1/2 to 192.168.0.2/2
+
+
+59: --dry-run allow to 192.168.0.1/3
+
+
+60: --dry-run allow from 192.168.0.1/3
+
+
+61: --dry-run allow from 192.168.0.1/3 to 192.168.0.2/3
+
+
+62: --dry-run allow to 192.168.0.1/4
+
+
+63: --dry-run allow from 192.168.0.1/4
+
+
+64: --dry-run allow from 192.168.0.1/4 to 192.168.0.2/4
+
+
+65: --dry-run allow to 192.168.0.1/5
+
+
+66: --dry-run allow from 192.168.0.1/5
+
+
+67: --dry-run allow from 192.168.0.1/5 to 192.168.0.2/5
+
+
+68: --dry-run allow to 192.168.0.1/6
+
+
+69: --dry-run allow from 192.168.0.1/6
+
+
+70: --dry-run allow from 192.168.0.1/6 to 192.168.0.2/6
+
+
+71: --dry-run allow to 192.168.0.1/7
+
+
+72: --dry-run allow from 192.168.0.1/7
+
+
+73: --dry-run allow from 192.168.0.1/7 to 192.168.0.2/7
+
+
+74: --dry-run allow to 192.168.0.1/8
+
+
+75: --dry-run allow from 192.168.0.1/8
+
+
+76: --dry-run allow from 192.168.0.1/8 to 192.168.0.2/8
+
+
+77: --dry-run allow to 192.168.0.1/9
+
+
+78: --dry-run allow from 192.168.0.1/9
+
+
+79: --dry-run allow from 192.168.0.1/9 to 192.168.0.2/9
+
+
+80: --dry-run allow to 192.168.0.1/10
+
+
+81: --dry-run allow from 192.168.0.1/10
+
+
+82: --dry-run allow from 192.168.0.1/10 to 192.168.0.2/10
+
+
+83: --dry-run allow to 192.168.0.1/11
+
+
+84: --dry-run allow from 192.168.0.1/11
+
+
+85: --dry-run allow from 192.168.0.1/11 to 192.168.0.2/11
+
+
+86: --dry-run allow to 192.168.0.1/12
+
+
+87: --dry-run allow from 192.168.0.1/12
+
+
+88: --dry-run allow from 192.168.0.1/12 to 192.168.0.2/12
+
+
+89: --dry-run allow to 192.168.0.1/13
+
+
+90: --dry-run allow from 192.168.0.1/13
+
+
+91: --dry-run allow from 192.168.0.1/13 to 192.168.0.2/13
+
+
+92: --dry-run allow to 192.168.0.1/14
+
+
+93: --dry-run allow from 192.168.0.1/14
+
+
+94: --dry-run allow from 192.168.0.1/14 to 192.168.0.2/14
+
+
+95: --dry-run allow to 192.168.0.1/15
+
+
+96: --dry-run allow from 192.168.0.1/15
+
+
+97: --dry-run allow from 192.168.0.1/15 to 192.168.0.2/15
+
+
+98: --dry-run allow to 192.168.0.1/16
+
+
+99: --dry-run allow from 192.168.0.1/16
+
+
+100: --dry-run allow from 192.168.0.1/16 to 192.168.0.2/16
+
+
+101: --dry-run allow to 192.168.0.1/17
+
+
+102: --dry-run allow from 192.168.0.1/17
+
+
+103: --dry-run allow from 192.168.0.1/17 to 192.168.0.2/17
+
+
+104: --dry-run allow to 192.168.0.1/18
+
+
+105: --dry-run allow from 192.168.0.1/18
+
+
+106: --dry-run allow from 192.168.0.1/18 to 192.168.0.2/18
+
+
+107: --dry-run allow to 192.168.0.1/19
+
+
+108: --dry-run allow from 192.168.0.1/19
+
+
+109: --dry-run allow from 192.168.0.1/19 to 192.168.0.2/19
+
+
+110: --dry-run allow to 192.168.0.1/20
+
+
+111: --dry-run allow from 192.168.0.1/20
+
+
+112: --dry-run allow from 192.168.0.1/20 to 192.168.0.2/20
+
+
+113: --dry-run allow to 192.168.0.1/21
+
+
+114: --dry-run allow from 192.168.0.1/21
+
+
+115: --dry-run allow from 192.168.0.1/21 to 192.168.0.2/21
+
+
+116: --dry-run allow to 192.168.0.1/22
+
+
+117: --dry-run allow from 192.168.0.1/22
+
+
+118: --dry-run allow from 192.168.0.1/22 to 192.168.0.2/22
+
+
+119: --dry-run allow to 192.168.0.1/23
+
+
+120: --dry-run allow from 192.168.0.1/23
+
+
+121: --dry-run allow from 192.168.0.1/23 to 192.168.0.2/23
+
+
+122: --dry-run allow to 192.168.0.1/24
+
+
+123: --dry-run allow from 192.168.0.1/24
+
+
+124: --dry-run allow from 192.168.0.1/24 to 192.168.0.2/24
+
+
+125: --dry-run allow to 192.168.0.1/25
+
+
+126: --dry-run allow from 192.168.0.1/25
+
+
+127: --dry-run allow from 192.168.0.1/25 to 192.168.0.2/25
+
+
+128: --dry-run allow to 192.168.0.1/26
+
+
+129: --dry-run allow from 192.168.0.1/26
+
+
+130: --dry-run allow from 192.168.0.1/26 to 192.168.0.2/26
+
+
+131: --dry-run allow to 192.168.0.1/27
+
+
+132: --dry-run allow from 192.168.0.1/27
+
+
+133: --dry-run allow from 192.168.0.1/27 to 192.168.0.2/27
+
+
+134: --dry-run allow to 192.168.0.1/28
+
+
+135: --dry-run allow from 192.168.0.1/28
+
+
+136: --dry-run allow from 192.168.0.1/28 to 192.168.0.2/28
+
+
+137: --dry-run allow to 192.168.0.1/29
+
+
+138: --dry-run allow from 192.168.0.1/29
+
+
+139: --dry-run allow from 192.168.0.1/29 to 192.168.0.2/29
+
+
+140: --dry-run allow to 192.168.0.1/30
+
+
+141: --dry-run allow from 192.168.0.1/30
+
+
+142: --dry-run allow from 192.168.0.1/30 to 192.168.0.2/30
+
+
+143: --dry-run allow to 192.168.0.1/31
+
+
+144: --dry-run allow from 192.168.0.1/31
+
+
+145: --dry-run allow from 192.168.0.1/31 to 192.168.0.2/31
+
+
+146: --dry-run allow to 192.168.0.1/32
+
+
+147: --dry-run allow from 192.168.0.1/32
+
+
+148: --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
+
+
+TESTING VALID DOTTED
+149: --dry-run allow from 10.0.0.1/255.255.255.0
+
+
+150: --dry-run allow from 10.0.0.1/255.255.0.255
+
+
+151: --dry-run allow from 10.0.0.1/255.0.255.255
+
+
+152: --dry-run allow from 10.0.0.1/0.255.255.255
+
+
+153: --dry-run allow from 10.0.0.1/0.0.0.0
+
+
+154: --dry-run allow from 10.0.0.1/255.255.255.16
+
+
+155: --dry-run allow from 10.0.0.1/255.255.16.255
+
+
+156: --dry-run allow from 10.0.0.1/255.16.255.255
+
+
+157: --dry-run allow from 10.0.0.1/16.255.255.255
+
+
+158: --dry-run allow from 10.0.0.1/16.16.16.16
+
+
+159: --dry-run allow from 10.0.0.1/255.255.255.32
+
+
+160: --dry-run allow from 10.0.0.1/255.255.32.255
+
+
+161: --dry-run allow from 10.0.0.1/255.32.255.255
+
+
+162: --dry-run allow from 10.0.0.1/32.255.255.255
+
+
+163: --dry-run allow from 10.0.0.1/32.32.32.32
+
+
+164: --dry-run allow from 10.0.0.1/255.255.255.48
+
+
+165: --dry-run allow from 10.0.0.1/255.255.48.255
+
+
+166: --dry-run allow from 10.0.0.1/255.48.255.255
+
+
+167: --dry-run allow from 10.0.0.1/48.255.255.255
+
+
+168: --dry-run allow from 10.0.0.1/48.48.48.48
+
+
+169: --dry-run allow from 10.0.0.1/255.255.255.64
+
+
+170: --dry-run allow from 10.0.0.1/255.255.64.255
+
+
+171: --dry-run allow from 10.0.0.1/255.64.255.255
+
+
+172: --dry-run allow from 10.0.0.1/64.255.255.255
+
+
+173: --dry-run allow from 10.0.0.1/64.64.64.64
+
+
+174: --dry-run allow from 10.0.0.1/255.255.255.80
+
+
+175: --dry-run allow from 10.0.0.1/255.255.80.255
+
+
+176: --dry-run allow from 10.0.0.1/255.80.255.255
+
+
+177: --dry-run allow from 10.0.0.1/80.255.255.255
+
+
+178: --dry-run allow from 10.0.0.1/80.80.80.80
+
+
+179: --dry-run allow from 10.0.0.1/255.255.255.96
+
+
+180: --dry-run allow from 10.0.0.1/255.255.96.255
+
+
+181: --dry-run allow from 10.0.0.1/255.96.255.255
+
+
+182: --dry-run allow from 10.0.0.1/96.255.255.255
+
+
+183: --dry-run allow from 10.0.0.1/96.96.96.96
+
+
+184: --dry-run allow from 10.0.0.1/255.255.255.112
+
+
+185: --dry-run allow from 10.0.0.1/255.255.112.255
+
+
+186: --dry-run allow from 10.0.0.1/255.112.255.255
+
+
+187: --dry-run allow from 10.0.0.1/112.255.255.255
+
+
+188: --dry-run allow from 10.0.0.1/112.112.112.112
+
+
+189: --dry-run allow from 10.0.0.1/255.255.255.128
+
+
+190: --dry-run allow from 10.0.0.1/255.255.128.255
+
+
+191: --dry-run allow from 10.0.0.1/255.128.255.255
+
+
+192: --dry-run allow from 10.0.0.1/128.255.255.255
+
+
+193: --dry-run allow from 10.0.0.1/128.128.128.128
+
+
+194: --dry-run allow from 10.0.0.1/255.255.255.144
+
+
+195: --dry-run allow from 10.0.0.1/255.255.144.255
+
+
+196: --dry-run allow from 10.0.0.1/255.144.255.255
+
+
+197: --dry-run allow from 10.0.0.1/144.255.255.255
+
+
+198: --dry-run allow from 10.0.0.1/144.144.144.144
+
+
+199: --dry-run allow from 10.0.0.1/255.255.255.160
+
+
+200: --dry-run allow from 10.0.0.1/255.255.160.255
+
+
+201: --dry-run allow from 10.0.0.1/255.160.255.255
+
+
+202: --dry-run allow from 10.0.0.1/160.255.255.255
+
+
+203: --dry-run allow from 10.0.0.1/160.160.160.160
+
+
+204: --dry-run allow from 10.0.0.1/255.255.255.176
+
+
+205: --dry-run allow from 10.0.0.1/255.255.176.255
+
+
+206: --dry-run allow from 10.0.0.1/255.176.255.255
+
+
+207: --dry-run allow from 10.0.0.1/176.255.255.255
+
+
+208: --dry-run allow from 10.0.0.1/176.176.176.176
+
+
+209: --dry-run allow from 10.0.0.1/255.255.255.192
+
+
+210: --dry-run allow from 10.0.0.1/255.255.192.255
+
+
+211: --dry-run allow from 10.0.0.1/255.192.255.255
+
+
+212: --dry-run allow from 10.0.0.1/192.255.255.255
+
+
+213: --dry-run allow from 10.0.0.1/192.192.192.192
+
+
+214: --dry-run allow from 10.0.0.1/255.255.255.208
+
+
+215: --dry-run allow from 10.0.0.1/255.255.208.255
+
+
+216: --dry-run allow from 10.0.0.1/255.208.255.255
+
+
+217: --dry-run allow from 10.0.0.1/208.255.255.255
+
+
+218: --dry-run allow from 10.0.0.1/208.208.208.208
+
+
+219: --dry-run allow from 10.0.0.1/255.255.255.224
+
+
+220: --dry-run allow from 10.0.0.1/255.255.224.255
+
+
+221: --dry-run allow from 10.0.0.1/255.224.255.255
+
+
+222: --dry-run allow from 10.0.0.1/224.255.255.255
+
+
+223: --dry-run allow from 10.0.0.1/224.224.224.224
+
+
+224: --dry-run allow from 10.0.0.1/255.255.255.240
+
+
+225: --dry-run allow from 10.0.0.1/255.255.240.255
+
+
+226: --dry-run allow from 10.0.0.1/255.240.255.255
+
+
+227: --dry-run allow from 10.0.0.1/240.255.255.255
+
+
+228: --dry-run allow from 10.0.0.1/240.240.240.240
 
 

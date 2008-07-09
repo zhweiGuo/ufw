@@ -20,14 +20,13 @@ import os
 import re
 import shutil
 import socket
+import struct
 import subprocess
 import sys
 from tempfile import mkstemp
 
-# only needed for UFWError
-import ufw.common
-
 debugging = False
+
 
 def get_services_proto(port):
     '''Get the protocol for a specified port from /etc/services'''
@@ -54,6 +53,7 @@ def get_services_proto(port):
 
     return proto
 
+
 def parse_port_proto(str):
     '''Parse port or port and protocol'''
     port = ""
@@ -66,14 +66,54 @@ def parse_port_proto(str):
         port = tmp[0]
         proto = tmp[1]
     else:
-        err_msg = _("Bad port/protocol")
-        raise common.UFWError(err_msg)
+        raise ValueError
     return (port, proto)
 
 
-def valid_address(addr, v6=False):
+def valid_cidr_netmask(nm, v6):
+    '''Verifies cidr netmasks'''
+    num = 32
+    if v6:
+        num = 128
+
+    if not re.match(r'^[0-9]+$', nm) or int(nm) < 0 or int(nm) > num:
+        return False
+
+    return True
+
+
+def valid_dotted_quads(nm, v6):
+    '''Verfies dotted quad ip addresses and netmasks'''
+    if v6:
+        return False
+    else:
+        if re.match(r'^[0-9]+\.[0-9\.]+$', nm):
+            quads = re.split('\.', nm)
+            if len(quads) != 4:
+                return False
+            for q in quads:
+                if not q or int(q) < 0 or int(q) > 255:
+                    return False
+        else:
+            return False
+
+    return True
+
+
+def valid_netmask(nm, v6):
+    '''Verfies if valid cidr or dotted netmask'''
+    return valid_cidr_netmask(nm, v6) or valid_dotted_quads(nm, v6)
+
+
+#
+# valid_address()
+#    version="6" tests if a valid IPv6 address
+#    version="4" tests if a valid IPv4 address
+#    version="any" tests if a valid IP address (IPv4 or IPv6)
+#
+def valid_address(addr, version="any"):
     '''Validate IP addresses'''
-    if v6 and not socket.has_ipv6:
+    if version == "6" and not socket.has_ipv6:
         warn_msg = _("python does not have IPv6 support.")
         warn(warn_msg)
         return False
@@ -83,40 +123,149 @@ def valid_address(addr, v6=False):
         return False
 
     net = addr.split('/')
+    is_ipv6 = False
+    try:
+        if version == "6":
+            socket.inet_pton(socket.AF_INET6, net[0])
+            is_ipv6 = True
+        elif version == "4":
+            socket.inet_pton(socket.AF_INET, net[0])
+            if not valid_dotted_quads(net[0], False):
+                return False
+    except:
+        return False
 
+    if version == "any":
+        try:
+            socket.inet_pton(socket.AF_INET, net[0])
+            if not valid_dotted_quads(net[0], False):
+                return False
+        except:
+            if socket.has_ipv6:
+                try:
+                    socket.inet_pton(socket.AF_INET6, net[0])
+                    is_ipv6 = True
+                except:
+                    return False
+            else:
+                return False
+    
     if len(net) > 2:
         return False
     elif len(net) == 2:
         # Check netmask specified via '/'
-
-        if not re.match(r'^[0-9]+$', net[1]):
-            # Only allow integer netmasks
+        if not valid_netmask(net[1], is_ipv6):
             return False
 
-        if v6:
-            if int(net[1]) < 0 or int(net[1]) > 128:
-                return False
-        else:
-            if int(net[1]) < 0 or int(net[1]) > 32:
-                return False
-
-    try:
-        if v6:
-            socket.inet_pton(socket.AF_INET6, net[0])
-        else:
-            socket.inet_pton(socket.AF_INET, net[0])
-    except:
-        return False
-    
     return True
+
+
+#
+# dotted_netmask_to_cidr()
+# Returns:
+#   cidr integer (0-32 for ipv4 and 0-128 for ipv6)
+#
+# Raises exception if cidr cannot be found
+#
+def dotted_netmask_to_cidr(nm, v6):
+    '''Convert netmask to cidr. IPv6 dotted netmasks are not supported.'''
+    cidr = ""
+    if v6:
+        raise ValueError
+    else:
+        if not valid_dotted_quads(nm, v6):
+            raise ValueError
+
+        mbits = 0
+        bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
+        found_one = False
+        for n in range(32):
+            #print "n = %d %d %d" % (n, (bits >> n), (bits >> n) & 1)
+            if (bits >> n) & 1 == 1:
+                found_one = True
+            else:
+                if found_one:
+                    mbits = -1
+                    break
+                else:
+                    mbits += 1
+
+        if mbits >= 0 and mbits <= 32:
+            cidr = str(32 - mbits)
+
+    if not valid_cidr_netmask(cidr, v6):
+        raise ValueError
+
+    return cidr
+
+
+#
+# cidr_to_dotted_netmask()
+# Returns:
+#   dotted netmask string
+#
+# Raises exception if dotted netmask cannot be found
+#
+def cidr_to_dotted_netmask(cidr, v6):
+    '''Convert cidr to netmask. IPv6 dotted netmasks not supported.'''
+    nm = ""
+    if v6:
+        raise ValueError
+    else:
+        if not valid_cidr_netmask(cidr, v6):
+            raise ValueError
+        bits = 0L
+        for n in range(32):
+            #print "n = %d cidr = %s" % (n, cidr)
+            if n < int(cidr):
+                bits |= 1<<31 - n
+        nm = socket.inet_ntoa(struct.pack('>L', bits))
+
+    if not valid_dotted_quads(nm, v6):
+        raise ValueError
+
+    return nm
+
+
+def normalize_address(orig, v6):
+    '''Convert address to standard form. Use no netmask for IP addresses. If
+       If netmask is specified and not all 1's, for IPv4 use cidr if possible, 
+       otherwise dotted netmask and for IPv6, use cidr.
+    '''
+    net = []
+    if '/' in orig:
+        net = orig.split('/')
+        # Remove host netmasks
+        if v6 and net[1] == "128":
+            del net[1]
+        elif not v6 and net[1] == "32":
+            del net[1]
+    else:
+        net.append(orig)
+
+    if not v6 and len(net) == 2 and valid_dotted_quads(net[1], v6):
+        try:
+            net[1] = dotted_netmask_to_cidr(net[1], v6)
+        except:
+            # Not valid cidr, so just use the dotted quads
+            pass
+
+    addr = net[0]
+    if len(net) == 2:
+        addr += "/" + net[1]
+
+    if not valid_address(addr, v6):
+        dbg_msg = "Invalid address '%s'" % (addr)
+        debug(dbg_msg)
+        raise ValueError
+
+    return addr
+
 
 def open_file_read(f):
     '''Opens the specified file read-only'''
     try:
         orig = open(f, 'r')
-    except OSError, e:
-        err_msg = _("Couldn't open '%s' for reading") % (f)
-        raise common.UFWError(err_msg)
     except Exception:
         raise
 
@@ -125,9 +274,8 @@ def open_file_read(f):
 
 def open_files(f):
     '''Opens the specified file read-only and a tempfile read-write.'''
-    orig = open_file_read(f)
-
     try:
+        orig = open_file_read(f)
         (tmp, tmpname) = mkstemp()
     except Exception:
         orig.close()
@@ -179,10 +327,11 @@ def cmd_pipe(command1, command2):
     return [sp2.returncode,out]
 
 
-def error(msg):
+def error(msg, exit=True):
     '''Print error message and exit'''
     print >> sys.stderr, _("ERROR: %s") % (msg)
-    sys.exit(1)
+    if exit:
+        sys.exit(1)
 
 
 def warn(msg):

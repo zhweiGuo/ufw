@@ -48,7 +48,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         for f in [self.files['rules'], self.files['rules6'], \
                   self.files['before_rules'], self.files['before6_rules'], \
                   self.files['after_rules'], self.files['after6_rules']]:
-            orig = ufw.util.open_file_read(f)
+            try:
+                orig = ufw.util.open_file_read(f)
+            except:
+                err_msg = _("Couldn't open '%s' for reading") % (f)
+                raise UFWError(err_msg)
+
             for line in orig:
                 # If find one occurence of the comment_str, we know the user
                 # ran "logging off"
@@ -462,7 +467,11 @@ COMMIT
             rfns.append(self.files['rules6'])
 
         for f in rfns:
-            orig = ufw.util.open_file_read(f)
+            try:
+                orig = ufw.util.open_file_read(f)
+            except:
+                err_msg = _("Couldn't open '%s' for reading") % (f)
+                raise UFWError(err_msg)
 
             pat_tuple = re.compile(r'^### tuple ###\s*')
             for line in orig:
@@ -580,6 +589,7 @@ COMMIT
 
         # First construct the new rules list
         for r in rules:
+            r.normalize()
             ret = UFWRule.match(r, rule)
             if ret == 0 and not found:
                 # If find the rule, add it if it's not to be removed, otherwise
@@ -595,6 +605,8 @@ COMMIT
                 newrules.append(rule)
             else:
                 newrules.append(r)
+
+        rule.normalize()
 
         # Add rule to the end if it was not already added.
         if not found and not rule.remove:
@@ -617,7 +629,7 @@ COMMIT
             rstr = _("Rules updated (v6)")
 
         # Operate on the chains
-        if self._is_enabled():
+        if self._is_enabled() and not self.dryrun:
             flag = ""
             if modified or self._need_reload(rule.v6):
                 # Reload the chain

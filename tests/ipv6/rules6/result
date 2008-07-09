@@ -1758,8 +1758,8 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1/128 any ::/0
--A ufw6-user-input -d ::1/128 -j ACCEPT
+### tuple ### allow any any ::1 any ::/0
+-A ufw6-user-input -d ::1 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1815,8 +1815,8 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::/0 any ::1/128
--A ufw6-user-input -s ::1/128 -j ACCEPT
+### tuple ### allow any any ::/0 any ::1
+-A ufw6-user-input -s ::1 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1834,8 +1834,8 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1/128 any ::1/32
--A ufw6-user-input -d ::1/128 -s ::1/32 -j ACCEPT
+### tuple ### allow any any ::1 any ::1/32
+-A ufw6-user-input -d ::1 -s ::1/32 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN

@@ -148,7 +148,11 @@ class UFWBackend:
         '''Get all settings from defaults file'''
         self.defaults = {}
         for f in [self.files['defaults'], self.files['conf']]:
-            orig = ufw.util.open_file_read(f)
+            try:
+                orig = ufw.util.open_file_read(f)
+            except:
+                err_msg = _("Couldn't open '%s' for reading") % (f)
+                raise UFWError(err_msg)
             pat = re.compile(r'^\w+="?\w+"?')
             for line in orig:
                 if pat.search(line):

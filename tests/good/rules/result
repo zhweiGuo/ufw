@@ -4673,8 +4673,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.1/32 any 0.0.0.0/0
--A ufw-user-input -d 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0
+-A ufw-user-input -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4745,8 +4745,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1/32
--A ufw-user-input -s 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
+-A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4769,8 +4769,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.2/32 any 192.168.0.1/32
--A ufw-user-input -d 192.168.0.2/32 -s 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 192.168.0.2 any 192.168.0.1
+-A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN

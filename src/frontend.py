@@ -138,7 +138,7 @@ def parse_command(argv):
                                 faddr = "0.0.0.0/0"
                                 from_type = "any"
                             else:
-                                if ufw.util.valid_address(faddr, True):
+                                if ufw.util.valid_address(faddr, "6"):
                                     from_type = "v6"
                                 else:
                                     from_type = "v4"
@@ -157,7 +157,7 @@ def parse_command(argv):
                                 saddr = "0.0.0.0/0"
                                 to_type = "any"
                             else:
-                                if ufw.util.valid_address(saddr, True):
+                                if ufw.util.valid_address(saddr, "6"):
                                     to_type = "v6"
                                 else:
                                     to_type = "v4"

@@ -145,8 +145,7 @@ class UFWRule:
         '''Sets source address of rule'''
         tmp = addr.lower()
 
-        if tmp != "any" and not ufw.util.valid_address(tmp) and \
-           not ufw.util.valid_address(tmp, True):
+        if tmp != "any" and not ufw.util.valid_address(tmp, "any"):
             err_msg = _("Bad source address")
             raise UFWError(err_msg)
         self.src = tmp
@@ -156,12 +155,27 @@ class UFWRule:
         '''Sets destination address of rule'''
         tmp = addr.lower()
 
-        if tmp != "any" and not ufw.util.valid_address(tmp) and \
-           not ufw.util.valid_address(tmp, True):
+        if tmp != "any" and not ufw.util.valid_address(tmp, "any"):
             err_msg = _("Bad destination address")
             raise UFWError(err_msg)
         self.dst = tmp
         self._fix_anywhere()
+
+    def normalize(self):
+        '''Normalize src and dst to standard form'''
+        if self.src:
+            try:
+                self.src = ufw.util.normalize_address(self.src, self.v6)
+            except:
+                err_msg = _("Could not normalize source address")
+                raise UFWError(err_msg)
+
+        if self.dst:
+            try:
+                self.dst = ufw.util.normalize_address(self.dst, self.v6)
+            except:
+                err_msg = _("Could not normalize destination address")
+                raise UFWError(err_msg)
 
     def match(x, y):
         '''Check if rules match
