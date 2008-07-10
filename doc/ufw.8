@@ -147,7 +147,7 @@ Allow access to udp 1.2.3.4 port 5469 from 1.2.3.5 port 5469:
 .PP
 When running \fBufw enable\fR or starting \fBufw\fR via its initscript, 
 \fBufw\fR will flush its chains. This is required so \fBufw\fR can maintain a
-consistent state, but it will drop existing connections (eg ssh). \fBufw\fR
+consistent state, but it may drop existing connections (eg ssh). \fBufw\fR
 does support adding rules before enabling the firewall, so administrators can
 do:
 

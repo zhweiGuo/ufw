@@ -1,7 +1,7 @@
 ufw (0.19) UNRELEASED; urgency=low
 
   * bump version
-  * don't modify the chains when --dry-run is specified
+  * don't modify the chains when --dry-run is specified (LP: #247352)
   * add dotted netmask support
   * don't have util.py import common.py
   * normalize rules so what is added to chains and what is displayed to the

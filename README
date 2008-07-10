@@ -71,7 +71,7 @@ man page for details.
 
 Remote Management
 -----------------
-On /etc/init.d/ufw start and 'ufw enable' the chains are flushed, so ssh will
+On /etc/init.d/ufw start and 'ufw enable' the chains are flushed, so ssh may
 drop. This is needed so ufw is in a consistent state. Once the ufw is 'enabled'
 it will insert rules into the existing chains, and therefore not flush the
 chains (but will when modifying a rule or changing the default policy).
