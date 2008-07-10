@@ -588,9 +588,17 @@ COMMIT
             rules = self.rules6
 
         # First construct the new rules list
-        rule.normalize()
+        try:
+            rule.normalize()
+        except:
+            raise
+
         for r in rules:
-            r.normalize()
+            try:
+                r.normalize()
+            except:
+                raise
+                
             ret = UFWRule.match(r, rule)
             if ret == 0 and not found:
                 # If find the rule, add it if it's not to be removed, otherwise

@@ -4625,8 +4625,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.0/0 any 0.0.0.0/0
--A ufw-user-input -d 192.168.0.0/0 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4636,6 +4636,7 @@ WARN: Checks disabled
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+WARN: Rule changed after normalization
 Rules updated
 
 
@@ -4697,8 +4698,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/0
--A ufw-user-input -s 192.168.0.0/0 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4708,6 +4709,7 @@ WARN: Checks disabled
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+WARN: Rule changed after normalization
 Rules updated
 
 
@@ -4771,6 +4773,57 @@ WARN: Checks disabled
 
 ### tuple ### allow any any 192.168.0.2 any 192.168.0.1
 -A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+Rules updated
+
+
+LP bug 237446
+208: --dry-run allow to 111.12.34.2/4
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
+-A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+WARN: Rule changed after normalization
+Rules updated
+
+
+ISP style
+209: --dry-run allow from 192.168.0.2/255.255.0.2
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.2/255.255.0.2
+-A ufw-user-input -s 192.168.0.2/255.255.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN

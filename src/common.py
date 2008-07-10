@@ -39,6 +39,7 @@ class UFWRule:
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
                  sport="any", src="0.0.0.0/0"):
         self.remove = False
+        self.updated = False
         self.v6 = False
         self.dst = ""
         self.src = ""
@@ -163,19 +164,27 @@ class UFWRule:
 
     def normalize(self):
         '''Normalize src and dst to standard form'''
+        changed = False
         if self.src:
             try:
-                self.src = ufw.util.normalize_address(self.src, self.v6)
+                (self.src, changed) = ufw.util.normalize_address(self.src, \
+                                                                 self.v6)
             except:
                 err_msg = _("Could not normalize source address")
                 raise UFWError(err_msg)
+        if changed:
+            self.updated = changed
 
         if self.dst:
             try:
-                self.dst = ufw.util.normalize_address(self.dst, self.v6)
+                (self.dst, changed) = ufw.util.normalize_address(self.dst, \
+                                                                   self.v6)
             except:
                 err_msg = _("Could not normalize destination address")
                 raise UFWError(err_msg)
+
+        if changed:
+            self.updated = changed
 
     def match(x, y):
         '''Check if rules match

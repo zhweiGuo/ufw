@@ -20,15 +20,19 @@
 import os
 import re
 import sys
+import warnings
 
 import ufw.frontend
 from ufw.common import UFWError
-from ufw.util import error
+from ufw.util import error, warn
 
 import gettext
 gettext.install(ufw.common.programName)
 
 version = "#VERSION#"
+
+def clean_warning(message, category, filename, lineno, file=None):
+    warn(message)
 
 # Internationalization
 gettext.bindtextdomain(ufw.common.programName, \
@@ -42,7 +46,9 @@ if sys.version_info[0] < 2 or \
              _(": Need at least python 2.5)\n")
     sys.exit(1)
 
+
 if __name__ == "__main__":
+    warnings.showwarning = clean_warning
     action = ""
     rule = ""
     dryrun = False

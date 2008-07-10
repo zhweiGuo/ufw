@@ -528,241 +528,289 @@ Rule deleted
 
 105: allow from 192.168.0.0/255.240.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 106: delete allow from 192.168.0.0/12
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 107: allow from 192.168.0.0/12
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 108: delete allow from 192.168.0.0/255.240.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 109: allow from 192.168.0.0/255.224.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 110: delete allow from 192.168.0.0/11
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 111: allow from 192.168.0.0/11
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 112: delete allow from 192.168.0.0/255.224.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 113: allow from 192.168.0.0/255.192.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 114: delete allow from 192.168.0.0/10
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 115: allow from 192.168.0.0/10
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 116: delete allow from 192.168.0.0/255.192.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 117: allow from 192.168.0.0/255.128.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 118: delete allow from 192.168.0.0/9
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 119: allow from 192.168.0.0/9
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 120: delete allow from 192.168.0.0/255.128.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 121: allow from 192.168.0.0/255.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 122: delete allow from 192.168.0.0/8
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 123: allow from 192.168.0.0/8
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 124: delete allow from 192.168.0.0/255.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 125: allow from 192.168.0.0/254.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 126: delete allow from 192.168.0.0/7
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 127: allow from 192.168.0.0/7
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 128: delete allow from 192.168.0.0/254.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 129: allow from 192.168.0.0/252.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 130: delete allow from 192.168.0.0/6
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 131: allow from 192.168.0.0/6
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 132: delete allow from 192.168.0.0/252.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 133: allow from 192.168.0.0/248.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 134: delete allow from 192.168.0.0/5
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 135: allow from 192.168.0.0/5
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 136: delete allow from 192.168.0.0/248.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 137: allow from 192.168.0.0/240.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 138: delete allow from 192.168.0.0/4
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 139: allow from 192.168.0.0/4
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 140: delete allow from 192.168.0.0/240.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 141: allow from 192.168.0.0/224.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 142: delete allow from 192.168.0.0/3
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 143: allow from 192.168.0.0/3
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 144: delete allow from 192.168.0.0/224.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 145: allow from 192.168.0.0/192.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 146: delete allow from 192.168.0.0/2
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 147: allow from 192.168.0.0/2
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 148: delete allow from 192.168.0.0/192.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 149: allow from 192.168.0.0/128.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 150: delete allow from 192.168.0.0/1
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 
 151: allow from 192.168.0.0/1
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule added
 
 
 152: delete allow from 192.168.0.0/128.0.0.0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rule deleted
 
 

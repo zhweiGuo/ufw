@@ -4,8 +4,9 @@ ufw (0.19) UNRELEASED; urgency=low
   * don't modify the chains when --dry-run is specified
   * add dotted netmask support
   * don't have util.py import common.py
-  * normalize rules so user can specify CIDR or dotted netmasks when adding
-    or deleting
+  * normalize rules so what is added to chains and what is displayed to the
+    user is consistent (LP: #237446)
+  * documentation updates (LP: #247177)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jul 2008 16:22:45 -0400
 

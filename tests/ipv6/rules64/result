@@ -1236,8 +1236,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.0/0 any 0.0.0.0/0
--A ufw-user-input -d 192.168.0.0/0 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -1247,6 +1247,7 @@ WARN: Checks disabled
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+WARN: Rule changed after normalization
 Rules updated
 
 
@@ -1308,8 +1309,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/0
--A ufw-user-input -s 192.168.0.0/0 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -1319,6 +1320,7 @@ WARN: Checks disabled
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+WARN: Rule changed after normalization
 Rules updated
 
 

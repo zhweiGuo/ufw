@@ -1816,14 +1816,16 @@ Rules updated
 TESTING NETMASK
 242: allow to 192.168.0.0/0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rules updated
 
 
-### tuple ### allow any any 192.168.0.0/0 any 0.0.0.0/0
--A ufw-user-input -d 192.168.0.0/0 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -j ACCEPT
 
 243: delete allow to 192.168.0.0/0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rules updated
 
 
@@ -1855,14 +1857,16 @@ Rules updated
 
 248: allow from 192.168.0.0/0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rules updated
 
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/0
--A ufw-user-input -s 192.168.0.0/0 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -j ACCEPT
 
 249: delete allow from 192.168.0.0/0
 WARN: Checks disabled
+WARN: Rule changed after normalization
 Rules updated
 
 
@@ -1905,16 +1909,35 @@ WARN: Checks disabled
 Rules updated
 
 
-256: allow from 192.168.16.0/255.255.0.255
+256: allow from 192.168.0.2/255.255.0.2
 WARN: Checks disabled
 Rules updated
 
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.16.0/255.255.0.255
--A ufw-user-input -s 192.168.16.0/255.255.0.255 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.2/255.255.0.2
+-A ufw-user-input -s 192.168.0.2/255.255.0.2 -j ACCEPT
 
-257: delete allow from 192.168.16.0/255.255.0.255
+257: delete allow from 192.168.0.2/255.255.0.2
 WARN: Checks disabled
 Rules updated
 
+
+LP bug 237446
+258: allow to 111.12.34.2/4
+WARN: Checks disabled
+WARN: Rule changed after normalization
+Rules updated
+
+
+### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
+-A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
+
+259: delete allow from 111.12.34.2/4
+WARN: Checks disabled
+WARN: Rule changed after normalization
+Rules updated
+
+
+### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
+-A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
 

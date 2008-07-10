@@ -395,9 +395,15 @@ do_cmd "0" allow from 192.168.0.1/32 to 192.168.0.2/32
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0" delete allow from 192.168.0.1/32 to 192.168.0.2/32
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-do_cmd "0" allow from 192.168.16.0/255.255.0.255 
+do_cmd "0" allow from 192.168.0.2/255.255.0.2 
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-do_cmd "0" delete allow from 192.168.16.0/255.255.0.255
+do_cmd "0" delete allow from 192.168.0.2/255.255.0.2
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+echo "LP bug 237446" >> $TESTTMP/result
+do_cmd "0" allow to 111.12.34.2/4
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow from 111.12.34.2/4
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 exit 0

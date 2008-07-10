@@ -18,6 +18,7 @@
 
 import re
 import sys
+import warnings
 
 from ufw.common import UFWError
 import ufw.util
@@ -349,6 +350,10 @@ class UFWFrontend:
         except UFWError, e:
             error(e.value)
 
+        if rule.updated:
+            warn_msg = _("Rule changed after normalization")
+            warnings.warn(warn_msg)
+
         return res
 
     def do_action(self, action, rule, ip_version):
@@ -373,7 +378,8 @@ class UFWFrontend:
         elif action == "allow" or action == "deny" or action == "limit":
             res = self.set_rule(rule, ip_version)
         else:
-            raise UFWError("Unsupported action '%s'" % (action))
+            err_msg = _("Unsupported action '%s'") % (action)
+            raise UFWError(err_msg)
 
         return res
 

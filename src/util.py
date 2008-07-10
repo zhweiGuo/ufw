@@ -149,6 +149,7 @@ def normalize_address(orig, v6):
        otherwise dotted netmask and for IPv6, use cidr.
     '''
     net = []
+    changed = False
     version = "4"
     if v6:
         version = "6"
@@ -174,13 +175,20 @@ def normalize_address(orig, v6):
     addr = net[0]
     if len(net) == 2:
         addr += "/" + net[1]
+        if not v6:
+            network = _address4_to_network(addr)
+            if network != addr:
+                dbg_msg = "Using '%s' for address '%s'" % (network, addr)
+                debug(dbg_msg)
+                addr = network
+                changed = True
 
     if not valid_address(addr, version):
         dbg_msg = "Invalid address '%s'" % (addr)
         debug(dbg_msg)
         raise ValueError
 
-    return addr
+    return (addr, changed)
 
 
 def open_file_read(f):
@@ -360,3 +368,33 @@ def _cidr_to_dotted_netmask(cidr, v6):
         raise ValueError
 
     return nm
+
+def _address4_to_network(addr):
+    '''Convert an IPv4 address and netmask to a network address'''
+    if '/' not in addr:
+        debug("_address4_to_network: skipping address without a netmask")
+        return addr
+
+    tmp = addr.split('/')
+    if len(tmp) != 2 or not _valid_dotted_quads(tmp[0], False):
+        raise ValueError
+
+    host = tmp[0]
+    orig_nm = tmp[1]
+
+    nm = orig_nm
+    if _valid_cidr_netmask(nm, False):
+        try:
+            nm = _cidr_to_dotted_netmask(nm, False)
+        except:
+            raise
+
+    # Now have dotted quad host and nm, find the network
+    host_bits = long(struct.unpack('>L',socket.inet_aton(host))[0])
+    nm_bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
+
+    network_bits = host_bits & nm_bits
+    network = socket.inet_ntoa(struct.pack('>L', network_bits))
+
+    return network + "/" + orig_nm
+
