@@ -73,8 +73,7 @@ def parse_port_proto(str):
 def valid_address6(addr):
     '''Verifies if valid IPv6 address'''
     if not socket.has_ipv6:
-        warn_msg = _("python does not have IPv6 support.")
-        warn(warn_msg)
+        warn("python does not have IPv6 support.")
         return False
 
     # quick and dirty test
@@ -251,20 +250,20 @@ def cmd_pipe(command1, command2):
 
 def error(msg, exit=True):
     '''Print error message and exit'''
-    print >> sys.stderr, _("ERROR: %s") % (msg)
+    print >> sys.stderr, "ERROR: %s" % (msg)
     if exit:
         sys.exit(1)
 
 
 def warn(msg):
     '''Print warning message'''
-    print >> sys.stderr, _("WARN: %s") % (msg)
+    print >> sys.stderr, "WARN: %s" % (msg)
 
 
 def debug(msg):
     '''Print debug message'''
     if debugging:
-        print >> sys.stderr, _("DEBUG: %s") % (msg)
+        print >> sys.stderr, "DEBUG: %s" % (msg)
 
 #
 # Internal helper functions
