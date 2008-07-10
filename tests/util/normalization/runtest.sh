@@ -62,8 +62,9 @@ try:
 except:
     print >> sys.stderr, "Invalid address/netmask '%s'" % (sys.argv[2])
     sys.exit(1)
+
+print "norm = %s, expected = %s" % (norm, sys.argv[3])
 if sys.argv[3] != norm:
-    print >> sys.stderr, "%s != %s" % (norm, sys.argv[3])
     sys.exit(1)
 sys.exit(0)
 EOM
