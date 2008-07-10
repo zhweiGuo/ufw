@@ -1845,8 +1845,8 @@ WARN: Checks disabled
 Rules updated
 
 
-### tuple ### allow any any 192.168.0.1/32 any 0.0.0.0/0
--A ufw-user-input -d 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0
+-A ufw-user-input -d 192.168.0.1 -j ACCEPT
 
 247: delete allow to 192.168.0.1/32
 WARN: Checks disabled
@@ -1884,8 +1884,8 @@ WARN: Checks disabled
 Rules updated
 
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1/32
--A ufw-user-input -s 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
+-A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 253: delete allow from 192.168.0.1/32
 WARN: Checks disabled
@@ -1897,10 +1897,23 @@ WARN: Checks disabled
 Rules updated
 
 
-### tuple ### allow any any 192.168.0.2/32 any 192.168.0.1/32
--A ufw-user-input -d 192.168.0.2/32 -s 192.168.0.1/32 -j ACCEPT
+### tuple ### allow any any 192.168.0.2 any 192.168.0.1
+-A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 255: delete allow from 192.168.0.1/32 to 192.168.0.2/32
+WARN: Checks disabled
+Rules updated
+
+
+256: allow from 192.168.16.0/255.255.0.255
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow any any 0.0.0.0/0 any 192.168.16.0/255.255.0.255
+-A ufw-user-input -s 192.168.16.0/255.255.0.255 -j ACCEPT
+
+257: delete allow from 192.168.16.0/255.255.0.255
 WARN: Checks disabled
 Rules updated
 

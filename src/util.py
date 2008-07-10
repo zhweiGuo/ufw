@@ -180,7 +180,6 @@ def dotted_netmask_to_cidr(nm, v6):
         bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
         found_one = False
         for n in range(32):
-            #print "n = %d %d %d" % (n, (bits >> n), (bits >> n) & 1)
             if (bits >> n) & 1 == 1:
                 found_one = True
             else:
@@ -216,7 +215,6 @@ def cidr_to_dotted_netmask(cidr, v6):
             raise ValueError
         bits = 0L
         for n in range(32):
-            #print "n = %d cidr = %s" % (n, cidr)
             if n < int(cidr):
                 bits |= 1<<31 - n
         nm = socket.inet_ntoa(struct.pack('>L', bits))
@@ -233,13 +231,18 @@ def normalize_address(orig, v6):
        otherwise dotted netmask and for IPv6, use cidr.
     '''
     net = []
+    version = "4"
+    if v6:
+        version = "6"
+
     if '/' in orig:
         net = orig.split('/')
         # Remove host netmasks
         if v6 and net[1] == "128":
             del net[1]
-        elif not v6 and net[1] == "32":
-            del net[1]
+        elif not v6:
+            if net[1] == "32" or net[1] == "255.255.255.255":
+                del net[1]
     else:
         net.append(orig)
 
@@ -254,7 +257,7 @@ def normalize_address(orig, v6):
     if len(net) == 2:
         addr += "/" + net[1]
 
-    if not valid_address(addr, v6):
+    if not valid_address(addr, version):
         dbg_msg = "Invalid address '%s'" % (addr)
         debug(dbg_msg)
         raise ValueError

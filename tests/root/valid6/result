@@ -1291,8 +1291,8 @@ WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow any any ::1/128 any ::/0
--A ufw6-user-input -d ::1/128 -j ACCEPT
+### tuple ### allow any any ::1 any ::/0
+-A ufw6-user-input -d ::1 -j ACCEPT
 
 189: delete allow to ::1/128
 WARN: Checks disabled
@@ -1330,8 +1330,8 @@ WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow any any ::/0 any ::1/128
--A ufw6-user-input -s ::1/128 -j ACCEPT
+### tuple ### allow any any ::/0 any ::1
+-A ufw6-user-input -s ::1 -j ACCEPT
 
 195: delete allow from ::1/128
 WARN: Checks disabled
@@ -1343,8 +1343,8 @@ WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow any any ::1/128 any ::1/32
--A ufw6-user-input -d ::1/128 -s ::1/32 -j ACCEPT
+### tuple ### allow any any ::1 any ::1/32
+-A ufw6-user-input -d ::1 -s ::1/32 -j ACCEPT
 
 197: delete allow from ::1/32 to ::1/128
 WARN: Checks disabled

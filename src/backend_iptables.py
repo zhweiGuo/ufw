@@ -588,6 +588,7 @@ COMMIT
             rules = self.rules6
 
         # First construct the new rules list
+        rule.normalize()
         for r in rules:
             r.normalize()
             ret = UFWRule.match(r, rule)
@@ -606,7 +607,6 @@ COMMIT
             else:
                 newrules.append(r)
 
-        rule.normalize()
 
         # Add rule to the end if it was not already added.
         if not found and not rule.remove:

@@ -15,7 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 testdir="tests"
-tests="installation bad good"
+tests="util installation bad good"
 CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
