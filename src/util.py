@@ -70,39 +70,60 @@ def parse_port_proto(str):
     return (port, proto)
 
 
-def valid_cidr_netmask(nm, v6):
-    '''Verifies cidr netmasks'''
-    num = 32
-    if v6:
-        num = 128
-
-    if not re.match(r'^[0-9]+$', nm) or int(nm) < 0 or int(nm) > num:
+def valid_address6(addr):
+    '''Verifies if valid IPv6 address'''
+    if not socket.has_ipv6:
+        warn_msg = _("python does not have IPv6 support.")
+        warn(warn_msg)
         return False
+
+    # quick and dirty test
+    if len(addr) > 43 or not re.match(r'^[a-fA-F0-9:\./]+$', addr):
+        return False
+
+    net = addr.split('/')
+    try:
+        socket.inet_pton(socket.AF_INET6, net[0])
+    except:
+        return False
+
+    if len(net) > 2:
+        return False
+    elif len(net) == 2:
+        # Check netmask specified via '/'
+        if not _valid_cidr_netmask(net[1], True):
+            return False
 
     return True
 
 
-def valid_dotted_quads(nm, v6):
-    '''Verfies dotted quad ip addresses and netmasks'''
-    if v6:
+def valid_address4(addr):
+    '''Verifies if valid IPv4 address'''
+    # quick and dirty test
+    if len(addr) > 31 or not re.match(r'^[0-9\./]+$', addr):
         return False
-    else:
-        if re.match(r'^[0-9]+\.[0-9\.]+$', nm):
-            quads = re.split('\.', nm)
-            if len(quads) != 4:
-                return False
-            for q in quads:
-                if not q or int(q) < 0 or int(q) > 255:
-                    return False
-        else:
+
+    net = addr.split('/')
+    try:
+        socket.inet_pton(socket.AF_INET, net[0])
+        if not _valid_dotted_quads(net[0], False):
+            return False
+    except:
+        return False
+
+    if len(net) > 2:
+        return False
+    elif len(net) == 2:
+        # Check netmask specified via '/'
+        if not valid_netmask(net[1], False):
             return False
 
     return True
 
 
 def valid_netmask(nm, v6):
-    '''Verfies if valid cidr or dotted netmask'''
-    return valid_cidr_netmask(nm, v6) or valid_dotted_quads(nm, v6)
+    '''Verifies if valid cidr or dotted netmask'''
+    return _valid_cidr_netmask(nm, v6) or _valid_dotted_quads(nm, v6)
 
 
 #
@@ -113,116 +134,14 @@ def valid_netmask(nm, v6):
 #
 def valid_address(addr, version="any"):
     '''Validate IP addresses'''
-    if version == "6" and not socket.has_ipv6:
-        warn_msg = _("python does not have IPv6 support.")
-        warn(warn_msg)
-        return False
+    if version == "6":
+        return valid_address6(addr)
+    elif version == "4":
+        return valid_address4(addr)
+    elif version == "any":
+        return valid_address4(addr) or valid_address6(addr)
 
-    # quick and dirty test
-    if len(addr) > 43 or not re.match(r'^[a-fA-F0-9:\./]+$', addr):
-        return False
-
-    net = addr.split('/')
-    is_ipv6 = False
-    try:
-        if version == "6":
-            socket.inet_pton(socket.AF_INET6, net[0])
-            is_ipv6 = True
-        elif version == "4":
-            socket.inet_pton(socket.AF_INET, net[0])
-            if not valid_dotted_quads(net[0], False):
-                return False
-    except:
-        return False
-
-    if version == "any":
-        try:
-            socket.inet_pton(socket.AF_INET, net[0])
-            if not valid_dotted_quads(net[0], False):
-                return False
-        except:
-            if socket.has_ipv6:
-                try:
-                    socket.inet_pton(socket.AF_INET6, net[0])
-                    is_ipv6 = True
-                except:
-                    return False
-            else:
-                return False
-    
-    if len(net) > 2:
-        return False
-    elif len(net) == 2:
-        # Check netmask specified via '/'
-        if not valid_netmask(net[1], is_ipv6):
-            return False
-
-    return True
-
-
-#
-# dotted_netmask_to_cidr()
-# Returns:
-#   cidr integer (0-32 for ipv4 and 0-128 for ipv6)
-#
-# Raises exception if cidr cannot be found
-#
-def dotted_netmask_to_cidr(nm, v6):
-    '''Convert netmask to cidr. IPv6 dotted netmasks are not supported.'''
-    cidr = ""
-    if v6:
-        raise ValueError
-    else:
-        if not valid_dotted_quads(nm, v6):
-            raise ValueError
-
-        mbits = 0
-        bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
-        found_one = False
-        for n in range(32):
-            if (bits >> n) & 1 == 1:
-                found_one = True
-            else:
-                if found_one:
-                    mbits = -1
-                    break
-                else:
-                    mbits += 1
-
-        if mbits >= 0 and mbits <= 32:
-            cidr = str(32 - mbits)
-
-    if not valid_cidr_netmask(cidr, v6):
-        raise ValueError
-
-    return cidr
-
-
-#
-# cidr_to_dotted_netmask()
-# Returns:
-#   dotted netmask string
-#
-# Raises exception if dotted netmask cannot be found
-#
-def cidr_to_dotted_netmask(cidr, v6):
-    '''Convert cidr to netmask. IPv6 dotted netmasks not supported.'''
-    nm = ""
-    if v6:
-        raise ValueError
-    else:
-        if not valid_cidr_netmask(cidr, v6):
-            raise ValueError
-        bits = 0L
-        for n in range(32):
-            if n < int(cidr):
-                bits |= 1<<31 - n
-        nm = socket.inet_ntoa(struct.pack('>L', bits))
-
-    if not valid_dotted_quads(nm, v6):
-        raise ValueError
-
-    return nm
+    raise ValueError
 
 
 def normalize_address(orig, v6):
@@ -246,9 +165,9 @@ def normalize_address(orig, v6):
     else:
         net.append(orig)
 
-    if not v6 and len(net) == 2 and valid_dotted_quads(net[1], v6):
+    if not v6 and len(net) == 2 and _valid_dotted_quads(net[1], v6):
         try:
-            net[1] = dotted_netmask_to_cidr(net[1], v6)
+            net[1] = _dotted_netmask_to_cidr(net[1], v6)
         except:
             # Not valid cidr, so just use the dotted quads
             pass
@@ -347,3 +266,98 @@ def debug(msg):
     if debugging:
         print >> sys.stderr, _("DEBUG: %s") % (msg)
 
+#
+# Internal helper functions
+#
+def _valid_cidr_netmask(nm, v6):
+    '''Verifies cidr netmasks'''
+    num = 32
+    if v6:
+        num = 128
+
+    if not re.match(r'^[0-9]+$', nm) or int(nm) < 0 or int(nm) > num:
+        return False
+
+    return True
+
+
+def _valid_dotted_quads(nm, v6):
+    '''Verifies dotted quad ip addresses and netmasks'''
+    if v6:
+        return False
+    else:
+        if re.match(r'^[0-9]+\.[0-9\.]+$', nm):
+            quads = re.split('\.', nm)
+            if len(quads) != 4:
+                return False
+            for q in quads:
+                if not q or int(q) < 0 or int(q) > 255:
+                    return False
+        else:
+            return False
+
+    return True
+
+#
+# _dotted_netmask_to_cidr()
+# Returns:
+#   cidr integer (0-32 for ipv4 and 0-128 for ipv6)
+#
+# Raises exception if cidr cannot be found
+#
+def _dotted_netmask_to_cidr(nm, v6):
+    '''Convert netmask to cidr. IPv6 dotted netmasks are not supported.'''
+    cidr = ""
+    if v6:
+        raise ValueError
+    else:
+        if not _valid_dotted_quads(nm, v6):
+            raise ValueError
+
+        mbits = 0
+        bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
+        found_one = False
+        for n in range(32):
+            if (bits >> n) & 1 == 1:
+                found_one = True
+            else:
+                if found_one:
+                    mbits = -1
+                    break
+                else:
+                    mbits += 1
+
+        if mbits >= 0 and mbits <= 32:
+            cidr = str(32 - mbits)
+
+    if not _valid_cidr_netmask(cidr, v6):
+        raise ValueError
+
+    return cidr
+
+
+#
+# _cidr_to_dotted_netmask()
+# Returns:
+#   dotted netmask string
+#
+# Raises exception if dotted netmask cannot be found
+#
+def _cidr_to_dotted_netmask(cidr, v6):
+    '''Convert cidr to netmask. IPv6 dotted netmasks not supported.'''
+    nm = ""
+    if v6:
+        raise ValueError
+    else:
+        if not _valid_cidr_netmask(cidr, v6):
+            raise ValueError
+        bits = 0L
+        for n in range(32):
+            if n < int(cidr):
+                bits |= 1<<31 - n
+        nm = socket.inet_ntoa(struct.pack('>L', bits))
+
+    if not _valid_dotted_quads(nm, v6):
+        raise ValueError
+
+    return nm
