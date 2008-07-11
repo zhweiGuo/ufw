@@ -126,7 +126,7 @@ def parse_command(argv):
                     if i+1 < nargs:
                         try:
                             rule.set_protocol(argv[i+1])
-                        except:
+                        except Exception:
                             raise
                     else:
                         err_msg = _("Invalid 'proto' clause")
@@ -144,7 +144,7 @@ def parse_command(argv):
                                 else:
                                     from_type = "v4"
                             rule.set_src(faddr)
-                        except:
+                        except Exception:
                             raise
                         loc = "src"
                     else:
@@ -163,7 +163,7 @@ def parse_command(argv):
                                 else:
                                     to_type = "v4"
                             rule.set_dst(saddr)
-                        except:
+                        except Exception:
                             raise
                         loc = "dst"
                     else:
@@ -184,7 +184,7 @@ def parse_command(argv):
 
                         try:
                             rule.set_port(tmp, loc)
-                        except:
+                        except Exception:
                             raise
                     else:
                         err_msg = _("Invalid 'port' clause")
@@ -256,7 +256,7 @@ class UFWFrontend:
         if backend_type == "iptables":
             try:
                 self.backend = UFWBackendIptables(dryrun)
-            except:
+            except Exception:
                 raise
         else:
             raise UFWError("Unsupported backend type '%s'" % (backend_type))

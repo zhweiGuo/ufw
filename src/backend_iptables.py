@@ -590,13 +590,13 @@ COMMIT
         # First construct the new rules list
         try:
             rule.normalize()
-        except:
+        except Exception:
             raise
 
         for r in rules:
             try:
                 r.normalize()
-            except:
+            except Exception:
                 raise
                 
             ret = UFWRule.match(r, rule)
@@ -643,7 +643,7 @@ COMMIT
                 # Reload the chain
                 try:
                     self._reload_user_rules()
-                except:
+                except Exception:
                     raise
                 rstr = _("Rule updated")
             elif found and rule.remove:

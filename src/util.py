@@ -33,13 +33,13 @@ def get_services_proto(port):
     proto = ""
     try:
         socket.getservbyname(port)
-    except:
+    except Exception:
         raise
 
     try:
         socket.getservbyname(port, "tcp")
         proto = "tcp"
-    except:
+    except Exception:
         pass
 
     try:
@@ -48,7 +48,7 @@ def get_services_proto(port):
             proto = "any"
         else:
             proto = "udp"
-    except:
+    except Exception:
         pass
 
     return proto
@@ -83,7 +83,7 @@ def valid_address6(addr):
     net = addr.split('/')
     try:
         socket.inet_pton(socket.AF_INET6, net[0])
-    except:
+    except Exception:
         return False
 
     if len(net) > 2:
@@ -107,7 +107,7 @@ def valid_address4(addr):
         socket.inet_pton(socket.AF_INET, net[0])
         if not _valid_dotted_quads(net[0], False):
             return False
-    except:
+    except Exception:
         return False
 
     if len(net) > 2:
@@ -168,7 +168,7 @@ def normalize_address(orig, v6):
     if not v6 and len(net) == 2 and _valid_dotted_quads(net[1], v6):
         try:
             net[1] = _dotted_netmask_to_cidr(net[1], v6)
-        except:
+        except Exception:
             # Not valid cidr, so just use the dotted quads
             pass
 
@@ -205,6 +205,10 @@ def open_files(f):
     '''Opens the specified file read-only and a tempfile read-write.'''
     try:
         orig = open_file_read(f)
+    except Exception:
+        raise
+
+    try:
         (tmp, tmpname) = mkstemp()
     except Exception:
         orig.close()
@@ -386,7 +390,7 @@ def _address4_to_network(addr):
     if _valid_cidr_netmask(nm, False):
         try:
             nm = _cidr_to_dotted_netmask(nm, False)
-        except:
+        except Exception:
             raise
 
     # Now have dotted quad host and nm, find the network
