@@ -19,7 +19,7 @@
 import os
 import re
 import sys
-from tempfile import mkstemp
+import tempfile
 
 from ufw.common import UFWError, UFWRule, config_dir, state_dir
 from ufw.util import warn, debug, cmd, cmd_pipe
@@ -252,11 +252,11 @@ COMMIT
             return
 
         try:
-            (tmp, tmpname) = mkstemp()
+            tmp = tempfile.NamedTemporaryFile()
         except Exception:
             raise
-        os.write(tmp, openconf)
-        os.close(tmp)
+        tmp.write(openconf)
+        tmp.close()
 
         err_msg = _("problem running")
 
@@ -271,7 +271,7 @@ COMMIT
             raise UFWError(err_msg + " iptables 'delete'")
 
         # Set default open
-        (rc, out) = cmd_pipe(['cat', tmpname], ['iptables-restore'])
+        (rc, out) = cmd_pipe(['cat', tmp.name], ['iptables-restore'])
         if rc != 0:
             raise UFWError(err_msg + " iptables")
 
@@ -287,11 +287,11 @@ COMMIT
                 raise UFWError(err_msg + " ip6tables 'delete'")
 
             # Set default open
-            (rc, out) = cmd_pipe(['cat', tmpname], ['ip6tables-restore'])
+            (rc, out) = cmd_pipe(['cat', tmp.name], ['ip6tables-restore'])
             if rc != 0:
                 raise UFWError(err_msg + " ip6tables")
 
-        os.unlink(tmpname)
+        os.unlink(tmp.fileno())
 
     def start_firewall(self):
         '''Starts the firewall'''
