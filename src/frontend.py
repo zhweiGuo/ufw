@@ -176,7 +176,7 @@ def parse_command(argv):
                             raise UFWError(err_msg)
 
                         tmp = argv[i+1]
-                        if not re.match('^\d+$', tmp):
+                        if not re.match('^\d[0-9,:]*\d+$', tmp):
                             if loc == "src":
                                 from_service = tmp
                             else:

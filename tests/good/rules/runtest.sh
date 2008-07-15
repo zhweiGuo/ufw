@@ -169,4 +169,32 @@ do_cmd "0" --dry-run allow to 111.12.34.2/4
 echo "ISP style" >> $TESTTMP/result
 do_cmd "0" --dry-run allow from 192.168.0.2/255.255.0.2
 
+echo "Multiports:" >> $TESTTMP/result
+for i in 192.168.0 any; do
+    for j in from to; do
+        k="to"
+        if [ "$j" = "to" ]; then
+            k="from"
+        fi
+        m="$i.1"
+        n="$i.2"
+        if [ "$i" = "any" ]; then
+            m="$i"
+            n="$i"
+        fi
+        do_cmd "0" --dry-run allow $j $m port 34,35 proto tcp
+        do_cmd "0" --dry-run allow $j $m port 34,35:39 proto udp
+        do_cmd "0" --dry-run allow $j $m port 35:39 proto tcp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 proto udp
+        do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24 proto tcp
+        do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24 proto udp
+        do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24 proto tcp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24 proto udp
+        do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24:26 proto tcp
+        do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24:26 proto udp
+        do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24:26 proto tcp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24:26 proto udp
+    done
+done
+
 exit 0

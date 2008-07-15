@@ -452,6 +452,16 @@ COMMIT
                 rule.set_port(fields[7][4:], "dst")
             elif re.match('spt', fields[7]):
                 rule.set_port(fields[7][4:], "src")
+            elif re.match('multiport', fields[5]):
+                if fields[6] == "dports":
+                    rule.set_port(fields[7], "dst")
+                elif fields[6] == "sports":
+                    rule.set_port(fields[7], "src")
+                if len(fields) == 11:
+                    if fields[9] == "dports":
+                        rule.set_port(fields[10], "dst")
+                    elif fields[9] == "sports":
+                        rule.set_port(fields[10], "src")
 
         if type == "v6":
             rule.set_v6(True)
@@ -577,6 +587,10 @@ COMMIT
             if rule.action == 'limit':
                 # Netfilter doesn't have ip6t_recent yet, so skip
                 return _("Skipping unsupported IPv6 '%s' rule") % (rule.action)
+
+        if rule.multi and rule.protocol != "udp" and rule.protocol != "tcp":
+            err_msg = _("Must specify 'tcp' or 'udp' with multiple ports")
+            raise UFWError(err_msg)
 
         newrules = []
         found = False

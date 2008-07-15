@@ -96,6 +96,14 @@ with the address 192.168.0.1.
 This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 25 on this
 host. Note that IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6
 firewalling to work.
+
+  ufw allow proto tcp from any to 80,443,8080:8090
+
+This will allow all traffic to tcp ports 80, 443 and 8080-8090 inclusive. Note
+that when specifying multiple ports, the ports list cannot contain spaces and
+must be modified as a whole. Eg, in the above example you cannot later try to
+delete the '443' port, but must delete the above rule and then add a new rule
+without '443'. You cannot specify more than 15 ports (ranges count as 2 ports).
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting
 against brute-force login attacks. \fBufw\fR will deny connections if an IP

@@ -43,6 +43,10 @@ class UFWRule:
         self.v6 = False
         self.dst = ""
         self.src = ""
+        self.dport = ""
+        self.sport = ""
+        self.protocol = ""
+        self.multi = False
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -66,13 +70,24 @@ class UFWRule:
         else:
             str = " -p " + self.protocol
 
+            if self.multi:
+                str += " -m multiport"
+                if self.dport != "any" and self.sport != "any":
+                    str += " --dport " + self.dport
+                    str += " -m multiport"
+                    str += " --sport " + self.sport
+                elif self.dport != "any":
+                    str += " --dport " + self.dport
+                elif self.sport != "any":
+                    str += " --sport " + self.sport
+
         if self.dst != "0.0.0.0/0" and self.dst != "::/0":
             str += " -d " + self.dst
-        if self.dport != "any":
+        if not self.multi and self.dport != "any":
             str += " --dport " + self.dport
         if self.src != "0.0.0.0/0" and self.src != "::/0":
             str += " -s " + self.src
-        if self.sport != "any":
+        if not self.multi and self.sport != "any":
             str += " --sport " + self.sport
         if self.action == "allow":
             str += " -j ACCEPT"
@@ -98,16 +113,48 @@ class UFWRule:
         err_msg = _("Bad port '%s'") % (port)
         if port == "any":
             pass
-        elif re.match('^\d+$', port):
-            if int(port) < 1 or int(port) > 65535:
-                raise UFWError(err_msg)
-        elif re.match(r'^\w[\w\-]+', port):
-            try:
-                port = socket.getservbyname(port)
-            except Exception, (error):
-                raise UFWError(err_msg)
-        else:
+        elif re.match(r'^[,:]', port) or re.match(r'[,:]$', port):
             raise UFWError(err_msg)
+        elif (port.count(',') + port.count(':')) > 14:
+            # Limitation of iptables
+            raise UFWError(err_msg)
+        else:
+            ports = port.split(',')
+            if len(ports) < 1:
+                raise UFWError(err_msg)
+            elif len(ports) > 1:
+                self.multi = True
+
+            tmp = ""
+            for p in ports:
+                if re.match(r'^\d+:\d+$', p):
+                    # Port range
+                    self.multi = True
+                    ran = p.split(':')
+                    if len(ran) != 2:
+                        raise UFWError(err_msg)
+                    for q in ran:
+                        if int(q) < 1 or int(q) > 65535:
+                            raise UFWError(err_msg)
+                    if int(ran[0]) >= int(ran[1]):
+                        raise UFWError(err_msg)
+                elif re.match('^\d+$', p):
+                    if int(p) < 1 or int(p) > 65535:
+                        raise UFWError(err_msg)
+                elif re.match(r'^\w[\w\-]+', p):
+                    try:
+                        p = socket.getservbyname(p)
+                    except Exception, (error):
+                        raise UFWError(err_msg)
+                else:
+                    raise UFWError(err_msg)
+
+                if tmp:
+                    tmp += "," + p
+                else:
+                    tmp = p
+
+            port = tmp
 
         if loc == "src":
             self.sport = str(port)
@@ -182,6 +229,16 @@ class UFWRule:
             except:
                 err_msg = _("Could not normalize destination address")
                 raise UFWError(err_msg)
+
+        if self.dport:
+            ports = self.dport.split(',')
+            ports.sort()
+            self.dport = ','.join(ports)
+            
+        if self.sport:
+            ports = self.sport.split(',')
+            ports.sort()
+            self.sport = ','.join(ports)
 
         if changed:
             self.updated = changed

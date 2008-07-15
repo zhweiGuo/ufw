@@ -92,4 +92,18 @@ for i in $(seq 0 16 255); do
     do_cmd "0" null --dry-run allow from 10.0.0.1/$i.$i.$i.$i
 done
 
+echo "Multiports:" >> $TESTTMP/result
+do_cmd "0" --dry-run allow from 192.168.0/0 port 34,35 proto tcp
+do_cmd "0" --dry-run allow from 192.168.0/0 port 34,35:39 proto udp
+do_cmd "0" --dry-run allow from 192.168.0/0 port 35:39 proto tcp
+do_cmd "0" --dry-run allow from 192.168.0/0 port 23,21,15:19,22 proto udp
+do_cmd "0" --dry-run allow from 192.168.0/0 port 34,35 $k $n port 24 proto tcp
+do_cmd "0" --dry-run allow from 192.168.0/0 port 34,35:39 $k $n port 24 proto udp
+do_cmd "0" --dry-run allow to ::1 port 35:39 $k $n port 24 proto tcp
+do_cmd "0" --dry-run allow to ::1 port 23,21,15:19,22 $k $n port 24 proto udp
+do_cmd "0" --dry-run allow to ::1 port 34,35 $k $n port 24:26 proto tcp
+do_cmd "0" --dry-run allow to ::1 port 34,35:39 $k $n port 24:26 proto udp
+do_cmd "0" --dry-run allow to ::1 port 35:39 $k $n port 24:26 proto tcp
+do_cmd "0" --dry-run allow to ::1 port 23,21,15:19,22 $k $n port 24:26 proto udp
+
 exit 0

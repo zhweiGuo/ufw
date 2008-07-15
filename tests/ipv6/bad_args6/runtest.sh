@@ -141,4 +141,37 @@ do_cmd "1" null --dry-run allow to any port 23 from any port tftp proto tcp
 do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto udp
 do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
 
+echo "TESTING BAD MULTIPORTS" >> $TESTTMP/result
+for i in allow deny limit; do
+    for j in from to; do
+        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
+        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp
+        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:36 proto tcp
+        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:36 proto udp
+        do_cmd "1" null --dry-run $i $j any port 20,21
+        do_cmd "1" null --dry-run $i $j any port 20,2L
+        do_cmd "1" null --dry-run $i $j any port 2o,21
+        do_cmd "1" null --dry-run $i $j any port 20, proto udp
+        do_cmd "1" null --dry-run $i $j any port ,20 proto tcp
+        do_cmd "1" null --dry-run $i $j any port ,20, proto udp
+        do_cmd "1" null --dry-run $i $j any port 20: proto tcp
+        do_cmd "1" null --dry-run $i $j any port :20 proto udp
+        do_cmd "1" null --dry-run $i $j any port :20: proto tcp
+        do_cmd "1" null --dry-run $i $j any port 20:65536 proto udp
+        do_cmd "1" null --dry-run $i $j any port 0:65 proto tcp
+        do_cmd "1" null --dry-run $i $j any port ,20:24 proto udp
+        do_cmd "1" null --dry-run $i $j any port 20:24, proto tcp
+        do_cmd "1" null --dry-run $i $j any port ,20:24, proto udp
+        do_cmd "1" null --dry-run $i $j any port 24:20 proto tcp
+        do_cmd "1" null --dry-run $i $j any port 2A:20 proto tcp
+        do_cmd "1" null --dry-run $i $j any port 24:2o proto tcp
+    done
+
+    do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
+    do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp
+    do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
+    do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
+done
+
+
 exit 0
