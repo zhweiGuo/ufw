@@ -9,7 +9,10 @@ ufw (0.19) UNRELEASED; urgency=low
   * documentation updates (LP: #247177)
   * implement port ranges (LP: #231103)
   * fix initscript to properly set default DROP when ipv6 is available and
-    but set to 'no' in /etc/default/ufw (LP: #251355)
+    set to 'no' in /etc/default/ufw (LP: #251355)
+  * don't give confusing output when ipv6 and/or ip6_tables is not
+    available (LP: #194844)
+  * update ucf historical checksums to include those in 0.16.2
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jul 2008 16:22:45 -0400
 
