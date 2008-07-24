@@ -177,6 +177,16 @@ rules, add the more specific rules first with more general rules later.
 its command interface, but instead provides an easy way to add or remove
 simple rules. It is currently mainly used for host-based firewalls.
 .PP
+The status command shows basic information about the state of the firewall, as
+well as rules managed via the \fBufw\fR command. It does not show rules from the
+rules files in #CONFIG_PREFIX#/ufw. To see the complete state of the firewall,
+users can use:
+
+  iptables -n -L
+  ip6tables -n -L
+
+See the \fBiptables\fR and \fBip6tables\fR documentation for more details.
+.PP
 Currently, \fBufw\fR is a front-end for \fBiptables-restore\fR, with its
 rules saved in #CONFIG_PREFIX#/ufw/before.rules, #CONFIG_PREFIX#/ufw/after.rules
 and #STATE_PREFIX#/user.rules. Administrators can customize \fBbefore.rules\fR

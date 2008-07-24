@@ -1,6 +1,5 @@
 ufw (0.19) UNRELEASED; urgency=low
 
-  * bump version
   * don't modify the chains when --dry-run is specified (LP: #247352)
   * add dotted netmask support
   * don't have util.py import common.py
@@ -13,6 +12,7 @@ ufw (0.19) UNRELEASED; urgency=low
   * don't give confusing output when ipv6 and/or ip6_tables is not
     available (LP: #194844)
   * update ucf historical checksums to include those in 0.16.2
+  * update manpage for 'status' clarifications (LP: #251153)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jul 2008 16:22:45 -0400
 
