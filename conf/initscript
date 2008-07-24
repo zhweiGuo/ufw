@@ -46,17 +46,17 @@ start)
         done
 
         execs="iptables"
+
+        # IPv6 setup
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
-            if [ -e "/proc/sys/net/ipv6" ]; then
-                execs="$execs ip6tables"
-            elif modprobe ipv6 ; then
+            if ip6tables -L INPUT >/dev/null 2>&1; then
                 execs="$execs ip6tables"
             else
                 log_action_cont_msg "Problem loading ipv6 (skipping)"
             fi
         else
-            if [ -e "/proc/sys/net/ipv6" ]; then
-                # if ipv6 disabled but loaded into the kernel, then
+            if ip6tables -L INPUT >/dev/null 2>&1; then
+                # IPv6 support disabled but available in the kernel, so
                 # default DROP and accept all on loopback
                 ip6tables -F || error="yes"
                 ip6tables -X || error="yes"
@@ -172,7 +172,7 @@ stop)
     error=""
 
     execs="iptables"
-    if [ -e "/proc/sys/net/ipv6" ]; then
+    if ip6tables -L INPUT >/dev/null 2>&1; then
         execs="$execs ip6tables"
     fi
 

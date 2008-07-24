@@ -303,25 +303,6 @@ COMMIT
             if rc != 0:
                 raise UFWError(err_msg + " init script")
 
-        # When ipv6 not enabled, just enable it on loopback
-        if not self.use_ipv6() and os.path.exists("/proc/sys/net/ipv6"):
-            ipv6conf = '''*filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT DROP [0:0]
-
--A INPUT -i lo -j ACCEPT
--A OUTPUT -o lo -j ACCEPT
-
-COMMIT
-'''
-            if not self.dryrun:
-                (rc, out) = cmd_pipe(['echo', ipv6conf], ['ip6tables-restore'])
-                if rc != 0:
-                    # Don't error here, as the user may have disabled ipv6
-                    # and doesn't have ipv6 support
-                    warn(err_msg + " ip6tables")
-
     def _need_reload(self, v6):
         '''Check if loaded rules are consistent with written rules'''
         if self.dryrun:
