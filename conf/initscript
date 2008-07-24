@@ -54,6 +54,21 @@ start)
             else
                 log_action_cont_msg "Problem loading ipv6 (skipping)"
             fi
+        else
+            if [ -e "/proc/sys/net/ipv6" ]; then
+                # if ipv6 disabled but loaded into the kernel, then
+                # default DROP and accept all on loopback
+                ip6tables -F || error="yes"
+                ip6tables -X || error="yes"
+                ip6tables -P INPUT DROP || error="yes"
+                ip6tables -P OUTPUT DROP || error="yes"
+                ip6tables -P FORWARD DROP || error="yes"
+                ip6tables -A INPUT -i lo -j ACCEPT || error="yes"
+                ip6tables -A OUTPUT -o lo -j ACCEPT || error="yes"
+                if [ "$error" = "yes" ]; then
+                    log_action_cont_msg "Problem setting default IPv6 policy"
+                fi
+            fi
         fi
 
         for exe in $execs
@@ -116,7 +131,7 @@ start)
             $exe -A ufw${type}-before-input -j RETURN || error="yes"
             $exe -A ufw${type}-before-output -j RETURN || error="yes"
             $exe -A ufw${type}-before-forward -j RETURN || error="yes"
-        
+
             # setup ufw${type}-after-* chains
             $exe -N ufw${type}-after-input || error="yes"
             $exe -N ufw${type}-after-output || error="yes"
