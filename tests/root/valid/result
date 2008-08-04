@@ -1932,12 +1932,76 @@ Rules updated
 ### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
 -A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
 
-259: delete allow from 111.12.34.2/4
+259: delete allow to 111.12.34.2/4
 WARN: Checks disabled
 WARN: Rule changed after normalization
 Rules updated
 
 
-### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
--A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
+260: allow from 111.12.34.2/4
+WARN: Checks disabled
+WARN: Rule changed after normalization
+Rules updated
+
+
+### tuple ### allow any any 0.0.0.0/0 any 96.0.0.0/4
+-A ufw-user-input -s 96.0.0.0/4 -j ACCEPT
+
+261: delete allow from 96.0.0.0/4
+WARN: Checks disabled
+Rules updated
+
+
+TESTING MULTIPORT
+262: allow to 192.168.0.1 port 80:83 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 80:83 192.168.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 80:83 -d 192.168.0.1 -j ACCEPT
+
+263: delete allow to 192.168.0.1 port 80:83 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+264: allow to 192.168.0.1 port 80:83,22 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22,80:83 192.168.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 22,80:83 -d 192.168.0.1 -j ACCEPT
+
+265: delete allow to 192.168.0.1 port 80:83,22 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+266: allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 22 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow tcp 22 192.168.0.2 35:39 192.168.0.1
+-A ufw-user-input -p tcp -m multiport --dport 22 -m multiport --sport 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+
+267: delete allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 22 proto tcp
+WARN: Checks disabled
+Rules updated
+
+
+268: allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24:26 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -j ACCEPT
+
+269: delete allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+WARN: Checks disabled
+Rules updated
+
 

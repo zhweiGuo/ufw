@@ -403,7 +403,29 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 echo "LP bug 237446" >> $TESTTMP/result
 do_cmd "0" allow to 111.12.34.2/4
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-do_cmd "0" delete allow from 111.12.34.2/4
+do_cmd "0" delete allow to 111.12.34.2/4
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" allow from 111.12.34.2/4
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow from 96.0.0.0/4
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+echo "TESTING MULTIPORT" >> $TESTTMP/result
+do_cmd "0" allow to 192.168.0.1 port 80:83 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow to 192.168.0.1 port 80:83 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" allow to 192.168.0.1 port 80:83,22 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow to 192.168.0.1 port 80:83,22 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 22 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 22 proto tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow to any port 23,21,15:19,22 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 exit 0
