@@ -4785,34 +4785,8 @@ COMMIT
 Rules updated
 
 
-LP bug 237446
-208: --dry-run allow to 111.12.34.2/4
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
--A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
-
-### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-COMMIT
-WARN: Rule changed after normalization
-Rules updated
-
-
 ISP style
-209: --dry-run allow from 192.168.0.2/255.255.0.2
+208: --dry-run allow from 192.168.0.2/255.255.0.2
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4837,7 +4811,7 @@ Rules updated
 
 
 Multiports:
-210: --dry-run allow from 192.168.0.1 port 34,35 proto tcp
+209: --dry-run allow from 192.168.0.1 port 34,35 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4848,7 +4822,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 34,35 192.168.0.1
--A ufw-user-input -p tcp -m multiport --sport 34,35 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --sports 34,35 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4861,7 +4835,7 @@ COMMIT
 Rules updated
 
 
-211: --dry-run allow from 192.168.0.1 port 34,35:39 proto udp
+210: --dry-run allow from 192.168.0.1 port 34,35:39 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4872,7 +4846,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 34,35:39 192.168.0.1
--A ufw-user-input -p udp -m multiport --sport 34,35:39 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --sports 34,35:39 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4885,7 +4859,7 @@ COMMIT
 Rules updated
 
 
-212: --dry-run allow from 192.168.0.1 port 35:39 proto tcp
+211: --dry-run allow from 192.168.0.1 port 35:39 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4896,7 +4870,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 35:39 192.168.0.1
--A ufw-user-input -p tcp -m multiport --sport 35:39 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --sports 35:39 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4909,7 +4883,7 @@ COMMIT
 Rules updated
 
 
-213: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 proto udp
+212: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4920,7 +4894,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23 192.168.0.1
--A ufw-user-input -p udp -m multiport --sport 15:19,21,22,23 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4933,7 +4907,7 @@ COMMIT
 Rules updated
 
 
-214: --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24 proto tcp
+213: --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4944,7 +4918,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 192.168.0.2 34,35 192.168.0.1
--A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4957,7 +4931,7 @@ COMMIT
 Rules updated
 
 
-215: --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24 proto udp
+214: --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4968,7 +4942,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 192.168.0.2 34,35:39 192.168.0.1
--A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -4981,7 +4955,7 @@ COMMIT
 Rules updated
 
 
-216: --dry-run allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 24 proto tcp
+215: --dry-run allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4992,7 +4966,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 192.168.0.2 35:39 192.168.0.1
--A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5005,7 +4979,7 @@ COMMIT
 Rules updated
 
 
-217: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 to 192.168.0.2 port 24 proto udp
+216: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 to 192.168.0.2 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5016,7 +4990,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 192.168.0.2 15:19,21,22,23 192.168.0.1
--A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5029,7 +5003,7 @@ COMMIT
 Rules updated
 
 
-218: --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24:26 proto tcp
+217: --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5040,7 +5014,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 192.168.0.2 34,35 192.168.0.1
--A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5053,7 +5027,7 @@ COMMIT
 Rules updated
 
 
-219: --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24:26 proto udp
+218: --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5064,7 +5038,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 192.168.0.2 34,35:39 192.168.0.1
--A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5077,7 +5051,7 @@ COMMIT
 Rules updated
 
 
-220: --dry-run allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 24:26 proto tcp
+219: --dry-run allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5088,7 +5062,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 192.168.0.2 35:39 192.168.0.1
--A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5101,7 +5075,7 @@ COMMIT
 Rules updated
 
 
-221: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 to 192.168.0.2 port 24:26 proto udp
+220: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 to 192.168.0.2 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5112,7 +5086,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 192.168.0.2 15:19,21,22,23 192.168.0.1
--A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5125,7 +5099,7 @@ COMMIT
 Rules updated
 
 
-222: --dry-run allow to 192.168.0.1 port 34,35 proto tcp
+221: --dry-run allow to 192.168.0.1 port 34,35 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5136,7 +5110,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 192.168.0.1 any 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -d 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5149,7 +5123,7 @@ COMMIT
 Rules updated
 
 
-223: --dry-run allow to 192.168.0.1 port 34,35:39 proto udp
+222: --dry-run allow to 192.168.0.1 port 34,35:39 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5160,7 +5134,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 192.168.0.1 any 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -d 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5173,7 +5147,7 @@ COMMIT
 Rules updated
 
 
-224: --dry-run allow to 192.168.0.1 port 35:39 proto tcp
+223: --dry-run allow to 192.168.0.1 port 35:39 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5184,7 +5158,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 192.168.0.1 any 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -d 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5197,7 +5171,7 @@ COMMIT
 Rules updated
 
 
-225: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 proto udp
+224: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5208,7 +5182,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 192.168.0.1 any 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -d 192.168.0.1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5221,7 +5195,7 @@ COMMIT
 Rules updated
 
 
-226: --dry-run allow to 192.168.0.1 port 34,35 from 192.168.0.2 port 24 proto tcp
+225: --dry-run allow to 192.168.0.1 port 34,35 from 192.168.0.2 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5232,7 +5206,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 192.168.0.1 24 192.168.0.2
--A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5245,7 +5219,7 @@ COMMIT
 Rules updated
 
 
-227: --dry-run allow to 192.168.0.1 port 34,35:39 from 192.168.0.2 port 24 proto udp
+226: --dry-run allow to 192.168.0.1 port 34,35:39 from 192.168.0.2 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5256,7 +5230,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 192.168.0.1 24 192.168.0.2
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5269,7 +5243,7 @@ COMMIT
 Rules updated
 
 
-228: --dry-run allow to 192.168.0.1 port 35:39 from 192.168.0.2 port 24 proto tcp
+227: --dry-run allow to 192.168.0.1 port 35:39 from 192.168.0.2 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5280,7 +5254,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 192.168.0.1 24 192.168.0.2
--A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5293,7 +5267,7 @@ COMMIT
 Rules updated
 
 
-229: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 from 192.168.0.2 port 24 proto udp
+228: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 from 192.168.0.2 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5304,7 +5278,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 192.168.0.1 24 192.168.0.2
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5317,7 +5291,7 @@ COMMIT
 Rules updated
 
 
-230: --dry-run allow to 192.168.0.1 port 34,35 from 192.168.0.2 port 24:26 proto tcp
+229: --dry-run allow to 192.168.0.1 port 34,35 from 192.168.0.2 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5328,7 +5302,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 192.168.0.1 24:26 192.168.0.2
--A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5341,7 +5315,7 @@ COMMIT
 Rules updated
 
 
-231: --dry-run allow to 192.168.0.1 port 34,35:39 from 192.168.0.2 port 24:26 proto udp
+230: --dry-run allow to 192.168.0.1 port 34,35:39 from 192.168.0.2 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5352,7 +5326,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 192.168.0.1 24:26 192.168.0.2
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5365,7 +5339,7 @@ COMMIT
 Rules updated
 
 
-232: --dry-run allow to 192.168.0.1 port 35:39 from 192.168.0.2 port 24:26 proto tcp
+231: --dry-run allow to 192.168.0.1 port 35:39 from 192.168.0.2 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5376,7 +5350,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 192.168.0.1 24:26 192.168.0.2
--A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5389,7 +5363,7 @@ COMMIT
 Rules updated
 
 
-233: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 from 192.168.0.2 port 24:26 proto udp
+232: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 from 192.168.0.2 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5400,7 +5374,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 192.168.0.1 24:26 192.168.0.2
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5413,7 +5387,7 @@ COMMIT
 Rules updated
 
 
-234: --dry-run allow from any port 34,35 proto tcp
+233: --dry-run allow from any port 34,35 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5424,7 +5398,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 34,35 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --sport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5437,7 +5411,7 @@ COMMIT
 Rules updated
 
 
-235: --dry-run allow from any port 34,35:39 proto udp
+234: --dry-run allow from any port 34,35:39 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5448,7 +5422,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 34,35:39 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5461,7 +5435,7 @@ COMMIT
 Rules updated
 
 
-236: --dry-run allow from any port 35:39 proto tcp
+235: --dry-run allow from any port 35:39 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5472,7 +5446,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 35:39 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --sport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5485,7 +5459,7 @@ COMMIT
 Rules updated
 
 
-237: --dry-run allow from any port 23,21,15:19,22 proto udp
+236: --dry-run allow from any port 23,21,15:19,22 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5496,7 +5470,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5509,7 +5483,7 @@ COMMIT
 Rules updated
 
 
-238: --dry-run allow from any port 34,35 to any port 24 proto tcp
+237: --dry-run allow from any port 34,35 to any port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5520,7 +5494,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 0.0.0.0/0 34,35 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5533,7 +5507,7 @@ COMMIT
 Rules updated
 
 
-239: --dry-run allow from any port 34,35:39 to any port 24 proto udp
+238: --dry-run allow from any port 34,35:39 to any port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5544,7 +5518,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 0.0.0.0/0 34,35:39 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5557,7 +5531,7 @@ COMMIT
 Rules updated
 
 
-240: --dry-run allow from any port 35:39 to any port 24 proto tcp
+239: --dry-run allow from any port 35:39 to any port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5568,7 +5542,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 0.0.0.0/0 35:39 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5581,7 +5555,7 @@ COMMIT
 Rules updated
 
 
-241: --dry-run allow from any port 23,21,15:19,22 to any port 24 proto udp
+240: --dry-run allow from any port 23,21,15:19,22 to any port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5592,7 +5566,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5605,7 +5579,7 @@ COMMIT
 Rules updated
 
 
-242: --dry-run allow from any port 34,35 to any port 24:26 proto tcp
+241: --dry-run allow from any port 34,35 to any port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5616,7 +5590,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 0.0.0.0/0 34,35 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5629,7 +5603,7 @@ COMMIT
 Rules updated
 
 
-243: --dry-run allow from any port 34,35:39 to any port 24:26 proto udp
+242: --dry-run allow from any port 34,35:39 to any port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5640,7 +5614,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 0.0.0.0/0 34,35:39 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5653,7 +5627,7 @@ COMMIT
 Rules updated
 
 
-244: --dry-run allow from any port 35:39 to any port 24:26 proto tcp
+243: --dry-run allow from any port 35:39 to any port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5664,7 +5638,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 0.0.0.0/0 35:39 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5677,7 +5651,7 @@ COMMIT
 Rules updated
 
 
-245: --dry-run allow from any port 23,21,15:19,22 to any port 24:26 proto udp
+244: --dry-run allow from any port 23,21,15:19,22 to any port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5688,7 +5662,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5701,7 +5675,7 @@ COMMIT
 Rules updated
 
 
-246: --dry-run allow to any port 34,35 proto tcp
+245: --dry-run allow to any port 34,35 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5712,7 +5686,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5725,7 +5699,7 @@ COMMIT
 Rules updated
 
 
-247: --dry-run allow to any port 34,35:39 proto udp
+246: --dry-run allow to any port 34,35:39 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5736,7 +5710,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5749,7 +5723,7 @@ COMMIT
 Rules updated
 
 
-248: --dry-run allow to any port 35:39 proto tcp
+247: --dry-run allow to any port 35:39 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5760,7 +5734,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5773,7 +5747,7 @@ COMMIT
 Rules updated
 
 
-249: --dry-run allow to any port 23,21,15:19,22 proto udp
+248: --dry-run allow to any port 23,21,15:19,22 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5784,7 +5758,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5797,7 +5771,7 @@ COMMIT
 Rules updated
 
 
-250: --dry-run allow to any port 34,35 from any port 24 proto tcp
+249: --dry-run allow to any port 34,35 from any port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5808,7 +5782,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5821,7 +5795,7 @@ COMMIT
 Rules updated
 
 
-251: --dry-run allow to any port 34,35:39 from any port 24 proto udp
+250: --dry-run allow to any port 34,35:39 from any port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5832,7 +5806,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5845,7 +5819,7 @@ COMMIT
 Rules updated
 
 
-252: --dry-run allow to any port 35:39 from any port 24 proto tcp
+251: --dry-run allow to any port 35:39 from any port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5856,7 +5830,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5869,7 +5843,7 @@ COMMIT
 Rules updated
 
 
-253: --dry-run allow to any port 23,21,15:19,22 from any port 24 proto udp
+252: --dry-run allow to any port 23,21,15:19,22 from any port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5880,7 +5854,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5893,7 +5867,7 @@ COMMIT
 Rules updated
 
 
-254: --dry-run allow to any port 34,35 from any port 24:26 proto tcp
+253: --dry-run allow to any port 34,35 from any port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5904,7 +5878,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5917,7 +5891,7 @@ COMMIT
 Rules updated
 
 
-255: --dry-run allow to any port 34,35:39 from any port 24:26 proto udp
+254: --dry-run allow to any port 34,35:39 from any port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5928,7 +5902,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5941,7 +5915,7 @@ COMMIT
 Rules updated
 
 
-256: --dry-run allow to any port 35:39 from any port 24:26 proto tcp
+255: --dry-run allow to any port 35:39 from any port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5952,7 +5926,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -5965,7 +5939,7 @@ COMMIT
 Rules updated
 
 
-257: --dry-run allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+256: --dry-run allow to any port 23,21,15:19,22 from any port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -5976,7 +5950,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN

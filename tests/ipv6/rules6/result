@@ -1855,7 +1855,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any ::/0 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p tcp -m multiport --sport 34,35 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --sports 34,35 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1874,7 +1874,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any ::/0 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p udp -m multiport --sport 34,35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --sports 34,35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1893,7 +1893,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any ::/0 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p tcp -m multiport --sport 35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --sports 35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1912,7 +1912,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any ::/0 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p udp -m multiport --sport 15:19,21,22,23 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --sports 15:19,21,22,23 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1931,7 +1931,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1950,7 +1950,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1969,7 +1969,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -1988,7 +1988,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2007,7 +2007,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2026,7 +2026,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2045,7 +2045,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2064,7 +2064,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
--A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2083,7 +2083,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
--A ufw6-user-input -p tcp -m multiport --dport 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2102,7 +2102,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
--A ufw6-user-input -p udp -m multiport --dport 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2121,7 +2121,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
--A ufw6-user-input -p tcp -m multiport --dport 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2140,7 +2140,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
--A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2159,7 +2159,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2178,7 +2178,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2197,7 +2197,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2216,7 +2216,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2235,7 +2235,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2254,7 +2254,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2273,7 +2273,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2292,7 +2292,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
--A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2313,7 +2313,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 34,35 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --sport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2330,7 +2330,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp any ::/0 34,35 ::/0
--A ufw6-user-input -p tcp -m multiport --sport 34,35 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2352,7 +2352,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 34,35:39 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2369,7 +2369,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp any ::/0 34,35:39 ::/0
--A ufw6-user-input -p udp -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2391,7 +2391,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp any 0.0.0.0/0 35:39 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --sport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2408,7 +2408,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp any ::/0 35:39 ::/0
--A ufw6-user-input -p tcp -m multiport --sport 35:39 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2430,7 +2430,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2447,7 +2447,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp any ::/0 15:19,21,22,23 ::/0
--A ufw6-user-input -p udp -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2469,7 +2469,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 0.0.0.0/0 34,35 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2486,7 +2486,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 24 ::/0 34,35 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2508,7 +2508,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 0.0.0.0/0 34,35:39 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2525,7 +2525,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 24 ::/0 34,35:39 ::/0
--A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2547,7 +2547,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24 0.0.0.0/0 35:39 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2564,7 +2564,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 24 ::/0 35:39 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2586,7 +2586,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2603,7 +2603,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 24 ::/0 15:19,21,22,23 ::/0
--A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2625,7 +2625,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 0.0.0.0/0 34,35 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2642,7 +2642,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 ::/0 34,35 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2664,7 +2664,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 0.0.0.0/0 34,35:39 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2681,7 +2681,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 24:26 ::/0 34,35:39 ::/0
--A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2703,7 +2703,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 0.0.0.0/0 35:39 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2720,7 +2720,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 24:26 ::/0 35:39 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2742,7 +2742,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 24:26 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2759,7 +2759,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 24:26 ::/0 15:19,21,22,23 ::/0
--A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2781,7 +2781,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2798,7 +2798,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 ::/0 any ::/0
--A ufw6-user-input -p tcp -m multiport --dport 34,35 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2820,7 +2820,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2837,7 +2837,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 ::/0 any ::/0
--A ufw6-user-input -p udp -m multiport --dport 34,35:39 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2859,7 +2859,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2876,7 +2876,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 ::/0 any ::/0
--A ufw6-user-input -p tcp -m multiport --dport 35:39 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2898,7 +2898,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2915,7 +2915,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 ::/0 any ::/0
--A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2937,7 +2937,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2954,7 +2954,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 ::/0 24 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -2976,7 +2976,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -2993,7 +2993,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 ::/0 24 ::/0
--A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -3015,7 +3015,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -3032,7 +3032,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 ::/0 24 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -3054,7 +3054,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -3071,7 +3071,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 ::/0 24 ::/0
--A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -3093,7 +3093,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -3110,7 +3110,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 34,35 ::/0 24:26 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -3132,7 +3132,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -3149,7 +3149,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 34,35:39 ::/0 24:26 ::/0
--A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -3171,7 +3171,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -3188,7 +3188,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow tcp 35:39 ::/0 24:26 ::/0
--A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -j ACCEPT
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN
@@ -3210,7 +3210,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24:26 0.0.0.0/0
--A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-input -j RETURN
@@ -3227,7 +3227,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### allow udp 15:19,21,22,23 ::/0 24:26 ::/0
--A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 -A ufw6-user-input -j RETURN

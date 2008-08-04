@@ -163,9 +163,6 @@ do_cmd "0" --dry-run allow from 192.168.0.0/16
 do_cmd "0" --dry-run allow from 192.168.0.1/32
 do_cmd "0" --dry-run allow from 192.168.0.1/32 to 192.168.0.2/32
 
-echo "LP bug 237446" >> $TESTTMP/result
-do_cmd "0" --dry-run allow to 111.12.34.2/4
-
 echo "ISP style" >> $TESTTMP/result
 do_cmd "0" --dry-run allow from 192.168.0.2/255.255.0.2
 

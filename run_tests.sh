@@ -15,7 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 testdir="tests"
-tests="installation bad good util"
+tests="installation bad good bugs util"
 CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
@@ -52,6 +52,12 @@ fi
 skipped=0
 errors=0
 numtests=0
+
+statsdir=`mktemp -d`
+trap "rm -rf $statsdir" EXIT HUP INT QUIT TERM
+export statsdir
+echo "0" > $statsdir/individual
+
 for class in $tests
 do
 	for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
@@ -68,11 +74,11 @@ do
 		echo "Performing tests '$class/$thistest'"
 
 		if [ ! -x "$CUR/$testdir/$class/$thistest/runtest.sh" ]; then
-			skipped=$(($skipped + 1)) 
+			skipped=$(($skipped + 1))
 			echo "    WARNING: couldn't find '$CUR/$testdir/$class/$thistest/runtest.sh' (skipping)"
 			continue
 		fi
-			
+
 		echo "- installing"
 		if [ -d "$testdir/testarea" ]; then
 			rm -rf $testdir/testarea
@@ -102,7 +108,7 @@ do
 			errors=$(($errors + 1))
 		else
 			if [ ! -f "$TESTTMP/result" ]; then
-				skipped=$(($skipped + 1)) 
+				skipped=$(($skipped + 1))
 				echo "    WARNING: couldn't find '$TESTTMP/result' (skipping)"
 				continue
 			else
@@ -111,7 +117,7 @@ do
 				sed -i 's/^options:/Options:/' $TESTTMP/result
 			fi
 			if [ ! -f "$testdir/$class/$thistest/result" ]; then
-				skipped=$(($skipped + 1)) 
+				skipped=$(($skipped + 1))
 				echo "    WARNING: couldn't find '$testdir/$class/$thistest/result' (skipping)"
 				continue
 			fi
@@ -138,13 +144,15 @@ if [ -d "$testdir/testarea" ]; then
 	rm -rf $testdir/testarea
 fi
 
+individual=$(cat $statsdir/individual)
+
 echo ""
 echo "-------"
 echo "Results"
 echo "-------"
-echo "Attempts:      $numtests"
-echo "Skipped:       $skipped"
-echo "Errors:        $errors"
+echo "Attempted test groups:      $numtests ($individual individual tests)"
+echo "Skipped groups:             $skipped"
+echo "Errors:                     $errors"
 
 if [ "$errors" != "0" ]; then
 	exit 1
@@ -152,6 +160,9 @@ fi
 if [ "$skipped" != "0" ]; then
 	exit 2
 fi
+
+# cleanup
+rm -rf $statsdir
 
 exit 0
 

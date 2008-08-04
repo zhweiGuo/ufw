@@ -73,13 +73,13 @@ class UFWRule:
             if self.multi:
                 str += " -m multiport"
                 if self.dport != "any" and self.sport != "any":
-                    str += " --dport " + self.dport
+                    str += " --dports " + self.dport
                     str += " -m multiport"
-                    str += " --sport " + self.sport
+                    str += " --sports " + self.sport
                 elif self.dport != "any":
-                    str += " --dport " + self.dport
+                    str += " --dports " + self.dport
                 elif self.sport != "any":
-                    str += " --sport " + self.sport
+                    str += " --sports " + self.sport
 
         if self.dst != "0.0.0.0/0" and self.dst != "::/0":
             str += " -d " + self.dst

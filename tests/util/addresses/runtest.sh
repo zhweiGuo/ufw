@@ -37,6 +37,10 @@ do_cmd() {
         let count=count+1
         echo "" >> $TESTTMP/result
         echo "" >> $TESTTMP/result
+
+        individual=$(cat $statsdir/individual)
+        let individual=individual+1
+        echo $individual > $statsdir/individual
 }
 
 # if running manually, do:
