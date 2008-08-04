@@ -1845,3 +1845,1396 @@ COMMIT
 Rules updated (v6)
 
 
+Multiports:
+134: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any ::/0 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p tcp -m multiport --sport 34,35 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+135: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp any ::/0 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p udp -m multiport --sport 34,35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+136: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any ::/0 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p tcp -m multiport --sport 35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+137: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp any ::/0 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p udp -m multiport --sport 15:19,21,22,23 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+138: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+139: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+140: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+141: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+142: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+143: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+144: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+145: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341
+-A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+146: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+147: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
+-A ufw6-user-input -p udp -m multiport --dport 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+148: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+149: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0
+-A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+150: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+151: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+152: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+153: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+154: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+155: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+156: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+157: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+-A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated (v6)
+
+
+158: --dry-run allow from any port 34,35 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any 0.0.0.0/0 34,35 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --sport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any ::/0 34,35 ::/0
+-A ufw6-user-input -p tcp -m multiport --sport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+159: --dry-run allow from any port 34,35:39 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp any 0.0.0.0/0 34,35:39 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --sport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp any ::/0 34,35:39 ::/0
+-A ufw6-user-input -p udp -m multiport --sport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+160: --dry-run allow from any port 35:39 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any 0.0.0.0/0 35:39 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --sport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp any ::/0 35:39 ::/0
+-A ufw6-user-input -p tcp -m multiport --sport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+161: --dry-run allow from any port 23,21,15:19,22 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --sport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp any ::/0 15:19,21,22,23 ::/0
+-A ufw6-user-input -p udp -m multiport --sport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+162: --dry-run allow from any port 34,35 to any port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24 0.0.0.0/0 34,35 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24 ::/0 34,35 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+163: --dry-run allow from any port 34,35:39 to any port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24 0.0.0.0/0 34,35:39 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24 ::/0 34,35:39 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+164: --dry-run allow from any port 35:39 to any port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24 0.0.0.0/0 35:39 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24 ::/0 35:39 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 24 -m multiport --sport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+165: --dry-run allow from any port 23,21,15:19,22 to any port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24 ::/0 15:19,21,22,23 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 24 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+166: --dry-run allow from any port 34,35 to any port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24:26 0.0.0.0/0 34,35 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24:26 ::/0 34,35 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+167: --dry-run allow from any port 34,35:39 to any port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24:26 0.0.0.0/0 34,35:39 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24:26 ::/0 34,35:39 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+168: --dry-run allow from any port 35:39 to any port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24:26 0.0.0.0/0 35:39 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 24:26 ::/0 35:39 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 24:26 -m multiport --sport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+169: --dry-run allow from any port 23,21,15:19,22 to any port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24:26 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 24:26 ::/0 15:19,21,22,23 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 24:26 -m multiport --sport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+170: --dry-run allow to any port 34,35 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 ::/0 any ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 34,35 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+171: --dry-run allow to any port 34,35:39 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 ::/0 any ::/0
+-A ufw6-user-input -p udp -m multiport --dport 34,35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+172: --dry-run allow to any port 35:39 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 ::/0 any ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 35:39 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+173: --dry-run allow to any port 23,21,15:19,22 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 ::/0 any ::/0
+-A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+174: --dry-run allow to any port 34,35 from any port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 0.0.0.0/0 24 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 ::/0 24 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+175: --dry-run allow to any port 34,35:39 from any port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 0.0.0.0/0 24 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 ::/0 24 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+176: --dry-run allow to any port 35:39 from any port 24 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 0.0.0.0/0 24 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 ::/0 24 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+177: --dry-run allow to any port 23,21,15:19,22 from any port 24 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 ::/0 24 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+178: --dry-run allow to any port 34,35 from any port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 0.0.0.0/0 24:26 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 34,35 ::/0 24:26 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 34,35 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+179: --dry-run allow to any port 34,35:39 from any port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 0.0.0.0/0 24:26 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 34,35:39 ::/0 24:26 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 34,35:39 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+180: --dry-run allow to any port 35:39 from any port 24:26 proto tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 0.0.0.0/0 24:26 0.0.0.0/0
+-A ufw-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 35:39 ::/0 24:26 ::/0
+-A ufw6-user-input -p tcp -m multiport --dport 35:39 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+181: --dry-run allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24:26 0.0.0.0/0
+-A ufw-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow udp 15:19,21,22,23 ::/0 24:26 ::/0
+-A ufw6-user-input -p udp -m multiport --dport 15:19,21,22,23 -m multiport --sport 24:26 -j ACCEPT
+
+### END RULES ###
+-A ufw6-user-input -j RETURN
+-A ufw6-user-output -j RETURN
+-A ufw6-user-forward -j RETURN
+COMMIT
+Rules updated
+Rules updated (v6)
+
+

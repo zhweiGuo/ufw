@@ -75,14 +75,14 @@ do_cmd "0" --dry-run allow from ::1/32 to ::1/128
 
 
 echo "Multiports:" >> $TESTTMP/result
-for i in 2001:db8:3:4:5:6:7:8 any; do
+for i in 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any; do
     for j in from to; do
         k="to"
         if [ "$j" = "to" ]; then
             k="from"
         fi
-        m="$i:1"
-        n="$i:2"
+        m="${i}1"
+        n="${i}2"
         if [ "$i" = "any" ]; then
             m="$i"
             n="$i"

@@ -144,13 +144,9 @@ do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
 echo "TESTING BAD MULTIPORTS" >> $TESTTMP/result
 for i in allow deny limit; do
     for j in from to; do
-        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
-        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp
-        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:36 proto tcp
-        do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:36 proto udp
         do_cmd "1" null --dry-run $i $j any port 20,21
-        do_cmd "1" null --dry-run $i $j any port 20,2L
-        do_cmd "1" null --dry-run $i $j any port 2o,21
+        do_cmd "1" null --dry-run $i $j any port 20,2L proto udp
+        do_cmd "1" null --dry-run $i $j any port 2o,21 proto tcp
         do_cmd "1" null --dry-run $i $j any port 20, proto udp
         do_cmd "1" null --dry-run $i $j any port ,20 proto tcp
         do_cmd "1" null --dry-run $i $j any port ,20, proto udp
@@ -169,8 +165,8 @@ for i in allow deny limit; do
 
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp
-    do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
-    do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
+    do_cmd "1" null --dry-run $i from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
+    do_cmd "1" null --dry-run $i from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto udp
 done
 
 
