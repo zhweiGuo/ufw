@@ -256,7 +256,7 @@ COMMIT
         except Exception:
             raise
         tmp.write(openconf)
-        tmp.close()
+        tmp.flush()
 
         err_msg = _("problem running")
 
@@ -291,7 +291,7 @@ COMMIT
             if rc != 0:
                 raise UFWError(err_msg + " ip6tables")
 
-        os.unlink(tmp.fileno())
+        tmp.close()
 
     def start_firewall(self):
         '''Starts the firewall'''
