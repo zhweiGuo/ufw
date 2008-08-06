@@ -13,6 +13,7 @@ ufw (0.19) UNRELEASED; urgency=low
     available (LP: #194844)
   * update ucf historical checksums to include those in 0.16.2
   * update manpage for 'status' clarifications (LP: #251153)
+  * update before*.rules to count outgoing packets on lo (LP: #255092)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 07 Jul 2008 16:22:45 -0400
 

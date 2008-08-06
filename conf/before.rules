@@ -19,7 +19,7 @@
 
 # allow all on loopback
 -A ufw-before-input -i lo -j ACCEPT
--A ufw-before-output -i lo -j ACCEPT
+-A ufw-before-output -o lo -j ACCEPT
 
 # connection tracking rules
 -A ufw-before-input -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
