@@ -150,9 +150,9 @@ echo ""
 echo "-------"
 echo "Results"
 echo "-------"
-echo "Attempted test groups:      $numtests ($individual individual tests)"
-echo "Skipped groups:             $skipped"
-echo "Errors:                     $errors"
+echo "Attempted:           $numtests ($individual individual tests)"
+echo "Skipped:             $skipped"
+echo "Errors:              $errors"
 
 if [ "$errors" != "0" ]; then
 	exit 1
