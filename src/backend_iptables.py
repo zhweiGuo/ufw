@@ -213,7 +213,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         location[loc] += " " + port
 
                     if r.protocol != "any":
-                        location[loc] += ":" + r.protocol
+                        location[loc] += "/" + r.protocol
 
                 if port == "any":
                     if tmp == "0.0.0.0/0":
