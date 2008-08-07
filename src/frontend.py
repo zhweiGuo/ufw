@@ -90,8 +90,17 @@ def parse_command(argv):
             # Short form where only port/proto is given
             try:
                 (port, proto) = ufw.util.parse_port_proto(argv[2])
-                if not re.match('^\d([0-9,:]*\d+)*$', port):
-                    to_service = port
+            except UFWError:
+                err_msg = _("Bad port")
+                raise UFWError(err_msg)
+
+            if not re.match('^\d([0-9,:]*\d+)*$', port):
+                if ',' in port or ':' in port:
+                    err_msg = _("Port ranges must be numeric")
+                    raise UFWError(err_msg)
+                to_service = port
+
+            try:
                 rule.set_protocol(proto)
                 rule.set_port(port, "dst")
                 type = "both"
@@ -177,6 +186,10 @@ def parse_command(argv):
 
                         tmp = argv[i+1]
                         if not re.match('^\d([0-9,:]*\d+)*$', tmp):
+                            if ',' in tmp or ':' in tmp:
+                                err_msg = _("Port ranges must be numeric")
+                                raise UFWError(err_msg)
+
                             if loc == "src":
                                 from_service = tmp
                             else:
@@ -210,20 +223,20 @@ def parse_command(argv):
             try:
                 proto = ufw.util.get_services_proto(to_service)
             except Exception:
-                err_msg = _("Improper rule syntax")
+                err_msg = _("Could not find protocol")
                 raise UFWError(err_msg)
         if from_service != "":
             if proto == "any" or proto == "":
                 try:
                     proto = ufw.util.get_services_proto(from_service)
                 except Exception:
-                    err_msg = _("Improper rule syntax")
+                    err_msg = _("Could not find protocol")
                     raise UFWError(err_msg)
             else:
                 try:
                     tmp = ufw.util.get_services_proto(from_service)
                 except Exception:
-                    err_msg = _("Improper rule syntax")
+                    err_msg = _("Could not find protocol")
                     raise UFWError(err_msg)
                 if proto == "any" or proto == tmp:
                     proto = tmp

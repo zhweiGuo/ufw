@@ -150,9 +150,9 @@ class UFWRule:
                     raise UFWError(err_msg)
 
                 if tmp:
-                    tmp += "," + p
+                    tmp += "," + str(p)
                 else:
-                    tmp = p
+                    tmp = str(p)
 
             port = tmp
 
