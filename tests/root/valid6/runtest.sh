@@ -314,5 +314,12 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 do_cmd "0" delete allow to any port 23,21,15:19,22 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" allow 23,21,15:19,22/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow 23,21,15:19,22/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
 
 exit 0

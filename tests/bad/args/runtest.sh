@@ -145,6 +145,7 @@ do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto udp
 do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
 
 echo "TESTING BAD MULTIPORTS" >> $TESTTMP/result
+# extended syntax
 for i in allow deny limit; do
     for j in from to; do
         do_cmd "1" null --dry-run $i $j any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
@@ -174,6 +175,34 @@ for i in allow deny limit; do
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto udp
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto tcp
+done
+
+# simple syntax
+for i in allow deny limit; do
+    do_cmd "1" --dry-run $i 34,35
+    do_cmd "1" --dry-run $i 34,35:39
+    do_cmd "1" --dry-run $i 35:39
+    do_cmd "1" --dry-run $i 23,21,15:19,22
+
+    for j in tcp udp; do
+        do_cmd "1" null --dry-run $i 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35/$j
+        do_cmd "1" null --dry-run $i 20,2L/$j
+        do_cmd "1" null --dry-run $i 2o,21/$j
+        do_cmd "1" null --dry-run $i 20,/$j
+        do_cmd "1" null --dry-run $i ,20/$j
+        do_cmd "1" null --dry-run $i ,20,/$j
+        do_cmd "1" null --dry-run $i 20:/$j
+        do_cmd "1" null --dry-run $i :20/$j
+        do_cmd "1" null --dry-run $i :20:/$j
+        do_cmd "1" null --dry-run $i 20:65536/$j
+        do_cmd "1" null --dry-run $i 0:65/$j
+        do_cmd "1" null --dry-run $i ,20:24/$j
+        do_cmd "1" null --dry-run $i 20:24,/$j
+        do_cmd "1" null --dry-run $i ,20:24,/$j
+        do_cmd "1" null --dry-run $i 24:20/$j
+        do_cmd "1" null --dry-run $i 2A:20/$j
+        do_cmd "1" null --dry-run $i 24:2o/$j
+    done
 done
 
 exit 0

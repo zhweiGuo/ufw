@@ -427,5 +427,21 @@ do_cmd "0" allow to any port 23,21,15:19,22 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0" delete allow to any port 23,21,15:19,22 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" allow 34,35/tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow 34,35/tcp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" allow 34,35:39/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow 34,35:39/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" deny 35:39/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete deny 35:39/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" deny 23,21,15:19,22/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0" delete deny 23,21,15:19,22/udp
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 exit 0

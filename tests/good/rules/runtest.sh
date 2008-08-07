@@ -34,6 +34,8 @@ do_cmd "0" --dry-run deny proto udp from 1.2.3.4 to any port 514
 do_cmd "0" --dry-run allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 
 echo "SIMPLE" >> $TESTTMP/result
+do_cmd "0" --dry-run allow 1
+do_cmd "0" --dry-run allow 9/udp
 do_cmd "0" --dry-run allow 25
 do_cmd "0" --dry-run allow 25/tcp
 do_cmd "0" --dry-run allow 25/udp
@@ -191,6 +193,17 @@ for i in 192.168.0 any; do
         do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24:26 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24:26 proto tcp
         do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24:26 proto udp
+    done
+done
+
+# simple syntax
+for i in allow deny limit; do
+    for j in tcp udp; do
+	do_cmd "0" --dry-run $i 34,35/$j
+	do_cmd "0" --dry-run $i 34,35:39/$j
+	do_cmd "0" --dry-run $i 35:39/$j
+	do_cmd "0" --dry-run $i 23,21,15:19,22/$j
+	do_cmd "0" --dry-run $i 1,9/$j
     done
 done
 

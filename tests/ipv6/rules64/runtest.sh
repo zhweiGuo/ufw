@@ -106,4 +106,14 @@ do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35
 do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
 do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
 
+# simple syntax
+for i in allow deny limit; do
+    for j in tcp udp; do
+        do_cmd "0" --dry-run $i 34,35/$j
+        do_cmd "0" --dry-run $i 34,35:39/$j
+        do_cmd "0" --dry-run $i 35:39/$j
+        do_cmd "0" --dry-run $i 23,21,15:19,22/$j
+    done
+done
+
 exit 0
