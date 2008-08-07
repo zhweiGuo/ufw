@@ -1,3 +1,9 @@
+ufw (0.20) UNRELEASED; urgency=low
+
+  * bump version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 07 Aug 2008 12:04:05 -0400
+
 ufw (0.19) intrepid; urgency=low
 
   * don't modify the chains when --dry-run is specified (LP: #247352)
