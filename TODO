@@ -6,8 +6,6 @@ working policy?))
 
 Package integration
 
-Support port ranges (2000:2010 and 80,443)
-
 Default allow logging messages aren't correct in after*.rules
 
 
