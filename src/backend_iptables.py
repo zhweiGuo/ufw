@@ -69,7 +69,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def get_default_policy(self):
         '''Get current policy'''
-        rstr = _("Default:") 
+        rstr = _("Default:")
         if self.defaults['default_input_policy'] == "accept":
             rstr += " allow"
         else:
@@ -128,7 +128,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 ufw.util.close_files(fns, False)
             else:
                 ufw.util.close_files(fns)
-    
+
         if level == "off":
             return _("Logging disabled")
         else:
@@ -202,10 +202,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if loc == 'src':
                     port = r.sport
                     tmp = r.src
-                
+
                 if tmp != "0.0.0.0/0" and tmp != "::/0":
                     location[loc] = tmp
-                
+
                 if port != "any":
                     if location[loc] == "":
                         location[loc] = port
@@ -227,7 +227,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if str != "":
             header = "\n\n%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
-            str = header + str 
+            str = header + str
 
         (level, logging_str) = self.get_loglevel()
         policy_str = self.get_default_policy()
@@ -322,16 +322,16 @@ COMMIT
             if rc != 0:
                 debug("_need_reload: forcing reload")
                 return True
-            
+
         return False
 
     def _reload_user_rules(self):
         '''Reload firewall rules file'''
         err_msg = _("problem running")
         if self.dryrun:
-            print "> iptables-restore < " + self.files['rules'] 
+            print "> iptables-restore < " + self.files['rules']
             if self.use_ipv6():
-                print "> ip6tables-restore < " + self.files['rules6'] 
+                print "> ip6tables-restore < " + self.files['rules6']
         else:
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
                                  ['iptables-restore', '-n'])
@@ -406,7 +406,7 @@ COMMIT
             rule.set_protocol('UNKNOWN')
 
         if type == "v6":
-            # ip6tables hack since it doesn't have a space between the 
+            # ip6tables hack since it doesn't have a space between the
             # destination address and the protocol on a large destination
             # address (see Debian bug #464244).
             mashed = fields[4][(len(fields[4]) - 3):]
@@ -427,7 +427,7 @@ COMMIT
                 rule.set_port(fields[6][4:], "dst")
             elif re.match('spt', fields[6]):
                 rule.set_port(fields[6][4:], "src")
-        
+
         if len(fields) >= 8:
             if re.match('dpt', fields[7]):
                 rule.set_port(fields[7][4:], "dst")
@@ -448,9 +448,9 @@ COMMIT
             rule.set_v6(True)
         else:
             rule.set_v6(False)
-        
+
         return rule
-        
+
     def _read_rules(self):
         '''Read in rules that were added by ufw.'''
         rfns = [self.files['rules']]
@@ -593,7 +593,7 @@ COMMIT
                 r.normalize()
             except Exception:
                 raise
-                
+
             ret = UFWRule.match(r, rule)
             if ret == 0 and not found:
                 # If find the rule, add it if it's not to be removed, otherwise
