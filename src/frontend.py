@@ -90,7 +90,7 @@ def parse_command(argv):
             # Short form where only port/proto is given
             try:
                 (port, proto) = ufw.util.parse_port_proto(argv[2])
-                if not re.match('^\d+$', port):
+                if not re.match('^\d([0-9,:]*\d+)*$', port):
                     to_service = port
                 rule.set_protocol(proto)
                 rule.set_port(port, "dst")
@@ -176,7 +176,7 @@ def parse_command(argv):
                             raise UFWError(err_msg)
 
                         tmp = argv[i+1]
-                        if not re.match('^\d[0-9,:]*\d+$', tmp):
+                        if not re.match('^\d([0-9,:]*\d+)*$', tmp):
                             if loc == "src":
                                 from_service = tmp
                             else:
@@ -207,12 +207,24 @@ def parse_command(argv):
     if to_service != "" or from_service != "":
         proto = ""
         if to_service != "":
-            proto = ufw.util.get_services_proto(to_service)
+            try:
+                proto = ufw.util.get_services_proto(to_service)
+            except Exception:
+                err_msg = _("Improper rule syntax")
+                raise UFWError(err_msg)
         if from_service != "":
             if proto == "any" or proto == "":
-                proto = ufw.util.get_services_proto(from_service)
+                try:
+                    proto = ufw.util.get_services_proto(from_service)
+                except Exception:
+                    err_msg = _("Improper rule syntax")
+                    raise UFWError(err_msg)
             else:
-                tmp = ufw.util.get_services_proto(from_service)
+                try:
+                    tmp = ufw.util.get_services_proto(from_service)
+                except Exception:
+                    err_msg = _("Improper rule syntax")
+                    raise UFWError(err_msg)
                 if proto == "any" or proto == tmp:
                     proto = tmp
                 elif tmp == "any":
