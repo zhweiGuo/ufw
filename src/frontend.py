@@ -82,7 +82,7 @@ def parse_command(argv):
     if action == "allow" or action == "deny" or action == "limit":
         if nargs < 3 or nargs > 12:
             raise ValueError()
-        
+
         rule = ufw.common.UFWRule(action, "any", "any")
         if remove:
             rule.remove = remove
@@ -220,10 +220,10 @@ def parse_command(argv):
                 else:
                     err_msg = _("Protocol mismatch (from/to)")
                     raise UFWError(err_msg)
-        
+
         # Verify found proto with specified proto
         if rule.protocol == "any":
-            rule.set_protocol(proto) 
+            rule.set_protocol(proto)
         elif proto != "any" and rule.protocol != proto:
             err_msg = _("Protocol mismatch with specified protocol %s") % \
                         (rule.protocol)
