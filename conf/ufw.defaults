@@ -18,6 +18,10 @@ DEFAULT_OUTPUT_POLICY="ACCEPT"
 # change this you will most likely want to adjust your rules
 DEFAULT_FORWARD_POLICY="DROP"
 
+# set the default application policy to ALLOW, DROP or SKIP. Please note that
+# setting this to ALLOW may be a security. See 'man ufw' for details
+DEFAULT_APPLICATION_POLICY="SKIP"
+
 #
 # IPT backend
 #
