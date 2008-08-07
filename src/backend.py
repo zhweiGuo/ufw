@@ -194,8 +194,31 @@ class UFWBackend:
                 os.write(fd, opt + "=" + value + "\n")
             else:
                 os.write(fd, line)
-    
+
         ufw.util.close_files(fns)
+
+    def set_default_application_policy(self, policy):
+        '''Sets default application policy of firewall'''
+        if not self.dryrun:
+            if policy == "allow":
+                self.set_default(self.files['defaults'], \
+                                            "DEFAULT_APPLICATION_POLICY", \
+                                            "\"ACCEPT\"")
+            elif policy == "deny":
+                self.set_default(self.files['defaults'], \
+                                            "DEFAULT_APPLICATION_POLICY", \
+                                            "\"DROP\"")
+            elif policy == "skip":
+                self.set_default(self.files['defaults'], \
+                                            "DEFAULT_APPLICATION_POLICY", \
+                                            "\"SKIP\"")
+            else:
+                err_msg = _("Unsupported policy '%s'") % (policy)
+                raise UFWError(err_msg)
+
+        rstr = _("Default application policy changed to '%s'\n") % (policy)
+
+        return rstr
 
     # API overrides
     def get_loglevel(self):

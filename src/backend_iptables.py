@@ -77,6 +77,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rstr
 
+    def get_default_application_policy(self):
+        '''Get current policy'''
+        rstr = _("New profiles:")
+        if self.defaults['default_application_policy'] == "accept":
+            rstr += " allow"
+        elif self.defaults['default_application_policy'] == "drop":
+            rstr += " deny"
+        else:
+            rstr += " skip"
+
+        return rstr
+
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
         if not self.dryrun:
@@ -134,7 +146,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             return _("Logging enabled")
 
-    def get_status(self):
+    def get_status(self, verbose=False):
         '''Show current status of firewall'''
         out = ""
         out6 = ""
@@ -229,9 +241,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str
 
-        (level, logging_str) = self.get_loglevel()
-        policy_str = self.get_default_policy()
-        return _("Status: loaded\n%s\n%s%s") % (logging_str, policy_str, str)
+        if verbose:
+            (level, logging_str) = self.get_loglevel()
+            policy_str = self.get_default_policy()
+            app_policy_str = self.get_default_application_policy()
+            return _("Status: loaded\n%s\n%s\n%s%s") % \
+                                                    (logging_str, policy_str, \
+                                                     app_policy_str, str)
+        else:
+            return _("Status: loaded%s") % (str)
 
     def stop_firewall(self):
         '''Stops the firewall'''

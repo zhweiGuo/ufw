@@ -211,4 +211,14 @@ for i in allow deny limit; do
     done
 done
 
+echo "TESTING ARGS (app)" >> $TESTTMP/result
+do_cmd "1" null --dry-run app
+do_cmd "1" null --dry-run app lis
+do_cmd "1" null --dry-run app info
+do_cmd "1" null --dry-run app ino foo
+do_cmd "1" null --dry-run app default
+do_cmd "1" null --dry-run app defalt foo
+do_cmd "1" null --dry-run app refresh
+do_cmd "1" null --dry-run app rfresh foo
+
 exit 0

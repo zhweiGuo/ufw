@@ -24,6 +24,7 @@ from ufw.common import UFWError
 import ufw.util
 from ufw.util import error
 from ufw.backend_iptables import UFWBackendIptables
+#import ufw.application
 
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
@@ -38,12 +39,12 @@ def parse_command(argv):
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
-        argv.remove("--dry-run")
+        argv.remove(argv[1])
 
     remove = False
     if len(argv) > 1 and argv[1].lower() == "delete":
         remove = True
-        argv.remove("delete")
+        argv.remove(argv[1])
 
     nargs = len(argv)
 
@@ -68,6 +69,10 @@ def parse_command(argv):
             action = "logging-on"
         else:
             raise ValueError()
+
+    if action == "status":
+        if nargs > 2 and argv[2].lower() == "verbose":
+            action = "status-verbose"
 
     if action == "default":
         if nargs < 3:
@@ -257,20 +262,72 @@ def parse_command(argv):
     return (action, rule, type, dryrun)
 
 
+def parse_application_command(argv):
+    '''Parse applications command. Returns tuple for action and profile name'''
+    name = ""
+    action = ""
+    dryrun = False
+
+    if len(argv) < 3 or argv[1].lower() != "app":
+        raise ValueError()
+
+    argv.remove("app")
+    nargs = len(argv)
+
+    if len(argv) > 1 and argv[1].lower() == "--dry-run":
+        dryrun = True
+        argv.remove(argv[1])
+
+    app_cmds = ['list', 'info', 'default', 'refresh']
+
+    if not argv[1].lower() in app_cmds:
+        raise ValueError()
+    else:
+        action = argv[1].lower()
+
+    if action == "info" or action == "refresh":
+        if nargs < 3:
+            raise ValueError()
+        name = argv[2].lower()
+
+    if action == "list" and nargs != 2:
+        raise ValueError()
+
+    if action == "default":
+        if nargs < 3:
+            raise ValueError()
+        if argv[2].lower() == "allow":
+            action = "default-allow"
+        elif argv[2].lower() == "deny":
+            action = "default-deny"
+        elif argv[2].lower() == "skip":
+            action = "default-skip"
+        else:
+            raise ValueError()
+
+    return (action, name, dryrun)
+
+
 def get_command_help():
     '''Print help message'''
     msg = _('''
 Usage: ''') + ufw.common.programName + _(''' COMMAND
 
 Commands:
-  enable			Enables the firewall
-  disable			Disables the firewall
+  enable			enables the firewall
+  disable			disables the firewall
   default ARG			set default policy to ALLOW or DENY
   logging ARG			set logging to ON or OFF
   allow|deny RULE		allow or deny RULE
   delete allow|deny RULE	delete the allow/deny RULE
   status			show firewall status
   version			display version information
+
+Application profile commands:
+  app list			list application profiles
+  app info PROFILE		show information on PROFILE
+  app refresh PROFILE		refresh PROFILE
+  app default ARG		set profile policy to ALLOW, DENY or SKIP
 ''')
     return (msg)
 
@@ -334,10 +391,10 @@ class UFWFrontend:
 
         return res
 
-    def get_status(self):
+    def get_status(self, verbose=False):
         '''Shows status of firewall'''
         try:
-            out = self.backend.get_status()
+            out = self.backend.get_status(verbose)
         except UFWError, e:
             error(e.value)
 
@@ -396,12 +453,67 @@ class UFWFrontend:
             res = self.set_default_policy("deny")
         elif action == "status":
             res = self.get_status()
+        elif action == "status-verbose":
+            res = self.get_status(True)
         elif action == "enable":
             res = self.set_enabled(True)
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
             res = self.set_rule(rule, ip_version)
+        else:
+            err_msg = _("Unsupported action '%s'") % (action)
+            raise UFWError(err_msg)
+
+        return res
+
+    def set_default_application_policy(self, policy):
+        '''Sets default application policy of firewall'''
+        res = ""
+        try:
+            res = self.backend.set_default_application_policy(policy)
+        except UFWError, e:
+            error(e.value)
+
+        return res
+
+    def get_application_list(self):
+        '''Display list of known application profiles'''
+        rstr = "UFWFrontend.get_application_list(): TODO"
+        return rstr
+
+    def get_application_list(self):
+        '''Display list of known application profiles'''
+        rstr = "UFWFrontend.get_application_list(): TODO"
+        return rstr
+
+    def get_application_info(self, profile):
+        '''Display information on profile'''
+        rstr = "UFWFrontend.get_application_info(%s): TODO" % (profile)
+        return rstr
+
+    def application_refresh(self, profile):
+        '''Refresh application profile'''
+        rstr = "UFWFrontend.application_refresh(%s): TODO" % (profile)
+        return rstr
+
+    def do_application_action(self, action, profile):
+        '''Perform action on profile. action and profile are usually based on
+           return values from parse_applications_command().
+        '''
+        res = ""
+        if action == "default-allow":
+            res = self.set_default_application_policy("allow")
+        elif action == "default-deny":
+            res = self.set_default_application_policy("deny")
+        elif action == "default-skip":
+            res = self.set_default_application_policy("skip")
+        elif action == "list":
+            res = self.get_application_list()
+        elif action == "info":
+            res = self.get_application_info(profile)
+        elif action == "refresh":
+            res = self.application_refresh(profile)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)

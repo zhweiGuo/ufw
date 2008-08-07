@@ -1357,3 +1357,28 @@ ERROR: Must specify 'tcp' or 'udp' with multiple ports
 440: --dry-run limit http,25/tcp
 
 
+TESTING ARGS (app)
+441: --dry-run app
+
+
+442: --dry-run app lis
+
+
+443: --dry-run app info
+
+
+444: --dry-run app ino foo
+
+
+445: --dry-run app default
+
+
+446: --dry-run app defalt foo
+
+
+447: --dry-run app refresh
+
+
+448: --dry-run app rfresh foo
+
+

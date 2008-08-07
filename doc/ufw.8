@@ -15,13 +15,13 @@ ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBstatus\fR
+ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR PORT[/protocol]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
-ufw \fBapp\fR \fBlist|info|default|refresh\fR 
+ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|refresh\fR 
 
 .SH OPTIONS
 .TP
@@ -48,7 +48,8 @@ have to be migrated manually when changing the default policy.
 toggle logging. Logged packets use the LOG_KERN syslog facility.
 .TP
 \fBstatus\fR
-show status of firewall and ufw managed rules
+show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
+extra information.
 .TP
 \fBallow\fR RULE
 allow RULE.  See \fBRULE SYNTAX\fR
