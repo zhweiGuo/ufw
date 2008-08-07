@@ -20,6 +20,8 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR PORT[/protocol]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+.TP
+ufw \fBapp\fR \fBlist|info|default|refresh\fR 
 
 .SH OPTIONS
 .TP
@@ -165,6 +167,50 @@ before running '\fBufw enable\fR'. The rules will still be flushed, but the
 ssh port will be open after enabling the firewall. Please note that once
 ufw is 'enabled', \fBufw\fR will not flush the chains when adding or removing
 rules (but will when modifying a rule or changing the default policy).
+
+.SH APPLICATION INTEGRATION
+.PP
+\fBufw\fR supports application integration by reading profiles located in
+#CONFIG_PREFIX#/ufw/applications.d. To list the names of applications known to
+\fBufw\fR, use:
+
+  ufw app list
+
+Users can specify one of the applications names when adding rules. For example,
+when using the simple syntax, users can use:
+
+  ufw allow <name>
+
+Or for the extended syntax:
+
+  ufw allow from 192.168.0.0/16 to any app <name>
+
+You should not specify the protocol with either syntax, and with the extended
+syntax, use \fBapp\fR in place of the \fBport\fR clause.
+
+Details on the firewall profile for a given application can be seen with:
+
+  ufw app info <name>
+
+where '<name>' is one of the applications seen with the \fFapp list\fR command.
+User's may also specify \fBall\fR to see the profiles for all known
+applications.
+
+After creating or editing an application profile, user's can run:
+
+  ufw app refresh <name>
+
+This command will automatically update the firewall with the new profile
+information. The behavior of the \fBrefresh\fB command can be configured using:
+
+  ufw app default <policy>
+
+The default application policy is \fBskip\fB, which means that the refresh
+option will do nothing. Users may also specify a policy of \fBallow\fB or
+\fBdeny\fR so the \fBrefresh\fB command may automatically update the firewall.
+\fBWARNING\fR it may be a security to risk to use a default \fBallow\fR policy
+for applications profiles. Carefully consider the security ramifications before
+using a default \fBallow\fR policy.
 
 .SH NOTES
 .PP
