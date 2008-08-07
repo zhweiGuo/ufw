@@ -169,6 +169,9 @@ for i in allow deny limit; do
         do_cmd "1" null --dry-run $i $j any port 24:20 proto tcp
         do_cmd "1" null --dry-run $i $j any port 2A:20 proto tcp
         do_cmd "1" null --dry-run $i $j any port 24:2o proto tcp
+        do_cmd "1" null --dry-run $i $j any port http,smtp proto tcp
+        do_cmd "1" null --dry-run $i $j any port 80,smtp proto tcp
+        do_cmd "1" null --dry-run $i $j any port http,25 proto tcp
     done
 
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
@@ -202,6 +205,9 @@ for i in allow deny limit; do
         do_cmd "1" null --dry-run $i 24:20/$j
         do_cmd "1" null --dry-run $i 2A:20/$j
         do_cmd "1" null --dry-run $i 24:2o/$j
+        do_cmd "1" null --dry-run $i http,smtp/tcp
+        do_cmd "1" null --dry-run $i 80,smtp/tcp
+        do_cmd "1" null --dry-run $i http,25/tcp
     done
 done
 
