@@ -69,7 +69,7 @@ class Install(_install, object):
 
         for dir in [ script, manpage ]:
             self.mkpath(os.path.dirname(dir))
-        
+
         self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
 
@@ -102,10 +102,12 @@ class Install(_install, object):
         before6_rules = os.path.join(confdir, 'ufw', 'before6.rules')
         after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
         initscript = os.path.join(confdir, 'init.d', 'ufw')
+        apps_dir = os.path.join(confdir, 'ufw', 'applications.d')
 
         for f in [ defaults, ufwconf, initscript ]:
             self.mkpath(os.path.dirname(f))
-        
+        self.mkpath(apps_dir)
+
         self.copy_file('conf/ufw.defaults', defaults)
         self.copy_file('conf/ufw.conf', ufwconf)
         self.copy_file('conf/sysctl.conf', sysctl)
@@ -127,7 +129,7 @@ class Install(_install, object):
             a = Popen3("sed -i 's%#PREFIX#%" + real_prefix + "%g' " + file)
             while a.poll() == -1:
                 pass
-        
+
             a = Popen3("sed -i 's%#STATE_PREFIX#%" + real_statedir + "%g' " + file)
             while a.poll() == -1:
                 pass
