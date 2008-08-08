@@ -288,7 +288,7 @@ def parse_application_command(argv):
     if action == "info" or action == "refresh":
         if nargs < 3:
             raise ValueError()
-        name = argv[2].lower()
+        name = argv[2]
 
     if action == "list" and nargs != 2:
         raise ValueError()
@@ -486,10 +486,34 @@ class UFWFrontend:
             rstr += "  %s\n" % (n)
         return rstr
 
-    def get_application_info(self, profile):
+    def get_application_info(self, name):
         '''Display information on profile'''
-        rstr = "UFWFrontend.get_application_info(%s): TODO" % (profile)
-        return rstr
+
+        if not self.backend.profiles.has_key(name) or \
+           not self.backend.profiles[name]:
+            err_msg = _("Could not find profile")
+            raise UFWError(err_msg)
+
+        if not ufw.applications.verify_profile(self.backend.profiles[name]):
+            err_msg = _("Invalid profile")
+            raise UFWError(err_msg)
+
+        rstr = _("Profile: %s\n") % (name)
+        rstr += _("Title: %s\n") % (self.backend.profiles[name]['title'])
+
+        rstr += _("Description: %s\n\n") % \
+                (self.backend.profiles[name]['description'])
+
+        (port, proto) = ufw.util.parse_port_proto(\
+                            self.backend.profiles[name]['port'])
+        if ',' in port:
+            rstr += _("Ports: %s\n") % (port)
+        else:
+            rstr += _("Port: %s\n") % (port)
+
+        rstr += _("Protocol: %s\n") % (proto)
+
+        return ufw.util.wrap_text(rstr)
 
     def application_refresh(self, profile):
         '''Refresh application profile'''

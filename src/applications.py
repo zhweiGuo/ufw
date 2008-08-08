@@ -60,7 +60,7 @@ def get_profiles(dir):
         size = 0
         try:
             size = os.stat(abs)[ST_SIZE]
-        except:
+        except Exception:
             warn_msg = _("Skipping '%s': couldn't stat") % (f)
             warn(warn_msg)
             continue
@@ -80,7 +80,7 @@ def get_profiles(dir):
         cdict = RawConfigParser()
         try:
             cdict.read(abs)
-        except:
+        except Exception:
             warn_msg = _("Skipping '%s': couldn't process") % (f)
             warn(warn_msg)
             continue
@@ -112,8 +112,26 @@ def get_profiles(dir):
                 warn_msg = _("Duplicate profile '%s', using last found") % (p)
                 warn(warn_msg)
 
-            profiles[p] = cdict.items(p)
+            pdict = {}
+            for key, value in cdict.items(p):
+                pdict[key] = value
+
+            profiles[p] = pdict
 
     return profiles
 
+def verify_profile(profile):
+    '''Make sure profile has everything needed'''
+    required_fields = ['title', 'description', 'port']
+
+    for f in required_fields:
+        if not profile.has_key(f) or not profile[f]:
+            return False
+
+    try:
+        (port, proto) = ufw.util.parse_port_proto(profile['port'])
+    except Exception:
+        return False
+
+    return True
 
