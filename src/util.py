@@ -277,6 +277,28 @@ def debug(msg):
     if debugging:
         print >> sys.stderr, "DEBUG: %s" % (msg)
 
+
+def word_wrap(text, width):
+    '''
+    A word-wrap function that preserves existing line breaks
+    and most spaces in the text. Expects that existing line
+    breaks are posix newlines (\n).
+    '''
+    return reduce(lambda line, word, width=width: '%s%s%s' %
+                  (line,
+                   ' \n'[(len(line)-line.rfind('\n')-1
+                         + len(word.split('\n',1)[0]
+                              ) >= width)],
+                   word),
+                  text.split(' ')
+                 )
+
+
+def wrap_text(text):
+    '''Word wrap to a specific width'''
+    return word_wrap(text, 75)
+
+
 #
 # Internal helper functions
 #
