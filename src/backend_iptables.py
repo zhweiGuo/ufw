@@ -50,7 +50,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                   self.files['after_rules'], self.files['after6_rules']]:
             try:
                 orig = ufw.util.open_file_read(f)
-            except:
+            except Exception:
                 err_msg = _("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
 
@@ -435,7 +435,7 @@ COMMIT
         try:
             rule.set_src(fields[3])
             rule.set_dst(fields[4])
-        except:
+        except Exception:
             warn_msg = _("Couldn't parse line '%s'") % (line)
             warn(warn_msg)
             return None
@@ -478,7 +478,7 @@ COMMIT
         for f in rfns:
             try:
                 orig = ufw.util.open_file_read(f)
-            except:
+            except Exception:
                 err_msg = _("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
 
@@ -641,7 +641,7 @@ COMMIT
         # Update the user rules file
         try:
             self._write_rules(rule.v6)
-        except:
+        except Exception:
             err_msg = _("Couldn't update rules file")
             UFWError(err_msg)
 

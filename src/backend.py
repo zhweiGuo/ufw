@@ -74,7 +74,7 @@ class UFWBackend:
 
         Doing this at the beginning causes a race condition with later
         operations that don't do these checks.  However, if the user running
-        this script is root, then need to be root to exploit the race 
+        this script is root, then need to be root to exploit the race
         condition (and you are hosed anyway...)
         '''
 
@@ -168,7 +168,7 @@ class UFWBackend:
         for f in [self.files['defaults'], self.files['conf']]:
             try:
                 orig = ufw.util.open_file_read(f)
-            except:
+            except Exception:
                 err_msg = _("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
             pat = re.compile(r'^\w+="?\w+"?')
