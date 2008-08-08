@@ -479,12 +479,11 @@ class UFWFrontend:
 
     def get_application_list(self):
         '''Display list of known application profiles'''
-        rstr = "UFWFrontend.get_application_list(): TODO"
-        return rstr
-
-    def get_application_list(self):
-        '''Display list of known application profiles'''
-        rstr = "UFWFrontend.get_application_list(): TODO"
+        names = self.backend.profiles.keys()
+        names.sort()
+        rstr = _("Available applications:\n")
+        for n in names:
+            rstr += "  %s\n" % (n)
         return rstr
 
     def get_application_info(self, profile):

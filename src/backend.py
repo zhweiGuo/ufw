@@ -24,6 +24,7 @@ import sys
 import ufw.util
 from ufw.util import warn, debug
 from ufw.common import UFWError, config_dir
+import ufw.applications
 
 class UFWBackend:
     '''Interface for backends'''
@@ -46,6 +47,8 @@ class UFWBackend:
             self._read_rules()
         except Exception:
             raise
+
+        self.profiles = ufw.applications.get_profiles(self.files['apps'])
 
     def _is_enabled(self):
         if self.defaults.has_key('enabled') and \

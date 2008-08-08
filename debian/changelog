@@ -1,6 +1,6 @@
 ufw (0.20) UNRELEASED; urgency=low
 
-  * bump version
+  * add 'verbose' option to status command
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 07 Aug 2008 12:04:05 -0400
 
