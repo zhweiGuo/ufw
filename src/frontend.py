@@ -27,7 +27,10 @@ from ufw.backend_iptables import UFWBackendIptables
 #import ufw.application
 
 def parse_command(argv):
-    '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
+    '''Parse command. Returns tuple for action, rule, ip_version and dryrun.
+       If this is a potential application rule, setup the rule as a template
+       and set is_app_rule to True.
+    '''
     action = ""
     rule = ""
     type = ""
@@ -36,6 +39,7 @@ def parse_command(argv):
     from_service = ""
     to_service = ""
     dryrun = False
+    is_app_rule = False
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
@@ -92,26 +96,33 @@ def parse_command(argv):
         if remove:
             rule.remove = remove
         if nargs == 3:
-            # Short form where only port/proto is given
-            try:
-                (port, proto) = ufw.util.parse_port_proto(argv[2])
-            except UFWError:
-                err_msg = _("Bad port")
-                raise UFWError(err_msg)
-
-            if not re.match('^\d([0-9,:]*\d+)*$', port):
-                if ',' in port or ':' in port:
-                    err_msg = _("Port ranges must be numeric")
+            # Short form where only app or port/proto is given
+            if ufw.applications.valid_profile_name(argv[2]):
+                try:
+                    ufw.util.get_services_proto(argv[2])
+                except Exception:
+                    type = "both"
+                    is_app_rule = True
+            if not is_app_rule:
+                try:
+                    (port, proto) = ufw.util.parse_port_proto(argv[2])
+                except UFWError:
+                    err_msg = _("Bad port")
                     raise UFWError(err_msg)
-                to_service = port
 
-            try:
-                rule.set_protocol(proto)
-                rule.set_port(port, "dst")
-                type = "both"
-            except UFWError:
-                err_msg = _("Bad port")
-                raise UFWError(err_msg)
+                if not re.match('^\d([0-9,:]*\d+)*$', port):
+                    if ',' in port or ':' in port:
+                        err_msg = _("Port ranges must be numeric")
+                        raise UFWError(err_msg)
+                    to_service = port
+
+                try:
+                    rule.set_protocol(proto)
+                    rule.set_port(port, "dst")
+                    type = "both"
+                except UFWError:
+                    err_msg = _("Bad port")
+                    raise UFWError(err_msg)
         elif nargs % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
@@ -259,7 +270,7 @@ def parse_command(argv):
                         (rule.protocol)
             raise UFWError(err_msg)
 
-    return (action, rule, type, dryrun)
+    return (action, rule, type, dryrun, is_app_rule)
 
 
 def parse_application_command(argv):
@@ -440,7 +451,7 @@ class UFWFrontend:
 
         return res
 
-    def do_action(self, action, rule, ip_version):
+    def do_action(self, action, rule, ip_version, is_app_rule):
         '''Perform action on rule. action, rule and ip_version are usually
            based on return values from parse_command().
         '''
