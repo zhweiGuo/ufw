@@ -53,6 +53,7 @@ if __name__ == "__main__":
     rule = ""
     dryrun = False
     app_action = False
+    is_app_rule = False
     profile = ""
 
     if len(sys.argv) > 1 and sys.argv[1].lower() == "app":
@@ -69,7 +70,7 @@ if __name__ == "__main__":
             raise
     else:
         try:
-            (action, rule, ip_version, dryrun) = \
+            (action, rule, ip_version, dryrun, is_app_rule) = \
                 ufw.frontend.parse_command(sys.argv)
         except ValueError:
             print ufw.frontend.get_command_help()
@@ -98,7 +99,7 @@ if __name__ == "__main__":
         if app_action:
             res = ufw.do_application_action(action, profile)
         else:
-            res = ufw.do_action(action, rule, ip_version)
+            res = ufw.do_action(action, rule, ip_version, is_app_rule)
         print res
     except UFWError, e:
         error(e.value)
