@@ -483,38 +483,51 @@ class UFWFrontend:
         '''Display list of known application profiles'''
         names = self.backend.profiles.keys()
         names.sort()
-        rstr = _("Available applications:\n")
+        rstr = _("Available applications:")
         for n in names:
-            rstr += "  %s\n" % (n)
+            rstr += "\n  %s" % (n)
         return rstr
 
-    def get_application_info(self, name):
+    def get_application_info(self, pname):
         '''Display information on profile'''
-
-        if not self.backend.profiles.has_key(name) or \
-           not self.backend.profiles[name]:
-            err_msg = _("Could not find profile '%s'") % (name)
-            raise UFWError(err_msg)
-
-        if not ufw.applications.verify_profile(self.backend.profiles[name]):
-            err_msg = _("Invalid profile")
-            raise UFWError(err_msg)
-
-        rstr = _("Profile: %s\n") % (name)
-        rstr += _("Title: %s\n") % (ufw.applications.get_title(\
-                                    self.backend.profiles[name]))
-
-        rstr += _("Description: %s\n\n") % (ufw.applications.get_description(\
-                                            self.backend.profiles[name]))
-
-        ports = ufw.applications.get_ports(self.backend.profiles[name])
-        if len(ports) > 1 or ',' in ports[0]:
-            rstr += _("Ports:")
+        names = []
+        if pname == "all":
+            names = self.backend.profiles.keys()
+            names.sort()
         else:
-            rstr += _("Port:")
+            names.append(pname)
 
-        for p in ports:
-            rstr += "\n  %s" % (p)
+        rstr = ""
+        for name in names:
+            if not self.backend.profiles.has_key(name) or \
+               not self.backend.profiles[name]:
+                err_msg = _("Could not find profile '%s'") % (name)
+                raise UFWError(err_msg)
+
+            if not ufw.applications.verify_profile(name, \
+               self.backend.profiles[name]):
+                err_msg = _("Invalid profile")
+                raise UFWError(err_msg)
+
+            rstr += _("Profile: %s\n") % (name)
+            rstr += _("Title: %s\n") % (ufw.applications.get_title(\
+                                        self.backend.profiles[name]))
+
+            rstr += _("Description: %s\n\n") % \
+                                            (ufw.applications.get_description(\
+                                             self.backend.profiles[name]))
+
+            ports = ufw.applications.get_ports(self.backend.profiles[name])
+            if len(ports) > 1 or ',' in ports[0]:
+                rstr += _("Ports:")
+            else:
+                rstr += _("Port:")
+
+            for p in ports:
+                rstr += "\n  %s" % (p)
+
+            if name != names[len(names)-1]:
+                rstr += "\n\n--\n\n"
 
         return ufw.util.wrap_text(rstr)
 

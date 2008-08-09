@@ -22,6 +22,7 @@ import re
 from stat import *
 import ufw.util
 from ufw.util import debug, warn
+from ufw.common import UFWError
 
 def get_profiles(dir):
     '''Get profiles found in profiles database.  Returns dictionary with
@@ -121,23 +122,43 @@ def get_profiles(dir):
 
     return profiles
 
-def verify_profile(profile):
+def valid_profile_name(name):
+    '''Only accept a limited set of characters for name'''
+    if re.match(r'^[a-zA-Z0-9][a-zA-Z0-9 _\-\.+]*$', name):
+        return True
+    return False
+
+def verify_profile(name, profile):
     '''Make sure profile has everything needed'''
     app_fields = ['title', 'description', 'ports']
 
     for f in app_fields:
-        if not profile.has_key(f) or not profile[f]:
-            return False
+        if not profile.has_key(f):
+            err_msg = _("Profile '%s' missing required field '%s'") % \
+                        (name, f)
+            raise UFWError(err_msg)
+        elif not profile[f]:
+            err_msg = _("Profile '%s' has empty required field '%s'") % \
+                        (name, f)
+            raise UFWError(err_msg)
 
     ports = profile['ports'].split('|')
     if len(ports) < 1:
+        err_msg = _("No ports found in profile '%s'") % (name)
         return False
 
     try:
         for p in ports:
-            ufw.util.parse_port_proto(p)
+            (port, proto) = ufw.util.parse_port_proto(p)
+            # quick check if error in profile
+            #if not proto:
+            #    proto = "any"
+            rule = ufw.common.UFWRule("ACCEPT", proto, port)
+            debug(rule)
     except Exception, e:
-        return False
+        debug(e)
+        err_msg = _("Invalid ports in profile '%s'") % (name)
+        raise UFWError(err_msg)
 
     return True
 
