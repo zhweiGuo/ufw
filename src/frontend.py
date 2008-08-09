@@ -92,26 +92,34 @@ def parse_command(argv):
         if remove:
             rule.remove = remove
         if nargs == 3:
-            # Short form where only port/proto is given
-            try:
-                (port, proto) = ufw.util.parse_port_proto(argv[2])
-            except UFWError:
-                err_msg = _("Bad port")
-                raise UFWError(err_msg)
-
-            if not re.match('^\d([0-9,:]*\d+)*$', port):
-                if ',' in port or ':' in port:
-                    err_msg = _("Port ranges must be numeric")
+            # Short form where only app or port/proto is given
+            if ufw.applications.valid_profile_name(argv[2]):
+                try:
+                    ufw.util.get_services_proto(argv[2])
+                except Exception:
+                    type = "both"
+                    rule.app = True
+                    rule.set_port(argv[2], "dst")
+            if not rule.app:
+                try:
+                    (port, proto) = ufw.util.parse_port_proto(argv[2])
+                except UFWError:
+                    err_msg = _("Bad port")
                     raise UFWError(err_msg)
-                to_service = port
 
-            try:
-                rule.set_protocol(proto)
-                rule.set_port(port, "dst")
-                type = "both"
-            except UFWError:
-                err_msg = _("Bad port")
-                raise UFWError(err_msg)
+                if not re.match('^\d([0-9,:]*\d+)*$', port):
+                    if ',' in port or ':' in port:
+                        err_msg = _("Port ranges must be numeric")
+                        raise UFWError(err_msg)
+                    to_service = port
+
+                try:
+                    rule.set_protocol(proto)
+                    rule.set_port(port, "dst")
+                    type = "both"
+                except UFWError:
+                    err_msg = _("Bad port")
+                    raise UFWError(err_msg)
         elif nargs % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
@@ -120,13 +128,15 @@ def parse_command(argv):
             raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port' ]
+            keys = [ 'proto', 'from', 'to', 'port', 'app' ]
 
             # quick check
             if argv.count("to") > 1 or \
                argv.count("from") > 1 or \
                argv.count("proto") > 1 or \
-               argv.count("port") > 2:
+               argv.count("port") > 2 or \
+               argv.count("app") > 2 or \
+               argv.count("app") > 0 and argv.count("proto") > 0:
                 err_msg = _("Improper rule syntax")
                 raise UFWError(err_msg)
 
@@ -183,14 +193,17 @@ def parse_command(argv):
                     else:
                         err_msg = _("Invalid 'to' clause")
                         raise UFWError(err_msg)
-                elif arg == "port":
+                elif arg == "port" or arg == "app":
                     if i+1 < nargs:
                         if loc == "":
-                            err_msg = _("Need 'from' or 'to' with 'port'")
+                            err_msg = _("Need 'from' or 'to' with '%s'") % \
+                                        (arg)
                             raise UFWError(err_msg)
 
                         tmp = argv[i+1]
-                        if not re.match('^\d([0-9,:]*\d+)*$', tmp):
+                        if arg == "app":
+                            rule.app = True
+                        elif not re.match('^\d([0-9,:]*\d+)*$', tmp):
                             if ',' in tmp or ':' in tmp:
                                 err_msg = _("Port ranges must be numeric")
                                 raise UFWError(err_msg)
@@ -199,7 +212,6 @@ def parse_command(argv):
                                 from_service = tmp
                             else:
                                 to_service = tmp
-
                         try:
                             rule.set_port(tmp, loc)
                         except Exception:
@@ -288,7 +300,9 @@ def parse_application_command(argv):
     if action == "info" or action == "refresh":
         if nargs < 3:
             raise ValueError()
-        name = argv[2].lower()
+        # Handle quoted name with spaces in it by stripping Python's ['...']
+        # list as string text.
+        name = str(argv[2]).strip("[']")
 
     if action == "list" and nargs != 2:
         raise ValueError()
@@ -460,6 +474,8 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
+            if rule.app:
+                raise UFWError("'app' not implemented yet")
             res = self.set_rule(rule, ip_version)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
@@ -481,15 +497,56 @@ class UFWFrontend:
         '''Display list of known application profiles'''
         names = self.backend.profiles.keys()
         names.sort()
-        rstr = _("Available applications:\n")
+        rstr = _("Available applications:")
         for n in names:
-            rstr += "  %s\n" % (n)
+            rstr += "\n  %s" % (n)
         return rstr
 
-    def get_application_info(self, profile):
+    def get_application_info(self, pname):
         '''Display information on profile'''
-        rstr = "UFWFrontend.get_application_info(%s): TODO" % (profile)
-        return rstr
+        names = []
+        if pname == "all":
+            names = self.backend.profiles.keys()
+            names.sort()
+        else:
+            if not ufw.applications.valid_profile_name(pname):
+                err_msg = _("Invalid profile name")
+                raise UFWError(err_msg)
+            names.append(pname)
+
+        rstr = ""
+        for name in names:
+            if not self.backend.profiles.has_key(name) or \
+               not self.backend.profiles[name]:
+                err_msg = _("Could not find profile '%s'") % (name)
+                raise UFWError(err_msg)
+
+            if not ufw.applications.verify_profile(name, \
+               self.backend.profiles[name]):
+                err_msg = _("Invalid profile")
+                raise UFWError(err_msg)
+
+            rstr += _("Profile: %s\n") % (name)
+            rstr += _("Title: %s\n") % (ufw.applications.get_title(\
+                                        self.backend.profiles[name]))
+
+            rstr += _("Description: %s\n\n") % \
+                                            (ufw.applications.get_description(\
+                                             self.backend.profiles[name]))
+
+            ports = ufw.applications.get_ports(self.backend.profiles[name])
+            if len(ports) > 1 or ',' in ports[0]:
+                rstr += _("Ports:")
+            else:
+                rstr += _("Port:")
+
+            for p in ports:
+                rstr += "\n  %s" % (p)
+
+            if name != names[len(names)-1]:
+                rstr += "\n\n--\n\n"
+
+        return ufw.util.wrap_text(rstr)
 
     def application_refresh(self, profile):
         '''Refresh application profile'''

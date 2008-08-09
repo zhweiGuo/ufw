@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
+cp tests/defaults/profiles/* $TESTPATH/etc/ufw/applications.d
 
 let count=0
 do_cmd() {
@@ -30,7 +31,7 @@ do_cmd() {
 	fi
 
         echo "$count: $@" >> $TESTTMP/result
-        $TESTPATH/usr/sbin/ufw $@ >> $cmd_results_file 2>&1
+        $TESTPATH/usr/sbin/ufw "$@" >> $cmd_results_file 2>&1
 	rc="$?"
 	if [ "$rc" != "$expected" ]; then
 		echo "Command '$@' exited with '$rc', but expected '$expected'"

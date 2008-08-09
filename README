@@ -97,6 +97,14 @@ Then do:
 # ufw enable
 
 
+Application Integration
+-----------------------
+ufw has support for application integration. This allows for administrators
+and developers to put profiles in /etc/ufw/applications.d and have users use
+these profiles in their rules. Profiles use the .INI syntax, and examples
+can be found in the examples/ directory. See 'man ufw' for details.
+
+
 Upgrading
 ---------
 If upgrading from 0.17 or below to 0.18, new chains to support the 'limit'

@@ -47,6 +47,7 @@ class UFWRule:
         self.sport = ""
         self.protocol = ""
         self.multi = False
+        self.app = False
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -111,7 +112,7 @@ class UFWRule:
     def set_port(self, port, loc="dst"):
         '''Sets port and location (destination or source) of the rule'''
         err_msg = _("Bad port '%s'") % (port)
-        if port == "any":
+        if port == "any" or self.app:
             pass
         elif re.match(r'^[,:]', port) or re.match(r'[,:]$', port):
             raise UFWError(err_msg)
@@ -216,7 +217,7 @@ class UFWRule:
             try:
                 (self.src, changed) = ufw.util.normalize_address(self.src, \
                                                                  self.v6)
-            except:
+            except Exception:
                 err_msg = _("Could not normalize source address")
                 raise UFWError(err_msg)
         if changed:
@@ -226,7 +227,7 @@ class UFWRule:
             try:
                 (self.dst, changed) = ufw.util.normalize_address(self.dst, \
                                                                    self.v6)
-            except:
+            except Exception:
                 err_msg = _("Could not normalize destination address")
                 raise UFWError(err_msg)
 

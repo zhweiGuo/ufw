@@ -102,7 +102,7 @@ firewalling to work.
 
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
-This will allow all traffic to tcp ports 80, 443 and 8080-8090 inclusive. Note
+This will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive. Note
 that when specifying multiple ports, the ports list must be numeric, cannot
 contain spaces and must be modified as a whole. Eg, in the above example you
 cannot later try to delete just the '443' port. You cannot specify more than 15
@@ -172,8 +172,8 @@ rules (but will when modifying a rule or changing the default policy).
 .SH APPLICATION INTEGRATION
 .PP
 \fBufw\fR supports application integration by reading profiles located in
-#CONFIG_PREFIX#/ufw/applications.d. To list the names of applications known to
-\fBufw\fR, use:
+#CONFIG_PREFIX#/ufw/applications.d. To list the names of application profiles
+known to \fBufw\fR, use:
 
   ufw app list
 
@@ -202,13 +202,13 @@ After creating or editing an application profile, user's can run:
   ufw app refresh <name>
 
 This command will automatically update the firewall with the new profile
-information. The behavior of the \fBrefresh\fB command can be configured using:
+information. The behavior of the \fBrefresh\fR command can be configured using:
 
   ufw app default <policy>
 
-The default application policy is \fBskip\fB, which means that the refresh
-option will do nothing. Users may also specify a policy of \fBallow\fB or
-\fBdeny\fR so the \fBrefresh\fB command may automatically update the firewall.
+The default application policy is \fBskip\fR, which means that the refresh
+option will do nothing. Users may also specify a policy of \fBallow\fR or
+\fBdeny\fR so the \fBrefresh\fR command may automatically update the firewall.
 \fBWARNING\fR it may be a security to risk to use a default \fBallow\fR policy
 for applications profiles. Carefully consider the security ramifications before
 using a default \fBallow\fR policy.
