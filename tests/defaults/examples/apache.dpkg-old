@@ -1,5 +1,5 @@
-[Apache-dpkg-new]
+[Apache-dpkg-old]
 title=Apache Web Server
 description=Apache v2 is the next generation of the omnipresent Apache web server.
-port=80,443/tcp
+ports=80,443/tcp
 

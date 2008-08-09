@@ -114,6 +114,7 @@ def get_profiles(dir):
 
             pdict = {}
             for key, value in cdict.items(p):
+                debug("add '%s' = '%s' to '%s'" % (key, value, p))
                 pdict[key] = value
 
             profiles[p] = pdict
@@ -122,16 +123,46 @@ def get_profiles(dir):
 
 def verify_profile(profile):
     '''Make sure profile has everything needed'''
-    required_fields = ['title', 'description', 'port']
+    app_fields = ['title', 'description', 'ports']
 
-    for f in required_fields:
+    for f in app_fields:
         if not profile.has_key(f) or not profile[f]:
             return False
 
+    ports = profile['ports'].split('|')
+    if len(ports) < 1:
+        return False
+
     try:
-        (port, proto) = ufw.util.parse_port_proto(profile['port'])
-    except Exception:
+        for p in ports:
+            ufw.util.parse_port_proto(p)
+    except Exception, e:
         return False
 
     return True
+
+def get_title(profile):
+    '''Retrieve the title from the profile'''
+    str = ""
+    field = 'title'
+    if profile.has_key(field) and profile[field]:
+        str = profile[field]
+    return str
+
+def get_description(profile):
+    '''Retrieve the description from the profile'''
+    str = ""
+    field = 'description'
+    if profile.has_key(field) and profile[field]:
+        str = profile[field]
+    return str
+
+def get_ports(profile):
+    '''Retrieve a list of ports from a profile'''
+    ports = []
+    field = 'ports'
+    if profile.has_key(field) and profile[field]:
+        ports = profile[field].split('|')
+
+    return ports
 
