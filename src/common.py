@@ -112,7 +112,7 @@ class UFWRule:
     def set_port(self, port, loc="dst"):
         '''Sets port and location (destination or source) of the rule'''
         err_msg = _("Bad port '%s'") % (port)
-        if port == "any":
+        if port == "any" or self.app:
             pass
         elif re.match(r'^[,:]', port) or re.match(r'[,:]$', port):
             raise UFWError(err_msg)

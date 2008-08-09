@@ -99,6 +99,7 @@ def parse_command(argv):
                 except Exception:
                     type = "both"
                     rule.app = True
+                    rule.set_port(argv[2], "dst")
             if not rule.app:
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[2])
@@ -473,6 +474,8 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
+            if rule.app:
+                raise UFWError("'app' not implemented yet")
             res = self.set_rule(rule, ip_version)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
