@@ -88,13 +88,18 @@ def get_profiles(dir):
 
         # If multiple occurences of profile name, use the last one
         for p in cdict.sections():
+            if len(p) > 64:
+                warn_msg = _("Skipping '%s': name too long") % (p)
+                warn(warn_msg)
+                continue
+
+            if not valid_profile_name(p):
+                warn_msg = _("Skipping '%s': invalid name") % (p)
+                warn(warn_msg)
+                continue
+
             skip = False
             for key, value in cdict.items(p):
-                if len(p) > 64:
-                    warn_msg = _("Skipping '%s': name too long") % (p)
-                    warn(warn_msg)
-                    skip = True
-                    break
                 if len(key) > 64:
                     warn_msg = _("Skipping '%s': field too long") % (p)
                     warn(warn_msg)
@@ -124,7 +129,9 @@ def get_profiles(dir):
 
 def valid_profile_name(name):
     '''Only accept a limited set of characters for name'''
-    if re.match(r'^[a-zA-Z0-9][a-zA-Z0-9 _\-\.+]*$', name):
+    # Require first character be alpha, so we can avoid collisions with port
+    # numbers.
+    if re.match(r'^[a-zA-Z][a-zA-Z0-9 _\-\.+]*$', name):
         return True
     return False
 

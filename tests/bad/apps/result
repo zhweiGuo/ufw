@@ -1,38 +1,38 @@
 TESTING BAD PROFILE (command name)
-0: --dry-run app info foo
+0: app info foo
 
 
-1: --dry-run app info Custom Web App
+1: app info Custom Web App
 
 
 TESTING BAD PROFILE (name)
-2: --dry-run app info bad-description1
+2: app info bad-description1
 
 
-3: --dry-run app info bad-description2
+3: app info bad-description2
 
 
-4: --dry-run app info bad-title1
+4: app info bad-title1
 
 
-5: --dry-run app info bad-title2
+5: app info bad-title2
 
 
-6: --dry-run app info bad-ports1
+6: app info bad-ports1
 
 
-7: --dry-run app info bad-ports2
+7: app info bad-ports2
 
 
-8: --dry-run app info bad-ports3
+8: app info bad-ports3
 
 
-9: --dry-run app info bad-ports4
+9: app info bad-ports4
 
 
-10: --dry-run app info bad-ports5
+10: app info bad-ports5
 
 
-11: --dry-run app info bad-ports6
+11: app info bad-ports6
 
 

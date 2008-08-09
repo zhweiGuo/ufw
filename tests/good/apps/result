@@ -2,7 +2,6 @@ TESTING APPLICATION INTEGRATION (args)
 0: app list
 WARN: Checks disabled
 Available applications:
-  0 aZ9 _-.+
   A aZ9 _-.+
   Apache
   Apache Full
@@ -89,15 +88,6 @@ Port:
 
 7: app info all
 WARN: Checks disabled
-Profile: 0 aZ9 _-.+
-Title: Example title
-Description: Example description
-
-Port:
-  80
-
---
-
 Profile: A aZ9 _-.+
 Title: Example title
 Description: Example description
