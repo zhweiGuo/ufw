@@ -2,6 +2,11 @@ all:
 	# Use setup.py to install. See README for details
 	exit 1
 
+install: all
+
+test:
+	run_tests -s
+
 clean:
 	rm -rf /tmp/ufw
 
