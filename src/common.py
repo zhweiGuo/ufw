@@ -47,6 +47,7 @@ class UFWRule:
         self.sport = ""
         self.protocol = ""
         self.multi = False
+        self.app = False
         try:
             self.set_action(action)
             self.set_protocol(protocol)

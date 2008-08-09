@@ -27,10 +27,7 @@ from ufw.backend_iptables import UFWBackendIptables
 #import ufw.application
 
 def parse_command(argv):
-    '''Parse command. Returns tuple for action, rule, ip_version and dryrun.
-       If this is a potential application rule, setup the rule as a template
-       and set is_app_rule to True.
-    '''
+    '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
     action = ""
     rule = ""
     type = ""
@@ -39,7 +36,6 @@ def parse_command(argv):
     from_service = ""
     to_service = ""
     dryrun = False
-    is_app_rule = False
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
@@ -102,8 +98,8 @@ def parse_command(argv):
                     ufw.util.get_services_proto(argv[2])
                 except Exception:
                     type = "both"
-                    is_app_rule = True
-            if not is_app_rule:
+                    rule.app = True
+            if not rule.app:
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[2])
                 except UFWError:
@@ -131,13 +127,15 @@ def parse_command(argv):
             raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port' ]
+            keys = [ 'proto', 'from', 'to', 'port', 'app' ]
 
             # quick check
             if argv.count("to") > 1 or \
                argv.count("from") > 1 or \
                argv.count("proto") > 1 or \
-               argv.count("port") > 2:
+               argv.count("port") > 2 or \
+               argv.count("app") > 2 or \
+               argv.count("app") > 0 and argv.count("proto") > 0:
                 err_msg = _("Improper rule syntax")
                 raise UFWError(err_msg)
 
@@ -194,14 +192,17 @@ def parse_command(argv):
                     else:
                         err_msg = _("Invalid 'to' clause")
                         raise UFWError(err_msg)
-                elif arg == "port":
+                elif arg == "port" or arg == "app":
                     if i+1 < nargs:
                         if loc == "":
-                            err_msg = _("Need 'from' or 'to' with 'port'")
+                            err_msg = _("Need 'from' or 'to' with '%s'") % \
+                                        (arg)
                             raise UFWError(err_msg)
 
                         tmp = argv[i+1]
-                        if not re.match('^\d([0-9,:]*\d+)*$', tmp):
+                        if arg == "app":
+                            rule.app = True
+                        elif not re.match('^\d([0-9,:]*\d+)*$', tmp):
                             if ',' in tmp or ':' in tmp:
                                 err_msg = _("Port ranges must be numeric")
                                 raise UFWError(err_msg)
@@ -210,7 +211,6 @@ def parse_command(argv):
                                 from_service = tmp
                             else:
                                 to_service = tmp
-
                         try:
                             rule.set_port(tmp, loc)
                         except Exception:
@@ -270,7 +270,7 @@ def parse_command(argv):
                         (rule.protocol)
             raise UFWError(err_msg)
 
-    return (action, rule, type, dryrun, is_app_rule)
+    return (action, rule, type, dryrun)
 
 
 def parse_application_command(argv):
@@ -451,7 +451,7 @@ class UFWFrontend:
 
         return res
 
-    def do_action(self, action, rule, ip_version, is_app_rule):
+    def do_action(self, action, rule, ip_version):
         '''Perform action on rule. action, rule and ip_version are usually
            based on return values from parse_command().
         '''
