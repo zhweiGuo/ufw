@@ -1,3 +1,7 @@
+all:
+	# Use setup.py to install. See README for details
+	exit 1
+
 clean:
 	rm -rf /tmp/ufw
 
