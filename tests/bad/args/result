@@ -1382,3 +1382,6 @@ TESTING ARGS (app)
 448: --dry-run app rfresh foo
 
 
+449: --dry-run app info foo%
+
+

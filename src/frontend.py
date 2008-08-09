@@ -495,6 +495,9 @@ class UFWFrontend:
             names = self.backend.profiles.keys()
             names.sort()
         else:
+            if not ufw.applications.valid_profile_name(pname):
+                err_msg = _("Invalid profile name")
+                raise UFWError(err_msg)
             names.append(pname)
 
         rstr = ""

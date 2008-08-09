@@ -1,0 +1,225 @@
+TESTING APPLICATION INTEGRATION (args)
+0: app list
+WARN: Checks disabled
+Available applications:
+  0 aZ9 _-.+
+  A aZ9 _-.+
+  Apache
+  Apache Full
+  Apache Secure
+  Bind9
+  Custom Web App
+  Dovecot IMAP
+  Dovecot POP3
+  Dovecot Secure IMAP
+  Dovecot Secure POP3
+  Samba
+  a aZ9 _-.+
+
+
+1: app info Apache
+WARN: Checks disabled
+Profile: Apache
+Title: Web Server
+Description: Apache v2 is the next generation of the omnipresent Apache web
+server.
+
+Port:
+  80/tcp
+
+
+2: app info Apache Secure
+WARN: Checks disabled
+Profile: Apache Secure
+Title: Web Server (HTTPS)
+Description: Apache v2 is the next generation of the omnipresent Apache web
+server.
+
+Port:
+  443/tcp
+
+
+3: app info Apache Full
+WARN: Checks disabled
+Profile: Apache Full
+Title: Web Server (HTTP,HTTPS)
+Description: Apache v2 is the next generation of the omnipresent Apache web
+server.
+
+Ports:
+  80,443/tcp
+
+
+4: app info Bind9
+WARN: Checks disabled
+Profile: Bind9
+Title: Internet Domain Name Server
+Description: The Berkeley Internet Name Domain (BIND) implements an
+Internet domain name server.  BIND is the most widely-used name server
+software on the Internet, and is supportsed by the Internet Software
+Consortium, www.isc.org.
+
+Port:
+  53
+
+
+5: app info Samba
+WARN: Checks disabled
+Profile: Samba
+Title: LanManager-like file and printer server for Unix
+Description: The Samba software suite is a collection of programs that
+implements the SMB/CIFS protocol for unix systems, allowing you to serve
+files and printers to Windows, NT, OS/2 and DOS clients. This protocol is
+sometimes also referred to as the LanManager or NetBIOS protocol.
+
+Ports:
+  137,138/udp
+  138,445/tcp
+
+
+6: app info Custom Web App
+WARN: Checks disabled
+Profile: Custom Web App
+Title: Example profile for a custom web application
+Description: Some nice descriptive text here
+
+Port:
+  8080/tcp
+
+
+7: app info all
+WARN: Checks disabled
+Profile: 0 aZ9 _-.+
+Title: Example title
+Description: Example description
+
+Port:
+  80
+
+--
+
+Profile: A aZ9 _-.+
+Title: Example title
+Description: Example description
+
+Port:
+  80
+
+--
+
+Profile: Apache
+Title: Web Server
+Description: Apache v2 is the next generation of the omnipresent Apache web
+server.
+
+Port:
+  80/tcp
+
+--
+
+Profile: Apache Full
+Title: Web Server (HTTP,HTTPS)
+Description: Apache v2 is the next generation of the omnipresent Apache web
+server.
+
+Ports:
+  80,443/tcp
+
+--
+
+Profile: Apache Secure
+Title: Web Server (HTTPS)
+Description: Apache v2 is the next generation of the omnipresent Apache web
+server.
+
+Port:
+  443/tcp
+
+--
+
+Profile: Bind9
+Title: Internet Domain Name Server
+Description: The Berkeley Internet Name Domain (BIND) implements an
+Internet domain name server.  BIND is the most widely-used name server
+software on the Internet, and is supportsed by the Internet Software
+Consortium, www.isc.org.
+
+Port:
+  53
+
+--
+
+Profile: Custom Web App
+Title: Example profile for a custom web application
+Description: Some nice descriptive text here
+
+Port:
+  8080/tcp
+
+--
+
+Profile: Dovecot IMAP
+Title: Secure mail server (IMAP)
+Description: Dovecot is a mail server whose major goals are security and
+extreme
+reliability.
+
+Port:
+  143/tcp
+
+--
+
+Profile: Dovecot POP3
+Title: Secure mail server (POP3)
+Description: Dovecot is a mail server whose major goals are security and
+extreme
+reliability.
+
+Port:
+  110/tcp
+
+--
+
+Profile: Dovecot Secure IMAP
+Title: Secure mail server (IMAPS)
+Description: Dovecot is a mail server whose major goals are security and
+extreme
+reliability.
+
+Port:
+  993/tcp
+
+--
+
+Profile: Dovecot Secure POP3
+Title: Secure mail server (POP3S)
+Description: Dovecot is a mail server whose major goals are security and
+extreme
+reliability.
+
+Port:
+  995/tcp
+
+--
+
+Profile: Samba
+Title: LanManager-like file and printer server for Unix
+Description: The Samba software suite is a collection of programs that
+implements the SMB/CIFS protocol for unix systems, allowing you to serve
+files and printers to Windows, NT, OS/2 and DOS clients. This protocol is
+sometimes also referred to as the LanManager or NetBIOS protocol.
+
+Ports:
+  137,138/udp
+  138,445/tcp
+
+--
+
+Profile: a aZ9 _-.+
+Title: Example title
+Description: Example description
+
+Port:
+  80/tcp
+
+
