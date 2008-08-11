@@ -73,7 +73,7 @@ sometimes also referred to as the LanManager or NetBIOS protocol.
 
 Ports:
   137,138/udp
-  138,445/tcp
+  139,445/tcp
 
 
 6: app info Custom Web App
@@ -201,7 +201,7 @@ sometimes also referred to as the LanManager or NetBIOS protocol.
 
 Ports:
   137,138/udp
-  138,445/tcp
+  139,445/tcp
 
 --
 
