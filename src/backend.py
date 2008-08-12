@@ -23,7 +23,7 @@ from stat import *
 import sys
 import ufw.util
 from ufw.util import warn, debug
-from ufw.common import UFWError, config_dir
+from ufw.common import UFWError, config_dir, UFWRule
 import ufw.applications
 
 class UFWBackend:
@@ -222,6 +222,68 @@ class UFWBackend:
         rstr = _("Default application policy changed to '%s'\n") % (policy)
 
         return rstr
+
+    def get_rules_for_apps(self, template):
+        '''Return a list of UFWRules from the given profile'''
+        rules = []
+        profile_names = self.profiles.keys()
+
+        if template.dport in profile_names and template.sport in profile_names:
+            print ("TODO: template.dport in profile_names and template.sport in profile_names")
+            pass
+#            rule = template
+#            rule.app = False
+#            for p in ufw.applications.get_ports(self.profiles[template.dport]):
+#                try:
+#                    (port, proto) = ufw.common.parse_port_proto(p)
+#                    rule.set_protocol(proto)
+#                    rule.set_port(port, "src")
+#                except UFWError:
+#                    err_msg = _("Bad port")
+#                    raise UFWError(err_msg)
+#                except Exception:
+#                    raise
+#            rules.append(rule)
+        elif template.sport in profile_names:
+            for p in ufw.applications.get_ports(self.profiles[template.sport]):
+                rule = UFWRule(template.action, "any", "any", template.dst, \
+                               "any", template.src)
+                rule.sapp = ""
+                try:
+                    (port, proto) = ufw.util.parse_port_proto(p)
+                    rule.set_protocol(proto)
+                    rule.set_port(port, "src")
+                except UFWError:
+                    err_msg = _("Bad port")
+                    raise UFWError(err_msg)
+                except Exception:
+                    raise
+                rules.append(rule)
+        elif template.dport in profile_names:
+            for p in ufw.applications.get_ports(self.profiles[template.dport]):
+                print "Processing %s" % (p)
+                rule = UFWRule(template.action, "any", "any", template.dst, \
+                               "any", template.src)
+
+                # set to False so we get the full checks
+                rule.dapp = ""
+                try:
+                    (port, proto) = ufw.util.parse_port_proto(p)
+                    rule.set_protocol(proto)
+                    rule.set_port(port, "dst")
+                except UFWError:
+                    err_msg = _("Bad port")
+                    raise UFWError(err_msg)
+                except Exception:
+                    raise
+                rule.dapp = template.dapp
+                rules.append(rule)
+
+        if len(rules) < 1:
+            err_msg = _("No rules found for application profile")
+            raise UFWError(err_msg)
+
+        return rules
 
     # API overrides
     def get_loglevel(self):

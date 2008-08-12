@@ -487,13 +487,19 @@ COMMIT
                 if pat_tuple.match(line):
                     tuple = pat_tuple.sub('', line)
                     tmp = re.split(r'\s+', tuple.strip())
-                    if len(tmp) != 6:
+                    if len(tmp) != 6 and len(tmp) != 8:
                         warn_msg = _("Skipping malformed tuple (bad length): %s") % (tuple)
                         warn(warn_msg)
                     else:
                         try:
-                            rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                           tmp[4], tmp[5])
+                            if len(tmp) == 6:
+                                rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
+                                               tmp[4], tmp[5])
+                            else:
+                                rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
+                                               tmp[4], tmp[5])
+                                rule.dapp = tmp[6]
+                                rule.sapp = tmp[7]
                             if f == self.files['rules6']:
                                 rule.set_v6(True)
                                 self.rules6.append(rule)
@@ -546,8 +552,20 @@ COMMIT
         for r in rules:
             rule_str = "-A " + chain_prefix + "-user-input " + \
                        r.format_rule() + "\n"
-            os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
+            if r.dapp == "" and r.sapp == "":
+                os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
                      (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+            else:
+                dapp = "-"
+                if r.dapp:
+                    dapp = r.dapp
+                sapp = "-"
+                if r.sapp:
+                    sapp = r.sapp
+                os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s %s %s\n" \
+                     % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src, \
+                      dapp, sapp))
+
             for s in self._get_rules_from_formatted(rule_str, chain_prefix):
                 os.write(fd, s)
 

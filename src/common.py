@@ -47,7 +47,8 @@ class UFWRule:
         self.sport = ""
         self.protocol = ""
         self.multi = False
-        self.app = False
+        self.dapp = ""
+        self.sapp = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -112,7 +113,11 @@ class UFWRule:
     def set_port(self, port, loc="dst"):
         '''Sets port and location (destination or source) of the rule'''
         err_msg = _("Bad port '%s'") % (port)
-        if port == "any" or self.app:
+        if port == "any":
+            pass
+        elif loc == "dst" and self.dapp:
+            pass
+        elif loc == "src" and self.sapp:
             pass
         elif re.match(r'^[,:]', port) or re.match(r'[,:]$', port):
             raise UFWError(err_msg)
@@ -270,7 +275,12 @@ class UFWRule:
         if x.v6 != y.v6:
             debug(dbg_msg)
             return 1
-        
+        if x.dapp != y.dapp:
+            debug(dbg_msg)
+            return 1
+        if x.sapp != y.sapp:
+            debug(dbg_msg)
+            return 1
         if x.action == y.action:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)

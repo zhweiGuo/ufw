@@ -24,7 +24,6 @@ from ufw.common import UFWError
 import ufw.util
 from ufw.util import error
 from ufw.backend_iptables import UFWBackendIptables
-#import ufw.application
 
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
@@ -98,9 +97,9 @@ def parse_command(argv):
                     ufw.util.get_services_proto(argv[2])
                 except Exception:
                     type = "both"
-                    rule.app = True
+                    rule.dapp = argv[2]
                     rule.set_port(argv[2], "dst")
-            if not rule.app:
+            if rule.dapp == "":
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[2])
                 except UFWError:
@@ -202,7 +201,10 @@ def parse_command(argv):
 
                         tmp = argv[i+1]
                         if arg == "app":
-                            rule.app = True
+                            if loc == "src":
+                                rule.sapp = tmp
+                            else:
+                                rule.dapp = tmp
                         elif not re.match('^\d([0-9,:]*\d+)*$', tmp):
                             if ',' in tmp or ':' in tmp:
                                 err_msg = _("Port ranges must be numeric")
@@ -474,9 +476,19 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
-            if rule.app:
-                raise UFWError("'app' not implemented yet")
-            res = self.set_rule(rule, ip_version)
+            if rule.dapp != "" or rule.sapp != "":
+                try:
+                    rules = self.backend.get_rules_for_apps(rule)
+                except Exception:
+                    raise
+                for r in rules:
+                    try:
+                        res += self.set_rule(r, ip_version) + '\n'
+                    except Exception:
+                        print "TODO: undo the currently committed actions if error"
+                        raise
+            else:
+                res = self.set_rule(rule, ip_version)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)
