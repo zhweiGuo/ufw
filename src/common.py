@@ -99,6 +99,18 @@ class UFWRule:
         else:
             str += " -j DROP"
 
+        if self.dapp != "" or self.sapp != "":
+            comment = "-m comment --comment '"
+            if self.dapp != "":
+                comment += "dapp_" + self.dapp
+            if self.dapp != "" and self.sapp != "":
+                comment += ","
+            if self.sapp != "":
+                comment += "sapp_" + self.sapp
+            comment += "'"
+
+            str += " " + comment
+
         return str.strip()
 
     def set_action(self, action):
