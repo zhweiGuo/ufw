@@ -223,60 +223,53 @@ class UFWBackend:
 
         return rstr
 
+    def _new_app_rule_from_template(self, template, loc, p):
+        '''Get a new application rule based on template'''
+        rule = UFWRule(template.action, "any", "any", template.dst, \
+                       "any", template.src)
+        rule.remove = template.remove
+
+        if loc == "dst":
+            rule.dapp = ""
+        else:
+            rule.sapp = ""
+
+        try:
+            (port, proto) = ufw.util.parse_port_proto(p)
+            rule.set_protocol(proto)
+            rule.set_port(port, loc)
+        except UFWError:
+            raise
+            err_msg = _("Bad port")
+            raise UFWError(err_msg)
+        except Exception:
+            raise
+
+        if loc == "dst":
+            rule.dapp = template.dapp
+        else:
+            rule.sapp = template.sapp
+
+        return rule
+
     def get_rules_for_apps(self, template):
         '''Return a list of UFWRules from the given profile'''
         rules = []
         profile_names = self.profiles.keys()
 
         if template.dport in profile_names and template.sport in profile_names:
-            print ("TODO: template.dport in profile_names and template.sport in profile_names")
-            pass
-#            rule = template
-#            rule.app = False
-#            for p in ufw.applications.get_ports(self.profiles[template.dport]):
-#                try:
-#                    (port, proto) = ufw.common.parse_port_proto(p)
-#                    rule.set_protocol(proto)
-#                    rule.set_port(port, "src")
-#                except UFWError:
-#                    err_msg = _("Bad port")
-#                    raise UFWError(err_msg)
-#                except Exception:
-#                    raise
-#            rules.append(rule)
+             error("TODO: template.sport && template.dport")
+#            for p in ufw.applications.get_ports(self.profiles[template.sport]):
+#                tmp = self._new_app_rule_from_template(template, "src", p)
+#                rule = self._new_app_rule_from_template(template, "dst", p)
+#                rules.append(rule)
         elif template.sport in profile_names:
             for p in ufw.applications.get_ports(self.profiles[template.sport]):
-                rule = UFWRule(template.action, "any", "any", template.dst, \
-                               "any", template.src)
-                rule.sapp = ""
-                try:
-                    (port, proto) = ufw.util.parse_port_proto(p)
-                    rule.set_protocol(proto)
-                    rule.set_port(port, "src")
-                except UFWError:
-                    err_msg = _("Bad port")
-                    raise UFWError(err_msg)
-                except Exception:
-                    raise
+                rule = self._new_app_rule_from_template(template, "src", p)
                 rules.append(rule)
         elif template.dport in profile_names:
             for p in ufw.applications.get_ports(self.profiles[template.dport]):
-                print "Processing %s" % (p)
-                rule = UFWRule(template.action, "any", "any", template.dst, \
-                               "any", template.src)
-
-                # set to False so we get the full checks
-                rule.dapp = ""
-                try:
-                    (port, proto) = ufw.util.parse_port_proto(p)
-                    rule.set_protocol(proto)
-                    rule.set_port(port, "dst")
-                except UFWError:
-                    err_msg = _("Bad port")
-                    raise UFWError(err_msg)
-                except Exception:
-                    raise
-                rule.dapp = template.dapp
+                rule = self._new_app_rule_from_template(template, "dst", p)
                 rules.append(rule)
 
         if len(rules) < 1:

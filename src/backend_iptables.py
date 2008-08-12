@@ -498,8 +498,10 @@ COMMIT
                             else:
                                 rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
                                                tmp[4], tmp[5])
-                                rule.dapp = tmp[6]
-                                rule.sapp = tmp[7]
+                                if tmp[6] != "-":
+                                    rule.dapp = tmp[6]
+                                if tmp[7] != "-":
+                                    rule.sapp = tmp[7]
                             if f == self.files['rules6']:
                                 rule.set_v6(True)
                                 self.rules6.append(rule)
@@ -646,7 +648,6 @@ COMMIT
             else:
                 newrules.append(r)
 
-
         # Add rule to the end if it was not already added.
         if not found and not rule.remove:
             newrules.append(rule)
@@ -701,6 +702,7 @@ COMMIT
 
                 for s in self._get_rules_from_formatted(rule.format_rule(), \
                                                         chain_prefix):
+                    debug([exe, flag, chain] + s.split())
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
                         print >> sys.stderr, out
