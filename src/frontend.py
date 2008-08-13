@@ -274,7 +274,8 @@ def parse_command(argv):
             raise UFWError(err_msg)
 
     # Verify protocol not specified with application rule
-    if rule.protocol != "any" and (rule.sapp != "" or rule.dapp != ""):
+    if rule and rule.protocol != "any" and \
+       (rule.sapp != "" or rule.dapp != ""):
         app = ""
         if rule.dapp:
             app = rule.dapp
