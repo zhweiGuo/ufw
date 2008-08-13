@@ -268,13 +268,15 @@ class UFWBackend:
                         except Exception:
                             raise
 
+                        if rule.protocol == "any":
+                            rule.set_protocol(tmp.protocol)
+
                         rule.sapp = template.sapp
                         rules.append(rule)
         elif template.sport in profile_names:
             for p in ufw.applications.get_ports(self.profiles[template.sport]):
                 rule = template.dup_rule()
                 rule.sapp = ""
-                rule.set_port("any", "dst")
                 try:
                     (port, proto) = ufw.util.parse_port_proto(p)
                     rule.set_protocol(proto)
@@ -288,7 +290,6 @@ class UFWBackend:
             for p in ufw.applications.get_ports(self.profiles[template.dport]):
                 rule = template.dup_rule()
                 rule.dapp = ""
-                rule.set_port("any", "src")
                 try:
                     (port, proto) = ufw.util.parse_port_proto(p)
                     rule.set_protocol(proto)
