@@ -38,6 +38,7 @@ class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
                  sport="any", src="0.0.0.0/0"):
+        # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
         self.v6 = False
@@ -49,6 +50,7 @@ class UFWRule:
         self.multi = False
         self.dapp = ""
         self.sapp = ""
+        self.action = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -61,6 +63,22 @@ class UFWRule:
 
     def __str__(self):
         print self.format_rule()
+
+    def dup_rule(self):
+        '''Return a duplicate of a rule'''
+        rule = UFWRule(self.action, self.protocol)
+        rule.dport = self.dport
+        rule.dport = self.sport
+        rule.dport = self.dst
+        rule.dport = self.src
+        rule.remove = self.remove
+        rule.updated = self.updated
+        rule.v6 = self.v6
+        rule.multi = self.multi
+        rule.dapp = self.dapp
+        rule.sapp = self.sapp
+
+        return rule
 
     def format_rule(self):
         '''Format rule for for later parsing'''
