@@ -244,18 +244,32 @@ class UFWBackend:
 
                 tmp.dapp = template.dapp
 
-                for j in sports:
-                    rule = tmp.dup_rule()
-                    rule.sapp = ""
+                if template.dport == template.sport:
+                    # Just use the same ports as dst for src when they are the
+                    # same to avoid duplicate rules
+                    tmp.sapp = ""
                     try:
-                        (port, proto) = ufw.util.parse_port_proto(j)
-                        rule.set_protocol(proto)
-                        rule.set_port(port, "src")
+                        (port, proto) = ufw.util.parse_port_proto(i)
+                        tmp.set_protocol(proto)
+                        tmp.set_port(port, "src")
                     except Exception:
                         raise
 
-                    rule.sapp = template.sapp
-                    rules.append(rule)
+                    tmp.sapp = template.sapp
+                    rules.append(tmp)
+                else:
+                    for j in sports:
+                        rule = tmp.dup_rule()
+                        rule.sapp = ""
+                        try:
+                            (port, proto) = ufw.util.parse_port_proto(j)
+                            rule.set_protocol(proto)
+                            rule.set_port(port, "src")
+                        except Exception:
+                            raise
+
+                        rule.sapp = template.sapp
+                        rules.append(rule)
         elif template.sport in profile_names:
             for p in ufw.applications.get_ports(self.profiles[template.sport]):
                 rule = template.dup_rule()
