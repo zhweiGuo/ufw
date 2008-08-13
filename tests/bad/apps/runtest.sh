@@ -33,4 +33,28 @@ do_cmd "1" null app info bad-ports4
 do_cmd "1" null app info bad-ports5
 do_cmd "1" null app info bad-ports6
 
+echo "TESTING APPLICATION INTEGRATION (bad simple rules)" >> $TESTTMP/result
+for target in allow deny limit ; do
+    do_cmd "1" null $target NONEXISTENT
+    do_cmd "1" null $target Apache/tcp
+done
+
+echo "TESTING APPLICATION INTEGRATION (bad extended rules)" >> $TESTTMP/result
+for target in allow deny limit ; do
+    for i in to from ; do
+        k="to"
+        if [ "$j" = "to" ]; then
+            k="from"
+        fi
+        for loc in 192.168.0.0/16 any ; do
+            do_cmd "1" --dry-run $target $i $loc app NONEXISTENT
+            do_cmd "1" --dry-run $target $i $loc app Apache proto tcp
+            do_cmd "1" --dry-run $target $i $loc app Apache proto udp
+            do_cmd "1" --dry-run $target $i $loc app 'No Protocol Multi'
+            do_cmd "1" --dry-run $target $i $loc app Samba $k $loc port http
+            do_cmd "1" --dry-run $target $i $loc app Samba $k $loc port 22 proto tcp
+        done
+    done
+done
+
 exit 0

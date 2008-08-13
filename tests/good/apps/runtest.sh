@@ -26,3 +26,56 @@ do_cmd "0" app info Samba
 do_cmd "0" app info 'Custom Web App'
 do_cmd "0" app info all
 
+echo "TESTING APPLICATION INTEGRATION (simple rules)" >> $TESTTMP/result
+for target in allow deny limit ; do
+    do_cmd "0" --dry-run $target Apache
+    do_cmd "0" --dry-run $target 'Apache Secure'
+    do_cmd "0" --dry-run $target 'Apache Full'
+    do_cmd "0" --dry-run $target Bind9
+    do_cmd "0" --dry-run $target Samba
+    do_cmd "0" --dry-run $target OpenNTPD
+    do_cmd "0" --dry-run $target 'Multi TCP'
+    do_cmd "0" --dry-run $target 'Multi UDP'
+done
+
+echo "TESTING APPLICATION INTEGRATION (extended rules)" >> $TESTTMP/result
+for target in allow deny limit ; do
+    for i in to from ; do
+        for loc in 192.168.0.0/16 any ; do
+            do_cmd "0" --dry-run $target $i $loc app Apache
+            do_cmd "0" --dry-run $target $i $loc app 'Apache Secure'
+            do_cmd "0" --dry-run $target $i $loc app 'Apache Full'
+            do_cmd "0" --dry-run $target $i $loc app Bind9
+            do_cmd "0" --dry-run $target $i $loc app Samba
+            do_cmd "0" --dry-run $target $i $loc app OpenNTPD
+            do_cmd "0" --dry-run $target $i $loc app 'Multi TCP'
+            do_cmd "0" --dry-run $target $i $loc app 'Multi UDP'
+        done
+    done
+
+    for i in 192.168.0 any; do
+        for j in from to; do
+            k="to"
+            if [ "$j" = "to" ]; then
+                k="from"
+            fi
+            m="$i.1"
+            n="$i.2"
+            if [ "$i" = "any" ]; then
+                m="$i"
+                n="$i"
+            fi
+            do_cmd "0" --dry-run $target $j $m app Apache $k $n port 8080
+            do_cmd "0" --dry-run $target $j $m app Apache $k $n port http
+            do_cmd "0" --dry-run $target $j $m app OpenNTPD $k $n port 10123
+            do_cmd "0" --dry-run $target $j $m app Samba $k $n app Bind9
+            do_cmd "0" --dry-run $target $j $m app Samba $k $n port 22
+            do_cmd "0" --dry-run $target $j $m app Apache $k $n app 'Apache Full'
+        done
+        if [ "$i" != "any" ]; then
+            i="$i.1"
+        fi
+        do_cmd "0" --dry-run $target to $i app Samba from $i app Samba
+    done
+done
+

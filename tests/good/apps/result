@@ -12,6 +12,10 @@ Available applications:
   Dovecot POP3
   Dovecot Secure IMAP
   Dovecot Secure POP3
+  Multi TCP
+  Multi UDP
+  No Protocol
+  OpenNTPD
   Samba
   a aZ9 _-.+
 
@@ -189,6 +193,45 @@ reliability.
 
 Port:
   995/tcp
+
+--
+
+Profile: Multi TCP
+Title: Mutli TCP
+Description: Example description
+
+Ports:
+  1234,5678/tcp
+
+--
+
+Profile: Multi UDP
+Title: Multi UDP
+Description: Example description
+
+Ports:
+  1234,5678/udp
+
+--
+
+Profile: No Protocol
+Title: No Protocol
+Description: Example description
+
+Port:
+  1234
+
+--
+
+Profile: OpenNTPD
+Title: OpenBSD NTP daemon
+Description: NTP, the Network Time Protocol, is used to keep the computer
+clocks synchronized. It provides the ability to sync the local clock to
+remote NTP servers and can act as NTP server itself, redistributing the
+local clock.
+
+Port:
+  123/udp
 
 --
 
