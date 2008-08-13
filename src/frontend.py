@@ -273,6 +273,17 @@ def parse_command(argv):
                         (rule.protocol)
             raise UFWError(err_msg)
 
+    # Verify protocol not specified with application rule
+    if rule.protocol != "any" and (rule.sapp != "" or rule.dapp != ""):
+        app = ""
+        if rule.dapp:
+            app = rule.dapp
+        else:
+            app = rule.sapp
+        err_msg = _("Protocol '%s' specified with '%s'") % \
+                    (rule.protocol, app)
+        raise UFWError(err_msg)
+
     return (action, rule, type, dryrun)
 
 
