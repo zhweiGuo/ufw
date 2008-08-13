@@ -243,7 +243,6 @@ class UFWBackend:
                     raise
 
                 tmp.dapp = template.dapp
-                print tmp.format_rule()
 
                 for j in sports:
                     rule = tmp.dup_rule()
@@ -256,7 +255,6 @@ class UFWBackend:
                         raise
 
                     rule.sapp = template.sapp
-                    print rule.format_rule()
                     rules.append(rule)
         elif template.sport in profile_names:
             for p in ufw.applications.get_ports(self.profiles[template.sport]):
