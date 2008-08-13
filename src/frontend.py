@@ -281,8 +281,8 @@ def parse_command(argv):
             app = rule.dapp
         else:
             app = rule.sapp
-        err_msg = _("Protocol '%s' specified with '%s'") % \
-                    (rule.protocol, app)
+        err_msg = _("Improper rule syntax (protocol '%s' specified with " + \
+                    "application rule)") % (rule.protocol)
         raise UFWError(err_msg)
 
     return (action, rule, type, dryrun)
@@ -489,16 +489,51 @@ class UFWFrontend:
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
             if rule.dapp != "" or rule.sapp != "":
+                error = False
+                tmp = ""
+                count = 0
                 try:
                     rules = self.backend.get_rules_for_apps(rule)
                 except Exception:
                     raise
-                for r in rules:
+                for i, r in enumerate(rules):
+                    count = i
                     try:
-                        res += self.set_rule(r, ip_version) + '\n'
+                        tmp = self.set_rule(r, ip_version) + '\n'
                     except Exception:
-                        print "TODO: undo the currently committed actions if error"
-                        raise
+                        error = True
+                        break
+
+                if not error:
+		    # Just return the last result, since errors have already
+                    # been caught.
+                    res += tmp
+                else:
+                    # Delete the successfully added rules in reverse order
+                    undo_error = False
+                    indexes = range(count+1)
+                    indexes.reverse()
+                    for j in indexes:
+                        backout_rule = rules[j].dup_rule()
+                        backout_rule.remove = True
+                        try:
+                            self.set_rule(backout_rule, ip_version)
+                        except Exception:
+                            # Don't fail, so we can try to backout more
+                            undo_error = True
+                            warn_msg = _("Could not back out rule '%s'" % \
+                                         r.format_rule())
+                            warn(warn_msg)
+
+                    err_msg = ""
+                    if undo_error:
+                        err_msg = _("Error applying application rules. " + \
+                                    "Some rules could not be unapplied.")
+                    else:
+                        err_msg = _("Error applying application rules. " + \
+                                    "Attempted rules successfully unapplied.")
+
+                    raise UFWError(err_msg)
             else:
                 res = self.set_rule(rule, ip_version)
         else:
