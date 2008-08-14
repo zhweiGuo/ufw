@@ -15,7 +15,7 @@ Commands:
 Application profile commands:
   app list			list application profiles
   app info PROFILE		show information on PROFILE
-  app refresh PROFILE		refresh PROFILE
+  app update PROFILE		update PROFILE
   app default ARG		set profile policy to ALLOW, DENY or SKIP
 
 

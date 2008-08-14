@@ -218,7 +218,7 @@ do_cmd "1" null --dry-run app info
 do_cmd "1" null --dry-run app ino foo
 do_cmd "1" null --dry-run app default
 do_cmd "1" null --dry-run app defalt foo
-do_cmd "1" null --dry-run app refresh
+do_cmd "1" null --dry-run app update
 do_cmd "1" null --dry-run app rfresh foo
 do_cmd "1" null --dry-run app info foo%
 

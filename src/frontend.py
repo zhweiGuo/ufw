@@ -304,14 +304,14 @@ def parse_application_command(argv):
         dryrun = True
         argv.remove(argv[1])
 
-    app_cmds = ['list', 'info', 'default', 'refresh']
+    app_cmds = ['list', 'info', 'default', 'update']
 
     if not argv[1].lower() in app_cmds:
         raise ValueError()
     else:
         action = argv[1].lower()
 
-    if action == "info" or action == "refresh":
+    if action == "info" or action == "update":
         if nargs < 3:
             raise ValueError()
         # Handle quoted name with spaces in it by stripping Python's ['...']
@@ -354,7 +354,7 @@ Commands:
 Application profile commands:
   app list			list application profiles
   app info PROFILE		show information on PROFILE
-  app refresh PROFILE		refresh PROFILE
+  app update PROFILE		update PROFILE
   app default ARG		set profile policy to ALLOW, DENY or SKIP
 ''')
     return (msg)
@@ -616,9 +616,9 @@ class UFWFrontend:
 
         return ufw.util.wrap_text(rstr)
 
-    def application_refresh(self, profile):
+    def application_update(self, profile):
         '''Refresh application profile'''
-        rstr = "UFWFrontend.application_refresh(%s): TODO" % (profile)
+        rstr = "UFWFrontend.application_update(%s): TODO" % (profile)
         return rstr
 
     def do_application_action(self, action, profile):
@@ -636,8 +636,8 @@ class UFWFrontend:
             res = self.get_application_list()
         elif action == "info":
             res = self.get_application_info(profile)
-        elif action == "refresh":
-            res = self.application_refresh(profile)
+        elif action == "update":
+            res = self.application_update(profile)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)

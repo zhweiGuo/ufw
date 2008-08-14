@@ -21,7 +21,7 @@ ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR PORT[/protocol]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|refresh\fR 
+ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
 .SH OPTIONS
 .TP
@@ -156,7 +156,7 @@ Allow access to udp 1.2.3.4 port 5469 from 1.2.3.5 port 5469:
 
 .SH REMOTE MANAGEMENT
 .PP
-When running \fBufw enable\fR or starting \fBufw\fR via its initscript, 
+When running \fBufw enable\fR or starting \fBufw\fR via its initscript,
 \fBufw\fR will flush its chains. This is required so \fBufw\fR can maintain a
 consistent state, but it may drop existing connections (eg ssh). \fBufw\fR
 does support adding rules before enabling the firewall, so administrators can
@@ -199,16 +199,16 @@ applications.
 
 After creating or editing an application profile, user's can run:
 
-  ufw app refresh <name>
+  ufw app update <name>
 
 This command will automatically update the firewall with the new profile
-information. The behavior of the \fBrefresh\fR command can be configured using:
+information. The behavior of the \fBupdate\fR command can be configured using:
 
   ufw app default <policy>
 
-The default application policy is \fBskip\fR, which means that the refresh
-option will do nothing. Users may also specify a policy of \fBallow\fR or
-\fBdeny\fR so the \fBrefresh\fR command may automatically update the firewall.
+The default application policy is \fBskip\fR, which means that the update
+command will do nothing. Users may also specify a policy of \fBallow\fR or
+\fBdeny\fR so the \fBupdate\fR command may automatically update the firewall.
 \fBWARNING\fR it may be a security to risk to use a default \fBallow\fR policy
 for applications profiles. Carefully consider the security ramifications before
 using a default \fBallow\fR policy.

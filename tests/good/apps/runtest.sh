@@ -66,7 +66,6 @@ for target in allow deny limit ; do
                 n="$i"
             fi
             do_cmd "0" --dry-run $target $j $m app Apache $k $n port 8080
-            do_cmd "0" --dry-run $target $j $m app Apache $k $n port http
             do_cmd "0" --dry-run $target $j $m app OpenNTPD $k $n port 10123
             do_cmd "0" --dry-run $target $j $m app Samba $k $n app Bind9
             do_cmd "0" --dry-run $target $j $m app Samba $k $n port 22
@@ -79,3 +78,17 @@ for target in allow deny limit ; do
     done
 done
 
+# this is for live rules
+echo "TESTING APPLICATION INTEGRATION (changed profile)" >> $TESTTMP/result
+cat > $TESTPATH/etc/ufw/applications.d/runtest << EOM
+[runtest]
+title=runtest title
+description=runtest description
+ports=23/tcp
+EOM
+do_cmd "0" --dry-run allow runtest
+rm -f $TESTPATH/etc/ufw/applications.d/runtest
+do_cmd "0" --dry-run delete allow runtest
+
+
+exit 0

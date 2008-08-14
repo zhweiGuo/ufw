@@ -13,3 +13,8 @@ title=Example title
 description=Example description
 ports=80
 
+[foo;cat /etc/passwd]
+title=Example title
+description=Example description
+ports=80
+

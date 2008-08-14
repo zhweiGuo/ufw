@@ -1376,7 +1376,7 @@ TESTING ARGS (app)
 446: --dry-run app defalt foo
 
 
-447: --dry-run app refresh
+447: --dry-run app update
 
 
 448: --dry-run app rfresh foo
