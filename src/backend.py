@@ -223,7 +223,7 @@ class UFWBackend:
 
         return rstr
 
-    def get_rules_for_apps(self, template):
+    def get_app_rules_from_profiles(self, template):
         '''Return a list of UFWRules from the given profile'''
         rules = []
         profile_names = self.profiles.keys()
@@ -331,4 +331,6 @@ class UFWBackend:
     def stop_firewall(self):
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
-
+    def get_app_rules_from_system(self, template):
+        raise UFWError("UFWBackend.get_app_rules_from_system: need to " + \
+                       "override")

@@ -492,10 +492,19 @@ class UFWFrontend:
                 error = False
                 tmp = ""
                 count = 0
+                rules = []
                 try:
-                    rules = self.backend.get_rules_for_apps(rule)
+                    if rule.remove:
+                        tmprules = self.backend.get_app_rules_from_system(rule)
+                        for tmp in tmprules:
+                            r = tmp.dup_rule()
+                            r.remove = rule.remove
+                            rules.append(r)
+                    else:
+                        rules = self.backend.get_app_rules_from_profiles(rule)
                 except Exception:
                     raise
+
                 for i, r in enumerate(rules):
                     count = i
                     try:

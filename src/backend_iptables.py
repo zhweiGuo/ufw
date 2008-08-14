@@ -498,20 +498,22 @@ COMMIT
                             else:
                                 rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
                                                tmp[4], tmp[5])
+                                # Removed leading [sd]app_ and unescape spaces
+                                pat_space = re.compile('%20')
                                 if tmp[6] != "-":
-                                    rule.dapp = tmp[6]
+                                    rule.dapp = pat_space.sub(' ', tmp[6])
                                 if tmp[7] != "-":
-                                    rule.sapp = tmp[7]
-                            if f == self.files['rules6']:
-                                rule.set_v6(True)
-                                self.rules6.append(rule)
-                            else:
-                                rule.set_v6(False)
-                                self.rules.append(rule)
+                                    rule.sapp = pat_space.sub(' ', tmp[7])
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
                                         (tuple)
                             warn(warn_msg)
+                        if f == self.files['rules6']:
+                            rule.set_v6(True)
+                            self.rules6.append(rule)
+                        else:
+                            rule.set_v6(False)
+                            self.rules.append(rule)
 
             orig.close()
 
@@ -558,13 +560,14 @@ COMMIT
                 os.write(fd, "\n### tuple ### %s %s %s %s %s %s\n" % \
                      (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
             else:
+                pat_space = re.compile(' ')
                 dapp = "-"
                 if r.dapp:
-                    dapp = r.dapp
+                    dapp = pat_space.sub('%20', r.dapp)
                 sapp = "-"
                 if r.sapp:
-                    sapp = r.sapp
-                os.write(fd, "\n### tuple ### %s %s %s %s %s %s '%s' '%s'\n" \
+                    sapp = pat_space.sub('%20', r.sapp)
+                os.write(fd, "\n### tuple ### %s %s %s %s %s %s %s %s\n" \
                      % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src, \
                       dapp, sapp))
 
@@ -720,4 +723,17 @@ COMMIT
                             print >> sys.stderr, out
         return rstr
 
+    def get_app_rules_from_system(self, template):
+        '''Return a list of UFWRules from the system for a given profile'''
+        rules = []
+
+        sapp = template.sapp
+        dapp = template.dapp
+
+        for r in self.rules + self.rules6:
+            tmp = r.dup_rule()
+            if tmp.dapp == dapp and tmp.sapp == sapp:
+                rules.append(tmp)
+
+        return rules
 
