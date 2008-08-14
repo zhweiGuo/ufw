@@ -555,7 +555,7 @@ COMMIT
             rule_str = "-A " + chain_prefix + "-user-input " + \
                        r.format_rule() + "\n"
             if r.dapp == "" and r.sapp == "":
-                os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s\n" % \
+                os.write(fd, "\n### tuple ### %s %s %s %s %s %s\n" % \
                      (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
             else:
                 dapp = "-"
@@ -564,7 +564,7 @@ COMMIT
                 sapp = "-"
                 if r.sapp:
                     sapp = r.sapp
-                os.write(fd, "\n### tuple ###" + " %s %s %s %s %s %s %s %s\n" \
+                os.write(fd, "\n### tuple ### %s %s %s %s %s %s '%s' '%s'\n" \
                      % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src, \
                       dapp, sapp))
 
