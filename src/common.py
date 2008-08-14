@@ -119,12 +119,13 @@ class UFWRule:
 
         if self.dapp != "" or self.sapp != "":
             comment = "-m comment --comment '"
+            pat_space = re.compile(' ')
             if self.dapp != "":
-                comment += "dapp_" + self.dapp
+                comment += "dapp_" + pat_space.sub('%20', self.dapp)
             if self.dapp != "" and self.sapp != "":
                 comment += ","
             if self.sapp != "":
-                comment += "sapp_" + self.sapp
+                comment += "sapp_" + pat_space.sub('%20', self.sapp)
             comment += "'"
 
             str += " " + comment
