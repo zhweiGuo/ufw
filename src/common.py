@@ -118,6 +118,7 @@ class UFWRule:
             str += " -j DROP"
 
         if self.dapp != "" or self.sapp != "":
+            # Format the comment string, and quote it just in case
             comment = "-m comment --comment '"
             pat_space = re.compile(' ')
             if self.dapp != "":
