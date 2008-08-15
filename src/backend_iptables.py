@@ -462,6 +462,31 @@ COMMIT
                     elif fields[9] == "sports":
                         rule.set_port(fields[10], "src")
 
+        has_comment = False
+        comments = []
+        try:
+            findex = fields.index('/*')
+            lindex = fields.index('*/')
+            has_comment = True
+        except Exception:
+            has_comment = False
+
+        if has_comment:
+            if findex + 1 >= lindex:
+                # Empty comment
+                has_comment = False
+            else:
+                comments = ' '.join(fields[findex+1:lindex]).strip("'").split()
+
+            if len(comments) > 0:
+                pat_space = re.compile('%20')
+                for app in comments[0].split(","):
+                    tmp = pat_space.sub(' ', app)
+                    if tmp.startswith('dapp_'):
+                        rule.dapp = app[5:]
+                    if tmp.startswith('sapp_'):
+                        rule.sapp = app[5:]
+
         if type == "v6":
             rule.set_v6(True)
         else:
