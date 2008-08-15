@@ -52,19 +52,21 @@ Firewall started and enabled on system startup
 
 
 /etc/init.d/ufw force-reload:
- * Stopping firewall: ufw...       [80G [74G[ OK ]
- * Starting firewall: ufw...       [80G [74G[ OK ]
+ * Stopping firewall: ufw...
+   ...done.
+ * Starting firewall: ufw...
+   ...done.
 ip6tables -L -n:
 Chain INPUT (policy DROP)
 target     prot opt source               destination         
-ACCEPT     all      ::/0                 ::/0               
+ACCEPT     all      ::/0                 ::/0                
 
 Chain FORWARD (policy DROP)
 target     prot opt source               destination         
 
 Chain OUTPUT (policy DROP)
 target     prot opt source               destination         
-ACCEPT     all      ::/0                 ::/0               
+ACCEPT     all      ::/0                 ::/0                
 6: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
