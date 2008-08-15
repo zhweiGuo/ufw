@@ -204,16 +204,45 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     if r is not None:
                         rules.append(r)
 
+        app_rules = {}
         for r in rules:
+            print "rule is '%s'" % (r.format_rule())
             location = {}
+            tuple = ""
+            show_proto = True
+            if r.dapp != "" or r.sapp != "":
+                show_proto = False
+                tuple = "%s %s %s %s" % (r.dapp, r.dst, r.sapp, r.src)
+                if r.dapp == "":
+                    tuple = "%s %s %s %s" % (r.dport, r.dst, r.sapp, r.src)
+                if r.sapp == "":
+                    tuple = "%s %s %s %s" % (r.dapp, r.dst, r.sport, r.src)
+
+                print "tuple is '%s'" % (tuple)
+
+                if app_rules.has_key(tuple):
+                    debug("Skipping found tuple '%s'" % (tuple))
+                    continue
+                else:
+                    app_rules[tuple] = True
+
             for loc in [ 'dst', 'src' ]:
                 location[loc] = ""
 
-                port = r.dport
-                tmp = r.dst
-                if loc == 'src':
-                    port = r.sport
+                port = ""
+                tmp = ""
+                if loc == "dst":
+                    tmp = r.dst
+                    if r.dapp != "":
+                        port = r.dapp
+                    else:
+                        port = r.dport
+                else:
                     tmp = r.src
+                    if r.sapp != "":
+                        port = r.sapp
+                    else:
+                        port = r.sport
 
                 if tmp != "0.0.0.0/0" and tmp != "::/0":
                     location[loc] = tmp
@@ -224,7 +253,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     else:
                         location[loc] += " " + port
 
-                    if r.protocol != "any":
+                    if show_proto and r.protocol != "any":
                         location[loc] += "/" + r.protocol
 
                 if port == "any":
@@ -456,7 +485,7 @@ COMMIT
                     rule.set_port(fields[7], "dst")
                 elif fields[6] == "sports":
                     rule.set_port(fields[7], "src")
-                if len(fields) == 11:
+                if len(fields) >= 11:
                     if fields[9] == "dports":
                         rule.set_port(fields[10], "dst")
                     elif fields[9] == "sports":
@@ -483,9 +512,9 @@ COMMIT
                 for app in comments[0].split(","):
                     tmp = pat_space.sub(' ', app)
                     if tmp.startswith('dapp_'):
-                        rule.dapp = app[5:]
+                        rule.dapp = tmp[5:]
                     if tmp.startswith('sapp_'):
-                        rule.sapp = app[5:]
+                        rule.sapp = tmp[5:]
 
         if type == "v6":
             rule.set_v6(True)
