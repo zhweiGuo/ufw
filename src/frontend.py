@@ -501,7 +501,7 @@ class UFWFrontend:
                             r.remove = rule.remove
                             rules.append(r)
                     else:
-                        rules = self.backend.get_app_rules_from_profiles(rule)
+                        rules = self.backend.get_app_rules_from_template(rule)
                 except Exception:
                     raise
 
@@ -618,7 +618,8 @@ class UFWFrontend:
 
     def application_update(self, profile):
         '''Refresh application profile'''
-        rstr = "UFWFrontend.application_update(%s): TODO" % (profile)
+        rstr = ""
+        rstr = self.backend.update_app_rule(profile)
         return rstr
 
     def do_application_action(self, action, profile):
