@@ -341,7 +341,7 @@ class UFWBackend:
 
                     for new_r in new_app_rules:
                         if new_r.v6:
-                            update_rules6.append(new_r)
+                            updated_rules6.append(new_r)
                         else:
                             updated_rules.append(new_r)
 
