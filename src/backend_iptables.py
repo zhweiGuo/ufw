@@ -792,10 +792,12 @@ COMMIT
 
         sapp = template.sapp
         dapp = template.dapp
+        tuple = template.get_app_tuple()
 
         for r in self.rules + self.rules6:
             tmp = r.dup_rule()
-            if tmp.dapp == dapp and tmp.sapp == sapp:
+            tmp_tuple = tmp.get_app_tuple()
+            if tmp_tuple == tuple:
                 rules.append(tmp)
 
         return rules
