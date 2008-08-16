@@ -206,19 +206,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         app_rules = {}
         for r in rules:
-            print "rule is '%s'" % (r.format_rule())
             location = {}
             tuple = ""
             show_proto = True
-            if r.dapp != "" or r.sapp != "":
+            if not verbose and (r.dapp != "" or r.sapp != ""):
                 show_proto = False
-                tuple = "%s %s %s %s" % (r.dapp, r.dst, r.sapp, r.src)
-                if r.dapp == "":
-                    tuple = "%s %s %s %s" % (r.dport, r.dst, r.sapp, r.src)
-                if r.sapp == "":
-                    tuple = "%s %s %s %s" % (r.dapp, r.dst, r.sport, r.src)
-
-                print "tuple is '%s'" % (tuple)
+                tuple = r.get_app_tuple()
 
                 if app_rules.has_key(tuple):
                     debug("Skipping found tuple '%s'" % (tuple))
@@ -233,13 +226,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tmp = ""
                 if loc == "dst":
                     tmp = r.dst
-                    if r.dapp != "":
+                    if not verbose and r.dapp != "":
                         port = r.dapp
                     else:
                         port = r.dport
                 else:
                     tmp = r.src
-                    if r.sapp != "":
+                    if not verbose and r.sapp != "":
                         port = r.sapp
                     else:
                         port = r.sport
@@ -255,6 +248,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                     if show_proto and r.protocol != "any":
                         location[loc] += "/" + r.protocol
+
+                    if verbose:
+                        if loc == "dst" and r.dapp != "":
+                            location[loc] += " (%s)" % (r.dapp)
+                        if loc == "src" and r.sapp != "":
+                            location[loc] += " (%s)" % (r.sapp)
 
                 if port == "any":
                     if tmp == "0.0.0.0/0":
@@ -778,7 +777,7 @@ COMMIT
         return rstr
 
     def get_app_rules_from_system(self, template):
-        '''Return a list of UFWRules from the system for a given profile'''
+        '''Return a list of UFWRules from the system based on template rule'''
         rules = []
 
         sapp = template.sapp
