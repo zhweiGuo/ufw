@@ -228,12 +228,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     tmp = r.dst
                     if not verbose and r.dapp != "":
                         port = r.dapp
+                        if r.v6 and tmp == "::/0":
+                            port += " (v6)"
                     else:
                         port = r.dport
                 else:
                     tmp = r.src
                     if not verbose and r.sapp != "":
                         port = r.sapp
+                        if r.v6 and tmp == "::/0":
+                            port += " (v6)"
                     else:
                         port = r.sport
 
@@ -251,9 +255,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                     if verbose:
                         if loc == "dst" and r.dapp != "":
-                            location[loc] += " (%s)" % (r.dapp)
+                            location[loc] += " (%s" % (r.dapp)
+                            if r.v6 and tmp == "::/0":
+                                location[loc] += " (v6)"
+                            location[loc] += ")"
                         if loc == "src" and r.sapp != "":
-                            location[loc] += " (%s)" % (r.sapp)
+                            location[loc] += " (%s" % (r.sapp)
+                            if r.v6 and tmp == "::/0":
+                                location[loc] += " (v6)"
+                            location[loc] += ")"
 
                 if port == "any":
                     if tmp == "0.0.0.0/0":
