@@ -360,7 +360,7 @@ COMMIT
                 raise UFWError(err_msg + " init script")
 
     def _need_reload(self, v6):
-        '''Check if loaded rules are consistent with written rules'''
+        '''Check if all chains exist'''
         if self.dryrun:
             return False
 

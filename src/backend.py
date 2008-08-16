@@ -363,13 +363,11 @@ class UFWBackend:
             err_msg = _("Couldn't update application rules")
             raise UFWError(err_msg)
 
-        if self._need_reload(False) or self._need_reload(True):
-            try:
-                self._reload_user_rules()
-            except Exception:
-                raise
-
+        try:
+            self._reload_user_rules()
             rstr += " and firewall reloaded"
+        except Exception:
+            raise
 
         return rstr
 
