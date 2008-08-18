@@ -340,6 +340,7 @@ class UFWBackend:
                         raise
 
                     for new_r in new_app_rules:
+                        new_r.normalize()
                         if new_r.v6:
                             updated_rules6.append(new_r)
                         else:
@@ -396,6 +397,7 @@ class UFWBackend:
     def stop_firewall(self):
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
-    def get_app_rules_from_system(self, template):
+    def get_app_rules_from_system(self, template, v6):
         raise UFWError("UFWBackend.get_app_rules_from_system: need to " + \
                        "override")
+

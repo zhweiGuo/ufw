@@ -22,7 +22,7 @@ import warnings
 
 from ufw.common import UFWError
 import ufw.util
-from ufw.util import error
+from ufw.util import error, warn
 from ufw.backend_iptables import UFWBackendIptables
 
 def parse_command(argv):
@@ -431,38 +431,108 @@ class UFWFrontend:
     def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
         res = ""
-        try:
-            if self.backend.use_ipv6():
-                if ip_version == "v4":
-                    rule.set_v6(False)
-                    res = self.backend.set_rule(rule)
-                elif ip_version == "v6":
-                    rule.set_v6(True)
-                    res = self.backend.set_rule(rule)
-                elif ip_version == "both":
-                    rule.set_v6(False)
-                    res = self.backend.set_rule(rule)
-                    rule.set_v6(True)
-                    res += "\n" + str(self.backend.set_rule(rule))
-                else:
-                    err_msg = _("Invalid IP version '%s'") % (ip_version)
-                    raise UFWError(err_msg)
-            else:
-                if ip_version == "v4" or ip_version == "both":
-                    rule.set_v6(False)
-                    res = self.backend.set_rule(rule)
-                elif ip_version == "v6":
-                    err_msg = _("IPv6 support not enabled")
-                    raise UFWError(err_msg)
-                else:
-                    err_msg = _("Invalid IP version '%s'") % (ip_version)
-                    raise UFWError(err_msg)
-        except UFWError, e:
-            error(e.value)
+        err_msg = ""
+        tmp = ""
+        rules = []
 
-        if rule.updated:
-            warn_msg = _("Rule changed after normalization")
-            warnings.warn(warn_msg)
+        if rule.dapp == "" and rule.sapp == "":
+            rules.append(rule)
+        else:
+            tmprules = []
+            try:
+                if rule.remove:
+                    if ip_version == "v4":
+                        tmprules = self.backend.get_app_rules_from_system(rule, False)
+                    elif ip_version == "v6":
+                        tmprules = self.backend.get_app_rules_from_system(rule, True)
+                    elif ip_version == "both":
+                        tmprules = self.backend.get_app_rules_from_system(rule, False)
+                        tmprules += self.backend.get_app_rules_from_system(rule, True)
+                    else:
+                        err_msg = _("Invalid IP version '%s'") % (ip_version)
+                        raise UFWError(err_msg)
+
+                    for tmp in tmprules:
+                        r = tmp.dup_rule()
+                        r.remove = rule.remove
+                        rules.append(r)
+                else:
+                    rules = self.backend.get_app_rules_from_template(rule)
+            except Exception:
+                raise
+
+        count = 0
+        set_error = False
+        for i, r in enumerate(rules):
+            count = i
+            try:
+                if self.backend.use_ipv6():
+                    if ip_version == "v4":
+                        r.set_v6(False)
+                        tmp = self.backend.set_rule(r)
+                    elif ip_version == "v6":
+                        r.set_v6(True)
+                        tmp = self.backend.set_rule(r)
+                    elif ip_version == "both":
+                        r.set_v6(False)
+                        tmp = self.backend.set_rule(r)
+                        r.set_v6(True)
+                        tmp += "\n" + str(self.backend.set_rule(r))
+                    else:
+                        err_msg = _("Invalid IP version '%s'") % (ip_version)
+                        raise UFWError(err_msg)
+                else:
+                    if ip_version == "v4" or ip_version == "both":
+                        r.set_v6(False)
+                        tmp = self.backend.set_rule(r)
+                    elif ip_version == "v6":
+                        err_msg = _("IPv6 support not enabled")
+                        raise UFWError(err_msg)
+                    else:
+                        err_msg = _("Invalid IP version '%s'") % (ip_version)
+                        raise UFWError(err_msg)
+            except UFWError, e:
+                err_msg = e.value
+                set_error = True
+                break
+
+            if r.updated:
+                warn_msg = _("Rule changed after normalization")
+                warnings.warn(warn_msg)
+
+        if not set_error:
+            # Just return the last result if no error
+            res += tmp
+        elif len(rules) == 1:
+            # If just one rule, error out
+            error(err_msg)
+        else:
+	    # If error and more than one rule, delete the successfully added
+	    # rules in reverse order
+            undo_error = False
+            indexes = range(count+1)
+            indexes.reverse()
+            for j in indexes:
+                if count > 0 and rules[j]:
+                    backout_rule = rules[j].dup_rule()
+                    backout_rule.remove = True
+                    try:
+                        self.set_rule(backout_rule, ip_version)
+                    except Exception:
+                        # Don't fail, so we can try to backout more
+                        undo_error = True
+                        warn_msg = _("Could not back out rule '%s'" % \
+                                     r.format_rule())
+                        warn(warn_msg)
+
+            if undo_error:
+                err_msg += _("\nError applying application rules. " + \
+                            "Some rules could not be unapplied.")
+            else:
+                err_msg += _("\nError applying application rules. " + \
+                            "Attempted rules successfully unapplied.")
+
+            raise UFWError(err_msg)
 
         return res
 
@@ -488,66 +558,8 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
-            if rule.dapp == "" and rule.sapp == "":
-                res = self.set_rule(rule, ip_version)
-            else:
-                ufw.util.warn("TODO: do_action does not setup v6 for app rules correctly")
-                print "v6 is " + ip_version
+            res = self.set_rule(rule, ip_version)
 
-                error = False
-                tmp = ""
-                count = 0
-                rules = []
-                try:
-                    if rule.remove:
-                        tmprules = self.backend.get_app_rules_from_system(rule, ip_version)
-                        for tmp in tmprules:
-                            r = tmp.dup_rule()
-                            r.remove = rule.remove
-                            rules.append(r)
-                    else:
-                        rules = self.backend.get_app_rules_from_template(rule)
-                except Exception:
-                    raise
-
-                for i, r in enumerate(rules):
-                    count = i
-                    try:
-                        tmp = self.set_rule(r, ip_version) + '\n'
-                    except Exception:
-                        error = True
-                        break
-
-                if not error:
-		    # Just return the last result, since errors have already
-                    # been caught.
-                    res += tmp
-                else:
-                    # Delete the successfully added rules in reverse order
-                    undo_error = False
-                    indexes = range(count+1)
-                    indexes.reverse()
-                    for j in indexes:
-                        backout_rule = rules[j].dup_rule()
-                        backout_rule.remove = True
-                        try:
-                            self.set_rule(backout_rule, ip_version)
-                        except Exception:
-                            # Don't fail, so we can try to backout more
-                            undo_error = True
-                            warn_msg = _("Could not back out rule '%s'" % \
-                                         r.format_rule())
-                            warn(warn_msg)
-
-                    err_msg = ""
-                    if undo_error:
-                        err_msg = _("Error applying application rules. " + \
-                                    "Some rules could not be unapplied.")
-                    else:
-                        err_msg = _("Error applying application rules. " + \
-                                    "Attempted rules successfully unapplied.")
-
-                    raise UFWError(err_msg)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)

@@ -788,20 +788,27 @@ COMMIT
                             print >> sys.stderr, out
         return rstr
 
-    def get_app_rules_from_system(self, template):
+    def get_app_rules_from_system(self, template, v6):
         '''Return a list of UFWRules from the system based on template rule'''
         rules = []
+        app_rules = []
+
+        if v6:
+            rules = self.rules6
+        else:
+            rules = self.rules
 
         norm = template.dup_rule()
-        print norm.v6
+        norm.set_v6(v6)
         norm.normalize()
         tuple = norm.get_app_tuple()
 
-        for r in self.rules + self.rules6:
+        for r in rules:
             tmp = r.dup_rule()
+            tmp.normalize()
             tmp_tuple = tmp.get_app_tuple()
             if tmp_tuple == tuple:
-                rules.append(tmp)
+                app_rules.append(tmp)
 
-        return rules
+        return app_rules
 
