@@ -35,8 +35,15 @@ if [ -e "/proc/sys/net/ipv6" ]; then
 	tests="$tests ipv6"
 fi
 
+subclass=""
 if [ ! -z "$1" ]; then
-	tests="$1"
+	tmp="$1"
+	if echo "$tmp" | egrep -q '/' ; then
+		subclass=`basename $tmp`
+		tests=`dirname $tmp`
+	else
+		tests="$tmp"
+	fi
 fi
 
 if [ ! -d "$testdir" ]; then
@@ -62,6 +69,12 @@ for class in $tests
 do
 	for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
 	do
+		if [ ! -z "$subclass" ]; then
+			if [ "$d" != "$testdir/$class/$subclass" ]; then
+				continue
+			fi
+		fi
+
 		if [ $skipped -gt 0 ]; then
 			if [ "$STOPONSKIP" = "yes" ]; then
 				echo ""
