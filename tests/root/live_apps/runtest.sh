@@ -108,6 +108,7 @@ do_cmd "0" app update --add-new Bind9
 do_cmd "0" status verbose
 do_cmd "0"  delete allow Apache
 do_cmd "0"  delete allow Samba
+do_cmd "0" status verbose
 
 do_cmd "0"  disable 
 
