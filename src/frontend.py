@@ -301,11 +301,6 @@ def parse_application_command(argv):
     argv.remove("app")
     nargs = len(argv)
 
-    if "--add-new" in argv:
-        addnew = True
-        argv.remove("--add-new")
-        nargs = len(argv)
-
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
         argv.remove(argv[1])
@@ -318,8 +313,14 @@ def parse_application_command(argv):
         action = argv[1].lower()
 
     if action == "info" or action == "update":
+        if nargs >= 4 and argv[2] == "--add-new":
+            addnew = True
+            argv.remove("--add-new")
+            nargs = len(argv)
+
         if nargs < 3:
             raise ValueError()
+
         # Handle quoted name with spaces in it by stripping Python's ['...']
         # list as string text.
         name = str(argv[2]).strip("[']")
