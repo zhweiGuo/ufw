@@ -201,17 +201,22 @@ After creating or editing an application profile, user's can run:
 
   ufw app update <name>
 
-This command will automatically update the firewall with the new profile
-information. The behavior of the \fBupdate\fR command can be configured using:
+This command will automatically update the firewall with updated profile
+information. To update a profile and add a new rule to the firewall
+automatically, user's can run:
+
+  ufw app update --add-new <name>
+
+The behavior of the \fBupdate --add-new\fR command can be configured using:
 
   ufw app default <policy>
 
-The default application policy is \fBskip\fR, which means that the update
-command will do nothing. Users may also specify a policy of \fBallow\fR or
-\fBdeny\fR so the \fBupdate\fR command may automatically update the firewall.
-\fBWARNING\fR it may be a security to risk to use a default \fBallow\fR policy
-for applications profiles. Carefully consider the security ramifications before
-using a default \fBallow\fR policy.
+The default application policy is \fBskip\fR, which means that the \fBupdate
+--add-new\fR command will do nothing. Users may also specify a policy of
+\fBallow\fR or \fBdeny\fR so the \fBupdate --add-new\fR command may
+automatically update the firewall.  \fBWARNING:\fR it may be a security to risk
+to use a default \fBallow\fR policy for applications profiles. Carefully
+consider the security ramifications before using a default \fBallow\fR policy.
 
 .SH NOTES
 .PP
