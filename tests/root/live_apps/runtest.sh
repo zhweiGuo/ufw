@@ -97,6 +97,17 @@ do_cmd "0" status verbose
 do_cmd "0" delete allow Apache
 do_cmd "0" status verbose
 
+echo "TESTING APPLICATION RULES (update)" >> $TESTTMP/result
+do_cmd "0" app update Bind9
+do_cmd "0" app default allow
+do_cmd "0" app update --add-new Apache
+do_cmd "0" app default deny
+do_cmd "0" app update --add-new Samba
+do_cmd "0" app default skip
+do_cmd "0" app update --add-new Bind9
+do_cmd "0" status verbose
+do_cmd "0"  delete allow Apache
+do_cmd "0"  delete allow Samba
 
 do_cmd "0"  disable 
 
