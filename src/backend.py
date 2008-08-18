@@ -223,8 +223,8 @@ class UFWBackend:
 
         return rstr
 
-    def get_app_rules_from_profiles(self, template):
-        '''Return a list of UFWRules from the given profile'''
+    def get_app_rules_from_template(self, template):
+        '''Return a list of UFWRules based on the template rule'''
         rules = []
         profile_names = self.profiles.keys()
 
@@ -305,6 +305,71 @@ class UFWBackend:
             raise UFWError(err_msg)
 
         return rules
+
+    def update_app_rule(self, profile):
+        '''Update rule for profile in place'''
+        updated_rules = []
+        updated_rules6 = []
+        last_tuple = ""
+        rstr = ""
+
+        # Remember, self.rules is from user[6].rules, and not the running
+        # firewall.
+        for r in self.rules + self.rules6:
+            if r.dapp == profile or r.sapp == profile:
+                # We assume that the rules are in app rule order. Specifically,
+                # if app rule has multiple rules, they are one after the other.
+                # If the rule ordering changes, the below will have to change.
+                tuple = r.get_app_tuple()
+                if tuple == last_tuple:
+                    # Skip the rule if seen this tuple already (ie, it is part
+                    # of a known tuple).
+                    continue
+                else:
+                    # Have a new tuple, so find and insert new app rules here
+                    template = r.dup_rule()
+                    template.set_protocol("any")
+                    if template.dapp != "":
+                        template.set_port(template.dapp, "dst")
+                    if template.sapp != "":
+                        template.set_port(template.sapp, "src")
+                    try:
+                        new_app_rules = self.get_app_rules_from_template(\
+                                          template)
+                    except Exception:
+                        raise
+
+                    for new_r in new_app_rules:
+                        if new_r.v6:
+                            updated_rules6.append(new_r)
+                        else:
+                            updated_rules.append(new_r)
+
+                    last_tuple = tuple
+            else:
+                if r.v6:
+                    updated_rules6.append(r)
+                else:
+                    updated_rules.append(r)
+
+        self.rules = updated_rules
+        self.rules6 = updated_rules6
+        rstr += _("Rules updated for profile '%s'" % (profile))
+
+        try:
+            self._write_rules(False) # ipv4
+            self._write_rules(True) # ipv6
+        except Exception:
+            err_msg = _("Couldn't update application rules")
+            raise UFWError(err_msg)
+
+        try:
+            self._reload_user_rules()
+            rstr += " and firewall reloaded"
+        except Exception:
+            raise
+
+        return rstr
 
     # API overrides
     def get_loglevel(self):

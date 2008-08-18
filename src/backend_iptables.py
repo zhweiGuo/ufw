@@ -206,19 +206,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         app_rules = {}
         for r in rules:
-            print "rule is '%s'" % (r.format_rule())
             location = {}
             tuple = ""
             show_proto = True
-            if r.dapp != "" or r.sapp != "":
+            if not verbose and (r.dapp != "" or r.sapp != ""):
                 show_proto = False
-                tuple = "%s %s %s %s" % (r.dapp, r.dst, r.sapp, r.src)
-                if r.dapp == "":
-                    tuple = "%s %s %s %s" % (r.dport, r.dst, r.sapp, r.src)
-                if r.sapp == "":
-                    tuple = "%s %s %s %s" % (r.dapp, r.dst, r.sport, r.src)
-
-                print "tuple is '%s'" % (tuple)
+                tuple = r.get_app_tuple()
 
                 if app_rules.has_key(tuple):
                     debug("Skipping found tuple '%s'" % (tuple))
@@ -233,14 +226,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tmp = ""
                 if loc == "dst":
                     tmp = r.dst
-                    if r.dapp != "":
+                    if not verbose and r.dapp != "":
                         port = r.dapp
+                        if r.v6 and tmp == "::/0":
+                            port += " (v6)"
                     else:
                         port = r.dport
                 else:
                     tmp = r.src
-                    if r.sapp != "":
+                    if not verbose and r.sapp != "":
                         port = r.sapp
+                        if r.v6 and tmp == "::/0":
+                            port += " (v6)"
                     else:
                         port = r.sport
 
@@ -255,6 +252,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                     if show_proto and r.protocol != "any":
                         location[loc] += "/" + r.protocol
+
+                    if verbose:
+                        if loc == "dst" and r.dapp != "":
+                            location[loc] += " (%s" % (r.dapp)
+                            if r.v6 and tmp == "::/0":
+                                location[loc] += " (v6)"
+                            location[loc] += ")"
+                        if loc == "src" and r.sapp != "":
+                            location[loc] += " (%s" % (r.sapp)
+                            if r.v6 and tmp == "::/0":
+                                location[loc] += " (v6)"
+                            location[loc] += ")"
 
                 if port == "any":
                     if tmp == "0.0.0.0/0":
@@ -351,7 +360,7 @@ COMMIT
                 raise UFWError(err_msg + " init script")
 
     def _need_reload(self, v6):
-        '''Check if loaded rules are consistent with written rules'''
+        '''Check if all chains exist'''
         if self.dryrun:
             return False
 
@@ -778,15 +787,18 @@ COMMIT
         return rstr
 
     def get_app_rules_from_system(self, template):
-        '''Return a list of UFWRules from the system for a given profile'''
+        '''Return a list of UFWRules from the system based on template rule'''
         rules = []
 
-        sapp = template.sapp
-        dapp = template.dapp
+        norm = template.dup_rule()
+        print norm.v6
+        norm.normalize()
+        tuple = norm.get_app_tuple()
 
         for r in self.rules + self.rules6:
             tmp = r.dup_rule()
-            if tmp.dapp == dapp and tmp.sapp == sapp:
+            tmp_tuple = tmp.get_app_tuple()
+            if tmp_tuple == tuple:
                 rules.append(tmp)
 
         return rules

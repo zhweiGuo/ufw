@@ -255,6 +255,7 @@ class UFWRule:
                 (self.src, changed) = ufw.util.normalize_address(self.src, \
                                                                  self.v6)
             except Exception:
+                raise
                 err_msg = _("Could not normalize source address")
                 raise UFWError(err_msg)
         if changed:
@@ -323,4 +324,18 @@ class UFWRule:
         dbg_msg = _("Found non-action match")
         debug(dbg_msg)
         return -1
+
+    def get_app_tuple(self):
+        '''Returns a tuple to identify an app rule'''
+        tuple = ""
+        if self.dapp != "" or self.sapp != "":
+            tuple = "%s %s %s %s" % (self.dapp, self.dst, self.sapp, self.src)
+            if self.dapp == "":
+                tuple = "%s %s %s %s" % (self.dport, self.dst, self.sapp, \
+                                         self.src)
+            if self.sapp == "":
+                tuple = "%s %s %s %s" % (self.dapp, self.dst, self.sport, \
+                                         self.src)
+
+        return tuple
 
