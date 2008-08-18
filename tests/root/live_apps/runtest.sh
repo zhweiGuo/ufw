@@ -16,11 +16,20 @@
 
 source "$TESTPATH/../testlib.sh"
 
-sed -i 's/debugging = False/debugging = True/' $TESTPATH/lib/python/ufw/util.py
-
 echo "TESTING APPLICATION RULES" >> $TESTTMP/result
-for ipv6 in yes no
+for update in no yes
 do
+    if [ "$update" = "yes" ]; then
+        echo "Adding and deleting updated app rules" >> $TESTTMP/result
+    else
+        echo "Adding and deleting app rules" >> $TESTTMP/result
+    fi
+    for ipv6 in yes no
+    do
+        # make sure we always start clean
+        sed -i 's/9999/137/g' $TESTPATH/etc/ufw/applications.d/samba
+        sed -i 's/8888/80/g' $TESTPATH/etc/ufw/applications.d/apache
+
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
 	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
 	do_cmd "0"  disable
@@ -44,12 +53,14 @@ do
 	do_cmd "0" status
 	do_cmd "0" status verbose
 
-	sed -i 's/137/9999/g' $TESTPATH/etc/ufw/applications.d/samba
-	sed -i 's/80/8888/g' $TESTPATH/etc/ufw/applications.d/apache
-	do_cmd "0"  app update Apache
-	do_cmd "0"  app update Samba
-	do_cmd "0" status
-	do_cmd "0" status verbose
+        if [ "$update" = "yes" ]; then
+	    sed -i 's/137/9999/g' $TESTPATH/etc/ufw/applications.d/samba
+	    sed -i 's/80/8888/g' $TESTPATH/etc/ufw/applications.d/apache
+	    do_cmd "0"  app update Apache
+	    do_cmd "0"  app update Samba
+	    do_cmd "0" status
+	    do_cmd "0" status verbose
+        fi
 
 	do_cmd "0"  delete allow Apache
 	for loc in any addr ; do
@@ -67,15 +78,23 @@ do
 		do_cmd "0"  delete allow to $loc app Apache from $loc port 88
 	done
 	do_cmd "0" status
-	do_cmd "0" status verbose
+    done
 done
 
-echo "TESTING APPLICATION RULES (v6 app rules)" >> $TESTTMP/result
+sed -i 's/9999/137/g' $TESTPATH/etc/ufw/applications.d/samba
+sed -i 's/8888/80/g' $TESTPATH/etc/ufw/applications.d/apache
+
+echo "TESTING APPLICATION RULES (v6 delete app rules)" >> $TESTTMP/result
+echo "Setting IPV6 to yes" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 do_cmd "0"  disable 
 do_cmd "0"  enable
 do_cmd "0"  allow Apache
 do_cmd "0"  allow from 2001:db8::/32 to any app Apache
+do_cmd "0" status verbose
 do_cmd "0"  delete allow from 2001:db8::/32 to any app Apache
+do_cmd "0" status verbose
+do_cmd "0" delete allow Apache
 do_cmd "0" status verbose
 
 

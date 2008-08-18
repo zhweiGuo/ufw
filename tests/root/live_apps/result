@@ -1,0 +1,981 @@
+TESTING APPLICATION RULES
+Adding and deleting app rules
+Setting IPV6 to yes
+0: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+1: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+2: allow Apache
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+3: allow to any app Samba
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+4: allow from any app Samba
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+5: allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+6: allow to any app Samba from any port 22
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+7: allow to any app Apache from any port 88
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+8: allow to 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule added (v6)
+
+
+9: allow from 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule added (v6)
+
+
+10: allow to 2001:db8::/32 app Samba from 2001:db8::/32 app Bind9
+WARN: Checks disabled
+Rule added (v6)
+
+
+11: allow to 2001:db8::/32 app Samba from 2001:db8::/32 port 22
+WARN: Checks disabled
+Rule added (v6)
+
+
+12: allow to 2001:db8::/32 app Apache from 2001:db8::/32 port 88
+WARN: Checks disabled
+Rule added (v6)
+
+
+13: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Apache                     ALLOW   Anywhere
+Samba                      ALLOW   Anywhere
+Anywhere                   ALLOW   Samba
+Samba                      ALLOW   Bind9
+Samba                      ALLOW   22
+Apache                     ALLOW   88
+Apache (v6)                ALLOW   Anywhere (v6)
+Samba (v6)                 ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   Samba (v6)
+Samba (v6)                 ALLOW   Bind9 (v6)
+Samba (v6)                 ALLOW   22
+Apache (v6)                ALLOW   88
+2001:db8::/32 Samba        ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   2001:db8::/32 Samba
+2001:db8::/32 Samba        ALLOW   2001:db8::/32 Bind9
+2001:db8::/32 Samba        ALLOW   2001:db8::/32 22
+2001:db8::/32 Apache       ALLOW   2001:db8::/32 88
+
+
+
+14: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+80/tcp (Apache)            ALLOW   Anywhere
+137,138/udp (Samba)        ALLOW   Anywhere
+139,445/tcp (Samba)        ALLOW   Anywhere
+Anywhere                   ALLOW   137,138/udp (Samba)
+Anywhere                   ALLOW   139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW   53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW   22/udp
+139,445/tcp (Samba)        ALLOW   22/tcp
+80/tcp (Apache)            ALLOW   88/tcp
+80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
+137,138/udp (Samba (v6))   ALLOW   Anywhere (v6)
+139,445/tcp (Samba (v6))   ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   137,138/udp (Samba (v6))
+Anywhere (v6)              ALLOW   139,445/tcp (Samba (v6))
+137,138/udp (Samba (v6))   ALLOW   53/udp (Bind9 (v6))
+139,445/tcp (Samba (v6))   ALLOW   53/tcp (Bind9 (v6))
+137,138/udp (Samba (v6))   ALLOW   22/udp
+139,445/tcp (Samba (v6))   ALLOW   22/tcp
+80/tcp (Apache (v6))       ALLOW   88/tcp
+2001:db8::/32 137,138/udp (Samba) ALLOW   Anywhere (v6)
+2001:db8::/32 139,445/tcp (Samba) ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   2001:db8::/32 137,138/udp (Samba)
+Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
+2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 53/udp (Bind9)
+2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 53/tcp (Bind9)
+2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 22/udp
+2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 22/tcp
+2001:db8::/32 80/tcp (Apache) ALLOW   2001:db8::/32 88/tcp
+
+
+
+15: delete allow Apache
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+16: delete allow to any app Samba
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+17: delete allow from any app Samba
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+18: delete allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+19: delete allow to any app Samba from any port 22
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+20: delete allow to any app Apache from any port 88
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+21: delete allow to 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+22: delete allow from 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+23: delete allow to 2001:db8::/32 app Samba from 2001:db8::/32 app Bind9
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+24: delete allow to 2001:db8::/32 app Samba from 2001:db8::/32 port 22
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+25: delete allow to 2001:db8::/32 app Apache from 2001:db8::/32 port 88
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+26: status
+WARN: Checks disabled
+Status: loaded
+
+
+Setting IPV6 to no
+27: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+28: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+29: allow Apache
+WARN: Checks disabled
+Rule added
+
+
+30: allow to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+31: allow from any app Samba
+WARN: Checks disabled
+Rule added
+
+
+32: allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rule added
+
+
+33: allow to any app Samba from any port 22
+WARN: Checks disabled
+Rule added
+
+
+34: allow to any app Apache from any port 88
+WARN: Checks disabled
+Rule added
+
+
+35: allow to 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule added
+
+
+36: allow from 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule added
+
+
+37: allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 app Bind9
+WARN: Checks disabled
+Rule added
+
+
+38: allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 port 22
+WARN: Checks disabled
+Rule added
+
+
+39: allow to 192.168.2.0/24 app Apache from 192.168.2.0/24 port 88
+WARN: Checks disabled
+Rule added
+
+
+40: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Apache                     ALLOW   Anywhere
+Samba                      ALLOW   Anywhere
+Anywhere                   ALLOW   Samba
+Samba                      ALLOW   Bind9
+Samba                      ALLOW   22
+Apache                     ALLOW   88
+192.168.2.0/24 Samba       ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.2.0/24 Samba
+192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 Bind9
+192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 22
+192.168.2.0/24 Apache      ALLOW   192.168.2.0/24 88
+
+
+
+41: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+80/tcp (Apache)            ALLOW   Anywhere
+137,138/udp (Samba)        ALLOW   Anywhere
+139,445/tcp (Samba)        ALLOW   Anywhere
+Anywhere                   ALLOW   137,138/udp (Samba)
+Anywhere                   ALLOW   139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW   53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW   22/udp
+139,445/tcp (Samba)        ALLOW   22/tcp
+80/tcp (Apache)            ALLOW   88/tcp
+192.168.2.0/24 137,138/udp (Samba) ALLOW   Anywhere
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.2.0/24 137,138/udp (Samba)
+Anywhere                   ALLOW   192.168.2.0/24 139,445/tcp (Samba)
+192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 53/udp (Bind9)
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 53/tcp (Bind9)
+192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 22/udp
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 22/tcp
+192.168.2.0/24 80/tcp (Apache) ALLOW   192.168.2.0/24 88/tcp
+
+
+
+42: delete allow Apache
+WARN: Checks disabled
+Rule deleted
+
+
+43: delete allow to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+44: delete allow from any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+45: delete allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rule deleted
+
+
+46: delete allow to any app Samba from any port 22
+WARN: Checks disabled
+Rule deleted
+
+
+47: delete allow to any app Apache from any port 88
+WARN: Checks disabled
+Rule deleted
+
+
+48: delete allow to 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+49: delete allow from 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+50: delete allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 app Bind9
+WARN: Checks disabled
+Rule deleted
+
+
+51: delete allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 port 22
+WARN: Checks disabled
+Rule deleted
+
+
+52: delete allow to 192.168.2.0/24 app Apache from 192.168.2.0/24 port 88
+WARN: Checks disabled
+Rule deleted
+
+
+53: status
+WARN: Checks disabled
+Status: loaded
+
+
+Adding and deleting updated app rules
+Setting IPV6 to yes
+54: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+55: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+56: allow Apache
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+57: allow to any app Samba
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+58: allow from any app Samba
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+59: allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+60: allow to any app Samba from any port 22
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+61: allow to any app Apache from any port 88
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+62: allow to 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule added (v6)
+
+
+63: allow from 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule added (v6)
+
+
+64: allow to 2001:db8::/32 app Samba from 2001:db8::/32 app Bind9
+WARN: Checks disabled
+Rule added (v6)
+
+
+65: allow to 2001:db8::/32 app Samba from 2001:db8::/32 port 22
+WARN: Checks disabled
+Rule added (v6)
+
+
+66: allow to 2001:db8::/32 app Apache from 2001:db8::/32 port 88
+WARN: Checks disabled
+Rule added (v6)
+
+
+67: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Apache                     ALLOW   Anywhere
+Samba                      ALLOW   Anywhere
+Anywhere                   ALLOW   Samba
+Samba                      ALLOW   Bind9
+Samba                      ALLOW   22
+Apache                     ALLOW   88
+Apache (v6)                ALLOW   Anywhere (v6)
+Samba (v6)                 ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   Samba (v6)
+Samba (v6)                 ALLOW   Bind9 (v6)
+Samba (v6)                 ALLOW   22
+Apache (v6)                ALLOW   88
+2001:db8::/32 Samba        ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   2001:db8::/32 Samba
+2001:db8::/32 Samba        ALLOW   2001:db8::/32 Bind9
+2001:db8::/32 Samba        ALLOW   2001:db8::/32 22
+2001:db8::/32 Apache       ALLOW   2001:db8::/32 88
+
+
+
+68: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+80/tcp (Apache)            ALLOW   Anywhere
+137,138/udp (Samba)        ALLOW   Anywhere
+139,445/tcp (Samba)        ALLOW   Anywhere
+Anywhere                   ALLOW   137,138/udp (Samba)
+Anywhere                   ALLOW   139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW   53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW   22/udp
+139,445/tcp (Samba)        ALLOW   22/tcp
+80/tcp (Apache)            ALLOW   88/tcp
+80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
+137,138/udp (Samba (v6))   ALLOW   Anywhere (v6)
+139,445/tcp (Samba (v6))   ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   137,138/udp (Samba (v6))
+Anywhere (v6)              ALLOW   139,445/tcp (Samba (v6))
+137,138/udp (Samba (v6))   ALLOW   53/udp (Bind9 (v6))
+139,445/tcp (Samba (v6))   ALLOW   53/tcp (Bind9 (v6))
+137,138/udp (Samba (v6))   ALLOW   22/udp
+139,445/tcp (Samba (v6))   ALLOW   22/tcp
+80/tcp (Apache (v6))       ALLOW   88/tcp
+2001:db8::/32 137,138/udp (Samba) ALLOW   Anywhere (v6)
+2001:db8::/32 139,445/tcp (Samba) ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   2001:db8::/32 137,138/udp (Samba)
+Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
+2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 53/udp (Bind9)
+2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 53/tcp (Bind9)
+2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 22/udp
+2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 22/tcp
+2001:db8::/32 80/tcp (Apache) ALLOW   2001:db8::/32 88/tcp
+
+
+
+69: app update Apache
+WARN: Checks disabled
+Rules updated for profile 'Apache' and firewall reloaded
+
+
+70: app update Samba
+WARN: Checks disabled
+Rules updated for profile 'Samba' and firewall reloaded
+
+
+71: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Apache                     ALLOW   Anywhere
+Samba                      ALLOW   Anywhere
+Anywhere                   ALLOW   Samba
+Samba                      ALLOW   Bind9
+Samba                      ALLOW   22
+Apache                     ALLOW   88
+Apache (v6)                ALLOW   Anywhere (v6)
+Samba (v6)                 ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   Samba (v6)
+Samba (v6)                 ALLOW   Bind9 (v6)
+Samba (v6)                 ALLOW   22
+Apache (v6)                ALLOW   88
+2001:db8::/32 Samba        ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   2001:db8::/32 Samba
+2001:db8::/32 Samba        ALLOW   2001:db8::/32 Bind9
+2001:db8::/32 Samba        ALLOW   2001:db8::/32 22
+2001:db8::/32 Apache       ALLOW   2001:db8::/32 88
+
+
+
+72: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+8888/tcp (Apache)          ALLOW   Anywhere
+138,9999/udp (Samba)       ALLOW   Anywhere
+139,445/tcp (Samba)        ALLOW   Anywhere
+Anywhere                   ALLOW   138,9999/udp (Samba)
+Anywhere                   ALLOW   139,445/tcp (Samba)
+138,9999/udp (Samba)       ALLOW   53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
+138,9999/udp (Samba)       ALLOW   22/udp
+139,445/tcp (Samba)        ALLOW   22/tcp
+8888/tcp (Apache)          ALLOW   88/tcp
+8888/tcp (Apache (v6))     ALLOW   Anywhere (v6)
+138,9999/udp (Samba (v6))  ALLOW   Anywhere (v6)
+139,445/tcp (Samba (v6))   ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   138,9999/udp (Samba (v6))
+Anywhere (v6)              ALLOW   139,445/tcp (Samba (v6))
+138,9999/udp (Samba (v6))  ALLOW   53/udp (Bind9 (v6))
+139,445/tcp (Samba (v6))   ALLOW   53/tcp (Bind9 (v6))
+138,9999/udp (Samba (v6))  ALLOW   22/udp
+139,445/tcp (Samba (v6))   ALLOW   22/tcp
+8888/tcp (Apache (v6))     ALLOW   88/tcp
+2001:db8::/32 138,9999/udp (Samba) ALLOW   Anywhere (v6)
+2001:db8::/32 139,445/tcp (Samba) ALLOW   Anywhere (v6)
+Anywhere (v6)              ALLOW   2001:db8::/32 138,9999/udp (Samba)
+Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
+2001:db8::/32 138,9999/udp (Samba) ALLOW   2001:db8::/32 53/udp (Bind9)
+2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 53/tcp (Bind9)
+2001:db8::/32 138,9999/udp (Samba) ALLOW   2001:db8::/32 22/udp
+2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 22/tcp
+2001:db8::/32 8888/tcp (Apache) ALLOW   2001:db8::/32 88/tcp
+
+
+
+73: delete allow Apache
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+74: delete allow to any app Samba
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+75: delete allow from any app Samba
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+76: delete allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+77: delete allow to any app Samba from any port 22
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+78: delete allow to any app Apache from any port 88
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+79: delete allow to 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+80: delete allow from 2001:db8::/32 app Samba
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+81: delete allow to 2001:db8::/32 app Samba from 2001:db8::/32 app Bind9
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+82: delete allow to 2001:db8::/32 app Samba from 2001:db8::/32 port 22
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+83: delete allow to 2001:db8::/32 app Apache from 2001:db8::/32 port 88
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+84: status
+WARN: Checks disabled
+Status: loaded
+
+
+Setting IPV6 to no
+85: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+86: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+87: allow Apache
+WARN: Checks disabled
+Rule added
+
+
+88: allow to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+89: allow from any app Samba
+WARN: Checks disabled
+Rule added
+
+
+90: allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rule added
+
+
+91: allow to any app Samba from any port 22
+WARN: Checks disabled
+Rule added
+
+
+92: allow to any app Apache from any port 88
+WARN: Checks disabled
+Rule added
+
+
+93: allow to 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule added
+
+
+94: allow from 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule added
+
+
+95: allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 app Bind9
+WARN: Checks disabled
+Rule added
+
+
+96: allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 port 22
+WARN: Checks disabled
+Rule added
+
+
+97: allow to 192.168.2.0/24 app Apache from 192.168.2.0/24 port 88
+WARN: Checks disabled
+Rule added
+
+
+98: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Apache                     ALLOW   Anywhere
+Samba                      ALLOW   Anywhere
+Anywhere                   ALLOW   Samba
+Samba                      ALLOW   Bind9
+Samba                      ALLOW   22
+Apache                     ALLOW   88
+192.168.2.0/24 Samba       ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.2.0/24 Samba
+192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 Bind9
+192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 22
+192.168.2.0/24 Apache      ALLOW   192.168.2.0/24 88
+
+
+
+99: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+80/tcp (Apache)            ALLOW   Anywhere
+137,138/udp (Samba)        ALLOW   Anywhere
+139,445/tcp (Samba)        ALLOW   Anywhere
+Anywhere                   ALLOW   137,138/udp (Samba)
+Anywhere                   ALLOW   139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW   53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW   22/udp
+139,445/tcp (Samba)        ALLOW   22/tcp
+80/tcp (Apache)            ALLOW   88/tcp
+192.168.2.0/24 137,138/udp (Samba) ALLOW   Anywhere
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.2.0/24 137,138/udp (Samba)
+Anywhere                   ALLOW   192.168.2.0/24 139,445/tcp (Samba)
+192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 53/udp (Bind9)
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 53/tcp (Bind9)
+192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 22/udp
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 22/tcp
+192.168.2.0/24 80/tcp (Apache) ALLOW   192.168.2.0/24 88/tcp
+
+
+
+100: app update Apache
+WARN: Checks disabled
+Rules updated for profile 'Apache' and firewall reloaded
+
+
+101: app update Samba
+WARN: Checks disabled
+Rules updated for profile 'Samba' and firewall reloaded
+
+
+102: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Apache                     ALLOW   Anywhere
+Samba                      ALLOW   Anywhere
+Anywhere                   ALLOW   Samba
+Samba                      ALLOW   Bind9
+Samba                      ALLOW   22
+Apache                     ALLOW   88
+192.168.2.0/24 Samba       ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.2.0/24 Samba
+192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 Bind9
+192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 22
+192.168.2.0/24 Apache      ALLOW   192.168.2.0/24 88
+
+
+
+103: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+8888/tcp (Apache)          ALLOW   Anywhere
+138,9999/udp (Samba)       ALLOW   Anywhere
+139,445/tcp (Samba)        ALLOW   Anywhere
+Anywhere                   ALLOW   138,9999/udp (Samba)
+Anywhere                   ALLOW   139,445/tcp (Samba)
+138,9999/udp (Samba)       ALLOW   53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
+138,9999/udp (Samba)       ALLOW   22/udp
+139,445/tcp (Samba)        ALLOW   22/tcp
+8888/tcp (Apache)          ALLOW   88/tcp
+192.168.2.0/24 138,9999/udp (Samba) ALLOW   Anywhere
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.2.0/24 138,9999/udp (Samba)
+Anywhere                   ALLOW   192.168.2.0/24 139,445/tcp (Samba)
+192.168.2.0/24 138,9999/udp (Samba) ALLOW   192.168.2.0/24 53/udp (Bind9)
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 53/tcp (Bind9)
+192.168.2.0/24 138,9999/udp (Samba) ALLOW   192.168.2.0/24 22/udp
+192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 22/tcp
+192.168.2.0/24 8888/tcp (Apache) ALLOW   192.168.2.0/24 88/tcp
+
+
+
+104: delete allow Apache
+WARN: Checks disabled
+Rule deleted
+
+
+105: delete allow to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+106: delete allow from any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+107: delete allow to any app Samba from any app Bind9
+WARN: Checks disabled
+Rule deleted
+
+
+108: delete allow to any app Samba from any port 22
+WARN: Checks disabled
+Rule deleted
+
+
+109: delete allow to any app Apache from any port 88
+WARN: Checks disabled
+Rule deleted
+
+
+110: delete allow to 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+111: delete allow from 192.168.2.0/24 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+112: delete allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 app Bind9
+WARN: Checks disabled
+Rule deleted
+
+
+113: delete allow to 192.168.2.0/24 app Samba from 192.168.2.0/24 port 22
+WARN: Checks disabled
+Rule deleted
+
+
+114: delete allow to 192.168.2.0/24 app Apache from 192.168.2.0/24 port 88
+WARN: Checks disabled
+Rule deleted
+
+
+115: status
+WARN: Checks disabled
+Status: loaded
+
+
+TESTING APPLICATION RULES (v6 delete app rules)
+Setting IPV6 to yes
+116: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+117: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+118: allow Apache
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+119: allow from 2001:db8::/32 to any app Apache
+WARN: Checks disabled
+Rule added (v6)
+
+
+120: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+80/tcp (Apache)            ALLOW   Anywhere
+80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
+80/tcp (Apache (v6))       ALLOW   2001:db8::/32
+
+
+
+121: delete allow from 2001:db8::/32 to any app Apache
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+122: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+80/tcp (Apache)            ALLOW   Anywhere
+80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
+
+
+
+123: delete allow Apache
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+124: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+
+125: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
