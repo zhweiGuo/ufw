@@ -488,10 +488,10 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
-            if rule.dapp == "" or rule.sapp == "":
+            if rule.dapp == "" and rule.sapp == "":
                 res = self.set_rule(rule, ip_version)
             else:
-                warn("TODO: do_action does not setup v6 for app rules correctly")
+                ufw.util.warn("TODO: do_action does not setup v6 for app rules correctly")
                 print "v6 is " + ip_version
 
                 error = False

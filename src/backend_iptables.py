@@ -553,6 +553,7 @@ COMMIT
                     if len(tmp) != 6 and len(tmp) != 8:
                         warn_msg = _("Skipping malformed tuple (bad length): %s") % (tuple)
                         warn(warn_msg)
+                        continue
                     else:
                         try:
                             if len(tmp) == 6:
@@ -571,6 +572,7 @@ COMMIT
                             warn_msg = _("Skipping malformed tuple: %s") % \
                                         (tuple)
                             warn(warn_msg)
+                            continue
                         if f == self.files['rules6']:
                             rule.set_v6(True)
                             self.rules6.append(rule)
