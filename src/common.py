@@ -271,12 +271,12 @@ class UFWRule:
 
         if self.dport:
             ports = self.dport.split(',')
-            ports.sort()
+            ufw.util.human_sort(ports)
             self.dport = ','.join(ports)
 
         if self.sport:
             ports = self.sport.split(',')
-            ports.sort()
+            ufw.util.human_sort(ports)
             self.sport = ','.join(ports)
 
         if changed:
