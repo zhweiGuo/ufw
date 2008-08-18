@@ -220,4 +220,33 @@ do_cmd "1" no 192.168.0.1/-1 192.168.0.1/-1
 do_cmd "1" no 192.168.0.1/33 192.168.0.1/33
 do_cmd "1" no 192.168.0.1/e1 192.168.0.1/e1
 
+echo "TEST HUMAN SORTING" >> $TESTTMP/result
+cat > $script << EOM
+#!/usr/bin/python
+
+import sys
+import ufw.util
+
+if len(sys.argv) != 3:
+    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
+    print >> sys.stderr, "Usage: %s <port str> <expected port str>" % (sys.argv[0])
+    sys.exit(1)
+
+tmp = sys.argv[1].split(',')
+try:
+    ufw.util.human_sort(tmp)
+    ports = ','.join(tmp)
+except:
+    print >> sys.stderr, "Error processing '%s'" % (sys.argv[1])
+    sys.exit(1)
+
+print "norm = %s, expected = %s" % (str(ports), str(sys.argv[2]))
+if sys.argv[2] != ports:
+    sys.exit(1)
+sys.exit(0)
+EOM
+
+chmod 755 $script
+do_cmd "0" '80,a222,a32,a2,b1,443,telnet,3,ZZZ,http' '3,80,443,a2,a32,a222,b1,http,telnet,ZZZ'
+
 exit 0

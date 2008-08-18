@@ -300,6 +300,19 @@ def wrap_text(text):
     return word_wrap(text, 75)
 
 
+def human_sort(list):
+    '''Sorts list of strings into numeric order, with text case-insensitive.
+       Modifies list in place.
+
+       Eg:
+       [ '80', 'a222', 'a32', 'a2', 'b1', '443', 'telnet', '3', 'http', 'ZZZ']
+
+       sorts to:
+       ['3', '80', '443', 'a2', 'a32', 'a222', 'b1', 'http', 'telnet', 'ZZZ']
+    '''
+    norm = lambda t: int(t) if t.isdigit() else t.lower()
+    list.sort(key=lambda k: [ norm(c) for c in re.split('([0-9]+)', k)])
+
 #
 # Internal helper functions
 #

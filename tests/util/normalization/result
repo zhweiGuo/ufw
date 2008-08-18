@@ -4643,3 +4643,8 @@ Invalid address/netmask '192.168.0.1/33'
 Invalid address/netmask '192.168.0.1/e1'
 
 
+TEST HUMAN SORTING
+1160: 80,a222,a32,a2,b1,443,telnet,3,ZZZ,http 3,80,443,a2,a32,a222,b1,http,telnet,ZZZ
+norm = 3,80,443,a2,a32,a222,b1,http,telnet,ZZZ, expected = 3,80,443,a2,a32,a222,b1,http,telnet,ZZZ
+
+
