@@ -658,7 +658,7 @@ class UFWFrontend:
             return rstr
         elif default == "accept":
             policy = "allow"
-        elif policy == "drop":
+        elif default == "drop":
             policy = "deny"
         else:
             err_msg = _("Unknown policy '%s'" % default)

@@ -90,13 +90,11 @@ rm -f $TESTPATH/etc/ufw/applications.d/runtest
 do_cmd "0" --dry-run delete allow runtest
 
 echo "TESTING APPLICATION INTEGRATION (update)" >> $TESTTMP/result
-do_cmd "0" status verbose
 do_cmd "0" app default allow
-do_cmd "0" status verbose
+do_cmd "0" app --dry-run update --add-new Apache
 do_cmd "0" app default deny
-do_cmd "0" status verbose
-do_cmd "0" --dry-run app update --add-new Apache
+do_cmd "0" app --dry-run update --add-new Samba
 do_cmd "0" app default skip
-do_cmd "0" status verbose
+do_cmd "0" app --dry-run update --add-new Bind9
 
 exit 0
