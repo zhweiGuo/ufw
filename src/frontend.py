@@ -293,12 +293,18 @@ def parse_application_command(argv):
     name = ""
     action = ""
     dryrun = False
+    addnew = False
 
     if len(argv) < 3 or argv[1].lower() != "app":
         raise ValueError()
 
     argv.remove("app")
     nargs = len(argv)
+
+    if "--add-new" in argv:
+        addnew = True
+        argv.remove("--add-new")
+        nargs = len(argv)
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
@@ -317,6 +323,9 @@ def parse_application_command(argv):
         # Handle quoted name with spaces in it by stripping Python's ['...']
         # list as string text.
         name = str(argv[2]).strip("[']")
+
+        if addnew:
+            action += "-with-new"
 
     if action == "list" and nargs != 2:
         raise ValueError()
@@ -637,6 +646,37 @@ class UFWFrontend:
         rstr = self.backend.update_app_rule(profile)
         return rstr
 
+    def application_add(self, profile):
+        '''Refresh application profile'''
+        rstr = ""
+        policy = ""
+        default = self.backend.defaults['default_application_policy']
+        if default == "skip":
+            ufw.util.debug("Policy is '%s', not adding profile '%s'" % \
+                           (policy, profile))
+            return rstr
+        elif default == "accept":
+            policy = "allow"
+        elif policy == "drop":
+            policy = "deny"
+        else:
+            err_msg = _("Unknown policy '%s'" % default)
+            raise UFWError(err_msg)
+
+        args = [ 'ufw' ]
+        if self.backend.dryrun:
+            args.append("--dry-run")
+
+        args += [ policy, profile ]
+        try:
+            (action, rule, ip_version, self.backend.dryrun) = \
+                parse_command(args)
+        except Exception:
+            raise
+
+        rstr = self.do_action(action, rule, ip_version)
+        return rstr
+
     def do_application_action(self, action, profile):
         '''Perform action on profile. action and profile are usually based on
            return values from parse_applications_command().
@@ -652,8 +692,10 @@ class UFWFrontend:
             res = self.get_application_list()
         elif action == "info":
             res = self.get_application_info(profile)
-        elif action == "update":
+        elif action == "update" or action == "update-with-new":
             res = self.application_update(profile)
+            if action == "update-with-new":
+                res += "\n" + self.application_add(profile)
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)

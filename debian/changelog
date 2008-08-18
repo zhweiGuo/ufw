@@ -1,4 +1,4 @@
-ufw (0.20) UNRELEASED; urgency=low
+ufw (0.20) intrepid; urgency=low
 
   * add 'verbose' option to status command
   * implement application (package) integration
