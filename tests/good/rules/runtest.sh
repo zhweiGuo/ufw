@@ -184,7 +184,7 @@ for i in 192.168.0 any; do
         do_cmd "0" --dry-run allow $j $m port 34,35 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 proto udp
+        do_cmd "0" --dry-run allow $j $m port 221,23,21,15:19,22 proto udp
         do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24 proto tcp

@@ -96,7 +96,7 @@ echo "Multiports:" >> $TESTTMP/result
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35 proto tcp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35:39 proto udp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 35:39 proto tcp
-do_cmd "0" --dry-run allow from 192.168.0.1 port 23,21,15:19,22 proto udp
+do_cmd "0" --dry-run allow from 192.168.0.1 port 210,23,21,15:19,22 proto udp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24 proto tcp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24 proto udp
 do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
