@@ -2,6 +2,8 @@ ufw (0.20) UNRELEASED; urgency=low
 
   * add 'verbose' option to status command
   * implement application (package) integration
+  * update run_tests.sh to honor subclass
+  * debian/control: Depends on iptables >= 1.4.0 for ipv6 comment support
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 07 Aug 2008 12:04:05 -0400
 
