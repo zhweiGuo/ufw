@@ -385,9 +385,9 @@ COMMIT
         '''Reload firewall rules file'''
         err_msg = _("problem running")
         if self.dryrun:
-            print "> cat\n" + self.files['rules'] + "| iptables-restore"
+            print "> cat " + self.files['rules'] + " | iptables-restore"
             if self.use_ipv6():
-                print "> cat\n" + self.files['rules6'] + "| ip6tables-restore"
+                print "> cat " + self.files['rules6'] + " | ip6tables-restore"
         else:
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
                                  ['iptables-restore', '-n'])
