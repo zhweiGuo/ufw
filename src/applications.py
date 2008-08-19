@@ -1,5 +1,5 @@
 #
-# common.py: common classes for ufw
+# applications.py: common classes for ufw
 #
 # Copyright (C) 2008 Canonical Ltd.
 #
