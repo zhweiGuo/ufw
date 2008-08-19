@@ -6006,7 +6006,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-> iptables-restore < /home/jamie/ubuntu/software/ufw/trunk/tests/testarea/var/lib/ufw/user.rules
+> | iptables-restore
 Rules updated for profile 'Apache' and firewall reloaded
 Rules updated
 
@@ -6087,7 +6087,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-> iptables-restore < /home/jamie/ubuntu/software/ufw/trunk/tests/testarea/var/lib/ufw/user.rules
+> | iptables-restore
 Rules updated for profile 'Samba' and firewall reloaded
 Rules updated
 
@@ -6127,7 +6127,7 @@ COMMIT
 -A ufw6-user-output -j RETURN
 -A ufw6-user-forward -j RETURN
 COMMIT
-> iptables-restore < /home/jamie/ubuntu/software/ufw/trunk/tests/testarea/var/lib/ufw/user.rules
+> | iptables-restore
 Rules updated for profile 'Bind9' and firewall reloaded
 
 
