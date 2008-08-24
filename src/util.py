@@ -313,6 +313,54 @@ def human_sort(list):
     norm = lambda t: int(t) if t.isdigit() else t.lower()
     list.sort(key=lambda k: [ norm(c) for c in re.split('([0-9]+)', k)])
 
+
+def get_ppid(p=os.getpid()):
+    '''Finds parent process id for pid based on /proc/<pid>/stat. See
+       'man 5 proc' for details.
+    '''
+    try:
+        pid = int(p)
+    except:
+        raise ValueError("pid must be an integer")
+
+    name = os.path.join("/proc", str(pid), "stat")
+    if not os.path.isfile(name):
+        raise IOError("Couldn't find '%s'" % (name))
+
+    try:
+        ppid = file(name).readlines()[0].split()[3]
+    except Exception:
+        raise
+
+    return int(ppid)
+
+
+def under_ssh(pid=os.getpid()):
+    '''Determine if a process is running under ssh'''
+    try:
+        ppid = get_ppid(pid)
+    except Exception:
+        warn_msg = _("Couldn't find parent pid for '%s'" % (str(pid)))
+        raise ValueError(warn_msg)
+
+    path = os.path.join("/proc", str(ppid), "exe")
+    if not os.path.islink(path):
+        warn_msg = _("'%s' is not a symlink" % (path))
+        raise ValueError(warn_msg)
+
+    exe = os.readlink(path)
+    debug("under_ssh: exe is '%s'" % (exe))
+
+    # Check for /sbin/init rather than pid '1' or '0' in case of pid
+    # randomization
+    if exe == "/sbin/init":
+        return False
+    elif exe.endswith("/sshd"):
+        return True
+    else:
+        return under_ssh(ppid)
+
+
 #
 # Internal helper functions
 #
