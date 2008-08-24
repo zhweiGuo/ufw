@@ -336,26 +336,29 @@ def get_ppid(p=os.getpid()):
 
 
 def under_ssh(pid=os.getpid()):
-    '''Determine if a process is running under ssh'''
+    '''Determine if current process is running under ssh'''
     try:
         ppid = get_ppid(pid)
     except Exception:
-        warn_msg = _("Couldn't find parent pid for '%s'" % (str(pid)))
-        raise ValueError(warn_msg)
+        err_msg = _("Couldn't find parent pid for '%s'" % (str(pid)))
+        raise ValueError(err_msg)
 
-    path = os.path.join("/proc", str(ppid), "exe")
-    if not os.path.islink(path):
-        warn_msg = _("'%s' is not a symlink" % (path))
-        raise ValueError(warn_msg)
+    path = os.path.join("/proc", str(ppid), "stat")
+    if not os.path.isfile(path):
+        err_msg = _("Couldn't find '%s'" % (path))
+        raise ValueError(err_msg)
 
-    exe = os.readlink(path)
+    try:
+        exe = file(path).readlines()[0].split()[1]
+    except:
+        err_msg = _("Could not find executable for '%s'" % (path))
+        raise ValueError(err_msg)
     debug("under_ssh: exe is '%s'" % (exe))
 
-    # Check for /sbin/init rather than pid '1' or '0' in case of pid
-    # randomization
-    if exe == "/sbin/init":
+    # Check for /sbin/init rather than pid '1' in case of pid randomization
+    if exe == "(init)" or ppid == 0:
         return False
-    elif exe.endswith("/sshd"):
+    elif exe == "(sshd)":
         return True
     else:
         return under_ssh(ppid)
