@@ -343,6 +343,11 @@ def under_ssh(pid=os.getpid()):
         err_msg = _("Couldn't find parent pid for '%s'" % (str(pid)))
         raise ValueError(err_msg)
 
+    # pid '1' is 'init' and '0' is the kernel. This should still work when
+    # pid randomization is in use, but needs to be checked.
+    if pid == 1 or ppid <= 1:
+        return False
+
     path = os.path.join("/proc", str(ppid), "stat")
     if not os.path.isfile(path):
         err_msg = _("Couldn't find '%s'" % (path))
@@ -355,10 +360,7 @@ def under_ssh(pid=os.getpid()):
         raise ValueError(err_msg)
     debug("under_ssh: exe is '%s'" % (exe))
 
-    # Check for /sbin/init rather than pid '1' in case of pid randomization
-    if exe == "(init)" or ppid == 0:
-        return False
-    elif exe == "(sshd)":
+    if exe == "(sshd)":
         return True
     else:
         return under_ssh(ppid)
