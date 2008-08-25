@@ -88,7 +88,7 @@ if __name__ == "__main__":
         sys.exit(0)
 
     try:
-        ufw = ufw.frontend.UFWFrontend(dryrun)
+        ui = ufw.frontend.UFWFrontend(dryrun)
     except UFWError, e:
         error(e.value)
     except Exception:
@@ -96,9 +96,17 @@ if __name__ == "__main__":
 
     try:
         if app_action:
-            res = ufw.do_application_action(action, profile)
+            res = ui.do_application_action(action, profile)
         else:
-            res = ufw.do_action(action, rule, ip_version)
+            bailout = False
+            if action == "enable" and not \
+               ufw.frontend.continue_under_ssh():
+                res = _("Aborted")
+                bailout = True
+
+            if not bailout:
+                res = ui.do_action(action, rule, ip_version)
+
         print res
     except UFWError, e:
         error(e.value)

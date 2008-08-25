@@ -17,6 +17,7 @@
 #
 
 import re
+import os
 import sys
 import warnings
 
@@ -368,6 +369,20 @@ Application profile commands:
   app default ARG		set profile policy to ALLOW, DENY or SKIP
 ''')
     return (msg)
+
+
+def continue_under_ssh():
+    '''If running under ssh, prompt the user for confirmation'''
+    proceed = True
+    if ufw.util.under_ssh():
+        prompt = _("Command being run under ssh. Are you sure you " + \
+                   "want to continue (y|n)? ")
+        os.write(sys.stdout.fileno(), prompt)
+        ans = sys.stdin.readline().lower().strip()
+        if ans != "y" and ans != "yes":
+            proceed = False
+
+    return proceed
 
 
 class UFWFrontend:

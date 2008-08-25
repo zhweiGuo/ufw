@@ -1,9 +1,5 @@
 TODO
 ----
-Possibly, provide a way out if it doesn't work (eg prompt user for 'Did it
-work?' type question, and timeout if no response (maybe use the previous
-working policy?))
-
 Default allow logging messages aren't correct in after*.rules
 
 
