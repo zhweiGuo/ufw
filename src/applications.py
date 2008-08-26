@@ -98,6 +98,14 @@ def get_profiles(dir):
                 warn(warn_msg)
                 continue
 
+            try:
+                ufw.util.get_services_proto(p)
+                warn_msg = _("Skipping '%s': also in /etc/services") % (p)
+                warn(warn_msg)
+                continue
+            except Exception:
+                pass
+
             skip = False
             for key, value in cdict.items(p):
                 if len(key) > 64:

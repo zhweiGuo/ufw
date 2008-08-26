@@ -18,3 +18,7 @@ title=Example title
 description=Example description
 ports=80
 
+[ssh]
+title=OpenSSH Server
+description=profile name in /etc/services
+ports=22/tcp

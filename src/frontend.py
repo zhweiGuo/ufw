@@ -94,6 +94,8 @@ def parse_command(argv):
         if nargs == 3:
             # Short form where only app or port/proto is given
             if ufw.applications.valid_profile_name(argv[2]):
+                # Check if name collision with /etc/services. If so, use
+                # /etc/services instead of application profile
                 try:
                     ufw.util.get_services_proto(argv[2])
                 except Exception:

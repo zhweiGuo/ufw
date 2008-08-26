@@ -32,6 +32,7 @@ do_cmd "1" null app info bad-ports3
 do_cmd "1" null app info bad-ports4
 do_cmd "1" null app info bad-ports5
 do_cmd "1" null app info bad-ports6
+do_cmd "1" null app info ssh
 
 echo "TESTING APPLICATION INTEGRATION (bad simple rules)" >> $TESTTMP/result
 for target in allow deny limit ; do
