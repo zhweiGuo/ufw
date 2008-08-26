@@ -355,7 +355,7 @@ class UFWBackend:
 
         self.rules = updated_rules
         self.rules6 = updated_rules6
-        rstr += _("Rules updated for profile '%s'" % (profile))
+        rstr += _("Rules updated for profile '%s'") % (profile)
 
         try:
             self._write_rules(False) # ipv4

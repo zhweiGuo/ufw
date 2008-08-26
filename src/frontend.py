@@ -17,6 +17,7 @@
 #
 
 import re
+import os
 import sys
 import warnings
 
@@ -281,8 +282,8 @@ def parse_command(argv):
             app = rule.dapp
         else:
             app = rule.sapp
-        err_msg = _("Improper rule syntax (protocol '%s' specified with " + \
-                    "application rule)") % (rule.protocol)
+        err_msg = _("Improper rule syntax ('%s' specified with app rule)") % \
+                   (rule.protocol)
         raise UFWError(err_msg)
 
     return (action, rule, type, dryrun)
@@ -531,16 +532,15 @@ class UFWFrontend:
                     except Exception:
                         # Don't fail, so we can try to backout more
                         undo_error = True
-                        warn_msg = _("Could not back out rule '%s'" % \
-                                     r.format_rule())
+                        warn_msg = _("Could not back out rule '%s'") % \
+                                     r.format_rule()
                         warn(warn_msg)
 
+            err_msg += _("\nError applying application rules.")
             if undo_error:
-                err_msg += _("\nError applying application rules. " + \
-                            "Some rules could not be unapplied.")
+                err_msg += _(" Some rules could not be unapplied.")
             else:
-                err_msg += _("\nError applying application rules. " + \
-                            "Attempted rules successfully unapplied.")
+                err_msg += _(" Attempted rules successfully unapplied.")
 
             raise UFWError(err_msg)
 
@@ -661,7 +661,7 @@ class UFWFrontend:
         elif default == "drop":
             policy = "deny"
         else:
-            err_msg = _("Unknown policy '%s'" % default)
+            err_msg = _("Unknown policy '%s'") % (default)
             raise UFWError(err_msg)
 
         args = [ 'ufw' ]
@@ -702,4 +702,20 @@ class UFWFrontend:
             raise UFWError(err_msg)
 
         return res
+
+    def continue_under_ssh(self):
+        '''If running under ssh, prompt the user for confirmation'''
+        proceed = True
+        if self.backend.do_checks:
+            print "do_checks is true"
+        else:
+            print "do_checks is false"
+        if self.backend.do_checks and ufw.util.under_ssh():
+            prompt = _("Command being run under ssh. Proceed (y|n)? ")
+            os.write(sys.stdout.fileno(), prompt)
+            ans = sys.stdin.readline().lower().strip()
+            if ans != "y" and ans != "yes":
+                proceed = False
+
+        return proceed
 

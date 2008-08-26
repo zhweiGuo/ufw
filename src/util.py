@@ -313,6 +313,59 @@ def human_sort(list):
     norm = lambda t: int(t) if t.isdigit() else t.lower()
     list.sort(key=lambda k: [ norm(c) for c in re.split('([0-9]+)', k)])
 
+
+def get_ppid(p=os.getpid()):
+    '''Finds parent process id for pid based on /proc/<pid>/stat. See
+       'man 5 proc' for details.
+    '''
+    try:
+        pid = int(p)
+    except:
+        raise ValueError("pid must be an integer")
+
+    name = os.path.join("/proc", str(pid), "stat")
+    if not os.path.isfile(name):
+        raise IOError("Couldn't find '%s'" % (name))
+
+    try:
+        ppid = file(name).readlines()[0].split()[3]
+    except Exception:
+        raise
+
+    return int(ppid)
+
+
+def under_ssh(pid=os.getpid()):
+    '''Determine if current process is running under ssh'''
+    try:
+        ppid = get_ppid(pid)
+    except Exception:
+        err_msg = _("Couldn't find parent pid for '%s'") % (str(pid))
+        raise ValueError(err_msg)
+
+    # pid '1' is 'init' and '0' is the kernel. This should still work when
+    # pid randomization is in use, but needs to be checked.
+    if pid == 1 or ppid <= 1:
+        return False
+
+    path = os.path.join("/proc", str(ppid), "stat")
+    if not os.path.isfile(path):
+        err_msg = _("Couldn't find '%s'") % (path)
+        raise ValueError(err_msg)
+
+    try:
+        exe = file(path).readlines()[0].split()[1]
+    except:
+        err_msg = _("Could not find executable for '%s'") % (path)
+        raise ValueError(err_msg)
+    debug("under_ssh: exe is '%s'" % (exe))
+
+    if exe == "(sshd)":
+        return True
+    else:
+        return under_ssh(ppid)
+
+
 #
 # Internal helper functions
 #

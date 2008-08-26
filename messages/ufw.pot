@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-08-07 11:37+EDT\n"
+"POT-Creation-Date: 2008-08-25 19:09+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,56 +15,141 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: src/backend.py:78
+#: src/applications.py:32
+msgid "Profiles directory does not exist"
+msgstr ""
+
+#: src/applications.py:49
+msgid "Skipping '%s': hidden file"
+msgstr ""
+
+#: src/applications.py:65
+msgid "Skipping '%s': couldn't stat"
+msgstr ""
+
+#: src/applications.py:70
+msgid "Skipping '%s': too big"
+msgstr ""
+
+#: src/applications.py:75
+msgid "Skipping '%s': too many files read already"
+msgstr ""
+
+#: src/applications.py:85
+msgid "Skipping '%s': couldn't process"
+msgstr ""
+
+#: src/applications.py:92
+msgid "Skipping '%s': name too long"
+msgstr ""
+
+#: src/applications.py:97
+msgid "Skipping '%s': invalid name"
+msgstr ""
+
+#: src/applications.py:104
+msgid "Skipping '%s': field too long"
+msgstr ""
+
+#: src/applications.py:109
+msgid "Skipping '%s': value to long for '%s'"
+msgstr ""
+
+#: src/applications.py:118
+msgid "Duplicate profile '%s', using last found"
+msgstr ""
+
+#: src/applications.py:144
+msgid "Profile '%s' missing required field '%s'"
+msgstr ""
+
+#: src/applications.py:148
+msgid "Profile '%s' has empty required field '%s'"
+msgstr ""
+
+#: src/applications.py:154
+msgid "No ports found in profile '%s'"
+msgstr ""
+
+#: src/applications.py:167
+msgid "Invalid ports in profile '%s'"
+msgstr ""
+
+#: src/backend.py:82
 msgid "Checks disabled"
 msgstr ""
 
-#: src/backend.py:84
+#: src/backend.py:88
 msgid "ERROR: this script should not be SUID"
 msgstr ""
 
-#: src/backend.py:87
+#: src/backend.py:91
 msgid "ERROR: this script should not be SGID"
 msgstr ""
 
-#: src/backend.py:92
+#: src/backend.py:96
 msgid "You need to be root to run this script"
 msgstr ""
 
-#: src/backend.py:105
+#: src/backend.py:108
+msgid "'%s' does not exist"
+msgstr ""
+
+#: src/backend.py:119
 msgid "found hidden directory in path: %s"
 msgstr ""
 
-#: src/backend.py:112
+#: src/backend.py:130
 msgid "Couldn't stat '%s'"
 msgstr ""
 
-#: src/backend.py:118
+#: src/backend.py:136
 msgid "found symbolic link in path: %s"
 msgstr ""
 
-#: src/backend.py:121
+#: src/backend.py:139
 msgid "uid is %s but '%s' is owned by %s"
 msgstr ""
 
-#: src/backend.py:126
+#: src/backend.py:144
 msgid "%s is world writable!"
 msgstr ""
 
-#: src/backend.py:130
+#: src/backend.py:148
 msgid "%s is group writable!"
 msgstr ""
 
-#: src/backend.py:143
+#: src/backend.py:161
 msgid "'%s' file '%s' does not exist"
 msgstr ""
 
-#: src/backend.py:154 src/backend_iptables.py:54 src/backend_iptables.py:464
+#: src/backend.py:172 src/backend_iptables.py:54 src/backend_iptables.py:545
 msgid "Couldn't open '%s' for reading"
 msgstr ""
 
-#: src/backend.py:167
+#: src/backend.py:185
 msgid "Invalid option"
+msgstr ""
+
+#: src/backend.py:219 src/backend_iptables.py:104
+msgid "Unsupported policy '%s'"
+msgstr ""
+
+#: src/backend.py:222
+msgid ""
+"Default application policy changed to '%s'\n"
+msgstr ""
+
+#: src/backend.py:304
+msgid "No rules found for application profile"
+msgstr ""
+
+#: src/backend.py:358
+msgid "Rules updated for profile '%s'"
+msgstr ""
+
+#: src/backend.py:364
+msgid "Couldn't update application rules"
 msgstr ""
 
 #: src/backend_iptables.py:47
@@ -79,280 +164,377 @@ msgstr ""
 msgid "Default:"
 msgstr ""
 
-#: src/backend_iptables.py:92
-msgid "Unsupported policy '%s'"
+#: src/backend_iptables.py:82
+msgid "New profiles:"
 msgstr ""
 
-#: src/backend_iptables.py:95
+#: src/backend_iptables.py:107
 msgid ""
 "Default policy changed to '%s'\n"
 msgstr ""
 
-#: src/backend_iptables.py:96
+#: src/backend_iptables.py:108
 msgid "(be sure to update your rules accordingly)"
 msgstr ""
 
-#: src/backend_iptables.py:133
+#: src/backend_iptables.py:145
 msgid "Logging disabled"
 msgstr ""
 
-#: src/backend_iptables.py:135
+#: src/backend_iptables.py:147
 msgid "Logging enabled"
 msgstr ""
 
-#: src/backend_iptables.py:142
+#: src/backend_iptables.py:154
 msgid ""
 "Checking iptables\n"
 msgstr ""
 
-#: src/backend_iptables.py:144
+#: src/backend_iptables.py:156
 msgid ""
 "Checking ip6tables\n"
 msgstr ""
 
-#: src/backend_iptables.py:150
+#: src/backend_iptables.py:162
 msgid "Status: not loaded"
 msgstr ""
 
-#: src/backend_iptables.py:152 src/backend_iptables.py:261
-#: src/backend_iptables.py:298 src/backend_iptables.py:330
+#: src/backend_iptables.py:164 src/backend_iptables.py:317
+#: src/backend_iptables.py:354 src/backend_iptables.py:386
 msgid "problem running"
 msgstr ""
 
-#: src/backend_iptables.py:167
+#: src/backend_iptables.py:179
 msgid "Status: loaded"
 msgstr ""
 
-#: src/backend_iptables.py:228
+#: src/backend_iptables.py:278
 msgid "Action"
 msgstr ""
 
-#: src/backend_iptables.py:228
+#: src/backend_iptables.py:278
 msgid "From"
 msgstr ""
 
-#: src/backend_iptables.py:228
+#: src/backend_iptables.py:278
 msgid "To"
 msgstr ""
 
-#: src/backend_iptables.py:229
+#: src/backend_iptables.py:279
 msgid "--"
 msgstr ""
 
-#: src/backend_iptables.py:229
+#: src/backend_iptables.py:279
 msgid "----"
 msgstr ""
 
-#: src/backend_iptables.py:229
+#: src/backend_iptables.py:279
 msgid "------"
 msgstr ""
 
-#: src/backend_iptables.py:234
+#: src/backend_iptables.py:286
 msgid ""
 "Status: loaded\n"
+"%s\n"
 "%s\n"
 "%s%s"
 msgstr ""
 
-#: src/backend_iptables.py:300
+#: src/backend_iptables.py:290
+msgid "Status: loaded%s"
+msgstr ""
+
+#: src/backend_iptables.py:356
 msgid "running initscript"
 msgstr ""
 
-#: src/backend_iptables.py:386 src/backend_iptables.py:421
+#: src/backend_iptables.py:442 src/backend_iptables.py:477
 msgid "Couldn't parse line '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:473
+#: src/backend_iptables.py:554
 msgid "Skipping malformed tuple (bad length): %s"
 msgstr ""
 
-#: src/backend_iptables.py:486
+#: src/backend_iptables.py:572
 msgid "Skipping malformed tuple: %s"
 msgstr ""
 
-#: src/backend_iptables.py:566
+#: src/backend_iptables.py:672
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
 msgstr ""
 
-#: src/backend_iptables.py:570
+#: src/backend_iptables.py:676
 msgid "Skipping unsupported IPv6 '%s' rule"
 msgstr ""
 
-#: src/backend_iptables.py:573
+#: src/backend_iptables.py:679
 msgid "Must specify 'tcp' or 'udp' with multiple ports"
 msgstr ""
 
-#: src/backend_iptables.py:627
+#: src/backend_iptables.py:732
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:630
+#: src/backend_iptables.py:735
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:632
+#: src/backend_iptables.py:737
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:643
+#: src/backend_iptables.py:748
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:646
+#: src/backend_iptables.py:751
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:649
+#: src/backend_iptables.py:754
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:661
+#: src/backend_iptables.py:766
 msgid "Could not update running firewall"
 msgstr ""
 
-#: src/common.py:113
+#: src/common.py:147
 msgid "Bad port '%s'"
 msgstr ""
 
-#: src/common.py:169
+#: src/common.py:207
 msgid "Unsupported protocol '%s'"
 msgstr ""
 
-#: src/common.py:197
+#: src/common.py:235
 msgid "Bad source address"
 msgstr ""
 
-#: src/common.py:207
+#: src/common.py:245
 msgid "Bad destination address"
 msgstr ""
 
-#: src/common.py:220
+#: src/common.py:259
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:230
+#: src/common.py:269
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:253
+#: src/common.py:295
 msgid "No match"
 msgstr ""
 
-#: src/common.py:274
+#: src/common.py:321
 msgid "Found exact match"
 msgstr ""
 
-#: src/common.py:277
+#: src/common.py:324
 msgid "Found non-action match"
 msgstr ""
 
-#: src/frontend.py:94 src/frontend.py:108
+#: src/frontend.py:107 src/frontend.py:121
 msgid "Bad port"
 msgstr ""
 
-#: src/frontend.py:99 src/frontend.py:190
+#: src/frontend.py:112 src/frontend.py:211
 msgid "Port ranges must be numeric"
 msgstr ""
 
-#: src/frontend.py:111
+#: src/frontend.py:124
 msgid "Wrong number of arguments"
 msgstr ""
 
-#: src/frontend.py:114
+#: src/frontend.py:127
 msgid "Need 'to' or 'from' clause"
 msgstr ""
 
-#: src/frontend.py:125
+#: src/frontend.py:140
 msgid "Improper rule syntax"
 msgstr ""
 
-#: src/frontend.py:132
+#: src/frontend.py:147
 msgid "Invalid token '%s'"
 msgstr ""
 
-#: src/frontend.py:141
+#: src/frontend.py:156
 msgid "Invalid 'proto' clause"
 msgstr ""
 
-#: src/frontend.py:160
+#: src/frontend.py:175
 msgid "Invalid 'from' clause"
 msgstr ""
 
-#: src/frontend.py:179
+#: src/frontend.py:194
 msgid "Invalid 'to' clause"
 msgstr ""
 
-#: src/frontend.py:184
-msgid "Need 'from' or 'to' with 'port'"
+#: src/frontend.py:199
+msgid "Need 'from' or 'to' with '%s'"
 msgstr ""
 
-#: src/frontend.py:203
+#: src/frontend.py:223
 msgid "Invalid 'port' clause"
 msgstr ""
 
-#: src/frontend.py:212
+#: src/frontend.py:232
 msgid "Mixed IP versions for 'from' and 'to'"
 msgstr ""
 
-#: src/frontend.py:226 src/frontend.py:233 src/frontend.py:239
+#: src/frontend.py:246 src/frontend.py:253 src/frontend.py:259
 msgid "Could not find protocol"
 msgstr ""
 
-#: src/frontend.py:246
+#: src/frontend.py:266
 msgid "Protocol mismatch (from/to)"
 msgstr ""
 
-#: src/frontend.py:253
+#: src/frontend.py:273
 msgid "Protocol mismatch with specified protocol %s"
 msgstr ""
 
-#: src/frontend.py:262
+#: src/frontend.py:285
+msgid "Improper rule syntax ('%s' specified with app rule)"
+msgstr ""
+
+#: src/frontend.py:352
 msgid ""
 "\n"
 "Usage: "
 msgstr ""
 
-#: src/frontend.py:263
+#: src/frontend.py:353
 msgid ""
 " COMMAND\n"
 "\n"
 "Commands:\n"
-"  enable\t\t\tEnables the firewall\n"
-"  disable\t\t\tDisables the firewall\n"
+"  enable\t\t\tenables the firewall\n"
+"  disable\t\t\tdisables the firewall\n"
 "  default ARG\t\t\tset default policy to ALLOW or DENY\n"
 "  logging ARG\t\t\tset logging to ON or OFF\n"
 "  allow|deny RULE\t\tallow or deny RULE\n"
 "  delete allow|deny RULE\tdelete the allow/deny RULE\n"
 "  status\t\t\tshow firewall status\n"
 "  version\t\t\tdisplay version information\n"
+"\n"
+"Application profile commands:\n"
+"  app list\t\t\tlist application profiles\n"
+"  app info PROFILE\t\tshow information on PROFILE\n"
+"  app update PROFILE\t\tupdate PROFILE\n"
+"  app default ARG\t\tset profile policy to ALLOW, DENY or SKIP\n"
 msgstr ""
 
-#: src/frontend.py:298
+#: src/frontend.py:394
 msgid "Firewall started and enabled on system startup"
 msgstr ""
 
-#: src/frontend.py:304
+#: src/frontend.py:400
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
 
-#: src/frontend.py:363 src/frontend.py:373
+#: src/frontend.py:463 src/frontend.py:493 src/frontend.py:503
 msgid "Invalid IP version '%s'"
 msgstr ""
 
-#: src/frontend.py:370
+#: src/frontend.py:500
 msgid "IPv6 support not enabled"
 msgstr ""
 
-#: src/frontend.py:379
+#: src/frontend.py:511
 msgid "Rule changed after normalization"
 msgstr ""
 
-#: src/frontend.py:406
+#: src/frontend.py:535
+msgid "Could not back out rule '%s'"
+msgstr ""
+
+#: src/frontend.py:539
+msgid ""
+"\n"
+"Error applying application rules."
+msgstr ""
+
+#: src/frontend.py:541
+msgid " Some rules could not be unapplied."
+msgstr ""
+
+#: src/frontend.py:543
+msgid " Attempted rules successfully unapplied."
+msgstr ""
+
+#: src/frontend.py:574 src/frontend.py:701
 msgid "Unsupported action '%s'"
+msgstr ""
+
+#: src/frontend.py:593
+msgid "Available applications:"
+msgstr ""
+
+#: src/frontend.py:606
+msgid "Invalid profile name"
+msgstr ""
+
+#: src/frontend.py:614
+msgid "Could not find profile '%s'"
+msgstr ""
+
+#: src/frontend.py:619
+msgid "Invalid profile"
+msgstr ""
+
+#: src/frontend.py:622
+msgid ""
+"Profile: %s\n"
+msgstr ""
+
+#: src/frontend.py:623
+msgid ""
+"Title: %s\n"
+msgstr ""
+
+#: src/frontend.py:626
+msgid ""
+"Description: %s\n"
+"\n"
+msgstr ""
+
+#: src/frontend.py:632
+msgid "Ports:"
+msgstr ""
+
+#: src/frontend.py:634
+msgid "Port:"
+msgstr ""
+
+#: src/frontend.py:664
+msgid "Unknown policy '%s'"
+msgstr ""
+
+#: src/frontend.py:714
+msgid "Command being run under ssh. Proceed (y|n)? "
 msgstr ""
 
 #: src/ufw:46
 msgid ""
 ": Need at least python 2.5)\n"
+msgstr ""
+
+#: src/ufw:103
+msgid "Aborted"
+msgstr ""
+
+#: src/util.py:343
+msgid "Couldn't find parent pid for '%s'"
+msgstr ""
+
+#: src/util.py:353
+msgid "Couldn't find '%s'"
+msgstr ""
+
+#: src/util.py:359
+msgid "Could not find executable for '%s'"
 msgstr ""
 
