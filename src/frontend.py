@@ -706,10 +706,6 @@ class UFWFrontend:
     def continue_under_ssh(self):
         '''If running under ssh, prompt the user for confirmation'''
         proceed = True
-        if self.backend.do_checks:
-            print "do_checks is true"
-        else:
-            print "do_checks is false"
         if self.backend.do_checks and ufw.util.under_ssh():
             prompt = _("Command being run under ssh. Proceed (y|n)? ")
             os.write(sys.stdout.fileno(), prompt)
