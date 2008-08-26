@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-08-25 19:09+CDT\n"
+"POT-Creation-Date: 2008-08-26 18:15+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,31 +47,35 @@ msgstr ""
 msgid "Skipping '%s': invalid name"
 msgstr ""
 
-#: src/applications.py:104
+#: src/applications.py:103
+msgid "Skipping '%s': also in /etc/services"
+msgstr ""
+
+#: src/applications.py:112
 msgid "Skipping '%s': field too long"
 msgstr ""
 
-#: src/applications.py:109
+#: src/applications.py:117
 msgid "Skipping '%s': value to long for '%s'"
 msgstr ""
 
-#: src/applications.py:118
+#: src/applications.py:126
 msgid "Duplicate profile '%s', using last found"
 msgstr ""
 
-#: src/applications.py:144
+#: src/applications.py:152
 msgid "Profile '%s' missing required field '%s'"
 msgstr ""
 
-#: src/applications.py:148
+#: src/applications.py:156
 msgid "Profile '%s' has empty required field '%s'"
 msgstr ""
 
-#: src/applications.py:154
+#: src/applications.py:162
 msgid "No ports found in profile '%s'"
 msgstr ""
 
-#: src/applications.py:167
+#: src/applications.py:175
 msgid "Invalid ports in profile '%s'"
 msgstr ""
 
@@ -336,77 +340,77 @@ msgstr ""
 msgid "Found non-action match"
 msgstr ""
 
-#: src/frontend.py:107 src/frontend.py:121
+#: src/frontend.py:109 src/frontend.py:123
 msgid "Bad port"
 msgstr ""
 
-#: src/frontend.py:112 src/frontend.py:211
+#: src/frontend.py:114 src/frontend.py:213
 msgid "Port ranges must be numeric"
 msgstr ""
 
-#: src/frontend.py:124
+#: src/frontend.py:126
 msgid "Wrong number of arguments"
 msgstr ""
 
-#: src/frontend.py:127
+#: src/frontend.py:129
 msgid "Need 'to' or 'from' clause"
 msgstr ""
 
-#: src/frontend.py:140
+#: src/frontend.py:142
 msgid "Improper rule syntax"
 msgstr ""
 
-#: src/frontend.py:147
+#: src/frontend.py:149
 msgid "Invalid token '%s'"
 msgstr ""
 
-#: src/frontend.py:156
+#: src/frontend.py:158
 msgid "Invalid 'proto' clause"
 msgstr ""
 
-#: src/frontend.py:175
+#: src/frontend.py:177
 msgid "Invalid 'from' clause"
 msgstr ""
 
-#: src/frontend.py:194
+#: src/frontend.py:196
 msgid "Invalid 'to' clause"
 msgstr ""
 
-#: src/frontend.py:199
+#: src/frontend.py:201
 msgid "Need 'from' or 'to' with '%s'"
 msgstr ""
 
-#: src/frontend.py:223
+#: src/frontend.py:225
 msgid "Invalid 'port' clause"
 msgstr ""
 
-#: src/frontend.py:232
+#: src/frontend.py:234
 msgid "Mixed IP versions for 'from' and 'to'"
 msgstr ""
 
-#: src/frontend.py:246 src/frontend.py:253 src/frontend.py:259
+#: src/frontend.py:248 src/frontend.py:255 src/frontend.py:261
 msgid "Could not find protocol"
 msgstr ""
 
-#: src/frontend.py:266
+#: src/frontend.py:268
 msgid "Protocol mismatch (from/to)"
 msgstr ""
 
-#: src/frontend.py:273
+#: src/frontend.py:275
 msgid "Protocol mismatch with specified protocol %s"
 msgstr ""
 
-#: src/frontend.py:285
+#: src/frontend.py:287
 msgid "Improper rule syntax ('%s' specified with app rule)"
 msgstr ""
 
-#: src/frontend.py:352
+#: src/frontend.py:354
 msgid ""
 "\n"
 "Usage: "
 msgstr ""
 
-#: src/frontend.py:353
+#: src/frontend.py:355
 msgid ""
 " COMMAND\n"
 "\n"
@@ -427,93 +431,93 @@ msgid ""
 "  app default ARG\t\tset profile policy to ALLOW, DENY or SKIP\n"
 msgstr ""
 
-#: src/frontend.py:394
+#: src/frontend.py:396
 msgid "Firewall started and enabled on system startup"
 msgstr ""
 
-#: src/frontend.py:400
+#: src/frontend.py:402
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
 
-#: src/frontend.py:463 src/frontend.py:493 src/frontend.py:503
+#: src/frontend.py:465 src/frontend.py:496 src/frontend.py:506
 msgid "Invalid IP version '%s'"
 msgstr ""
 
-#: src/frontend.py:500
+#: src/frontend.py:503
 msgid "IPv6 support not enabled"
 msgstr ""
 
-#: src/frontend.py:511
+#: src/frontend.py:514
 msgid "Rule changed after normalization"
 msgstr ""
 
-#: src/frontend.py:535
+#: src/frontend.py:538
 msgid "Could not back out rule '%s'"
 msgstr ""
 
-#: src/frontend.py:539
+#: src/frontend.py:542
 msgid ""
 "\n"
 "Error applying application rules."
 msgstr ""
 
-#: src/frontend.py:541
+#: src/frontend.py:544
 msgid " Some rules could not be unapplied."
 msgstr ""
 
-#: src/frontend.py:543
+#: src/frontend.py:546
 msgid " Attempted rules successfully unapplied."
 msgstr ""
 
-#: src/frontend.py:574 src/frontend.py:701
+#: src/frontend.py:576 src/frontend.py:703
 msgid "Unsupported action '%s'"
 msgstr ""
 
-#: src/frontend.py:593
+#: src/frontend.py:595
 msgid "Available applications:"
 msgstr ""
 
-#: src/frontend.py:606
+#: src/frontend.py:608
 msgid "Invalid profile name"
 msgstr ""
 
-#: src/frontend.py:614
+#: src/frontend.py:616
 msgid "Could not find profile '%s'"
 msgstr ""
 
-#: src/frontend.py:619
+#: src/frontend.py:621
 msgid "Invalid profile"
 msgstr ""
 
-#: src/frontend.py:622
+#: src/frontend.py:624
 msgid ""
 "Profile: %s\n"
 msgstr ""
 
-#: src/frontend.py:623
+#: src/frontend.py:625
 msgid ""
 "Title: %s\n"
 msgstr ""
 
-#: src/frontend.py:626
+#: src/frontend.py:628
 msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
 
-#: src/frontend.py:632
+#: src/frontend.py:634
 msgid "Ports:"
 msgstr ""
 
-#: src/frontend.py:634
+#: src/frontend.py:636
 msgid "Port:"
 msgstr ""
 
-#: src/frontend.py:664
+#: src/frontend.py:666
 msgid "Unknown policy '%s'"
 msgstr ""
 
-#: src/frontend.py:714
+#: src/frontend.py:712
 msgid "Command being run under ssh. Proceed (y|n)? "
 msgstr ""
 
