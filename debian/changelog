@@ -4,6 +4,8 @@ ufw (0.21) UNRELEASED; urgency=low
   * update ufw.pot
   * fix some pygettext errors
   * warn if profile name is found in /etc/services
+  * don't delete application rules when the action doesn't match
+    (LP: #260881)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 18 Aug 2008 20:22:32 -0400
 

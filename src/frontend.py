@@ -468,6 +468,7 @@ class UFWFrontend:
                     for tmp in tmprules:
                         r = tmp.dup_rule()
                         r.remove = rule.remove
+                        r.set_action(rule.action)
                         rules.append(r)
                 else:
                     rules = self.backend.get_app_rules_from_template(rule)
@@ -571,7 +572,6 @@ class UFWFrontend:
             res = self.set_enabled(False)
         elif action == "allow" or action == "deny" or action == "limit":
             res = self.set_rule(rule, ip_version)
-
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)

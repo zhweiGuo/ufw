@@ -30,13 +30,26 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 echo "Bug #251355" >> $TESTTMP/result
 echo "Setting IPV6 to no" >> $TESTTMP/result
-sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 do_cmd "0"  disable
 do_cmd "0"  enable
 echo "/etc/init.d/ufw force-reload:" >> $TESTTMP/result
 $TESTPATH/etc/init.d/ufw force-reload >> $TESTTMP/result 2>&1
 echo "ip6tables -L -n:" >> $TESTTMP/result
 ip6tables -L -n >> $TESTTMP/result 2>&1
+
+echo "Bug #260881" >> $TESTTMP/result
+echo "Setting IPV6 to no" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
+do_cmd "0"  disable
+do_cmd "0"  enable
+do_cmd "0"  allow Apache
+do_cmd "0"  delete deny Apache
+echo "iptables -L -n:" >> $TESTTMP/result
+iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+do_cmd "0"  delete allow Apache
+echo "iptables -L -n:" >> $TESTTMP/result
+iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
 
 # teardown
 do_cmd "0"  disable

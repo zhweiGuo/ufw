@@ -67,7 +67,39 @@ target     prot opt source               destination
 Chain OUTPUT (policy DROP)
 target     prot opt source               destination         
 ACCEPT     all      ::/0                 ::/0                
+Bug #260881
+Setting IPV6 to no
 6: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+7: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+8: allow Apache
+WARN: Checks disabled
+Rule added
+
+
+9: delete deny Apache
+WARN: Checks disabled
+Rules updated
+
+
+iptables -L -n:
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 /* 'dapp_Apache' */ 
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
+
+10: delete allow Apache
+WARN: Checks disabled
+Rule deleted
+
+
+iptables -L -n:
+11: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
