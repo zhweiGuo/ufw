@@ -1,4 +1,4 @@
-ufw (0.21) UNRELEASED; urgency=low
+ufw (0.21) intrepid; urgency=low
 
   * add confirmation on enable when running under ssh (LP: #253840)
   * don't reload the firewall on 'app update' when running under ssh
