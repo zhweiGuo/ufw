@@ -1,3 +1,9 @@
+ufw (0.22) UNRELEASED; urgency=low
+
+  * bump version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 27 Aug 2008 11:51:14 -0500
+
 ufw (0.21) intrepid; urgency=low
 
   * add confirmation on enable when running under ssh (LP: #253840)
