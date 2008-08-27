@@ -32,6 +32,10 @@ case "$1" in
 
         update-rc.d ufw start 39 S . stop 39 0 1 6 . > /dev/null
         ;;
+    triggered)
+        ufw app update all
+        exit 0
+        ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
     *)

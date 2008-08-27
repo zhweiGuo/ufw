@@ -39,239 +39,242 @@ TESTING BAD PROFILE (name)
 12: app info ssh
 
 
+13: app update --add-new all
+
+
 TESTING APPLICATION INTEGRATION (bad simple rules)
-13: allow NONEXISTENT
+14: allow NONEXISTENT
 
 
-14: allow Apache/tcp
+15: allow Apache/tcp
 
 
-15: deny NONEXISTENT
+16: deny NONEXISTENT
 
 
-16: deny Apache/tcp
+17: deny Apache/tcp
 
 
-17: limit NONEXISTENT
+18: limit NONEXISTENT
 
 
-18: limit Apache/tcp
+19: limit Apache/tcp
 
 
 TESTING APPLICATION INTEGRATION (bad extended rules)
-19: --dry-run allow to 192.168.0.0/16 app NONEXISTENT
+20: --dry-run allow to 192.168.0.0/16 app NONEXISTENT
 
 
-20: --dry-run allow to 192.168.0.0/16 app Apache proto tcp
+21: --dry-run allow to 192.168.0.0/16 app Apache proto tcp
 
 
-21: --dry-run allow to 192.168.0.0/16 app Apache proto udp
+22: --dry-run allow to 192.168.0.0/16 app Apache proto udp
 
 
-22: --dry-run allow to 192.168.0.0/16 app No Protocol Multi
+23: --dry-run allow to 192.168.0.0/16 app No Protocol Multi
 
 
-23: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
+24: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
 
 
-24: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
+25: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
 
 
-25: --dry-run allow to any app NONEXISTENT
+26: --dry-run allow to any app NONEXISTENT
 
 
-26: --dry-run allow to any app Apache proto tcp
+27: --dry-run allow to any app Apache proto tcp
 
 
-27: --dry-run allow to any app Apache proto udp
+28: --dry-run allow to any app Apache proto udp
 
 
-28: --dry-run allow to any app No Protocol Multi
+29: --dry-run allow to any app No Protocol Multi
 
 
-29: --dry-run allow to any app Samba from any port http
+30: --dry-run allow to any app Samba from any port http
 
 
-30: --dry-run allow to any app Samba from any port 22 proto tcp
+31: --dry-run allow to any app Samba from any port 22 proto tcp
 
 
-31: --dry-run allow from 192.168.0.0/16 app NONEXISTENT
+32: --dry-run allow from 192.168.0.0/16 app NONEXISTENT
 
 
-32: --dry-run allow from 192.168.0.0/16 app Apache proto tcp
+33: --dry-run allow from 192.168.0.0/16 app Apache proto tcp
 
 
-33: --dry-run allow from 192.168.0.0/16 app Apache proto udp
+34: --dry-run allow from 192.168.0.0/16 app Apache proto udp
 
 
-34: --dry-run allow from 192.168.0.0/16 app No Protocol Multi
+35: --dry-run allow from 192.168.0.0/16 app No Protocol Multi
 
 
-35: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
+36: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
 
 
-36: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
+37: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
 
 
-37: --dry-run allow from any app NONEXISTENT
+38: --dry-run allow from any app NONEXISTENT
 
 
-38: --dry-run allow from any app Apache proto tcp
+39: --dry-run allow from any app Apache proto tcp
 
 
-39: --dry-run allow from any app Apache proto udp
+40: --dry-run allow from any app Apache proto udp
 
 
-40: --dry-run allow from any app No Protocol Multi
+41: --dry-run allow from any app No Protocol Multi
 
 
-41: --dry-run allow from any app Samba to any port http
+42: --dry-run allow from any app Samba to any port http
 
 
-42: --dry-run allow from any app Samba to any port 22 proto tcp
+43: --dry-run allow from any app Samba to any port 22 proto tcp
 
 
-43: --dry-run deny to 192.168.0.0/16 app NONEXISTENT
+44: --dry-run deny to 192.168.0.0/16 app NONEXISTENT
 
 
-44: --dry-run deny to 192.168.0.0/16 app Apache proto tcp
+45: --dry-run deny to 192.168.0.0/16 app Apache proto tcp
 
 
-45: --dry-run deny to 192.168.0.0/16 app Apache proto udp
+46: --dry-run deny to 192.168.0.0/16 app Apache proto udp
 
 
-46: --dry-run deny to 192.168.0.0/16 app No Protocol Multi
+47: --dry-run deny to 192.168.0.0/16 app No Protocol Multi
 
 
-47: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
+48: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
 
 
-48: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
+49: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
 
 
-49: --dry-run deny to any app NONEXISTENT
+50: --dry-run deny to any app NONEXISTENT
 
 
-50: --dry-run deny to any app Apache proto tcp
+51: --dry-run deny to any app Apache proto tcp
 
 
-51: --dry-run deny to any app Apache proto udp
+52: --dry-run deny to any app Apache proto udp
 
 
-52: --dry-run deny to any app No Protocol Multi
+53: --dry-run deny to any app No Protocol Multi
 
 
-53: --dry-run deny to any app Samba from any port http
+54: --dry-run deny to any app Samba from any port http
 
 
-54: --dry-run deny to any app Samba from any port 22 proto tcp
+55: --dry-run deny to any app Samba from any port 22 proto tcp
 
 
-55: --dry-run deny from 192.168.0.0/16 app NONEXISTENT
+56: --dry-run deny from 192.168.0.0/16 app NONEXISTENT
 
 
-56: --dry-run deny from 192.168.0.0/16 app Apache proto tcp
+57: --dry-run deny from 192.168.0.0/16 app Apache proto tcp
 
 
-57: --dry-run deny from 192.168.0.0/16 app Apache proto udp
+58: --dry-run deny from 192.168.0.0/16 app Apache proto udp
 
 
-58: --dry-run deny from 192.168.0.0/16 app No Protocol Multi
+59: --dry-run deny from 192.168.0.0/16 app No Protocol Multi
 
 
-59: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
+60: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
 
 
-60: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
+61: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
 
 
-61: --dry-run deny from any app NONEXISTENT
+62: --dry-run deny from any app NONEXISTENT
 
 
-62: --dry-run deny from any app Apache proto tcp
+63: --dry-run deny from any app Apache proto tcp
 
 
-63: --dry-run deny from any app Apache proto udp
+64: --dry-run deny from any app Apache proto udp
 
 
-64: --dry-run deny from any app No Protocol Multi
+65: --dry-run deny from any app No Protocol Multi
 
 
-65: --dry-run deny from any app Samba to any port http
+66: --dry-run deny from any app Samba to any port http
 
 
-66: --dry-run deny from any app Samba to any port 22 proto tcp
+67: --dry-run deny from any app Samba to any port 22 proto tcp
 
 
-67: --dry-run limit to 192.168.0.0/16 app NONEXISTENT
+68: --dry-run limit to 192.168.0.0/16 app NONEXISTENT
 
 
-68: --dry-run limit to 192.168.0.0/16 app Apache proto tcp
+69: --dry-run limit to 192.168.0.0/16 app Apache proto tcp
 
 
-69: --dry-run limit to 192.168.0.0/16 app Apache proto udp
+70: --dry-run limit to 192.168.0.0/16 app Apache proto udp
 
 
-70: --dry-run limit to 192.168.0.0/16 app No Protocol Multi
+71: --dry-run limit to 192.168.0.0/16 app No Protocol Multi
 
 
-71: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
+72: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
 
 
-72: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
+73: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
 
 
-73: --dry-run limit to any app NONEXISTENT
+74: --dry-run limit to any app NONEXISTENT
 
 
-74: --dry-run limit to any app Apache proto tcp
+75: --dry-run limit to any app Apache proto tcp
 
 
-75: --dry-run limit to any app Apache proto udp
+76: --dry-run limit to any app Apache proto udp
 
 
-76: --dry-run limit to any app No Protocol Multi
+77: --dry-run limit to any app No Protocol Multi
 
 
-77: --dry-run limit to any app Samba from any port http
+78: --dry-run limit to any app Samba from any port http
 
 
-78: --dry-run limit to any app Samba from any port 22 proto tcp
+79: --dry-run limit to any app Samba from any port 22 proto tcp
 
 
-79: --dry-run limit from 192.168.0.0/16 app NONEXISTENT
+80: --dry-run limit from 192.168.0.0/16 app NONEXISTENT
 
 
-80: --dry-run limit from 192.168.0.0/16 app Apache proto tcp
+81: --dry-run limit from 192.168.0.0/16 app Apache proto tcp
 
 
-81: --dry-run limit from 192.168.0.0/16 app Apache proto udp
+82: --dry-run limit from 192.168.0.0/16 app Apache proto udp
 
 
-82: --dry-run limit from 192.168.0.0/16 app No Protocol Multi
+83: --dry-run limit from 192.168.0.0/16 app No Protocol Multi
 
 
-83: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
+84: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
 
 
-84: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
+85: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
 
 
-85: --dry-run limit from any app NONEXISTENT
+86: --dry-run limit from any app NONEXISTENT
 
 
-86: --dry-run limit from any app Apache proto tcp
+87: --dry-run limit from any app Apache proto tcp
 
 
-87: --dry-run limit from any app Apache proto udp
+88: --dry-run limit from any app Apache proto udp
 
 
-88: --dry-run limit from any app No Protocol Multi
+89: --dry-run limit from any app No Protocol Multi
 
 
-89: --dry-run limit from any app Samba to any port http
+90: --dry-run limit from any app Samba to any port http
 
 
-90: --dry-run limit from any app Samba to any port 22 proto tcp
+91: --dry-run limit from any app Samba to any port 22 proto tcp
 
 

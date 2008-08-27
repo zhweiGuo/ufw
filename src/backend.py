@@ -371,7 +371,9 @@ class UFWBackend:
             except Exception:
                 raise
         else:
-            rstr += _(" (skipped reloading firewall)")
+            # TODO: shouldn't have to do this here
+            if profile != "all":
+                rstr += _(" (skipped reloading firewall)")
 
         return rstr
 

@@ -137,6 +137,10 @@ def get_profiles(dir):
 
 def valid_profile_name(name):
     '''Only accept a limited set of characters for name'''
+    # Reserved profile name
+    if name == "all":
+        return False
+
     # Require first character be alpha, so we can avoid collisions with port
     # numbers.
     if re.match(r'^[a-zA-Z][a-zA-Z0-9 _\-\.+]*$', name):

@@ -658,7 +658,24 @@ class UFWFrontend:
         if self.backend.do_checks and ufw.util.under_ssh():
             # Don't reload the firewall if running under ssh
             allow_reload = False
-        rstr = self.backend.update_app_rule(profile, allow_reload)
+
+        if profile == "all":
+            profiles = self.backend.profiles.keys()
+            profiles.sort()
+            for p in profiles:
+                rstr += self.backend.update_app_rule(p, False) + "\n"
+            if allow_reload:
+                # Only reload once
+                try:
+                    self.backend._reload_user_rules()
+                    rstr += _("Firewall reloaded")
+                except Exception:
+                    raise
+            else:
+                rstr += _("Skipped reloading firewall")
+
+        else:
+            rstr = self.backend.update_app_rule(profile, allow_reload)
 
         return rstr
 
@@ -666,6 +683,11 @@ class UFWFrontend:
         '''Refresh application profile'''
         rstr = ""
         policy = ""
+
+        if profile == "all":
+            err_msg = _("Cannot specify 'all' with '--add-new'")
+            raise UFWError(err_msg)
+
         default = self.backend.defaults['default_application_policy']
         if default == "skip":
             ufw.util.debug("Policy is '%s', not adding profile '%s'" % \
