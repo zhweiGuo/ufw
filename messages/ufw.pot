@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-08-26 20:45+CDT\n"
+"POT-Creation-Date: 2008-08-27 11:37+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,19 +63,19 @@ msgstr ""
 msgid "Duplicate profile '%s', using last found"
 msgstr ""
 
-#: src/applications.py:152
+#: src/applications.py:156
 msgid "Profile '%s' missing required field '%s'"
 msgstr ""
 
-#: src/applications.py:156
+#: src/applications.py:160
 msgid "Profile '%s' has empty required field '%s'"
 msgstr ""
 
-#: src/applications.py:162
+#: src/applications.py:166
 msgid "No ports found in profile '%s'"
 msgstr ""
 
-#: src/applications.py:175
+#: src/applications.py:179
 msgid "Invalid ports in profile '%s'"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 msgid " and firewall reloaded"
 msgstr ""
 
-#: src/backend.py:374 src/backend_iptables.py:751
+#: src/backend.py:376 src/backend_iptables.py:751
 msgid " (skipped reloading firewall)"
 msgstr ""
 
@@ -477,7 +477,7 @@ msgstr ""
 msgid " Attempted rules successfully unapplied."
 msgstr ""
 
-#: src/frontend.py:577
+#: src/frontend.py:577 src/frontend.py:671
 msgid "Firewall reloaded"
 msgstr ""
 
@@ -485,7 +485,7 @@ msgstr ""
 msgid "Firewall not enabled (skipping reload)"
 msgstr ""
 
-#: src/frontend.py:583 src/frontend.py:716
+#: src/frontend.py:583 src/frontend.py:738
 msgid "Unsupported action '%s'"
 msgstr ""
 
@@ -529,15 +529,23 @@ msgstr ""
 msgid "Port:"
 msgstr ""
 
-#: src/frontend.py:679
+#: src/frontend.py:675
+msgid "Skipped reloading firewall"
+msgstr ""
+
+#: src/frontend.py:688
+msgid "Cannot specify 'all' with '--add-new'"
+msgstr ""
+
+#: src/frontend.py:701
 msgid "Unknown policy '%s'"
 msgstr ""
 
-#: src/frontend.py:725
+#: src/frontend.py:747
 msgid "Command may disrupt existing ssh connections."
 msgstr ""
 
-#: src/frontend.py:726
+#: src/frontend.py:748
 msgid " Proceed with operation (y|n)? "
 msgstr ""
 
