@@ -660,7 +660,7 @@ COMMIT
         else:
             ufw.util.close_files(fns)
 
-    def set_rule(self, rule):
+    def set_rule(self, rule, allow_reload=True):
         '''Updates firewall with rule by:
         * appending the rule to the chain if new rule and firewall enabled
         * deleting the rule from the chain if found and firewall enabled
@@ -740,12 +740,15 @@ COMMIT
         if self._is_enabled() and not self.dryrun:
             flag = ""
             if modified or self._need_reload(rule.v6):
-                # Reload the chain
-                try:
-                    self._reload_user_rules()
-                except Exception:
-                    raise
                 rstr = _("Rule updated")
+                if allow_reload:
+                    # Reload the chain
+                    try:
+                        self._reload_user_rules()
+                    except Exception:
+                        raise
+                else:
+                    rstr += _(" (skipped reloading firewall)")
             elif found and rule.remove:
                 flag = '-D'
                 rstr = _("Rule deleted")

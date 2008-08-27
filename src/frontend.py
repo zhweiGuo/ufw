@@ -646,7 +646,13 @@ class UFWFrontend:
     def application_update(self, profile):
         '''Refresh application profile'''
         rstr = ""
-        rstr = self.backend.update_app_rule(profile)
+        allow_reload = True
+
+        if self.backend.do_checks and ufw.util.under_ssh():
+            # Don't reload the firewall if running under ssh
+            allow_reload = False
+        rstr = self.backend.update_app_rule(profile, allow_reload)
+
         return rstr
 
     def application_add(self, profile):
@@ -709,7 +715,8 @@ class UFWFrontend:
         '''If running under ssh, prompt the user for confirmation'''
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():
-            prompt = _("Command being run under ssh. Proceed (y|n)? ")
+            prompt = _("Command may disrupt existing ssh connections.")
+            prompt += _(" Proceed with operation (y|n)? ")
             os.write(sys.stdout.fileno(), prompt)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != "yes":

@@ -306,7 +306,7 @@ class UFWBackend:
 
         return rules
 
-    def update_app_rule(self, profile):
+    def update_app_rule(self, profile, allow_reload=True):
         '''Update rule for profile in place'''
         updated_rules = []
         updated_rules6 = []
@@ -364,11 +364,14 @@ class UFWBackend:
             err_msg = _("Couldn't update application rules")
             raise UFWError(err_msg)
 
-        try:
-            self._reload_user_rules()
-            rstr += " and firewall reloaded"
-        except Exception:
-            raise
+        if allow_reload:
+            try:
+                self._reload_user_rules()
+                rstr += _(" and firewall reloaded")
+            except Exception:
+                raise
+        else:
+            rstr += _(" (skipped reloading firewall)")
 
         return rstr
 
@@ -388,7 +391,7 @@ class UFWBackend:
     def get_status(self):
         raise UFWError("UFWBackend.get_status: need to override")
 
-    def set_rule(self, rule):
+    def set_rule(self, rule, allow_reload):
         raise UFWError("UFWBackend.set_rule: need to override")
 
     def start_firewall(self):
