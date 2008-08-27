@@ -9,7 +9,7 @@ use interface for the user.
 
 .SH USAGE
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBenable|disable\fR
+ufw [\fB\-\-dry\-run\fR] \fBenable|disable|reload\fR
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny
 .TP
@@ -39,6 +39,9 @@ reloads firewall and enables firewall on boot
 .TP
 \fBdisable\fR
 unloads firewall and disables firewall on boot
+.TP
+\fBreload\fR
+reloads firewall
 .TP
 \fBdefault\fR allow|deny
 change the default policy for incoming traffic. Note that existing rules will

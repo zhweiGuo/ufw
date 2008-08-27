@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-08-26 18:15+CDT\n"
+"POT-Creation-Date: 2008-08-26 20:45+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,6 +156,14 @@ msgstr ""
 msgid "Couldn't update application rules"
 msgstr ""
 
+#: src/backend.py:370
+msgid " and firewall reloaded"
+msgstr ""
+
+#: src/backend.py:374 src/backend_iptables.py:751
+msgid " (skipped reloading firewall)"
+msgstr ""
+
 #: src/backend_iptables.py:47
 msgid "Logging: on"
 msgstr ""
@@ -288,19 +296,19 @@ msgstr ""
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:748
+#: src/backend_iptables.py:743
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:751
+#: src/backend_iptables.py:754
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:754
+#: src/backend_iptables.py:757
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:766
+#: src/backend_iptables.py:769
 msgid "Could not update running firewall"
 msgstr ""
 
@@ -469,56 +477,68 @@ msgstr ""
 msgid " Attempted rules successfully unapplied."
 msgstr ""
 
-#: src/frontend.py:576 src/frontend.py:703
+#: src/frontend.py:577
+msgid "Firewall reloaded"
+msgstr ""
+
+#: src/frontend.py:579
+msgid "Firewall not enabled (skipping reload)"
+msgstr ""
+
+#: src/frontend.py:583 src/frontend.py:716
 msgid "Unsupported action '%s'"
 msgstr ""
 
-#: src/frontend.py:595
+#: src/frontend.py:602
 msgid "Available applications:"
 msgstr ""
 
-#: src/frontend.py:608
+#: src/frontend.py:615
 msgid "Invalid profile name"
 msgstr ""
 
-#: src/frontend.py:616
+#: src/frontend.py:623
 msgid "Could not find profile '%s'"
 msgstr ""
 
-#: src/frontend.py:621
+#: src/frontend.py:628
 msgid "Invalid profile"
 msgstr ""
 
-#: src/frontend.py:624
+#: src/frontend.py:631
 msgid ""
 "Profile: %s\n"
 msgstr ""
 
-#: src/frontend.py:625
+#: src/frontend.py:632
 msgid ""
 "Title: %s\n"
 msgstr ""
 
-#: src/frontend.py:628
+#: src/frontend.py:635
 msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
 
-#: src/frontend.py:634
+#: src/frontend.py:641
 msgid "Ports:"
 msgstr ""
 
-#: src/frontend.py:636
+#: src/frontend.py:643
 msgid "Port:"
 msgstr ""
 
-#: src/frontend.py:666
+#: src/frontend.py:679
 msgid "Unknown policy '%s'"
 msgstr ""
 
-#: src/frontend.py:712
-msgid "Command being run under ssh. Proceed (y|n)? "
+#: src/frontend.py:725
+msgid "Command may disrupt existing ssh connections."
+msgstr ""
+
+#: src/frontend.py:726
+msgid " Proceed with operation (y|n)? "
 msgstr ""
 
 #: src/ufw:46

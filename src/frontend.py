@@ -53,7 +53,7 @@ def parse_command(argv):
 
     allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
                     'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'limit' ]
+                    'deny', 'limit', 'reload' ]
 
     if not argv[1].lower() in allowed_cmds:
         raise ValueError()
@@ -570,6 +570,13 @@ class UFWFrontend:
             res = self.set_enabled(True)
         elif action == "disable":
             res = self.set_enabled(False)
+        elif action == "reload":
+            if self.backend._is_enabled():
+                self.set_enabled(False)
+                self.set_enabled(True)
+                res = _("Firewall reloaded")
+            else:
+                res = _("Firewall not enabled (skipping reload)")
         elif action == "allow" or action == "deny" or action == "limit":
             res = self.set_rule(rule, ip_version)
         else:
