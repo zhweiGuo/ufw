@@ -367,13 +367,8 @@ class UFWBackend:
         if allow_reload:
             try:
                 self._reload_user_rules()
-                rstr += _(" and firewall reloaded")
             except Exception:
                 raise
-        else:
-            # TODO: shouldn't have to do this here
-            if profile != "all":
-                rstr += _(" (skipped reloading firewall)")
 
         return rstr
 

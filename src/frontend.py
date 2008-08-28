@@ -676,6 +676,10 @@ class UFWFrontend:
 
         else:
             rstr = self.backend.update_app_rule(profile, allow_reload)
+            if allow_reload:
+                rstr += _("Firewall reloaded")
+            else:
+                rstr += _("Skipped reloading firewall")
 
         return rstr
 
