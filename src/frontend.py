@@ -668,18 +668,18 @@ class UFWFrontend:
                 # Only reload once
                 try:
                     self.backend._reload_user_rules()
-                    rstr += _("Firewall reloaded")
+                    rstr += _("\nFirewall reloaded")
                 except Exception:
                     raise
             else:
-                rstr += _("Skipped reloading firewall")
+                rstr += _("\nSkipped reloading firewall")
 
         else:
             rstr = self.backend.update_app_rule(profile, allow_reload)
             if allow_reload:
-                rstr += _("Firewall reloaded")
+                rstr += _("\nFirewall reloaded")
             else:
-                rstr += _("Skipped reloading firewall")
+                rstr += _("\nSkipped reloading firewall")
 
         return rstr
 

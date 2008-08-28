@@ -6007,7 +6007,8 @@ COMMIT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
 > | iptables-restore
-Rules updated for profile 'Apache' and firewall reloaded
+Rules updated for profile 'Apache'
+Firewall reloaded
 Rules updated
 
 
@@ -6088,7 +6089,8 @@ COMMIT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
 > | iptables-restore
-Rules updated for profile 'Samba' and firewall reloaded
+Rules updated for profile 'Samba'
+Firewall reloaded
 Rules updated
 
 
@@ -6128,7 +6130,8 @@ COMMIT
 -A ufw6-user-forward -j RETURN
 COMMIT
 > | iptables-restore
-Rules updated for profile 'Bind9' and firewall reloaded
+Rules updated for profile 'Bind9'
+Firewall reloaded
 
 
 
