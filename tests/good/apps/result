@@ -5968,33 +5968,6 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-COMMIT
-*filter
-:ufw6-user-input - [0:0]
-:ufw6-user-output - [0:0]
-:ufw6-user-forward - [0:0]
-### RULES ###
-
-### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
-COMMIT
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
 ### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
@@ -6006,9 +5979,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-> | iptables-restore
-Rules updated for profile 'Apache'
-Firewall reloaded
+
 Rules updated
 
 
@@ -6020,33 +5991,6 @@ Default application policy changed to 'deny'
 
 199: app --dry-run update --add-new Samba
 WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-COMMIT
-*filter
-:ufw6-user-input - [0:0]
-:ufw6-user-output - [0:0]
-:ufw6-user-forward - [0:0]
-### RULES ###
-
-### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
-COMMIT
 *filter
 :ufw-user-input - [0:0]
 :ufw-user-output - [0:0]
@@ -6088,9 +6032,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-> | iptables-restore
-Rules updated for profile 'Samba'
-Firewall reloaded
+
 Rules updated
 
 
@@ -6102,36 +6044,7 @@ Default application policy changed to 'skip'
 
 201: app --dry-run update --add-new Bind9
 WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
 
-### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-COMMIT
-*filter
-:ufw6-user-input - [0:0]
-:ufw6-user-output - [0:0]
-:ufw6-user-forward - [0:0]
-### RULES ###
-
-### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
-COMMIT
-> | iptables-restore
-Rules updated for profile 'Bind9'
-Firewall reloaded
 
 
 

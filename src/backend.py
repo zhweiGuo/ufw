@@ -306,12 +306,15 @@ class UFWBackend:
 
         return rules
 
-    def update_app_rule(self, profile, allow_reload=True):
-        '''Update rule for profile in place'''
+    def update_app_rule(self, profile):
+        '''Update rule for profile in place. Returns result string and bool
+           on whether or not the profile is used in the current ruleset.
+        '''
         updated_rules = []
         updated_rules6 = []
         last_tuple = ""
         rstr = ""
+        updated_profile = False
 
         # Remember, self.rules is from user[6].rules, and not the running
         # firewall.
@@ -347,30 +350,26 @@ class UFWBackend:
                             updated_rules.append(new_r)
 
                     last_tuple = tuple
+                    updated_profile = True
             else:
                 if r.v6:
                     updated_rules6.append(r)
                 else:
                     updated_rules.append(r)
 
-        self.rules = updated_rules
-        self.rules6 = updated_rules6
-        rstr += _("Rules updated for profile '%s'") % (profile)
+        if updated_profile:
+            self.rules = updated_rules
+            self.rules6 = updated_rules6
+            rstr += _("Rules updated for profile '%s'") % (profile)
 
-        try:
-            self._write_rules(False) # ipv4
-            self._write_rules(True) # ipv6
-        except Exception:
-            err_msg = _("Couldn't update application rules")
-            raise UFWError(err_msg)
-
-        if allow_reload:
             try:
-                self._reload_user_rules()
+                self._write_rules(False) # ipv4
+                self._write_rules(True) # ipv6
             except Exception:
-                raise
+                err_msg = _("Couldn't update application rules")
+                raise UFWError(err_msg)
 
-        return rstr
+        return (rstr, updated_profile)
 
     # API overrides
     def get_loglevel(self):

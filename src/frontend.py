@@ -654,6 +654,7 @@ class UFWFrontend:
         '''Refresh application profile'''
         rstr = ""
         allow_reload = True
+        trigger_reload = False
 
         if self.backend.do_checks and ufw.util.under_ssh():
             # Don't reload the firewall if running under ssh
@@ -663,23 +664,24 @@ class UFWFrontend:
             profiles = self.backend.profiles.keys()
             profiles.sort()
             for p in profiles:
-                rstr += self.backend.update_app_rule(p, False) + "\n"
+                (tmp, found) = self.backend.update_app_rule(p)
+                if found:
+                    rstr += tmp + "\n"
+                    trigger_reload = found
+        else:
+            (rstr, trigger_reload) = self.backend.update_app_rule(profile)
+            if rstr != "":
+                rstr += "\n"
+
+        if trigger_reload:
             if allow_reload:
-                # Only reload once
                 try:
                     self.backend._reload_user_rules()
-                    rstr += _("\nFirewall reloaded")
                 except Exception:
                     raise
+                rstr += _("Firewall reloaded")
             else:
-                rstr += _("\nSkipped reloading firewall")
-
-        else:
-            rstr = self.backend.update_app_rule(profile, allow_reload)
-            if allow_reload:
-                rstr += _("\nFirewall reloaded")
-            else:
-                rstr += _("\nSkipped reloading firewall")
+                rstr += _("Skipped reloading firewall")
 
         return rstr
 
