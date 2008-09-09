@@ -14,7 +14,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
+sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.py
 cp tests/defaults/profiles/* $TESTPATH/etc/ufw/applications.d
 
 let count=0
