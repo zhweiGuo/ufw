@@ -1,4 +1,4 @@
-ufw (0.22) UNRELEASED; urgency=low
+ufw (0.22) intrepid; urgency=low
 
   * fix confusing output of 'app update' command (LP: #261932)
   * only reload during 'app update' if the profile name is used in
