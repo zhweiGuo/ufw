@@ -26,6 +26,10 @@ else
     exit 0
 fi
 
+# setup
+do_cmd "0"  disable
+do_cmd "0"  enable
+
 trap "/sbin/iptables.bak /sbin/iptables" EXIT HUP INT QUIT TERM
 echo "Bug #262451 (part 2)" >> $TESTTMP/result
 do_cmd "0"  disable
