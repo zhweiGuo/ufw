@@ -35,8 +35,9 @@ do_cmd "0"  status
 mv /sbin/iptables.bak /sbin/iptables
 trap - EXIT HUP INT QUIT TERM
 
-trap "mount -t proc /proc /proc" EXIT HUP INT QUIT TERM
+trap "mount -t proc /proc /proc ; sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw" EXIT HUP INT QUIT TERM
 echo "Bug #268084" >> $TESTTMP/result
+sed -i 's/disable_checks = True/disable_checks = False/' $TESTPATH/usr/sbin/ufw
 do_cmd "0" app update --add-new Apache
 do_cmd "0"  disable
 umount /proc
@@ -44,6 +45,7 @@ do_cmd "1"  enable
 do_cmd "0"  status
 do_cmd "0"  app update Apache
 mount -t proc /proc /proc
+sed -i 's/disable_checks = False/disable_checks = True/' $TESTPATH/usr/sbin/ufw
 trap - EXIT HUP INT QUIT TERM
 
 # teardown
