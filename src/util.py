@@ -340,8 +340,8 @@ def under_ssh(pid=os.getpid()):
     try:
         ppid = get_ppid(pid)
     except IOError, e:
-        warn_msg = e + _(" (is /proc mounted?)")
-        warn(e)
+        warn_msg = _("Couldn't find pid (is /proc mounted?)")
+        warn(warn_msg)
         return False
     except Exception:
         err_msg = _("Couldn't find parent pid for '%s'") % (str(pid))

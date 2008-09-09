@@ -405,15 +405,15 @@ class UFWFrontend:
             except UFWError, e:
                 error(e.value)
 
-        error = ""
+        error_str = ""
         if enabled:
             try:
                 self.backend.start_firewall()
             except UFWError, e:
                 if changed:
-                    error = e.value
+                    error_str = e.value
 
-            if error != "":
+            if error_str != "":
                 # Revert config files when toggling enable/disable and
                 # firewall failed to start
                 try:
@@ -423,7 +423,7 @@ class UFWFrontend:
                     error(e.value)
 
                 # Report the error
-                error(e.value)
+                error(error_str)
 
             res = _("Firewall started and enabled on system startup")
         else:
@@ -704,7 +704,7 @@ class UFWFrontend:
             if rstr != "":
                 rstr += "\n"
 
-        if trigger_reload:
+        if trigger_reload and self.backend._is_enabled():
             if allow_reload:
                 try:
                     self.backend._reload_user_rules()
