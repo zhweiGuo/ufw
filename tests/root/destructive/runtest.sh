@@ -35,13 +35,13 @@ do_cmd "0"  status
 mv /sbin/iptables.bak /sbin/iptables
 trap - EXIT HUP INT QUIT TERM
 
-trap "mount /proc" EXIT HUP INT QUIT TERM
+trap "mount -t proc /proc /proc" EXIT HUP INT QUIT TERM
 echo "Bug #268084" >> $TESTTMP/result
 do_cmd "0"  disable
 umount /proc
 do_cmd "1"  enable
 do_cmd "0"  status
-mount /proc
+mount -t proc /proc /proc
 trap - EXIT HUP INT QUIT TERM
 
 # teardown
