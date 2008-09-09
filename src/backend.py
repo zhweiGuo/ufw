@@ -200,6 +200,9 @@ class UFWBackend:
 
         ufw.util.close_files(fns)
 
+        # Now that the files are written out, update value in memory
+        self.defaults[opt.lower()] = value.lower().strip('"\'')
+
     def set_default_application_policy(self, policy):
         '''Sets default application policy of firewall'''
         if not self.dryrun:
