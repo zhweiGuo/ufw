@@ -20,15 +20,11 @@ echo "These tests are destructive and should only be run in a virtual machine"
 echo -n "Continue (y|N)? "
 read ans
 if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
-    echo "Continuing with desctructive tests..."
+    echo "Continuing with destructive tests..."
 else
     echo "Skipping descructive tests"
     exit 0
 fi
-
-# setup
-do_cmd "0"  disable
-do_cmd "0"  enable
 
 trap "/sbin/iptables.bak /sbin/iptables" EXIT HUP INT QUIT TERM
 echo "Bug #262451 (part 2)" >> $TESTTMP/result
