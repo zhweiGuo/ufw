@@ -981,8 +981,7 @@ New profiles: skip
 TESTING APPLICATION RULES (update)
 125: app update Bind9
 WARN: Checks disabled
-Rules updated for profile 'Bind9'
-Firewall reloaded
+
 
 
 126: app default allow
@@ -993,8 +992,7 @@ Default application policy changed to 'allow'
 
 127: app update --add-new Apache
 WARN: Checks disabled
-Rules updated for profile 'Apache'
-Firewall reloaded
+
 Rule added
 Rule added (v6)
 
@@ -1007,8 +1005,7 @@ Default application policy changed to 'deny'
 
 129: app update --add-new Samba
 WARN: Checks disabled
-Rules updated for profile 'Samba'
-Firewall reloaded
+
 Rule added
 Rule added (v6)
 
@@ -1021,8 +1018,7 @@ Default application policy changed to 'skip'
 
 131: app update --add-new Bind9
 WARN: Checks disabled
-Rules updated for profile 'Bind9'
-Firewall reloaded
+
 
 
 

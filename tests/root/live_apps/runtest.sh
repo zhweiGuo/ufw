@@ -98,6 +98,7 @@ do_cmd "0" delete allow Apache
 do_cmd "0" status verbose
 
 echo "TESTING APPLICATION RULES (update)" >> $TESTTMP/result
+# some of these are ommitted cause they are above
 do_cmd "0" app update Bind9
 do_cmd "0" app default allow
 do_cmd "0" app update --add-new Apache
