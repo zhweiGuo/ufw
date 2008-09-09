@@ -411,7 +411,7 @@ class UFWFrontend:
                 self.backend.start_firewall()
             except UFWError, e:
                 if changed:
-                    error = str(e.value)
+                    error = "%s" % (e.value)
 
             if error != "":
                 # Revert config files when toggling enable/disable and
