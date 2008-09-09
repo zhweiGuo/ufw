@@ -339,6 +339,10 @@ def under_ssh(pid=os.getpid()):
     '''Determine if current process is running under ssh'''
     try:
         ppid = get_ppid(pid)
+    except IOError, e:
+        warn_msg = e + _(" (is /proc mounted?)")
+        warn(e)
+        return False
     except Exception:
         err_msg = _("Couldn't find parent pid for '%s'") % (str(pid))
         raise ValueError(err_msg)

@@ -388,7 +388,7 @@ COMMIT
             print "> | iptables-restore"
             if self.use_ipv6():
                 print "> | ip6tables-restore"
-        else:
+        elif self._is_enabled():
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
                                  ['iptables-restore', '-n'])
             if rc != 0:
