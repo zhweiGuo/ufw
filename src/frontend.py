@@ -387,21 +387,52 @@ class UFWFrontend:
     def set_enabled(self, enabled):
         '''Toggles ENABLED state in of <config_dir>/ufw/ufw.conf'''
         res = ""
-        try:
-            if enabled:
-                if not self.backend._is_enabled():
-                    self.backend.set_default(self.backend.files['conf'], \
-                                             "ENABLED", "yes")
+
+        str = "no"
+        if enabled:
+            str = "yes"
+
+        changed = False
+        if (enabled and not self.backend._is_enabled()) or \
+           (not enabled and self.backend._is_enabled()):
+            changed = True
+
+        # Update the config files when toggling enable/disable
+        if changed:
+            try:
+                self.backend.set_default(self.backend.files['conf'], \
+                                         "ENABLED", str)
+            except UFWError, e:
+                error(e.value)
+
+        error = ""
+        if enabled:
+            try:
                 self.backend.start_firewall()
-                res = _("Firewall started and enabled on system startup")
-            else:
-                if self.backend._is_enabled():
+            except UFWError, e:
+                if changed:
+                    error = e.value
+
+            if error != "":
+                # Revert config files when toggling enable/disable and
+                # firewall failed to start
+                try:
                     self.backend.set_default(self.backend.files['conf'], \
                                              "ENABLED", "no")
+                except UFWError, e:
+                    error(e.value)
+
+                # Report the error
+                error(e.value)
+
+            res = _("Firewall started and enabled on system startup")
+        else:
+            try:
                 self.backend.stop_firewall()
-                res = _("Firewall stopped and disabled on system startup")
-        except UFWError, e:
-            error(e.value)
+            except UFWError, e:
+                error(e.value)
+
+            res = _("Firewall stopped and disabled on system startup")
 
         return res
 
