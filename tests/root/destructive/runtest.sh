@@ -29,7 +29,7 @@ fi
 trap "/sbin/iptables.bak /sbin/iptables" EXIT HUP INT QUIT TERM
 echo "Bug #262451 (part 2)" >> $TESTTMP/result
 do_cmd "0"  disable
-mv /sbin/iptables /sbin/iptables.bak
+mv /sbin/iptables /sbin/iptables.bak || true
 do_cmd "1"  enable
 do_cmd "0"  status
 mv /sbin/iptables.bak /sbin/iptables

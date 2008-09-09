@@ -423,7 +423,7 @@ class UFWFrontend:
                     error(e.value)
 
                 # Report the error
-                error(e.value)
+                error(error)
 
             res = _("Firewall started and enabled on system startup")
         else:
