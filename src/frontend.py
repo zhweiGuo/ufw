@@ -704,7 +704,7 @@ class UFWFrontend:
             if rstr != "":
                 rstr += "\n"
 
-        if trigger_reload:
+        if trigger_reload and self.backend._is_enabled():
             if allow_reload:
                 try:
                     self.backend._reload_user_rules()

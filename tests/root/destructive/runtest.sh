@@ -37,10 +37,12 @@ trap - EXIT HUP INT QUIT TERM
 
 trap "mount -t proc /proc /proc" EXIT HUP INT QUIT TERM
 echo "Bug #268084" >> $TESTTMP/result
+do_cmd "0" app update --add-new Apache
 do_cmd "0"  disable
 umount /proc
 do_cmd "1"  enable
 do_cmd "0"  status
+do_cmd "0"  app update Apache
 mount -t proc /proc /proc
 trap - EXIT HUP INT QUIT TERM
 
