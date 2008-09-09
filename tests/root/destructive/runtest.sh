@@ -29,6 +29,7 @@ fi
 trap "/sbin/iptables.bak /sbin/iptables" EXIT HUP INT QUIT TERM
 echo "Bug #262451 (part 2)" >> $TESTTMP/result
 do_cmd "0"  disable
+do_cmd "0"  status
 mv /sbin/iptables /sbin/iptables.bak || true
 do_cmd "1"  enable
 do_cmd "0"  status
@@ -39,14 +40,10 @@ trap "mount -t proc /proc /proc ; sed -i 's/do_checks = True/do_checks = False/'
 echo "Bug #268084" >> $TESTTMP/result
 sed -i 's/do_checks = False/do_checks = True/' $TESTPATH/lib/python/ufw/backend.py
 do_cmd "0"  disable
-do_cmd "0"  enable
-do_cmd "0"  allow Apache
-do_cmd "0"  delete allow Apache
-do_cmd "0"  disable
 umount /proc
 do_cmd "1"  enable
 do_cmd "0"  status
-do_cmd "0"  app update Apache
+do_cmd "0"  app update all
 mount -t proc /proc /proc
 sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.py
 trap - EXIT HUP INT QUIT TERM
