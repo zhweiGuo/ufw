@@ -42,6 +42,7 @@ do_cmd "0"  disable
 do_cmd "0"  enable
 do_cmd "0"  allow Apache
 do_cmd "0"  delete allow Apache
+do_cmd "0"  disable
 umount /proc
 do_cmd "1"  enable
 do_cmd "0"  status
