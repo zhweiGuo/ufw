@@ -51,6 +51,21 @@ do_cmd "0"  delete allow Apache
 echo "iptables -L -n:" >> $TESTTMP/result
 iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
 
+echo "Bug #263308" >> $TESTTMP/result
+echo "Setting IPV6 to yes" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
+do_cmd "0"  disable
+do_cmd "0"  enable
+do_cmd "0"  allow proto udp from 192.168.1.1
+do_cmd "0"  allow proto tcp to 192.168.1.1
+do_cmd "0"  allow proto tcp to any from any
+do_cmd "0"  allow to any from any
+do_cmd "0"  status
+do_cmd "0"  delete allow proto udp from 192.168.1.1
+do_cmd "0"  delete allow proto tcp to 192.168.1.1
+do_cmd "0"  delete allow proto tcp to any from any
+do_cmd "0"  delete allow to any from any
+
 # teardown
 do_cmd "0"  disable
 

@@ -266,10 +266,21 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             location[loc] += ")"
 
                 if port == "any":
-                    if tmp == "0.0.0.0/0":
+                    if tmp == "0.0.0.0/0" or tmp == "::/0":
                         location[loc] = "Anywhere"
-                    if tmp == "::/0":
-                        location[loc] = "Anywhere (v6)"
+
+                        # Show the protocol if Anywhere to Anwhere and have
+                        # protocol
+                        if show_proto and r.protocol != "any" and \
+                           r.dst == r.src:
+                            location[loc] += "/" + r.protocol
+
+                        if tmp == "::/0":
+                            location[loc] += " (v6)"
+                    else:
+                        # Show the protocol if no port but have protocol
+                        if show_proto and r.protocol != "any":
+                            location[loc] += "/" + r.protocol
 
             str += "%-26s %-8s%s\n" % (location['dst'], r.action.upper(), \
                     location['src'])
