@@ -1,6 +1,6 @@
 ufw (0.23) intrepid; urgency=low
 
-  * bump version 
+  * show protocol when no ports are specified in status (LP: #263308)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 09 Sep 2008 17:52:53 -0500
 

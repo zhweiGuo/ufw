@@ -99,7 +99,78 @@ Rule deleted
 
 
 iptables -L -n:
+Bug #263308
+Setting IPV6 to yes
 11: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+12: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+13: allow proto udp from 192.168.1.1
+WARN: Checks disabled
+Rule added
+
+
+14: allow proto tcp to 192.168.1.1
+WARN: Checks disabled
+Rule added
+
+
+15: allow proto tcp to any from any
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+16: allow to any from any
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+17: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+Anywhere                   ALLOW   192.168.1.1/udp
+192.168.1.1/tcp            ALLOW   Anywhere
+Anywhere/tcp               ALLOW   Anywhere/tcp
+Anywhere                   ALLOW   Anywhere
+Anywhere/tcp (v6)          ALLOW   Anywhere/tcp (v6)
+Anywhere (v6)              ALLOW   Anywhere (v6)
+
+
+
+18: delete allow proto udp from 192.168.1.1
+WARN: Checks disabled
+Rule deleted
+
+
+19: delete allow proto tcp to 192.168.1.1
+WARN: Checks disabled
+Rule deleted
+
+
+20: delete allow proto tcp to any from any
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+21: delete allow to any from any
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+22: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
