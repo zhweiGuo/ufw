@@ -69,6 +69,56 @@ be viewed with 'iptables -L -n' or 'iptables -L [chain] -n'. See the iptables
 man page for details.
 
 
+Advanced Configuration
+----------------------
+ufw can be thought of two parts, the ufw command-line program and the ufw
+framework. The ufw command is intentially kept as simple as possible, so users
+can do common tasks more easily. The framework (ie the bootscripts, setup of
+the chains (see above), sysctl configuration, etc) is very flexible, and since
+ufw is simply a frontend for iptables, anything that can be done with iptables
+can be done within the ufw framework.
+
+As an example, to perform port redirection, users can add to the top of
+/etc/ufw/before.rules:
+*nat
+:PREROUTING ACCEPT [0:0]
+# redirect all incoming requests to tcp port 80 to tcp port 22
+-A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 22
+COMMIT
+
+then run:
+# ufw disable
+# ufw enable
+
+To add in NAT masquerading, change the above to something like:
+*nat
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+-A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 22
+# Forward traffic from eth1 through eth0.
+-A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
+COMMIT
+
+then adjust /etc/default/ufw to have:
+DEFAULT_FORWARD_POLICY="ACCEPT"
+
+and /etc/ufw/sysctl.conf to have:
+net.ipv4.ip_forward=1
+
+then run:
+# ufw disable
+# ufw enable
+
+
+It's important to remember that ufw will only flush the chains and tables it manages, so if if you need to flush the nat table to restart anew, please do:
+# iptables -F -t nat
+
+Similarly, to see what rules are in the nat table's chains, use:
+# iptables -L -n -t nat
+
+See 'man iptables' for details.
+
+
 Remote Management
 -----------------
 On /etc/init.d/ufw start and 'ufw enable' the chains are flushed, so ssh may
