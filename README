@@ -79,22 +79,25 @@ ufw is simply a frontend for iptables, anything that can be done with iptables
 can be done within the ufw framework.
 
 As an example, to perform port redirection, users can add to the top of
-/etc/ufw/before.rules:
+/etc/ufw/before.rules, before the '*filter' section:
 *nat
 :PREROUTING ACCEPT [0:0]
 # redirect all incoming requests to tcp port 80 to tcp port 22
--A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 22
+-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 22
 COMMIT
 
 then run:
 # ufw disable
 # ufw enable
+# ufw allow 80/tcp	(required only if ufw blocks requests to this port)
 
-To add in NAT masquerading, change the above to something like:
+
+To add NAT masquerading to the above, change the nat table that was just added
+to something like:
 *nat
 :PREROUTING ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
--A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 22
+-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 22
 # Forward traffic from eth1 through eth0.
 -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
 COMMIT
