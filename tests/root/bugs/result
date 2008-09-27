@@ -111,66 +111,93 @@ WARN: Checks disabled
 Firewall started and enabled on system startup
 
 
-13: allow proto udp from 192.168.1.1
-WARN: Checks disabled
-Rule added
-
-
-14: allow proto tcp to 192.168.1.1
-WARN: Checks disabled
-Rule added
-
-
-15: allow proto tcp to any from any
+13: allow to any from any
 WARN: Checks disabled
 Rule added
 Rule added (v6)
 
 
-16: allow to any from any
+14: allow proto tcp to any from any
 WARN: Checks disabled
 Rule added
 Rule added (v6)
 
 
-17: status
+15: allow to 192.168.1.1
+WARN: Checks disabled
+Rule added
+
+
+16: allow proto udp from 192.168.1.1 to any
+WARN: Checks disabled
+Rule added
+
+
+17: allow from 192.168.1.1 to 192.168.1.2
+WARN: Checks disabled
+Rule added
+
+
+18: allow proto udp from 192.168.1.1 to 192.168.1.2
+WARN: Checks disabled
+Rule added
+
+
+19: status
 WARN: Checks disabled
 Status: loaded
 
 To                         Action  From
 --                         ------  ----
-Anywhere                   ALLOW   192.168.1.1/udp
-192.168.1.1/tcp            ALLOW   Anywhere
-Anywhere/tcp               ALLOW   Anywhere/tcp
 Anywhere                   ALLOW   Anywhere
-Anywhere/tcp (v6)          ALLOW   Anywhere/tcp (v6)
+Anywhere/tcp               ALLOW   Anywhere/tcp
+192.168.1.1                ALLOW   Anywhere
+Anywhere                   ALLOW   192.168.1.1/udp
+192.168.1.2                ALLOW   192.168.1.1
+192.168.1.2/udp            ALLOW   192.168.1.1/udp
 Anywhere (v6)              ALLOW   Anywhere (v6)
+Anywhere/tcp (v6)          ALLOW   Anywhere/tcp (v6)
 
 
 
-18: delete allow proto udp from 192.168.1.1
-WARN: Checks disabled
-Rule deleted
-
-
-19: delete allow proto tcp to 192.168.1.1
-WARN: Checks disabled
-Rule deleted
-
-
-20: delete allow proto tcp to any from any
+20: delete allow to any from any
 WARN: Checks disabled
 Rule deleted
 Rule deleted (v6)
 
 
-21: delete allow to any from any
+21: delete allow proto tcp to any from any
 WARN: Checks disabled
 Rule deleted
 Rule deleted (v6)
 
 
-22: disable
+22: delete allow to 192.168.1.1
+WARN: Checks disabled
+Rule deleted
+
+
+23: delete allow proto udp from 192.168.1.1 to any
+WARN: Checks disabled
+Rule deleted
+
+
+24: delete allow from 192.168.1.1 to 192.168.1.2
+WARN: Checks disabled
+Rule deleted
+
+
+25: delete allow proto udp from 192.168.1.1 to 192.168.1.2
+WARN: Checks disabled
+Rule deleted
+
+
+26: status
+WARN: Checks disabled
+Status: loaded
+
+
+27: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
