@@ -22,7 +22,7 @@ read ans
 if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
     echo "Continuing with destructive tests..."
 else
-    echo "Skipping descructive tests"
+    echo "Skipping destructive tests"
     exit 0
 fi
 
