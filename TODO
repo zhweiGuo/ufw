@@ -2,5 +2,7 @@ TODO
 ----
 Default allow logging messages aren't correct in after*.rules
 
+output of machine-friendly status (adjust backend_iptables.py to return this
+to frontend, and have frontend do cli/machine status)
 
 (C) 2008 Canonical Ltd.
