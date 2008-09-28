@@ -2,7 +2,11 @@ TODO
 ----
 Default allow logging messages aren't correct in after*.rules
 
-output of machine-friendly status (adjust backend_iptables.py to return this
+Output of machine-friendly status (adjust backend_iptables.py to return this
 to frontend, and have frontend do cli/machine status)
+
+Support insertion of rules (LP: #260745). Perhaps 'ufw insert as 5 allow ...'
+
+Simplify initscript and break rules setup into a helper program
 
 (C) 2008 Canonical Ltd.
