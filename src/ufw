@@ -94,6 +94,7 @@ if __name__ == "__main__":
     except Exception:
         raise
 
+    res = ""
     try:
         if app_action:
             res = ui.do_application_action(action, profile)
@@ -106,7 +107,9 @@ if __name__ == "__main__":
             if not bailout:
                 res = ui.do_action(action, rule, ip_version)
 
-        print res
+        if res != "":
+            print res
+
     except UFWError, e:
         error(e.value)
     except Exception:
