@@ -522,7 +522,9 @@ class UFWFrontend:
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
                         r.set_v6(True)
-                        tmp += "\n" + str(self.backend.set_rule(r))
+                        if tmp != "":
+                            tmp += "\n"
+                        tmp += self.backend.set_rule(r)
                     else:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
@@ -549,7 +551,7 @@ class UFWFrontend:
             # Just return the last result if no error
             res += tmp
         elif len(rules) == 1:
-            # If just one rule, error out
+            # If no error, and just one rule, error out
             error(err_msg)
         else:
 	    # If error and more than one rule, delete the successfully added
