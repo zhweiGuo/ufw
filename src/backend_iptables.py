@@ -92,17 +92,41 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
         if not self.dryrun:
+            if policy != "allow" and policy != "deny":
+                err_msg = _("Unsupported policy '%s'") % (policy)
+                raise UFWError(err_msg)
+
+            old_log_str = ''
+            new_log_str = ''
             if policy == "allow":
                 self.set_default(self.files['defaults'], \
                                             "DEFAULT_INPUT_POLICY", \
                                             "\"ACCEPT\"")
-            elif policy == "deny":
+                old_log_str = 'UFW BLOCK'
+                new_log_str = 'UFW ALLOW'
+            else:
                 self.set_default(self.files['defaults'], \
                                             "DEFAULT_INPUT_POLICY", \
                                             "\"DROP\"")
-            else:
-                err_msg = _("Unsupported policy '%s'") % (policy)
-                raise UFWError(err_msg)
+                old_log_str = 'UFW ALLOW'
+                new_log_str = 'UFW BLOCK'
+
+            # Switch logging message in catch-all rules
+            pat = re.compile(r'' + old_log_str)
+            for f in [self.files['after_rules'], self.files['after6_rules']]:
+                try:
+                    fns = ufw.util.open_files(f)
+                except Exception:
+                    raise
+                fd = fns['tmp']
+
+                for line in fns['orig']:
+                    if pat.search(line):
+                        os.write(fd, pat.sub(new_log_str, line))
+                    else:
+                        os.write(fd, line)
+
+                ufw.util.close_files(fns)
 
         rstr = _("Default policy changed to '%s'\n") % (policy)
         rstr += _("(be sure to update your rules accordingly)")

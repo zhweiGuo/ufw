@@ -197,7 +197,67 @@ WARN: Checks disabled
 Status: loaded
 
 
+Bug #273278
+Setting IPV6 to yes
 27: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+28: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+29: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+30: default allow
+WARN: Checks disabled
+Default policy changed to 'allow'
+(be sure to update your rules accordingly)
+
+
+31: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: allow
+New profiles: skip
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW FORWARD]: "
+32: default deny
+WARN: Checks disabled
+Default policy changed to 'deny'
+(be sure to update your rules accordingly)
+
+
+33: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+
+-A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+-A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
+-A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+34: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

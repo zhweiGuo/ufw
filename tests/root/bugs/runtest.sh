@@ -71,6 +71,20 @@ do_cmd "0"  delete allow from 192.168.1.1 to 192.168.1.2
 do_cmd "0"  delete allow proto udp from 192.168.1.1 to 192.168.1.2
 do_cmd "0"  status
 
+echo "Bug #273278" >> $TESTTMP/result
+echo "Setting IPV6 to yes" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
+do_cmd "0"  disable
+do_cmd "0"  enable
+do_cmd "0"  status verbose
+cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
+do_cmd "0"  default allow
+do_cmd "0"  status verbose
+cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
+do_cmd "0"  default deny
+do_cmd "0"  status verbose
+cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
+
 # teardown
 do_cmd "0"  disable
 
