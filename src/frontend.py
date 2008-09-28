@@ -699,7 +699,9 @@ class UFWFrontend:
             for p in profiles:
                 (tmp, found) = self.backend.update_app_rule(p)
                 if found:
-                    rstr += tmp + "\n"
+                    if tmp != "":
+                        rstr += "\n"
+                    rstr += tmp
                     trigger_reload = found
         else:
             (rstr, trigger_reload) = self.backend.update_app_rule(profile)
