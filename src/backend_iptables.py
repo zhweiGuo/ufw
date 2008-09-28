@@ -704,6 +704,8 @@ COMMIT
         * updating user rules file
         * reloading the user rules file if rule is modified
         '''
+        rstr = ""
+
         if rule.v6:
             if not self.use_ipv6():
                 err_msg = _("Adding IPv6 rule failed: IPv6 not enabled")
@@ -757,6 +759,9 @@ COMMIT
         if not found and not rule.remove:
             newrules.append(rule)
 
+        if not found and rule.remove:
+            return rstr
+
         if rule.v6:
             self.rules6 = newrules
         else:
@@ -769,15 +774,13 @@ COMMIT
             err_msg = _("Couldn't update rules file")
             UFWError(err_msg)
 
-        rstr = _("Rules updated")
-        if rule.v6:
-            rstr = _("Rules updated (v6)")
-
         # Operate on the chains
         if self._is_enabled() and not self.dryrun:
             flag = ""
             if modified or self._need_reload(rule.v6):
                 rstr = _("Rule updated")
+                if rule.v6:
+                    rstr += " (v6)"
                 if allow_reload:
                     # Reload the chain
                     try:
