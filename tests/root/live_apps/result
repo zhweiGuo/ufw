@@ -983,7 +983,6 @@ TESTING APPLICATION RULES (update)
 WARN: Checks disabled
 
 
-
 126: app default allow
 WARN: Checks disabled
 Default application policy changed to 'allow'
