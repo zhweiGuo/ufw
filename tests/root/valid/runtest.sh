@@ -60,10 +60,7 @@ do_cmd "0"  deny 25
 do_cmd "0"  deny 1 
 do_cmd "0"  deny 65535 
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow 25 
 do_cmd "0"  delete deny 25 
-do_cmd "0"  delete allow smtp 
-do_cmd "0"  delete deny smtp 
 do_cmd "0"  delete deny 1 
 do_cmd "0"  delete deny 65535 
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
@@ -96,9 +93,7 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0"  allow from 1.2.3.5 port 5469 proto udp to 1.2.3.4 port 5469
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
-do_cmd "0"  delete allow 53
 do_cmd "0"  delete allow 25/tcp
-do_cmd "0"  delete deny to any port 80 proto tcp
 do_cmd "0"  delete deny from 10.0.0.0/8 to 192.168.0.1 port 25 proto tcp
 do_cmd "0"  delete limit 22/tcp
 do_cmd "0"  delete deny 53

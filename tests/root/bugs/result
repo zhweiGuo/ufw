@@ -36,7 +36,7 @@ Rules updated
 iptables -L -n:
 3: delete allow http/tcp
 WARN: Checks disabled
-Rules updated
+Could not delete non-existent rule
 
 
 Bug #251355
@@ -86,7 +86,7 @@ Rule added
 
 9: delete deny Apache
 WARN: Checks disabled
-Rules updated
+Could not delete non-existent rule
 
 
 iptables -L -n:
@@ -257,7 +257,56 @@ New profiles: skip
 -A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 -A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
 -A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
+Bug #251136
+Setting IPV6 to yes
 34: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+35: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+36: status
+WARN: Checks disabled
+Status: loaded
+
+
+37: delete allow 22
+WARN: Checks disabled
+Could not delete non-existent rule
+Could not delete non-existent rule (v6)
+
+
+38: delete allow Apache
+WARN: Checks disabled
+Could not delete non-existent rule
+Could not delete non-existent rule (v6)
+
+
+39: delete allow to 127.0.0.1 port 22
+WARN: Checks disabled
+Could not delete non-existent rule
+
+
+40: delete allow to 127.0.0.1 app Apache
+WARN: Checks disabled
+Could not delete non-existent rule
+
+
+41: delete allow to ::1 port 22
+WARN: Checks disabled
+Could not delete non-existent rule (v6)
+
+
+42: delete allow to ::1 app Apache
+WARN: Checks disabled
+Could not delete non-existent rule (v6)
+
+
+43: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

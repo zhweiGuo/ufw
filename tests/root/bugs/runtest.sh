@@ -85,6 +85,19 @@ do_cmd "0"  default deny
 do_cmd "0"  status verbose
 cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
 
+echo "Bug #251136" >> $TESTTMP/result
+echo "Setting IPV6 to yes" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
+do_cmd "0"  disable
+do_cmd "0"  enable
+do_cmd "0"  status
+do_cmd "0"  delete allow 22
+do_cmd "0"  delete allow Apache
+do_cmd "0"  delete allow to 127.0.0.1 port 22
+do_cmd "0"  delete allow to 127.0.0.1 app Apache
+do_cmd "0"  delete allow to ::1 port 22
+do_cmd "0"  delete allow to ::1 app Apache
+
 # teardown
 do_cmd "0"  disable
 

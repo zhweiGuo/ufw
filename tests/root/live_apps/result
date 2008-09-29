@@ -141,38 +141,38 @@ Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
 
 15: delete allow Apache
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 16: delete allow to any app Samba
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 17: delete allow from any app Samba
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 18: delete allow to any app Samba from any app Bind9
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 19: delete allow to any app Samba from any port 22
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 20: delete allow to any app Apache from any port 88
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 21: delete allow to 2001:db8::/32 app Samba
@@ -603,38 +603,38 @@ Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
 
 73: delete allow Apache
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 74: delete allow to any app Samba
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 75: delete allow from any app Samba
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 76: delete allow to any app Samba from any app Bind9
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 77: delete allow to any app Samba from any port 22
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 78: delete allow to any app Apache from any port 88
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 79: delete allow to 2001:db8::/32 app Samba
@@ -966,8 +966,8 @@ To                         Action  From
 
 123: delete allow Apache
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 124: status verbose
@@ -1041,14 +1041,14 @@ To                         Action  From
 
 133: delete allow Apache
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 134: delete deny Samba
 WARN: Checks disabled
-Rules updated
-Rules updated (v6)
+Rule deleted
+Rule deleted (v6)
 
 
 135: status verbose
