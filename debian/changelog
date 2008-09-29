@@ -2,8 +2,11 @@ ufw (0.23) intrepid; urgency=low
 
   * show protocol when no ports are specified in status (LP: #263308)
   * update after*.rules when setting default policy (LP: #273278)
-  * give help message when trying to delete a non-existent rule (LP: #251136)
+  * give useful message when trying to delete a non-existent rule (LP: #251136)
+  * don't print useless newlines
   * add 'translations' support to Makefile (but don't use it in build yet)
+  * updated README for advanced usage
+  * updated TODO
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 09 Sep 2008 17:52:53 -0500
 

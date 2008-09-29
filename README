@@ -113,7 +113,8 @@ then run:
 # ufw enable
 
 
-It's important to remember that ufw will only flush the chains and tables it manages, so if if you need to flush the nat table to restart anew, please do:
+It's important to remember that ufw will only flush the chains and tables it
+manages, so if if you need to flush the nat table to restart anew, please do:
 # iptables -F -t nat
 
 Similarly, to see what rules are in the nat table's chains, use:

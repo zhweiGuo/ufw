@@ -492,7 +492,7 @@ class UFWFrontend:
                     elif ip_version == "both":
                         tmprules = self.backend.get_app_rules_from_system(rule, False)
                         tmprules6 = self.backend.get_app_rules_from_system(rule, True)
-                        # Only add rules that are differnt by more than v6 (we
+                        # Only add rules that are different by more than v6 (we
                         # will handle 'ip_version == both' specially, below).
                         for x in tmprules:
                             for y in tmprules6:
