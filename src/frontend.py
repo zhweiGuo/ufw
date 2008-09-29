@@ -491,10 +491,30 @@ class UFWFrontend:
                         tmprules = self.backend.get_app_rules_from_system(rule, True)
                     elif ip_version == "both":
                         tmprules = self.backend.get_app_rules_from_system(rule, False)
-                        tmprules += self.backend.get_app_rules_from_system(rule, True)
+                        tmprules6 = self.backend.get_app_rules_from_system(rule, True)
+                        # Only add rules that are differnt by more than v6 (we
+                        # will handle 'ip_version == both' specially, below).
+                        for x in tmprules:
+                            for y in tmprules6:
+                                prev6 = y.v6
+                                y.v6 = False
+                                if not x.match(y):
+                                    y.v6 = prev6
+                                    tmprules.append(y)
                     else:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
+
+                    # Don't process removal of non-existing application rules
+                    if len(tmprules) == 0 and not self.backend.dryrun:
+                        tmp =  _("Could not delete non-existent rule")
+                        if ip_version == "v4":
+                            res = tmp
+                        elif ip_version == "v6":
+                            res = tmp + " (v6)"
+                        elif ip_version == "both":
+                            res = tmp + "\n" + tmp + " (v6)"
+                        return res
 
                     for tmp in tmprules:
                         r = tmp.dup_rule()

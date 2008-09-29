@@ -759,7 +759,16 @@ COMMIT
         if not found and not rule.remove:
             newrules.append(rule)
 
-        if not found and rule.remove:
+        # Don't process non-existing or unchanged pre-exisiting rules
+        if not found and rule.remove and not self.dryrun:
+            rstr = _("Could not delete non-existent rule")
+            if rule.v6:
+                rstr += " (v6)"
+            return rstr
+        elif found and not rule.remove and not modified:
+            rstr = _("Skipping adding existing rule")
+            if rule.v6:
+                rstr += " (v6)"
             return rstr
 
         if rule.v6:
@@ -773,6 +782,12 @@ COMMIT
         except Exception:
             err_msg = _("Couldn't update rules file")
             UFWError(err_msg)
+
+        # We wrote out the rules, so set reasonable string. We will change
+        # this below when operating on the live firewall.
+        rstr = _("Rules updated")
+        if rule.v6:
+            rstr = _("Rules updated (v6)")
 
         # Operate on the chains
         if self._is_enabled() and not self.dryrun:

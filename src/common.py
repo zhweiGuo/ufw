@@ -62,7 +62,7 @@ class UFWRule:
             raise
 
     def __str__(self):
-        print self.format_rule()
+        return self.format_rule()
 
     def dup_rule(self):
         '''Return a duplicate of a rule'''
