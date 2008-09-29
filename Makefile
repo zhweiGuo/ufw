@@ -5,7 +5,7 @@ all:
 install: all
 
 test:
-	run_tests -s
+	./run_tests.sh -s
 
 clean:
 	rm -rf /tmp/ufw
