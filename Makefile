@@ -1,3 +1,6 @@
+SRCS     = src/ufw $(wildcard src/*.py)
+POTFILES = messages/ufw.pot
+
 all:
 	# Use setup.py to install. See README for details
 	exit 1
@@ -23,3 +26,7 @@ devel: evaluate
 debug: devel
 	sed -i 's/debugging = False/debugging = True/' /tmp/ufw/lib/python/ufw/util.py
 
+translations: $(POTFILES)
+
+$(POTFILES): $(SRCS)
+	pygettext -v -d ufw -p messages -S GNU $(SRCS)
