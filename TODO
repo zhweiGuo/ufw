@@ -7,4 +7,7 @@ Support insertion of rules (LP: #260745). Perhaps 'ufw insert as 5 allow ...'
 
 Simplify initscript and break rules setup into a helper program
 
+Detect version of ip6tables and warn that application profiles are not
+supported for ip6tables < 1.4
+
 (C) 2008 Canonical Ltd.
