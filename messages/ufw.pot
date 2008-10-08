@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2008-09-28 19:39+CDT\n"
+"POT-Creation-Date: 2008-10-08 15:01+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgid "Skipping '%s': field too long"
 msgstr ""
 
 #: src/applications.py:117
-msgid "Skipping '%s': value to long for '%s'"
+msgid "Skipping '%s': value too long for '%s'"
 msgstr ""
 
 #: src/applications.py:126

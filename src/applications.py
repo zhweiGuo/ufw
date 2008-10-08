@@ -114,7 +114,7 @@ def get_profiles(dir):
                     skip = True
                     break
                 if len(value) > 1024:
-                    warn_msg = _("Skipping '%s': value to long for '%s'") % \
+                    warn_msg = _("Skipping '%s': value too long for '%s'") % \
                                 (p, key)
                     warn(warn_msg)
                     skip = True
