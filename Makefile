@@ -1,8 +1,11 @@
 SRCS     = src/ufw $(wildcard src/*.py)
 POTFILES = messages/ufw.pot
 TMPDIR   = ./tmp
-EXCLUDED = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='build'
+EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
+SRCVER   = ufw-$(VERSION)
+TARSRC   = ../$(SRCVER)
+TARDST   = ../$(SRCVER).tar.gz
 
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
@@ -19,13 +22,18 @@ install: all
 
 # These are only used in development
 clean:
-	rm -rf $(TMPDIR)/ufw
+	rm -rf ./build
+	rm -rf ./tests/testarea
+	rm -rf $(TMPDIR)
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
 	python ./setup.py install --home=$(TMPDIR)/ufw
 	sed -i 's/self.do_checks = True/self.do_checks = False/' $(TMPDIR)/ufw/lib/python/ufw/backend.py
 	cp ./examples/* $(TMPDIR)/ufw/etc/ufw/applications.d
+	# Test with:
+	# PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(TMPDIR)/ufw/usr/sbin/ufw ...
+	# sudo sh -c "PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(TMPDIR)/ufw/usr/sbin/ufw ..."
 
 devel: evaluate
 	cp -f ./tests/defaults/profiles/* $(TMPDIR)/ufw/etc/ufw/applications.d
@@ -34,9 +42,9 @@ devel: evaluate
 debug: devel
 	sed -i 's/debugging = False/debugging = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
 
-tarball:
-	mkdir ufw-$(VERSION)
-	cp -a ./* ufw-$(VERSION)
-	tar -zcv --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='build' -f ufw-$(VERSION).tar.gz ufw-$(VERSION)
-	rm -rf ufw-$(VERSION)
+tarball: clean
+	mkdir $(TARSRC)
+	cp -a ./* $(TARSRC)
+	tar -zcv -C ../ $(EXCLUDES) -f $(TARDST) $(SRCVER)
+	rm -rf $(TARSRC)
 
