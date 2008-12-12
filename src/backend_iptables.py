@@ -170,6 +170,32 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             return _("Logging enabled")
 
+    def get_status_raw(self):
+        '''Show current raw status of firewall'''
+        if self.dryrun:
+            out = "> " + _("Checking raw iptables\n")
+            out += "> " + _("Checking raw ip6tables\n")
+            return out
+
+        err_msg = _("problem running")
+
+        out = "IPV4:\n"
+        for table in ['filter', 'nat', 'mangle', 'raw']:
+            (rc, tmp) = cmd(['iptables', '-L', '-n', '-t', table])
+            out += tmp
+            if rc != 0:
+                raise UFWError(out)
+
+        out += "\n\nIPV6:\n"
+        for table in ['filter', 'mangle', 'raw']:
+            (rc, tmp) = cmd(['ip6tables', '-L', '-n', '-t', table])
+            out += tmp
+            if rc != 0:
+                raise UFWError(out)
+
+        return out
+
+
     def get_status(self, verbose=False):
         '''Show current status of firewall'''
         out = ""

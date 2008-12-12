@@ -70,6 +70,12 @@ do
 	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 done
 
+
+echo "Checking status" >> $TESTTMP/result
+do_cmd "0" null status
+do_cmd "0" null status verbose
+do_cmd "0" null status raw
+
 do_cmd "0"  disable 
 
 exit 0

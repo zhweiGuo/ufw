@@ -92,3 +92,16 @@ WARN: Checks disabled
 
 
 
+13: --dry-run status verbose
+WARN: Checks disabled
+> Checking iptables
+
+
+
+14: --dry-run status raw
+WARN: Checks disabled
+> Checking raw iptables
+> Checking raw ip6tables
+
+
+

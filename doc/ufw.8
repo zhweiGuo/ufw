@@ -15,7 +15,7 @@ ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose]
+ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|raw]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|limit\fR PORT[/protocol]
 .TP
@@ -52,7 +52,7 @@ toggle logging. Logged packets use the LOG_KERN syslog facility.
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
-extra information.
+extra information. Use \fBstatus raw\fR to see unprocessed output.
 .TP
 \fBallow\fR RULE
 allow RULE.  See \fBRULE SYNTAX\fR
