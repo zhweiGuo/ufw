@@ -36,5 +36,7 @@ do_cmd "0" --dry-run DISABLE
 
 echo "TESTING ARGS (status)" >> $TESTTMP/result || exit 1
 do_cmd "0" --dry-run status
+do_cmd "0" --dry-run status verbose
+do_cmd "0" --dry-run status raw
 
 exit 0

@@ -59,4 +59,20 @@ for target in allow deny limit ; do
     done
 done
 
+echo "TESTING APPLICATION INTEGRATION (case sensitive)" >> $TESTTMP/result
+cat > $TESTPATH/etc/ufw/applications.d/Runtest << EOM
+[Runtest]
+title=runtest title
+description=runtest description
+ports=23/tcp
+EOM
+cat > $TESTPATH/etc/ufw/applications.d/RunTest << EOM
+[RunTest]
+title=runtest title
+description=runtest description
+ports=24/tcp
+EOM
+do_cmd "1" null --dry-run allow runtest
+rm -f $TESTPATH/etc/ufw/applications.d/Runtest $TESTPATH/etc/ufw/applications.d/RunTest
+
 exit 0

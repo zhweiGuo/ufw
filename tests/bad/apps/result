@@ -278,3 +278,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 91: --dry-run limit from any app Samba to any port 22 proto tcp
 
 
+TESTING APPLICATION INTEGRATION (case sensitive)
+92: --dry-run allow runtest
+
+

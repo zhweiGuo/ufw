@@ -70,9 +70,11 @@ def parse_command(argv):
         else:
             raise ValueError()
 
-    if action == "status":
-        if nargs > 2 and argv[2].lower() == "verbose":
+    if action == "status" and nargs > 2:
+        if argv[2].lower() == "verbose":
             action = "status-verbose"
+        elif argv[2].lower() == "raw":
+            action = "status-raw"
 
     if action == "default":
         if nargs < 3:
@@ -472,6 +474,15 @@ class UFWFrontend:
 
         return out
 
+    def get_status_raw(self):
+        '''Shows raw status of firewall'''
+        try:
+            out = self.backend.get_status_raw()
+        except UFWError, e:
+            error(e.value)
+
+        return out
+
     def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
         res = ""
@@ -619,6 +630,8 @@ class UFWFrontend:
             res = self.get_status()
         elif action == "status-verbose":
             res = self.get_status(True)
+        elif action == "status-raw":
+            res = self.get_status_raw()
         elif action == "enable":
             res = self.set_enabled(True)
         elif action == "disable":
@@ -631,6 +644,20 @@ class UFWFrontend:
             else:
                 res = _("Firewall not enabled (skipping reload)")
         elif action == "allow" or action == "deny" or action == "limit":
+            # allow case insensitive matches for application rules
+            try:
+                if rule.dapp != "":
+                    tmp = self.backend.find_application_name(rule.dapp)
+                    if tmp != rule.dapp:
+                        rule.dapp = tmp
+                        rule.set_port(tmp, "dst")
+                if rule.sapp != "":
+                    tmp = self.backend.find_application_name(rule.sapp)
+                    if tmp != rule.sapp:
+                        rule.sapp = tmp
+                        rule.set_port(tmp, "src")
+            except UFWError, e:
+                error(e.value)
             res = self.set_rule(rule, ip_version)
         else:
             err_msg = _("Unsupported action '%s'") % (action)

@@ -3,6 +3,15 @@ ufw (0.24) UNRELEASED; urgency=low
   * debian/rules: check for 'nocheck' in DEB_BUILD_OPTIONS
   * debian/postrm: don't fail if iptables or ip6tables fails (LP: #278670)
   * fix typo in error message (LP: #280348)
+  * allow case-insensitive matches for application rules (LP: #263757). Based
+    on work by Didier Roche
+  * add skel-ui for UI example
+  * debian/postinst: don't stop in runlevels 0 and 6 (LP: #298736)
+  * before6.rules: adjust hop limit to 255 for NDP messages and dhcp requests
+    (LP: #299268). Thanks to Ryan Giobbi
+  * before6.rules: restrict multicast (LP: #304216). Thanks to Ryan Giobbi
+  * before.rules: don't use ctstate as it is not supported on all kernels and
+    we don't use the extra information anyway (LP: #289906)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 29 Sep 2008 13:43:11 -0500
 
