@@ -10,6 +10,8 @@ ufw (0.24) UNRELEASED; urgency=low
   * before6.rules: adjust hop limit to 255 for NDP messages and dhcp requests
     (LP: #299268). Thanks to Ryan Giobbi
   * before6.rules: restrict multicast (LP: #304216). Thanks to Ryan Giobbi
+  * before.rules: don't use ctstate as it is not supported on all kernels and
+    we don't use the extra information anyway (LP: #289906)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 29 Sep 2008 13:43:11 -0500
 
