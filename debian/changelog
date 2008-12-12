@@ -7,6 +7,8 @@ ufw (0.24) UNRELEASED; urgency=low
     on work by Didier Roche
   * add skel-ui for UI example
   * debian/postinst: don't stop in runlevels 0 and 6 (LP: #298736)
+  * before6.rules: adjust hop limit to 255 for NDP messages and dhcp requests
+    (LP: #299268). Thanks to Ryan Giobbi
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 29 Sep 2008 13:43:11 -0500
 
