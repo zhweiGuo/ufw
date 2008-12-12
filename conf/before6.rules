@@ -55,8 +55,10 @@
 -A ufw6-before-input -p udp --sport 67 --dport 68 -m hl --hl-eq 255 -j ACCEPT
 
 # allow MULTICAST
--A ufw6-before-input -s ff00::/8 -j ACCEPT
--A ufw6-before-input -d ff00::/8 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -s ff00::1/8 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -d ff00::1/8 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -s ff00::2/8 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -d ff00::2/8 -j ACCEPT
 
 
 # don't delete the 'COMMIT' line or these rules won't be processed
