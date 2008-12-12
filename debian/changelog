@@ -5,6 +5,7 @@ ufw (0.24) UNRELEASED; urgency=low
   * fix typo in error message (LP: #280348)
   * allow case-insensitive matches for application rules (LP: #263757). Based
     on work by Didier Roche
+  * add skel-ui for UI example
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 29 Sep 2008 13:43:11 -0500
 
