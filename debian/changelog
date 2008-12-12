@@ -3,6 +3,8 @@ ufw (0.24) UNRELEASED; urgency=low
   * debian/rules: check for 'nocheck' in DEB_BUILD_OPTIONS
   * debian/postrm: don't fail if iptables or ip6tables fails (LP: #278670)
   * fix typo in error message (LP: #280348)
+  * allow case-insensitive matches for application rules (LP: #263757). Based
+    on work by Didier Roche
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 29 Sep 2008 13:43:11 -0500
 

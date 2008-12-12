@@ -631,6 +631,20 @@ class UFWFrontend:
             else:
                 res = _("Firewall not enabled (skipping reload)")
         elif action == "allow" or action == "deny" or action == "limit":
+            # allow case insensitive matches for application rules
+            try:
+                if rule.dapp != "":
+                    tmp = self.backend.find_application_name(rule.dapp)
+                    if tmp != rule.dapp:
+                        rule.dapp = tmp
+                        rule.set_port(tmp, "dst")
+                if rule.sapp != "":
+                    tmp = self.backend.find_application_name(rule.sapp)
+                    if tmp != rule.sapp:
+                        rule.sapp = tmp
+                        rule.set_port(tmp, "src")
+            except UFWError, e:
+                error(e.value)
             res = self.set_rule(rule, ip_version)
         else:
             err_msg = _("Unsupported action '%s'") % (action)

@@ -111,6 +111,38 @@ do_cmd "0"  delete allow Apache
 do_cmd "0"  delete deny Samba
 do_cmd "0" status verbose
 
+
+echo "TESTING APPLICATION INTEGRATION (exact vs multi)" >> $TESTTMP/result
+cat > $TESTPATH/etc/ufw/applications.d/Runtest2 << EOM
+[Runtest2]
+title=runtest title
+description=runtest description
+ports=23/tcp
+EOM
+cat > $TESTPATH/etc/ufw/applications.d/RunTest2 << EOM
+[RunTest2]
+title=runtest title
+description=runtest description
+ports=24/tcp
+EOM
+do_cmd "0" allow RunTest2
+do_cmd "0" status verbose
+do_cmd "0" delete allow RunTest2
+do_cmd "0" status verbose
+
+echo "TESTING APPLICATION INTEGRATION (case insensitive)" >> $TESTTMP/result
+cat > $TESTPATH/etc/ufw/applications.d/runtest << EOM
+[runtest]
+title=runtest title
+description=runtest description
+ports=26/tcp
+EOM
+do_cmd "0" allow runtest
+do_cmd "0" status verbose
+do_cmd "0" deny RunTest
+do_cmd "0" status verbose
+do_cmd "0" delete deny RUNTESt
+
 do_cmd "0"  disable 
 
 exit 0

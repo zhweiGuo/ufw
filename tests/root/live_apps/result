@@ -1059,7 +1059,89 @@ Default: deny
 New profiles: skip
 
 
-136: disable
+TESTING APPLICATION INTEGRATION (exact vs multi)
+136: allow RunTest2
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+137: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+24/tcp (RunTest2)          ALLOW   Anywhere
+24/tcp (RunTest2 (v6))     ALLOW   Anywhere (v6)
+
+
+
+138: delete allow RunTest2
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+139: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+
+TESTING APPLICATION INTEGRATION (case insensitive)
+140: allow runtest
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+141: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+26/tcp (runtest)           ALLOW   Anywhere
+26/tcp (runtest (v6))      ALLOW   Anywhere (v6)
+
+
+
+142: deny RunTest
+WARN: Checks disabled
+Rule updated
+Rule updated (v6)
+
+
+143: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+26/tcp (runtest)           DENY    Anywhere
+26/tcp (runtest (v6))      DENY    Anywhere (v6)
+
+
+
+144: delete deny RUNTESt
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+145: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

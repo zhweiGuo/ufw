@@ -5921,7 +5921,7 @@ COMMIT
 Rules updated
 
 
-TESTING APPLICATION INTEGRATION (changed profile)
+TESTING APPLICATION INTEGRATION (case insensitive)
 194: --dry-run allow runtest
 WARN: Checks disabled
 *filter
@@ -5946,8 +5946,28 @@ COMMIT
 Rules updated
 
 
-195: --dry-run delete allow runtest
+195: --dry-run allow RunTest
 WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest -
+-A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
+
+### END RULES ###
+-A ufw-user-input -j RETURN
+-A ufw-user-output -j RETURN
+-A ufw-user-forward -j RETURN
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT]: "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+Rules updated
 
 
 TESTING APPLICATION INTEGRATION (update)
@@ -6045,5 +6065,9 @@ Default application policy changed to 'skip'
 WARN: Checks disabled
 
 
+
+
+TESTING APPLICATION INTEGRATION (exact vs multi)
+202: --dry-run allow RunTest2
 
 

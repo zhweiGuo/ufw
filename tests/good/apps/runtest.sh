@@ -78,7 +78,7 @@ for target in allow deny limit ; do
     done
 done
 
-echo "TESTING APPLICATION INTEGRATION (changed profile)" >> $TESTTMP/result
+echo "TESTING APPLICATION INTEGRATION (case insensitive)" >> $TESTTMP/result
 cat > $TESTPATH/etc/ufw/applications.d/runtest << EOM
 [runtest]
 title=runtest title
@@ -86,8 +86,8 @@ description=runtest description
 ports=23/tcp
 EOM
 do_cmd "0" --dry-run allow runtest
+do_cmd "0" --dry-run allow RunTest
 rm -f $TESTPATH/etc/ufw/applications.d/runtest
-do_cmd "0" --dry-run delete allow runtest
 
 echo "TESTING APPLICATION INTEGRATION (update)" >> $TESTTMP/result
 do_cmd "0" app default allow
@@ -96,5 +96,22 @@ do_cmd "0" app default deny
 do_cmd "0" app --dry-run update --add-new Samba
 do_cmd "0" app default skip
 do_cmd "0" app --dry-run update --add-new Bind9
+
+echo "TESTING APPLICATION INTEGRATION (exact vs multi)" >> $TESTTMP/result
+cat > $TESTPATH/etc/ufw/applications.d/Runtest2 << EOM
+[Runtest2]
+title=runtest title
+description=runtest description
+ports=23/tcp
+EOM
+cat > $TESTPATH/etc/ufw/applications.d/RunTest2 << EOM
+[RunTest2]
+title=runtest title
+description=runtest description
+ports=24/tcp
+EOM
+do_cmd "0" null --dry-run allow RunTest2
+rm -f $TESTPATH/etc/ufw/applications.d/Runtest2 $TESTPATH/etc/ufw/applications.d/RunTest2
+
 
 exit 0

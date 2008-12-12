@@ -374,6 +374,28 @@ class UFWBackend:
 
         return (rstr, updated_profile)
 
+    def find_application_name(self, str):
+        '''Find the application profile name for str'''
+        if self.profiles.has_key(str):
+            return str
+
+        match = ""
+        matches = 0
+        for n in self.profiles.keys():
+            if n.lower() == str.lower():
+                match = n
+                matches += 1
+
+        debug_msg = "'%d' matches for '%s'" % (matches, str)
+        debug(debug_msg)
+        if matches == 1:
+            return match
+        elif matches > 1:
+            err_msg = _("Found multiple matches for '%s'. Please use exact" + \
+                        " profile name") % (str)
+        err_msg = _("Could not find a profile matching '%s'") % (str)
+        raise UFWError(err_msg)
+
     # API overrides
     def get_loglevel(self):
         raise UFWError("UFWBackend.get_loglevel: need to override")
