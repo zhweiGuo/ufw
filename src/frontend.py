@@ -845,7 +845,7 @@ class UFWFrontend:
                        (self.yes, self.no)
             os.write(sys.stdout.fileno(), prompt)
             ans = sys.stdin.readline().lower().strip()
-            if ans != self.yes and ans != self.yes_full:
+            if ans != "y" and ans != self.yes and ans != self.yes_full:
                 proceed = False
 
         return proceed
