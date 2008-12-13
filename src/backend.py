@@ -391,8 +391,7 @@ class UFWBackend:
         if matches == 1:
             return match
         elif matches > 1:
-            err_msg = _("Found multiple matches for '%s'. Please use exact" + \
-                        " profile name") % (str)
+            err_msg = _("Found multiple matches for '%s'. Please use exact profile name") % (str)
         err_msg = _("Could not find a profile matching '%s'") % (str)
         raise UFWError(err_msg)
 
