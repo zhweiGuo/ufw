@@ -386,6 +386,14 @@ class UFWFrontend:
         else:
             raise UFWError("Unsupported backend type '%s'" % (backend_type))
 
+        self._init_input_strings()
+
+    def _init_input_strings(self):
+        '''Initialize input strings for translations'''
+        self.no = _("n")
+        self.yes = _("y")
+        self.yes_full = _("yes")
+
     def set_enabled(self, enabled):
         '''Toggles ENABLED state in of <config_dir>/ufw/ufw.conf'''
         res = ""
@@ -833,10 +841,11 @@ class UFWFrontend:
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():
             prompt = _("Command may disrupt existing ssh connections.")
-            prompt += _(" Proceed with operation (y|n)? ")
+            prompt += _(" Proceed with operation (%s|%s)? ") % \
+                       (self.yes, self.no)
             os.write(sys.stdout.fileno(), prompt)
             ans = sys.stdin.readline().lower().strip()
-            if ans != "y" and ans != "yes":
+            if ans != self.yes and ans != self.yes_full:
                 proceed = False
 
         return proceed
