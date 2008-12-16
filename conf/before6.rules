@@ -20,11 +20,11 @@
 -A ufw6-before-input -i lo -j ACCEPT
 -A ufw6-before-output -o lo -j ACCEPT
 
-# for stateless autoconfiguration
--A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-solicitation -j ACCEPT
--A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-advertisement -j ACCEPT
--A ufw6-before-input -p icmpv6 --icmpv6-type router-solicitation -j ACCEPT
--A ufw6-before-input -p icmpv6 --icmpv6-type router-advertisement -j ACCEPT
+# for stateless autoconfiguration (restrict NDP messages to hop limit of 255)
+-A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-solicitation -m hl --hl-eq 255 -j ACCEPT
+-A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-advertisement -m hl --hl-eq 255 -j ACCEPT
+-A ufw6-before-input -p icmpv6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT
+-A ufw6-before-input -p icmpv6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT
 
 # connection tracking rules
 -A ufw6-before-input -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -45,14 +45,8 @@
 -A ufw6-before-input -p icmpv6 --icmpv6-type parameter-problem -j ACCEPT
 -A ufw6-before-input -p icmpv6 --icmpv6-type echo-request -j ACCEPT
 
-# restrict NDP messages to hop limit of 255
--A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-solicitation -m hl --hl-eq 255 -j ACCEPT
--A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-advertisement -m hl --hl-eq 255 -j ACCEPT
--A ufw6-before-input -p icmpv6 --icmpv6-type router-solicitation -m hl --hl-eq 255 -j ACCEPT
--A ufw6-before-input -p icmpv6 --icmpv6-type router-advertisement -m hl --hl-eq 255 -j ACCEPT
-
 # allow dhcp client to work
--A ufw6-before-input -p udp --sport 67 --dport 68 -m hl --hl-eq 255 -j ACCEPT
+-A ufw6-before-input -p udp --sport 67 --dport 68 -j ACCEPT
 
 # allow MULTICAST
 -A ufw6-before-input -p icmpv6 -s ff00::1/8 -j ACCEPT
