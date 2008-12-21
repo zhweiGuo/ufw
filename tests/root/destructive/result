@@ -37,8 +37,8 @@ Status: not loaded
 WARN: Couldn't find pid (is /proc mounted?)
 
 
-
 8: disable
+WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
 
