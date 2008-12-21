@@ -41,10 +41,16 @@ echo "Bug #268084" >> $TESTTMP/result
 sed -i 's/do_checks = False/do_checks = True/' $TESTPATH/lib/python/ufw/backend.py
 do_cmd "0"  disable
 umount /proc
-do_cmd "1"  enable
-do_cmd "0"  status
-do_cmd "0"  app update all
-mount -t proc /proc /proc
+
+mount | egrep -q '^/proc '
+if [ "$?" == "0" ]; then
+    echo "  Skipping (/proc still mounted)" >> $TESTTMP/result
+else
+    do_cmd "1"  enable
+    do_cmd "0"  status
+    do_cmd "0"  app update all
+    mount -t proc /proc /proc
+fi
 sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.py
 trap - EXIT HUP INT QUIT TERM
 
