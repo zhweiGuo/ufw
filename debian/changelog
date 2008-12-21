@@ -1,4 +1,4 @@
-ufw (0.24) UNRELEASED; urgency=low
+ufw (0.24) jaunty; urgency=low
 
   * debian/rules: check for 'nocheck' in DEB_BUILD_OPTIONS
   * debian/postrm: don't fail if iptables or ip6tables fails (LP: #278670)
