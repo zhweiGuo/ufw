@@ -1,3 +1,9 @@
+ufw (0.25) UNRELEASED; urgency=low
+
+  * bump version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 22 Dec 2008 08:45:59 -0600
+
 ufw (0.24.1) jaunty; urgency=low
 
   * remove existing stop links for runlevels 0 and 6, thus completing the fix
