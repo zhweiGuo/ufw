@@ -4,8 +4,9 @@ TMPDIR   = ./tmp
 EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
 SRCVER   = ufw-$(VERSION)
-TARSRC   = ../$(SRCVER)
-TARDST   = ../$(SRCVER).tar.gz
+TARBALLS = ../tarballs
+TARSRC   = $(TARBALLS)/$(SRCVER)
+TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
@@ -43,8 +44,7 @@ debug: devel
 	sed -i 's/debugging = False/debugging = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
 
 tarball: clean
-	mkdir $(TARSRC)
-	cp -a ./* $(TARSRC)
-	tar -zcv -C ../ $(EXCLUDES) -f $(TARDST) $(SRCVER)
+	bzr export --format dir $(TARSRC)
+	tar -zcv -C $(TARBALLS) $(EXCLUDES) -f $(TARDST) $(SRCVER)
 	rm -rf $(TARSRC)
 
