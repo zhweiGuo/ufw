@@ -1,0 +1,6 @@
+ufw (0.25) UNRELEASED; urgency=low
+
+  * new ChangeLog files for upstream tarballs. See ChangeLog.pre-0.25 for
+    previous changes, including Ubuntu-specific changes
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 22 Dec 2008 08:53:14 -0600
