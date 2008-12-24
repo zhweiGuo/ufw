@@ -1,7 +1,7 @@
-ufw (0.25-0ubuntu1) UNRELEASED; urgency=low
+ufw (0.25-0ubuntu1) jaunty; urgency=low
 
-  * new upstream release
-    - fixes LP: #311066 (initscript flush rules on stop when not enabled)
+  * new upstream release (no longer a native package)
+    - fixes LP: #311066 (initscript flushes rules on stop when not enabled)
   * add debian/initscript.ubuntu since upstream doesn't ship an initscript
     anymore
   * dirs: add etc/init.d
