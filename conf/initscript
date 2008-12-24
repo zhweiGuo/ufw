@@ -36,16 +36,20 @@ start)
             done
         fi
     else
-        log_action_begin_msg "Skipping firewall:" "ufw (not enabled)"
+        log_action_begin_msg "Skip starting firewall:" "ufw (not enabled)"
     fi
     log_action_end_msg $error
     exit $error
     ;;
 stop)
-    log_action_begin_msg "Stopping firewall:" "ufw"
-    output=`ufw_stop` || error="$?"
-    if [ ! -z "$output" ]; then
-        log_action_cont_msg "$output"
+    if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+        log_action_begin_msg "Stopping firewall:" "ufw"
+        output=`ufw_stop` || error="$?"
+        if [ ! -z "$output" ]; then
+            log_action_cont_msg "$output"
+        fi
+    else
+        log_action_begin_msg "Skip stopping firewall:" "ufw (not enabled)"
     fi
     log_action_end_msg $error
     exit $error

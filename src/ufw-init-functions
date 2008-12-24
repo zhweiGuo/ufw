@@ -159,7 +159,7 @@ ufw_start() {
             return 1
         fi
     else
-        out="Skipping firewall: ufw (not enabled)"
+        out="Skip starting firewall: ufw (not enabled)"
     fi
     if [ ! -z "$out" ]; then
         /bin/echo -e "$out"
@@ -167,6 +167,11 @@ ufw_start() {
 }
 
 ufw_stop() {
+    if [ "$ENABLED" != "yes" ] && [ "$ENABLED" != "YES" ]; then
+        echo "Skip stopping firewall: ufw (not enabled)"
+        return 0
+    fi
+
     error=""
     execs="iptables"
     if ip6tables -L INPUT >/dev/null 2>&1; then

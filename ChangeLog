@@ -2,5 +2,10 @@ ufw (0.25) UNRELEASED; urgency=low
 
   * new ChangeLog files for upstream tarballs. See ChangeLog.pre-0.25 for
     previous changes, including Ubuntu-specific changes
+  * split out initscript into ufw-init-functions, ufw-init (for use by
+    ufw itself) and conf/initscript (for use by distributions). This makes ufw
+    more robust and portable
+  * don't stop the firewall via the initscripts if ufw is not enabled
+    (LP: #311066)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 22 Dec 2008 08:53:14 -0600
