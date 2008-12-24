@@ -5,7 +5,8 @@ ufw (0.25-0ubuntu1) jaunty; urgency=low
   * add debian/initscript.ubuntu since upstream doesn't ship an initscript
     anymore
   * dirs: add etc/init.d
-  * debian/rules: install initscript.ubuntu and examples from doc/
+  * debian/rules: install initscript.ubuntu, examples from doc/ and
+    upstream changelogs
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 22 Dec 2008 08:45:59 -0600
 
