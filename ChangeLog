@@ -7,5 +7,12 @@ ufw (0.25) UNRELEASED; urgency=low
     more robust and portable
   * don't stop the firewall via the initscripts if ufw is not enabled
     (LP: #311066)
+  * setup.py: don't install initscript anymore
+  * add example (non-LSB) initscript to doc/initscript.example
+  * rename skel-ui to skel-ui.example
+  * README:
+    - add Distributions section
+    - update for initscript changes
+    - update What's in a Name
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 22 Dec 2008 08:53:14 -0600

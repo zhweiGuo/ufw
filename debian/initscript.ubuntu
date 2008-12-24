@@ -11,11 +11,11 @@
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
-[ -x #PREFIX#/sbin/ufw ] || exit 0
+[ -x /usr/sbin/ufw ] || exit 0
 
 . /lib/lsb/init-functions
 
-for s in "#PREFIX#/share/ufw/ufw-init-functions" "#CONFIG_PREFIX#/ufw/ufw.conf" ; do
+for s in "/usr/share/ufw/ufw-init-functions" "/etc/ufw/ufw.conf" ; do
     if [ -s "$s" ]; then
         . "$s"
     else

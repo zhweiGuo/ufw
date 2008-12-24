@@ -111,11 +111,11 @@ class Install(_install, object):
         after_rules = os.path.join(confdir, 'ufw', 'after.rules')
         before6_rules = os.path.join(confdir, 'ufw', 'before6.rules')
         after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
-        initscript = os.path.join(confdir, 'init.d', 'ufw')
         apps_dir = os.path.join(confdir, 'ufw', 'applications.d')
 
-        for f in [ defaults, ufwconf, initscript ]:
+        for f in [ defaults, ufwconf ]:
             self.mkpath(os.path.dirname(f))
+
         self.mkpath(apps_dir)
 
         self.copy_file('conf/ufw.defaults', defaults)
@@ -125,11 +125,10 @@ class Install(_install, object):
         self.copy_file('conf/after.rules', after_rules)
         self.copy_file('conf/before6.rules', before6_rules)
         self.copy_file('conf/after6.rules', after6_rules)
-        self.copy_file('conf/initscript', initscript)
 
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
-                      before6_rules, after6_rules, initscript, script, \
+                      before6_rules, after6_rules, script, \
                       manpage, sysctl, init_helper, init_helper_functions ]:
             print "Updating " + file
             a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + real_confdir + "%g' " + file)
@@ -147,7 +146,6 @@ class Install(_install, object):
             a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%g' " + file)
             while a.poll() == -1:
                 pass
-
 
 if os.path.exists('staging'):
     shutil.rmtree('staging')

@@ -5,10 +5,10 @@ https://wiki.ubuntu.com/UbuntuFirewall
 
 What's in a name?
 -----------------
-What does it mean?  I like 'Uncomplicated Firewall', but really, it's up to
-you. :)  If you like it, you might pick 'Universal Firewall', 'Ultimate
-Firewall', or considering its current state, 'Unfinished Firewall'. If you are
-not a fan, perhaps 'Unbearable Firewall'.
+What does it mean?  It has come to mean 'Uncomplicated Firewall', but you
+can change it to something more suitable if you want. If you like it, you might
+pick 'Universal Firewall', or 'Ultimate Firewall'. If you are not a fan,
+perhaps 'Unbearable Firewall'. Have fun!
 
 
 Install
@@ -34,7 +34,7 @@ Basic Layout
 /etc/ufw/after[6].rules 	rules evaluated after UI added rules
 /var/lib/ufw/user[6].rules	UI added rules (not to be modified)
 /etc/ufw/sysctl.conf 		kernel network tunables
-/etc/init.d/ufw			start script
+/usr/share/ufw/ufw-init		start script
 
 
 Usage
@@ -125,10 +125,11 @@ See 'man iptables' for details.
 
 Remote Management
 -----------------
-On /etc/init.d/ufw start and 'ufw enable' the chains are flushed, so ssh may
-drop. This is needed so ufw is in a consistent state. Once the ufw is 'enabled'
-it will insert rules into the existing chains, and therefore not flush the
-chains (but will when modifying a rule or changing the default policy).
+On /usr/share/ufw/ufw-init start and 'ufw enable' the chains are flushed, so
+ssh may drop. This is needed so ufw is in a consistent state. Once the ufw is
+'enabled' it will insert rules into the existing chains, and therefore not
+flush the chains (but will when modifying a rule or changing the default
+policy).
 
 You can insert rules before enabling the firewall however, so it is often
 a good idea to to:
@@ -163,6 +164,14 @@ Upgrading
 ---------
 If upgrading from 0.17 or below to 0.18, new chains to support the 'limit'
 command will be added automatically.
+
+
+Distributions
+-------------
+While it certainly ok to use /usr/share/ufw/ufw-init as the initscript for
+ufw, this script is meant to be used by ufw itself, and therefore not
+particularly user friendly. See doc/initscript.example for a simple
+implementation that can be adapted to your distribution.
 
 
 Testing
