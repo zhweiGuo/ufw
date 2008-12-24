@@ -1,6 +1,8 @@
 ufw (0.25) UNRELEASED; urgency=low
 
-  * bump version
+  * split out initscript into ufw-init-functions, ufw-init (for use by
+    ufw itself) and conf/initscript (for use by Ubuntu). This makes ufw
+    more robust and portable
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 22 Dec 2008 08:45:59 -0600
 
