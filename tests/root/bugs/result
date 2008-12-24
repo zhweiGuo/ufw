@@ -51,11 +51,7 @@ WARN: Checks disabled
 Firewall started and enabled on system startup
 
 
-/etc/init.d/ufw force-reload:
- * Stopping firewall: ufw...
-   ...done.
- * Starting firewall: ufw...
-   ...done.
+/usr/share/ufw/ufw-init force-reload:
 ip6tables -L -n:
 Chain INPUT (policy DROP)
 target     prot opt source               destination         

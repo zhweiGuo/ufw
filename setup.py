@@ -56,6 +56,11 @@ class Install(_install, object):
             while a.poll() == -1:
                 pass
 
+            a = Popen3("sed -i 's%#PREFIX#%" + real_prefix + "%g' " + \
+                       os.path.join('staging', file))
+            while a.poll() == -1:
+                pass
+
         # Now byte-compile everything
         super(Install, self).run()
 
@@ -66,12 +71,17 @@ class Install(_install, object):
 
         script = os.path.join(prefix, 'sbin', 'ufw')
         manpage = os.path.join(prefix, 'share', 'man', 'man8', 'ufw.8')
+        init_helper = os.path.join(prefix, 'share', 'ufw', 'ufw-init')
+        init_helper_functions = os.path.join(prefix, 'share', 'ufw', \
+                                             'ufw-init-functions')
 
-        for dir in [ script, manpage ]:
+        for dir in [ script, manpage, init_helper_functions ]:
             self.mkpath(os.path.dirname(dir))
 
         self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
+        self.copy_file('src/ufw-init', init_helper)
+        self.copy_file('src/ufw-init-functions', init_helper_functions)
 
         # Install state files
         statedir = real_statedir
@@ -120,7 +130,7 @@ class Install(_install, object):
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, initscript, script, \
-                      manpage, sysctl ]:
+                      manpage, sysctl, init_helper, init_helper_functions ]:
             print "Updating " + file
             a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + real_confdir + "%g' " + file)
             while a.poll() == -1:
@@ -142,6 +152,8 @@ class Install(_install, object):
 if os.path.exists('staging'):
     shutil.rmtree('staging')
 shutil.copytree('src', 'staging')
+os.unlink(os.path.join('staging', 'ufw-init'))
+os.unlink(os.path.join('staging', 'ufw-init-functions'))
 
 setup (name='ufw',
       version=ufw_version,

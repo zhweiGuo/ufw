@@ -21,7 +21,7 @@ import re
 import sys
 import tempfile
 
-from ufw.common import UFWError, UFWRule, config_dir, state_dir
+from ufw.common import UFWError, UFWRule, config_dir, state_dir, prefix_dir
 from ufw.util import warn, debug, cmd, cmd_pipe
 import ufw.backend
 
@@ -37,7 +37,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         files['rules6'] = os.path.join(state_dir, 'user6.rules')
         files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
         files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
-        files['init'] = os.path.join(config_dir, 'init.d/ufw')
+        files['init'] = os.path.join(prefix_dir, 'share/ufw/ufw-init')
 
         ufw.backend.UFWBackend.__init__(self, "iptables", d, files)
 

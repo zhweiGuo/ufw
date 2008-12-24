@@ -33,8 +33,8 @@ echo "Setting IPV6 to no" >> $TESTTMP/result
 sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 do_cmd "0"  disable
 do_cmd "0"  enable
-echo "/etc/init.d/ufw force-reload:" >> $TESTTMP/result
-$TESTPATH/etc/init.d/ufw force-reload >> $TESTTMP/result 2>&1
+echo "/usr/share/ufw/ufw-init force-reload:" >> $TESTTMP/result
+$TESTPATH/usr/share/ufw/ufw-init force-reload >> $TESTTMP/result 2>&1
 echo "ip6tables -L -n:" >> $TESTTMP/result
 ip6tables -L -n >> $TESTTMP/result 2>&1
 

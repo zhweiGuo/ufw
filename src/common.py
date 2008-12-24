@@ -24,6 +24,7 @@ from ufw.util import debug
 programName = "ufw"
 state_dir = "#STATE_PREFIX#"
 config_dir = "#CONFIG_PREFIX#"
+prefix_dir = "#PREFIX#"
 
 class UFWError(Exception):
     '''This class represents ufw exceptions'''

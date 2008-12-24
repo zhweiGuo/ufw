@@ -24,6 +24,7 @@ install: all
 # These are only used in development
 clean:
 	rm -rf ./build
+	rm -rf ./staging
 	rm -rf ./tests/testarea
 	rm -rf $(TMPDIR)
 
