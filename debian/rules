@@ -46,6 +46,9 @@ endif
 	mv $(CURDIR)/debian/ufw/var/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
 
+	# add the initscript
+	cp $(CURDIR)/debian/initscript.ubuntu $(CURDIR)/etc/init.d
+
 binary-arch: build
 
 binary-indep: build install
@@ -53,7 +56,7 @@ binary-indep: build install
 	dh_testroot
 	dh_installchangelogs 
 	dh_installdocs
-	dh_installdocs README
+	dh_installdocs README doc/initscript.example doc/skel-ui.example
 	dh_installman
 	dh_installdebconf
 
