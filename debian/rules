@@ -56,7 +56,7 @@ binary-indep: build install
 	dh_testroot
 	dh_installchangelogs 
 	dh_installdocs
-	dh_installdocs README doc/initscript.example doc/skel-ui.example
+	dh_installdocs README doc/initscript.example doc/skel-ui.example ChangeLog ChangeLog.pre-0.25
 	dh_installman
 	dh_installdebconf
 

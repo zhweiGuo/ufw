@@ -1,14 +1,14 @@
-ufw (0.25) UNRELEASED; urgency=low
+ufw (0.25) RELEASE; urgency=low
 
   * new ChangeLog files for upstream tarballs. See ChangeLog.pre-0.25 for
     previous changes, including Ubuntu-specific changes
-  * split out initscript into ufw-init-functions, ufw-init (for use by
-    ufw itself) and conf/initscript (for use by distributions). This makes ufw
-    more robust and portable
-  * don't stop the firewall via the initscripts if ufw is not enabled
-    (LP: #311066)
   * setup.py: don't install initscript anymore
   * add example (non-LSB) initscript to doc/initscript.example
+  * split out initscript into ufw-init-functions, ufw-init (for use by
+    ufw itself) and doc/initscript.example (for use by distributions). This
+    makes ufw more robust and portable
+  * don't stop the firewall via the initscripts if ufw is not enabled
+    (LP: #311066)
   * rename skel-ui to skel-ui.example
   * README:
     - add Distributions section
