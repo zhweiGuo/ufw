@@ -1,3 +1,9 @@
+ufw (0.26-0ubuntu1) UNRELEASED; urgency=low
+
+  * new upstream release
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:37:12 -0600
+
 ufw (0.25-0ubuntu1) jaunty; urgency=low
 
   * new upstream release (no longer a native package)
