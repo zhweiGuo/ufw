@@ -1,6 +1,7 @@
 ufw (0.26-0ubuntu1) UNRELEASED; urgency=low
 
-  * new upstream release
+  * new upstream release, which fixes:
+    - formatting of dpkg output incorrect on upgrades (LP: #300726)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:37:12 -0600
 

@@ -755,7 +755,7 @@ class UFWFrontend:
                 (tmp, found) = self.backend.update_app_rule(p)
                 if found:
                     if tmp != "":
-                        rstr += "\n"
+                        tmp += "\n"
                     rstr += tmp
                     trigger_reload = found
         else:

@@ -1,6 +1,6 @@
 ufw (0.26) UNRELEASED; urgency=low
 
-  * bump version
+  * fix formatting when using 'app update all' (LP: #300726)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:36:35 -0600
 
