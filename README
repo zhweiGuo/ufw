@@ -11,6 +11,16 @@ pick 'Universal Firewall', or 'Ultimate Firewall'. If you are not a fan,
 perhaps 'Unbearable Firewall'. Have fun!
 
 
+Requirements
+------------
+python 2.5
+iptables 1.4*
+
+* Systems with iptables below 1.4 will not have IPv6 application rule support.
+  ufw will give a warning when users try to use this functionality, but ufw
+  will otherwise work fine.
+
+
 Install
 -------
 Users can install with:

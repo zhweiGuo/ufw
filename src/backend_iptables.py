@@ -751,7 +751,11 @@ COMMIT
 
         rules = self.rules
         if rule.v6:
-            rules = self.rules6
+            if self.iptables_version < "1.4" and (rule.dapp != "" or rule.sapp != ""):
+                warn_msg = _("Skipping IPv6 application rule. Need at least iptables 1.4")
+                warn(warn_msg)
+            else:
+                rules = self.rules6
 
         # First construct the new rules list
         try:

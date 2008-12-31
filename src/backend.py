@@ -49,6 +49,7 @@ class UFWBackend:
             raise
 
         self.profiles = ufw.applications.get_profiles(self.files['apps'])
+        self.iptables_version = ufw.util.get_iptables_version()
 
     def _is_enabled(self):
         if self.defaults.has_key('enabled') and \

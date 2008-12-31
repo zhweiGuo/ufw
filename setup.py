@@ -21,12 +21,25 @@
 
 from distutils.command.install import install as _install
 from distutils.core import setup
+import errno
 import os
 from popen2 import Popen3
+import re
 import sys
 import shutil
+import subprocess
 
 ufw_version = '0.26'
+
+def cmd(command):
+    '''Try to execute the given command.'''
+    try:
+        sp = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    except OSError, e:
+        return [127, str(e)]
+
+    out = sp.communicate()[0]
+    return [sp.returncode,out]
 
 class Install(_install, object):
     '''Override distutils to install the files where we want them.'''
@@ -152,6 +165,15 @@ if os.path.exists('staging'):
 shutil.copytree('src', 'staging')
 os.unlink(os.path.join('staging', 'ufw-init'))
 os.unlink(os.path.join('staging', 'ufw-init-functions'))
+
+exe = 'iptables'
+(rc, out) = cmd([exe, '-V'])
+if rc != 0:
+    raise OSError(errno.ENOENT, "Could not find version for '%s'" % (exe))
+version = re.sub('^v', '', re.split('\s', out)[1])
+print "Found '%s' version '%s'" % (exe, version)
+if version < "1.4":
+    print >> sys.stderr, "WARN: version '%s' has limited IPv6 support. See README for details." % (version)
 
 setup (name='ufw',
       version=ufw_version,

@@ -16,6 +16,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import errno
 import os
 import re
 import shutil
@@ -494,4 +495,13 @@ def _address4_to_network(addr):
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
 
     return network + "/" + orig_nm
+
+def get_iptables_version():
+    '''Return iptables version'''
+    exe = 'iptables'
+    (rc, out) = cmd([exe, '-V'])
+    if rc != 0:
+        raise OSError(errno.ENOENT, "Error running '%s'" % (exe))
+    tmp = re.split('\s', out)
+    return re.sub('^v', '', tmp[1])
 
