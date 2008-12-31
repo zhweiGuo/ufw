@@ -44,7 +44,7 @@ devel: evaluate
 debug: devel
 	sed -i 's/debugging = False/debugging = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
 
-tarball: clean
+tarball: clean translations
 	bzr export --format dir $(TARSRC)
 	tar -zcv -C $(TARBALLS) $(EXCLUDES) -f $(TARDST) $(SRCVER)
 	rm -rf $(TARSRC)

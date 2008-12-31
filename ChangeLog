@@ -3,6 +3,7 @@ ufw (0.26) UNRELEASED; urgency=low
   * fix formatting when using 'app update all' (LP: #300726)
   * add runtime version check for iptables and warn if using IPv6 application
     rules with iptables < 1.4
+  * Makefile: depend on translations when making tarball
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:36:35 -0600
 
