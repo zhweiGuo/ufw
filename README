@@ -207,8 +207,9 @@ $ sudo sh -c "PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw .
 Can also just run from the source directory:
 $ ./run_tests.sh -s
 
-Or for the root tests (these will modify your existing firewall and insert
-kernel modules, so they require root privileges and aren't run by default):
+Or for the root tests (these are iptables version dependent, will modify your
+existing firewall and insert kernel modules, so they require root privileges
+and aren't run by default):
 $ sudo ./run_tests.sh -s root
 
 

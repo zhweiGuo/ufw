@@ -1,7 +1,7 @@
 #
 # backend.py: interface for backends
 #
-# Copyright (C) 2008 Canonical Ltd.
+# Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -223,7 +223,7 @@ class UFWBackend:
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
-        rstr = _("Default application policy changed to '%s'\n") % (policy)
+        rstr = _("Default application policy changed to '%s'") % (policy)
 
         return rstr
 

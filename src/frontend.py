@@ -1,7 +1,7 @@
 #
 # frontend.py: frontend interface for ufw
 #
-# Copyright (C) 2008 Canonical Ltd.
+# Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -827,9 +827,14 @@ class UFWFrontend:
         elif action == "info":
             res = self.get_application_info(profile)
         elif action == "update" or action == "update-with-new":
-            res = self.application_update(profile)
+            str1 = self.application_update(profile)
+            str2 = ""
             if action == "update-with-new":
-                res += "\n" + self.application_add(profile)
+                str2 = self.application_add(profile)
+
+            if str1 != "" and str2 != "":
+                str1 += "\n"
+            res = str1 + str2
         else:
             err_msg = _("Unsupported action '%s'") % (action)
             raise UFWError(err_msg)

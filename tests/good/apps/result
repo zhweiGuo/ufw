@@ -5976,7 +5976,6 @@ WARN: Checks disabled
 Default application policy changed to 'allow'
 
 
-
 197: app --dry-run update --add-new Apache
 WARN: Checks disabled
 *filter
@@ -5998,14 +5997,12 @@ WARN: Checks disabled
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-
 Rules updated
 
 
 198: app default deny
 WARN: Checks disabled
 Default application policy changed to 'deny'
-
 
 
 199: app --dry-run update --add-new Samba
@@ -6051,7 +6048,6 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-
 Rules updated
 
 
@@ -6060,11 +6056,8 @@ WARN: Checks disabled
 Default application policy changed to 'skip'
 
 
-
 201: app --dry-run update --add-new Bind9
 WARN: Checks disabled
-
-
 
 
 TESTING APPLICATION INTEGRATION (exact vs multi)
