@@ -223,7 +223,7 @@ class UFWBackend:
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
-        rstr = _("Default application policy changed to '%s'\n") % (policy)
+        rstr = _("Default application policy changed to '%s'") % (policy)
 
         return rstr
 
