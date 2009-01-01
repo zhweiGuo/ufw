@@ -10,4 +10,4 @@ Stablize API for programming frontends
 DBus support so frontend can send messages to ufw which can then be protected
 via policy kit
 
-(C) 2008 Canonical Ltd.
+(C) 2008-2009 Canonical Ltd.
