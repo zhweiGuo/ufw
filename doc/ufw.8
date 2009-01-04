@@ -1,4 +1,4 @@
-.TH UFW: "8" "June 2008" "" ""
+.TH UFW: "4" "January 2009" "" ""
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -52,7 +52,8 @@ toggle logging. Logged packets use the LOG_KERN syslog facility.
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
-extra information. Use \fBstatus raw\fR to see unprocessed output.
+extra information. In the status output, 'Anywhere' is synonymous with 'any'
+and '0.0.0.0/0'. Use \fBstatus raw\fR to see unprocessed output.
 .TP
 \fBallow\fR RULE
 allow RULE.  See \fBRULE SYNTAX\fR
@@ -236,10 +237,11 @@ simple rules. It is currently mainly used for host-based firewalls.
 The status command shows basic information about the state of the firewall, as
 well as rules managed via the \fBufw\fR command. It does not show rules from the
 rules files in #CONFIG_PREFIX#/ufw. To see the complete state of the firewall,
-users can use:
+users can \fBufw status raw\fR.  This displays the filter, nat, mangle and raw
+tables using:
 
-  iptables -n -L
-  ip6tables -n -L
+  iptables -n -L -t <table>
+  ip6tables -n -L -t <table>
 
 See the \fBiptables\fR and \fBip6tables\fR documentation for more details.
 .PP
@@ -265,7 +267,7 @@ behavior, modify #CONFIG_PREFIX#/default/ufw.
 
 .SH AUTHOR
 .PP
-ufw is (C) 2008, Canonical Ltd.
+ufw is (C) 2008-2009, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>
