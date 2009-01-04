@@ -3,15 +3,15 @@ Section: admin
 XS-Python-Version: >= 2.5
 Priority: optional
 Maintainer: Jamie Strandboge <jamie@ubuntu.com>
-Build-Depends-Indep: python-central (>= 0.5.6), sed (>= 3.95), netbase, po-debconf
-Build-Depends: debhelper (>= 5.0.38), iptables
-Standards-Version: 3.7.3
+Build-Depends-Indep: python-central (>= 0.5.6), sed (>= 3.95), netbase, po-debconf, iptables
+Build-Depends: debhelper (>= 5.0.38)
+Standards-Version: 3.8.0
 Homepage: https://launchpad.net/ufw
 Vcs-Bzr: https://bazaar.launchpad.net/~jamie-strandboge/ufw/trunk
 
 Package: ufw
 Architecture: all
-Depends: debconf, ${python:Depends}, iptables (>= 1.4.0), ucf
+Depends: debconf, ${python:Depends}, ${misc:Depends}, iptables (>= 1.4.0), ucf
 XB-Python-Version: ${python:Versions}
 Description: program for managing a netfilter firewall
  Ufw is a tool to manage a local host-based firewall. It provides a command

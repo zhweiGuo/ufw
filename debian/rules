@@ -49,14 +49,20 @@ endif
 	# add the initscript
 	cp $(CURDIR)/debian/initscript.ubuntu $(CURDIR)/debian/ufw/etc/init.d/ufw
 
+	# rename, install and gzip the upstream changelog files
+	cp $(CURDIR)/ChangeLog $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
+	cp $(CURDIR)/ChangeLog.pre-0.25 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
+	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
+	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
+
 binary-arch: build
 
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs 
+	dh_installchangelogs
 	dh_installdocs
-	dh_installdocs README doc/initscript.example doc/skel-ui.example ChangeLog ChangeLog.pre-0.25
+	dh_installdocs README doc/initscript.example doc/skel-ui.example
 	dh_installman
 	dh_installdebconf
 
