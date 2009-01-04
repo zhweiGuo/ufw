@@ -3,8 +3,8 @@ Section: admin
 XS-Python-Version: >= 2.5
 Priority: optional
 Maintainer: Jamie Strandboge <jamie@ubuntu.com>
-Build-Depends-Indep: python-central (>= 0.5.6), sed (>= 3.95), netbase, po-debconf
-Build-Depends: debhelper (>= 5.0.38), iptables
+Build-Depends-Indep: python-central (>= 0.5.6), sed (>= 3.95), netbase, po-debconf, iptables
+Build-Depends: debhelper (>= 5.0.38)
 Standards-Version: 3.8.0
 Homepage: https://launchpad.net/ufw
 Vcs-Bzr: https://bazaar.launchpad.net/~jamie-strandboge/ufw/trunk
