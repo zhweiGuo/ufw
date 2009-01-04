@@ -210,15 +210,15 @@ information. If specify 'all' for name, then all the profiles will be updated.
 To update a profile and add a new rule to the firewall automatically, user's
 can run:
 
-  ufw app update --add-new <name>
+  ufw app update \-\-add\-new <name>
 
-The behavior of the \fBupdate --add-new\fR command can be configured using:
+The behavior of the \fBupdate \-\-add\-new\fR command can be configured using:
 
   ufw app default <policy>
 
 The default application policy is \fBskip\fR, which means that the \fBupdate
---add-new\fR command will do nothing. Users may also specify a policy of
-\fBallow\fR or \fBdeny\fR so the \fBupdate --add-new\fR command may
+\-\-add\-new\fR command will do nothing. Users may also specify a policy of
+\fBallow\fR or \fBdeny\fR so the \fBupdate \-\-add\-new\fR command may
 automatically update the firewall.  \fBWARNING:\fR it may be a security to risk
 to use a default \fBallow\fR policy for applications profiles. Carefully
 consider the security ramifications before using a default \fBallow\fR policy.
@@ -240,8 +240,8 @@ rules files in #CONFIG_PREFIX#/ufw. To see the complete state of the firewall,
 users can \fBufw status raw\fR.  This displays the filter, nat, mangle and raw
 tables using:
 
-  iptables -n -L -t <table>
-  ip6tables -n -L -t <table>
+  iptables \-n \-L \-t <table>
+  ip6tables \-n \-L \-t <table>
 
 See the \fBiptables\fR and \fBip6tables\fR documentation for more details.
 .PP
