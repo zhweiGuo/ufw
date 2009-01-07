@@ -20,6 +20,7 @@ iptables 1.4*
   ufw will give a warning when users try to use this functionality, but ufw
   will otherwise work fine.
 
+ufw has been widely tested on Linux 2.6.24 and higher kernels.
 
 Install
 -------
