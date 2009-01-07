@@ -5,6 +5,50 @@
 RULES_PATH="/etc/ufw"
 USER_PATH="/var/lib/ufw"
 TEMPLATE_PATH="/usr/share/ufw"
+
+enable_ufw() {
+    ans=""
+    if [ "$1" = "true" ]; then
+        ans="yes"
+    elif [ "$1" = "false" ]; then
+        ans="no"
+    else
+        return 1
+    fi
+
+    sed -i "s/^ENABLED=.*/ENABLED=$ans/" /etc/ufw/ufw.conf
+}
+
+allow_port() {
+    ufw allow "$@" >/dev/null
+}
+
+allow_service() {
+    service=`echo "$@" | sed 's/#/ /g'`
+    if [ "$service" = "Cups" ]; then
+        allow_port 631
+    elif [ "$service" = "DNS" ]; then
+        allow_port 53
+    elif [ "$service" = "Imap (Secure)" ]; then
+        allow_port 993/tcp
+    elif [ "$service" = "Pop3 (Secure)" ]; then
+        allow_port 995/tcp
+    elif [ "$service" = "SSH" ]; then
+        allow_port 22/tcp
+    elif [ "$service" = "Samba" ]; then
+        allow_port 137/udp
+        allow_port 138/udp
+        allow_port 139/tcp
+        allow_port 445/tcp
+    elif [ "$service" = "Smtp" ]; then
+        allow_port 25/tcp
+    elif [ "$service" = "WWW" ]; then
+        allow_port 80/tcp
+    elif [ "$service" = "WWW (Secure)" ]; then
+        allow_port 443/tcp
+    fi
+}
+
 case "$1" in
     configure)
         # these files are required, but don't want to change them if
@@ -13,10 +57,6 @@ case "$1" in
         do
             ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
         done
-
-        if [ -e "/etc/ufw/ufw.rules" ]; then
-            mv -f /etc/ufw/ufw.rules /etc/ufw/ufw.rules.dpkg-old
-        fi
 
         for f in user.rules user6.rules
         do
@@ -37,6 +77,20 @@ case "$1" in
         fi
 
         update-rc.d ufw start 39 S . stop 39 1 . > /dev/null
+
+        db_get ufw/enable
+        enabled="$RET"
+        enable_ufw "$enabled"
+
+        db_fget ufw/existing_configuration seen
+        seen_warning="$RET"
+        if [ "$enabled" = "true" ] && [ "$seen_warning" = "false" ] ; then
+            db_get ufw/allow_known_ports
+            CHOICES="$RET"
+            for service in `echo "$CHOICES" | sed 's/, /\n/g' | sed 's/ /#/g'`; do
+                allow_service "$service"
+            done
+        fi
         ;;
     triggered)
         ufw app update all

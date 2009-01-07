@@ -1,6 +1,20 @@
-Template: ufw/oldrules
-Type: note
-_Description: Found old rules file
- Detected /etc/ufw/ufw.rules. This file is obsoleted by
- /etc/ufw/before.rules and /etc/ufw/after.rules. You will have to manually
- migrate this file.
+Template: ufw/existing_configuration
+Type: error
+_Description: Found existing configuration
+ An existing configuration was found. Please use the ufw command to manage your
+ firewall rules. See 'man ufw' for details.
+
+Template: ufw/enable
+Type: boolean
+Default: false
+_Description: Should ufw be enabled?
+ If you enable ufw now, it will block incoming connections and will be started
+ the next time you reboot. If it is disabled, ufw will not be started on boot.
+ To start or stop ufw without rebooting, please use '/etc/init.d/ufw start' or
+ '/etc/init.d/ufw stop'.
+
+Template: ufw/allow_known_ports
+Type: multiselect
+_Choices: Cups, DNS, Imap (Secure), Pop3 (Secure), SSH, Samba, Smtp, WWW, WWW (Secure)
+_Description: Allow the following ports:
+ Selecting an item from this list allows all traffic to the specified service.

@@ -4,8 +4,38 @@
 . /usr/share/debconf/confmodule
 db_version 2.0
 
-if [ -e "/etc/ufw/ufw.rules" ]; then
-	db_text high ufw/oldrules || true
-	db_go
+USER_PATH="/var/lib/ufw"
+TEMPLATE_PATH="/usr/share/ufw"
+
+has_existing() {
+    if [ ! -e "$USER_PATH/user.rules" ]; then
+        return 1
+    fi
+
+    orig=`md5sum $TEMPLATE_PATH/user.rules | cut -d ' ' -f 1`
+    user=`md5sum $USER_PATH/user.rules | cut -d ' ' -f 1`
+    orig6=`md5sum $TEMPLATE_PATH/user6.rules | cut -d ' ' -f 1`
+    user6=`md5sum $USER_PATH/user6.rules | cut -d ' ' -f 1`
+
+    if [ "$orig" != "$user" ] || [ "$orig6" != "$user6" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+db_input medium ufw/enable || true
+db_go
+
+db_get ufw/enable
+if [ ! -z "$RET" ] && [ "$RET" = true ]; then
+    if has_existing ; then
+        # Can't reliably configure ports in an existing configuration
+        db_text low ufw/existing_configuration || true
+        db_go
+    else
+        db_input medium ufw/allow_known_ports || true
+        db_go
+    fi
 fi
 

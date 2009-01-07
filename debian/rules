@@ -20,15 +20,13 @@ clean:
 	rm -f build-stamp
 	rm -rf $(CURDIR)/build
 	-find . -name '*.py[co]' | xargs rm -f
-	dh_clean 
+	dh_clean
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
-	dh_installdirs usr/share/
-	dh_installdirs usr/share/ufw
-	dh_installdirs etc/
+	dh_clean -k
+	dh_installdirs
 
 	# make sure the version is in sync with our changelog
 	sed -i "s/^ufw_version = .*/ufw_version = '$(UBUVERS)'/" ./setup.py
@@ -40,14 +38,13 @@ endif
 	python ./setup.py install \
 		--root=$(CURDIR)/debian/ufw
 
-	# don't make *.rules conffiles
+	# these shouldn't be conffiles
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.conf $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/var/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
-	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
 
-	# add the initscript
-	cp $(CURDIR)/debian/initscript.ubuntu $(CURDIR)/debian/ufw/etc/init.d/ufw
+	# for ucf
+	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
 
 	# rename, install and gzip the upstream changelog files
 	cp $(CURDIR)/ChangeLog $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
@@ -62,7 +59,9 @@ binary-indep: build install
 	dh_testroot
 	dh_installchangelogs
 	dh_installdocs
-	dh_installdocs README doc/initscript.example doc/skel-ui.example
+	dh_installdocs README
+	dh_installexamples doc/initscript.example doc/skel-ui.example
+	dh_installinit --noscripts
 	dh_installman
 	dh_installdebconf
 

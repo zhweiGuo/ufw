@@ -14,5 +14,6 @@ Architecture: all
 Depends: debconf, ${python:Depends}, ${misc:Depends}, iptables (>= 1.4.0), ucf
 XB-Python-Version: ${python:Versions}
 Description: program for managing a netfilter firewall
- Ufw is a tool to manage a local host-based firewall. It provides a command
- line interface and aims to be uncomplicated and easy to use.
+ Ufw is a tool to manage a netfilter firewall. It provides a command line
+ interface with PF-style syntax and aims to be uncomplicated and easy to use.
+ It is particularly well-suited for use as a host-based firewall.
