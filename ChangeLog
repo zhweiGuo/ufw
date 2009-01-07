@@ -6,6 +6,7 @@ ufw (0.26) UNRELEASED; urgency=low
   * Makefile: depend on translations when making tarball
   * remove more useless newlines
   * man page updates
+  * display interfaces and exact packet counters in 'status raw'
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:36:35 -0600
 

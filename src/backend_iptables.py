@@ -1,7 +1,7 @@
 #
 # backend_iptables.py: iptables backend for ufw
 #
-# Copyright (C) 2008 Canonical Ltd.
+# Copyright (C) 2008-2008 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -181,14 +181,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         out = "IPV4:\n"
         for table in ['filter', 'nat', 'mangle', 'raw']:
-            (rc, tmp) = cmd(['iptables', '-L', '-n', '-t', table])
+            (rc, tmp) = cmd(['iptables', '-L', '-n', '-v', '-x', '-t', table])
             out += tmp
             if rc != 0:
                 raise UFWError(out)
 
         out += "\n\nIPV6:\n"
         for table in ['filter', 'mangle', 'raw']:
-            (rc, tmp) = cmd(['ip6tables', '-L', '-n', '-t', table])
+            (rc, tmp) = cmd(['ip6tables', '-L', '-n', '-v', '-x', '-t', table])
             out += tmp
             if rc != 0:
                 raise UFWError(out)

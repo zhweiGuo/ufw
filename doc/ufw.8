@@ -240,8 +240,8 @@ rules files in #CONFIG_PREFIX#/ufw. To see the complete state of the firewall,
 users can \fBufw status raw\fR.  This displays the filter, nat, mangle and raw
 tables using:
 
-  iptables \-n \-L \-t <table>
-  ip6tables \-n \-L \-t <table>
+  iptables \-n \-L \-v \-x \-t <table>
+  ip6tables \-n \-L \-v \-x \-t <table>
 
 See the \fBiptables\fR and \fBip6tables\fR documentation for more details.
 .PP
