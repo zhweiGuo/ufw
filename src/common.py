@@ -110,8 +110,11 @@ class UFWRule:
             str += " -s " + self.src
         if not self.multi and self.sport != "any":
             str += " --sport " + self.sport
+
         if self.action == "allow":
             str += " -j ACCEPT"
+        elif self.action == "reject":
+            str += " -j REJECT"
         elif self.action == "limit":
             # Caller needs to change this
             str += " -j LIMIT"
@@ -136,10 +139,9 @@ class UFWRule:
 
     def set_action(self, action):
         '''Sets action of the rule'''
-        if action.lower() == "allow":
-            self.action = action
-        elif action.lower() == "limit":
-            self.action = "limit"
+        if action.lower() == "allow" or action.lower() == "reject" or \
+           action.lower() == "limit":
+            self.action = action.lower()
         else:
             self.action = "deny"
 

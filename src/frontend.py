@@ -53,7 +53,7 @@ def parse_command(argv):
 
     allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
                     'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'limit', 'reload' ]
+                    'deny', 'reject', 'limit', 'reload' ]
 
     if not argv[1].lower() in allowed_cmds:
         raise ValueError()
@@ -83,10 +83,13 @@ def parse_command(argv):
             action = "default-deny"
         elif argv[2].lower() == "allow":
             action = "default-allow"
+        elif argv[2].lower() == "reject":
+            action = "default-reject"
         else:
             raise ValueError()
 
-    if action == "allow" or action == "deny" or action == "limit":
+    if action == "allow" or action == "deny" or action == "reject" or \
+       action == "limit":
         if nargs < 3 or nargs > 12:
             raise ValueError()
 
@@ -343,6 +346,8 @@ def parse_application_command(argv):
             action = "default-allow"
         elif argv[2].lower() == "deny":
             action = "default-deny"
+        elif argv[2].lower() == "reject":
+            action = "default-reject"
         elif argv[2].lower() == "skip":
             action = "default-skip"
         else:
@@ -357,20 +362,21 @@ def get_command_help():
 Usage: ''') + ufw.common.programName + _(''' COMMAND
 
 Commands:
-  enable			enables the firewall
-  disable			disables the firewall
-  default ARG			set default policy to ALLOW or DENY
-  logging ARG			set logging to ON or OFF
-  allow|deny RULE		allow or deny RULE
-  delete allow|deny RULE	delete the allow/deny RULE
-  status			show firewall status
-  version			display version information
+ enable				enables the firewall
+ disable			disables the firewall
+ default ARG			set default policy to ALLOW, DENY or REJECT
+ logging ARG			set logging to ON or OFF
+ allow|deny|reject RULE		allow, deny or reject RULE
+ delete allow|deny|reject RULE	delete the allow/deny/reject RULE
+ status				show firewall status
+ version			display version information
 
 Application profile commands:
-  app list			list application profiles
-  app info PROFILE		show information on PROFILE
-  app update PROFILE		update PROFILE
-  app default ARG		set profile policy to ALLOW, DENY or SKIP
+ app list			list application profiles
+ app info PROFILE		show information on PROFILE
+ app update PROFILE		update PROFILE
+ app default ARG		set profile policy to ALLOW, DENY, REJECT or
+				SKIP
 ''')
     return (msg)
 
@@ -634,6 +640,8 @@ class UFWFrontend:
             res = self.set_default_policy("allow")
         elif action == "default-deny":
             res = self.set_default_policy("deny")
+        elif action == "default-reject":
+            res = self.set_default_policy("reject")
         elif action == "status":
             res = self.get_status()
         elif action == "status-verbose":
@@ -651,7 +659,8 @@ class UFWFrontend:
                 res = _("Firewall reloaded")
             else:
                 res = _("Firewall not enabled (skipping reload)")
-        elif action == "allow" or action == "deny" or action == "limit":
+        elif action == "allow" or action == "deny" or action == "reject" or \
+             action == "limit":
             # allow case insensitive matches for application rules
             try:
                 if rule.dapp != "":
@@ -793,6 +802,8 @@ class UFWFrontend:
             policy = "allow"
         elif default == "drop":
             policy = "deny"
+        elif default == "reject":
+            policy = "reject"
         else:
             err_msg = _("Unknown policy '%s'") % (default)
             raise UFWError(err_msg)
@@ -820,6 +831,8 @@ class UFWFrontend:
             res = self.set_default_application_policy("allow")
         elif action == "default-deny":
             res = self.set_default_application_policy("deny")
+        elif action == "default-reject":
+            res = self.set_default_application_policy("reject")
         elif action == "default-skip":
             res = self.set_default_application_policy("skip")
         elif action == "list":

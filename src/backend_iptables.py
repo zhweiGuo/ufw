@@ -72,6 +72,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         rstr = _("Default:")
         if self.defaults['default_input_policy'] == "accept":
             rstr += " allow"
+        elif self.defaults['default_input_policy'] == "reject":
+            rstr += " reject"
         else:
             rstr += " deny"
 
@@ -84,6 +86,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             rstr += " allow"
         elif self.defaults['default_application_policy'] == "drop":
             rstr += " deny"
+        elif self.defaults['default_application_policy'] == "reject":
+            rstr += " reject"
         else:
             rstr += " skip"
 
@@ -92,7 +96,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
     def set_default_policy(self, policy):
         '''Sets default policy of firewall'''
         if not self.dryrun:
-            if policy != "allow" and policy != "deny":
+            if policy != "allow" and policy != "deny" and policy != "reject":
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
@@ -104,6 +108,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                             "\"ACCEPT\"")
                 old_log_str = 'UFW BLOCK'
                 new_log_str = 'UFW ALLOW'
+            elif policy == "reject":
+                self.set_default(self.files['defaults'], \
+                                            "DEFAULT_INPUT_POLICY", \
+                                            "\"REJECT\"")
+                old_log_str = 'UFW ALLOW'
+                new_log_str = 'UFW BLOCK'
             else:
                 self.set_default(self.files['defaults'], \
                                             "DEFAULT_INPUT_POLICY", \
@@ -511,6 +521,8 @@ COMMIT
             rule.set_action('allow')
         elif fields[0] == 'DROP':
             rule.set_action('deny')
+        elif fields[0] == 'REJECT':
+            rule.set_action('reject')
         elif fields[0] == "ufw-user-limit-accept":
             rule.set_action('limit')
         else:

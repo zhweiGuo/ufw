@@ -7,6 +7,8 @@ ufw (0.26) UNRELEASED; urgency=low
   * remove more useless newlines
   * man page updates
   * display interfaces and exact packet counters in 'status raw'
+  * support REJECT for rules, default policy and default application policy
+    (LP: #197322)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:36:35 -0600
 

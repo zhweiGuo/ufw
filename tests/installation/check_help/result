@@ -3,20 +3,21 @@
 Usage: ufw COMMAND
 
 Commands:
-  enable			enables the firewall
-  disable			disables the firewall
-  default ARG			set default policy to ALLOW or DENY
-  logging ARG			set logging to ON or OFF
-  allow|deny RULE		allow or deny RULE
-  delete allow|deny RULE	delete the allow/deny RULE
-  status			show firewall status
-  version			display version information
+ enable				enables the firewall
+ disable			disables the firewall
+ default ARG			set default policy to ALLOW, DENY or REJECT
+ logging ARG			set logging to ON or OFF
+ allow|deny|reject RULE		allow, deny or reject RULE
+ delete allow|deny|reject RULE	delete the allow/deny/reject RULE
+ status				show firewall status
+ version			display version information
 
 Application profile commands:
-  app list			list application profiles
-  app info PROFILE		show information on PROFILE
-  app update PROFILE		update PROFILE
-  app default ARG		set profile policy to ALLOW, DENY or SKIP
+ app list			list application profiles
+ app info PROFILE		show information on PROFILE
+ app update PROFILE		update PROFILE
+ app default ARG		set profile policy to ALLOW, DENY, REJECT or
+				SKIP
 
 
 

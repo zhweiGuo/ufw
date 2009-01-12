@@ -215,6 +215,10 @@ class UFWBackend:
                 self.set_default(self.files['defaults'], \
                                             "DEFAULT_APPLICATION_POLICY", \
                                             "\"DROP\"")
+            elif policy == "reject":
+                self.set_default(self.files['defaults'], \
+                                            "DEFAULT_APPLICATION_POLICY", \
+                                            "\"REJECT\"")
             elif policy == "skip":
                 self.set_default(self.files['defaults'], \
                                             "DEFAULT_APPLICATION_POLICY", \

@@ -84,9 +84,21 @@ ufw_start() {
             $exe -X || error="yes"
 
             # setup built-in chains' default policy
-            $exe -P INPUT $DEFAULT_INPUT_POLICY || error="yes"
-            $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY || error="yes"
-            $exe -P FORWARD $DEFAULT_FORWARD_POLICY || error="yes"
+            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
+                $exe -P INPUT DROP || error="yes"
+            else
+                $exe -P INPUT $DEFAULT_INPUT_POLICY || error="yes"
+            fi
+            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
+                $exe -P OUTPUT DROP || error="yes"
+            else
+                $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY || error="yes"
+            fi
+            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
+                $exe -P FORWARD DROP || error="yes"
+            else
+                $exe -P FORWARD $DEFAULT_FORWARD_POLICY || error="yes"
+            fi
 
             # setup some other chains that can be used later
             if [ "$type" != "6" ]; then
@@ -148,6 +160,26 @@ ufw_start() {
             $exe -A ufw${type}-after-input -j RETURN || error="yes"
             $exe -A ufw${type}-after-output -j RETURN || error="yes"
             $exe -A ufw${type}-after-forward -j RETURN || error="yes"
+
+            # now setup the REJECT chains
+            $exe -N ufw${type}-reject-input || error="yes"
+            $exe -N ufw${type}-reject-output || error="yes"
+            $exe -N ufw${type}-reject-forward || error="yes"
+            $exe -A INPUT -j ufw${type}-reject-input || error="yes"
+            $exe -A OUTPUT -j ufw${type}-reject-output || error="yes"
+            $exe -A FORWARD -j ufw${type}-reject-forward || error="yes"
+            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
+                $exe -A ufw${type}-reject-input -j REJECT || error="yes"
+            fi
+            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
+                $exe -A ufw${type}-reject-output -j REJECT || error="yes"
+            fi
+            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
+                $exe -A ufw${type}-reject-forward -j REJECT || error="yes"
+            fi
+            $exe -A ufw${type}-reject-input -j RETURN || error="yes"
+            $exe -A ufw${type}-reject-output -j RETURN || error="yes"
+            $exe -A ufw${type}-reject-forward -j RETURN || error="yes"
         done
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
