@@ -115,6 +115,9 @@ class UFWRule:
             str += " -j ACCEPT"
         elif self.action == "reject":
             str += " -j REJECT"
+            if self.protocol == "tcp":
+                # follow TCP's default and send RST
+                str += " --reject-with tcp-reset"
         elif self.action == "limit":
             # Caller needs to change this
             str += " -j LIMIT"

@@ -479,9 +479,15 @@ COMMIT
 
         pat_proto = re.compile(r'-p all ')
         pat_port = re.compile(r'port ')
+        pat_reject = re.compile(r'-j REJECT')
         if pat_proto.search(frule):
             if pat_port.search(frule):
-                snippets.append(pat_proto.sub('-p tcp ', frule))
+                if pat_reject.search(frule):
+                    snippets.append(pat_proto.sub('-p tcp ', \
+                        pat_reject.sub('-j REJECT --reject-with tcp-reset ', \
+                        frule)))
+                else:
+                    snippets.append(pat_proto.sub('-p tcp ', frule))
                 snippets.append(pat_proto.sub('-p udp ', frule))
             else:
                 snippets.append(pat_proto.sub('', frule))
