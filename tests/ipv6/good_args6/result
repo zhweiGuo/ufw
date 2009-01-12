@@ -32,26 +32,38 @@ Default policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
-6: --dry-run DEFAULT ALLOW
+6: --dry-run default reject
+WARN: Checks disabled
+Default policy changed to 'reject'
+(be sure to update your rules accordingly)
+
+
+7: --dry-run DEFAULT ALLOW
 WARN: Checks disabled
 Default policy changed to 'allow'
 (be sure to update your rules accordingly)
 
 
-7: --dry-run DEFAULT DENY
+8: --dry-run DEFAULT DENY
 WARN: Checks disabled
 Default policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
+9: --dry-run DEFAULT REJECT
+WARN: Checks disabled
+Default policy changed to 'reject'
+(be sure to update your rules accordingly)
+
+
 TESTING ARGS (enable/disable)
-8: --dry-run enable
+10: --dry-run enable
 WARN: Checks disabled
 > running initscript
 Firewall started and enabled on system startup
 
 
-9: --dry-run disable
+11: --dry-run disable
 WARN: Checks disabled
 > iptables -F
 > iptables -X
@@ -74,13 +86,13 @@ COMMIT
 Firewall stopped and disabled on system startup
 
 
-10: --dry-run ENABLE
+12: --dry-run ENABLE
 WARN: Checks disabled
 > running initscript
 Firewall started and enabled on system startup
 
 
-11: --dry-run DISABLE
+13: --dry-run DISABLE
 WARN: Checks disabled
 > iptables -F
 > iptables -X
@@ -104,7 +116,7 @@ Firewall stopped and disabled on system startup
 
 
 TESTING ARGS (status)
-12: --dry-run status
+14: --dry-run status
 WARN: Checks disabled
 > Checking iptables
 > Checking ip6tables

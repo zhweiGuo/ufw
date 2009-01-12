@@ -87,7 +87,7 @@ sed -i 's/8888/80/g' $TESTPATH/etc/ufw/applications.d/apache
 echo "TESTING APPLICATION RULES (v6 delete app rules)" >> $TESTTMP/result
 echo "Setting IPV6 to yes" >> $TESTTMP/result
 sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
-do_cmd "0"  disable 
+do_cmd "0"  disable
 do_cmd "0"  enable
 do_cmd "0"  allow Apache
 do_cmd "0"  allow from 2001:db8::/32 to any app Apache
@@ -143,6 +143,14 @@ do_cmd "0" deny RunTest
 do_cmd "0" status verbose
 do_cmd "0" delete deny RUNTESt
 
-do_cmd "0"  disable 
+echo "TESTING APPLICATION INTEGRATION (reject)" >> $TESTTMP/result
+do_cmd "0" reject to any from any app Samba
+do_cmd "0" reject Samba
+do_cmd "0" status verbose
+do_cmd "0" delete reject to any from any app Samba
+do_cmd "0" delete reject Samba
+do_cmd "0" status verbose
+
+do_cmd "0"  disable
 
 exit 0

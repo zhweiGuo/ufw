@@ -116,4 +116,26 @@ for i in allow deny limit; do
     done
 done
 
+echo "Man page (reject)" >> $TESTTMP/result
+do_cmd "0" --dry-run reject auth
+
+echo "Reject" >> $TESTTMP/result
+do_cmd "0" --dry-run reject to any port auth from any port smtp
+do_cmd "0" --dry-run delete reject to any port auth from any port smtp
+do_cmd "0" --dry-run reject to 10.0.0.1 port domain from 192.168.0.1 port auth
+do_cmd "0" --dry-run delete reject to 10.0.0.1 port domain from 192.168.0.1 port auth
+for i in any tcp udp ; do
+    p="/$i"
+    if [ "$i" = "any" ]; then
+        p=""
+    else
+        do_cmd "0" --dry-run reject 23,21,15:19,22$p
+    fi
+    do_cmd "0" --dry-run reject 116$p
+done
+do_cmd "0" --dry-run reject from 2001:db8::/32 to any port 25
+do_cmd "0" --dry-run reject to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+do_cmd "0" --dry-run reject to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+
+
 exit 0

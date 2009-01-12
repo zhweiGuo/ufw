@@ -92,6 +92,8 @@ do_cmd "0"  deny from 1.2.3.4 to any port 514 proto udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0"  allow from 1.2.3.5 port 5469 proto udp to 1.2.3.4 port 5469
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+do_cmd "0"  reject auth
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 do_cmd "0"  delete allow 25/tcp
 do_cmd "0"  delete deny from 10.0.0.0/8 to 192.168.0.1 port 25 proto tcp
@@ -103,6 +105,7 @@ do_cmd "0"  delete allow from 172.16.0.0/12
 do_cmd "0"  delete allow from 192.168.0.0/16
 do_cmd "0"  delete deny from 1.2.3.4 to any port 514 proto udp
 do_cmd "0"  delete allow from 1.2.3.5 port 5469 proto udp to 1.2.3.4 port 5469
+do_cmd "0"  delete reject auth
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 
@@ -176,7 +179,7 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
 to="10.0.0.1"
-for x in allow deny limit
+for x in allow deny limit reject
 do
         context="2"
         if [ "$x" = "limit" ]; then
@@ -438,5 +441,7 @@ do_cmd "0" deny 23,21,15:19,22/udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0" delete deny 23,21,15:19,22/udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+do_cmd "0" disable
 
 exit 0

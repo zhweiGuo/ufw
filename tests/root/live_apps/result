@@ -1134,7 +1134,60 @@ Rule deleted
 Rule deleted (v6)
 
 
-145: disable
+TESTING APPLICATION INTEGRATION (reject)
+145: reject to any from any app Samba
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+146: reject Samba
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+147: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+To                         Action  From
+--                         ------  ----
+Anywhere                   REJECT  137,138/udp (Samba)
+Anywhere                   REJECT  139,445/tcp (Samba)
+137,138/udp (Samba)        REJECT  Anywhere
+139,445/tcp (Samba)        REJECT  Anywhere
+Anywhere (v6)              REJECT  137,138/udp (Samba (v6))
+Anywhere (v6)              REJECT  139,445/tcp (Samba (v6))
+137,138/udp (Samba (v6))   REJECT  Anywhere (v6)
+139,445/tcp (Samba (v6))   REJECT  Anywhere (v6)
+
+
+
+148: delete reject to any from any app Samba
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+149: delete reject Samba
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+150: status verbose
+WARN: Checks disabled
+Status: loaded
+Logging: on
+Default: deny
+New profiles: skip
+
+
+151: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

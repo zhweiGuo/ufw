@@ -481,7 +481,166 @@ Checking status
 62: status raw
 
 
+Checking reject
+Setting IPV6 to yes
 63: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+64: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+65: reject 113
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+66: reject 114/tcp
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+67: reject 115/udp
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+68: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+113/tcp                    REJECT  Anywhere
+113/udp                    REJECT  Anywhere
+114/tcp                    REJECT  Anywhere
+115/udp                    REJECT  Anywhere
+113/tcp                    REJECT  Anywhere (v6)
+113/udp                    REJECT  Anywhere (v6)
+114/tcp                    REJECT  Anywhere (v6)
+115/udp                    REJECT  Anywhere (v6)
+
+
+
+### tuple ### reject any 113 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p udp --dport 113 -j REJECT
+--
+### tuple ### reject tcp 114 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 114 -j REJECT --reject-with tcp-reset
+
+### tuple ### reject udp 115 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 115 -j REJECT
+
+### tuple ### reject any 113 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p udp --dport 113 -j REJECT
+--
+### tuple ### reject tcp 114 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 114 -j REJECT --reject-with tcp-reset
+
+### tuple ### reject udp 115 ::/0 any ::/0
+-A ufw6-user-input -p udp --dport 115 -j REJECT
+
+69: delete reject 113
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+70: delete reject 114/tcp
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+71: delete reject 115/udp
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+72: status
+WARN: Checks disabled
+Status: loaded
+
+
+Setting IPV6 to no
+73: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+74: enable
+WARN: Checks disabled
+Firewall started and enabled on system startup
+
+
+75: reject 113
+WARN: Checks disabled
+Rule added
+
+
+76: reject 114/tcp
+WARN: Checks disabled
+Rule added
+
+
+77: reject 115/udp
+WARN: Checks disabled
+Rule added
+
+
+78: status
+WARN: Checks disabled
+Status: loaded
+
+To                         Action  From
+--                         ------  ----
+113/tcp                    REJECT  Anywhere
+113/udp                    REJECT  Anywhere
+114/tcp                    REJECT  Anywhere
+115/udp                    REJECT  Anywhere
+
+
+
+### tuple ### reject any 113 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p udp --dport 113 -j REJECT
+--
+### tuple ### reject tcp 114 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 114 -j REJECT --reject-with tcp-reset
+
+### tuple ### reject udp 115 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p udp --dport 115 -j REJECT
+
+79: delete reject 113
+WARN: Checks disabled
+Rule deleted
+
+
+80: delete reject 114/tcp
+WARN: Checks disabled
+Rule deleted
+
+
+81: delete reject 115/udp
+WARN: Checks disabled
+Rule deleted
+
+
+82: status
+WARN: Checks disabled
+Status: loaded
+
+
+83: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

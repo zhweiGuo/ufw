@@ -76,6 +76,28 @@ do_cmd "0" null status
 do_cmd "0" null status verbose
 do_cmd "0" null status raw
 
-do_cmd "0"  disable 
+echo "Checking reject" >> $TESTTMP/result
+for ipv6 in yes no
+do
+	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+	do_cmd "0" disable
+	do_cmd "0" enable
+	do_cmd "0" reject 113
+	do_cmd "0" reject 114/tcp
+	do_cmd "0" reject 115/udp
+	do_cmd "0" status
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	do_cmd "0" delete reject 113
+	do_cmd "0" delete reject 114/tcp
+	do_cmd "0" delete reject 115/udp
+	do_cmd "0" status
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+done
+
+
+do_cmd "0"  disable
 
 exit 0

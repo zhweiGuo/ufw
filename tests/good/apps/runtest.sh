@@ -96,6 +96,8 @@ do_cmd "0" app default deny
 do_cmd "0" app --dry-run update --add-new Samba
 do_cmd "0" app default skip
 do_cmd "0" app --dry-run update --add-new Bind9
+do_cmd "0" app default reject
+do_cmd "0" app --dry-run update --add-new Samba
 
 echo "TESTING APPLICATION INTEGRATION (exact vs multi)" >> $TESTTMP/result
 cat > $TESTPATH/etc/ufw/applications.d/Runtest2 << EOM

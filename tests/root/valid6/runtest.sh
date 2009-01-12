@@ -79,7 +79,7 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 echo "TO/FROM" >> $TESTTMP/result
 from="2001:db8::/32"
 to="2001:db8:3:4:5:6:7:8"
-for x in allow deny limit
+for x in allow deny limit reject
 do
         context="2"
         if [ "$x" = "limit" ]; then
