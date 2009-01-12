@@ -2,6 +2,7 @@ ufw (0.26-0ubuntu1) UNRELEASED; urgency=low
 
   * new upstream release, which fixes:
     - formatting of dpkg output incorrect on upgrades (LP: #300726)
+    - new REJECT functionality (LP: #197322)
   * debian/control:
     - Build-Depends-Indep on iptables (required for iptables version check in
       setup.py)
