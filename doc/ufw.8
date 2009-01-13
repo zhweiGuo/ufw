@@ -271,6 +271,9 @@ files.
 Please note that #CONFIG_PREFIX#/ufw/sysctl.conf overrides values in the
 system systcl.conf (usually #CONFIG_PREFIX#/sysctl.conf).  To change this
 behavior, modify #CONFIG_PREFIX#/default/ufw.
+.PP
+If the default policy is set to REJECT, \fBufw\fB may interfere with rules
+added outside of the ufw framework. See README for details.
 
 .SH SEE ALSO
 .PP

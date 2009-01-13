@@ -364,73 +364,23 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def stop_firewall(self):
         '''Stops the firewall'''
-        openconf = '''*filter
-:INPUT ACCEPT [0:0]
-:FORWARD ACCEPT [0:0]
-:OUTPUT ACCEPT [0:0]
-COMMIT
-'''
-        if self.dryrun:
-            print "> iptables -F"
-            print "> iptables -X"
-            print "> echo\n" + openconf + "> | iptables-restore"
-            if self.use_ipv6():
-                print "> ip6tables -F"
-                print "> ip6tables -X"
-                print "> echo\n" + openconf + "> | ip6tables-restore"
-            return
-
-        try:
-            tmp = tempfile.NamedTemporaryFile()
-        except Exception:
-            raise
-        tmp.write(openconf)
-        tmp.flush()
-
         err_msg = _("problem running")
-
-        # Flush the firewall
-        (rc, out) = cmd(['iptables', '-F'])
-        if rc != 0:
-            raise UFWError(err_msg + " iptables 'flush'")
-
-        # Remove user chains
-        (rc, out) = cmd(['iptables', '-X'])
-        if rc != 0:
-            raise UFWError(err_msg + " iptables 'delete'")
-
-        # Set default open
-        (rc, out) = cmd_pipe(['cat', tmp.name], ['iptables-restore'])
-        if rc != 0:
-            raise UFWError(err_msg + " iptables")
-
-        if self.use_ipv6():
-            # Flush the firewall
-            (rc, out) = cmd(['ip6tables', '-F'])
+        if self.dryrun:
+            print "> " + _("running ufw-init")
+        else:
+            (rc, out) = cmd([self.files['init'], 'force-stop'])
             if rc != 0:
-                raise UFWError(err_msg + " ip6tables 'flush'")
-
-            # Remove user chains
-            (rc, out) = cmd(['ip6tables', '-X'])
-            if rc != 0:
-                raise UFWError(err_msg + " ip6tables 'delete'")
-
-            # Set default open
-            (rc, out) = cmd_pipe(['cat', tmp.name], ['ip6tables-restore'])
-            if rc != 0:
-                raise UFWError(err_msg + " ip6tables")
-
-        tmp.close()
+                raise UFWError(err_msg + " ufw-init")
 
     def start_firewall(self):
         '''Starts the firewall'''
         err_msg = _("problem running")
         if self.dryrun:
-            print "> " + _("running initscript")
+            print "> " + _("running ufw-init")
         else:
             (rc, out) = cmd([self.files['init'], 'start'])
             if rc != 0:
-                raise UFWError(err_msg + " init script")
+                raise UFWError(err_msg + " ufw-init")
 
     def _need_reload(self, v6):
         '''Check if all chains exist'''
