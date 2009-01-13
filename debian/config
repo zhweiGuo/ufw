@@ -4,6 +4,7 @@
 . /usr/share/debconf/confmodule
 db_version 2.0
 
+CONFFILE="/etc/ufw/ufw.conf"
 USER_PATH="/var/lib/ufw"
 TEMPLATE_PATH="/usr/share/ufw"
 
@@ -23,6 +24,15 @@ has_existing() {
         return 1
     fi
 }
+
+# If ufw is enabled (eg during an upgrade), then update debconf
+if [ -f "$CONFFILE" ]; then
+    if egrep -q '^ENABLED=yes$' ; then
+        db_set ufw/enable true || true
+    else
+        db_set ufw/enable false || true
+    fi
+fi
 
 db_input medium ufw/enable || true
 db_go
