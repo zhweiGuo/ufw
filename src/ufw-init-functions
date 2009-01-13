@@ -31,7 +31,7 @@ done
 RULES_PATH="#CONFIG_PREFIX#/ufw"
 USER_PATH="#STATE_PREFIX#"
 
-update_chains() {
+chains_command() {
     flag="$1"
     type=""
     exe="iptables"
@@ -40,8 +40,6 @@ update_chains() {
         exe="ip6tables"
     fi
 
-    # Remove ufw chains. Chain must be empty to delete, so process these in
-    # reverse order.
     for c in ufw$type-not-local ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-reject-forward ufw$type-after-forward ufw$type-user-forward ufw$type-before-forward ufw$type-reject-output ufw$type-after-output ufw$type-user-output ufw$type-before-output ; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
@@ -53,21 +51,21 @@ update_chains() {
 }
 
 delete_chains() {
-    update_chains -F $1
-    update_chains -Z $1
+    chains_command -F $1
+    chains_command -Z $1
 
-    # Remove references from the built-in chains
-    $exe -D INPUT -j ufw${type}-before-input 2>/dev/null || true
-    $exe -D OUTPUT -j ufw${type}-before-output 2>/dev/null || true
-    $exe -D FORWARD -j ufw${type}-before-forward 2>/dev/null || true
-    $exe -D INPUT -j ufw${type}-after-input 2>/dev/null || true
-    $exe -D OUTPUT -j ufw${type}-after-output 2>/dev/null || true
-    $exe -D FORWARD -j ufw${type}-after-forward 2>/dev/null || true
-    $exe -D INPUT -j ufw${type}-reject-input 2>/dev/null || true
-    $exe -D OUTPUT -j ufw${type}-reject-output 2>/dev/null || true
-    $exe -D FORWARD -j ufw${type}-reject-forward 2>/dev/null || true
-
-    update_chains -X $1
+    # Delete the secondary chains to reduce clutter, but keep the primary ones
+    # so that the primary chains don't leave the built-in chains just to come
+    # back later in a different place. This means that some (empty) chains will
+    # linger until the next boot after disabling ufw.
+    for c in ufw$type-not-local ufw$type-user-limit-accept ufw$type-user-limit ufw$type-user-input ufw$type-user-forward ufw$type-user-output ; do
+        if [ "$UFW_INIT_DEBUG" = "yes" ]; then
+            echo "$exe $flag $c" >&2
+            $exe -X $c || true
+        else
+            $exe -X $c 2>/dev/null || true
+        fi
+    done
 }
 
 ufw_start() {
@@ -150,12 +148,14 @@ ufw_start() {
             fi
 
             # setup ufw${type}-before-* chains
-            $exe -N ufw${type}-before-input || error="yes"
-            $exe -N ufw${type}-before-output || error="yes"
-            $exe -N ufw${type}-before-forward || error="yes"
-            $exe -A INPUT -j ufw${type}-before-input || error="yes"
-            $exe -A OUTPUT -j ufw${type}-before-output || error="yes"
-            $exe -A FORWARD -j ufw${type}-before-forward || error="yes"
+            if ! $exe -L ufw${type}-before-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-before-input || error="yes"
+                $exe -N ufw${type}-before-output || error="yes"
+                $exe -N ufw${type}-before-forward || error="yes"
+                $exe -A INPUT -j ufw${type}-before-input || error="yes"
+                $exe -A OUTPUT -j ufw${type}-before-output || error="yes"
+                $exe -A FORWARD -j ufw${type}-before-forward || error="yes"
+            fi
             if [ -s "$RULES_PATH" ]; then
                 if ! $exe-restore -n < $BEFORE_RULES ; then
                     out="${out}\nProblem running '$BEFORE_RULES'"
@@ -187,12 +187,14 @@ ufw_start() {
             $exe -A ufw${type}-before-forward -j RETURN || error="yes"
 
             # setup ufw${type}-after-* chains
-            $exe -N ufw${type}-after-input || error="yes"
-            $exe -N ufw${type}-after-output || error="yes"
-            $exe -N ufw${type}-after-forward || error="yes"
-            $exe -A INPUT -j ufw${type}-after-input || error="yes"
-            $exe -A OUTPUT -j ufw${type}-after-output || error="yes"
-            $exe -A FORWARD -j ufw${type}-after-forward || error="yes"
+            if ! $exe -L ufw${type}-after-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-after-input || error="yes"
+                $exe -N ufw${type}-after-output || error="yes"
+                $exe -N ufw${type}-after-forward || error="yes"
+                $exe -A INPUT -j ufw${type}-after-input || error="yes"
+                $exe -A OUTPUT -j ufw${type}-after-output || error="yes"
+                $exe -A FORWARD -j ufw${type}-after-forward || error="yes"
+            fi
             if [ -s "$AFTER_RULES" ]; then
                 if ! $exe-restore -n < $AFTER_RULES ; then
                     out="${out}\nProblem running '$AFTER_RULES'"
@@ -206,12 +208,14 @@ ufw_start() {
             $exe -A ufw${type}-after-forward -j RETURN || error="yes"
 
             # now setup the REJECT chains
-            $exe -N ufw${type}-reject-input || error="yes"
-            $exe -N ufw${type}-reject-output || error="yes"
-            $exe -N ufw${type}-reject-forward || error="yes"
-            $exe -A INPUT -j ufw${type}-reject-input || error="yes"
-            $exe -A OUTPUT -j ufw${type}-reject-output || error="yes"
-            $exe -A FORWARD -j ufw${type}-reject-forward || error="yes"
+            if ! $exe -L ufw${type}-reject-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-reject-input || error="yes"
+                $exe -N ufw${type}-reject-output || error="yes"
+                $exe -N ufw${type}-reject-forward || error="yes"
+                $exe -A INPUT -j ufw${type}-reject-input || error="yes"
+                $exe -A OUTPUT -j ufw${type}-reject-output || error="yes"
+                $exe -A FORWARD -j ufw${type}-reject-forward || error="yes"
+            fi
             if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
                 $exe -A ufw${type}-reject-input -j REJECT || error="yes"
             fi
