@@ -67,6 +67,7 @@ flush-all)
         return 1
     fi
     return 0
+    ;;
 *)
     echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload|status}"
     exit 1
