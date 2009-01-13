@@ -46,6 +46,27 @@ restart|force-reload)
 status)
     ufw_status || exit "$?"
     ;;
+flush-all)
+    # Use sparingly. It flushes the built-in chains, deletes all non-builtin
+    # chains and resets the policy to ACCEPT
+    error=""
+    execs="iptables"
+    if ip6tables -L INPUT >/dev/null 2>&1; then
+        execs="$execs ip6tables"
+    fi
+
+    for exe in $execs
+    do
+        $exe -F || error="yes"
+        $exe -X || error="yes"
+        $exe -P INPUT ACCEPT || error="yes"
+        $exe -P OUTPUT ACCEPT || error="yes"
+        $exe -P FORWARD ACCEPT || error="yes"
+    done
+    if [ "$error" = "yes" ]; then
+        return 1
+    fi
+    return 0
 *)
     echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload|status}"
     exit 1

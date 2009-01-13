@@ -63,7 +63,7 @@ http://doc.ubuntu.com/ubuntu/serverguide/C/firewall.html
 Chains
 ------
 ufw uses several chains to allow ease of use and flexibility. The chains are
-organized as follows:
+(more or less) organized as follows:
 
 INPUT -> ufw-before-input -> ufw-user-input -> ufw-after-input ->
   ufw-reject-input
@@ -83,6 +83,12 @@ There is some default configuration in both 'before.rules' and 'after.rules',
 and this configuration is not displayed with 'ufw status' (but can always
 be viewed with 'iptables -L -n' or 'iptables -L [chain] -n'. See the iptables
 man page for details.
+
+The primary chains are ufw-before-*, ufw-after-* and ufw-reject-*. Once ufw
+is in use, these chains stay in the table, even after disabling ufw. This is to
+make sure that the primary chains don't move around other non-ufw rules and
+chains. To completely flush the built-in chains, you can use:
+# /usr/share/ufw/ufw-init flush-all
 
 * as a result, ufw will end up rejecting rules that are added outside of ufw
   and after ufw is started.
