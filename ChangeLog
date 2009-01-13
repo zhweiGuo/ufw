@@ -9,6 +9,7 @@ ufw (0.26) UNRELEASED; urgency=low
   * display interfaces and exact packet counters in 'status raw'
   * support REJECT for rules, default policy and default application policy
     (LP: #197322)
+  * only flush and delete ufw chains
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:36:35 -0600
 

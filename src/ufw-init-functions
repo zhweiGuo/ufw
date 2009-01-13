@@ -31,6 +31,45 @@ done
 RULES_PATH="#CONFIG_PREFIX#/ufw"
 USER_PATH="#STATE_PREFIX#"
 
+update_chains() {
+    flag="$1"
+    type=""
+    exe="iptables"
+    if [ "$2" = "6" ]; then
+        type="$2"
+        exe="ip6tables"
+    fi
+
+    # Remove ufw chains. Chain must be empty to delete, so process these in
+    # reverse order.
+    for c in ufw$type-not-local ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-reject-forward ufw$type-after-forward ufw$type-user-forward ufw$type-before-forward ufw$type-reject-output ufw$type-after-output ufw$type-user-output ufw$type-before-output ; do
+        if [ "$UFW_INIT_DEBUG" = "yes" ]; then
+            echo "$exe $flag $c" >&2
+            $exe $flag $c || true
+        else
+            $exe $flag $c 2>/dev/null || true
+        fi
+    done
+}
+
+delete_chains() {
+    update_chains -F $1
+    update_chains -Z $1
+
+    # Remove references from the built-in chains
+    $exe -D INPUT -j ufw${type}-before-input 2>/dev/null || true
+    $exe -D OUTPUT -j ufw${type}-before-output 2>/dev/null || true
+    $exe -D FORWARD -j ufw${type}-before-forward 2>/dev/null || true
+    $exe -D INPUT -j ufw${type}-after-input 2>/dev/null || true
+    $exe -D OUTPUT -j ufw${type}-after-output 2>/dev/null || true
+    $exe -D FORWARD -j ufw${type}-after-forward 2>/dev/null || true
+    $exe -D INPUT -j ufw${type}-reject-input 2>/dev/null || true
+    $exe -D OUTPUT -j ufw${type}-reject-output 2>/dev/null || true
+    $exe -D FORWARD -j ufw${type}-reject-forward 2>/dev/null || true
+
+    update_chains -X $1
+}
+
 ufw_start() {
     out=""
     if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
@@ -56,13 +95,19 @@ ufw_start() {
             if ip6tables -L INPUT >/dev/null 2>&1; then
                 # IPv6 support disabled but available in the kernel, so
                 # default DROP and accept all on loopback
-                ip6tables -F || error="yes"
-                ip6tables -X || error="yes"
+                delete_chains 6 || error="yes"
+
                 ip6tables -P INPUT DROP || error="yes"
                 ip6tables -P OUTPUT DROP || error="yes"
                 ip6tables -P FORWARD DROP || error="yes"
+
+                # delete these first so don't add multiple rules
+                ip6tables -D INPUT -i lo -j ACCEPT 2>/dev/null || true
+                ip6tables -D OUTPUT -o lo -j ACCEPT 2>/dev/null || true
+
                 ip6tables -A INPUT -i lo -j ACCEPT || error="yes"
                 ip6tables -A OUTPUT -o lo -j ACCEPT || error="yes"
+
                 if [ "$error" = "yes" ]; then
                     out="${out}\nProblem loading ipv6 (skipping)"
                 fi
@@ -80,8 +125,7 @@ ufw_start() {
             USER_RULES="$USER_PATH/user${type}.rules"
 
             # flush the chains
-            $exe -F || error="yes"
-            $exe -X || error="yes"
+            delete_chains $type || error="yes"
 
             # setup built-in chains' default policy
             if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
@@ -199,7 +243,7 @@ ufw_start() {
 }
 
 ufw_stop() {
-    if [ "$ENABLED" != "yes" ] && [ "$ENABLED" != "YES" ]; then
+    if [ "$1" != "--force" ] && [ "$ENABLED" != "yes" ] && [ "$ENABLED" != "YES" ]; then
         echo "Skip stopping firewall: ufw (not enabled)"
         return 0
     fi
@@ -212,8 +256,11 @@ ufw_stop() {
 
     for exe in $execs
     do
-        $exe -F || error="yes"
-        $exe -X || error="yes"
+        type=""
+        if [ "$exe" = "ip6tables" ]; then
+            type="6"
+        fi
+        delete_chains $type || error="yes"
         $exe -P INPUT ACCEPT || error="yes"
         $exe -P OUTPUT ACCEPT || error="yes"
         $exe -P FORWARD ACCEPT || error="yes"

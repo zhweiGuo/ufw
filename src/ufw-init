@@ -37,6 +37,9 @@ start)
 stop)
     ufw_stop || exit "$?"
     ;;
+force-stop)
+    ufw_stop --force || exit "$?"
+    ;;
 restart|force-reload)
     ufw_reload || exit "$?"
     ;;
