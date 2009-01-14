@@ -97,6 +97,19 @@ do
 	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 done
 
+echo "Checking flush builtins" >> $TESTTMP/result
+for ans in yes no
+do
+        str="ufw_test_builtins"
+        do_cmd "0"  disable
+        sed -i "s/MANAGE_BUILTINS=.*/MANAGE_BUILTINS=$ans/" $TESTPATH/etc/default/ufw
+
+        iptables -D INPUT -j ACCEPT -m comment --comment $str 2>/dev/null
+        echo iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
+        iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
+        do_cmd "0" enable
+        iptables -n -L INPUT | grep "$str" >> $TESTTMP/result
+done
 
 do_cmd "0"  disable
 
