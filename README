@@ -76,31 +76,38 @@ The 'before' chains are setup in 'before.rules', the 'after' chains in
 'after.rules' and the 'user' chains are maintained by ufw. If an administrator
 wants to add rules manually, the rules should be added to 'before.rules' and
 'after.rules'. The 'reject' chains are used for when the default policy is
-set to REJECT* (because iptables does not support REJECT as a target at this
-time).
+set to REJECT (because iptables does not support REJECT as a target at this
+time). Keep in mind, when using REJECT as default policy, ufw may end up
+rejecting rules that are added outside of ufw and after ufw is started.
 
 There is some default configuration in both 'before.rules' and 'after.rules',
 and this configuration is not displayed with 'ufw status' (but can always
 be viewed with 'iptables -L -n' or 'iptables -L [chain] -n'. See the iptables
 man page for details.
 
-The primary chains are ufw-before-*, ufw-after-* and ufw-reject-*. Once ufw
-is in use, these chains stay in the table, even after disabling ufw. This is to
-make sure that the primary chains don't move around other non-ufw rules and
-chains. To completely flush the built-in chains, you can use:
+The primary chains are ufw-before-*, ufw-after-* and ufw-reject-*. The
+treatment of iptables' built-in chains can be controlled with the
+MANAGE_BUILTINS configuration option (in /etc/default/ufw). By default this is
+set to 'no', which means that other than adding the primary chains, the
+built-in chains will remain untouched. This also means that these primary
+chains will stay in the table, even after disabling ufw. This is to make sure
+that the primary chains don't move around other non-ufw rules and chains. To
+completely flush the built-in chains with this configuration, you can use:
 # /usr/share/ufw/ufw-init flush-all
 
-* as a result, ufw will end up rejecting rules that are added outside of ufw
-  and after ufw is started.
+Alternately, ufw may also take full control of the firewall by setting
+MANAGE_BUILTINS=yes in /etc/defaults/ufw. This will flush all the built-in
+rules and delete the non-built-in rules on start, stop and reload.
+
 
 Advanced Configuration
 ----------------------
 ufw can be thought of two parts, the ufw command-line program and the ufw
-framework. The ufw command is intentially kept as simple as possible, so users
-can do common tasks more easily. The framework (ie the bootscripts, setup of
-the chains (see above), sysctl configuration, etc) is very flexible, and since
-ufw is simply a frontend for iptables, anything that can be done with iptables
-can be done within the ufw framework.
+framework. The ufw command is intentionally kept as simple as possible, so
+users can do common tasks more easily. The framework (ie the bootscripts, setup
+of the chains (see above), sysctl configuration, etc) is very flexible, and
+since ufw is simply a frontend for iptables, anything that can be done with
+iptables can be done within the ufw framework.
 
 As an example, to perform port redirection, users can add to the top of
 /etc/ufw/before.rules, before the '*filter' section:
