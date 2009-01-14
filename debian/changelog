@@ -24,7 +24,7 @@ ufw (0.26-0ubuntu1) UNRELEASED; urgency=low
     and its existence is harmless.
   * debian/config and debian/templates: remove ufw/oldrules
   * provide debconf mechanism for enabling the firewall and setting some basic
-    rules
+    rules (LP: #307715)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:37:12 -0600
 
