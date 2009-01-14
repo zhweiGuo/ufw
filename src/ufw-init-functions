@@ -31,6 +31,43 @@ done
 RULES_PATH="#CONFIG_PREFIX#/ufw"
 USER_PATH="#STATE_PREFIX#"
 
+flush_builtins() {
+    error=""
+    execs="iptables"
+    if ip6tables -L INPUT -n >/dev/null 2>&1; then
+        execs="$execs ip6tables"
+    fi
+
+    for exe in $execs
+    do
+        $exe -F || error="yes"
+        $exe -X || error="yes"
+        $exe -P INPUT ACCEPT || error="yes"
+        $exe -P OUTPUT ACCEPT || error="yes"
+        $exe -P FORWARD ACCEPT || error="yes"
+
+        # now handle the mangle table
+        if $exe -t mangle -L -n >/dev/null 2>&1; then
+            for i in INPUT OUTPUT FORWARD PREROUTING POSTROUTING ; do
+                $exe -t mangle -F $i || error="yes"
+                $exe -t mangle -P $i ACCEPT || error="yes"
+            done
+        fi
+    done
+
+    # now handle the nat table
+    if iptables -t nat -L -n >/dev/null 2>&1; then
+        for i in OUTPUT PREROUTING POSTROUTING ; do
+            iptables -t nat -F $i || error="yes"
+            iptables -t nat -P $i ACCEPT || error="yes"
+        done
+    fi
+
+    if [ "$error" = "yes" ]; then
+        return 1
+    fi
+}
+
 chains_command() {
     flag="$1"
     type=""
@@ -80,17 +117,21 @@ ufw_start() {
             modprobe $m || true
         done
 
+        if [ "$MANAGE_BUILTINS" = "yes" ]; then
+            flush_builtins
+        fi
+
         execs="iptables"
 
         # IPv6 setup
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
-            if ip6tables -L INPUT >/dev/null 2>&1; then
+            if ip6tables -L INPUT -n >/dev/null 2>&1; then
                 execs="$execs ip6tables"
             else
                 out="${out}\nProblem loading ipv6 (skipping)"
             fi
         else
-            if ip6tables -L INPUT >/dev/null 2>&1; then
+            if ip6tables -L INPUT -n >/dev/null 2>&1; then
                 # IPv6 support disabled but available in the kernel, so
                 # default DROP and accept all on loopback
                 delete_chains 6 || error="yes"
@@ -252,9 +293,15 @@ ufw_stop() {
         return 0
     fi
 
+    # If we manage the builtins, just return
+    if [ "$MANAGE_BUILTINS" = "yes" ]; then
+        flush_builtins || return 1
+        return 0
+    fi
+
     error=""
     execs="iptables"
-    if ip6tables -L INPUT >/dev/null 2>&1; then
+    if ip6tables -L INPUT -n >/dev/null 2>&1; then
         execs="$execs ip6tables"
     fi
 
