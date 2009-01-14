@@ -3,7 +3,8 @@ ufw (0.26-0ubuntu1) UNRELEASED; urgency=low
   * new upstream release, which fixes:
     - formatting of dpkg output incorrect on upgrades (LP: #300726)
     - new REJECT functionality (LP: #197322)
-    - flushing of built-in chains
+    - ufw shouldn't flush built-in chains by default. New MANAGE_BUILTINS
+      configuration option can be used to restore the old (flush) behavior
   * debian/control:
     - Build-Depends-Indep on iptables (required for iptables version check in
       setup.py)
