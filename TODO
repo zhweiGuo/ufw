@@ -5,8 +5,6 @@ to frontend, and have frontend do cli/machine status)
 
 Support insertion of rules (LP: #260745). Perhaps 'ufw insert as 5 allow ...'
 
-Stablize API for programming frontends
-
 DBus support so frontend can send messages to ufw which can then be protected
 via policy kit
 
