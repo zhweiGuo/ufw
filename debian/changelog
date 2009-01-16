@@ -10,6 +10,7 @@ ufw (0.26-0ubuntu1) jaunty; urgency=low
       setup.py)
     - add ${misc:Depends} to Depends and bump Standards-Version to 3.8.0
     - update Description
+    - move po-debconf to Build-Depends
   * added debian/watch
   * debian/source.lintian-overrides: don't complain about
     no-complete-debconf-translation
@@ -19,6 +20,7 @@ ufw (0.26-0ubuntu1) jaunty; urgency=low
       continue to use /etc/defaults/ufw installed via setup.py for now)
     - cleanup dh_installdirs
     - use dh_installexamples for example files
+    - run debconf-updatepo in clean target
   * debian/postinst: remove old ufw.rules check because ufw.rules existed for
     only a short time during the Hardy development cycle, it's ignored by ufw
     and its existence is harmless.

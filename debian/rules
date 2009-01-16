@@ -21,6 +21,7 @@ clean:
 	rm -rf $(CURDIR)/build
 	-find . -name '*.py[co]' | xargs rm -f
 	dh_clean
+	debconf-updatepo
 
 install: build
 	dh_testdir
