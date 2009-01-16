@@ -22,7 +22,7 @@ import sys
 import tempfile
 
 from ufw.common import UFWError, UFWRule, config_dir, state_dir, prefix_dir
-from ufw.util import warn, debug, cmd, cmd_pipe
+from ufw.util import warn, debug, msg, cmd, cmd_pipe
 import ufw.backend
 
 
@@ -366,7 +366,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Stops the firewall'''
         err_msg = _("problem running")
         if self.dryrun:
-            print "> " + _("running ufw-init")
+            msg("> " + _("running ufw-init"))
         else:
             (rc, out) = cmd([self.files['init'], 'force-stop'])
             if rc != 0:
@@ -376,7 +376,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Starts the firewall'''
         err_msg = _("problem running")
         if self.dryrun:
-            print "> " + _("running ufw-init")
+            msg("> " + _("running ufw-init"))
         else:
             (rc, out) = cmd([self.files['init'], 'start'])
             if rc != 0:
@@ -408,9 +408,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Reload firewall rules file'''
         err_msg = _("problem running")
         if self.dryrun:
-            print "> | iptables-restore"
+            msg("> | iptables-restore")
             if self.use_ipv6():
-                print "> | ip6tables-restore"
+                msg("> | ip6tables-restore")
         elif self._is_enabled():
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
                                  ['iptables-restore', '-n'])
@@ -828,7 +828,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     debug([exe, flag, chain] + s.split())
                     (rc, out) = cmd([exe, flag, chain] + s.split())
                     if rc != 0:
-                        print >> sys.stderr, out
+                        msg(out, sys.stderr)
                         UFWError(err_msg)
 
                     # delete the RETURN rule then add it back, so it is at the
@@ -836,11 +836,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     if flag == "-A":
                         (rc, out) = cmd([exe, '-D', chain, '-j', 'RETURN'])
                         if rc != 0:
-                            print >> sys.stderr, out
+                            msg(out, sys.stderr)
 
                         (rc, out) = cmd([exe, '-A', chain, '-j', 'RETURN'])
                         if rc != 0:
-                            print >> sys.stderr, out
+                            msg(out, sys.stderr)
         return rstr
 
     def get_app_rules_from_system(self, template, v6):
