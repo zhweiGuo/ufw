@@ -34,11 +34,16 @@ if [ -f "$CONFFILE" ]; then
     fi
 fi
 
+db_get ufw/enable
+previous="$RET"
+
 db_input medium ufw/enable || true
 db_go
 
 db_get ufw/enable
-if [ ! -z "$RET" ] && [ "$RET" = true ]; then
+# only use existing_configuration/allow_known_ports if the user changed from
+# false to true
+if [ ! -z "$RET" ] && [ "$previous" = "false" ] && [ "$RET" = true ]; then
     if has_existing ; then
         # Can't reliably configure ports in an existing configuration
         db_text low ufw/existing_configuration || true
