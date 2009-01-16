@@ -78,9 +78,9 @@ case "$1" in
 
         update-rc.d ufw start 39 S . stop 39 1 . > /dev/null
 
+        # configure ufw with debconf values
         db_get ufw/enable
         enabled="$RET"
-        enable_ufw "$enabled"
 
         db_fget ufw/existing_configuration seen
         seen_warning="$RET"
@@ -91,6 +91,10 @@ case "$1" in
                 allow_service "$service"
             done
         fi
+
+        # need to do this after all 'allow_service' calls, otherwise ufw may
+        # try to use iptables, which breaks the installer
+        enable_ufw "$enabled"
         ;;
     triggered)
         ufw app update all
