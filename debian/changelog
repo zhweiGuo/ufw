@@ -1,4 +1,4 @@
-ufw (0.26-0ubuntu1) UNRELEASED; urgency=low
+ufw (0.26-0ubuntu1) jaunty; urgency=low
 
   * new upstream release, which fixes:
     - formatting of dpkg output incorrect on upgrades (LP: #300726)
