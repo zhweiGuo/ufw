@@ -26,7 +26,7 @@ ufw (0.26-0ubuntu1) jaunty; urgency=low
   * provide debconf mechanism for enabling the firewall and setting some basic
     rules (LP: #307715)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Dec 2008 15:37:12 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 08:02:36 -0600
 
 ufw (0.25-0ubuntu1) jaunty; urgency=low
 
