@@ -1,7 +1,7 @@
 #
 # util.py: utility functions for ufw
 #
-# Copyright (C) 2008 Canonical Ltd.
+# Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -264,20 +264,38 @@ def cmd_pipe(command1, command2):
 
 def error(msg, exit=True):
     '''Print error message and exit'''
-    print >> sys.stderr, "ERROR: %s" % (msg)
+    try:
+        print >> sys.stderr, "ERROR: %s" % (msg)
+    except IOError:
+        pass
+
     if exit:
         sys.exit(1)
 
 
 def warn(msg):
     '''Print warning message'''
-    print >> sys.stderr, "WARN: %s" % (msg)
+    try:
+        print >> sys.stderr, "WARN: %s" % (msg)
+    except IOError:
+        pass
+
+
+def msg(msg, output=sys.stdout):
+    '''Print message'''
+    try:
+        print >> output, "%s" % (msg)
+    except IOError:
+        pass
 
 
 def debug(msg):
     '''Print debug message'''
     if debugging:
-        print >> sys.stderr, "DEBUG: %s" % (msg)
+        try:
+            print >> sys.stderr, "DEBUG: %s" % (msg)
+        except IOError:
+            pass
 
 
 def word_wrap(text, width):

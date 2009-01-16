@@ -1,4 +1,4 @@
-ufw (0.26) UNRELEASED; urgency=low
+ufw (0.26) RELEASED; urgency=low
 
   * fix formatting when using 'app update all' (LP: #300726)
   * add runtime version check for iptables and warn if using IPv6 application
