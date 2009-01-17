@@ -1,6 +1,7 @@
 ufw (0.26-0ubuntu2) UNRELEASED; urgency=low
 
   * debian/ufw.init: use mountall for Required-Start rather than mountall.sh
+  * don't do symlink check anymore (LP: #317700)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 17:17:38 -0600
 
