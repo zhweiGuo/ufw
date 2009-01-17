@@ -1,5 +1,0 @@
-etc/init.d
-etc/ufw
-usr/share/doc/ufw
-usr/share/ufw
-var/lib/ufw
