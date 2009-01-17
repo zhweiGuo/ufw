@@ -133,9 +133,6 @@ class UFWBackend:
                 except Exception:
                     raise
 
-                if os.path.islink(path):
-                    err_msg = _("found symbolic link in path: %s") % (path)
-                    raise UFWError(err_msg)
                 if statinfo.st_uid != 0 and not warned_owner.has_key(path):
                     warn_msg = _("uid is %s but '%s' is owned by %s") % \
                                 (str(uid), path, str(statinfo.st_uid))
