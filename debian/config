@@ -51,6 +51,8 @@ if [ ! -z "$RET" ] && [ "$previous" = "false" ] && [ "$RET" = true ]; then
     else
         db_input medium ufw/allow_known_ports || true
         db_go
+        db_input low ufw/allow_custom_ports || true
+        db_go
     fi
 fi
 

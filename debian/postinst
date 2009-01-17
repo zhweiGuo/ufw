@@ -20,7 +20,7 @@ enable_ufw() {
 }
 
 allow_port() {
-    ufw allow "$@" >/dev/null
+    ufw allow "$@" >/dev/null || true
 }
 
 allow_service() {
@@ -89,6 +89,12 @@ case "$1" in
             CHOICES="$RET"
             for service in `echo "$CHOICES" | sed 's/, /\n/g' | sed 's/ /#/g'`; do
                 allow_service "$service"
+            done
+
+            db_get ufw/allow_custom_ports
+            PORTS="$RET"
+            for port in $PORTS ; do
+                allow_service "$port"
             done
         fi
 

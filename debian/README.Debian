@@ -24,7 +24,6 @@ Preseeding
 ----------
 ufw has support for preseeding. To enable a default deny firewall, add to your
 preseed file:
-
 ufw ufw/enable boolean true
 
 And to allow a service, use:
@@ -41,6 +40,10 @@ Currently, ufw knows about the following services:
  WWW		# tcp port 80
  WWW (Secure)	# tcp port 443
 
-These ports are not associated with application profiles. Support for custom
-ports is planned.
+You may also add additional ports by supplying a space separated list of
+services from /etc/services, a port number or a port/protocol combination. Eg:
+ufw ufw/allow_custom_ports string auth 8080 1194/udp 
+
+Please keep in mind that these ports and services are not associated with ufw
+application profiles.
 

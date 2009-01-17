@@ -16,5 +16,13 @@ _Description: Should ufw be enabled?
 Template: ufw/allow_known_ports
 Type: multiselect
 _Choices: Cups, DNS, Imap (Secure), Pop3 (Secure), SSH, Samba, Smtp, WWW, WWW (Secure)
-_Description: Allow the following ports:
+_Description: Allow the following services:
  Selecting an item from this list allows all traffic to the specified service.
+
+Template: ufw/allow_custom_ports
+Type: string
+_Description: Allow additional ports?
+ Please enter a space separated list of any additional ports you would like to
+ have open. These may either be a service name as found in /etc/services, a
+ port number, or a port number/protocol combination. Eg, to allow http, port 53
+ and tcp port 22, use 'http 53 22/tcp'.
