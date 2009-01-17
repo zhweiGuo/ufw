@@ -69,7 +69,6 @@ class UFWBackend:
         is setuid or setgid (for non-Linux systems)
         checks that script is owned by root
         checks that every component in absolute path are owned by root
-        checks that every component of absolute path are not a symlink
         warn if script is group writable
         warn if part of script path is group writable
 
