@@ -1,3 +1,9 @@
+ufw (0.26-0ubuntu2) UNRELEASED; urgency=low
+
+  * debian/ufw.init: use mountall for Required-Start rather than mountall.sh
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 17:17:38 -0600
+
 ufw (0.26-0ubuntu1) jaunty; urgency=low
 
   * new upstream release, which fixes:

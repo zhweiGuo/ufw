@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides:          ufw
-# Required-Start:    mountall.sh
+# Required-Start:    mountall
 # Required-Stop:     
 # Default-Start:     S
 # Default-Stop:      
