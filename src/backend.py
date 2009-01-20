@@ -101,24 +101,20 @@ class UFWBackend:
         warned_group_write = {}
         warned_owner = {}
 
-        pat = re.compile(r'^\.')
-
         profiles = []
         if not os.path.isdir(self.files['apps']):
             warn_msg = _("'%s' does not exist") % (self.files['apps'])
             warn(warn_msg)
         else:
+            pat = re.compile(r'^\.')
             for profile in os.listdir(self.files['apps']):
-                profiles.append(os.path.join(self.files['apps'], profile))
+                if not pat.search(profile):
+                    profiles.append(os.path.join(self.files['apps'], profile))
 
         for path in self.files.values() + [ os.path.abspath(sys.argv[0]) ] + \
                 profiles:
             while True:
                 debug("Checking " + path)
-                if pat.search(os.path.basename(path)):
-                    err_msg = _("found hidden directory in path: %s") % (path)
-                    raise UFWError(err_msg)
-
                 if path == self.files['apps'] and \
                            not os.path.isdir(self.files['apps']):
                     break

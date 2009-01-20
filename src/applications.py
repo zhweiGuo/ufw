@@ -46,8 +46,7 @@ def get_profiles(dir):
             continue
 
         if pat.search(f):
-            warn_msg = _("Skipping '%s': hidden file") % (f)
-            warn(warn_msg)
+            debug("Skipping '%s': hidden file" % (f))
             continue
 
         if f.endswith('.dpkg-new') or f.endswith('.dpkg-old') or \

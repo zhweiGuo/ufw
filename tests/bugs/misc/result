@@ -1,0 +1,22 @@
+Bug #319226
+0: app list
+WARN: Checks disabled
+Available applications:
+  A aZ9 _-.+
+  Apache
+  Apache Full
+  Apache Secure
+  Bind9
+  Custom Web App
+  Dovecot IMAP
+  Dovecot POP3
+  Dovecot Secure IMAP
+  Dovecot Secure POP3
+  Multi TCP
+  Multi UDP
+  No Protocol
+  OpenNTPD
+  Samba
+  a aZ9 _-.+
+
+
