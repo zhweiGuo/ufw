@@ -316,17 +316,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             location[loc] += "/" + r.protocol
 
             if show_count:
-                str += "[%d] " % (count)
+                str += "[%2d] " % (count)
             str += "%-26s %-8s%s\n" % (location['dst'], r.action.upper(), \
                     location['src'])
+            count += 1
 
         if str != "":
             header = "\n\n"
             if show_count:
-                header += "    "
+                header += "     "
             header += "%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
             if show_count:
-                header += "    "
+                header += "     "
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str
 
