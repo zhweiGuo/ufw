@@ -32,6 +32,8 @@ echo "Bug #251355" >> $TESTTMP/result
 echo "Setting IPV6 to no" >> $TESTTMP/result
 sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 do_cmd "0"  disable
+echo "/usr/share/ufw/ufw-init flush-all:" >> $TESTTMP/result
+$TESTPATH/usr/share/ufw/ufw-init flush-all >> $TESTTMP/result 2>&1
 do_cmd "0"  enable
 echo "/usr/share/ufw/ufw-init force-reload:" >> $TESTTMP/result
 $TESTPATH/usr/share/ufw/ufw-init force-reload >> $TESTTMP/result 2>&1
