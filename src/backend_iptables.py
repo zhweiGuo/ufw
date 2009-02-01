@@ -205,14 +205,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return out
 
-
-    def get_status(self, verbose=False):
-        '''Show current status of firewall'''
+    def get_status(self, verbose=False, show_count=False):
+        '''Show ufw managed rules'''
         out = ""
         out6 = ""
         if self.dryrun:
+            #out = "> " + _("Getting IPv4 rules\n")
             out = "> " + _("Checking iptables\n")
             if self.use_ipv6():
+                #out += "> " + _("Getting IPv6 rules\n")
                 out += "> " + _("Checking ip6tables\n")
             return out
 
@@ -222,48 +223,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return _("Status: not loaded")
 
         err_msg = _("problem running")
-
-        # Get the output of iptables for parsing
-        (rc, out) = cmd(['iptables', '-L', '-n'])
-        if rc != 0:
-            raise UFWError(err_msg + " iptables")
-
         if self.use_ipv6():
             (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
             if rc != 0:
                 raise UFWError(err_msg + " ip6tables")
-            if out6 == "":
-                return out6
 
         if out == "" and out6 == "":
             return _("Status: loaded")
 
         str = ""
-        rules = []
-        pat_chain = re.compile(r'^Chain ')
-        pat_target = re.compile(r'^target')
-        for type in ["v4", "v6"]:
-            pat_ufw = re.compile(r'^Chain ufw-user-input')
-            if type == "v6":
-                pat_ufw = re.compile(r'^Chain ufw6-user-input')
-            lines = out
-            if type == "v6":
-                lines = out6
-            in_ufw_input = False
-            for line in lines.split('\n'):
-                if pat_ufw.search(line):
-                    in_ufw_input = True
-                    continue
-                elif pat_chain.search(line):
-                    in_ufw_input = False
-                    continue
-                elif pat_target.search(line):
-                    pass
-                elif in_ufw_input:
-                    r = self._parse_iptables_status(line, type)
-                    if r is not None:
-                        rules.append(r)
-
+        rules = self.rules + self.rules6
+        #rules = self._read_running()
+        count = 1
         app_rules = {}
         for r in rules:
             location = {}
@@ -344,11 +315,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
 
+            if show_count:
+                str += "[%d] " % (count)
             str += "%-26s %-8s%s\n" % (location['dst'], r.action.upper(), \
                     location['src'])
 
         if str != "":
-            header = "\n\n%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
+            header = "\n\n"
+            if show_count:
+                header += "    "
+            header += "%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
+            if show_count:
+                header += "    "
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str
 
@@ -612,6 +590,53 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             self.rules.append(rule)
 
             orig.close()
+
+    def _read_running(self):
+        '''Return a list of rules from the running firewall'''
+# TODO-- TESTME
+        err_msg = _("problem running")
+
+        # Get the output of iptables for parsing
+        (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
+        if rc != 0:
+            raise UFWError(err_msg + " iptables")
+
+        if self.use_ipv6():
+            (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
+            if rc != 0:
+                raise UFWError(err_msg + " ip6tables")
+            if out6 == "":
+                return out6
+
+        if out == "" and out6 == "":
+            return []
+
+        rules = []
+        pat_chain = re.compile(r'^Chain ')
+        pat_target = re.compile(r'^target')
+        for type in ["v4", "v6"]:
+            pat_ufw = re.compile(r'^Chain ufw-user-input')
+            if type == "v6":
+                pat_ufw = re.compile(r'^Chain ufw6-user-input')
+            lines = out
+            if type == "v6":
+                lines = out6
+            in_ufw_input = False
+            for line in lines.split('\n'):
+                if pat_ufw.search(line):
+                    in_ufw_input = True
+                    continue
+                elif pat_chain.search(line):
+                    in_ufw_input = False
+                    continue
+                elif pat_target.search(line):
+                    pass
+                elif in_ufw_input:
+                    r = self._parse_iptables_status(line, type)
+                    if r is not None:
+                        rules.append(r)
+
+        return rules
 
     def _write_rules(self, v6=False):
         '''Write out new rules to file to user chain file'''

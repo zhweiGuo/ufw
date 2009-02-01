@@ -408,8 +408,11 @@ class UFWBackend:
     def get_status_raw(self):
         raise UFWError("UFWBackend.get_status_raw: need to override")
 
-    def get_status(self):
+    def get_status(self, verbose, show_count):
         raise UFWError("UFWBackend.get_status: need to override")
+
+    def get_status_as_list(self):
+        raise UFWError("UFWBackend.get_status_as_list: need to override")
 
     def set_rule(self, rule, allow_reload):
         raise UFWError("UFWBackend.set_rule: need to override")

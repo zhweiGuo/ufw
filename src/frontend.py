@@ -75,6 +75,8 @@ def parse_command(argv):
             action = "status-verbose"
         elif argv[2].lower() == "raw":
             action = "status-raw"
+        elif argv[2].lower() == "numbered":
+            action = "status-numbered"
 
     if action == "default":
         if nargs < 3:
@@ -479,10 +481,10 @@ class UFWFrontend:
 
         return res
 
-    def get_status(self, verbose=False):
+    def get_status(self, verbose=False, show_count=False):
         '''Shows status of firewall'''
         try:
-            out = self.backend.get_status(verbose)
+            out = self.backend.get_status(verbose, show_count)
         except UFWError, e:
             error(e.value)
 
@@ -648,6 +650,8 @@ class UFWFrontend:
             res = self.get_status(True)
         elif action == "status-raw":
             res = self.get_status_raw()
+        elif action == "status-numbered":
+            res = self.get_status(False, True)
         elif action == "enable":
             res = self.set_enabled(True)
         elif action == "disable":
