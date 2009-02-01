@@ -46,6 +46,7 @@ WARN: Checks disabled
 Firewall stopped and disabled on system startup
 
 
+/usr/share/ufw/ufw-init flush-all:
 5: enable
 WARN: Checks disabled
 Firewall started and enabled on system startup
