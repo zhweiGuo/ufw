@@ -43,6 +43,7 @@ endif
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.conf $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/var/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
+	cp -f $(CURDIR)/debian/sysctl.conf $(CURDIR)/debian/etc/ufw
 
 	# for ucf
 	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
