@@ -60,7 +60,7 @@ TESTING ARGS (enable/disable)
 10: --dry-run enable
 WARN: Checks disabled
 > running ufw-init
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 11: --dry-run disable
@@ -72,7 +72,7 @@ Firewall stopped and disabled on system startup
 12: --dry-run ENABLE
 WARN: Checks disabled
 > running ufw-init
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 13: --dry-run DISABLE

@@ -50,7 +50,7 @@ Logging disabled
 TESTING ARGS (default)
 4: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 5: default allow
@@ -119,7 +119,7 @@ Firewall stopped and disabled on system startup
 TESTING ARGS (enable/disable)
 11: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 ENABLED=yes
@@ -131,7 +131,7 @@ Firewall stopped and disabled on system startup
 ENABLED=no
 13: ENABLE
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 ENABLED=yes

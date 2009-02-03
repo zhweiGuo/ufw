@@ -6,7 +6,7 @@ Firewall stopped and disabled on system startup
 
 1: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 TESTING ARGS (logging)
@@ -107,7 +107,7 @@ Rule added (v6)
 
 17: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -260,7 +260,7 @@ Rule deleted (v6)
 
 31: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Setting IPV6 to no
@@ -271,7 +271,7 @@ Firewall stopped and disabled on system startup
 
 33: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 TESTING ARGS (logging)
@@ -357,7 +357,7 @@ Rule added
 
 47: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -468,7 +468,7 @@ Rule deleted
 
 59: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Checking status
@@ -490,7 +490,7 @@ Firewall stopped and disabled on system startup
 
 64: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 65: reject 113
@@ -513,7 +513,7 @@ Rule added (v6)
 
 68: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -568,7 +568,7 @@ Rule deleted (v6)
 
 72: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Setting IPV6 to no
@@ -579,7 +579,7 @@ Firewall stopped and disabled on system startup
 
 74: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 75: reject 113
@@ -599,7 +599,7 @@ Rule added
 
 78: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -637,7 +637,7 @@ Rule deleted
 
 82: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Checking flush builtins
@@ -649,7 +649,7 @@ Firewall stopped and disabled on system startup
 iptables -I INPUT -j ACCEPT -m comment --comment ufw_test_builtins
 84: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 85: disable
@@ -660,7 +660,7 @@ Firewall stopped and disabled on system startup
 iptables -I INPUT -j ACCEPT -m comment --comment ufw_test_builtins
 86: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           /* ufw_test_builtins */ 
