@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2009-02-03 00:21+CET\n"
+"POT-Creation-Date: 2009-02-03 00:51+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -467,7 +467,7 @@ msgid "yes"
 msgstr ""
 
 #: src/frontend.py:444
-msgid "Firewall is now active and enabled on system startup"
+msgid "Firewall is active and enabled on system startup"
 msgstr ""
 
 #: src/frontend.py:451
