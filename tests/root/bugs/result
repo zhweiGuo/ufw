@@ -5,7 +5,7 @@ Firewall stopped and disabled on system startup
 
 1: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 Bug #247352
@@ -49,7 +49,7 @@ Firewall stopped and disabled on system startup
 /usr/share/ufw/ufw-init flush-all:
 5: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 /usr/share/ufw/ufw-init force-reload:
@@ -73,7 +73,7 @@ Firewall stopped and disabled on system startup
 
 7: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 8: allow Apache
@@ -105,7 +105,7 @@ Firewall stopped and disabled on system startup
 
 12: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 13: allow to any from any
@@ -142,7 +142,7 @@ Rule added
 
 19: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -191,7 +191,7 @@ Rule deleted
 
 26: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Bug #273278
@@ -203,12 +203,12 @@ Firewall stopped and disabled on system startup
 
 28: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 29: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -226,7 +226,7 @@ Default policy changed to 'allow'
 
 31: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: allow
 New profiles: skip
@@ -244,7 +244,7 @@ Default policy changed to 'deny'
 
 33: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -263,12 +263,12 @@ Firewall stopped and disabled on system startup
 
 35: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 36: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 37: delete allow 22

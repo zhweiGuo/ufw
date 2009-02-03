@@ -5,6 +5,7 @@ ufw (0.27) UNRELEASED; urgency=low
     profiles are already skipped, so this check only bumps into revision
     control systems
   * add 'status numbered' command
+  * more comments in conf/sysctl.conf
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 17 Jan 2009 07:15:25 -0600
 

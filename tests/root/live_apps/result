@@ -8,7 +8,7 @@ Firewall stopped and disabled on system startup
 
 1: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 2: allow Apache
@@ -74,7 +74,7 @@ Rule added (v6)
 
 13: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -100,7 +100,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 
 14: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -202,7 +202,7 @@ Rule deleted (v6)
 
 26: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Setting IPV6 to no
@@ -213,7 +213,7 @@ Firewall stopped and disabled on system startup
 
 28: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 29: allow Apache
@@ -273,7 +273,7 @@ Rule added
 
 40: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -293,7 +293,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 
 41: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -379,7 +379,7 @@ Rule deleted
 
 53: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Adding and deleting updated app rules
@@ -391,7 +391,7 @@ Firewall stopped and disabled on system startup
 
 55: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 56: allow Apache
@@ -457,7 +457,7 @@ Rule added (v6)
 
 67: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -483,7 +483,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 
 68: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -536,7 +536,7 @@ Firewall reloaded
 
 71: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -562,7 +562,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 
 72: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -664,7 +664,7 @@ Rule deleted (v6)
 
 84: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Setting IPV6 to no
@@ -675,7 +675,7 @@ Firewall stopped and disabled on system startup
 
 86: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 87: allow Apache
@@ -735,7 +735,7 @@ Rule added
 
 98: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -755,7 +755,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 
 99: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -798,7 +798,7 @@ Firewall reloaded
 
 102: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 To                         Action  From
 --                         ------  ----
@@ -818,7 +818,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 
 103: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -904,7 +904,7 @@ Rule deleted
 
 115: status
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 TESTING APPLICATION RULES (v6 delete app rules)
@@ -916,7 +916,7 @@ Firewall stopped and disabled on system startup
 
 117: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 118: allow Apache
@@ -932,7 +932,7 @@ Rule added (v6)
 
 120: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -952,7 +952,7 @@ Rule deleted (v6)
 
 122: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -972,7 +972,7 @@ Rule deleted (v6)
 
 124: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1016,7 +1016,7 @@ WARN: Checks disabled
 
 132: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1046,7 +1046,7 @@ Rule deleted (v6)
 
 135: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1061,7 +1061,7 @@ Rule added (v6)
 
 137: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1081,7 +1081,7 @@ Rule deleted (v6)
 
 139: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1096,7 +1096,7 @@ Rule added (v6)
 
 141: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1116,7 +1116,7 @@ Rule updated (v6)
 
 143: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1149,7 +1149,7 @@ Rule added (v6)
 
 147: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip
@@ -1181,7 +1181,7 @@ Rule deleted (v6)
 
 150: status verbose
 WARN: Checks disabled
-Status: loaded
+Status: active
 Logging: on
 Default: deny
 New profiles: skip

@@ -220,7 +220,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Is the firewall loaded at all?
         (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
         if rc != 0:
-            return _("Status: not loaded")
+            return _("Status: inactive")
 
         err_msg = _("problem running")
         if self.use_ipv6():
@@ -229,7 +229,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 raise UFWError(err_msg + " ip6tables")
 
         if out == "" and out6 == "":
-            return _("Status: loaded")
+            return _("Status: active")
 
         str = ""
         rules = self.rules + self.rules6
@@ -335,11 +335,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             (level, logging_str) = self.get_loglevel()
             policy_str = self.get_default_policy()
             app_policy_str = self.get_default_application_policy()
-            return _("Status: loaded\n%s\n%s\n%s%s") % \
+            return _("Status: active\n%s\n%s\n%s%s") % \
                                                     (logging_str, policy_str, \
                                                      app_policy_str, str)
         else:
-            return _("Status: loaded%s") % (str)
+            return _("Status: active%s") % (str)
 
     def stop_firewall(self):
         '''Stops the firewall'''

@@ -15,7 +15,7 @@ PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
 . /lib/lsb/init-functions
 
-for s in "/usr/share/ufw/ufw-init-functions" "/etc/ufw/ufw.conf" ; do
+for s in "/usr/share/ufw/ufw-init-functions" "/etc/ufw/ufw.conf" "/etc/default/ufw" ; do
     if [ -s "$s" ]; then
         . "$s"
     else
@@ -30,6 +30,9 @@ start)
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
         log_action_begin_msg "Starting firewall:" "ufw"
         output=`ufw_start` || error="$?"
+        if [ "$error" = "0" ]; then
+            log_action_cont_msg "Setting kernel variables ($IPT_SYSCTL)"
+        fi
         if [ ! -z "$output" ]; then
             echo "$output" | while read line ; do
                 log_action_cont_msg "$line"
