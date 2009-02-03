@@ -180,8 +180,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             return _("Logging enabled")
 
-    def get_status_raw(self):
-        '''Show current raw status of firewall'''
+    def get_running_raw(self):
+        '''Show current running status of firewall'''
         if self.dryrun:
             out = "> " + _("Checking raw iptables\n")
             out += "> " + _("Checking raw ip6tables\n")

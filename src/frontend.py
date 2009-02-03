@@ -53,7 +53,7 @@ def parse_command(argv):
 
     allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
                     'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'reject', 'limit', 'reload' ]
+                    'deny', 'reject', 'limit', 'reload', 'show' ]
 
     if not argv[1].lower() in allowed_cmds:
         raise ValueError()
@@ -73,10 +73,14 @@ def parse_command(argv):
     if action == "status" and nargs > 2:
         if argv[2].lower() == "verbose":
             action = "status-verbose"
-        elif argv[2].lower() == "raw":
-            action = "status-raw"
         elif argv[2].lower() == "numbered":
             action = "status-numbered"
+
+    if action == "show":
+        if nargs == 2:
+            raise ValueError()
+        elif argv[2].lower() == "raw":
+            action = "show-raw"
 
     if action == "default":
         if nargs < 3:
@@ -371,6 +375,7 @@ Commands:
  allow|deny|reject RULE		allow, deny or reject RULE
  delete allow|deny|reject RULE	delete the allow/deny/reject RULE
  status				show firewall status
+ show ARG			show firewall report
  version			display version information
 
 Application profile commands:
@@ -490,10 +495,10 @@ class UFWFrontend:
 
         return out
 
-    def get_status_raw(self):
-        '''Shows raw status of firewall'''
+    def get_show_raw(self):
+        '''Shows raw output of firewall'''
         try:
-            out = self.backend.get_status_raw()
+            out = self.backend.get_running_raw()
         except UFWError, e:
             error(e.value)
 
@@ -648,8 +653,8 @@ class UFWFrontend:
             res = self.get_status()
         elif action == "status-verbose":
             res = self.get_status(True)
-        elif action == "status-raw":
-            res = self.get_status_raw()
+        elif action == "show-raw":
+            res = self.get_show_raw()
         elif action == "status-numbered":
             res = self.get_status(False, True)
         elif action == "enable":

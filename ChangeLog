@@ -4,6 +4,7 @@ ufw (0.27) UNRELEASED; urgency=low
   * don't do hidden file check anymore (LP: #319226). Hidden application
     profiles are already skipped, so this check only bumps into revision
     control systems
+  * add 'status numbered' command
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 17 Jan 2009 07:15:25 -0600
 

@@ -15,7 +15,9 @@ ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|raw]
+ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
+.TP
+ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|reject|limit\fR PORT[/protocol]
 .TP
@@ -54,7 +56,10 @@ toggle logging. Logged packets use the LOG_KERN syslog facility.
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
 extra information. In the status output, 'Anywhere' is synonymous with 'any'
-and '0.0.0.0/0'. Use \fBstatus raw\fR to see unprocessed output.
+and '0.0.0.0/0'.
+.TP
+\fBshow\fR
+show the running firewall in raw iptables format.
 .TP
 \fBallow\fR RULE
 allow RULE.  See \fBRULE SYNTAX\fR
@@ -248,7 +253,7 @@ simple rules. It is currently mainly used for host-based firewalls.
 The status command shows basic information about the state of the firewall, as
 well as rules managed via the \fBufw\fR command. It does not show rules from the
 rules files in #CONFIG_PREFIX#/ufw. To see the complete state of the firewall,
-users can \fBufw status raw\fR.  This displays the filter, nat, mangle and raw
+users can \fBufw show raw\fR.  This displays the filter, nat, mangle and raw
 tables using:
 
   iptables \-n \-L \-v \-x \-t <table>
