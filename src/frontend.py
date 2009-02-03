@@ -441,7 +441,7 @@ class UFWFrontend:
                 # Report the error
                 error(error_str)
 
-            res = _("Firewall is now active and enabled on system startup")
+            res = _("Firewall is active and enabled on system startup")
         else:
             try:
                 self.backend.stop_firewall()
