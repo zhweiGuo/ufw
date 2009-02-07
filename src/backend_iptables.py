@@ -721,6 +721,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Updates firewall with rule by:
         * appending the rule to the chain if new rule and firewall enabled
         * deleting the rule from the chain if found and firewall enabled
+        * inserting the rule if possible and firewall enabled
         * updating user rules file
         * reloading the user rules file if rule is modified
         '''
@@ -750,26 +751,41 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             else:
                 rules = self.rules6
 
+        if rule.position > 0:
+            if rule.remove:
+                err_msg = _("Cannot specify insert and delete")
+                raise UFWError(err_msg)
+            if rule.position < 1 or rule.position > len(rules):
+                err_msg = _("Cannot insert rule at position '%d'") % \
+                            rule.position
+                raise UFWError(err_msg)
+
         # First construct the new rules list
         try:
             rule.normalize()
         except Exception:
             raise
 
+        count = 1
+        inserted = False
         for r in rules:
             try:
                 r.normalize()
             except Exception:
                 raise
 
+            if count == rule.position:
+                inserted = True
+                newrules.append(rule)
+
             ret = UFWRule.match(r, rule)
-            if ret == 0 and not found:
+            if ret == 0 and not found and not inserted:
                 # If find the rule, add it if it's not to be removed, otherwise
                 # skip it.
                 found = True
                 if not rule.remove:
                     newrules.append(rule)
-            elif ret < 0 and not rule.remove:
+            elif ret < 0 and not rule.remove and not inserted:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
                 found = True
@@ -778,21 +794,24 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             else:
                 newrules.append(r)
 
-        # Add rule to the end if it was not already added.
-        if not found and not rule.remove:
-            newrules.append(rule)
+            count += 1
 
-        # Don't process non-existing or unchanged pre-exisiting rules
-        if not found and rule.remove and not self.dryrun:
-            rstr = _("Could not delete non-existent rule")
-            if rule.v6:
-                rstr += " (v6)"
-            return rstr
-        elif found and not rule.remove and not modified:
-            rstr = _("Skipping adding existing rule")
-            if rule.v6:
-                rstr += " (v6)"
-            return rstr
+        if not inserted:
+            # Add rule to the end if it was not already added.
+            if not found and not rule.remove:
+                newrules.append(rule)
+
+            # Don't process non-existing or unchanged pre-exisiting rules
+            if not found and rule.remove and not self.dryrun:
+                rstr = _("Could not delete non-existent rule")
+                if rule.v6:
+                    rstr += " (v6)"
+                return rstr
+            elif found and not rule.remove and not modified:
+                rstr = _("Skipping adding existing rule")
+                if rule.v6:
+                    rstr += " (v6)"
+                return rstr
 
         if rule.v6:
             self.rules6 = newrules
@@ -815,8 +834,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Operate on the chains
         if self._is_enabled() and not self.dryrun:
             flag = ""
-            if modified or self._need_reload(rule.v6):
-                rstr = _("Rule updated")
+            if modified or self._need_reload(rule.v6) or inserted:
+                rstr = _("Rule ")
+                if inserted:
+                    rstr += _("inserted")
+                else:
+                    rstr += _("updated")
                 if rule.v6:
                     rstr += " (v6)"
                 if allow_reload:

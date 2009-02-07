@@ -26,6 +26,17 @@ import ufw.util
 from ufw.util import error, warn
 from ufw.backend_iptables import UFWBackendIptables
 
+def allowed_command(cmd):
+    '''Return command if it is allowed, otherwise raise an exception'''
+    allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
+                    'logging', 'status', 'version', '--version', 'allow', \
+                    'deny', 'reject', 'limit', 'reload', 'show', 'insert' ]
+
+    if not cmd.lower() in allowed_cmds:
+        raise ValueError()
+
+    return cmd.lower()
+
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
     action = ""
@@ -36,6 +47,7 @@ def parse_command(argv):
     from_service = ""
     to_service = ""
     dryrun = False
+    insert_pos = ""
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
@@ -51,14 +63,23 @@ def parse_command(argv):
     if nargs < 2:
         raise ValueError()
 
-    allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
-                    'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'reject', 'limit', 'reload', 'show' ]
+    action = allowed_command(argv[1])
 
-    if not argv[1].lower() in allowed_cmds:
-        raise ValueError()
-    else:
-        action = argv[1].lower()
+    if action == "insert":
+        if nargs < 4:
+            raise ValueError()
+        insert_pos = argv[2]
+
+        # strip out 'insert NUM' and parse as normal
+        del argv[2]
+        del argv[1]
+        action = allowed_command(argv[1])
+        nargs = len(argv)
+
+        # error if use insert with non-rule commands
+        if action != "allow" and action != "deny" and action != "reject" and \
+           action != "limit":
+            raise ValueError()
 
     if action == "logging":
         if nargs < 3:
@@ -102,6 +123,11 @@ def parse_command(argv):
         rule = ufw.common.UFWRule(action, "any", "any")
         if remove:
             rule.remove = remove
+        elif insert_pos != "":
+            try:
+                rule.set_position(insert_pos)
+            except Exception:
+                raise
         if nargs == 3:
             # Short form where only app or port/proto is given
             if ufw.applications.valid_profile_name(argv[2]):
@@ -372,9 +398,11 @@ Commands:
  disable			disables the firewall
  default ARG			set default policy to ALLOW, DENY or REJECT
  logging ARG			set logging to ON or OFF
- allow|deny|reject RULE		allow, deny or reject RULE
- delete allow|deny|reject RULE	delete the allow/deny/reject RULE
- status				show firewall status
+ allow|deny|reject ARG		add allow, deny or reject RULE
+ delete RULE		 	delete the RULE
+ insert NUM RULE	 	insert RULE at NUM
+ status 			show firewall status
+ status numbered		show firewall status as numbered list of RULES
  show ARG			show firewall report
  version			display version information
 

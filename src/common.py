@@ -52,6 +52,7 @@ class UFWRule:
         self.dapp = ""
         self.sapp = ""
         self.action = ""
+        self.position = 0
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -252,6 +253,13 @@ class UFWRule:
             raise UFWError(err_msg)
         self.dst = tmp
         self._fix_anywhere()
+
+    def set_position(self, num):
+        '''Sets the position of the rule'''
+        if not re.match(r'^[0-9]+', num):
+            err_msg = _("Insert position '%s' is not a number") % (num)
+            raise UFWError(err_msg)
+        self.position = int(num)
 
     def normalize(self):
         '''Normalize src and dst to standard form'''
