@@ -666,7 +666,7 @@ Firewall stopped and disabled on system startup
 
 88: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 89: allow 53
@@ -741,7 +741,7 @@ Rule added (v6)
 
 102: status numbered
 WARN: Checks disabled
-Status: loaded
+Status: active
 
      To                         Action  From
      --                         ------  ----
@@ -837,7 +837,7 @@ Rule deleted (v6)
 
 116: status numbered
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 Setting IPV6 to no
@@ -848,7 +848,7 @@ Firewall stopped and disabled on system startup
 
 118: enable
 WARN: Checks disabled
-Firewall started and enabled on system startup
+Firewall is active and enabled on system startup
 
 
 119: allow 53
@@ -908,7 +908,7 @@ Rule added
 
 130: status numbered
 WARN: Checks disabled
-Status: loaded
+Status: active
 
      To                         Action  From
      --                         ------  ----
@@ -983,7 +983,7 @@ Rule deleted
 
 142: status numbered
 WARN: Checks disabled
-Status: loaded
+Status: active
 
 
 143: disable
