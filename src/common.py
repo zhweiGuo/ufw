@@ -69,16 +69,17 @@ class UFWRule:
     def dup_rule(self):
         '''Return a duplicate of a rule'''
         rule = UFWRule(self.action, self.protocol)
-        rule.dport = self.dport
-        rule.sport = self.sport
-        rule.dst = self.dst
-        rule.src = self.src
         rule.remove = self.remove
         rule.updated = self.updated
         rule.v6 = self.v6
+        rule.dst = self.dst
+        rule.src = self.src
+        rule.dport = self.dport
+        rule.sport = self.sport
         rule.multi = self.multi
         rule.dapp = self.dapp
         rule.sapp = self.sapp
+        rule.position = self.position
 
         return rule
 
@@ -256,7 +257,7 @@ class UFWRule:
 
     def set_position(self, num):
         '''Sets the position of the rule'''
-        if not re.match(r'^[0-9]+', num):
+        if not re.match(r'^[0-9]+', str(num)):
             err_msg = _("Insert position '%s' is not a number") % (num)
             raise UFWError(err_msg)
         self.position = int(num)

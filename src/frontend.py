@@ -592,19 +592,46 @@ class UFWFrontend:
             count = i
             try:
                 if self.backend.use_ipv6():
+                    num_v4 = self.backend.get_rules_count(False)
                     if ip_version == "v4":
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "v6":
                         r.set_v6(True)
+                        if r.position > num_v4:
+                            r.set_position(r.position - num_v4)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "both":
+                        original_p = r.position
                         r.set_v6(False)
+                        if r.position > num_v4:
+			    # The user specified a v6 rule, so try to find a
+			    # match in the v4 rules and use its position.
+                            p = self.backend.find_other_position(r.position,\
+                                                                 True)
+                            if p > 0:
+                                r.set_position(p)
+                            else:
+                                # if not found, then add the rule
+                                r.set_position(0)
                         tmp = self.backend.set_rule(r)
+                        r.set_position(original_p)
+
                         r.set_v6(True)
+                        if r.position > 0 and r.position <= num_v4:
+			    # The user specified a v4 rule, so try to find a
+			    # match in the v6 rules and use its position.
+                            p = self.backend.find_other_position(r.position, \
+                                                                 False)
+                            if p > 0:
+                                r.set_position(p)
+                            else:
+                                # if not found, then add the rule
+                                r.set_position(0)
                         if tmp != "":
                             tmp += "\n"
                         tmp += self.backend.set_rule(r)
+                        r.set_position(original_p)
                     else:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)

@@ -392,6 +392,40 @@ class UFWBackend:
         err_msg = _("Could not find a profile matching '%s'") % (str)
         raise UFWError(err_msg)
 
+    def find_other_position(self, position, v6):
+        '''Return the position in the other list of the rule with the position
+           of the given list. For example, find_other_position(4, True) will
+	   return the position of the rule in the ipv4 list matching the rule
+           at position '4' in the ipv6 list.
+        '''
+        # Invalid search (v6 rule with too low position)
+        if v6 and position <= len(self.rules):
+            raise ValueError()
+
+        # Invalid search (v4 rule with too high position)
+        if not v6 and position > len(self.rules):
+            raise ValueError()
+
+        if position < 1:
+            raise ValueError()
+
+        rules = []
+        if v6:
+            rules = self.rules
+            match_rule = self.rules6[position - 1].dup_rule()
+            match_rule.set_v6(False)
+        else:
+            rules = self.rules6
+            match_rule = self.rules[position - 1].dup_rule()
+            match_rule.set_v6(True)
+
+        count = 1
+        for r in rules:
+            if UFWRule.match(r, match_rule) == 0:
+                return count
+            count += 1
+        return 0
+
     # API overrides
     def get_loglevel(self):
         raise UFWError("UFWBackend.get_loglevel: need to override")
@@ -426,4 +460,7 @@ class UFWBackend:
     def get_app_rules_from_system(self, template, v6):
         raise UFWError("UFWBackend.get_app_rules_from_system: need to " + \
                        "override")
+
+    def get_rules_count(self, v6):
+        raise UFWError("UFWBackend.get_rules_count: need to override")
 

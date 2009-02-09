@@ -341,6 +341,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             return _("Status: active%s") % (str)
 
+    def get_rules_count(self, v6):
+        '''Return number of rules'''
+        if v6:
+            return len(self.rules6)
+        return len(self.rules)
+
     def stop_firewall(self):
         '''Stops the firewall'''
         err_msg = _("problem running")
@@ -745,20 +751,20 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         delete = False
 
         rules = self.rules
+        ipv6_offset = len(rules)
+        position = rule.position
         if rule.v6:
             if self.iptables_version < "1.4" and (rule.dapp != "" or rule.sapp != ""):
                 return _("Skipping IPv6 application rule. Need at least iptables 1.4")
-            else:
-                rules = self.rules6
+            rules = self.rules6
+            position = rule.position - len(self.rules)
 
-        if rule.position > 0:
-            if rule.remove:
-                err_msg = _("Cannot specify insert and delete")
-                raise UFWError(err_msg)
-            if rule.position < 1 or rule.position > len(rules):
-                err_msg = _("Cannot insert rule at position '%d'") % \
-                            rule.position
-                raise UFWError(err_msg)
+        if position > 0 and rule.remove:
+            err_msg = _("Cannot specify insert and delete")
+            raise UFWError(err_msg)
+        if position > len(rules):
+            err_msg = _("Cannot insert rule at position '%d'") % position
+            raise UFWError(err_msg)
 
         # First construct the new rules list
         try:
@@ -774,7 +780,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             except Exception:
                 raise
 
-            if count == rule.position:
+            if count == position:
                 inserted = True
                 newrules.append(rule)
 
