@@ -758,6 +758,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 return _("Skipping IPv6 application rule. Need at least iptables 1.4")
             rules = self.rules6
             position = rule.position - len(self.rules)
+            if position < 0:
+                position = 0
 
         if position > 0 and rule.remove:
             err_msg = _("Cannot specify insert and delete")

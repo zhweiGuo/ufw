@@ -615,7 +615,12 @@ class UFWFrontend:
                                 # if not found, then add the rule
                                 r.set_position(0)
                         tmp = self.backend.set_rule(r)
-                        r.set_position(original_p)
+
+                        # we need to readjust this since the number of ipv4
+                        # rules just changed with the above set_rule
+                        offset = original_p - num_v4
+                        num_v4 = self.backend.get_rules_count(False)
+                        r.set_position(num_v4 + offset)
 
                         r.set_v6(True)
                         if r.position > 0 and r.position <= num_v4:
