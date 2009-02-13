@@ -924,7 +924,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.loglevels[level] >= self.loglevels["low"]:
             largs = []
             # log levels under high use limit
-            if self.loglevels[level] < self.loglevels["high"]
+            if self.loglevels[level] < self.loglevels["high"]:
                 largs = limit_args
             for c in chains['after']:
                 for t in ['input', 'output', 'forward']:
