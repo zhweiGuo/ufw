@@ -52,7 +52,7 @@ flush-all)
     flush_builtins || exit "$?"
     ;;
 *)
-    echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload|status}"
+    echo "Usage: /etc/init.d/ufw {start|stop|restart|force-reload|force-stop|flush-all|status}"
     exit 1
     ;;
 esac
