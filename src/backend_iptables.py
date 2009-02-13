@@ -41,32 +41,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         ufw.backend.UFWBackend.__init__(self, "iptables", d, files)
 
-    def get_loglevel(self):
-        '''Gets current log level of firewall'''
-        level = 1
-        rstr = _("Logging: on")
-        for f in [self.files['rules'], self.files['rules6'], \
-                  self.files['before_rules'], self.files['before6_rules'], \
-                  self.files['after_rules'], self.files['after6_rules']]:
-            try:
-                orig = ufw.util.open_file_read(f)
-            except Exception:
-                err_msg = _("Couldn't open '%s' for reading") % (f)
-                raise UFWError(err_msg)
-
-            for line in orig:
-                # If find one occurence of the comment_str, we know the user
-                # ran "logging off"
-                if self.comment_str in line:
-                    rstr = _("Logging: off")
-                    level = 0
-                    orig.close()
-                    break
-
-            orig.close()
-
-        return (level, rstr)
-
     def get_default_policy(self):
         '''Get current policy'''
         rstr = _("Default:")
@@ -142,43 +116,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         rstr += _("(be sure to update your rules accordingly)")
 
         return rstr
-
-    def set_loglevel(self, level):
-        '''Sets log level of firewall'''
-        for f in [self.files['rules'], self.files['rules6'], \
-                  self.files['before_rules'], self.files['before6_rules'], \
-                  self.files['after_rules'], self.files['after6_rules']]:
-            try:
-                fns = ufw.util.open_files(f)
-            except Exception:
-                raise
-            fd = fns['tmp']
-
-            pat = re.compile(r'^-.*\sLOG\s')
-            if level == "on":
-                pat = re.compile(r'^#.*\sLOG\s')
-
-            if not self.dryrun:
-                for line in fns['orig']:
-                    if pat.search(line):
-                        if level == "off":
-                            os.write(fd, self.comment_str + ' ' + line)
-                        else:
-                            pat_comment = re.compile(r"^" + \
-                                                     self.comment_str + "\s*")
-                            os.write(fd, pat_comment.sub('', line))
-                    else:
-                        os.write(fd, line)
-
-            if self.dryrun:
-                ufw.util.close_files(fns, False)
-            else:
-                ufw.util.close_files(fns)
-
-        if level == "off":
-            return _("Logging disabled")
-        else:
-            return _("Logging enabled")
 
     def get_running_raw(self):
         '''Show current running status of firewall'''

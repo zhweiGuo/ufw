@@ -30,7 +30,7 @@ def allowed_command(cmd):
     '''Return command if it is allowed, otherwise raise an exception'''
     allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
                     'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'reject', 'limit', 'reload', 'show', 'insert' ]
+                    'deny', 'reject', 'limit', 'reload', 'show' ]
 
     if not cmd.lower() in allowed_cmds:
         raise ValueError()
@@ -48,6 +48,8 @@ def parse_command(argv):
     to_service = ""
     dryrun = False
     insert_pos = ""
+    logtype = ""
+    loglevel = ""
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
@@ -81,13 +83,31 @@ def parse_command(argv):
            action != "limit":
             raise ValueError()
 
+    if action == "log" or action == 'log-all':
+        if nargs < 3:
+            raise ValueError()
+        logtype = action
+
+        # strip out 'log' or 'log-all' and parse as normal
+        del argv[1]
+        action = allowed_command(argv[1])
+        nargs = len(argv)
+
+        # error if use insert with non-rule commands
+        if action != "allow" and action != "deny" and action != "reject" and \
+           action != "limit":
+            raise ValueError()
+
     if action == "logging":
         if nargs < 3:
             raise ValueError()
         elif argv[2].lower() == "off":
             action = "logging-off"
-        elif argv[2].lower() == "on":
+        elif argv[2].lower() == "on" or argv[2].lower() == "low" or \
+             argv[2].lower() == "medium" or argv[2].lower() == "high":
             action = "logging-on"
+            if argv[2].lower() != "on":
+                action += "_" + argv[2].lower()
         else:
             raise ValueError()
 
@@ -120,7 +140,7 @@ def parse_command(argv):
         if nargs < 3 or nargs > 12:
             raise ValueError()
 
-        rule = ufw.common.UFWRule(action, "any", "any")
+        rule = ufw.common.UFWRule(action, "any", "any", logtype=logtype)
         if remove:
             rule.remove = remove
         elif insert_pos != "":
@@ -699,8 +719,12 @@ class UFWFrontend:
            based on return values from parse_command().
         '''
         res = ""
-        if action == "logging-on":
-            res = self.set_loglevel("on")
+        if action.startswith("logging-on"):
+            tmp = action.split('_')
+            if len(tmp) > 1:
+                res = self.set_loglevel(tmp[1])
+            else:
+                res = self.set_loglevel("on")
         elif action == "logging-off":
             res = self.set_loglevel("off")
         elif action == "default-allow":
