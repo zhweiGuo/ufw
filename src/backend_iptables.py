@@ -931,7 +931,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     msg = "[UFW BLOCK %s] " % (t.upper())
                     if c.endswith(t) and ( \
                        self.defaults['default_'+ t +'policy'] == "reject" or \
-                       self.defaults['default_'+ t +'policy'] == "deny":
+                       self.defaults['default_'+ t +'policy'] == "deny"):
                         try:
                             self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
                                                 '--log-prefix', msg] + \
