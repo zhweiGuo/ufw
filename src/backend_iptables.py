@@ -930,8 +930,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 for t in ['input', 'output', 'forward']:
                     msg = "[UFW BLOCK %s] " % (t.upper())
                     if c.endswith(t) and ( \
-                       self.defaults['default_'+ t +'policy'] == "reject" or \
-                       self.defaults['default_'+ t +'policy'] == "deny"):
+                       self.defaults['default_'+ t +'_policy'] == "reject" or \
+                       self.defaults['default_'+ t +'_policy'] == "deny"):
                         try:
                             self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
                                                 '--log-prefix', msg] + \
@@ -943,7 +943,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # log all traffic on all 'before' logging chains
         if self.loglevels[level] >= self.loglevels["high"]:
             largs = []
-            if self.loglevels[level] < self.loglevels["maximum"]
+            if self.loglevels[level] < self.loglevels["maximum"]:
                 # log level high logs all new connections
                 largs = limit_args
             msg = "[UFW AUDIT] "

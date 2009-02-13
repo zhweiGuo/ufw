@@ -269,8 +269,9 @@ class UFWRule:
         if logtype.lower() == "log" or logtype.lower() == "log-all" or \
            logtype == "":
             self.logtype = logtype.lower()
-        err_msg = _("Invalid log type '%s'") % (logtype)
-        raise UFWError(err_msg)
+        else:
+            err_msg = _("Invalid log type '%s'") % (logtype)
+            raise UFWError(err_msg)
 
     def normalize(self):
         '''Normalize src and dst to standard form'''
