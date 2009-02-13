@@ -77,7 +77,7 @@ chains_command() {
         exe="ip6tables"
     fi
 
-    for c in ufw$type-not-local ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-reject-forward ufw$type-after-forward ufw$type-user-forward ufw$type-before-forward ufw$type-reject-output ufw$type-after-output ufw$type-user-output ufw$type-before-output ; do
+    for c in ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
             $exe $flag $c || true
@@ -95,7 +95,7 @@ delete_chains() {
     # so that the primary chains don't leave the built-in chains just to come
     # back later in a different place. This means that some (empty) chains will
     # linger until the next boot after disabling ufw.
-    for c in ufw$type-not-local ufw$type-user-limit-accept ufw$type-user-limit ufw$type-user-input ufw$type-user-forward ufw$type-user-output ; do
+    for c in ufw$type-not-local ufw$type-user-logging-input ufw$type-user-logging-output ufw$type-user-logging-forward ufw$type-user-limit-accept ufw$type-user-limit ufw$type-user-input ufw$type-user-forward ufw$type-user-output ; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
             $exe -X $c || true
@@ -188,6 +188,21 @@ ufw_start() {
                 $exe -N ufw${type}-not-local || error="yes"
             fi
 
+            # setup ufw${type}-before-logging-* chains
+            if ! $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-before-logging-input || error="yes"
+                $exe -N ufw${type}-before-logging-output || error="yes"
+                $exe -N ufw${type}-before-logging-forward || error="yes"
+                $exe -A INPUT -j ufw${type}-before-logging-input || error="yes"
+                $exe -A OUTPUT -j ufw${type}-before-logging-output || error="yes"
+                $exe -A FORWARD -j ufw${type}-before-logging-forward || error="yes"
+            fi
+
+            # now exit from the chain
+            $exe -A ufw${type}-before-logging-input -j RETURN || error="yes"
+            $exe -A ufw${type}-before-logging-output -j RETURN || error="yes"
+            $exe -A ufw${type}-before-logging-forward -j RETURN || error="yes"
+
             # setup ufw${type}-before-* chains
             if ! $exe -L ufw${type}-before-input -n >/dev/null 2>&1 ; then
                 $exe -N ufw${type}-before-input || error="yes"
@@ -227,6 +242,17 @@ ufw_start() {
             $exe -A ufw${type}-before-output -j RETURN || error="yes"
             $exe -A ufw${type}-before-forward -j RETURN || error="yes"
 
+            # setup ufw${type}-user-logging-* chains
+            if ! $exe -L ufw${type}-user-logging-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-user-logging-input || error="yes"
+                $exe -N ufw${type}-user-logging-output || error="yes"
+                $exe -N ufw${type}-user-logging-forward || error="yes"
+            fi
+            # now exit from the chain
+            $exe -A ufw${type}-user-logging-input -j RETURN || error="yes"
+            $exe -A ufw${type}-user-logging-output -j RETURN || error="yes"
+            $exe -A ufw${type}-user-logging-forward -j RETURN || error="yes"
+
             # setup ufw${type}-after-* chains
             if ! $exe -L ufw${type}-after-input -n >/dev/null 2>&1 ; then
                 $exe -N ufw${type}-after-input || error="yes"
@@ -248,6 +274,21 @@ ufw_start() {
             $exe -A ufw${type}-after-output -j RETURN || error="yes"
             $exe -A ufw${type}-after-forward -j RETURN || error="yes"
 
+            # setup ufw${type}-after-logging-* chains
+            if ! $exe -L ufw${type}-after-logging-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-after-logging-input || error="yes"
+                $exe -N ufw${type}-after-logging-output || error="yes"
+                $exe -N ufw${type}-after-logging-forward || error="yes"
+                $exe -A INPUT -j ufw${type}-after-logging-input || error="yes"
+                $exe -A OUTPUT -j ufw${type}-after-logging-output || error="yes"
+                $exe -A FORWARD -j ufw${type}-after-logging-forward || error="yes"
+            fi
+            # now exit from the chain
+            $exe -A ufw${type}-after-logging-input -j RETURN || error="yes"
+            $exe -A ufw${type}-after-logging-output -j RETURN || error="yes"
+            $exe -A ufw${type}-after-logging-forward -j RETURN || error="yes"
+
+
             # now setup the REJECT chains
             if ! $exe -L ufw${type}-reject-input -n >/dev/null 2>&1 ; then
                 $exe -N ufw${type}-reject-input || error="yes"
@@ -257,6 +298,7 @@ ufw_start() {
                 $exe -A OUTPUT -j ufw${type}-reject-output || error="yes"
                 $exe -A FORWARD -j ufw${type}-reject-forward || error="yes"
             fi
+
             if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
                 $exe -A ufw${type}-reject-input -j REJECT || error="yes"
             fi

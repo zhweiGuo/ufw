@@ -66,12 +66,29 @@ Chains
 ufw uses several chains to allow ease of use and flexibility. The chains are
 (more or less) organized as follows:
 
-INPUT -> ufw-before-input -> ufw-user-input -> ufw-after-input ->
-  ufw-reject-input
-OUTPUT -> ufw-before-output -> ufw-user-output -> ufw-after-output ->
-  ufw-reject-output
-FORWARD -> ufw-before-forward -> ufw-user-forward -> ufw-after-forward ->
-  ufw-reject-forward
+INPUT ->
+  ufw-before-logging-input ->
+    ufw-before-input ->
+      ufw-user-input -> ufw-user-logging-input (possibly) ->
+        ufw-after-input ->
+          ufw-after-logging-input ->
+            ufw-reject-input -> return to INPUT
+
+OUTPUT ->
+  ufw-before-logging-output ->
+    ufw-before-output ->
+      ufw-user-output ->
+        ufw-after-output ->
+          ufw-after-logging-output ->
+            ufw-reject-output -> return to OUTPUT
+
+FORWARD ->
+  ufw-before-logging-forward ->
+    ufw-before-forward ->
+      ufw-user-forward ->
+        ufw-after-forward ->
+          ufw-after-logging-forward ->
+            ufw-reject-forward -> return to FORWARD
 
 The 'before' chains are setup in 'before.rules', the 'after' chains in
 'after.rules' and the 'user' chains are maintained by ufw. If an administrator
@@ -94,6 +111,7 @@ built-in chains will remain untouched. This also means that these primary
 chains will stay in the table, even after disabling ufw. This is to make sure
 that the primary chains don't move around other non-ufw rules and chains. To
 completely flush the built-in chains with this configuration, you can use:
+
 # /usr/share/ufw/ufw-init flush-all
 
 Alternately, ufw may also take full control of the firewall by setting

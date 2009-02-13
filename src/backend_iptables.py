@@ -41,32 +41,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         ufw.backend.UFWBackend.__init__(self, "iptables", d, files)
 
-    def get_loglevel(self):
-        '''Gets current log level of firewall'''
-        level = 1
-        rstr = _("Logging: on")
-        for f in [self.files['rules'], self.files['rules6'], \
-                  self.files['before_rules'], self.files['before6_rules'], \
-                  self.files['after_rules'], self.files['after6_rules']]:
-            try:
-                orig = ufw.util.open_file_read(f)
-            except Exception:
-                err_msg = _("Couldn't open '%s' for reading") % (f)
-                raise UFWError(err_msg)
-
-            for line in orig:
-                # If find one occurence of the comment_str, we know the user
-                # ran "logging off"
-                if self.comment_str in line:
-                    rstr = _("Logging: off")
-                    level = 0
-                    orig.close()
-                    break
-
-            orig.close()
-
-        return (level, rstr)
-
     def get_default_policy(self):
         '''Get current policy'''
         rstr = _("Default:")
@@ -142,43 +116,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         rstr += _("(be sure to update your rules accordingly)")
 
         return rstr
-
-    def set_loglevel(self, level):
-        '''Sets log level of firewall'''
-        for f in [self.files['rules'], self.files['rules6'], \
-                  self.files['before_rules'], self.files['before6_rules'], \
-                  self.files['after_rules'], self.files['after6_rules']]:
-            try:
-                fns = ufw.util.open_files(f)
-            except Exception:
-                raise
-            fd = fns['tmp']
-
-            pat = re.compile(r'^-.*\sLOG\s')
-            if level == "on":
-                pat = re.compile(r'^#.*\sLOG\s')
-
-            if not self.dryrun:
-                for line in fns['orig']:
-                    if pat.search(line):
-                        if level == "off":
-                            os.write(fd, self.comment_str + ' ' + line)
-                        else:
-                            pat_comment = re.compile(r"^" + \
-                                                     self.comment_str + "\s*")
-                            os.write(fd, pat_comment.sub('', line))
-                    else:
-                        os.write(fd, line)
-
-            if self.dryrun:
-                ufw.util.close_files(fns, False)
-            else:
-                ufw.util.close_files(fns)
-
-        if level == "off":
-            return _("Logging disabled")
-        else:
-            return _("Logging enabled")
 
     def get_running_raw(self):
         '''Show current running status of firewall'''
@@ -923,4 +860,111 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 app_rules.append(tmp)
 
         return app_rules
+
+    def _chain_cmd(self, chain, args):
+        '''Perform command on chain'''
+        exe = "iptables"
+        if chain.startswith("ufw6"):
+            exe = "ip6tables"
+        (rc, out) = cmd([exe] + args)
+        if rc != 0:
+           dbg_msg = "%s %s %s" % (exe, args)
+           debug(dbg_msg)
+           err_msg = _("Could not perform '%s'") % (args)
+           raise UFWError(err_msg)
+
+    def update_loglevel(self, level):
+        '''Update loglevel of running firewall'''
+        if not self._is_enabled():
+            return
+
+        if level not in ['off', 'low', 'medium', 'high']:
+            err_msg = _("Invalid log level '%s'") % (level)
+            raise UFWError(err_msg)
+
+        exe = "iptables"
+        chain_prefix = "ufw"
+        chains = {'before': [], 'user': [], 'after': []}
+        for ver in ['4', '6']:
+            exe = "iptables"
+            chain_prefix = "ufw"
+            if self.use_ipv6():
+                exe = "ip6tables"
+                chain_prefix += ver
+            for loc in ['before', 'user', 'after']:
+                for target in ['input', 'output', 'forward']:
+                   chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
+                   chains[loc].append(chain)
+
+        # make sure all the chains are here, it's redundant but helps make
+        # sure the chains are in a consistent state
+        err_msg = _("Could not update running firewall")
+        for c in chains['before'] + chains['user'] + chains['after']:
+            try:
+                self._chain_cmd(c, ['-L', c, '-n'])
+            except:
+                raise UFWError(err_msg)
+
+        # Flush all the logging chains
+        try:
+            for c in chains['before'] + chains['user'] + chains['after']:
+                self._chain_cmd(c, ['-F', c])
+                self._chain_cmd(c, ['-Z', c])
+                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
+        except:
+            raise UFWError(err_msg)
+
+        # No logging in the default chains
+        if level == "off":
+            return
+
+        limit_args = ['-m', 'limit', '--limit', '3/min', '--limit-burst', '10']
+
+        # log levels of low and higher log blocked packets
+        if self.loglevels[level] >= self.loglevels["low"]:
+            largs = []
+            # log levels under high use limit
+            if self.loglevels[level] < self.loglevels["high"]:
+                largs = limit_args
+            for c in chains['after']:
+                for t in ['input', 'output', 'forward']:
+                    msg = "[UFW BLOCK %s] " % (t.upper())
+                    if c.endswith(t) and ( \
+                       self.defaults['default_'+ t +'_policy'] == "reject" or \
+                       self.defaults['default_'+ t +'_policy'] == "deny"):
+                        try:
+                            self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
+                                                '--log-prefix', msg] + \
+                                                largs)
+                        except:
+                            raise
+
+
+        # log all traffic on all 'before' logging chains
+        if self.loglevels[level] >= self.loglevels["high"]:
+            largs = []
+            if self.loglevels[level] < self.loglevels["maximum"]:
+                # log level high logs all new connections
+                largs = limit_args
+            msg = "[UFW AUDIT] "
+            for c in chains['before']:
+                try:
+                    self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
+                                        '--log-prefix', msg] + \
+                                        largs)
+                except:
+                    raise UFWError(err_msg)
+
+        elif self.loglevels[level] >= self.loglevels["medium"]:
+            # log level high logs all incoming connections, with limit
+            msg = "[UFW AUDIT] "
+            for c in chains['before']:
+                try:
+                    self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
+                                        '--log-prefix', msg] + \
+                                        limit_args + \
+                                        ['-m', 'state', '--state', 'NEW'])
+                except:
+                    raise UFWError(err_msg)
+
 

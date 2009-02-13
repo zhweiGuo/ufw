@@ -38,7 +38,7 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0"):
+                 sport="any", src="0.0.0.0/0", logtype=""):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -53,6 +53,7 @@ class UFWRule:
         self.sapp = ""
         self.action = ""
         self.position = 0
+        self.logtype = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -60,6 +61,7 @@ class UFWRule:
             self.set_port(sport, "src")
             self.set_src(src)
             self.set_dst(dst)
+            self.set_logtype(logtype)
         except UFWError:
             raise
 
@@ -261,6 +263,15 @@ class UFWRule:
             err_msg = _("Insert position '%s' is not a valid position") % (num)
             raise UFWError(err_msg)
         self.position = int(num)
+
+    def set_logtype(self, logtype):
+        '''Sets logtype of the rule'''
+        if logtype.lower() == "log" or logtype.lower() == "log-all" or \
+           logtype == "":
+            self.logtype = logtype.lower()
+        else:
+            err_msg = _("Invalid log type '%s'") % (logtype)
+            raise UFWError(err_msg)
 
     def normalize(self):
         '''Normalize src and dst to standard form'''
