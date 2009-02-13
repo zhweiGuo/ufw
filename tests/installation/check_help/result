@@ -7,9 +7,12 @@ Commands:
  disable			disables the firewall
  default ARG			set default policy to ALLOW, DENY or REJECT
  logging ARG			set logging to ON or OFF
- allow|deny|reject RULE		allow, deny or reject RULE
- delete allow|deny|reject RULE	delete the allow/deny/reject RULE
- status				show firewall status
+ allow|deny|reject ARG		add allow, deny or reject RULE
+ delete RULE		 	delete the RULE
+ insert NUM RULE	 	insert RULE at NUM
+ status 			show firewall status
+ status numbered		show firewall status as numbered list of RULES
+ show ARG			show firewall report
  version			display version information
 
 Application profile commands:

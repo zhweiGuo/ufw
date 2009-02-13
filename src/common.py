@@ -52,6 +52,7 @@ class UFWRule:
         self.dapp = ""
         self.sapp = ""
         self.action = ""
+        self.position = 0
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -68,16 +69,17 @@ class UFWRule:
     def dup_rule(self):
         '''Return a duplicate of a rule'''
         rule = UFWRule(self.action, self.protocol)
-        rule.dport = self.dport
-        rule.sport = self.sport
-        rule.dst = self.dst
-        rule.src = self.src
         rule.remove = self.remove
         rule.updated = self.updated
         rule.v6 = self.v6
+        rule.dst = self.dst
+        rule.src = self.src
+        rule.dport = self.dport
+        rule.sport = self.sport
         rule.multi = self.multi
         rule.dapp = self.dapp
         rule.sapp = self.sapp
+        rule.position = self.position
 
         return rule
 
@@ -252,6 +254,13 @@ class UFWRule:
             raise UFWError(err_msg)
         self.dst = tmp
         self._fix_anywhere()
+
+    def set_position(self, num):
+        '''Sets the position of the rule'''
+        if not re.match(r'^[0-9]+', str(num)):
+            err_msg = _("Insert position '%s' is not a valid position") % (num)
+            raise UFWError(err_msg)
+        self.position = int(num)
 
     def normalize(self):
         '''Normalize src and dst to standard form'''

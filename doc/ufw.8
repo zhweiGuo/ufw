@@ -15,11 +15,13 @@ ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|raw]
+ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|reject|limit\fR PORT[/protocol]
+ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] \fBallow|deny|reject|limit\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR PORT[/protocol]
+.TP
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
@@ -54,22 +56,28 @@ toggle logging. Logged packets use the LOG_KERN syslog facility.
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
 extra information. In the status output, 'Anywhere' is synonymous with 'any'
-and '0.0.0.0/0'. Use \fBstatus raw\fR to see unprocessed output.
+and '0.0.0.0/0'.
 .TP
-\fBallow\fR RULE
-allow RULE.  See \fBRULE SYNTAX\fR
+\fBshow\fR
+show the running firewall in raw iptables format.
 .TP
-\fBdeny\fR RULE
-deny RULE.  See \fBRULE SYNTAX\fR
+\fBallow\fR ARGS
+add allow rule.  See \fBRULE SYNTAX\fR
 .TP
-\fBreject\fR RULE
-reject RULE.  See \fBRULE SYNTAX\fR
+\fBdeny\fR ARGS
+add deny rule.  See \fBRULE SYNTAX\fR
 .TP
-\fBlimit\fR RULE
-limit RULE.  Currently only IPv4 is supported.  See \fBRULE SYNTAX\fR
+\fBreject\fR ARGS
+add reject rule.  See \fBRULE SYNTAX\fR
 .TP
-\fBdelete\fR allow|deny|reject|limit RULE
-deletes the corresponding allow/deny/limit RULE
+\fBlimit\fR ARGS
+add limit rule.  Currently only IPv4 is supported.  See \fBRULE SYNTAX\fR
+.TP
+\fBdelete\fR RULE
+deletes the corresponding RULE
+.TP
+\fBinsert\fR NUM RULE
+insert the corresponding RULE as rule number NUM
 
 .SH "RULE SYNTAX"
 .PP
@@ -140,6 +148,17 @@ example, if the original rule was:
 Use this to delete it:
 
   ufw delete deny 80/tcp
+
+.PP
+To insert a rule, specify the new rule as normal, but prefix the rule with
+the rule number to insert. For example, if you have four rules, and you want
+to insert a new rule as rule number three, use:
+
+  ufw insert 3 deny to any port 22 from 10.0.0.135 proto tcp
+
+To see a list of numbered rules, use:
+
+  ufw status numbered
 
 .SH EXAMPLES
 .PP
@@ -248,7 +267,7 @@ simple rules. It is currently mainly used for host-based firewalls.
 The status command shows basic information about the state of the firewall, as
 well as rules managed via the \fBufw\fR command. It does not show rules from the
 rules files in #CONFIG_PREFIX#/ufw. To see the complete state of the firewall,
-users can \fBufw status raw\fR.  This displays the filter, nat, mangle and raw
+users can \fBufw show raw\fR.  This displays the filter, nat, mangle and raw
 tables using:
 
   iptables \-n \-L \-v \-x \-t <table>

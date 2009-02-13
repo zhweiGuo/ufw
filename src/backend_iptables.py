@@ -180,8 +180,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             return _("Logging enabled")
 
-    def get_status_raw(self):
-        '''Show current raw status of firewall'''
+    def get_running_raw(self):
+        '''Show current running status of firewall'''
         if self.dryrun:
             out = "> " + _("Checking raw iptables\n")
             out += "> " + _("Checking raw ip6tables\n")
@@ -205,14 +205,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return out
 
-
-    def get_status(self, verbose=False):
-        '''Show current status of firewall'''
+    def get_status(self, verbose=False, show_count=False):
+        '''Show ufw managed rules'''
         out = ""
         out6 = ""
         if self.dryrun:
+            #out = "> " + _("Getting IPv4 rules\n")
             out = "> " + _("Checking iptables\n")
             if self.use_ipv6():
+                #out += "> " + _("Getting IPv6 rules\n")
                 out += "> " + _("Checking ip6tables\n")
             return out
 
@@ -222,48 +223,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return _("Status: inactive")
 
         err_msg = _("problem running")
-
-        # Get the output of iptables for parsing
-        (rc, out) = cmd(['iptables', '-L', '-n'])
-        if rc != 0:
-            raise UFWError(err_msg + " iptables")
-
         if self.use_ipv6():
             (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
             if rc != 0:
                 raise UFWError(err_msg + " ip6tables")
-            if out6 == "":
-                return out6
 
         if out == "" and out6 == "":
             return _("Status: active")
 
         str = ""
-        rules = []
-        pat_chain = re.compile(r'^Chain ')
-        pat_target = re.compile(r'^target')
-        for type in ["v4", "v6"]:
-            pat_ufw = re.compile(r'^Chain ufw-user-input')
-            if type == "v6":
-                pat_ufw = re.compile(r'^Chain ufw6-user-input')
-            lines = out
-            if type == "v6":
-                lines = out6
-            in_ufw_input = False
-            for line in lines.split('\n'):
-                if pat_ufw.search(line):
-                    in_ufw_input = True
-                    continue
-                elif pat_chain.search(line):
-                    in_ufw_input = False
-                    continue
-                elif pat_target.search(line):
-                    pass
-                elif in_ufw_input:
-                    r = self._parse_iptables_status(line, type)
-                    if r is not None:
-                        rules.append(r)
-
+        rules = self.rules + self.rules6
+        #rules = self._read_running()
+        count = 1
         app_rules = {}
         for r in rules:
             location = {}
@@ -344,11 +315,19 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
 
+            if show_count:
+                str += "[%2d] " % (count)
             str += "%-26s %-8s%s\n" % (location['dst'], r.action.upper(), \
                     location['src'])
+            count += 1
 
         if str != "":
-            header = "\n\n%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
+            header = "\n\n"
+            if show_count:
+                header += "     "
+            header += "%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
+            if show_count:
+                header += "     "
             header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
             str = header + str
 
@@ -361,6 +340,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                                      app_policy_str, str)
         else:
             return _("Status: active%s") % (str)
+
+    def get_rules_count(self, v6):
+        '''Return number of rules'''
+        if v6:
+            return len(self.rules6)
+        return len(self.rules)
 
     def stop_firewall(self):
         '''Stops the firewall'''
@@ -613,6 +598,53 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             orig.close()
 
+    def _read_running(self):
+        '''Return a list of rules from the running firewall'''
+# TODO-- TESTME
+        err_msg = _("problem running")
+
+        # Get the output of iptables for parsing
+        (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
+        if rc != 0:
+            raise UFWError(err_msg + " iptables")
+
+        if self.use_ipv6():
+            (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
+            if rc != 0:
+                raise UFWError(err_msg + " ip6tables")
+            if out6 == "":
+                return out6
+
+        if out == "" and out6 == "":
+            return []
+
+        rules = []
+        pat_chain = re.compile(r'^Chain ')
+        pat_target = re.compile(r'^target')
+        for type in ["v4", "v6"]:
+            pat_ufw = re.compile(r'^Chain ufw-user-input')
+            if type == "v6":
+                pat_ufw = re.compile(r'^Chain ufw6-user-input')
+            lines = out
+            if type == "v6":
+                lines = out6
+            in_ufw_input = False
+            for line in lines.split('\n'):
+                if pat_ufw.search(line):
+                    in_ufw_input = True
+                    continue
+                elif pat_chain.search(line):
+                    in_ufw_input = False
+                    continue
+                elif pat_target.search(line):
+                    pass
+                elif in_ufw_input:
+                    r = self._parse_iptables_status(line, type)
+                    if r is not None:
+                        rules.append(r)
+
+        return rules
+
     def _write_rules(self, v6=False):
         '''Write out new rules to file to user chain file'''
         rules_file = self.files['rules']
@@ -695,6 +727,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Updates firewall with rule by:
         * appending the rule to the chain if new rule and firewall enabled
         * deleting the rule from the chain if found and firewall enabled
+        * inserting the rule if possible and firewall enabled
         * updating user rules file
         * reloading the user rules file if rule is modified
         '''
@@ -718,11 +751,22 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         delete = False
 
         rules = self.rules
+        ipv6_offset = len(rules)
+        position = rule.position
         if rule.v6:
             if self.iptables_version < "1.4" and (rule.dapp != "" or rule.sapp != ""):
                 return _("Skipping IPv6 application rule. Need at least iptables 1.4")
-            else:
-                rules = self.rules6
+            rules = self.rules6
+            position = rule.position - len(self.rules)
+            if position < 0:
+                position = 0
+
+        if position > 0 and rule.remove:
+            err_msg = _("Cannot specify insert and delete")
+            raise UFWError(err_msg)
+        if position > len(rules):
+            err_msg = _("Cannot insert rule at position '%d'") % position
+            raise UFWError(err_msg)
 
         # First construct the new rules list
         try:
@@ -730,20 +774,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             raise
 
+        count = 1
+        inserted = False
         for r in rules:
             try:
                 r.normalize()
             except Exception:
                 raise
 
+            if count == position:
+                inserted = True
+                newrules.append(rule)
+
             ret = UFWRule.match(r, rule)
-            if ret == 0 and not found:
+            if ret == 0 and not found and not inserted:
                 # If find the rule, add it if it's not to be removed, otherwise
                 # skip it.
                 found = True
                 if not rule.remove:
                     newrules.append(rule)
-            elif ret < 0 and not rule.remove:
+            elif ret < 0 and not rule.remove and not inserted:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
                 found = True
@@ -752,21 +802,24 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             else:
                 newrules.append(r)
 
-        # Add rule to the end if it was not already added.
-        if not found and not rule.remove:
-            newrules.append(rule)
+            count += 1
 
-        # Don't process non-existing or unchanged pre-exisiting rules
-        if not found and rule.remove and not self.dryrun:
-            rstr = _("Could not delete non-existent rule")
-            if rule.v6:
-                rstr += " (v6)"
-            return rstr
-        elif found and not rule.remove and not modified:
-            rstr = _("Skipping adding existing rule")
-            if rule.v6:
-                rstr += " (v6)"
-            return rstr
+        if not inserted:
+            # Add rule to the end if it was not already added.
+            if not found and not rule.remove:
+                newrules.append(rule)
+
+            # Don't process non-existing or unchanged pre-exisiting rules
+            if not found and rule.remove and not self.dryrun:
+                rstr = _("Could not delete non-existent rule")
+                if rule.v6:
+                    rstr += " (v6)"
+                return rstr
+            elif found and not rule.remove and not modified:
+                rstr = _("Skipping adding existing rule")
+                if rule.v6:
+                    rstr += " (v6)"
+                return rstr
 
         if rule.v6:
             self.rules6 = newrules
@@ -789,8 +842,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Operate on the chains
         if self._is_enabled() and not self.dryrun:
             flag = ""
-            if modified or self._need_reload(rule.v6):
-                rstr = _("Rule updated")
+            if modified or self._need_reload(rule.v6) or inserted:
+                rstr = _("Rule ")
+                if inserted:
+                    rstr += _("inserted")
+                else:
+                    rstr += _("updated")
                 if rule.v6:
                     rstr += " (v6)"
                 if allow_reload:

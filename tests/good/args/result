@@ -94,7 +94,7 @@ WARN: Checks disabled
 
 
 
-16: --dry-run status raw
+16: --dry-run show raw
 WARN: Checks disabled
 > Checking raw iptables
 > Checking raw ip6tables

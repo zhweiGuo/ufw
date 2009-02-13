@@ -111,8 +111,7 @@ Status: active
 
 To                         Action  From
 --                         ------  ----
-53/tcp                     ALLOW   Anywhere
-53/udp                     ALLOW   Anywhere
+53                         ALLOW   Anywhere
 23/tcp                     ALLOW   Anywhere
 25/tcp                     ALLOW   Anywhere
 80/tcp                     DENY    Anywhere
@@ -123,14 +122,12 @@ Anywhere                   ALLOW   192.168.0.0/16
 514/udp                    DENY    1.2.3.4
 1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
 22/tcp                     LIMIT   Anywhere
-53/tcp                     ALLOW   Anywhere (v6)
-53/udp                     ALLOW   Anywhere (v6)
+53                         ALLOW   Anywhere (v6)
 23/tcp                     ALLOW   Anywhere (v6)
 25/tcp                     ALLOW   Anywhere (v6)
 80/tcp                     DENY    Anywhere (v6)
 25/tcp                     DENY    2001:db8::/32
-2001:db8:3:4:5:6:7:8/128   DENY    2001:db8::/32 26/tcp
-2001:db8:3:4:5:6:7:8/128   DENY    2001:db8::/32 26/udp
+2001:db8:3:4:5:6:7:8       DENY    2001:db8::/32 26
 
 
 
@@ -361,8 +358,7 @@ Status: active
 
 To                         Action  From
 --                         ------  ----
-53/tcp                     ALLOW   Anywhere
-53/udp                     ALLOW   Anywhere
+53                         ALLOW   Anywhere
 23/tcp                     ALLOW   Anywhere
 25/tcp                     ALLOW   Anywhere
 80/tcp                     DENY    Anywhere
@@ -517,12 +513,10 @@ Status: active
 
 To                         Action  From
 --                         ------  ----
-113/tcp                    REJECT  Anywhere
-113/udp                    REJECT  Anywhere
+113                        REJECT  Anywhere
 114/tcp                    REJECT  Anywhere
 115/udp                    REJECT  Anywhere
-113/tcp                    REJECT  Anywhere (v6)
-113/udp                    REJECT  Anywhere (v6)
+113                        REJECT  Anywhere (v6)
 114/tcp                    REJECT  Anywhere (v6)
 115/udp                    REJECT  Anywhere (v6)
 
@@ -603,8 +597,7 @@ Status: active
 
 To                         Action  From
 --                         ------  ----
-113/tcp                    REJECT  Anywhere
-113/udp                    REJECT  Anywhere
+113                        REJECT  Anywhere
 114/tcp                    REJECT  Anywhere
 115/udp                    REJECT  Anywhere
 
@@ -664,7 +657,336 @@ Firewall is active and enabled on system startup
 
 
 ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           /* ufw_test_builtins */ 
+Testing status numbered
+Setting IPV6 to yes
 87: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+88: enable
+WARN: Checks disabled
+Firewall is active and enabled on system startup
+
+
+89: allow 53
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+90: allow 23/tcp
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+91: allow smtp
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+92: deny proto tcp to any port 80
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+93: deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule added
+
+
+94: allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule added
+
+
+95: allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule added
+
+
+96: allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule added
+
+
+97: deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule added
+
+
+98: allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule added
+
+
+99: limit 22/tcp
+WARN: Checks disabled
+Rule added
+Skipping unsupported IPv6 'limit' rule
+
+
+100: deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+Rule added (v6)
+
+
+101: deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rule added (v6)
+
+
+102: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action  From
+     --                         ------  ----
+[ 1] 53                         ALLOW   Anywhere
+[ 2] 23/tcp                     ALLOW   Anywhere
+[ 3] 25/tcp                     ALLOW   Anywhere
+[ 4] 80/tcp                     DENY    Anywhere
+[ 5] 192.168.0.1 25/tcp         DENY    10.0.0.0/8
+[ 6] Anywhere                   ALLOW   10.0.0.0/8
+[ 7] Anywhere                   ALLOW   172.16.0.0/12
+[ 8] Anywhere                   ALLOW   192.168.0.0/16
+[ 9] 514/udp                    DENY    1.2.3.4
+[10] 1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
+[11] 22/tcp                     LIMIT   Anywhere
+[12] 53                         ALLOW   Anywhere (v6)
+[13] 23/tcp                     ALLOW   Anywhere (v6)
+[14] 25/tcp                     ALLOW   Anywhere (v6)
+[15] 80/tcp                     DENY    Anywhere (v6)
+[16] 25/tcp                     DENY    2001:db8::/32
+[17] 2001:db8:3:4:5:6:7:8       DENY    2001:db8::/32 26
+
+
+
+103: delete allow 53
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+104: delete allow 23/tcp
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+105: delete allow smtp
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+106: delete deny proto tcp to any port 80
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+107: delete deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule deleted
+
+
+108: delete allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule deleted
+
+
+109: delete allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule deleted
+
+
+110: delete allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule deleted
+
+
+111: delete deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule deleted
+
+
+112: delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule deleted
+
+
+113: delete limit 22/tcp
+WARN: Checks disabled
+Rule deleted
+Skipping unsupported IPv6 'limit' rule
+
+
+114: delete deny proto tcp from 2001:db8::/32 to any port 25
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+115: delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+116: status numbered
+WARN: Checks disabled
+Status: active
+
+
+Setting IPV6 to no
+117: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+118: enable
+WARN: Checks disabled
+Firewall is active and enabled on system startup
+
+
+119: allow 53
+WARN: Checks disabled
+Rule added
+
+
+120: allow 23/tcp
+WARN: Checks disabled
+Rule added
+
+
+121: allow smtp
+WARN: Checks disabled
+Rule added
+
+
+122: deny proto tcp to any port 80
+WARN: Checks disabled
+Rule added
+
+
+123: deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule added
+
+
+124: allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule added
+
+
+125: allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule added
+
+
+126: allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule added
+
+
+127: deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule added
+
+
+128: allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule added
+
+
+129: limit 22/tcp
+WARN: Checks disabled
+Rule added
+
+
+130: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action  From
+     --                         ------  ----
+[ 1] 53                         ALLOW   Anywhere
+[ 2] 23/tcp                     ALLOW   Anywhere
+[ 3] 25/tcp                     ALLOW   Anywhere
+[ 4] 80/tcp                     DENY    Anywhere
+[ 5] 192.168.0.1 25/tcp         DENY    10.0.0.0/8
+[ 6] Anywhere                   ALLOW   10.0.0.0/8
+[ 7] Anywhere                   ALLOW   172.16.0.0/12
+[ 8] Anywhere                   ALLOW   192.168.0.0/16
+[ 9] 514/udp                    DENY    1.2.3.4
+[10] 1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
+[11] 22/tcp                     LIMIT   Anywhere
+
+
+
+131: delete allow 53
+WARN: Checks disabled
+Rule deleted
+
+
+132: delete allow 23/tcp
+WARN: Checks disabled
+Rule deleted
+
+
+133: delete allow smtp
+WARN: Checks disabled
+Rule deleted
+
+
+134: delete deny proto tcp to any port 80
+WARN: Checks disabled
+Rule deleted
+
+
+135: delete deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
+WARN: Checks disabled
+Rule deleted
+
+
+136: delete allow from 10.0.0.0/8
+WARN: Checks disabled
+Rule deleted
+
+
+137: delete allow from 172.16.0.0/12
+WARN: Checks disabled
+Rule deleted
+
+
+138: delete allow from 192.168.0.0/16
+WARN: Checks disabled
+Rule deleted
+
+
+139: delete deny proto udp from 1.2.3.4 to any port 514
+WARN: Checks disabled
+Rule deleted
+
+
+140: delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
+WARN: Checks disabled
+Rule deleted
+
+
+141: delete limit 22/tcp
+WARN: Checks disabled
+Rule deleted
+
+
+142: status numbered
+WARN: Checks disabled
+Status: active
+
+
+143: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

@@ -26,6 +26,17 @@ import ufw.util
 from ufw.util import error, warn
 from ufw.backend_iptables import UFWBackendIptables
 
+def allowed_command(cmd):
+    '''Return command if it is allowed, otherwise raise an exception'''
+    allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
+                    'logging', 'status', 'version', '--version', 'allow', \
+                    'deny', 'reject', 'limit', 'reload', 'show', 'insert' ]
+
+    if not cmd.lower() in allowed_cmds:
+        raise ValueError()
+
+    return cmd.lower()
+
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
     action = ""
@@ -36,6 +47,7 @@ def parse_command(argv):
     from_service = ""
     to_service = ""
     dryrun = False
+    insert_pos = ""
 
     if len(argv) > 1 and argv[1].lower() == "--dry-run":
         dryrun = True
@@ -51,14 +63,23 @@ def parse_command(argv):
     if nargs < 2:
         raise ValueError()
 
-    allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
-                    'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'reject', 'limit', 'reload' ]
+    action = allowed_command(argv[1])
 
-    if not argv[1].lower() in allowed_cmds:
-        raise ValueError()
-    else:
-        action = argv[1].lower()
+    if action == "insert":
+        if nargs < 4:
+            raise ValueError()
+        insert_pos = argv[2]
+
+        # strip out 'insert NUM' and parse as normal
+        del argv[2]
+        del argv[1]
+        action = allowed_command(argv[1])
+        nargs = len(argv)
+
+        # error if use insert with non-rule commands
+        if action != "allow" and action != "deny" and action != "reject" and \
+           action != "limit":
+            raise ValueError()
 
     if action == "logging":
         if nargs < 3:
@@ -73,8 +94,14 @@ def parse_command(argv):
     if action == "status" and nargs > 2:
         if argv[2].lower() == "verbose":
             action = "status-verbose"
+        elif argv[2].lower() == "numbered":
+            action = "status-numbered"
+
+    if action == "show":
+        if nargs == 2:
+            raise ValueError()
         elif argv[2].lower() == "raw":
-            action = "status-raw"
+            action = "show-raw"
 
     if action == "default":
         if nargs < 3:
@@ -96,6 +123,11 @@ def parse_command(argv):
         rule = ufw.common.UFWRule(action, "any", "any")
         if remove:
             rule.remove = remove
+        elif insert_pos != "":
+            try:
+                rule.set_position(insert_pos)
+            except Exception:
+                raise
         if nargs == 3:
             # Short form where only app or port/proto is given
             if ufw.applications.valid_profile_name(argv[2]):
@@ -366,9 +398,12 @@ Commands:
  disable			disables the firewall
  default ARG			set default policy to ALLOW, DENY or REJECT
  logging ARG			set logging to ON or OFF
- allow|deny|reject RULE		allow, deny or reject RULE
- delete allow|deny|reject RULE	delete the allow/deny/reject RULE
- status				show firewall status
+ allow|deny|reject ARG		add allow, deny or reject RULE
+ delete RULE		 	delete the RULE
+ insert NUM RULE	 	insert RULE at NUM
+ status 			show firewall status
+ status numbered		show firewall status as numbered list of RULES
+ show ARG			show firewall report
  version			display version information
 
 Application profile commands:
@@ -479,19 +514,19 @@ class UFWFrontend:
 
         return res
 
-    def get_status(self, verbose=False):
+    def get_status(self, verbose=False, show_count=False):
         '''Shows status of firewall'''
         try:
-            out = self.backend.get_status(verbose)
+            out = self.backend.get_status(verbose, show_count)
         except UFWError, e:
             error(e.value)
 
         return out
 
-    def get_status_raw(self):
-        '''Shows raw status of firewall'''
+    def get_show_raw(self):
+        '''Shows raw output of firewall'''
         try:
-            out = self.backend.get_status_raw()
+            out = self.backend.get_running_raw()
         except UFWError, e:
             error(e.value)
 
@@ -557,19 +592,51 @@ class UFWFrontend:
             count = i
             try:
                 if self.backend.use_ipv6():
+                    num_v4 = self.backend.get_rules_count(False)
                     if ip_version == "v4":
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "v6":
                         r.set_v6(True)
+                        if r.position > num_v4:
+                            r.set_position(r.position - num_v4)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "both":
+                        original_p = r.position
                         r.set_v6(False)
+                        if r.position > num_v4:
+			    # The user specified a v6 rule, so try to find a
+			    # match in the v4 rules and use its position.
+                            p = self.backend.find_other_position(r.position,\
+                                                                 True)
+                            if p > 0:
+                                r.set_position(p)
+                            else:
+                                # if not found, then add the rule
+                                r.set_position(0)
                         tmp = self.backend.set_rule(r)
+
+                        # we need to readjust this since the number of ipv4
+                        # rules just changed with the above set_rule
+                        offset = original_p - num_v4
+                        num_v4 = self.backend.get_rules_count(False)
+                        r.set_position(num_v4 + offset)
+
                         r.set_v6(True)
+                        if r.position > 0 and r.position <= num_v4:
+			    # The user specified a v4 rule, so try to find a
+			    # match in the v6 rules and use its position.
+                            p = self.backend.find_other_position(r.position, \
+                                                                 False)
+                            if p > 0:
+                                r.set_position(p)
+                            else:
+                                # if not found, then add the rule
+                                r.set_position(0)
                         if tmp != "":
                             tmp += "\n"
                         tmp += self.backend.set_rule(r)
+                        r.set_position(original_p)
                     else:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
@@ -646,8 +713,10 @@ class UFWFrontend:
             res = self.get_status()
         elif action == "status-verbose":
             res = self.get_status(True)
-        elif action == "status-raw":
-            res = self.get_status_raw()
+        elif action == "show-raw":
+            res = self.get_show_raw()
+        elif action == "status-numbered":
+            res = self.get_status(False, True)
         elif action == "enable":
             res = self.set_enabled(True)
         elif action == "disable":
