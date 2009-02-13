@@ -861,3 +861,110 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return app_rules
 
+    def _chain_cmd(self, chain, args):
+        '''Perform command on chain'''
+        exe = "iptables"
+        if chain.startswith("ufw6"):
+            exe = "ip6tables"
+        (rc, out) = cmd([exe] + args)
+        if rc != 0:
+           dbg_msg = "%s %s %s" % (exe, args)
+           debug(dbg_msg)
+           err_msg = _("Could not perform '%s'") % (args)
+           raise UFWError(err_msg)
+
+    def update_loglevel(self, level):
+        '''Update loglevel of running firewall'''
+        if not self._is_enabled():
+            return
+
+        if level not in ['off', 'low', 'medium', 'high']:
+            err_msg = _("Invalid log level '%s'") % (level)
+            raise UFWError(err_msg)
+
+        exe = "iptables"
+        chain_prefix = "ufw"
+        chains = {'before': [], 'user': [], 'after': []}
+        for ver in ['4', '6']:
+            exe = "iptables"
+            chain_prefix = "ufw"
+            if self.use_ipv6():
+                exe = "ip6tables"
+                chain_prefix += ver
+            for loc in ['before', 'user', 'after']:
+                for target in ['input', 'output', 'forward']:
+                   chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
+                   chains[loc].append(chain)
+
+        # make sure all the chains are here, it's redundant but helps make
+        # sure the chains are in a consistent state
+        err_msg = _("Could not update running firewall")
+        for c in chains['before'] + chains['user'] + chains['after']:
+            try:
+                self._chain_cmd(c, ['-L', c, '-n'])
+            except:
+                raise UFWError(err_msg)
+
+        # Flush all the logging chains
+        try:
+            for c in chains['before'] + chains['user'] + chains['after']:
+                self._chain_cmd(c, ['-F', c])
+                self._chain_cmd(c, ['-Z', c])
+                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
+        except:
+            raise UFWError(err_msg)
+
+        # No logging in the default chains
+        if level == "off":
+            return
+
+        limit_args = ['-m', 'limit', '--limit', '3/min', '--limit-burst', '10']
+
+        # log levels of low and higher log blocked packets
+        if self.loglevels[level] >= self.loglevels["low"]:
+            largs = []
+            # log levels under high use limit
+            if self.loglevels[level] < self.loglevels["high"]
+                largs = limit_args
+            for c in chains['after']:
+                for t in ['input', 'output', 'forward']:
+                    msg = "[UFW BLOCK %s] " % (t.upper())
+                    if c.endswith(t) and ( \
+                       self.defaults['default_'+ t +'policy'] == "reject" or \
+                       self.defaults['default_'+ t +'policy'] == "deny":
+                        try:
+                            self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
+                                                '--log-prefix', msg] + \
+                                                largs)
+                        except:
+                            raise
+
+
+        # log all traffic on all 'before' logging chains
+        if self.loglevels[level] >= self.loglevels["high"]:
+            largs = []
+            if self.loglevels[level] < self.loglevels["maximum"]
+                # log level high logs all new connections
+                largs = limit_args
+            msg = "[UFW AUDIT] "
+            for c in chains['before']:
+                try:
+                    self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
+                                        '--log-prefix', msg] + \
+                                        largs)
+                except:
+                    raise UFWError(err_msg)
+
+        elif self.loglevels[level] >= self.loglevels["medium"]:
+            # log level high logs all incoming connections, with limit
+            msg = "[UFW AUDIT] "
+            for c in chains['before']:
+                try:
+                    self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
+                                        '--log-prefix', msg] + \
+                                        limit_args + \
+                                        ['-m', 'state', '--state', 'NEW'])
+                except:
+                    raise UFWError(err_msg)
+
+

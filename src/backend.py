@@ -40,6 +40,12 @@ class UFWBackend:
                       'apps': os.path.join(config_dir, 'ufw/applications.d') }
         self.files.update(extra_files)
 
+        self.loglevels = {'off':       0,
+                          'low':     100,
+                          'medium':  200,
+                          'high':    300,
+                          'maximum': 400 }
+
         self.do_checks = True
         try:
             self._do_checks()
@@ -436,29 +442,18 @@ class UFWBackend:
         '''Gets current log level of firewall'''
         level = 0
         rstr = _("Logging: on")
-        if not self.defaults.has_key('loglevel'):
+        if not self.defaults.has_key('loglevel') or \
+           self.defaults['loglevel'] not in self.loglevels.keys():
             level = -1
             rstr = _("Logging: unknown")
-        elif self.defaults['loglevel'] == "low":
-            level = 10
-            rstr += _(" (low)")
-        elif self.defaults['loglevel'] == "medium":
-            level = 20
-            rstr += _(" (medium)")
-        elif self.defaults['loglevel'] == "high":
-            level = 30
-            rstr += _(" (high)")
-        elif self.defaults['loglevel'] == "off":
-            level = 0
-            rstr = _("Logging: off")
         else:
-            level = -1
-            rstr = _("Logging: unknown")
+            level = self.loglevels[self.defaults['loglevel']]
+            rstr += _(" (%s)") % (self.defaults['loglevel'])
         return (level, rstr)
 
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
-        if level not in ['off', 'on', 'low', 'medium', 'high']:
+        if level not in self.loglevels.keys() + ['on']:
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 
@@ -471,6 +466,10 @@ class UFWBackend:
                new_level = self.defaults['loglevel']
 
         self.set_default(self.files['conf'], "LOGLEVEL", new_level)
+        try:
+            self.update_loglevel(level)
+        except:
+            raise
 
         if new_level == "off":
             return _("Logging disabled")
@@ -508,4 +507,7 @@ class UFWBackend:
 
     def get_rules_count(self, v6):
         raise UFWError("UFWBackend.get_rules_count: need to override")
+
+    def update_loglevel(self, level):
+        raise UFWError("UFWBackend.update_loglevel: need to override")
 

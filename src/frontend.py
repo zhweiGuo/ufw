@@ -104,7 +104,8 @@ def parse_command(argv):
         elif argv[2].lower() == "off":
             action = "logging-off"
         elif argv[2].lower() == "on" or argv[2].lower() == "low" or \
-             argv[2].lower() == "medium" or argv[2].lower() == "high":
+             argv[2].lower() == "medium" or argv[2].lower() == "high" or \
+             argv[2].lower() == "maximum":
             action = "logging-on"
             if argv[2].lower() != "on":
                 action += "_" + argv[2].lower()
@@ -525,10 +526,6 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_loglevel(level)
-            if self.backend._is_enabled():
-                # have to just restart because of ordering of LOG rules
-                self.backend.stop_firewall()
-                self.backend.start_firewall()
         except UFWError, e:
             error(e.value)
 
