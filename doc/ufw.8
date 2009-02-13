@@ -13,7 +13,7 @@ ufw [\fB\-\-dry\-run\fR] \fBenable|disable|reload\fR
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off
+ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off|LEVEL
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
@@ -50,8 +50,16 @@ change the default policy for incoming traffic. Note that existing rules will
 have to be migrated manually when changing the default policy. See
 \fBRULE SYNTAX\fR for more on \fBdeny\fR and \fBreject\fR.
 .TP
-\fBlogging\fR on|off
-toggle logging. Logged packets use the LOG_KERN syslog facility.
+\fBlogging\fR on|off|LEVEL
+toggle logging. Logged packets use the LOG_KERN syslog facility. Specifying a
+LEVEL turns logging on for the specified LEVEL. LEVEL may be 'low', 'medium'
+and 'high'. Log levels are:
+
+  low           logs all packets not matching the default policy
+  medium        log level low, plus all new incoming packets
+  high          log level low, plus all incoming packets
+
+The default log level is 'low'.
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
