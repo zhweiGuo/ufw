@@ -1,12 +1,17 @@
-ufw (0.26-0ubuntu2) UNRELEASED; urgency=low
+ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
 
+  * new upstream release
+    - don't do symlink check anymore (LP: #317700)
+    - don't do hidden file check anymore (LP: #319226)
+    - add insert rule support (LP: #260745)
+    - clear up status output (LP: #262975)
   * debian/ufw.init: use mountall for Required-Start rather than mountall.sh
-  * don't do symlink check anymore (LP: #317700)
   * added allow_custom_ports debconf option
   * debian/postinst: don't exit on ufw error
   * ship debian/sysctl.conf instead of upstream. This file now only lists
     settings that do are non-default in Ubuntu
   * adjust initscript to tell it is using /etc/ufw/sysctl.conf
+  * debian/*md5sums: updated for new upstream defaults
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 17:17:38 -0600
 

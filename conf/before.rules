@@ -24,9 +24,8 @@
 # connection tracking rules
 -A ufw-before-input -m state --state RELATED,ESTABLISHED -j ACCEPT
 
-# drop INVALID packets
-# uncomment to log INVALID packets
-#-A ufw-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# drop INVALID packets (logs these in loglevel medium and higher)
+-A ufw-before-input -m state --state INVALID -j ufw-logging-deny
 -A ufw-before-input -m state --state INVALID -j DROP
 
 # connection tracking for outbound
@@ -57,9 +56,8 @@
 # if BROADCAST, RETURN
 -A ufw-not-local -m addrtype --dst-type BROADCAST -j RETURN
 
--A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK NOT-TO-ME]: "
-
 # all other non-local packets are dropped
+-A ufw-not-local -m limit --limit 3/min --limit-burst 10 -j ufw-logging-deny
 -A ufw-not-local -j DROP
 
 # allow MULTICAST, be sure the MULTICAST line above is uncommented

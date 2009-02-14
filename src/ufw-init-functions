@@ -77,7 +77,7 @@ chains_command() {
         exe="ip6tables"
     fi
 
-    for c in ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
+    for c in ufw$type-logging-deny ufw$ype-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
             $exe $flag $c || true
@@ -95,7 +95,7 @@ delete_chains() {
     # so that the primary chains don't leave the built-in chains just to come
     # back later in a different place. This means that some (empty) chains will
     # linger until the next boot after disabling ufw.
-    for c in ufw$type-not-local ufw$type-user-logging-input ufw$type-user-logging-output ufw$type-user-logging-forward ufw$type-user-limit-accept ufw$type-user-limit ufw$type-user-input ufw$type-user-forward ufw$type-user-output ; do
+    for c in ufw$type-logging-deny ufw$ype-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-logging-output ufw$type-user-logging-forward ufw$type-user-limit-accept ufw$type-user-limit ufw$type-user-input ufw$type-user-forward ufw$type-user-output ; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
             $exe -X $c || true
@@ -187,6 +187,15 @@ ufw_start() {
             if [ "$type" != "6" ]; then
                 $exe -N ufw${type}-not-local || error="yes"
             fi
+
+            # setup ufw${type}-logging-* chains
+            if ! $exe -L ufw${type}-logging-deny -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-logging-deny || error="yes"
+                $exe -N ufw${type}-logging-allow || error="yes"
+            fi
+            # now exit from the chain
+            $exe -A ufw${type}-logging-deny -j RETURN || error="yes"
+            $exe -A ufw${type}-logging-allow -j RETURN || error="yes"
 
             # setup ufw${type}-before-logging-* chains
             if ! $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then

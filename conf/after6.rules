@@ -23,9 +23,5 @@
 -A ufw6-after-input -p udp --dport 67 -j RETURN
 -A ufw6-after-input -p udp --dport 68 -j RETURN
 
-# catchall for logging
--A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
-
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT

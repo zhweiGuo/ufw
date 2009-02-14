@@ -29,9 +29,8 @@
 # connection tracking rules
 -A ufw6-before-input -m state --state RELATED,ESTABLISHED -j ACCEPT
 
-# drop INVALID packets
-# uncomment to log INVALID packets
-#-A ufw6-before-input -m state --state INVALID -j LOG --log-prefix "[UFW BLOCK INVALID]: "
+# drop INVALID packets (logs these in loglevel medium and higher)
+-A ufw6-before-input -m state --state INVALID -j ufw6-logging-deny
 -A ufw6-before-input -m state --state INVALID -j DROP
 
 # connection tracking for outbound
@@ -53,7 +52,6 @@
 -A ufw6-before-input -p icmpv6 -d ff00::1/8 -j ACCEPT
 -A ufw6-before-input -p icmpv6 -s ff00::2/8 -j ACCEPT
 -A ufw6-before-input -p icmpv6 -d ff00::2/8 -j ACCEPT
-
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT
