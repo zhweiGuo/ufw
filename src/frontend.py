@@ -144,7 +144,10 @@ def parse_command(argv):
         if nargs < 3 or nargs > 12:
             raise ValueError()
 
-        rule = ufw.common.UFWRule(action, "any", "any", logtype=logtype)
+        rule_action = action
+        if logtype != "":
+            rule_action += "_" + logtype
+        rule = ufw.common.UFWRule(rule_action, "any", "any")
         if remove:
             rule.remove = remove
         elif insert_pos != "":

@@ -366,14 +366,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Return list of iptables rules appropriate for sending'''
         snippets = []
 
+        # adjust reject and protocol 'all'
         pat_proto = re.compile(r'-p all ')
         pat_port = re.compile(r'port ')
-        pat_reject = re.compile(r'-j REJECT')
+        pat_reject = re.compile(r'-j (REJECT(_log(-all)?)?)')
         if pat_proto.search(frule):
             if pat_port.search(frule):
                 if pat_reject.search(frule):
                     snippets.append(pat_proto.sub('-p tcp ', \
-                        pat_reject.sub('-j REJECT --reject-with tcp-reset ', \
+                        pat_reject.sub(r'-j \1 --reject-with tcp-reset ', \
                         frule)))
                 else:
                     snippets.append(pat_proto.sub('-p tcp ', frule))
@@ -383,6 +384,31 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             snippets.append(frule)
 
+        # adjust for logging rules
+        pat_log = re.compile(r'(.*)-j ([A-Z]+)_log(-all)?(.*)')
+        pat_logall = re.compile(r'-j [A-Z]+_log-all')
+        pat_chain = re.compile(r'-A ([a-zA-Z0-9\-]+)')
+        limit_args = '-m limit --limit 3/min --limit-burst 10'
+        for i, s in enumerate(snippets):
+            if pat_log.search(s):
+                policy = pat_log.sub(r'\2', s).strip()
+                if policy.lower() == "accept":
+                    policy = "ALLOW"
+                else:
+                    policy = "BLOCK"
+
+                lstr = '%s -j LOG --log-prefix "[UFW %s] "' % (limit_args, \
+                       policy)
+                if not pat_logall.search(s):
+                    lstr = '-m state --state NEW ' + lstr
+                snippets[i] = pat_log.sub(r'\1-j \2\4', s)
+                snippets.insert(i, pat_log.sub(r'\1-j ' + prefix + \
+                                                '-user-logging-input', s))
+                snippets.insert(i, pat_chain.sub(r'-A ' + prefix + \
+                                                '-user-logging-input', 
+                                                 pat_log.sub(r'\1' + lstr, s)))
+
+        # adjust for limit
         pat_limit = re.compile(r' -j LIMIT')
         for i, s in enumerate(snippets):
             if pat_limit.search(s):
@@ -636,11 +662,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # Write rules
         for r in rules:
-            rule_str = "-A " + chain_prefix + "-user-input " + \
-                       r.format_rule() + "\n"
+            action = r.action
+            if r.logtype != "":
+                action += "_" + r.logtype
+
             if r.dapp == "" and r.sapp == "":
                 os.write(fd, "\n### tuple ### %s %s %s %s %s %s\n" % \
-                     (r.action, r.protocol, r.dport, r.dst, r.sport, r.src))
+                     (action, r.protocol, r.dport, r.dst, r.sport, r.src))
             else:
                 pat_space = re.compile(' ')
                 dapp = "-"
@@ -650,9 +678,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if r.sapp:
                     sapp = pat_space.sub('%20', r.sapp)
                 os.write(fd, "\n### tuple ### %s %s %s %s %s %s %s %s\n" \
-                     % (r.action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                      dapp, sapp))
+                     % (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
+                        dapp, sapp))
 
+            rule_str = "-A " + chain_prefix + "-user-input " + \
+                       r.format_rule() + "\n"
             for s in self._get_rules_from_formatted(rule_str, chain_prefix):
                 os.write(fd, s)
 

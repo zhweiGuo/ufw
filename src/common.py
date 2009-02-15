@@ -38,7 +38,7 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0", logtype=""):
+                 sport="any", src="0.0.0.0/0"):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -61,7 +61,6 @@ class UFWRule:
             self.set_port(sport, "src")
             self.set_src(src)
             self.set_dst(dst)
-            self.set_logtype(logtype)
         except UFWError:
             raise
 
@@ -115,18 +114,21 @@ class UFWRule:
         if not self.multi and self.sport != "any":
             str += " --sport " + self.sport
 
+        lstr = ""
+        if self.logtype != "":
+            lstr = "_" + self.logtype
         if self.action == "allow":
-            str += " -j ACCEPT"
+            str += " -j ACCEPT%s" % (lstr)
         elif self.action == "reject":
-            str += " -j REJECT"
+            str += " -j REJECT%s" % (lstr)
             if self.protocol == "tcp":
                 # follow TCP's default and send RST
                 str += " --reject-with tcp-reset"
         elif self.action == "limit":
             # Caller needs to change this
-            str += " -j LIMIT"
+            str += " -j LIMIT%s" % (lstr)
         else:
-            str += " -j DROP"
+            str += " -j DROP%s" % (lstr)
 
         if self.dapp != "" or self.sapp != "":
             # Format the comment string, and quote it just in case
@@ -146,11 +148,16 @@ class UFWRule:
 
     def set_action(self, action):
         '''Sets action of the rule'''
-        if action.lower() == "allow" or action.lower() == "reject" or \
-           action.lower() == "limit":
-            self.action = action.lower()
+        tmp = action.lower().split('_')
+        if tmp[0] == "allow" or tmp[0] == "reject" or tmp[0] == "limit":
+            self.action = tmp[0]
         else:
             self.action = "deny"
+
+        logtype = ""
+        if len(tmp) > 1:
+             logtype = tmp[1]
+        self.set_logtype(logtype)
 
     def set_port(self, port, loc="dst"):
         '''Sets port and location (destination or source) of the rule'''
@@ -343,11 +350,11 @@ class UFWRule:
         if x.sapp != y.sapp:
             debug(dbg_msg)
             return 1
-        if x.action == y.action:
+        if x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
-        dbg_msg = _("Found non-action match")
+        dbg_msg = _("Found non-action/non-logtype match")
         debug(dbg_msg)
         return -1
 
