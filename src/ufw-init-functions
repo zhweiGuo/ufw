@@ -197,6 +197,17 @@ ufw_start() {
             $exe -A ufw${type}-logging-deny -j RETURN || error="yes"
             $exe -A ufw${type}-logging-allow -j RETURN || error="yes"
 
+            # setup ufw${type}-user-logging-* chains
+            if ! $exe -L ufw${type}-user-logging-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-user-logging-input || error="yes"
+                $exe -N ufw${type}-user-logging-output || error="yes"
+                $exe -N ufw${type}-user-logging-forward || error="yes"
+            fi
+            # now exit from the chain
+            $exe -A ufw${type}-user-logging-input -j RETURN || error="yes"
+            $exe -A ufw${type}-user-logging-output -j RETURN || error="yes"
+            $exe -A ufw${type}-user-logging-forward -j RETURN || error="yes"
+
             # setup ufw${type}-before-logging-* chains
             if ! $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
                 $exe -N ufw${type}-before-logging-input || error="yes"
@@ -250,17 +261,6 @@ ufw_start() {
             $exe -A ufw${type}-before-input -j RETURN || error="yes"
             $exe -A ufw${type}-before-output -j RETURN || error="yes"
             $exe -A ufw${type}-before-forward -j RETURN || error="yes"
-
-            # setup ufw${type}-user-logging-* chains
-            if ! $exe -L ufw${type}-user-logging-input -n >/dev/null 2>&1 ; then
-                $exe -N ufw${type}-user-logging-input || error="yes"
-                $exe -N ufw${type}-user-logging-output || error="yes"
-                $exe -N ufw${type}-user-logging-forward || error="yes"
-            fi
-            # now exit from the chain
-            $exe -A ufw${type}-user-logging-input -j RETURN || error="yes"
-            $exe -A ufw${type}-user-logging-output -j RETURN || error="yes"
-            $exe -A ufw${type}-user-logging-forward -j RETURN || error="yes"
 
             # setup ufw${type}-after-* chains
             if ! $exe -L ufw${type}-after-input -n >/dev/null 2>&1 ; then
