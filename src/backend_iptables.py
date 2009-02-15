@@ -256,8 +256,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             if show_count:
                 str += "[%2d] " % (count)
-            str += "%-26s %-8s%s\n" % (location['dst'], r.action.upper(), \
-                    location['src'])
+            
+            log_str = ""
+            if r.logtype:
+                log_str = " (%s)" % (r.logtype.lower())
+            str += "%-26s %-8s%s%s\n" % (location['dst'], r.action.upper(), \
+                    location['src'], log_str)
             count += 1
 
         if str != "":
