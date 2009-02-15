@@ -5,6 +5,8 @@ ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
     - don't do hidden file check anymore (LP: #319226)
     - add insert rule support (LP: #260745)
     - clear up status output (LP: #262975)
+    - add log level support
+    - add per rule logging
   * debian/ufw.init: use mountall for Required-Start rather than mountall.sh
   * added allow_custom_ports debconf option
   * debian/postinst: don't exit on ufw error
