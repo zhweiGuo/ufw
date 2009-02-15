@@ -65,7 +65,7 @@ def parse_command(argv):
     if nargs < 2:
         raise ValueError()
 
-    if argv[1].lower() in ['insert', 'log', 'log-all']:
+    if argv[1].lower() in ['insert']:
         action = argv[1].lower()
     else:
         action = allowed_command(argv[1])
@@ -77,21 +77,6 @@ def parse_command(argv):
 
         # strip out 'insert NUM' and parse as normal
         del argv[2]
-        del argv[1]
-        action = allowed_command(argv[1])
-        nargs = len(argv)
-
-        # error if use insert with non-rule commands
-        if action != "allow" and action != "deny" and action != "reject" and \
-           action != "limit":
-            raise ValueError()
-
-    if action == "log" or action == 'log-all':
-        if nargs < 3:
-            raise ValueError()
-        logtype = action
-
-        # strip out 'log' or 'log-all' and parse as normal
         del argv[1]
         action = allowed_command(argv[1])
         nargs = len(argv)
@@ -141,6 +126,16 @@ def parse_command(argv):
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
+        if nargs > 2 and (argv[2].lower() == "log" or \
+                          argv[2].lower() == 'log-all'):
+            if nargs < 4:
+                raise ValueError()
+            logtype = argv[2].lower()
+
+            # strip out 'log' or 'log-all' and parse as normal
+            del argv[2]
+            nargs = len(argv)
+
         if nargs < 3 or nargs > 12:
             raise ValueError()
 
@@ -424,7 +419,7 @@ Commands:
  enable				enables the firewall
  disable			disables the firewall
  default ARG			set default policy to ALLOW, DENY or REJECT
- logging ARG			set logging to ON or OFF
+ logging ARG			set logging to OFF, ON or LEVEL
  allow|deny|reject ARG		add allow, deny or reject RULE
  delete RULE		 	delete the RULE
  insert NUM RULE	 	insert RULE at NUM

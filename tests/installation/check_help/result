@@ -6,7 +6,7 @@ Commands:
  enable				enables the firewall
  disable			disables the firewall
  default ARG			set default policy to ALLOW, DENY or REJECT
- logging ARG			set logging to ON or OFF
+ logging ARG			set logging to OFF, ON or LEVEL
  allow|deny|reject ARG		add allow, deny or reject RULE
  delete RULE		 	delete the RULE
  insert NUM RULE	 	insert RULE at NUM
