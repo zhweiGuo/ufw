@@ -65,7 +65,10 @@ def parse_command(argv):
     if nargs < 2:
         raise ValueError()
 
-    action = allowed_command(argv[1])
+    if argv[1].lower() in ['insert', 'log', 'log-all']:
+        action = argv[1].lower()
+    else:
+        action = allowed_command(argv[1])
 
     if action == "insert":
         if nargs < 4:
