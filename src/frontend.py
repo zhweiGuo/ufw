@@ -105,7 +105,7 @@ def parse_command(argv):
             action = "logging-off"
         elif argv[2].lower() == "on" or argv[2].lower() == "low" or \
              argv[2].lower() == "medium" or argv[2].lower() == "high" or \
-             argv[2].lower() == "maximum":
+             argv[2].lower() == "full":
             action = "logging-on"
             if argv[2].lower() != "on":
                 action += "_" + argv[2].lower()

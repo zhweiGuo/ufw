@@ -306,6 +306,21 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if rc != 0:
                 raise UFWError(err_msg + " ufw-init")
 
+            if not self.defaults.has_key('loglevel') or \
+               self.defaults['loglevel'] not in self.loglevels.keys():
+                # Add the loglevel if not valid
+                try:
+                    self.set_loglevel("low")
+                except:
+                    err_msg = _("Could update logging rules")
+                    raise UFWError(err_msg)
+            else:
+                try:
+                    self.update_logging(self.defaults['loglevel'])
+                except:
+                    err_msg = _("Could not load logging rules")
+                    raise UFWError(err_msg)
+
     def _need_reload(self, v6):
         '''Check if all chains exist'''
         if self.dryrun:
@@ -873,12 +888,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
            err_msg = _("Could not perform '%s'") % (args)
            raise UFWError(err_msg)
 
-    def update_loglevel(self, level):
+    def update_logging(self, level):
         '''Update loglevel of running firewall'''
         if not self._is_enabled():
             return
 
-        if level not in ['off', 'low', 'medium', 'high']:
+        if level not in self.loglevels.keys():
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 
@@ -933,17 +948,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 largs = limit_args
             for c in chains['after']:
                 for t in ['input', 'output', 'forward']:
-                    msg = "[UFW BLOCK] "
-                    if c.endswith(t) and ( \
-                       self.get_default_policy(t) == "reject" or \
-                       self.get_default_policy(t) == "deny"):
-                        try:
-                            self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
-                                                '--log-prefix', msg] + largs)
-                            self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
-                            self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
-                        except:
-                            raise
+                    if c.endswith(t):
+                        if self.get_default_policy(t) == "reject" or \
+                           self.get_default_policy(t) == "deny":
+                            msg = "[UFW BLOCK] "
+                            try:
+                                self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
+                                                    '--log-prefix', msg] + largs)
+                                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
+                                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
+                            except:
+                                raise
+                        elif self.loglevels[level] >= self.loglevels["medium"]:
+                            msg = "[UFW ALLOW] "
+                            try:
+                                self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
+                                                    '--log-prefix', msg] + largs)
+                                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
+                                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
+                            except:
+                                raise
 
             # Setup the miscellaneous logging chains
             largs = []
@@ -956,12 +980,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     msg = "[UFW ALLOW] "
                 elif c.endswith("deny"):
                     msg = "[UFW BLOCK] "
-                    if self.loglevels[level] < self.loglevels["medium"]:
-                        # don't log INVALID in loglevel 'low'
+                    if self.loglevels[level] >= self.loglevels["medium"]:
+                        # only log INVALID in medium and higher
                         try:
                             self._chain_cmd(c, ['-I', c, '-m', 'state', \
                                                 '--state', 'INVALID', \
-                                                '-j', 'RETURN'])
+                                                '-j', 'RETURN'] + largs)
                         except:
                             raise
                 try:
@@ -975,16 +999,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # Setup the audit logging chains
         if self.loglevels[level] >= self.loglevels["medium"]:
-            # loglevel maximum logs all packets without limit
+            # loglevel full logs all packets without limit
             largs = []
 
             # loglevel high logs all packets with limit
-            if self.loglevels[level] < self.loglevels["maximum"]:
+            if self.loglevels[level] < self.loglevels["full"]:
                 largs = limit_args
 
             # loglevel medium logs all new packets with limit
             if self.loglevels[level] < self.loglevels["high"]:
-                largs = limit_args + ['-m', 'state', '--state', 'NEW']
+                largs = ['-m', 'state', '--state', 'NEW'] + limit_args
 
             msg = "[UFW AUDIT] "
             for c in chains['before']:

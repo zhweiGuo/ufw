@@ -44,7 +44,7 @@ class UFWBackend:
                           'low':     100,
                           'medium':  200,
                           'high':    300,
-                          'maximum': 400 }
+                          'full':    400 }
 
         self.do_checks = True
         try:
@@ -441,14 +441,17 @@ class UFWBackend:
     def get_loglevel(self):
         '''Gets current log level of firewall'''
         level = 0
-        rstr = _("Logging: on")
+        rstr = _("Logging: ")
         if not self.defaults.has_key('loglevel') or \
            self.defaults['loglevel'] not in self.loglevels.keys():
             level = -1
-            rstr = _("Logging: unknown")
+            rstr += _("unknown")
         else:
             level = self.loglevels[self.defaults['loglevel']]
-            rstr += _(" (%s)") % (self.defaults['loglevel'])
+            if level == 0:
+                rstr += "off"
+            else:
+                rstr += "on (%s)" % (self.defaults['loglevel'])
         return (level, rstr)
 
     def set_loglevel(self, level):
@@ -467,7 +470,7 @@ class UFWBackend:
 
         self.set_default(self.files['conf'], "LOGLEVEL", new_level)
         try:
-            self.update_loglevel(level)
+            self.update_logging(new_level)
         except:
             raise
 
@@ -508,6 +511,6 @@ class UFWBackend:
     def get_rules_count(self, v6):
         raise UFWError("UFWBackend.get_rules_count: need to override")
 
-    def update_loglevel(self, level):
-        raise UFWError("UFWBackend.update_loglevel: need to override")
+    def update_logging(self, level):
+        raise UFWError("UFWBackend.update_logging: need to override")
 

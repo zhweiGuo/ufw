@@ -52,14 +52,8 @@ have to be migrated manually when changing the default policy. See
 .TP
 \fBlogging\fR on|off|LEVEL
 toggle logging. Logged packets use the LOG_KERN syslog facility. Specifying a
-LEVEL turns logging on for the specified LEVEL. LEVEL may be 'low', 'medium'
-and 'high'. Log levels are:
-
-  low           logs all packets not matching the default policy
-  medium        log level low, plus all new incoming packets
-  high          log level low, plus all incoming packets
-
-The default log level is 'low'.
+LEVEL turns logging on for the specified LEVEL. The default log level is 'low'.
+See \fBLOGGING\fR for details.
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
@@ -260,6 +254,42 @@ The default application policy is \fBskip\fR, which means that the \fBupdate
 automatically update the firewall.  \fBWARNING:\fR it may be a security to risk
 to use a default \fBallow\fR policy for applications profiles. Carefully
 consider the security ramifications before using a default \fBallow\fR policy.
+
+.SH LOGGING
+.PP
+\fBufw\fR supports multiple logging levels. \fBufw\fR defaults to a loglevel
+of 'low' when a loglevel is not specified. Users may specify a loglevel with:
+
+  ufw logging LEVEL
+
+LEVEL may be 'off', 'low', 'medium', 'high' and full. Log levels are defined
+as:
+.TP
+\fBoff\fR
+disables ufw managed logging
+.TP
+\fBlow\fR
+logs all blocked packets not matching the default policy (with rate limiting),
+as well as packets matching logged rules
+.TP
+\fBmedium\fR
+log level low, plus all allowed packets not matching the default policy, all
+INVALID packets, and all new connections.  All logging is done with rate
+limiting.
+.TP
+\fBhigh\fR
+log level medium (without rate limiting), plus all packets with rate limiting
+.TP
+\fBfull\fR
+log level high without rate limiting
+
+.PP
+Loglevels above medium generate a lot of logging output, and may quickly fill
+up your disk. Loglevel medium may generate a lot of logging output on a busy
+system.
+.PP
+Specifying 'on' simply enables logging at log level 'low' if logging is
+currently not enabled.
 
 .SH NOTES
 .PP
