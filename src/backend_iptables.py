@@ -390,7 +390,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # adjust for logging rules
         pat_log = re.compile(r'(.*)-j ([A-Z]+)_log(-all)?(.*)')
         pat_logall = re.compile(r'-j [A-Z]+_log-all')
-        pat_chain = re.compile(r'-A ([a-zA-Z0-9\-]+)')
+        pat_chain = re.compile(r'(-A|-D) ([a-zA-Z0-9\-]+)')
         limit_args = '-m limit --limit 3/min --limit-burst 10'
         for i, s in enumerate(snippets):
             if pat_log.search(s):
@@ -407,7 +407,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 snippets[i] = pat_log.sub(r'\1-j \2\4', s)
                 snippets.insert(i, pat_log.sub(r'\1-j ' + prefix + \
                                                 '-user-logging-input', s))
-                snippets.insert(i, pat_chain.sub(r'-A ' + prefix + \
+                snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
                                                 '-user-logging-input', 
                                                  pat_log.sub(r'\1' + lstr, s)))
 
