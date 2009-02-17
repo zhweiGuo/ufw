@@ -41,6 +41,22 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         ufw.backend.UFWBackend.__init__(self, "iptables", d, files)
 
+        self.chains = {'before': [], 'user': [], 'after': [], 'misc': []}
+        for ver in ['4', '6']:
+            chain_prefix = "ufw"
+            if ver == "6":
+                if self.use_ipv6():
+                    chain_prefix += ver
+                elif ver == "6":
+                    continue
+
+            for loc in ['before', 'user', 'after']:
+                for target in ['input', 'output', 'forward']:
+                   chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
+                   self.chains[loc].append(chain)
+            self.chains['misc'].append(chain_prefix + "-logging-deny")
+            self.chains['misc'].append(chain_prefix + "-logging-allow")
+
     def get_default_policy(self, primary="input"):
         '''Get current policy'''
         policy = "default_" + primary + "_policy"
@@ -354,6 +370,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if self.use_ipv6():
                 msg("> | ip6tables-restore")
         elif self._is_enabled():
+            # first flush the user chains
+            try:
+                for c in self.chains['user']:
+                    self._chain_cmd(c, ['-F', c])
+                    self._chain_cmd(c, ['-Z', c])
+                    self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
+            except:
+                raise UFWError(err_msg)
+
+            # then restore the system rules
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
                                  ['iptables-restore', '-n'])
             if rc != 0:
@@ -799,29 +825,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 
-        exe = "iptables"
-        chain_prefix = "ufw"
-        chains = {'before': [], 'user': [], 'after': [], 'misc': []}
-        for ver in ['4', '6']:
-            chain_prefix = "ufw"
-            if ver == "6":
-                if self.use_ipv6():
-                    chain_prefix += ver
-                elif ver == "6":
-                    continue
-
-            for loc in ['before', 'user', 'after']:
-                for target in ['input', 'output', 'forward']:
-                   chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
-                   chains[loc].append(chain)
-            chains['misc'].append(chain_prefix + "-logging-deny")
-            chains['misc'].append(chain_prefix + "-logging-allow")
-
         # make sure all the chains are here, it's redundant but helps make
         # sure the chains are in a consistent state
         err_msg = _("Could not update running firewall")
-        for c in chains['before'] + chains['user'] + chains['after'] + \
-                 chains['misc']:
+        for c in self.chains['before'] + self.chains['user'] + \
+           self.chains['after'] + self.chains['misc']:
             try:
                 self._chain_cmd(c, ['-L', c, '-n'])
             except:
@@ -829,7 +837,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # Flush all the logging chains except 'user'
         try:
-            for c in chains['before'] + chains['after'] + chains['misc']:
+            for c in self.chains['before'] + self.chains['after'] + \
+               self.chains['misc']:
                 self._chain_cmd(c, ['-F', c])
                 self._chain_cmd(c, ['-Z', c])
                 self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
@@ -839,14 +848,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if level == "off":
             # when off, insert a RETURN rule at the top of user rules, thus
             # preserving the rules
-            for c in chains['user']:
+            for c in self.chains['user']:
                 self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
                 self._chain_cmd(c, ['-I', c, '-j', 'RETURN'])
             return
         else:
             # when on, append a RETURN rule at the end of user rules, thus
             # honoring the log rules
-            for c in chains['user']:
+            for c in self.chains['user']:
                 self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
                 self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
 
@@ -859,7 +868,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             # log levels under high use limit
             if self.loglevels[level] < self.loglevels["high"]:
                 largs = limit_args
-            for c in chains['after']:
+            for c in self.chains['after']:
                 for t in ['input', 'output', 'forward']:
                     if c.endswith(t):
                         if self.get_default_policy(t) == "reject" or \
@@ -888,7 +897,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if self.loglevels[level] < self.loglevels["high"]:
                 largs = limit_args
 
-            for c in chains['misc']:
+            for c in self.chains['misc']:
                 if c.endswith("allow"):
                     msg = "[UFW ALLOW] "
                 elif c.endswith("deny"):
@@ -924,7 +933,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 largs = ['-m', 'state', '--state', 'NEW'] + limit_args
 
             msg = "[UFW AUDIT] "
-            for c in chains['before']:
+            for c in self.chains['before']:
                 try:
                     self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
                                         '--log-prefix', msg] + largs)
