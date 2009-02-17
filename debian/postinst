@@ -103,7 +103,7 @@ case "$1" in
         enable_ufw "$enabled"
         ;;
     triggered)
-        ufw app update all
+        ufw app update all || true
         exit 0
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
