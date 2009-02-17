@@ -81,6 +81,7 @@ class UFWRule:
         rule.dapp = self.dapp
         rule.sapp = self.sapp
         rule.position = self.position
+        rule.logtype = self.logtype
 
         return rule
 
@@ -354,7 +355,8 @@ class UFWRule:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
-        dbg_msg = _("Found non-action/non-logtype match")
+        dbg_msg = _("Found non-action/non-logtype match (%s/%s %s/%s)") % \
+                    (x.action, y.action, x.logtype, y.logtype)
         debug(dbg_msg)
         return -1
 

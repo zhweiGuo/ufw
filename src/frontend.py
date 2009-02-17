@@ -598,6 +598,7 @@ class UFWFrontend:
                         r = tmp.dup_rule()
                         r.remove = rule.remove
                         r.set_action(rule.action)
+                        r.set_logtype(rule.logtype)
                         rules.append(r)
                 else:
                     rules = self.backend.get_app_rules_from_template(rule)
