@@ -428,6 +428,24 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return snippets
 
+    def _get_lists_from_formatted(self, frule, prefix):
+        '''Return list of iptables rules appropriate for sending as arguments
+           to cmd()
+        '''
+        snippets = []
+        str_snippets = self._get_rules_from_formatted(frule, prefix)
+
+        # split the string such that the log prefix can contain spaces
+        pat = re.compile(r'(.*) --log-prefix (".* ")(.*)')
+        for i, s in enumerate(str_snippets):
+            snippets.append(pat.sub(r'\1', s).split())
+            if pat.match(s):
+                snippets[i].append("--log-prefix")
+                snippets[i].append(pat.sub(r'\2', s))
+                snippets[i] += pat.sub(r'\3', s).split()
+
+        return snippets
+
     def _parse_iptables_status(self, line, type):
         '''Parses a line from iptables -L -n'''
         fields = line.split()
@@ -868,10 +886,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if rc != 0:
                     raise UFWError(err_msg)
 
-                for s in self._get_rules_from_formatted(rule.format_rule(), \
+                for s in self._get_lists_from_formatted(rule.format_rule(), \
                                                         chain_prefix):
-                    debug([exe, flag, chain] + s.split())
-                    (rc, out) = cmd([exe, flag, chain] + s.split())
+                    debug([exe, flag, chain] + s)
+                    (rc, out) = cmd([exe, flag, chain] + s)
                     if rc != 0:
                         msg(out, sys.stderr)
                         UFWError(err_msg)
