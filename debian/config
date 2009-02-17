@@ -14,11 +14,15 @@ has_existing() {
     fi
 
     orig=`md5sum $TEMPLATE_PATH/user.rules | cut -d ' ' -f 1`
+    orig_md5file="$TEMPLATE_PATH/user.rules.md5sum"
     user=`md5sum $USER_PATH/user.rules | cut -d ' ' -f 1`
     orig6=`md5sum $TEMPLATE_PATH/user6.rules | cut -d ' ' -f 1`
+    orig6_md5file="$TEMPLATE_PATH/user6.rules.md5sum"
     user6=`md5sum $USER_PATH/user6.rules | cut -d ' ' -f 1`
 
-    if [ "$orig" != "$user" ] || [ "$orig6" != "$user6" ]; then
+    if [ "$orig" != "$user" ] && ! grep -q "$user" "$orig_md5file" 2>/dev/null ; then
+        return 0
+    elif [ "$orig6" != "$user6" ] && && ! grep -q "$user6" "$orig6_md5file" 2>/dev/null ; then
         return 0
     else
         return 1
