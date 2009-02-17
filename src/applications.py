@@ -127,7 +127,7 @@ def get_profiles(dir):
 
             pdict = {}
             for key, value in cdict.items(p):
-                debug("add '%s' = '%s' to '%s'" % (key, value, p))
+                #debug("add '%s' = '%s' to '%s'" % (key, value, p))
                 pdict[key] = value
 
             profiles[p] = pdict
