@@ -15,6 +15,8 @@ ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
   * adjust initscript to tell it is using /etc/ufw/sysctl.conf
   * debian/*md5sums: updated for new upstream defaults
   * debian/config: update has_existing() to also check old md5sums
+  * debian/postinst: don't error out when processing triggers, as this causes
+    dpkg errors (LP #270285, #328728)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 17:17:38 -0600
 
