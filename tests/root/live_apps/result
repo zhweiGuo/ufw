@@ -101,7 +101,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 14: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -294,7 +294,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 41: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -484,7 +484,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 68: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -563,7 +563,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 72: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -756,7 +756,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 99: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -819,7 +819,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 103: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -933,7 +933,7 @@ Rule added (v6)
 120: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -953,7 +953,7 @@ Rule deleted (v6)
 122: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -973,7 +973,7 @@ Rule deleted (v6)
 124: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1017,7 +1017,7 @@ WARN: Checks disabled
 132: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1047,7 +1047,7 @@ Rule deleted (v6)
 135: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1062,7 +1062,7 @@ Rule added (v6)
 137: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1082,7 +1082,7 @@ Rule deleted (v6)
 139: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1097,7 +1097,7 @@ Rule added (v6)
 141: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1117,7 +1117,7 @@ Rule updated (v6)
 143: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1150,7 +1150,7 @@ Rule added (v6)
 147: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
@@ -1182,7 +1182,7 @@ Rule deleted (v6)
 150: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 

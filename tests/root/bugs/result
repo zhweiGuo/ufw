@@ -209,15 +209,11 @@ Firewall is active and enabled on system startup
 29: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
 
--A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
--A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 30: default allow
 WARN: Checks disabled
 Default policy changed to 'allow'
@@ -227,15 +223,11 @@ Default policy changed to 'allow'
 31: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: allow
 New profiles: skip
 
 
--A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW INPUT]: "
--A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW FORWARD]: "
--A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW INPUT]: "
--A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW FORWARD]: "
 32: default deny
 WARN: Checks disabled
 Default policy changed to 'deny'
@@ -245,15 +237,11 @@ Default policy changed to 'deny'
 33: status verbose
 WARN: Checks disabled
 Status: active
-Logging: on
+Logging: on (low)
 Default: deny
 New profiles: skip
 
 
--A ufw6-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A ufw6-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
--A ufw-after-input -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK INPUT]: "
--A ufw-after-forward -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK FORWARD]: "
 Bug #251136
 Setting IPV6 to yes
 34: disable
