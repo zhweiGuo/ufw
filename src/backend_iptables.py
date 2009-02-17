@@ -441,7 +441,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             snippets.append(pat.sub(r'\1', s).split())
             if pat.match(s):
                 snippets[i].append("--log-prefix")
-                snippets[i].append(pat.sub(r'\2', s))
+                snippets[i].append(pat.sub(r'\2', s).replace('"', ''))
                 snippets[i] += pat.sub(r'\3', s).split()
 
         return snippets
@@ -718,7 +718,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             # Rate limiting only supported with IPv4
             os.write(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
                          "--limit 3/minute -j LOG --log-prefix " + \
-                         "\"[UFW LIMIT]: \"\n")
+                         "\"[UFW LIMIT] \"\n")
             os.write(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
             os.write(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
 
@@ -886,22 +886,24 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if rc != 0:
                     raise UFWError(err_msg)
 
-                for s in self._get_lists_from_formatted(rule.format_rule(), \
-                                                        chain_prefix):
-                    debug([exe, flag, chain] + s)
-                    (rc, out) = cmd([exe, flag, chain] + s)
+                rule_str = "%s %s %s" % (flag, chain, rule.format_rule())
+                pat_log = re.compile(r'(-A +)(ufw6?-user-[a-z\-]+)(.*)')
+                for s in self._get_lists_from_formatted(rule_str, \
+                                                               chain_prefix):
+                    (rc, out) = cmd([exe] + s)
                     if rc != 0:
                         msg(out, sys.stderr)
                         UFWError(err_msg)
 
                     # delete the RETURN rule then add it back, so it is at the
                     # end
-                    if flag == "-A":
-                        (rc, out) = cmd([exe, '-D', chain, '-j', 'RETURN'])
+                    if flag == "-A" and pat_log.search(" ".join(s)):
+                        c = pat_log.sub(r'\2', " ".join(s))
+                        (rc, out) = cmd([exe, '-D', c, '-j', 'RETURN'])
                         if rc != 0:
                             msg(out, sys.stderr)
 
-                        (rc, out) = cmd([exe, '-A', chain, '-j', 'RETURN'])
+                        (rc, out) = cmd([exe, '-A', c, '-j', 'RETURN'])
                         if rc != 0:
                             msg(out, sys.stderr)
         return rstr
@@ -954,10 +956,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         chains = {'before': [], 'user': [], 'after': [], 'misc': []}
         for ver in ['4', '6']:
             chain_prefix = "ufw"
-            if self.use_ipv6():
-                chain_prefix += ver
-            elif ver == "6":
-                continue
+            if ver == "6":
+                if self.use_ipv6():
+                    chain_prefix += ver
+                elif ver == "6":
+                    continue
+
             for loc in ['before', 'user', 'after']:
                 for target in ['input', 'output', 'forward']:
                    chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
@@ -975,19 +979,28 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             except:
                 raise UFWError(err_msg)
 
-        # Flush all the logging chains
+        # Flush all the logging chains except 'user'
         try:
-            for c in chains['before'] + chains['user'] + chains['after'] + \
-                     chains['misc']:
+            for c in chains['before'] + chains['after'] + chains['misc']:
                 self._chain_cmd(c, ['-F', c])
                 self._chain_cmd(c, ['-Z', c])
                 self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
         except:
             raise UFWError(err_msg)
 
-        # No logging in the default chains
         if level == "off":
+            # when off, insert a RETURN rule at the top of user rules, thus
+            # preserving the rules
+            for c in chains['user']:
+                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
+                self._chain_cmd(c, ['-I', c, '-j', 'RETURN'])
             return
+        else:
+            # when on, append a RETURN rule at the end of user rules, thus
+            # honoring the log rules
+            for c in chains['user']:
+                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
+                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
 
         limit_args = ['-m', 'limit', '--limit', '3/min', '--limit-burst', '10']
 
