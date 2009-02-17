@@ -172,7 +172,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         str = ""
         rules = self.rules + self.rules6
-        #rules = self._read_running()
         count = 1
         app_rules = {}
         for r in rules:
@@ -446,110 +445,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return snippets
 
-    def _parse_iptables_status(self, line, type):
-        '''Parses a line from iptables -L -n'''
-        fields = line.split()
-
-        if type == "v6":
-            # ip6tables hack since its opt field is blank (unlike iptables)
-            fields.insert(2, '--')
-
-        if len(fields) < 5:
-            dbg_msg = _("Couldn't parse line '%s'") % (line)
-            debug(dbg_msg)
-            return None
-
-        rule = UFWRule("ACCEPT", "any", "any")
-        if fields[0] == 'ACCEPT':
-            rule.set_action('allow')
-        elif fields[0] == 'DROP':
-            rule.set_action('deny')
-        elif fields[0] == 'REJECT':
-            rule.set_action('reject')
-        elif fields[0] == "ufw-user-limit-accept":
-            rule.set_action('limit')
-        else:
-            # RETURN and LOG are valid, but we skip them
-            return None
-
-        if fields[1] == 'tcp' or fields[1] == 'udp':
-            rule.set_protocol(fields[1])
-        elif fields[1] == "0" or fields[1] == "all":
-            rule.set_protocol('any')
-        else:
-            rule.set_protocol('UNKNOWN')
-
-        if type == "v6":
-            # ip6tables hack since it doesn't have a space between the
-            # destination address and the protocol on a large destination
-            # address (see Debian bug #464244).
-            mashed = fields[4][(len(fields[4]) - 3):]
-            if mashed == 'tcp' or mashed == 'udp':
-                fields.insert(5, mashed)
-                fields[4] = fields[4][:(len(fields[4]) - 3)]
-
-        try:
-            rule.set_src(fields[3])
-            rule.set_dst(fields[4])
-        except Exception:
-            warn_msg = _("Couldn't parse line '%s'") % (line)
-            warn(warn_msg)
-            return None
-
-        if len(fields) >= 7:
-            if re.match('dpt', fields[6]):
-                rule.set_port(fields[6][4:], "dst")
-            elif re.match('spt', fields[6]):
-                rule.set_port(fields[6][4:], "src")
-
-        if len(fields) >= 8:
-            if re.match('dpt', fields[7]):
-                rule.set_port(fields[7][4:], "dst")
-            elif re.match('spt', fields[7]):
-                rule.set_port(fields[7][4:], "src")
-            elif re.match('multiport', fields[5]):
-                if fields[6] == "dports":
-                    rule.set_port(fields[7], "dst")
-                elif fields[6] == "sports":
-                    rule.set_port(fields[7], "src")
-                if len(fields) >= 11:
-                    if fields[9] == "dports":
-                        rule.set_port(fields[10], "dst")
-                    elif fields[9] == "sports":
-                        rule.set_port(fields[10], "src")
-
-        has_comment = False
-        comments = []
-        try:
-            findex = fields.index('/*')
-            lindex = fields.index('*/')
-            has_comment = True
-        except Exception:
-            has_comment = False
-
-        if has_comment:
-            if findex + 1 >= lindex:
-                # Empty comment
-                has_comment = False
-            else:
-                comments = ' '.join(fields[findex+1:lindex]).strip("'").split()
-
-            if len(comments) > 0:
-                pat_space = re.compile('%20')
-                for app in comments[0].split(","):
-                    tmp = pat_space.sub(' ', app)
-                    if tmp.startswith('dapp_'):
-                        rule.dapp = tmp[5:]
-                    if tmp.startswith('sapp_'):
-                        rule.sapp = tmp[5:]
-
-        if type == "v6":
-            rule.set_v6(True)
-        else:
-            rule.set_v6(False)
-
-        return rule
-
     def _read_rules(self):
         '''Read in rules that were added by ufw.'''
         rfns = [self.files['rules']]
@@ -599,53 +494,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             self.rules.append(rule)
 
             orig.close()
-
-    def _read_running(self):
-        '''Return a list of rules from the running firewall'''
-# TODO-- TESTME
-        err_msg = _("problem running")
-
-        # Get the output of iptables for parsing
-        (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
-        if rc != 0:
-            raise UFWError(err_msg + " iptables")
-
-        if self.use_ipv6():
-            (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
-            if rc != 0:
-                raise UFWError(err_msg + " ip6tables")
-            if out6 == "":
-                return out6
-
-        if out == "" and out6 == "":
-            return []
-
-        rules = []
-        pat_chain = re.compile(r'^Chain ')
-        pat_target = re.compile(r'^target')
-        for type in ["v4", "v6"]:
-            pat_ufw = re.compile(r'^Chain ufw-user-input')
-            if type == "v6":
-                pat_ufw = re.compile(r'^Chain ufw6-user-input')
-            lines = out
-            if type == "v6":
-                lines = out6
-            in_ufw_input = False
-            for line in lines.split('\n'):
-                if pat_ufw.search(line):
-                    in_ufw_input = True
-                    continue
-                elif pat_chain.search(line):
-                    in_ufw_input = False
-                    continue
-                elif pat_target.search(line):
-                    pass
-                elif in_ufw_input:
-                    r = self._parse_iptables_status(line, type)
-                    if r is not None:
-                        rules.append(r)
-
-        return rules
 
     def _write_rules(self, v6=False):
         '''Write out new rules to file to user chain file'''
