@@ -622,7 +622,7 @@ class UFWFrontend:
                     elif ip_version == "both":
                         original_p = r.position
                         r.set_v6(False)
-                        if r.position > num_v4:
+                        if not r.remove and r.position > num_v4:
 			    # The user specified a v6 rule, so try to find a
 			    # match in the v4 rules and use its position.
                             p = self.backend.find_other_position(r.position,\
@@ -636,12 +636,14 @@ class UFWFrontend:
 
                         # we need to readjust this since the number of ipv4
                         # rules just changed with the above set_rule
-                        offset = original_p - num_v4
-                        num_v4 = self.backend.get_rules_count(False)
-                        r.set_position(num_v4 + offset)
+                        if not r.remove:
+                            offset = original_p - num_v4
+                            num_v4 = self.backend.get_rules_count(False)
+                            r.set_position(num_v4 + offset)
 
                         r.set_v6(True)
-                        if r.position > 0 and r.position <= num_v4:
+                        if not r.remove and r.position > 0 and \
+                           r.position <= num_v4:
 			    # The user specified a v4 rule, so try to find a
 			    # match in the v6 rules and use its position.
                             p = self.backend.find_other_position(r.position, \
