@@ -1,7 +1,7 @@
 SRCS     = src/ufw $(wildcard src/*.py)
 POTFILES = messages/ufw.pot
 TMPDIR   = ./tmp
-EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian'
+EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
 SRCVER   = ufw-$(VERSION)
 TARBALLS = ../tarballs
