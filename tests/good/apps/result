@@ -271,7 +271,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -292,7 +292,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -313,7 +313,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -335,7 +335,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -356,7 +356,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -375,7 +375,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -396,7 +396,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -417,7 +417,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -438,7 +438,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -459,7 +459,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -480,7 +480,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -501,7 +501,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j DROP -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -523,7 +523,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -544,7 +544,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -563,7 +563,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -584,7 +584,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -605,7 +605,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -626,7 +626,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -649,7 +649,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -672,7 +672,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -695,7 +695,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -721,7 +721,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -744,7 +744,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -767,7 +767,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -790,7 +790,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -813,7 +813,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -836,7 +836,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -858,7 +858,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -879,7 +879,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -900,7 +900,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -922,7 +922,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -943,7 +943,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -962,7 +962,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -983,7 +983,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1004,7 +1004,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1025,7 +1025,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1046,7 +1046,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1067,7 +1067,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1088,7 +1088,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1110,7 +1110,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1131,7 +1131,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1150,7 +1150,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1171,7 +1171,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1192,7 +1192,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1213,7 +1213,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1234,7 +1234,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1255,7 +1255,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j ACCEPT -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1276,7 +1276,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1298,7 +1298,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1319,7 +1319,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1338,7 +1338,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1359,7 +1359,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1380,7 +1380,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1401,7 +1401,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1422,7 +1422,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1443,7 +1443,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --sport 443 -j ACCEPT -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1464,7 +1464,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -j ACCEPT -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1486,7 +1486,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1507,7 +1507,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1526,7 +1526,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1547,7 +1547,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1568,7 +1568,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j ACCEPT -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1589,7 +1589,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j ACCEPT -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1610,7 +1610,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1631,7 +1631,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1652,7 +1652,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1671,7 +1671,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1692,7 +1692,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1711,7 +1711,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1732,7 +1732,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1753,7 +1753,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1774,7 +1774,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1795,7 +1795,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1814,7 +1814,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1835,7 +1835,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1854,7 +1854,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1875,7 +1875,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1896,7 +1896,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1915,7 +1915,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1936,7 +1936,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1957,7 +1957,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 10123 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1978,7 +1978,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -1997,7 +1997,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2018,7 +2018,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2037,7 +2037,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2058,7 +2058,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j ACCEPT -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2079,7 +2079,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2100,7 +2100,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 --sport 10123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2121,7 +2121,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2140,7 +2140,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2161,7 +2161,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2180,7 +2180,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2201,7 +2201,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2222,7 +2222,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2241,7 +2241,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2262,7 +2262,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2283,7 +2283,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2304,7 +2304,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2326,7 +2326,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2347,7 +2347,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2366,7 +2366,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2387,7 +2387,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2408,7 +2408,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2429,7 +2429,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2450,7 +2450,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2471,7 +2471,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2492,7 +2492,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j DROP -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2514,7 +2514,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2535,7 +2535,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2554,7 +2554,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2575,7 +2575,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2596,7 +2596,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2617,7 +2617,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2638,7 +2638,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2659,7 +2659,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j DROP -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2680,7 +2680,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2702,7 +2702,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2723,7 +2723,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2742,7 +2742,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2763,7 +2763,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2784,7 +2784,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2805,7 +2805,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2826,7 +2826,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2847,7 +2847,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --sport 443 -j DROP -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2868,7 +2868,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -j DROP -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2890,7 +2890,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2911,7 +2911,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2930,7 +2930,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2951,7 +2951,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2972,7 +2972,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j DROP -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -2993,7 +2993,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j DROP -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3014,7 +3014,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3035,7 +3035,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3056,7 +3056,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3075,7 +3075,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3096,7 +3096,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3115,7 +3115,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3136,7 +3136,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3157,7 +3157,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3178,7 +3178,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3199,7 +3199,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3218,7 +3218,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3239,7 +3239,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3258,7 +3258,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3279,7 +3279,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3300,7 +3300,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3319,7 +3319,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3340,7 +3340,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3361,7 +3361,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 10123 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3382,7 +3382,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3401,7 +3401,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3422,7 +3422,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3441,7 +3441,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3462,7 +3462,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j DROP -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3483,7 +3483,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3504,7 +3504,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 --sport 10123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3525,7 +3525,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3544,7 +3544,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3565,7 +3565,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3584,7 +3584,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3605,7 +3605,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j DROP -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3626,7 +3626,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3645,7 +3645,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3668,7 +3668,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3691,7 +3691,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3714,7 +3714,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3740,7 +3740,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3763,7 +3763,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3786,7 +3786,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3809,7 +3809,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3832,7 +3832,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3855,7 +3855,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3878,7 +3878,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3901,7 +3901,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3924,7 +3924,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3950,7 +3950,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3973,7 +3973,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -3996,7 +3996,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4019,7 +4019,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4042,7 +4042,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4065,7 +4065,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4088,7 +4088,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4111,7 +4111,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4134,7 +4134,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4160,7 +4160,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4183,7 +4183,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4206,7 +4206,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4229,7 +4229,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4252,7 +4252,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4275,7 +4275,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4298,7 +4298,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4321,7 +4321,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --sport 443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4344,7 +4344,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4370,7 +4370,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4393,7 +4393,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4416,7 +4416,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4439,7 +4439,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4462,7 +4462,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4485,7 +4485,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4508,7 +4508,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4531,7 +4531,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4554,7 +4554,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4577,7 +4577,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4600,7 +4600,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4623,7 +4623,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4646,7 +4646,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4669,7 +4669,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4692,7 +4692,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4715,7 +4715,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4738,7 +4738,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4761,7 +4761,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4784,7 +4784,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4807,7 +4807,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4830,7 +4830,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4853,7 +4853,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4876,7 +4876,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4899,7 +4899,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 10123 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4922,7 +4922,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4945,7 +4945,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4968,7 +4968,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -4991,7 +4991,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5014,7 +5014,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5037,7 +5037,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5060,7 +5060,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 123 --sport 10123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5083,7 +5083,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5106,7 +5106,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5129,7 +5129,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5152,7 +5152,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5175,7 +5175,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5198,7 +5198,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5221,7 +5221,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5243,7 +5243,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5264,7 +5264,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5291,7 +5291,7 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5317,7 +5317,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5336,7 +5336,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5371,7 +5371,7 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
@@ -5390,7 +5390,7 @@ COMMIT
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT

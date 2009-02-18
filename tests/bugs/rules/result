@@ -13,7 +13,7 @@ WARN: Checks disabled
 -A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT

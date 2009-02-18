@@ -11,6 +11,8 @@ ufw (0.27) UNRELEASED; urgency=low
     with reality and fixes (LP: #262975)
   * add loglevel support. This also changed the default rules files
   * add per rule logging support
+  * get rid of redundant RETURN rules
+  * update LIMIT logging prefix
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 17 Jan 2009 07:15:25 -0600
 

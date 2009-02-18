@@ -422,6 +422,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 policy = pat_log.sub(r'\2', s).strip()
                 if policy.lower() == "accept":
                     policy = "ALLOW"
+                elif policy.lower() == "limit":
+                    policy = "LIMIT"
                 else:
                     policy = "BLOCK"
 
@@ -592,7 +594,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             # Rate limiting only supported with IPv4
             os.write(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
                          "--limit 3/minute -j LOG --log-prefix " + \
-                         "\"[UFW LIMIT] \"\n")
+                         "\"[UFW LIMIT BLOCK] \"\n")
             os.write(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
             os.write(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
 
