@@ -23,9 +23,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -88,8 +85,8 @@ Could not delete non-existent rule
 
 iptables -L -n:
 ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 /* 'dapp_Apache' */ 
-RETURN     all  --  0.0.0.0/0            0.0.0.0/0           
 
+Chain ufw-user-limit (0 references)
 10: delete allow Apache
 WARN: Checks disabled
 Rule deleted

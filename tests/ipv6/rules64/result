@@ -14,9 +14,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -32,9 +29,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 53 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -54,9 +48,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -71,9 +62,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -93,9 +81,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -110,9 +95,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -132,9 +114,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -149,9 +128,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -171,9 +147,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -193,9 +166,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -214,9 +184,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -231,9 +198,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -250,9 +214,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -264,9 +225,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -288,9 +246,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 22 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -314,9 +269,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 53 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -332,9 +284,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 53 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -354,9 +303,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -371,9 +317,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -393,9 +336,6 @@ WARN: Checks disabled
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -417,9 +357,6 @@ WARN: Checks disabled
 -A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -441,9 +378,6 @@ WARN: Checks disabled
 -A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -465,9 +399,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -489,9 +420,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -514,9 +442,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -531,9 +456,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -550,9 +472,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -564,9 +483,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -586,9 +502,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -603,9 +516,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -622,9 +532,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -636,9 +543,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -658,9 +562,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -675,9 +576,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -694,9 +592,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -708,9 +603,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -730,9 +622,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -747,9 +636,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -766,9 +652,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -780,9 +663,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -803,9 +683,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -821,9 +698,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -840,9 +714,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -854,9 +725,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -876,9 +744,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -893,9 +758,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -912,9 +774,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -926,9 +785,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -948,9 +804,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -965,9 +818,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -984,9 +834,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -998,9 +845,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1021,9 +865,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1038,9 +879,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1057,9 +895,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1071,9 +906,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1093,9 +925,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 69 --sport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1110,9 +939,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 69 --sport 22 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1129,9 +955,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1143,9 +966,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1166,9 +986,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 22 --sport 53 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1184,9 +1001,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 22 --sport 53 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1203,9 +1017,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1217,9 +1028,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -1240,9 +1048,6 @@ WARN: Checks disabled
 -A ufw-user-input -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1265,9 +1070,6 @@ WARN: Checks disabled
 -A ufw-user-input -d 192.168.0.0/16 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1289,9 +1091,6 @@ WARN: Checks disabled
 -A ufw-user-input -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1313,9 +1112,6 @@ WARN: Checks disabled
 -A ufw-user-input -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1338,9 +1134,6 @@ WARN: Checks disabled
 -A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1362,9 +1155,6 @@ WARN: Checks disabled
 -A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1386,9 +1176,6 @@ WARN: Checks disabled
 -A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -1408,9 +1195,6 @@ WARN: Checks disabled
 -A ufw6-user-input -d ::1/0 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -1427,9 +1211,6 @@ WARN: Checks disabled
 -A ufw6-user-input -d ::1/32 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -1446,9 +1227,6 @@ WARN: Checks disabled
 -A ufw6-user-input -d ::1 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -1465,9 +1243,6 @@ WARN: Checks disabled
 -A ufw6-user-input -s ::1/0 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -1484,9 +1259,6 @@ WARN: Checks disabled
 -A ufw6-user-input -s ::1/32 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -1503,9 +1275,6 @@ WARN: Checks disabled
 -A ufw6-user-input -s ::1 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -1522,9 +1291,6 @@ WARN: Checks disabled
 -A ufw6-user-input -d ::1/16 -s ::1/32 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2083,9 +1849,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 34,35 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2107,9 +1870,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 34,35:39 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2131,9 +1891,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --sports 35:39 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2155,9 +1912,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23,210 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2179,9 +1933,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2203,9 +1954,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2225,9 +1973,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2244,9 +1989,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2263,9 +2005,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2282,9 +2021,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2301,9 +2037,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2320,9 +2053,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -2341,9 +2071,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2358,9 +2085,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2380,9 +2104,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2397,9 +2118,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2419,9 +2137,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2436,9 +2151,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2458,9 +2170,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2475,9 +2184,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2497,9 +2203,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2514,9 +2217,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2536,9 +2236,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2553,9 +2250,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2575,9 +2269,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2592,9 +2283,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2614,9 +2302,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2631,9 +2316,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2653,9 +2335,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2670,9 +2349,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2692,9 +2368,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2709,9 +2382,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2731,9 +2401,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2748,9 +2415,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2770,9 +2434,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2787,9 +2448,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2809,9 +2467,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2826,9 +2481,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2848,9 +2500,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2865,9 +2514,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2887,9 +2533,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2904,9 +2547,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2926,9 +2566,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2943,9 +2580,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -2967,9 +2601,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -2994,9 +2625,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3021,9 +2649,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3048,9 +2673,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3075,9 +2697,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 34,35 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3102,9 +2721,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3129,9 +2745,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 35:39 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3156,9 +2769,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3182,9 +2792,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3199,9 +2806,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3222,9 +2826,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 113 --sport 25 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3239,9 +2840,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 113 --sport 25 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3258,9 +2856,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3272,9 +2867,6 @@ COMMIT
 ### RULES ###
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3294,9 +2886,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 53 -s 192.168.0.1 --sport 113 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3315,9 +2904,6 @@ WARN: Checks disabled
 ### RULES ###
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3340,9 +2926,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3358,9 +2941,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3380,9 +2960,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3397,9 +2974,6 @@ COMMIT
 -A ufw6-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3419,9 +2993,6 @@ WARN: Checks disabled
 -A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3436,9 +3007,6 @@ COMMIT
 -A ufw6-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3458,9 +3026,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j REJECT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3475,9 +3040,6 @@ COMMIT
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j REJECT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3497,9 +3059,6 @@ WARN: Checks disabled
 -A ufw-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
--A ufw-user-input -j RETURN
--A ufw-user-output -j RETURN
--A ufw-user-forward -j RETURN
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
@@ -3514,9 +3073,6 @@ COMMIT
 -A ufw6-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated
 Rules updated (v6)
@@ -3535,9 +3091,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p udp --dport 25 -s 2001:db8::/32 -j REJECT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -3554,9 +3107,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
@@ -3573,9 +3123,6 @@ WARN: Checks disabled
 -A ufw6-user-input -p udp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j REJECT
 
 ### END RULES ###
--A ufw6-user-input -j RETURN
--A ufw6-user-output -j RETURN
--A ufw6-user-forward -j RETURN
 COMMIT
 Rules updated (v6)
 
