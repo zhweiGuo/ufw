@@ -587,9 +587,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # Write footer
         os.write(fd, "\n### END RULES ###\n")
-        os.write(fd, "-A " + chain_prefix + "-user-input -j RETURN\n")
-        os.write(fd, "-A " + chain_prefix + "-user-output -j RETURN\n")
-        os.write(fd, "-A " + chain_prefix + "-user-forward -j RETURN\n")
 
         if chain_prefix == "ufw":
             # Rate limiting only supported with IPv4
@@ -772,6 +769,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         msg(out, sys.stderr)
                         UFWError(err_msg)
 
+                    # delete any lingering RETURN rules (needed for upgrades)
+                    if flag == "-A" and pat_log.search(" ".join(s)):
+                        c = pat_log.sub(r'\2', " ".join(s))
+                        (rc, out) = cmd([exe, '-D', c, '-j', 'RETURN'])
+                        if rc != 0:
+                            debug("FAILOK: " + err_msg)
+
         return rstr
 
     def get_app_rules_from_system(self, template, v6):
@@ -798,7 +802,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return app_rules
 
-    def _chain_cmd(self, chain, args):
+    def _chain_cmd(self, chain, args, fail_ok=False):
         '''Perform command on chain'''
         exe = "iptables"
         if chain.startswith("ufw6"):
@@ -806,7 +810,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         (rc, out) = cmd([exe] + args)
         if rc != 0:
            err_msg = _("Could not perform '%s'") % (args)
-           raise UFWError(err_msg)
+           if fail_ok:
+               debug("FAILOK: " + err_msg)
+           else: 
+               raise UFWError(err_msg)
 
     def update_logging(self, level):
         '''Update loglevel of running firewall'''
@@ -840,14 +847,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             # when off, insert a RETURN rule at the top of user rules, thus
             # preserving the rules
             for c in self.chains['user']:
-                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
+                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'], fail_ok=True)
                 self._chain_cmd(c, ['-I', c, '-j', 'RETURN'])
             return
         else:
-            # when on, append a RETURN rule at the end of user rules, thus
+            # when on, remove the RETURN rule at the top of user rules, thus
             # honoring the log rules
             for c in self.chains['user']:
-                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
+                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'], fail_ok=True)
 
         limit_args = ['-m', 'limit', '--limit', '3/min', '--limit-burst', '10']
 
