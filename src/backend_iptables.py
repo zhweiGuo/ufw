@@ -659,15 +659,28 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         count = 1
         inserted = False
         matches = 0
+        last = ('', '', '', '')
         for r in rules:
             try:
                 r.normalize()
             except Exception:
                 raise
 
+            current = (r.dst, r.src, r.dapp, r.sapp)
             if count == position:
-                inserted = True
-                newrules.append(rule)
+                # insert the rule if:
+                # 1. the last rule was not an application rule
+                # 2. the current rule is not an application rule
+                # 3. the last application rule is different than the current
+                if (last[2] == '' and last[3] == '') or \
+                   (current[2] == '' and current[3] == '') or last != current:
+                    inserted = True
+                    newrules.append(rule)
+                    last = ('', '', '', '')
+                else:
+                    position += 1
+            last = current
+            count += 1
 
             ret = UFWRule.match(r, rule)
             if ret < 1:
@@ -687,8 +700,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 newrules.append(rule)
             else:
                 newrules.append(r)
-
-            count += 1
 
         if inserted:
             if matches > 0:
