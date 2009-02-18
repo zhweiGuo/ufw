@@ -658,6 +658,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         count = 1
         inserted = False
+        matches = 0
         for r in rules:
             try:
                 r.normalize()
@@ -669,6 +670,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 newrules.append(rule)
 
             ret = UFWRule.match(r, rule)
+            if ret < 1:
+                matches += 1
+
             if ret == 0 and not found and not inserted:
                 # If find the rule, add it if it's not to be removed, otherwise
                 # skip it.
@@ -686,7 +690,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             count += 1
 
-        if not inserted:
+        if inserted:
+            if matches > 0:
+                rstr = _("Skipping inserting existing rule")
+                if rule.v6:
+                    rstr += " (v6)"
+                return rstr
+        else:
             # Add rule to the end if it was not already added.
             if not found and not rule.remove:
                 newrules.append(rule)

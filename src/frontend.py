@@ -75,6 +75,12 @@ def parse_command(argv):
             raise ValueError()
         insert_pos = argv[2]
 
+        # Using position '0' adds rule at end, which is potentially confusing
+        # for the end user
+        if insert_pos == "0":
+            err_msg = _("Cannot insert rule at position '%s'") % (insert_pos)
+            raise UFWError(err_msg)
+
         # strip out 'insert NUM' and parse as normal
         del argv[2]
         del argv[1]
