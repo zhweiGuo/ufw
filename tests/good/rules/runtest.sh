@@ -227,4 +227,20 @@ for i in any tcp udp ; do
     do_cmd "0" --dry-run reject 116$p
 done
 
+echo "Insert" >> $TESTTMP/result
+do_cmd "0" null allow 22
+do_cmd "0" null allow 23
+
+do_cmd "0" null insert 1 allow 9999
+do_cmd "0" null insert 1 allow log 9998
+do_cmd "0" null insert 2 reject to 192.168.0.1 from 10.0.0.1
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow 22
+do_cmd "0" null delete allow 23
+do_cmd "0" null delete allow 9999
+do_cmd "0" null delete allow log 9998
+do_cmd "0" null delete reject to 192.168.0.1 from 10.0.0.1
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
 exit 0

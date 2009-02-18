@@ -238,4 +238,18 @@ do_cmd "1" null --dry-run allow logg 22
 do_cmd "1" null --dry-run allow logall 22
 do_cmd "1" null --dry-run allow log-al1 22
 
+echo "TESTING ARGS (insert)" >> $TESTTMP/result
+do_cmd "0" null allow 22
+do_cmd "0" null allow 23
+
+do_cmd "1" null insert 0 allow 24
+do_cmd "1" null insert 3 allow 24
+do_cmd "1" null insert allow 24
+do_cmd "1" null allow insert 2 24
+do_cmd "0" null insert 1 allow 22
+do_cmd "0" null insert 1 allow log 22
+
+do_cmd "0" null delete allow 22
+do_cmd "0" null delete allow 23
+
 exit 0

@@ -6092,3 +6092,85 @@ COMMIT
 Rules updated
 
 
+Insert
+299: allow 22
+
+
+300: allow 23
+
+
+301: insert 1 allow 9999
+
+
+302: insert 1 allow log 9998
+
+
+303: insert 2 reject to 192.168.0.1 from 10.0.0.1
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow_log any 9998 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-logging-input -p tcp --dport 9998 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p tcp --dport 9998 -j RETURN
+-A ufw-user-input -p tcp --dport 9998 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 9998 -j ACCEPT
+-A ufw-user-logging-input -p udp --dport 9998 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p udp --dport 9998 -j RETURN
+-A ufw-user-input -p udp --dport 9998 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 9998 -j ACCEPT
+
+### tuple ### reject any any 192.168.0.1 any 10.0.0.1
+-A ufw-user-input -d 192.168.0.1 -s 10.0.0.1 -j REJECT
+
+### tuple ### allow any 9999 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 9999 -j ACCEPT
+-A ufw-user-input -p udp --dport 9999 -j ACCEPT
+
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+-A ufw-user-input -p udp --dport 22 -j ACCEPT
+
+### tuple ### allow any 23 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 23 -j ACCEPT
+-A ufw-user-input -p udp --dport 23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+304: delete allow 22
+
+
+305: delete allow 23
+
+
+306: delete allow 9999
+
+
+307: delete allow log 9998
+
+
+308: delete reject to 192.168.0.1 from 10.0.0.1
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT

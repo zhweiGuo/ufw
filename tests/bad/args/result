@@ -1413,3 +1413,34 @@ TESTING ARGS (logging)
 458: --dry-run allow log-al1 22
 
 
+TESTING ARGS (insert)
+459: allow 22
+
+
+460: allow 23
+
+
+461: insert 0 allow 24
+
+
+462: insert 3 allow 24
+
+
+463: insert allow 24
+
+
+464: allow insert 2 24
+
+
+465: insert 1 allow 22
+
+
+466: insert 1 allow log 22
+
+
+467: delete allow 22
+
+
+468: delete allow 23
+
+
