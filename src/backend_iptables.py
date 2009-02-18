@@ -331,7 +331,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 try:
                     self.set_loglevel("low")
                 except:
-                    err_msg = _("Could update logging rules")
+                    err_msg = _("Could not set LOGLEVEL")
                     raise UFWError(err_msg)
             else:
                 try:
@@ -370,7 +370,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if self.use_ipv6():
                 msg("> | ip6tables-restore")
         elif self._is_enabled():
-            # first flush the user chains
+            # first flush the user logging chains
             try:
                 for c in self.chains['user']:
                     self._chain_cmd(c, ['-F', c])
