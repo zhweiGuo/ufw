@@ -22,7 +22,7 @@ has_existing() {
 
     if [ "$orig" != "$user" ] && ! grep -q "$user" "$orig_md5file" 2>/dev/null ; then
         return 0
-    elif [ "$orig6" != "$user6" ] && && ! grep -q "$user6" "$orig6_md5file" 2>/dev/null ; then
+    elif [ "$orig6" != "$user6" ] && ! grep -q "$user6" "$orig6_md5file" 2>/dev/null ; then
         return 0
     else
         return 1

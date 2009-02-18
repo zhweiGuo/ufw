@@ -1,4 +1,4 @@
-ufw (0.27~r414-0ubuntu1) jaunty; urgency=low
+ufw (0.27~r416-0ubuntu1) jaunty; urgency=low
 
   * new upstream release
     - don't do symlink check anymore (LP: #317700)
