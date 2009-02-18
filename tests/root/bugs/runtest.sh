@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright (C) 2008 Canonical Ltd.
+#    Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -101,6 +101,6 @@ do_cmd "0"  delete allow to ::1 port 22
 do_cmd "0"  delete allow to ::1 app Apache
 
 # teardown
-do_cmd "0"  disable
+cleanup
 
 exit 0

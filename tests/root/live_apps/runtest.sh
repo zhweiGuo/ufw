@@ -151,6 +151,6 @@ do_cmd "0" delete reject to any from any app Samba
 do_cmd "0" delete reject Samba
 do_cmd "0" status verbose
 
-do_cmd "0"  disable
+cleanup
 
 exit 0

@@ -442,6 +442,6 @@ grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 do_cmd "0" delete deny 23,21,15:19,22/udp
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
-do_cmd "0" disable
+cleanup
 
 exit 0

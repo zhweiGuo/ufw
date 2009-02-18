@@ -32,11 +32,16 @@ for i in allow deny limit reject ; do
         cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
-        iptables-save | grep -v '^#' > $TESTTMP/save.1
+        iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
+        ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
         do_cmd "0"  disable
         do_cmd "0"  enable
-        iptables-save | grep -v '^#' > $TESTTMP/save.2
-        diff $TESTTMP/save.1 $TESTTMP/save.2 || exit 1
+        iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
+        ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
+        diff $TESTTMP/save.1 $TESTTMP/save.2 || {
+            echo "ip(6)tables-restore different for '$i'"
+            exit 1
+        }
 
         do_cmd "0" null delete $i $j 23
         do_cmd "0" null delete $i $j Samba
@@ -51,6 +56,5 @@ echo "contents of user*.rules:" >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
-do_cmd "0"  disable
-
+cleanup
 exit 0

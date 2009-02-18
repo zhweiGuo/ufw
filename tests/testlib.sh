@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright (C) 2008 Canonical Ltd.
+#    Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -44,5 +44,10 @@ do_cmd() {
         individual=$(cat $statsdir/individual)
         let individual=individual+1
         echo $individual > $statsdir/individual
+}
+
+cleanup() {
+    do_cmd "0" disable
+    $TESTPATH/usr/share/ufw/ufw-init flush-all
 }
 

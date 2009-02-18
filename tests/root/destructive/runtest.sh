@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright (C) 2008 Canonical Ltd.
+#    Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -55,6 +55,6 @@ sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.
 trap - EXIT HUP INT QUIT TERM
 
 # teardown
-do_cmd "0"  disable
+cleanup
 
 exit 0

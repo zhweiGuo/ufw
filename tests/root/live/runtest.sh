@@ -154,6 +154,6 @@ do
 	do_cmd "0" status numbered
 done
 
-do_cmd "0"  disable
+cleanup
 
 exit 0
