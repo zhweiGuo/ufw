@@ -115,5 +115,35 @@ EOM
 do_cmd "0" null --dry-run allow RunTest2
 rm -f $TESTPATH/etc/ufw/applications.d/Runtest2 $TESTPATH/etc/ufw/applications.d/RunTest2
 
+echo "TESTING INSERT" >> $TESTTMP/result
+do_cmd "0" null allow Apache
+do_cmd "0" null allow Bind9
+do_cmd "0" null insert 1 allow Samba
+do_cmd "0" null insert 2 reject 'Dovecot POP3'
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow Apache
+do_cmd "0" null delete allow Bind9
+do_cmd "0" null delete allow Samba
+do_cmd "0" null delete reject 'Dovecot POP3'
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+do_cmd "0" null allow Samba
+do_cmd "0" null allow 22
+do_cmd "0" null insert 2 allow from any to any app Samba
+do_cmd "0" null insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
+do_cmd "0" null insert 2 allow from 192.168.0.1 to any app Samba
+do_cmd "0" null insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
+do_cmd "0" null insert 2 allow from any app Samba to 10.0.0.1
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow Samba
+do_cmd "0" null delete allow 22
+do_cmd "0" null delete allow from any to any app Samba
+do_cmd "0" null delete allow from 192.168.0.1 to 10.0.0.1 app Samba
+do_cmd "0" null delete allow from 192.168.0.1 to any app Samba
+do_cmd "0" null delete allow from 192.168.0.1 app Samba to 10.0.0.1
+do_cmd "0" null delete allow from any app Samba to 10.0.0.1
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 exit 0
