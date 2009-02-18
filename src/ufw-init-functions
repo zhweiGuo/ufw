@@ -193,9 +193,6 @@ ufw_start() {
                 $exe -N ufw${type}-logging-deny || error="yes"
                 $exe -N ufw${type}-logging-allow || error="yes"
             fi
-            # now exit from the chain
-            $exe -A ufw${type}-logging-deny -j RETURN || error="yes"
-            $exe -A ufw${type}-logging-allow -j RETURN || error="yes"
 
             # setup ufw${type}-user-logging-* chains
             if ! $exe -L ufw${type}-user-logging-input -n >/dev/null 2>&1 ; then
@@ -203,10 +200,6 @@ ufw_start() {
                 $exe -N ufw${type}-user-logging-output || error="yes"
                 $exe -N ufw${type}-user-logging-forward || error="yes"
             fi
-            # now exit from the chain
-            $exe -A ufw${type}-user-logging-input -j RETURN || error="yes"
-            $exe -A ufw${type}-user-logging-output -j RETURN || error="yes"
-            $exe -A ufw${type}-user-logging-forward -j RETURN || error="yes"
 
             # setup ufw${type}-before-logging-* chains
             if ! $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
@@ -217,11 +210,6 @@ ufw_start() {
                 $exe -A OUTPUT -j ufw${type}-before-logging-output || error="yes"
                 $exe -A FORWARD -j ufw${type}-before-logging-forward || error="yes"
             fi
-
-            # now exit from the chain
-            $exe -A ufw${type}-before-logging-input -j RETURN || error="yes"
-            $exe -A ufw${type}-before-logging-output -j RETURN || error="yes"
-            $exe -A ufw${type}-before-logging-forward -j RETURN || error="yes"
 
             # setup ufw${type}-before-* chains
             if ! $exe -L ufw${type}-before-input -n >/dev/null 2>&1 ; then
@@ -257,11 +245,6 @@ ufw_start() {
                 # be in the USER_PATH file
             fi
 
-            # now exit from the chain
-            $exe -A ufw${type}-before-input -j RETURN || error="yes"
-            $exe -A ufw${type}-before-output -j RETURN || error="yes"
-            $exe -A ufw${type}-before-forward -j RETURN || error="yes"
-
             # setup ufw${type}-after-* chains
             if ! $exe -L ufw${type}-after-input -n >/dev/null 2>&1 ; then
                 $exe -N ufw${type}-after-input || error="yes"
@@ -279,9 +262,6 @@ ufw_start() {
             else
                 out="${out}\nCouldn't find '$AFTER_RULES'"
             fi
-            $exe -A ufw${type}-after-input -j RETURN || error="yes"
-            $exe -A ufw${type}-after-output -j RETURN || error="yes"
-            $exe -A ufw${type}-after-forward -j RETURN || error="yes"
 
             # setup ufw${type}-after-logging-* chains
             if ! $exe -L ufw${type}-after-logging-input -n >/dev/null 2>&1 ; then
@@ -292,11 +272,6 @@ ufw_start() {
                 $exe -A OUTPUT -j ufw${type}-after-logging-output || error="yes"
                 $exe -A FORWARD -j ufw${type}-after-logging-forward || error="yes"
             fi
-            # now exit from the chain
-            $exe -A ufw${type}-after-logging-input -j RETURN || error="yes"
-            $exe -A ufw${type}-after-logging-output -j RETURN || error="yes"
-            $exe -A ufw${type}-after-logging-forward -j RETURN || error="yes"
-
 
             # now setup the REJECT chains
             if ! $exe -L ufw${type}-reject-input -n >/dev/null 2>&1 ; then
@@ -317,9 +292,6 @@ ufw_start() {
             if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
                 $exe -A ufw${type}-reject-forward -j REJECT || error="yes"
             fi
-            $exe -A ufw${type}-reject-input -j RETURN || error="yes"
-            $exe -A ufw${type}-reject-output -j RETURN || error="yes"
-            $exe -A ufw${type}-reject-forward -j RETURN || error="yes"
         done
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then

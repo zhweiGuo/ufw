@@ -375,7 +375,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 for c in self.chains['user']:
                     self._chain_cmd(c, ['-F', c])
                     self._chain_cmd(c, ['-Z', c])
-                    self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
             except:
                 raise UFWError(err_msg)
 
@@ -432,9 +431,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     lstr = '-m state --state NEW ' + lstr
                 snippets[i] = pat_log.sub(r'\1-j \2\4', s)
                 snippets.insert(i, pat_log.sub(r'\1-j ' + prefix + \
-                                                '-user-logging-input', s))
+                                               '-user-logging-input', s))
                 snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
-                                                '-user-logging-input', 
+                                                 '-user-logging-input', 
+                                                 pat_log.sub(r'\1-j RETURN', \
+                                                 s)))
+                snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
+                                                 '-user-logging-input', 
                                                  pat_log.sub(r'\1' + lstr, s)))
 
         # adjust for limit
@@ -769,17 +772,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         msg(out, sys.stderr)
                         UFWError(err_msg)
 
-                    # delete the RETURN rule then add it back, so it is at the
-                    # end
-                    if flag == "-A" and pat_log.search(" ".join(s)):
-                        c = pat_log.sub(r'\2', " ".join(s))
-                        (rc, out) = cmd([exe, '-D', c, '-j', 'RETURN'])
-                        if rc != 0:
-                            msg(out, sys.stderr)
-
-                        (rc, out) = cmd([exe, '-A', c, '-j', 'RETURN'])
-                        if rc != 0:
-                            msg(out, sys.stderr)
         return rstr
 
     def get_app_rules_from_system(self, template, v6):
@@ -841,7 +833,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                self.chains['misc']:
                 self._chain_cmd(c, ['-F', c])
                 self._chain_cmd(c, ['-Z', c])
-                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
         except:
             raise UFWError(err_msg)
 
@@ -857,7 +848,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             # honoring the log rules
             for c in self.chains['user']:
                 self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
-                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
 
         limit_args = ['-m', 'limit', '--limit', '3/min', '--limit-burst', '10']
 
@@ -877,8 +867,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             try:
                                 self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
                                                     '--log-prefix', msg] + largs)
-                                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
-                                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
                             except:
                                 raise
                         elif self.loglevels[level] >= self.loglevels["medium"]:
@@ -886,8 +874,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             try:
                                 self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
                                                     '--log-prefix', msg] + largs)
-                                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
-                                self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
                             except:
                                 raise
 
@@ -913,9 +899,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 try:
                     self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
                                         '--log-prefix', msg] + largs)
-                    # put return at the end again
-                    self._chain_cmd(c, ['-D', c, '-j', 'RETURN'])
-                    self._chain_cmd(c, ['-A', c, '-j', 'RETURN'])
                 except:
                     raise
 
