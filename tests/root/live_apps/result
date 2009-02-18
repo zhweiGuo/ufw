@@ -1187,7 +1187,284 @@ Default: deny
 New profiles: skip
 
 
+TESTING INSERT
+Setting IPV6 to no
 151: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+152: enable
+WARN: Checks disabled
+Firewall is active and enabled on system startup
+
+
+153: allow Apache
+WARN: Checks disabled
+Rule added
+
+
+154: allow Bind9
+WARN: Checks disabled
+Rule added
+
+
+155: insert 1 allow Samba
+WARN: Checks disabled
+Rule inserted
+
+
+156: insert 2 reject Dovecot POP3
+WARN: Checks disabled
+Rule inserted
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+-A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
+
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+-A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+COMMIT
+157: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+158: enable
+WARN: Checks disabled
+Firewall is active and enabled on system startup
+
+
+159: delete allow Apache
+WARN: Checks disabled
+Rule deleted
+
+
+160: delete allow Bind9
+WARN: Checks disabled
+Rule deleted
+
+
+161: delete allow Samba
+WARN: Checks disabled
+Rule deleted
+
+
+162: delete reject Dovecot POP3
+WARN: Checks disabled
+Rule deleted
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+COMMIT
+163: allow Samba
+WARN: Checks disabled
+Rule added
+
+
+164: allow 22
+WARN: Checks disabled
+Rule added
+
+
+165: insert 2 allow from any to any app Samba
+WARN: Checks disabled
+Skipping inserting existing rule
+
+
+166: insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
+WARN: Checks disabled
+Rule inserted
+
+
+167: insert 2 allow from 192.168.0.1 to any app Samba
+WARN: Checks disabled
+Rule inserted
+
+
+168: insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
+WARN: Checks disabled
+Rule inserted
+
+
+169: insert 2 allow from any app Samba to 10.0.0.1
+WARN: Checks disabled
+Rule inserted
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+-A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+-A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+-A ufw-user-input -p udp --dport 22 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+COMMIT
+170: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+171: enable
+WARN: Checks disabled
+Firewall is active and enabled on system startup
+
+
+172: delete allow Samba
+WARN: Checks disabled
+Rule deleted
+
+
+173: delete allow 22
+WARN: Checks disabled
+Rule deleted
+
+
+174: delete allow from any to any app Samba
+WARN: Checks disabled
+Could not delete non-existent rule
+Could not delete non-existent rule (v6)
+
+
+175: delete allow from 192.168.0.1 to 10.0.0.1 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+176: delete allow from 192.168.0.1 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+177: delete allow from 192.168.0.1 app Samba to 10.0.0.1
+WARN: Checks disabled
+Rule deleted
+
+
+178: delete allow from any app Samba to 10.0.0.1
+WARN: Checks disabled
+Rule deleted
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+COMMIT
+179: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

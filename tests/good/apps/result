@@ -5422,11 +5422,11 @@ TESTING INSERT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
-
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
 -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'

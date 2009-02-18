@@ -151,6 +151,71 @@ do_cmd "0" delete reject to any from any app Samba
 do_cmd "0" delete reject Samba
 do_cmd "0" status verbose
 
+
+echo "TESTING INSERT" >> $TESTTMP/result
+#for ipv6 in yes no ; do
+for ipv6 in no ; do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0"  disable
+    do_cmd "0"  enable
+    do_cmd "0" allow Apache
+    do_cmd "0" allow Bind9
+    do_cmd "0" insert 1 allow Samba
+    do_cmd "0" insert 2 reject 'Dovecot POP3'
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
+    do_cmd "0"  disable
+    do_cmd "0"  enable
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
+    diff $TESTTMP/save.1 $TESTTMP/save.2 || {
+        echo "ip(6)tables-restore different for '$i'"
+        exit 1
+    }
+
+    do_cmd "0" delete allow Apache
+    do_cmd "0" delete allow Bind9
+    do_cmd "0" delete allow Samba
+    do_cmd "0" delete reject 'Dovecot POP3'
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+    do_cmd "0" allow Samba
+    do_cmd "0" allow 22
+    do_cmd "0" insert 2 allow from any to any app Samba
+    do_cmd "0" insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
+    do_cmd "0" insert 2 allow from 192.168.0.1 to any app Samba
+    do_cmd "0" insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
+    do_cmd "0" insert 2 allow from any app Samba to 10.0.0.1
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
+    do_cmd "0"  disable
+    do_cmd "0"  enable
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
+    diff $TESTTMP/save.1 $TESTTMP/save.2 || {
+        echo "ip(6)tables-restore different for '$i'"
+        exit 1
+    }
+
+    do_cmd "0" delete allow Samba
+    do_cmd "0" delete allow 22
+    do_cmd "0" delete allow from any to any app Samba
+    do_cmd "0" delete allow from 192.168.0.1 to 10.0.0.1 app Samba
+    do_cmd "0" delete allow from 192.168.0.1 to any app Samba
+    do_cmd "0" delete allow from 192.168.0.1 app Samba to 10.0.0.1
+    do_cmd "0" delete allow from any app Samba to 10.0.0.1
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+done
+
 cleanup
 
 exit 0
