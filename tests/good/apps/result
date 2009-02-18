@@ -379,6 +379,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -567,6 +568,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -771,6 +773,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j LIMIT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -966,6 +969,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -1154,6 +1158,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -1342,6 +1347,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -1530,6 +1536,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -1675,6 +1682,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba' 0
 Rules updated
 
 
@@ -1715,6 +1723,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -1818,6 +1827,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9' 0
 Rules updated
 
 
@@ -1858,6 +1868,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -1919,6 +1930,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba' 0
 Rules updated
 
 
@@ -2001,6 +2013,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba' 0
 Rules updated
 
 
@@ -2041,6 +2054,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -2144,6 +2158,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9' 0
 Rules updated
 
 
@@ -2184,6 +2199,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -2245,6 +2261,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba' 0
 Rules updated
 
 
@@ -2370,6 +2387,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -2558,6 +2576,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -2746,6 +2765,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -2934,6 +2954,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -3079,6 +3100,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba' 0
 Rules updated
 
 
@@ -3119,6 +3141,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -3222,6 +3245,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9' 0
 Rules updated
 
 
@@ -3262,6 +3286,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -3323,6 +3348,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba' 0
 Rules updated
 
 
@@ -3405,6 +3431,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba' 0
 Rules updated
 
 
@@ -3445,6 +3472,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -3548,6 +3576,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9' 0
 Rules updated
 
 
@@ -3588,6 +3617,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -3649,6 +3679,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba' 0
 Rules updated
 
 
@@ -3790,6 +3821,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j LIMIT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -4000,6 +4032,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j LIMIT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -4210,6 +4243,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j LIMIT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -4420,6 +4454,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --sports 137,138 -j LIMIT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -4581,6 +4616,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j LIMIT -m comment --comment 'dapp_Bind9,sapp_Samba' 0
 Rules updated
 
 
@@ -4627,6 +4663,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j LIMIT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -4742,6 +4779,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j LIMIT -m comment --comment 'dapp_Samba,sapp_Bind9' 0
 Rules updated
 
 
@@ -4788,6 +4826,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j LIMIT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -4857,6 +4896,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j LIMIT -m comment --comment 'dapp_Samba,sapp_Samba' 0
 Rules updated
 
 
@@ -4949,6 +4989,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j LIMIT -m comment --comment 'dapp_Bind9,sapp_Samba' 0
 Rules updated
 
 
@@ -4995,6 +5036,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j LIMIT -m comment --comment 'sapp_Samba' 0
 Rules updated
 
 
@@ -5110,6 +5152,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j LIMIT -m comment --comment 'dapp_Samba,sapp_Bind9' 0
 Rules updated
 
 
@@ -5156,6 +5199,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j LIMIT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -5225,6 +5269,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j LIMIT -m comment --comment 'dapp_Samba,sapp_Samba' 0
 Rules updated
 
 
@@ -5340,6 +5385,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -5394,6 +5440,7 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+jamie: -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba' 0
 Rules updated
 
 
@@ -5401,3 +5448,172 @@ TESTING APPLICATION INTEGRATION (exact vs multi)
 204: --dry-run allow RunTest2
 
 
+TESTING INSERT
+205: allow Apache
+
+
+206: allow Bind9
+
+
+207: insert 1 allow Samba
+
+
+208: insert 2 reject Dovecot POP3
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+-A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
+
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
+
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+-A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+-A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+209: delete allow Apache
+
+
+210: delete allow Bind9
+
+
+211: delete allow Samba
+
+
+212: delete reject Dovecot POP3
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+213: allow Samba
+
+
+214: allow 22
+
+
+215: insert 2 allow from any to any app Samba
+
+
+216: insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
+
+
+217: insert 2 allow from 192.168.0.1 to any app Samba
+
+
+218: insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
+
+
+219: insert 2 allow from any app Samba to 10.0.0.1
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+-A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+-A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+-A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+-A ufw-user-input -p udp --dport 22 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+220: delete allow Samba
+
+
+221: delete allow 22
+
+
+222: delete allow from any to any app Samba
+
+
+223: delete allow from 192.168.0.1 to 10.0.0.1 app Samba
+
+
+224: delete allow from 192.168.0.1 to any app Samba
+
+
+225: delete allow from 192.168.0.1 app Samba to 10.0.0.1
+
+
+226: delete allow from any app Samba to 10.0.0.1
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
