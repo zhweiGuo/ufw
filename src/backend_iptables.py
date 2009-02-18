@@ -673,9 +673,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 # 1. the last rule was not an application rule
                 # 2. the current rule is not an application rule
                 # 3. the last application rule is different than the current
-                #    current one, and the new rule is different than the
-                #     current one
-                if (last[2] == '' and last[3] == '') or \
+                #    while the new rule is different than the current one
+                if (last[2] == '' and last[3] == '' and count > 1) or \
                    (current[2] == '' and current[3] == '') or \
                    (last != current and this_rule != current):
                     inserted = True
