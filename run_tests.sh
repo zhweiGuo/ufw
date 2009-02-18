@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#    Copyright (C) 2008 Canonical Ltd.
+#    Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -96,6 +96,8 @@ do
 		if [ -d "$testdir/testarea" ]; then
 			rm -rf $testdir/testarea
 		fi
+		tmpdir=`mktemp -d`
+		mv "$tmpdir" "$testdir/testarea"
 
 		mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
 
@@ -143,6 +145,7 @@ do
 				echo "$diffs"
 			fi
 		fi
+		chmod 755 "$testdir/testarea"
 		if [ $errors -gt 0 ]; then
 			if [ "$STOPONFAIL" = "yes" ]; then
 				echo ""
