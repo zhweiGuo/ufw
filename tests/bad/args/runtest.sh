@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright (C) 2008 Canonical Ltd.
+#    Copyright (C) 2008-2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -221,5 +221,21 @@ do_cmd "1" null --dry-run app defalt foo
 do_cmd "1" null --dry-run app update
 do_cmd "1" null --dry-run app rfresh foo
 do_cmd "1" null --dry-run app info foo%
+
+echo "TESTING ARGS (logging)" >> $TESTTMP/result
+do_cmd "1" null --dry-run logging offf
+grep -q "^LOGLEVEL=low" $TESTPATH/etc/ufw/ufw.conf || echo "ERROR: loglevel changed"
+do_cmd "1" null --dry-run logging onn
+do_cmd "1" null --dry-run logging loww
+do_cmd "1" null --dry-run logging meduim
+grep -q "^LOGLEVEL=low" $TESTPATH/etc/ufw/ufw.conf || echo "ERROR: loglevel changed"
+do_cmd "1" null --dry-run logging hih
+grep -q "^LOGLEVEL=low" $TESTPATH/etc/ufw/ufw.conf || echo "ERROR: loglevel changed"
+do_cmd "1" null --dry-run logging ful1
+grep -q "^LOGLEVEL=low" $TESTPATH/etc/ufw/ufw.conf || echo "ERROR: loglevel changed"
+
+do_cmd "1" null --dry-run allow logg 22
+do_cmd "1" null --dry-run allow logall 22
+do_cmd "1" null --dry-run allow log-al1 22
 
 exit 0

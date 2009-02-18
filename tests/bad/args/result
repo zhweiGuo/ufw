@@ -1385,3 +1385,31 @@ TESTING ARGS (app)
 449: --dry-run app info foo%
 
 
+TESTING ARGS (logging)
+450: --dry-run logging offf
+
+
+451: --dry-run logging onn
+
+
+452: --dry-run logging loww
+
+
+453: --dry-run logging meduim
+
+
+454: --dry-run logging hih
+
+
+455: --dry-run logging ful1
+
+
+456: --dry-run allow logg 22
+
+
+457: --dry-run allow logall 22
+
+
+458: --dry-run allow log-al1 22
+
+
