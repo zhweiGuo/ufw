@@ -1,4 +1,4 @@
-ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
+ufw (0.27~r414-0ubuntu1) jaunty; urgency=low
 
   * new upstream release
     - don't do symlink check anymore (LP: #317700)
@@ -16,9 +16,9 @@ ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
   * debian/*md5sums: updated for new upstream defaults
   * debian/config: update has_existing() to also check old md5sums
   * debian/postinst: don't error out when processing triggers, as this causes
-    dpkg errors (LP #270285, #328728)
+    dpkg errors (LP: #270285, #328728)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 17:17:38 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Feb 2009 16:53:15 -0600
 
 ufw (0.26-0ubuntu1) jaunty; urgency=low
 
