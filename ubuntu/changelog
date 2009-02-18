@@ -1,3 +1,9 @@
+ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
+
+  * debian/templates: fix lintian error
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Feb 2009 17:41:08 -0600
+
 ufw (0.27~r416-0ubuntu1) jaunty; urgency=low
 
   * new upstream release
