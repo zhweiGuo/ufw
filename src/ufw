@@ -31,7 +31,7 @@ gettext.install(ufw.common.programName)
 
 version = "#VERSION#"
 
-def clean_warning(message, category, filename, lineno, file=None):
+def clean_warning(message, category, filename, lineno, file=None, line=""):
     warn(message)
 
 # Internationalization
