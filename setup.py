@@ -58,11 +58,10 @@ class Install(_install, object):
         # Update the modules' paths
         for file in [ 'common.py' ]:
             print "Updating " + file
-            subprocess.call(["sed", 
-                             "-i", 
+            subprocess.call(["sed",
+                             "-i",
                              "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
                              os.path.join('staging', file)])
-                
 
             subprocess.call(["sed",
                              "-i",

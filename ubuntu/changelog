@@ -3,6 +3,7 @@ ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
   * debian/templates: fix lintian error
   * get rid of DeprecationWarnings from 2.6 transition, which cause a FTBFS
     due to tests failing
+  * debian/control: update Vcs-Bzr url
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Feb 2009 17:41:08 -0600
 
