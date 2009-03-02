@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2009-02-18 17:03+CST\n"
+"POT-Creation-Date: 2009-03-02 17:44+CST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -623,12 +623,12 @@ msgstr ""
 msgid " Proceed with operation (%s|%s)? "
 msgstr ""
 
-#: src/ufw:45
+#: src/ufw:42
 msgid ""
 ": Need at least python 2.5)\n"
 msgstr ""
 
-#: src/ufw:104
+#: src/ufw:107
 msgid "Aborted"
 msgstr ""
 
