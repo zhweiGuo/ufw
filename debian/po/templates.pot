@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: ubuntu-motu@lists.ubuntu.com\n"
-"POT-Creation-Date: 2008-01-28 13:24-0500\n"
+"Report-Msgid-Bugs-To: ufw@packages.debian.org\n"
+"POT-Creation-Date: 2009-03-02 14:22-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,16 +16,68 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Type: note
+#. Type: error
 #. Description
 #: ../templates:1001
-msgid "Found old rules file"
+msgid "Found existing configuration"
 msgstr ""
 
-#. Type: note
+#. Type: error
 #. Description
 #: ../templates:1001
 msgid ""
-"Detected /etc/ufw/ufw.rules. This file is obsoleted by /etc/ufw/before.rules "
-"and /etc/ufw/after.rules. You will have to manually migrate this file."
+"An existing configuration was found. Please use the ufw command to manage "
+"your firewall rules. See 'man ufw' for details."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid "Should ufw be enabled?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid ""
+"If you enable ufw now, it will block incoming connections and will be "
+"started the next time you reboot. If it is disabled, ufw will not be started "
+"on boot. To start or stop ufw without rebooting, please use '/etc/init.d/ufw "
+"start' or '/etc/init.d/ufw stop'."
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../templates:3001
+msgid ""
+"Cups, DNS, Imap (Secure), Pop3 (Secure), SSH, Samba, Smtp, WWW, WWW (Secure)"
+msgstr ""
+
+#. Type: multiselect
+#. Description
+#: ../templates:3002
+msgid "Allow the following services:"
+msgstr ""
+
+#. Type: multiselect
+#. Description
+#: ../templates:3002
+msgid ""
+"Selecting an item from this list allows all traffic to the specified service."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:4001
+msgid "Allow additional ports:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:4001
+msgid ""
+"Please enter a space separated list of any additional ports you would like "
+"to have open. These may either be a service name as found in /etc/services, "
+"a port number, or a port number/protocol combination. Eg, to allow http, "
+"port 53 and tcp port 22, use 'http 53 22/tcp'."
 msgstr ""
