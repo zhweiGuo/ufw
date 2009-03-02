@@ -13,6 +13,7 @@ ufw (0.27) UNRELEASED; urgency=low
   * add per rule logging support
   * get rid of redundant RETURN rules
   * update LIMIT logging prefix
+  * update setup.py to use subprocess instead of Popen3
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 17 Jan 2009 07:15:25 -0600
 

@@ -23,7 +23,6 @@ from distutils.command.install import install as _install
 from distutils.core import setup
 import errno
 import os
-from popen2 import Popen3
 import re
 import sys
 import shutil
@@ -59,20 +58,21 @@ class Install(_install, object):
         # Update the modules' paths
         for file in [ 'common.py' ]:
             print "Updating " + file
-            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + real_confdir + "%g' " + \
-                       os.path.join('staging', file))
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed", 
+                             "-i", 
+                             "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
+                             os.path.join('staging', file)])
+                
 
-            a = Popen3("sed -i 's%#STATE_PREFIX#%" + real_statedir + "%g' " + \
-                       os.path.join('staging', file))
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#STATE_PREFIX#%" + real_statedir + "%g",
+                             os.path.join('staging', file)])
 
-            a = Popen3("sed -i 's%#PREFIX#%" + real_prefix + "%g' " + \
-                       os.path.join('staging', file))
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#PREFIX#%" + real_prefix + "%g",
+                             os.path.join('staging', file)])
 
         # Now byte-compile everything
         super(Install, self).run()
@@ -144,21 +144,25 @@ class Install(_install, object):
                       before6_rules, after6_rules, script, \
                       manpage, sysctl, init_helper, init_helper_functions ]:
             print "Updating " + file
-            a = Popen3("sed -i 's%#CONFIG_PREFIX#%" + real_confdir + "%g' " + file)
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
+                             file])
 
-            a = Popen3("sed -i 's%#PREFIX#%" + real_prefix + "%g' " + file)
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#PREFIX#%" + real_prefix + "%g",
+                             file])
 
-            a = Popen3("sed -i 's%#STATE_PREFIX#%" + real_statedir + "%g' " + file)
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#STATE_PREFIX#%" + real_statedir + "%g",
+                             file])
 
-            a = Popen3("sed -i 's%#VERSION#%" + ufw_version + "%g' " + file)
-            while a.poll() == -1:
-                pass
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#VERSION#%" + ufw_version + "%g",
+                             file])
 
 if os.path.exists('staging'):
     shutil.rmtree('staging')
