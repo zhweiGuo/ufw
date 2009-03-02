@@ -31,9 +31,6 @@ gettext.install(ufw.common.programName)
 
 version = "#VERSION#"
 
-def clean_warning(message, category, filename, lineno, file=None, line=""):
-    warn(message)
-
 # Internationalization
 gettext.bindtextdomain(ufw.common.programName, \
                        os.path.join(ufw.common.state_dir, 'messages'))
@@ -46,6 +43,12 @@ if sys.version_info[0] < 2 or \
         sys.stderr)
     sys.exit(1)
 
+if sys.version_info[0] == 2 and sys.version_info[1] < 6:
+    def clean_warning(message, category, filename, lineno, file=None):
+        warn(message)
+else:
+    def clean_warning(message, category, filename, lineno, file=None, line=""):
+        warn(message)
 
 if __name__ == "__main__":
     warnings.showwarning = clean_warning
