@@ -22,9 +22,13 @@ import re
 import sys
 import warnings
 
-import ufw.frontend
-from ufw.common import UFWError
-from ufw.util import error, warn, msg
+try:
+    import ufw.frontend
+    from ufw.common import UFWError
+    from ufw.util import error, warn, msg
+except:
+    print >> sys.stderr, "ERROR: Could not find required libraries. Aborting."
+    sys.exit(1)
 
 import gettext
 gettext.install(ufw.common.programName)

@@ -20,3 +20,8 @@ Available applications:
   a aZ9 _-.+
 
 
+Bug #337705
+1: help
+ERROR: Could not find required libraries. Aborting.
+
+
