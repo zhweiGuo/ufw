@@ -37,7 +37,7 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 endif
 
 	python ./setup.py install \
-		--root=$(CURDIR)/debian/ufw
+		--root=$(CURDIR)/debian/ufw --install-layout=deb
 
 	# these shouldn't be conffiles
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
@@ -81,7 +81,7 @@ binary-indep: build install
 		fi; \
 	done
 
-	dh_pycentral
+	DH_PYCENTRAL=include-links dh_pycentral
 	dh_compress
 	dh_fixperms
 	dh_installdeb
