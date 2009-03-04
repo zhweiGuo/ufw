@@ -4,6 +4,8 @@ ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
   * get rid of DeprecationWarnings from 2.6 transition, which cause a FTBFS
     due to tests failing
   * debian/control: update Vcs-Bzr url
+  * debian/rules: adjust dh_pycentral call to make sure dist-package symlinks
+    are available at dpkg unpack. Patch thanks to Michael Vogt (LP: #337705)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Feb 2009 17:41:08 -0600
 
