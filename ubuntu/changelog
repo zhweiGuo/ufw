@@ -6,6 +6,8 @@ ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
   * debian/control: update Vcs-Bzr url
   * debian/rules: adjust dh_pycentral call to make sure dist-package symlinks
     are available at dpkg unpack. Patch thanks to Michael Vogt (LP: #337705)
+  * debian/templates: rephrase boolean description so it works with both cli
+    yes/no question and gui checkbox (LP: #337890)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Feb 2009 17:41:08 -0600
 
