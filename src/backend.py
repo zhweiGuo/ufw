@@ -411,7 +411,7 @@ class UFWBackend:
            at position '4' in the ipv6 list.
         '''
         # Invalid search (v6 rule with too low position)
-        if v6 and position <= len(self.rules):
+        if v6 and position > len(self.rules6):
             raise ValueError()
 
         # Invalid search (v4 rule with too high position)

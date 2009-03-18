@@ -613,18 +613,29 @@ class UFWFrontend:
 
         count = 0
         set_error = False
+        pos_err_msg = _("Invalid position '")
+        num_v4 = self.backend.get_rules_count(False)
+        num_v6 = self.backend.get_rules_count(True)
         for i, r in enumerate(rules):
             count = i
+            if r.position > num_v4 + num_v6:
+                pos_err_msg += str(r.position) + "'"
+                raise UFWError(pos_err_msg)
             try:
                 if self.backend.use_ipv6():
-                    num_v4 = self.backend.get_rules_count(False)
                     if ip_version == "v4":
+                        if r.position > num_v4:
+                            pos_err_msg += str(r.position) + "'"
+                            raise UFWError(pos_err_msg)
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "v6":
-                        r.set_v6(True)
                         if r.position > num_v4:
                             r.set_position(r.position - num_v4)
+                        elif r.position != 0 and r.position <= num_v4:
+                            pos_err_msg += str(r.position) + "'"
+                            raise UFWError(pos_err_msg)
+                        r.set_v6(True)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "both":
                         original_p = r.position
@@ -632,8 +643,8 @@ class UFWFrontend:
                         if not r.remove and r.position > num_v4:
 			    # The user specified a v6 rule, so try to find a
 			    # match in the v4 rules and use its position.
-                            p = self.backend.find_other_position(r.position,\
-                                                                 True)
+                            p = self.backend.find_other_position(r.position - \
+                                                                 num_v4, True)
                             if p > 0:
                                 r.set_position(p)
                             else:
@@ -643,7 +654,7 @@ class UFWFrontend:
 
                         # we need to readjust this since the number of ipv4
                         # rules just changed with the above set_rule
-                        if not r.remove:
+                        if not r.remove and original_p > 0:
                             offset = original_p - num_v4
                             num_v4 = self.backend.get_rules_count(False)
                             r.set_position(num_v4 + offset)
@@ -662,8 +673,12 @@ class UFWFrontend:
                                 r.set_position(0)
                         if tmp != "":
                             tmp += "\n"
+
+                        # readjust position to send to set_rule
+                        if not r.remove and r.position > num_v4:
+                            r.set_position(r.position - num_v4)
+
                         tmp += self.backend.set_rule(r)
-                        r.set_position(original_p)
                     else:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)

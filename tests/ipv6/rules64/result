@@ -3127,3 +3127,263 @@ COMMIT
 Rules updated (v6)
 
 
+Insert
+278: allow to 127.0.0.1 port 22
+
+
+279: allow to 127.0.0.1 port 23
+
+
+280: allow to ::1 port 24
+
+
+281: allow to ::1 port 25
+
+
+ipv4 rule in ipv4 section
+282: insert 2 allow to 127.0.0.1 port 8888
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
+
+### tuple ### allow any 8888 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 8888 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 8888 -j ACCEPT
+
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 24 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
+
+### tuple ### allow any 25 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
+
+### END RULES ###
+COMMIT
+ipv6 rule in ipv6 section
+283: delete allow to 127.0.0.1 port 8888
+
+
+284: insert 4 allow to ::1 port 8888
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
+
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 24 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
+
+### tuple ### allow any 8888 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 8888 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 8888 -j ACCEPT
+
+### tuple ### allow any 25 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
+
+### END RULES ###
+COMMIT
+ipv6 rule in ipv4 section
+285: delete allow to ::1 port 8888
+
+
+286: insert 2 allow to ::1 port 8888
+
+
+ipv4 rule in ipv6 section
+287: delete allow to ::1 port 8888
+
+
+288: insert 4 allow to 127.0.0.1 port 8888
+
+
+'both' rule in ipv4 section
+289: delete allow to 127.0.0.1 port 8888
+
+
+290: insert 2 allow 8888
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
+
+### tuple ### allow any 8888 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 8888 -j ACCEPT
+-A ufw-user-input -p udp --dport 8888 -j ACCEPT
+
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 24 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
+
+### tuple ### allow any 25 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
+
+### tuple ### allow any 8888 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 8888 -j ACCEPT
+-A ufw6-user-input -p udp --dport 8888 -j ACCEPT
+
+### END RULES ###
+COMMIT
+'both' rule in ipv6 section
+291: delete allow 8888
+
+
+292: insert 4 allow 8888
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
+
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+-A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
+-A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
+
+### tuple ### allow any 8888 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-input -p tcp --dport 8888 -j ACCEPT
+-A ufw-user-input -p udp --dport 8888 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any 24 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
+
+### tuple ### allow any 8888 ::/0 any ::/0
+-A ufw6-user-input -p tcp --dport 8888 -j ACCEPT
+-A ufw6-user-input -p udp --dport 8888 -j ACCEPT
+
+### tuple ### allow any 25 ::1 any ::/0
+-A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
+-A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
+
+### END RULES ###
+COMMIT
+293: delete allow to 127.0.0.1 port 22
+
+
+294: delete allow to 127.0.0.1 port 23
+
+
+295: delete allow to ::1 port 24
+
+
+296: delete allow to ::1 port 25
+
+
+297: delete allow 8888
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+COMMIT

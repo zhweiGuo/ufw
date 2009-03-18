@@ -137,5 +137,49 @@ do_cmd "0" --dry-run reject from 2001:db8::/32 to any port 25
 do_cmd "0" --dry-run reject to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
 do_cmd "0" --dry-run reject to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
 
+echo "Insert" >> $TESTTMP/result
+do_cmd "0" null allow to 127.0.0.1 port 22
+do_cmd "0" null allow to 127.0.0.1 port 23
+do_cmd "0" null allow to ::1 port 24
+do_cmd "0" null allow to ::1 port 25
+
+echo "ipv4 rule in ipv4 section" >> $TESTTMP/result
+do_cmd "0" null insert 2 allow to 127.0.0.1 port 8888
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+echo "ipv6 rule in ipv6 section" >> $TESTTMP/result
+do_cmd "0" null delete allow to 127.0.0.1 port 8888
+do_cmd "0" null insert 4 allow to ::1 port 8888
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+echo "ipv6 rule in ipv4 section" >> $TESTTMP/result
+do_cmd "0" null delete allow to ::1 port 8888
+do_cmd "1" null insert 2 allow to ::1 port 8888
+
+echo "ipv4 rule in ipv6 section" >> $TESTTMP/result
+do_cmd "0" null delete allow to ::1 port 8888
+do_cmd "1" null insert 4 allow to 127.0.0.1 port 8888
+
+echo "'both' rule in ipv4 section" >> $TESTTMP/result
+do_cmd "0" null delete allow to 127.0.0.1 port 8888
+do_cmd "0" null insert 2 allow 8888
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+echo "'both' rule in ipv6 section" >> $TESTTMP/result
+do_cmd "0" null delete allow 8888
+do_cmd "0" null insert 4 allow 8888
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow to 127.0.0.1 port 22
+do_cmd "0" null delete allow to 127.0.0.1 port 23
+do_cmd "0" null delete allow to ::1 port 24
+do_cmd "0" null delete allow to ::1 port 25
+do_cmd "0" null delete allow 8888
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
 exit 0

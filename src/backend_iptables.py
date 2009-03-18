@@ -633,15 +633,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         delete = False
 
         rules = self.rules
-        ipv6_offset = len(rules)
         position = rule.position
         if rule.v6:
             if self.iptables_version < "1.4" and (rule.dapp != "" or rule.sapp != ""):
                 return _("Skipping IPv6 application rule. Need at least iptables 1.4")
             rules = self.rules6
-            position = rule.position - len(self.rules)
-            if position < 0:
-                position = 0
+
+        # bail if we have a bad position
+        if position < 0 or position > len(rules):
+            err_msg = _("Invalid position '%d'") % (position)
+            raise UFWError(err_msg)
 
         if position > 0 and rule.remove:
             err_msg = _("Cannot specify insert and delete")
