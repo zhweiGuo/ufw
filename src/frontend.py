@@ -608,6 +608,10 @@ class UFWFrontend:
                         rules.append(r)
                 else:
                     rules = self.backend.get_app_rules_from_template(rule)
+                    # Reverse the order of rules for inserted rules, so they
+                    # are inserted in the right order
+                    if rule.position > 0:
+                        rules.reverse()
             except Exception:
                 raise
 
@@ -648,11 +652,11 @@ class UFWFrontend:
                             if p > 0:
                                 r.set_position(p)
                             else:
-                                # if not found, then add the rule
+                                # If not found, then add the rule
                                 r.set_position(0)
                         tmp = self.backend.set_rule(r)
 
-                        # we need to readjust this since the number of ipv4
+                        # We need to readjust this since the number of ipv4
                         # rules just changed with the above set_rule
                         if not r.remove and original_p > 0:
                             offset = original_p - num_v4
@@ -669,12 +673,12 @@ class UFWFrontend:
                             if p > 0:
                                 r.set_position(p)
                             else:
-                                # if not found, then add the rule
+                                # If not found, then add the rule
                                 r.set_position(0)
                         if tmp != "":
                             tmp += "\n"
 
-                        # readjust position to send to set_rule
+                        # Readjust position to send to set_rule
                         if not r.remove and r.position > num_v4:
                             r.set_position(r.position - num_v4)
 

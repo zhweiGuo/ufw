@@ -661,7 +661,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         inserted = False
         matches = 0
         last = ('', '', '', '')
-        this_rule = (rule.dst, rule.src, rule.dapp, rule.sapp)
         for r in rules:
             try:
                 r.normalize()
@@ -677,7 +676,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 #    while the new rule is different than the current one
                 if (last[2] == '' and last[3] == '' and count > 1) or \
                    (current[2] == '' and current[3] == '') or \
-                   (last != current and this_rule != current):
+                   last != current:
                     inserted = True
                     newrules.append(rule)
                     last = ('', '', '', '')
