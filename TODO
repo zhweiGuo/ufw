@@ -3,8 +3,6 @@ TODO
 Output of machine-friendly status (adjust backend_iptables.py to return this
 to frontend, and have frontend do cli/machine status)
 
-Support insertion of rules (LP: #260745). Perhaps 'ufw insert as 5 allow ...'
-
 DBus support so frontend can send messages to ufw which can then be protected
 via policy kit
 
