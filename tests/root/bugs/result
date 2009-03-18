@@ -288,7 +288,94 @@ WARN: Checks disabled
 Could not delete non-existent rule (v6)
 
 
-43: disable
+43: status
+WARN: Checks disabled
+Status: active
+
+
+Bug #344971
+Setting IPV6 to yes
+44: disable
+WARN: Checks disabled
+Firewall stopped and disabled on system startup
+
+
+45: enable
+WARN: Checks disabled
+Firewall is active and enabled on system startup
+
+
+46: allow 3
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+47: allow 4
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+48: insert 1 allow 1
+WARN: Checks disabled
+Rule inserted
+Rule inserted (v6)
+
+
+49: insert 2 allow 2
+WARN: Checks disabled
+Rule inserted
+Rule inserted (v6)
+
+
+50: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action  From
+     --                         ------  ----
+[ 1] 1                          ALLOW   Anywhere
+[ 2] 2                          ALLOW   Anywhere
+[ 3] 3                          ALLOW   Anywhere
+[ 4] 4                          ALLOW   Anywhere
+[ 5] 1                          ALLOW   Anywhere (v6)
+[ 6] 2                          ALLOW   Anywhere (v6)
+[ 7] 3                          ALLOW   Anywhere (v6)
+[ 8] 4                          ALLOW   Anywhere (v6)
+
+
+
+51: delete allow 4
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+52: delete allow 3
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+53: delete allow 2
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+54: delete allow 1
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+55: status
+WARN: Checks disabled
+Status: active
+
+
+56: disable
 WARN: Checks disabled
 Firewall stopped and disabled on system startup
 

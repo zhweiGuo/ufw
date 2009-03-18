@@ -99,6 +99,23 @@ do_cmd "0"  delete allow to 127.0.0.1 port 22
 do_cmd "0"  delete allow to 127.0.0.1 app Apache
 do_cmd "0"  delete allow to ::1 port 22
 do_cmd "0"  delete allow to ::1 app Apache
+do_cmd "0"  status
+
+echo "Bug #344971" >> $TESTTMP/result
+echo "Setting IPV6 to yes" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
+do_cmd "0"  disable
+do_cmd "0"  enable
+do_cmd "0"  allow 3
+do_cmd "0"  allow 4
+do_cmd "0"  insert 1 allow 1
+do_cmd "0"  insert 2 allow 2
+do_cmd "0"  status numbered
+do_cmd "0"  delete allow 4
+do_cmd "0"  delete allow 3
+do_cmd "0"  delete allow 2
+do_cmd "0"  delete allow 1
+do_cmd "0"  status
 
 # teardown
 cleanup
