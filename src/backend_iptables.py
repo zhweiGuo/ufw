@@ -165,10 +165,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         out = ""
         out6 = ""
         if self.dryrun:
-            #out = "> " + _("Getting IPv4 rules\n")
             out = "> " + _("Checking iptables\n")
             if self.use_ipv6():
-                #out += "> " + _("Getting IPv6 rules\n")
                 out += "> " + _("Checking ip6tables\n")
             return out
 
@@ -298,12 +296,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                                      app_policy_str, str)
         else:
             return _("Status: active%s") % (str)
-
-    def get_rules_count(self, v6):
-        '''Return number of rules'''
-        if v6:
-            return len(self.rules6)
-        return len(self.rules)
 
     def stop_firewall(self):
         '''Stops the firewall'''

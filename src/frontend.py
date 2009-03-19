@@ -656,12 +656,11 @@ class UFWFrontend:
                                 r.set_position(0)
                         tmp = self.backend.set_rule(r)
 
-                        # We need to readjust this since the number of ipv4
-                        # rules just changed with the above set_rule
+                        # We need to readjust the position since the number
+                        # the number of ipv4 rules increased
                         if not r.remove and original_p > 0:
-                            offset = original_p - num_v4
                             num_v4 = self.backend.get_rules_count(False)
-                            r.set_position(num_v4 + offset)
+                            r.set_position(original_p + 1)
 
                         r.set_v6(True)
                         if not r.remove and r.position > 0 and \

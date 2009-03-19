@@ -423,12 +423,37 @@ class UFWBackend:
 
         rules = []
         if v6:
+            rules = self.rules6
+        else:
             rules = self.rules
-            match_rule = self.rules6[position - 1].dup_rule()
+
+        # self.rules[6] is a list of tuples. Some application rules have
+        # multiple tuples but the user specifies by ufw rule, not application
+        # tuple, so we need to find how many tuples there are leading up to
+        # the specified position, which we can then use as an offset for
+        # getting the proper match_rule.
+        app_rules = {}
+        tuple_offset = 0
+        for i, r in enumerate(rules):
+            if i >= position:
+                break
+            tuple = ""
+            if r.dapp != "" or r.sapp != "":
+                tuple = r.get_app_tuple()
+
+                if app_rules.has_key(tuple):
+                    tuple_offset += 1
+                else:
+                    app_rules[tuple] = True
+
+        rules = []
+        if v6:
+            rules = self.rules
+            match_rule = self.rules6[position - 1 + tuple_offset].dup_rule()
             match_rule.set_v6(False)
         else:
             rules = self.rules6
-            match_rule = self.rules[position - 1].dup_rule()
+            match_rule = self.rules[position - 1 + tuple_offset].dup_rule()
             match_rule.set_v6(True)
 
         count = 1
@@ -436,6 +461,7 @@ class UFWBackend:
             if UFWRule.match(r, match_rule) == 0:
                 return count
             count += 1
+
         return 0
 
     def get_loglevel(self):
@@ -479,6 +505,30 @@ class UFWBackend:
         else:
             return _("Logging enabled")
 
+    def get_rules_count(self, v6):
+        '''Return number of ufw rules (not iptables rules)'''
+        rules = []
+        if v6:
+            rules = self.rules6
+        else:
+            rules = self.rules
+
+        count = 0
+        app_rules = {}
+        for r in rules:
+            tuple = ""
+            if r.dapp != "" or r.sapp != "":
+                tuple = r.get_app_tuple()
+
+                if app_rules.has_key(tuple):
+                    debug("Skipping found tuple '%s'" % (tuple))
+                    continue
+                else:
+                    app_rules[tuple] = True
+            count += 1
+
+        return count
+
     # API overrides
     def get_default_policy(self):
         raise UFWError("UFWBackend.get_default_policy: need to override")
@@ -507,9 +557,6 @@ class UFWBackend:
     def get_app_rules_from_system(self, template, v6):
         raise UFWError("UFWBackend.get_app_rules_from_system: need to " + \
                        "override")
-
-    def get_rules_count(self, v6):
-        raise UFWError("UFWBackend.get_rules_count: need to override")
 
     def update_logging(self, level):
         raise UFWError("UFWBackend.update_logging: need to override")
