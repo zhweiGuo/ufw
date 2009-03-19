@@ -1,8 +1,5 @@
 TODO
 ----
-Output of machine-friendly status (adjust backend_iptables.py to return this
-to frontend, and have frontend do cli/machine status)
-
 DBus support so frontend can send messages to ufw which can then be protected
 via policy kit
 
