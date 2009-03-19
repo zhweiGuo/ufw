@@ -1,5 +1,5 @@
-ufw (0.26-1) unstable; urgency=low
+ufw (0.28-1) UNRELEASED; urgency=low
 
   * Initial release.
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 Jan 2009 17:17:38 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Mar 2009 22:57:21 -0500

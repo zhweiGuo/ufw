@@ -1,3 +1,9 @@
+ufw (0.28-0ubuntu1) UNRELEASED; urgency=low
+
+  * bump version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Mar 2009 22:56:41 -0500
+
 ufw (0.27-0ubuntu1) jaunty; urgency=low
 
   * new upstream release (bug fix only)
