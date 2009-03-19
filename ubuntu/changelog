@@ -1,15 +1,38 @@
-ufw (0.27-0ubuntu1) UNRELEASED; urgency=low
+ufw (0.27-0ubuntu1) jaunty; urgency=low
 
-  * debian/templates: fix lintian error
-  * get rid of DeprecationWarnings from 2.6 transition, which cause a FTBFS
-    due to tests failing
-  * debian/control: update Vcs-Bzr url
-  * debian/rules: adjust dh_pycentral call to make sure dist-package symlinks
-    are available at dpkg unpack. Patch thanks to Michael Vogt (LP: #337705)
+  * new upstream release (bug fix only)
+    - insert rules in proper order when ufw is enabled (LP: #344971)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Mar 2009 22:10:08 -0500
+
+ufw (0.27~r416-0ubuntu5) jaunty; urgency=low
+
+  * Don't traceback when ufw modules aren't available (LP: #337705)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Mar 2009 15:10:13 -0600
+
+ufw (0.27~r416-0ubuntu4) jaunty; urgency=low
+
   * debian/templates: rephrase boolean description so it works with both cli
     yes/no question and gui checkbox (LP: #337890)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Feb 2009 17:41:08 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Mar 2009 13:29:15 -0600
+
+ufw (0.27~r416-0ubuntu3) jaunty; urgency=low
+
+  * debian/rules: adjust dh_pycentral call to make sure dist-package symlinks
+    are available at dpkg unpack. Patch thanks to Michael Vogt (LP: #337705)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Mar 2009 09:20:11 -0600
+
+ufw (0.27~r416-0ubuntu2) jaunty; urgency=low
+
+  * debian/templates: fix lintian error
+  * get rid of DeprecationWarnings from 2.6 transition, which cause a FTBFS
+    due to tests failing (grab commits 420-422 from trunk)
+  * debian/control: update Vcs-Bzr url
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 02 Mar 2009 14:44:48 -0600
 
 ufw (0.27~r416-0ubuntu1) jaunty; urgency=low
 

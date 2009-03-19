@@ -1,4 +1,4 @@
-ufw (0.27) UNRELEASED; urgency=low
+ufw (0.27) RELEASED; urgency=low
 
   * don't do symlink check anymore (LP: #317700)
   * don't do hidden file check anymore (LP: #319226). Hidden application
