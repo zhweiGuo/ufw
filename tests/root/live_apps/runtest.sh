@@ -153,8 +153,7 @@ do_cmd "0" status verbose
 
 
 echo "TESTING INSERT" >> $TESTTMP/result
-#for ipv6 in yes no ; do
-for ipv6 in no ; do
+for ipv6 in no yes ; do
     echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
     sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
     do_cmd "0"  disable

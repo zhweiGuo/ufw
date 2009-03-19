@@ -642,12 +642,12 @@ class UFWFrontend:
                         r.set_v6(True)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "both":
-                        original_p = r.position
+                        user_pos = r.position # user specified position
                         r.set_v6(False)
-                        if not r.remove and r.position > num_v4:
+                        if not r.remove and user_pos > num_v4:
 			    # The user specified a v6 rule, so try to find a
 			    # match in the v4 rules and use its position.
-                            p = self.backend.find_other_position(r.position - \
+                            p = self.backend.find_other_position(user_pos - \
                                                                  num_v4, True)
                             if p > 0:
                                 r.set_position(p)
@@ -658,9 +658,9 @@ class UFWFrontend:
 
                         # We need to readjust the position since the number
                         # the number of ipv4 rules increased
-                        if not r.remove and original_p > 0:
+                        if not r.remove and user_pos > 0:
                             num_v4 = self.backend.get_rules_count(False)
-                            r.set_position(original_p + 1)
+                            r.set_position(user_pos + 1)
 
                         r.set_v6(True)
                         if not r.remove and r.position > 0 and \
@@ -670,7 +670,8 @@ class UFWFrontend:
                             p = self.backend.find_other_position(r.position, \
                                                                  False)
                             if p > 0:
-                                r.set_position(p)
+                                # Subtract count since the list is reversed
+                                r.set_position(p - count)
                             else:
                                 # If not found, then add the rule
                                 r.set_position(0)

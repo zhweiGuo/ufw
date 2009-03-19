@@ -405,10 +405,10 @@ class UFWBackend:
         raise UFWError(err_msg)
 
     def find_other_position(self, position, v6):
-        '''Return the position in the other list of the rule with the position
-           of the given list. For example, find_other_position(4, True) will
-	   return the position of the rule in the ipv4 list matching the rule
-           at position '4' in the ipv6 list.
+	'''Return the absolute position in the other list of the rule with the
+	   user position of the given list. For example, find_other_position(4,
+	   True) will return the absolute position of the rule in the ipv4 list
+           matching the user specified '4' rule in the ipv6 list.
         '''
         # Invalid search (v6 rule with too low position)
         if v6 and position > len(self.rules6):
