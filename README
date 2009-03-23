@@ -37,6 +37,17 @@ $ python ./setup.py install --root=PREFIX
 Eg:
 python ./setup.py install --root=/tmp/ufw
 
+When installing ufw from source, you will also need to integrate it into your
+boot process for the firewall to start when you restart your system. Depending
+on your needs, this can be as simple as adding the following to a startup
+script (eg rc.local for systems that use it):
+
+/usr/share/ufw/ufw-init start
+
+For systems that use SysV initscripts, an example script is provided in
+doc/initscript.example. Consult your distribution's documentation for the
+proper way to modify your boot process.
+
 
 Basic Layout
 ------------
