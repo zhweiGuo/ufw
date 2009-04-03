@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2009-03-18 22:02+CDT\n"
+"POT-Creation-Date: 2009-04-03 10:23+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,7 +214,8 @@ msgstr ""
 msgid "Status: inactive"
 msgstr ""
 
-#: src/backend_iptables.py:185
+#: src/backend_iptables.py:185 src/backend_iptables.py:294
+#: src/backend_iptables.py:298
 msgid "Status: active"
 msgstr ""
 
@@ -246,18 +247,6 @@ msgstr ""
 msgid "Default: %s"
 msgstr ""
 
-#: src/backend_iptables.py:294
-msgid ""
-"Status: active\n"
-"%s\n"
-"%s\n"
-"%s%s"
-msgstr ""
-
-#: src/backend_iptables.py:298
-msgid "Status: active%s"
-msgstr ""
-
 #: src/backend_iptables.py:304 src/backend_iptables.py:314
 msgid "running ufw-init"
 msgstr ""
@@ -283,7 +272,11 @@ msgid "Adding IPv6 rule failed: IPv6 not enabled"
 msgstr ""
 
 #: src/backend_iptables.py:616
-msgid "Skipping unsupported IPv6 '%s' rule"
+msgid "' rule"
+msgstr ""
+
+#: src/backend_iptables.py:616
+msgid "Skipping unsupported IPv6 '"
 msgstr ""
 
 #: src/backend_iptables.py:619
