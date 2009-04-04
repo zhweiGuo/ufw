@@ -11,4 +11,6 @@ Filter by interface name
 
 nftables backend (long term)
 
+Perhaps check it recent module is available to avoid LP: #355291
+
 (C) 2008-2009 Canonical Ltd.
