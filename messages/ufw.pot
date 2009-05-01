@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2009-04-03 10:23+CDT\n"
+"POT-Creation-Date: 2009-05-01 16:43+CDT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,7 +115,7 @@ msgstr ""
 msgid "'%s' file '%s' does not exist"
 msgstr ""
 
-#: src/backend.py:171 src/backend_iptables.py:481
+#: src/backend.py:171 src/backend_iptables.py:486
 msgid "Couldn't open '%s' for reading"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: src/backend.py:486 src/backend_iptables.py:842
+#: src/backend.py:486 src/backend_iptables.py:847
 msgid "Invalid log level '%s'"
 msgstr ""
 
@@ -195,8 +195,8 @@ msgid ""
 msgstr ""
 
 #: src/backend_iptables.py:145 src/backend_iptables.py:178
-#: src/backend_iptables.py:302 src/backend_iptables.py:312
-#: src/backend_iptables.py:359
+#: src/backend_iptables.py:307 src/backend_iptables.py:317
+#: src/backend_iptables.py:364
 msgid "problem running"
 msgstr ""
 
@@ -214,144 +214,135 @@ msgstr ""
 msgid "Status: inactive"
 msgstr ""
 
-#: src/backend_iptables.py:185 src/backend_iptables.py:294
-#: src/backend_iptables.py:298
+#: src/backend_iptables.py:185
 msgid "Status: active"
-msgstr ""
-
-#: src/backend_iptables.py:284
-msgid "Action"
-msgstr ""
-
-#: src/backend_iptables.py:284
-msgid "From"
 msgstr ""
 
 #: src/backend_iptables.py:284
 msgid "To"
 msgstr ""
 
-#: src/backend_iptables.py:287
-msgid "--"
+#: src/backend_iptables.py:285
+msgid "From"
 msgstr ""
 
-#: src/backend_iptables.py:287
-msgid "----"
+#: src/backend_iptables.py:286
+msgid "Action"
 msgstr ""
 
-#: src/backend_iptables.py:287
-msgid "------"
-msgstr ""
-
-#: src/backend_iptables.py:292
+#: src/backend_iptables.py:297
 msgid "Default: %s"
 msgstr ""
 
-#: src/backend_iptables.py:304 src/backend_iptables.py:314
+#: src/backend_iptables.py:299
+msgid ""
+"Status: active\n"
+"%s\n"
+"%s\n"
+"%s%s"
+msgstr ""
+
+#: src/backend_iptables.py:303
+msgid "Status: active%s"
+msgstr ""
+
+#: src/backend_iptables.py:309 src/backend_iptables.py:319
 msgid "running ufw-init"
 msgstr ""
 
-#: src/backend_iptables.py:326
+#: src/backend_iptables.py:331
 msgid "Could not set LOGLEVEL"
 msgstr ""
 
-#: src/backend_iptables.py:332
+#: src/backend_iptables.py:337
 msgid "Could not load logging rules"
 msgstr ""
 
-#: src/backend_iptables.py:490
+#: src/backend_iptables.py:495
 msgid "Skipping malformed tuple (bad length): %s"
 msgstr ""
 
-#: src/backend_iptables.py:508
+#: src/backend_iptables.py:513
 msgid "Skipping malformed tuple: %s"
 msgstr ""
 
-#: src/backend_iptables.py:612
+#: src/backend_iptables.py:617
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
 msgstr ""
 
-#: src/backend_iptables.py:616
-msgid "' rule"
+#: src/backend_iptables.py:621
+msgid "Skipping unsupported IPv6 '%s' rule"
 msgstr ""
 
-#: src/backend_iptables.py:616
-msgid "Skipping unsupported IPv6 '"
-msgstr ""
-
-#: src/backend_iptables.py:619
+#: src/backend_iptables.py:624
 msgid "Must specify 'tcp' or 'udp' with multiple ports"
 msgstr ""
 
-#: src/backend_iptables.py:631
+#: src/backend_iptables.py:636
 msgid "Skipping IPv6 application rule. Need at least iptables 1.4"
 msgstr ""
 
-#: src/backend_iptables.py:636
+#: src/backend_iptables.py:641
 msgid "Invalid position '%d'"
 msgstr ""
 
-#: src/backend_iptables.py:640
+#: src/backend_iptables.py:645
 msgid "Cannot specify insert and delete"
 msgstr ""
 
-#: src/backend_iptables.py:643
+#: src/backend_iptables.py:648
 msgid "Cannot insert rule at position '%d'"
 msgstr ""
 
-#: src/backend_iptables.py:701
+#: src/backend_iptables.py:706
 msgid "Skipping inserting existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:712 src/frontend.py:594
+#: src/backend_iptables.py:717 src/frontend.py:594
 msgid "Could not delete non-existent rule"
 msgstr ""
 
-#: src/backend_iptables.py:717
+#: src/backend_iptables.py:722
 msgid "Skipping adding existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:731
+#: src/backend_iptables.py:736
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:736
+#: src/backend_iptables.py:741
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:738
+#: src/backend_iptables.py:743
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:744
-msgid "Rule "
+#: src/backend_iptables.py:751
+msgid "Rule inserted"
 msgstr ""
 
-#: src/backend_iptables.py:746
-msgid "inserted"
+#: src/backend_iptables.py:753
+msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:748
-msgid "updated"
-msgstr ""
-
-#: src/backend_iptables.py:758
+#: src/backend_iptables.py:763
 msgid " (skipped reloading firewall)"
 msgstr ""
 
-#: src/backend_iptables.py:761
+#: src/backend_iptables.py:766
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:764
+#: src/backend_iptables.py:769
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:776 src/backend_iptables.py:847
+#: src/backend_iptables.py:781 src/backend_iptables.py:852
 msgid "Could not update running firewall"
 msgstr ""
 
-#: src/backend_iptables.py:830
+#: src/backend_iptables.py:835
 msgid "Could not perform '%s'"
 msgstr ""
 
