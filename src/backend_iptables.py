@@ -291,11 +291,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             (level, logging_str) = self.get_loglevel()
             policy_str = _("Default: %s") % (self.get_default_policy())
             app_policy_str = self.get_default_application_policy()
-            return _("Status: active") + "\n%s\n%s\n%s%s" % \
+            return _("Status: active\n%s\n%s\n%s%s") % \
                                                     (logging_str, policy_str, \
                                                      app_policy_str, str)
         else:
-            return _("Status: active") + "%s" % (str)
+            return _("Status: active%s") % (str)
 
     def stop_firewall(self):
         '''Stops the firewall'''
@@ -613,7 +613,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 raise UFWError(err_msg)
             if rule.action == 'limit':
                 # Netfilter doesn't have ip6t_recent yet, so skip
-                return _("Skipping unsupported IPv6 '") + "%s" % (rule.action) + _("' rule")
+                return _("Skipping unsupported IPv6 '%s' rule") % (rule.action)
 
         if rule.multi and rule.protocol != "udp" and rule.protocol != "tcp":
             err_msg = _("Must specify 'tcp' or 'udp' with multiple ports")
