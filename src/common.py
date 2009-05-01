@@ -239,7 +239,7 @@ class UFWRule:
                 self.src = "0.0.0.0/0"
 
     def set_v6(self, v6):
-        '''Sets whether this is ipv6 rule, and adjusts src and dst 
+        '''Sets whether this is ipv6 rule, and adjusts src and dst
            accordingly.
         '''
         self.v6 = v6

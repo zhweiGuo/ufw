@@ -146,7 +146,7 @@ def valid_address(addr, version="any"):
 
 def normalize_address(orig, v6):
     '''Convert address to standard form. Use no netmask for IP addresses. If
-       If netmask is specified and not all 1's, for IPv4 use cidr if possible, 
+       If netmask is specified and not all 1's, for IPv4 use cidr if possible,
        otherwise dotted netmask and for IPv6, use cidr.
     '''
     net = []
