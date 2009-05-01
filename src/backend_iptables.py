@@ -746,11 +746,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self._is_enabled() and not self.dryrun:
             flag = ""
             if modified or self._need_reload(rule.v6) or inserted:
-                rstr = _("Rule ")
+                rstr = ""
                 if inserted:
-                    rstr += _("inserted")
+                    rstr += _("Rule inserted")
                 else:
-                    rstr += _("updated")
+                    rstr += _("Rule updated")
                 if rule.v6:
                     rstr += " (v6)"
                 if allow_reload:
