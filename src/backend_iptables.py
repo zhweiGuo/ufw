@@ -269,7 +269,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             if show_count:
                 str += "[%2d] " % (count)
-            
+
             log_str = ""
             if r.logtype:
                 log_str = " (%s)" % (r.logtype.lower())
@@ -281,10 +281,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             header = "\n\n"
             if show_count:
                 header += "     "
-            header += "%-26s %-8s%s\n" % (_("To"), _("Action"), _("From"))
+            str_to = _("To")
+            str_from = _("From")
+            str_action = _("Action")
+            header += "%-26s %-8s%s\n" % (str_to, str_action, str_from)
             if show_count:
                 header += "     "
-            header += "%-26s %-8s%s\n" % (_("--"), _("------"), _("----"))
+            header += "%-26s %-8s%s\n" % ("-" * len(str_to), \
+                                          "-" * len(str_action), \
+                                          "-" * len(str_from))
             str = header + str
 
         if verbose:
@@ -427,11 +432,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 snippets.insert(i, pat_log.sub(r'\1-j ' + prefix + \
                                                '-user-logging-input', s))
                 snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
-                                                 '-user-logging-input', 
+                                                 '-user-logging-input',
                                                  pat_log.sub(r'\1-j RETURN', \
                                                  s)))
                 snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
-                                                 '-user-logging-input', 
+                                                 '-user-logging-input',
                                                  pat_log.sub(r'\1' + lstr, s)))
 
         # adjust for limit
@@ -830,7 +835,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
            err_msg = _("Could not perform '%s'") % (args)
            if fail_ok:
                debug("FAILOK: " + err_msg)
-           else: 
+           else:
                raise UFWError(err_msg)
 
     def update_logging(self, level):
