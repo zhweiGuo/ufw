@@ -1,4 +1,4 @@
-ufw (0.28-1) UNRELEASED; urgency=low
+ufw (0.27.1-1) unstable; urgency=low
 
   * Initial release.
 
