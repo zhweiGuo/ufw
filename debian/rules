@@ -48,11 +48,13 @@ endif
 	# for ucf
 	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
 
-	# rename, install and gzip the upstream changelog files
+	# rename, install and gzip the upstream and old Ubuntu changelog files
 	cp $(CURDIR)/ChangeLog $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
 	cp $(CURDIR)/ChangeLog.pre-0.25 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
+	cp $(CURDIR)/debian/changelog.pre-0.27.1 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.Debian.pre-0.27.1
 	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
 	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
+	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.Debian.pre-0.27.1
 
 binary-arch: build
 
