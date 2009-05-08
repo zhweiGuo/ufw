@@ -8,9 +8,9 @@ case "$1" in
 
     purge)
         if [ -e /usr/share/debconf/confmodule ]; then
-		. /usr/share/debconf/confmodule
-		db_purge
-	fi
+            . /usr/share/debconf/confmodule
+            db_purge
+        fi
         update-rc.d ufw remove > /dev/null
 
         for f in before.rules before6.rules after.rules after6.rules

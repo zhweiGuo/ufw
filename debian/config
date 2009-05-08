@@ -59,4 +59,3 @@ if [ ! -z "$RET" ] && [ "$previous" = "false" ] && [ "$RET" = true ]; then
         db_go
     fi
 fi
-

@@ -46,4 +46,3 @@ ufw ufw/allow_custom_ports string auth 8080 1194/udp
 
 Please keep in mind that these ports and services are not associated with ufw
 application profiles.
-
