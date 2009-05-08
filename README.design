@@ -31,4 +31,4 @@ use, the IPv4 and IPv6 configuration are kept completely separate (ie there
 are no IPv4 mapped addresses).
 
 
-(C) 2008 Canonical Ltd.
+Copyright 2008 Canonical Ltd.
