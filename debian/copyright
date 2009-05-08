@@ -1,31 +1,43 @@
-This package was debianized by Jamie Strandboge <jamie@canonical.com> on
-Wed, 02 Jan 2008 10:35:56 -0500.
+Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=178
+Upstream-Name: ufw
+Upstream-Maintainer: Jamie Strandboge <jamie@canonical.com>
+Upstream-Source: https://code.launchpad.net/ufw
 
-Upstream source is located at: https://code.launchpad.net/ufw
+Files: *
+Copyright: Copyright 2007-2009, Canonical Ltd.
+License: GPL-3
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Upstream Author: Jamie Strandboge <jamie@canonical.com>
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-Copyright: 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-The packaging of this software and the programs in this package are distributed
-under the terms of the GNU General Public License, version 3 as distributed by
-the Free Software Foundation.
+ On Debian systems the full text of the GNU General Public License can be found
+ in the `/usr/share/common-licenses/GPL-3' file.
 
-License:
-    Copyright (C) 2007 Canonical Ltd.
+Files: debian/*
+Copyright: Copyright 2007-2009, Canonical Ltd.
+License: GPL-3
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License version 3,
-    as published by the Free Software Foundation.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-On Debian systems, the complete text of the GNU General
-Public License can be found in `/usr/share/common-licenses/GPL-3'.
+ On Debian systems the full text of the GNU General Public License can be found
+ in the `/usr/share/common-licenses/GPL-3' file.
 
