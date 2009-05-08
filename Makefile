@@ -1,5 +1,5 @@
 SRCS     = src/ufw $(wildcard src/*.py)
-POTFILES = messages/ufw.pot
+POTFILES = po/ufw.pot
 TMPDIR   = ./tmp
 EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
@@ -10,7 +10,7 @@ TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
-	pygettext -v -d ufw -p messages -S GNU $(SRCS)
+	pygettext -v -d ufw -p po -S GNU $(SRCS)
 
 test:
 	./run_tests.sh -s
