@@ -1,0 +1,2 @@
+# Non-question messes up GUI checkbox. See http://launchpad.net/bugs/337890
+ufw binary: malformed-question-in-templates ufw/enable

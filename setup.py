@@ -28,7 +28,7 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.28'
+ufw_version = '0.27.1'
 
 def cmd(command):
     '''Try to execute the given command.'''
@@ -109,7 +109,7 @@ class Install(_install, object):
         # Install translations
         i18ndir = os.path.join(statedir, 'messages')
         self.mkpath(i18ndir)
-        self.copy_tree('messages', i18ndir)
+        self.copy_tree('po', i18ndir)
 
         # Install configuration files
         confdir = real_confdir

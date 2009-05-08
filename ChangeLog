@@ -1,7 +1,8 @@
-ufw (0.28) UNRELEASED; urgency=low
+ufw (0.27.1) UNRELEASED; urgency=low
 
   * update README for instructions on integrating ufw into the boot process
   * adjust strings to better conform with translation guidelines (LP: #353424)
+  * adjust translation location to work with rosetta
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 23 Mar 2009 12:06:27 -0500
 
