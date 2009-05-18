@@ -19,9 +19,9 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBon INTERFACE\fR] PORT[/protocol]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBon INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBin on INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
@@ -146,7 +146,7 @@ By default, \fBufw\fR will apply rules to all available interfaces. To limit
 this, specify \fBon INTERFACE\fR.  For example, to allow all new http
 connections on eth0, use:
 
-  ufw allow 80/tcp on eth0
+  ufw allow in on eth0 to any port 80 proto tcp
 
 .PP
 To delete a rule, simply prefix the original rule with \fBdelete\fR. For
