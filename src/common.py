@@ -54,6 +54,8 @@ class UFWRule:
         self.action = ""
         self.position = 0
         self.logtype = ""
+        self.interface_in = ""
+        self.interface_out = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -82,6 +84,8 @@ class UFWRule:
         rule.sapp = self.sapp
         rule.position = self.position
         rule.logtype = self.logtype
+        rule.interface_in = self.interface_in
+        rule.interface_out = self.interface_out
 
         return rule
 
@@ -89,11 +93,16 @@ class UFWRule:
         '''Format rule for for later parsing'''
         str = ""
 
+        if self.interface_in != "":
+            str += "-i %s" % (self.interfcae_in)
+        if self.interface_out != "":
+            str += "-i %s" % (self.interfcae_out)
+
         # Protocol is handled below
         if self.protocol == "any":
-            str = " -p all"
+            str += " -p all"
         else:
-            str = " -p " + self.protocol
+            str += " -p " + self.protocol
 
             if self.multi:
                 str += " -m multiport"
@@ -265,6 +274,21 @@ class UFWRule:
         self.dst = tmp
         self._fix_anywhere()
 
+    def set_interface(type, name):
+        '''Sets an interface for rule'''
+        if type != "in" and type != "out":
+            err_msg = _("Bad interface type")
+            raise UFWError(err_msg)
+
+        if not re.match(r'^[a-zA-Z0-9]+[0-9]', str(name)):
+            err_msg = _("Bad interface name")
+            raise UFWError(err_msg)
+
+        if type == "in":
+            self.interface_in = name
+        else:
+            self.interface_out = name
+
     def set_position(self, num):
         '''Sets the position of the rule'''
         if not re.match(r'^[0-9]+', str(num)):
@@ -351,6 +375,10 @@ class UFWRule:
         if x.sapp != y.sapp:
             debug(dbg_msg)
             return 1
+        if x.interface_in != y.interface_in:
+            return 1
+        if x.interface_out != y.interface_out:
+            return 1
         if x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
@@ -361,7 +389,16 @@ class UFWRule:
         return -1
 
     def get_app_tuple(self):
-        '''Returns a tuple to identify an app rule'''
+        '''Returns a tuple to identify an app rule. Tuple is:
+             dapp dst sapp src
+           or
+             dport dst sapp src
+           or
+             dapp dst sport src
+
+           All of these might have in_eth0 out_eth0 (or similar) if an
+           interface is also defined.
+        '''
         tuple = ""
         if self.dapp != "" or self.sapp != "":
             tuple = "%s %s %s %s" % (self.dapp, self.dst, self.sapp, self.src)
@@ -371,6 +408,12 @@ class UFWRule:
             if self.sapp == "":
                 tuple = "%s %s %s %s" % (self.dapp, self.dst, self.sport, \
                                          self.src)
+
+            # add interfaces to the end, if they exist
+            if self.interface_in != "":
+                tuple += " in_%s" % (self.interface_in)
+            if self.interface_out != "":
+                tuple += " out_%s" % (self.interface_out)
 
         return tuple
 
