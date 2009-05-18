@@ -94,9 +94,9 @@ class UFWRule:
         str = ""
 
         if self.interface_in != "":
-            str += "-i %s" % (self.interfcae_in)
+            str += " -i %s" % (self.interface_in)
         if self.interface_out != "":
-            str += "-i %s" % (self.interfcae_out)
+            str += " -o %s" % (self.interface_out)
 
         # Protocol is handled below
         if self.protocol == "any":
@@ -274,7 +274,7 @@ class UFWRule:
         self.dst = tmp
         self._fix_anywhere()
 
-    def set_interface(type, name):
+    def set_interface(self, type, name):
         '''Sets an interface for rule'''
         if type != "in" and type != "out":
             err_msg = _("Bad interface type")
