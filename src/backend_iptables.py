@@ -266,6 +266,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if show_proto and r.protocol != "any" and \
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
+                if loc == 'dst' and r.interface_in != "":
+                    location[loc] += " on %s" % (r.interface_in)
+                if loc == 'src' and r.interface_out != "":
+                    location[loc] += " on %s" % (r.interface_out)
 
             if show_count:
                 str += "[%2d] " % (count)
@@ -509,6 +513,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                     rule.dapp = pat_space.sub(' ', tmp[6])
                                 if tmp[7] != "-":
                                     rule.sapp = pat_space.sub(' ', tmp[7])
+                            if len(tmp) == 7 or len(tmp) == 9:
+                                (type, interface) = tmp[-1].split('_')
+                                rule.set_interface(type, interface)
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
                                         (tuple)
