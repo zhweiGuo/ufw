@@ -266,6 +266,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if show_proto and r.protocol != "any" and \
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
+                if loc == 'dst' and r.interface_in != "":
+                    location[loc] += " on %s" % (r.interface_in)
+                if loc == 'src' and r.interface_out != "":
+                    location[loc] += " on %s" % (r.interface_out)
 
             if show_count:
                 str += "[%2d] " % (count)
@@ -296,9 +300,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             (level, logging_str) = self.get_loglevel()
             policy_str = _("Default: %s") % (self.get_default_policy())
             app_policy_str = self.get_default_application_policy()
-            return _("Status: active\n%s\n%s\n%s%s") % \
-                                                    (logging_str, policy_str, \
-                                                     app_policy_str, str)
+            return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
+                     ({'log': logging_str, 'pol': policy_str, \
+                       'app': app_policy_str, 'status': str})
         else:
             return _("Status: active%s") % (str)
 
@@ -491,13 +495,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if pat_tuple.match(line):
                     tuple = pat_tuple.sub('', line)
                     tmp = re.split(r'\s+', tuple.strip())
-                    if len(tmp) != 6 and len(tmp) != 8:
+                    if len(tmp) < 6 or len(tmp) > 9:
                         warn_msg = _("Skipping malformed tuple (bad length): %s") % (tuple)
                         warn(warn_msg)
                         continue
                     else:
                         try:
-                            if len(tmp) == 6:
+                            if len(tmp) < 8:
                                 rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
                                                tmp[4], tmp[5])
                             else:
@@ -509,6 +513,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                     rule.dapp = pat_space.sub(' ', tmp[6])
                                 if tmp[7] != "-":
                                     rule.sapp = pat_space.sub(' ', tmp[7])
+                            if len(tmp) == 7 or len(tmp) == 9:
+                                (type, interface) = tmp[-1].split('_')
+                                rule.set_interface(type, interface)
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
                                         (tuple)
@@ -565,8 +572,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 action += "_" + r.logtype
 
             if r.dapp == "" and r.sapp == "":
-                os.write(fd, "\n### tuple ### %s %s %s %s %s %s\n" % \
-                     (action, r.protocol, r.dport, r.dst, r.sport, r.src))
+                tstr = "\n### tuple ### %s %s %s %s %s %s" % \
+                     (action, r.protocol, r.dport, r.dst, r.sport, r.src)
+                if r.interface_in != "":
+                    tstr += " in_%s" % (r.interface_in)
+                if r.interface_out != "":
+                    tstr += " out_%s" % (r.interface_out)
+                os.write(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
                 dapp = "-"
@@ -575,9 +587,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 sapp = "-"
                 if r.sapp:
                     sapp = pat_space.sub('%20', r.sapp)
-                os.write(fd, "\n### tuple ### %s %s %s %s %s %s %s %s\n" \
-                     % (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                        dapp, sapp))
+                tstr = "\n### tuple ### %s %s %s %s %s %s %s %s" % \
+                       (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
+                        dapp, sapp)
+                     
+                if r.interface_in != "":
+                    tstr += " in_%s" % (r.interface_in)
+                if r.interface_out != "":
+                    tstr += " out_%s" % (r.interface_out)
+                os.write(fd, tstr + "\n")
 
             rule_str = "-A " + chain_prefix + "-user-input " + \
                        r.format_rule() + "\n"

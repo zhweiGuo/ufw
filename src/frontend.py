@@ -132,6 +132,18 @@ def parse_command(argv):
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
+        # strip out 'on' as in 'allow in on eth0 ...'
+        if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
+            err_msg = _("Invalid interface clause")
+
+            if argv[2].lower() != "in" and argv[2].lower() != "out":
+                raise UFWError(err_msg)
+            if nargs < 4 or argv[3].lower() != "on":
+                raise UFWError(err_msg)
+                
+            del argv[3]
+            nargs = len(argv)
+
         if nargs > 2 and (argv[2].lower() == "log" or \
                           argv[2].lower() == 'log-all'):
             if nargs < 4:
@@ -142,7 +154,7 @@ def parse_command(argv):
             del argv[2]
             nargs = len(argv)
 
-        if nargs < 3 or nargs > 12:
+        if nargs < 3 or nargs > 14:
             raise ValueError()
 
         rule_action = action
@@ -190,18 +202,19 @@ def parse_command(argv):
         elif nargs % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
-        elif not 'from' in argv and not 'to' in argv:
+        elif not 'from' in argv and not 'to' in argv and not 'in' in argv:
             err_msg = _("Need 'to' or 'from' clause")
             raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port', 'app' ]
+            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in' ]
 
             # quick check
             if argv.count("to") > 1 or \
                argv.count("from") > 1 or \
                argv.count("proto") > 1 or \
                argv.count("port") > 2 or \
+               argv.count("in") > 1 or \
                argv.count("app") > 2 or \
                argv.count("app") > 0 and argv.count("proto") > 0:
                 err_msg = _("Improper rule syntax")
@@ -221,6 +234,16 @@ def parse_command(argv):
                             raise
                     else:
                         err_msg = _("Invalid 'proto' clause")
+                        raise UFWError(err_msg)
+                elif arg == "in":
+                    if i+1 < nargs:
+                        try:
+                            # for now, hardcode to 'in'
+                            rule.set_interface("in", argv[i+1])
+                        except Exception:
+                            raise
+                    else:
+                        err_msg = _("Invalid 'in' clause")
                         raise UFWError(err_msg)
                 elif arg == "from":
                     if i+1 < nargs:
@@ -978,8 +1001,8 @@ class UFWFrontend:
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():
             prompt = _("Command may disrupt existing ssh connections.")
-            prompt += _(" Proceed with operation (%s|%s)? ") % \
-                       (self.yes, self.no)
+            prompt += _(" Proceed with operation (%(yes)s|%(no)s)? ") % \
+                       ({'yes': self.yes, 'no': self.no})
             os.write(sys.stdout.fileno(), prompt)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:

@@ -135,8 +135,10 @@ class UFWBackend:
                     raise
 
                 if statinfo.st_uid != 0 and not warned_owner.has_key(path):
-                    warn_msg = _("uid is %s but '%s' is owned by %s") % \
-                                (str(uid), path, str(statinfo.st_uid))
+                    warn_msg = _("uid is %(uid)s but '%(path)s' is owned by " \
+                                 "%(st_uid)s") % ({'uid': str(uid), \
+                                               'path': path, \
+                                               'st_uid': str(statinfo.st_uid)})
                     warn(warn_msg)
                     warned_owner[path] = True
                 if mode & S_IWOTH and not warned_world_write.has_key(path):
@@ -157,8 +159,8 @@ class UFWBackend:
 
         for f in self.files:
             if f != 'apps' and not os.path.isfile(self.files[f]):
-                err_msg = _("'%s' file '%s' does not exist") % (f, \
-                                                                self.files[f])
+                err_msg = _("'%(f)s' file '%(name)s' does not exist") % \
+                           ({'f': f, 'name': self.files[f]})
                 raise UFWError(err_msg)
 
     def _get_defaults(self):

@@ -10,7 +10,7 @@ TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
-	pygettext -v -d ufw -p po -S GNU $(SRCS)
+	xgettext -d ufw -L Python -o $@ $(SRCS)
 
 test:
 	./run_tests.sh -s
@@ -31,6 +31,7 @@ clean:
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
 	python ./setup.py install --home=$(TMPDIR)/ufw
+	PYTHONPATH=$(PYTHONPATH):$(TMPDIR)/ufw/lib/python $(TMPDIR)/ufw/usr/sbin/ufw version
 	sed -i 's/self.do_checks = True/self.do_checks = False/' $(TMPDIR)/ufw/lib/python/ufw/backend.py
 	cp ./examples/* $(TMPDIR)/ufw/etc/ufw/applications.d
 	# Test with:

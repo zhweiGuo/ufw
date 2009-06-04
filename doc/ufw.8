@@ -21,7 +21,7 @@ ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBin on INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
@@ -140,6 +140,13 @@ denied, rather than simply ignoring it. In these cases, use \fBreject\fR
 instead of \fBdeny\fR.  For example:
 
   ufw reject auth
+
+.PP
+By default, \fBufw\fR will apply rules to all available interfaces. To limit
+this, specify \fBon INTERFACE\fR.  For example, to allow all new http
+connections on eth0, use:
+
+  ufw allow in on eth0 to any port 80 proto tcp
 
 .PP
 To delete a rule, simply prefix the original rule with \fBdelete\fR. For
@@ -348,7 +355,7 @@ added outside of the ufw framework. See README for details.
 
 .SH AUTHOR
 .PP
-ufw is (C) 2008-2009, Canonical Ltd.
+ufw is Copyright 2008-2009, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>

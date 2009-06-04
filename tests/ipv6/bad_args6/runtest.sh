@@ -172,4 +172,15 @@ for i in allow deny limit; do
     do_cmd "1" null --dry-run $i from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto udp
 done
 
+echo "TESTING BAD INTERFACES" >> $TESTTMP/result
+#for i in "in" out ; do
+for i in "in" ; do
+    for j in allow deny limit reject; do
+        do_cmd "1" null --dry-run $j $i on e%th0 to 2001:db8:3:4:5:6:7:8
+        do_cmd "1" null --dry-run $j $i eth0 to 2001:db8:3:4:5:6:7:8
+        do_cmd "1" null --dry-run $j ina eth0 to 2001:db8:3:4:5:6:7:8
+        do_cmd "1" null --dry-run $j on eth0 to 2001:db8:3:4:5:6:7:8
+    done
+done
+
 exit 0

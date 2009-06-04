@@ -1444,3 +1444,94 @@ TESTING ARGS (insert)
 468: delete allow 23
 
 
+TESTING ARGS (interfaces)
+469: --dry-run allow in on e%th0
+
+
+470: --dry-run allow on eth0
+
+
+471: --dry-run allow ina on eth0
+
+
+472: --dry-run allow in ona eth0
+
+
+473: --dry-run allow in eth0
+
+
+474: --dry-run allow in on eth0 to
+
+
+475: --dry-run allow in on eth0 from
+
+
+476: --dry-run allow in on eth0 from any to
+
+
+477: --dry-run allow in on eth0 any from
+
+
+478: --dry-run allow in on eth0 any from to any proto
+
+
+479: --dry-run deny in on e%th0
+
+
+480: --dry-run deny on eth0
+
+
+481: --dry-run deny ina on eth0
+
+
+482: --dry-run deny in ona eth0
+
+
+483: --dry-run deny in eth0
+
+
+484: --dry-run deny in on eth0 to
+
+
+485: --dry-run deny in on eth0 from
+
+
+486: --dry-run deny in on eth0 from any to
+
+
+487: --dry-run deny in on eth0 any from
+
+
+488: --dry-run deny in on eth0 any from to any proto
+
+
+489: --dry-run limit in on e%th0
+
+
+490: --dry-run limit on eth0
+
+
+491: --dry-run limit ina on eth0
+
+
+492: --dry-run limit in ona eth0
+
+
+493: --dry-run limit in eth0
+
+
+494: --dry-run limit in on eth0 to
+
+
+495: --dry-run limit in on eth0 from
+
+
+496: --dry-run limit in on eth0 from any to
+
+
+497: --dry-run limit in on eth0 any from
+
+
+498: --dry-run limit in on eth0 any from to any proto
+
+

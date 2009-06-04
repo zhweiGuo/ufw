@@ -243,4 +243,52 @@ do_cmd "0" null delete allow log 9998
 do_cmd "0" null delete reject to 192.168.0.1 from 10.0.0.1
 cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
+echo "Man page (interface)" >> $TESTTMP/result
+do_cmd "0" null --dry-run allow in on eth0 to any port 80 proto tcp
+
+echo "Interfaces" >> $TESTTMP/result
+#for i in "in" out ; do
+for i in "in" ; do
+    for j in allow deny limit reject ; do
+        do_cmd "0" null $j $i on eth0
+        do_cmd "0" null $j $i on eth0:1
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22
+        do_cmd "0" null $j $i on eth0 from 10.0.0.1 port 80
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 proto tcp
+        do_cmd "0" null $j $i on eth0 from 10.0.0.1 port 80 proto tcp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+        cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+
+        do_cmd "0" null delete $j $i on eth0
+        do_cmd "0" null delete $j $i on eth0:1
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22
+        do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 port 80
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 proto tcp
+        do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 port 80 proto tcp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+        cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    done
+    do_cmd "0" null allow $i on eth0
+    do_cmd "0" null deny $i on eth0
+    do_cmd "0" null allow $i on eth0:0
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    do_cmd "0" null delete deny $i on eth0
+    do_cmd "0" null delete allow $i on eth0:0
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+done
+
 exit 0

@@ -858,3 +858,52 @@ TESTING BAD MULTIPORTS
 282: --dry-run limit from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34:39 proto udp
 
 
+TESTING BAD INTERFACES
+283: --dry-run allow in on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+284: --dry-run allow in eth0 to 2001:db8:3:4:5:6:7:8
+
+
+285: --dry-run allow ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+286: --dry-run allow on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+287: --dry-run deny in on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+288: --dry-run deny in eth0 to 2001:db8:3:4:5:6:7:8
+
+
+289: --dry-run deny ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+290: --dry-run deny on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+291: --dry-run limit in on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+292: --dry-run limit in eth0 to 2001:db8:3:4:5:6:7:8
+
+
+293: --dry-run limit ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+294: --dry-run limit on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+295: --dry-run reject in on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+296: --dry-run reject in eth0 to 2001:db8:3:4:5:6:7:8
+
+
+297: --dry-run reject ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+298: --dry-run reject on eth0 to 2001:db8:3:4:5:6:7:8
+
+

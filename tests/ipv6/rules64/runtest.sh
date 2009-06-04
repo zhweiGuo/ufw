@@ -182,4 +182,28 @@ do_cmd "0" null delete allow 8888
 cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
+echo "Interfaces" >> $TESTTMP/result
+#for i in "in" out ; do
+for i in "in" ; do
+    do_cmd "0" null allow $i on eth0
+    do_cmd "0" null allow $i on eth0 to 192.168.0.1
+    do_cmd "0" null deny $i on eth0:1 to 192.168.0.1
+    do_cmd "0" null deny $i on eth0 from 192.168.0.1 port 22 proto tcp
+    do_cmd "0" null reject $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+    do_cmd "0" null reject $i on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+    do_cmd "0" null limit $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    do_cmd "0" null delete allow $i on eth0
+    do_cmd "0" null delete allow $i on eth0 to 192.168.0.1
+    do_cmd "0" null delete deny $i on eth0:1 to 192.168.0.1
+    do_cmd "0" null delete deny $i on eth0 from 192.168.0.1 port 22 proto tcp
+    do_cmd "0" null delete reject $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+    do_cmd "0" null delete reject $i on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+    do_cmd "0" null delete limit $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+done
+
+
 exit 0
