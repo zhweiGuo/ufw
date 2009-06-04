@@ -300,9 +300,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             (level, logging_str) = self.get_loglevel()
             policy_str = _("Default: %s") % (self.get_default_policy())
             app_policy_str = self.get_default_application_policy()
-            return _("Status: active\n%s\n%s\n%s%s") % \
-                                                    (logging_str, policy_str, \
-                                                     app_policy_str, str)
+            return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
+                     ({'log': logging_str, 'pol': policy_str, \
+                       'app': app_policy_str, 'status': str})
         else:
             return _("Status: active%s") % (str)
 

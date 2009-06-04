@@ -10,7 +10,7 @@ TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
-	pygettext -v -d ufw -p po -S GNU $(SRCS)
+	xgettext -d ufw -L Python -o $@ $(SRCS)
 
 test:
 	./run_tests.sh -s

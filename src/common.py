@@ -383,8 +383,10 @@ class UFWRule:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
-        dbg_msg = _("Found non-action/non-logtype match (%s/%s %s/%s)") % \
-                    (x.action, y.action, x.logtype, y.logtype)
+        dbg_msg = _("Found non-action/non-logtype match " \
+                    "(%(xa)s/%(ya)s %(xl)s/%(yl)s)") % \
+                    ({'xa': x.action, 'ya': y.action, \
+                      'xl': x.logtype, 'yl': y.logtype})
         debug(dbg_msg)
         return -1
 

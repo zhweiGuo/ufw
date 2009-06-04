@@ -1001,8 +1001,8 @@ class UFWFrontend:
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():
             prompt = _("Command may disrupt existing ssh connections.")
-            prompt += _(" Proceed with operation (%s|%s)? ") % \
-                       (self.yes, self.no)
+            prompt += _(" Proceed with operation (%(yes)s|%(no)s)? ") % \
+                       ({'yes': self.yes, 'no': self.no})
             os.write(sys.stdout.fileno(), prompt)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:

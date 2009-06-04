@@ -113,8 +113,9 @@ def get_profiles(dir):
                     skip = True
                     break
                 if len(value) > 1024:
-                    warn_msg = _("Skipping '%s': value too long for '%s'") % \
-                                (p, key)
+                    warn_msg = _("Skipping '%(value)s': value too long for " \
+                                 "'%(field)s'") % \
+                                 ({'value': p, 'field': key})
                     warn(warn_msg)
                     skip = True
                     break
@@ -152,12 +153,13 @@ def verify_profile(name, profile):
 
     for f in app_fields:
         if not profile.has_key(f):
-            err_msg = _("Profile '%s' missing required field '%s'") % \
-                        (name, f)
+            err_msg = _("Profile '%(fn)s' missing required field '%(f)s'") % \
+                        ({'fn': name, 'f': f})
+                        
             raise UFWError(err_msg)
         elif not profile[f]:
-            err_msg = _("Profile '%s' has empty required field '%s'") % \
-                        (name, f)
+            err_msg = _("Profile '%(fn)s' has empty required field '%(f)s'") \
+                        % ({'fn': name, 'f': f})
             raise UFWError(err_msg)
 
     ports = profile['ports'].split('|')
