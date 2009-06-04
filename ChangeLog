@@ -1,3 +1,11 @@
+ufw (0.28) UNRELEASED; urgency=low
+
+  * translation fixes
+  * add interface rules
+  * update Makefile to fail if byte-compiling failed
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 04 Jun 2009 18:21:28 -0500
+
 ufw (0.27.1) RELEASED; urgency=low
 
   * update README for instructions on integrating ufw into the boot process
