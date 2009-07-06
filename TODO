@@ -7,11 +7,7 @@ Egress filtering
 
 MAC address filtering (ie ebtables)
 
-Filter by interface name
-
 nftables backend (long term)
-
-Perhaps check it recent module is available to avoid LP: #355291
 
 Delete rule be rule number (LP: #367571)
 
