@@ -13,7 +13,8 @@ Package: ufw
 Architecture: all
 Depends: debconf, ${python:Depends}, ${misc:Depends}, iptables (>= 1.4.0), ucf
 XB-Python-Version: ${python:Versions}
-Description: program for managing a netfilter firewall
- Ufw is a tool to manage a netfilter firewall. It provides a command line
- interface with PF-style syntax and aims to be uncomplicated and easy to use.
- It is particularly well-suited for use as a host-based firewall.
+Description: program for managing a Netfilter firewall
+ The Uncomplicated FireWall is a front-end for iptables, to make managing a
+ Netfilter firewall easier. It provides a command line interface with syntax
+ similar to OpenBSD's Packet Filter. It is particularly well-suited as a
+ host-based firewall.
