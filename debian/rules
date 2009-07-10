@@ -59,6 +59,9 @@ endif
 	# add lintian override
 	cp $(CURDIR)/debian/binary.lintian-overrides $(CURDIR)/debian/ufw/usr/share/lintian/overrides/ufw
 
+        # Add the shell-completion file
+        cp $(CURDIR)/debian/ufw.bash_completion $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw
+
 binary-arch: build
 
 binary-indep: build install
