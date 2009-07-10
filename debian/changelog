@@ -1,3 +1,22 @@
+ufw (0.27.1-2) UNRELEASED; urgency=low
+
+  [ Jonathan Wiltshire ]
+  * Debconf templates and debian/control reviewed by the debian-l10n-
+    english team as part of the Smith review project. Closes: #530956
+  * Debconf translation updates:
+    - Slovak (closes: #531782)
+    - Swedish (closes: #533375)
+    - Finnish (closes: #533454)
+    - Czech (closes: #533552)
+    - Portuguese (closes: #534098)
+    - German (closes: #534230)
+    - Basque (closes: #534298, #534298)
+    - Russian (closes: #534720)
+    - Spanish (closes: #534859)
+    - French (closes: #535032)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 10 Jul 2009 16:00:04 -0500
+
 ufw (0.27.1-1) unstable; urgency=low
 
   * Initial release. (closes: #506215)
