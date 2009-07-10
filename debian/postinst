@@ -25,26 +25,26 @@ allow_port() {
 
 allow_service() {
     service=`echo "$@" | sed 's/#/ /g'`
-    if [ "$service" = "Cups" ]; then
+    if [ "$service" = "CUPS" ]; then
         allow_port 631
     elif [ "$service" = "DNS" ]; then
         allow_port 53
-    elif [ "$service" = "Imap (Secure)" ]; then
+    elif [ "$service" = "IMAPS" ]; then
         allow_port 993/tcp
-    elif [ "$service" = "Pop3 (Secure)" ]; then
+    elif [ "$service" = "POP3S" ]; then
         allow_port 995/tcp
     elif [ "$service" = "SSH" ]; then
         allow_port 22/tcp
-    elif [ "$service" = "Samba" ]; then
+    elif [ "$service" = "CIFS (Samba)" ]; then
         allow_port 137/udp
         allow_port 138/udp
         allow_port 139/tcp
         allow_port 445/tcp
-    elif [ "$service" = "Smtp" ]; then
+    elif [ "$service" = "SMTP" ]; then
         allow_port 25/tcp
-    elif [ "$service" = "WWW" ]; then
+    elif [ "$service" = "HTTP" ]; then
         allow_port 80/tcp
-    elif [ "$service" = "WWW (Secure)" ]; then
+    elif [ "$service" = "HTTPS" ]; then
         allow_port 443/tcp
     fi
 }
