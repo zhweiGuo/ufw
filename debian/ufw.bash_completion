@@ -1,0 +1,51 @@
+#
+# Author: Didier Roche <didrocks@ubuntu.com>
+#         Jamie Strandboge <jamie@canonical.com>
+#
+# Copyright 2009 Didier Roche <didrocks@ubuntu.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License version 3,
+#    as published by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+_ufw_commands()
+{
+     commands=$(ufw --help | sed -e '1,/^Commands:/d' -e '/^Application profile commands:/Q' | awk '{print $1}' | sed 's/|/ /g' | uniq)
+     echo "$commands app"
+}
+
+_ufw_app_commands()
+{
+     ufw --help | sed -e '1,/^Application profile commands:/d' -e '/^ [^ ]/!d' | awk '{print $2}'
+}
+
+have ufw &&
+_ufw()
+{
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        COMPREPLY=( $( compgen -W "$(_ufw_commands)" $cur ) )
+    elif [ $COMP_CWORD -eq 2 ]; then
+        case "$prev" in
+        app)
+            COMPREPLY=( $( compgen -W "$(_ufw_app_commands)" $cur ) )
+            ;;
+        status)
+            COMPREPLY=numbered
+            ;;
+        esac
+    fi
+}
+
+[ "$have" ] && complete -F _ufw ufw
+
