@@ -56,6 +56,7 @@ case "$1" in
         for f in before.rules before6.rules after.rules after6.rules
         do
             ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+            chmod 640 $RULES_PATH/$f
         done
 
         for f in user.rules user6.rules
@@ -63,8 +64,21 @@ case "$1" in
             if [ ! -e "$USER_PATH/$f" ]; then
                 # if no config, copy the template
                 cp $TEMPLATE_PATH/$f $USER_PATH/$f
+                chmod 640 $USER_PATH/$f
             fi
         done
+
+        # https://bugs.launchpad.net/ufw/+bug/393187
+        if dpkg --compare-versions $2 lt 0.27.1-2 ; then
+            for f in before.rules before6.rules after.rules after6.rules
+            do
+                test -f $RULES_PATH/$f && chmod o-rwx $RULES_PATH/$f
+            done
+            for f in user.rules user6.rules
+            do
+                test -f $USER_PATH/$f && chmod o-rwx $USER_PATH/$f
+            done
+        fi
 
         if [ ! -e "/etc/ufw/ufw.conf" ]; then
             cp $TEMPLATE_PATH/ufw.conf /etc/ufw
