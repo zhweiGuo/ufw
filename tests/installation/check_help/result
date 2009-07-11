@@ -3,24 +3,27 @@
 Usage: ufw COMMAND
 
 Commands:
- enable				enables the firewall
- disable			disables the firewall
- default ARG			set default policy to ALLOW, DENY or REJECT
- logging ARG			set logging to OFF, ON or LEVEL
- allow|deny|reject ARG		add allow, deny or reject RULE
- delete RULE		 	delete the RULE
- insert NUM RULE	 	insert RULE at NUM
- status 			show firewall status
- status numbered		show firewall status as numbered list of RULES
- show ARG			show firewall report
- version			display version information
+ enable                          enables the firewall
+ disable                         disables the firewall
+ default ARG                     set default policy to ALLOW, DENY or REJECT
+ logging ARG                     set logging to OFF, ON or LEVEL
+ allow ARG                       add allow RULE
+ deny ARG                        add deny RULE
+ reject ARG                      add reject RULE
+ limit ARG                       add limit RULE
+ delete RULE                     delete RULE
+ insert NUM RULE                 insert RULE at NUM
+ status                          show firewall status
+ status numbered                 show firewall status as numbered list of RULES
+ show ARG                        show firewall report
+ version                         display version information
 
 Application profile commands:
- app list			list application profiles
- app info PROFILE		show information on PROFILE
- app update PROFILE		update PROFILE
- app default ARG		set profile policy to ALLOW, DENY, REJECT or
-				SKIP
+ app list                        list application profiles
+ app info PROFILE                show information on PROFILE
+ app update PROFILE              update PROFILE
+ app default ARG                 set profile policy to ALLOW, DENY, REJECT, or
+                                 SKIP
 
 
 

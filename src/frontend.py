@@ -442,27 +442,34 @@ def parse_application_command(argv):
 def get_command_help():
     '''Print help message'''
     msg = _('''
-Usage: ''') + ufw.common.programName + _(''' COMMAND
+Usage: %s %s''' % (ufw.common.programName, "COMMAND") + '''
 
-Commands:
- enable				enables the firewall
- disable			disables the firewall
- default ARG			set default policy to ALLOW, DENY or REJECT
- logging ARG			set logging to OFF, ON or LEVEL
- allow|deny|reject ARG		add allow, deny or reject RULE
- delete RULE		 	delete the RULE
- insert NUM RULE	 	insert RULE at NUM
- status 			show firewall status
- status numbered		show firewall status as numbered list of RULES
- show ARG			show firewall report
- version			display version information
+%s''' % ("Commands:") + '''
+ %-31s enables the firewall''' % ("enable") + '''
+ %-31s disables the firewall''' % ("disable") + '''
+ %-31s set default policy to %s, %s or %s''' % ("default ARG", "ALLOW", \
+                                                "DENY", "REJECT") + '''
+ %-31s set logging to %s, %s or %s''' % ("logging ARG", "OFF", "ON", \
+                                         "LEVEL") + '''
+ %-31s add allow %s''' % ("allow ARG", "RULE") + '''
+ %-31s add deny %s''' % ("deny ARG", "RULE") + '''
+ %-31s add reject %s''' % ("reject ARG", "RULE") + '''
+ %-31s add limit %s''' % ("limit ARG", "RULE") + '''
+ %-31s delete %s''' % ("delete RULE", "RULE") + '''
+ %-31s insert %s at %s''' % ("insert NUM RULE", "RULE", "NUM") + '''
+ %-31s show firewall status''' % ("status") + '''
+ %-31s show firewall status as numbered list of %s''' % ("status numbered", \
+                                                         "RULES") + '''
+ %-31s show firewall report''' % ("show ARG") + '''
+ %-31s display version information''' % ("version") + '''
 
-Application profile commands:
- app list			list application profiles
- app info PROFILE		show information on PROFILE
- app update PROFILE		update PROFILE
- app default ARG		set profile policy to ALLOW, DENY, REJECT or
-				SKIP
+%s''' % ("Application profile commands:") + '''
+ %-31s list application profiles''' % ("app list") + '''
+ %-31s show information on %s''' % ("app info PROFILE", "PROFILE") + '''
+ %-31s update %s''' % ("app update PROFILE", "PROFILE") + '''
+ %-31s set profile policy to %s, %s, %s, or\n%37s''' % ("app default ARG", \
+                                                     "ALLOW", "DENY", \
+                                                     "REJECT", "SKIP") + '''
 ''')
     return (msg)
 
