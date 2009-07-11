@@ -19,13 +19,13 @@
 
 _ufw_commands()
 {
-     commands=$(ufw --help | sed -e '1,/^Commands:/d' -e '/^Application profile commands:/Q' | awk '{print $1}' | sed 's/|/ /g' | uniq)
-     echo "$commands app"
+     commands=$(ufw --help | sed -e '1,/^Commands:/d' -e '/^Application profile commands:/Q' -e 's/^[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g' -e 's/|/ /g' | uniq)
+     echo "$commands app help"
 }
 
 _ufw_app_commands()
 {
-     ufw --help | sed -e '1,/^Application profile commands:/d' -e '/^ [^ ]/!d' | awk '{print $2}'
+     ufw --help | sed -e '1,/^Application profile commands:/d' -e '/^ [^ ]/!d' -e 's/[ \t]\+app[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g'
 }
 
 have ufw &&
