@@ -3,6 +3,7 @@ ufw (0.28) UNRELEASED; urgency=low
   * translation fixes
   * add interface rules
   * update Makefile to fail if byte-compiling failed
+  * install rules files 0640 (LP: #393187)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 04 Jun 2009 18:21:28 -0500
 

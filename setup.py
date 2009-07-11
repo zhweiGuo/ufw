@@ -138,6 +138,11 @@ class Install(_install, object):
         self.copy_file('conf/before6.rules', before6_rules)
         self.copy_file('conf/after6.rules', after6_rules)
 
+        # Update the installed rules files' permissions
+        for file in [ before_rules, after_rules, before6_rules, after6_rules, \
+                      user_rules, user6_rules ]:
+            os.chmod(file, 0640)
+
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, script, \

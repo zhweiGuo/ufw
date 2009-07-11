@@ -21,6 +21,7 @@ ufw (0.27.1-2) UNRELEASED; urgency=low
     - debian/bash_completion.ufw: process app and regular commands
     - debian/dirs: add etc/bash_completion.d
     - debian/rules: install bash_completion.ufw
+  * install rules files 0640 (LP: #393187)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 10 Jul 2009 22:34:38 -0500
 
