@@ -108,8 +108,10 @@ case "$1" in
             db_get ufw/allow_custom_ports
             PORTS="$RET"
             for port in $PORTS ; do
-                allow_service "$port"
+                allow_port "$port"
             done
+
+            db_fset ufw/existing_configuration seen true
         fi
 
         # need to do this after all 'allow_service' calls, otherwise ufw may
