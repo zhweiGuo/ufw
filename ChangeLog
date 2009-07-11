@@ -6,6 +6,7 @@ ufw (0.28) UNRELEASED; urgency=low
   * install rules files 0640 (LP: #393187)
   * adjust help command for proper translation and bash completion support
   * add limit command to help (LP: #358964)
+  * add shell-completion/bash. Based on work by Didier Roche
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 04 Jun 2009 18:21:28 -0500
 

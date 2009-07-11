@@ -1,4 +1,13 @@
-ufw (0.27.1-2) UNRELEASED; urgency=low
+ufw (0.28-1) UNRELEASED; urgency=low
+
+  * new upstream release. Fixes:
+    - filtering by interface (LP: #247450)
+    - ufw help does not mention 'limit' command (LP: #358964)
+    - install rules files 0640 (LP: #393187)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 11 Jul 2009 09:31:38 -0500
+
+ufw (0.27.1-2) unstable; urgency=low
 
   [ Jonathan Wiltshire ]
   * Debconf templates and debian/control reviewed by the debian-l10n-
