@@ -12,6 +12,7 @@ ufw (0.27.1-2) unstable; urgency=low
   [ Jonathan Wiltshire ]
   * Debconf templates and debian/control reviewed by the debian-l10n-
     english team as part of the Smith review project. Closes: #530956
+    - LP: #379591
   * Debconf translation updates:
     - Slovak (closes: #531782)
     - Swedish (closes: #533375)
