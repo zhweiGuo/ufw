@@ -1,8 +1,5 @@
 #
-# Author: Didier Roche <didrocks@ubuntu.com>
-#         Jamie Strandboge <jamie@canonical.com>
-#
-# Copyright 2009 Didier Roche <didrocks@ubuntu.com>
+# Copyright 2009 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -16,16 +13,38 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+# Based on work by Didier Roche <didrocks@ubuntu.com>
+#
 
 _ufw_commands()
 {
      commands=$(ufw --help | sed -e '1,/^Commands:/d' -e '/^Application profile commands:/Q' -e 's/^[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g' -e 's/|/ /g' | uniq)
-     echo "$commands app help"
+     echo "$commands app"
 }
 
 _ufw_app_commands()
 {
      ufw --help | sed -e '1,/^Application profile commands:/d' -e '/^ [^ ]/!d' -e 's/[ \t]\+app[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g'
+}
+
+_ufw_logging_commands()
+{
+    echo "off on low medium high full"
+}
+
+_ufw_default_commands()
+{
+    echo "allow deny reject"
+}
+
+_ufw_rule_commands()
+{
+    echo "`_ufw_default_commands` limit"
+}
+
+_ufw_show_commands()
+{
+    echo "raw"
 }
 
 have ufw &&
@@ -42,6 +61,18 @@ _ufw()
             ;;
         status)
             COMPREPLY=numbered
+            ;;
+        delete)
+            COMPREPLY=( $( compgen -W "$(_ufw_rule_commands)" $cur ) )
+            ;;
+        logging)
+            COMPREPLY=( $( compgen -W "$(_ufw_logging_commands)" $cur ) )
+            ;;
+        show)
+            COMPREPLY=( $( compgen -W "$(_ufw_show_commands)" $cur ) )
+            ;;
+        default)
+            COMPREPLY=( $( compgen -W "$(_ufw_default_commands)" $cur ) )
             ;;
         esac
     fi
