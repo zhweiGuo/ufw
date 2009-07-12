@@ -35,6 +35,8 @@ ufw (0.27.1-2) unstable; urgency=low
   * debian/postinst: make allow_custom_ports actually work and set
     existing_configuration as seen after doing initial configuration, to
     prevent calling ufw on already added rules
+  * debian/control: bump Standards-Version
+  * debian/control: update Vcs-Bzr
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 10 Jul 2009 22:34:38 -0500
 
