@@ -695,7 +695,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                    (current[2] == '' and current[3] == '') or \
                    last != current:
                     inserted = True
-                    newrules.append(rule)
+                    newrules.append(rule.dup_rule())
                     last = ('', '', '', '')
                 else:
                     position += 1
@@ -711,13 +711,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 # skip it.
                 found = True
                 if not rule.remove:
-                    newrules.append(rule)
+                    newrules.append(rule.dup_rule())
             elif ret < 0 and not rule.remove and not inserted:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
                 found = True
                 modified = True
-                newrules.append(rule)
+                newrules.append(rule.dup_rule())
             else:
                 newrules.append(r)
 
@@ -730,7 +730,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             # Add rule to the end if it was not already added.
             if not found and not rule.remove:
-                newrules.append(rule)
+                newrules.append(rule.dup_rule())
 
             # Don't process non-existing or unchanged pre-exisiting rules
             if not found and rule.remove and not self.dryrun:
