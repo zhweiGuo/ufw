@@ -118,35 +118,83 @@ Rules updated (v6)
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 -A ufw6-user-input -i eth2 -j ACCEPT
-12: delete allow in on eth0
+12: delete deny to any app Samba
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-13: delete allow to 192.168.0.2
-WARN: Checks disabled
-Rules updated
-
-
-14: delete allow to 192.168.0.3
-WARN: Checks disabled
-Rules updated
-
-
-15: delete allow in on eth1
+13: insert 5 deny to any app Bind9
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-16: delete allow in on eth2
+-A ufw-user-input -i eth0 -j ACCEPT
+-A ufw-user-input -d 192.168.0.2 -j ACCEPT
+-A ufw-user-input -d 192.168.0.3 -j ACCEPT
+-A ufw-user-input -i eth1 -j ACCEPT
+-A ufw-user-input -p tcp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+-A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+-A ufw-user-input -i eth2 -j ACCEPT
+-A ufw6-user-input -i eth0 -j ACCEPT
+-A ufw6-user-input -i eth1 -j ACCEPT
+-A ufw6-user-input -p tcp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+-A ufw6-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
+-A ufw6-user-input -i eth2 -j ACCEPT
+14: delete deny to any app Bind9
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-17: delete deny to any app Samba
+15: insert 5 deny to any app Samba
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+-A ufw-user-input -i eth0 -j ACCEPT
+-A ufw-user-input -d 192.168.0.2 -j ACCEPT
+-A ufw-user-input -d 192.168.0.3 -j ACCEPT
+-A ufw-user-input -i eth1 -j ACCEPT
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth2 -j ACCEPT
+-A ufw6-user-input -i eth0 -j ACCEPT
+-A ufw6-user-input -i eth1 -j ACCEPT
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -i eth2 -j ACCEPT
+16: delete allow in on eth0
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+17: delete allow to 192.168.0.2
+WARN: Checks disabled
+Rules updated
+
+
+18: delete allow to 192.168.0.3
+WARN: Checks disabled
+Rules updated
+
+
+19: delete allow in on eth1
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+20: delete allow in on eth2
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+21: delete deny to any app Samba
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)

@@ -56,6 +56,17 @@ do_cmd "0" insert 8 deny to any app Samba
 grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
+# this insert should look the same as the above
+do_cmd "0" delete deny to any app Samba
+do_cmd "0" insert 5 deny to any app Bind9
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+do_cmd "0" delete deny to any app Bind9
+do_cmd "0" insert 5 deny to any app Samba
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
 do_cmd "0" delete allow in on eth0
 do_cmd "0" delete allow to 192.168.0.2
 do_cmd "0" delete allow to 192.168.0.3
