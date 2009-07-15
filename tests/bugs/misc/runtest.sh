@@ -37,6 +37,33 @@ sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
 do_cmd "0" allow in on eth1 to any app Samba
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+do_cmd "0" null delete allow in on eth1 to any app Samba
+sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
+
+echo "Bug (inserted Samba rules out of order whenIPV6 is enabled" >> $TESTTMP/result
+sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
+do_cmd "0" allow in on eth0
+do_cmd "0" allow to 192.168.0.2
+do_cmd "0" allow to 192.168.0.3
+do_cmd "0" allow in on eth1
+do_cmd "0" allow in on eth2
+do_cmd "0" insert 8 deny to any app Bind9
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+do_cmd "0" delete deny to any app Bind9
+do_cmd "0" insert 8 deny to any app Samba
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+do_cmd "0" delete allow in on eth0
+do_cmd "0" delete allow to 192.168.0.2
+do_cmd "0" delete allow to 192.168.0.3
+do_cmd "0" delete allow in on eth1
+do_cmd "0" delete allow in on eth2
+do_cmd "0" delete deny to any app Samba
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
 
 exit 0

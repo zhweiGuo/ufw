@@ -173,12 +173,13 @@ echo "Errors:              $errors"
 if [ "$errors" != "0" ]; then
 	exit 1
 fi
-if [ "$skipped" != "0" ]; then
-	exit 2
-fi
 
 # cleanup
 rm -rf $statsdir
+
+if [ "$skipped" != "0" ]; then
+	exit 2
+fi
 
 exit 0
 

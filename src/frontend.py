@@ -685,8 +685,8 @@ class UFWFrontend:
                         if not r.remove and user_pos > num_v4:
 			    # The user specified a v6 rule, so try to find a
 			    # match in the v4 rules and use its position.
-                            p = self.backend.find_other_position(user_pos - \
-                                                                 num_v4, True)
+                            p = self.backend.find_other_position( \
+                                user_pos - num_v4 + count, True)
                             if p > 0:
                                 r.set_position(p)
                             else:
