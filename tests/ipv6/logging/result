@@ -24,7 +24,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 23 -j ACCEPT
 
-### tuple ### allow_log udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -180,7 +180,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 23 -j ACCEPT
 
-### tuple ### allow_log-all udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -336,7 +336,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 23 -j DROP
 
-### tuple ### deny_log udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### deny_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -492,7 +492,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 23 -j DROP
 
-### tuple ### deny_log-all udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### deny_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -652,7 +652,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp --dport 23 -j ufw-user-limit-accept
 
-### tuple ### limit_log udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### limit_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -788,7 +788,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp --dport 23 -j ufw-user-limit-accept
 
-### tuple ### limit_log-all udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### limit_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -920,7 +920,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 23 -j REJECT
 
-### tuple ### reject_log udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### reject_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -1076,7 +1076,7 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 23 -j REJECT
 
-### tuple ### reject_log-all udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### reject_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -1223,7 +1223,7 @@ contents of user*.rules:
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow_log udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
@@ -1281,7 +1281,7 @@ contents of user*.rules:
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny_log udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### deny_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input

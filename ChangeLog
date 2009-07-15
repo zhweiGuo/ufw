@@ -11,6 +11,9 @@ ufw (0.28) UNRELEASED; urgency=low
     in test results. Update many root tests to use 'nostats'
   * look for location of iptables and set IPTABLES_BIN in common.py. Adjust
     calls to ip[6]tables* to use IPTABLES_BIN
+  * fix harmless but annoying bug where multi-rule application rules ended
+    up with ::/0 in the tuple line in user.rules (IPV4) when not specifying a
+    destination or source address and IPV6 is enabled
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 15 Jul 2009 09:30:25 -0500
 
