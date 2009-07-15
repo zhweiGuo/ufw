@@ -58,7 +58,7 @@ class UFWBackend:
 
         self.iptables = os.path.join(iptables_dir, "iptables")
         self.iptables_restore = os.path.join(iptables_dir, "iptables-restore")
-        self.ip6tables = os.path.join(iptables_dir, "iptables")
+        self.ip6tables = os.path.join(iptables_dir, "ip6tables")
         self.ip6tables_restore = os.path.join(iptables_dir, \
                                               "ip6tables-restore")
 

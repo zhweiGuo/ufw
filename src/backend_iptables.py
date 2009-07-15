@@ -383,13 +383,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             # then restore the system rules
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
-                                 [self.iptables-restore, '-n'])
+                                 [self.iptables_restore, '-n'])
             if rc != 0:
                 raise UFWError(err_msg + " iptables")
 
             if self.use_ipv6():
                 (rc, out) = cmd_pipe(['cat', self.files['rules6']], \
-                                     [self.ip6tables-restore, '-n'])
+                                     [self.ip6tables_restore, '-n'])
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
