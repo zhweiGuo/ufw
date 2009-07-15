@@ -1445,111 +1445,120 @@ TESTING ARGS (insert)
 
 
 TESTING ARGS (interfaces)
-469: --dry-run allow in on e%th0
+469: --dry-run allow in on eth0:1
 
 
-470: --dry-run allow on eth0
+470: --dry-run allow in on e%th0
 
 
-471: --dry-run allow ina on eth0
+471: --dry-run allow on eth0
 
 
-472: --dry-run allow in ona eth0
+472: --dry-run allow ina on eth0
 
 
-473: --dry-run allow in eth0
+473: --dry-run allow in ona eth0
 
 
-474: --dry-run allow in on eth0 to
+474: --dry-run allow in eth0
 
 
-475: --dry-run allow in on eth0 from
+475: --dry-run allow in on eth0 to
 
 
-476: --dry-run allow in on eth0 from any to
+476: --dry-run allow in on eth0 from
 
 
-477: --dry-run allow in on eth0 any from
+477: --dry-run allow in on eth0 from any to
 
 
-478: --dry-run allow in on eth0 any from to any proto
+478: --dry-run allow in on eth0 any from
 
 
-479: --dry-run allow in on eth0 log
+479: --dry-run allow in on eth0 any from to any proto
 
 
-480: --dry-run allow in on eth0 log-all
+480: --dry-run allow in on eth0 log
 
 
-481: --dry-run deny in on e%th0
+481: --dry-run allow in on eth0 log-all
 
 
-482: --dry-run deny on eth0
+482: --dry-run deny in on eth0:1
 
 
-483: --dry-run deny ina on eth0
+483: --dry-run deny in on e%th0
 
 
-484: --dry-run deny in ona eth0
+484: --dry-run deny on eth0
 
 
-485: --dry-run deny in eth0
+485: --dry-run deny ina on eth0
 
 
-486: --dry-run deny in on eth0 to
+486: --dry-run deny in ona eth0
 
 
-487: --dry-run deny in on eth0 from
+487: --dry-run deny in eth0
 
 
-488: --dry-run deny in on eth0 from any to
+488: --dry-run deny in on eth0 to
 
 
-489: --dry-run deny in on eth0 any from
+489: --dry-run deny in on eth0 from
 
 
-490: --dry-run deny in on eth0 any from to any proto
+490: --dry-run deny in on eth0 from any to
 
 
-491: --dry-run deny in on eth0 log
+491: --dry-run deny in on eth0 any from
 
 
-492: --dry-run deny in on eth0 log-all
+492: --dry-run deny in on eth0 any from to any proto
 
 
-493: --dry-run limit in on e%th0
+493: --dry-run deny in on eth0 log
 
 
-494: --dry-run limit on eth0
+494: --dry-run deny in on eth0 log-all
 
 
-495: --dry-run limit ina on eth0
+495: --dry-run limit in on eth0:1
 
 
-496: --dry-run limit in ona eth0
+496: --dry-run limit in on e%th0
 
 
-497: --dry-run limit in eth0
+497: --dry-run limit on eth0
 
 
-498: --dry-run limit in on eth0 to
+498: --dry-run limit ina on eth0
 
 
-499: --dry-run limit in on eth0 from
+499: --dry-run limit in ona eth0
 
 
-500: --dry-run limit in on eth0 from any to
+500: --dry-run limit in eth0
 
 
-501: --dry-run limit in on eth0 any from
+501: --dry-run limit in on eth0 to
 
 
-502: --dry-run limit in on eth0 any from to any proto
+502: --dry-run limit in on eth0 from
 
 
-503: --dry-run limit in on eth0 log
+503: --dry-run limit in on eth0 from any to
 
 
-504: --dry-run limit in on eth0 log-all
+504: --dry-run limit in on eth0 any from
+
+
+505: --dry-run limit in on eth0 any from to any proto
+
+
+506: --dry-run limit in on eth0 log
+
+
+507: --dry-run limit in on eth0 log-all
 
 

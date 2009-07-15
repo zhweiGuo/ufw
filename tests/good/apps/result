@@ -5574,7 +5574,7 @@ TESTING APPLICATION INTEGRATION (interfaces)
 227: allow in on eth0 to 192.168.0.1 app Samba
 
 
-228: allow in on eth0:1 from 10.0.0.1 app Samba
+228: allow in on eth0 from 10.0.0.1 app Samba
 
 
 229: allow in on eth0 from 10.0.0.1 to any app Samba
@@ -5594,11 +5594,11 @@ TESTING APPLICATION INTEGRATION (interfaces)
 ### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
 -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
@@ -5614,7 +5614,7 @@ COMMIT
 230: delete allow in on eth0 to 192.168.0.1 app Samba
 
 
-231: delete allow in on eth0:1 from 10.0.0.1 app Samba
+231: delete allow in on eth0 from 10.0.0.1 app Samba
 
 
 232: delete allow in on eth0 from 10.0.0.1 to any app Samba
@@ -5636,7 +5636,7 @@ COMMIT
 233: deny in on eth0 to 192.168.0.1 app Samba
 
 
-234: deny in on eth0:1 from 10.0.0.1 app Samba
+234: deny in on eth0 from 10.0.0.1 app Samba
 
 
 235: deny in on eth0 from 10.0.0.1 to any app Samba
@@ -5656,11 +5656,11 @@ COMMIT
 ### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
 -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
@@ -5676,7 +5676,7 @@ COMMIT
 236: delete deny in on eth0 to 192.168.0.1 app Samba
 
 
-237: delete deny in on eth0:1 from 10.0.0.1 app Samba
+237: delete deny in on eth0 from 10.0.0.1 app Samba
 
 
 238: delete deny in on eth0 from 10.0.0.1 to any app Samba
@@ -5698,7 +5698,7 @@ COMMIT
 239: limit in on eth0 to 192.168.0.1 app Samba
 
 
-240: limit in on eth0:1 from 10.0.0.1 app Samba
+240: limit in on eth0 from 10.0.0.1 app Samba
 
 
 241: limit in on eth0 from 10.0.0.1 to any app Samba
@@ -5722,15 +5722,15 @@ COMMIT
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -i eth0:1 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -i eth0:1 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -i eth0:1 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -i eth0:1 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
 -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
@@ -5750,7 +5750,7 @@ COMMIT
 242: delete limit in on eth0 to 192.168.0.1 app Samba
 
 
-243: delete limit in on eth0:1 from 10.0.0.1 app Samba
+243: delete limit in on eth0 from 10.0.0.1 app Samba
 
 
 244: delete limit in on eth0 from 10.0.0.1 to any app Samba
@@ -5772,7 +5772,7 @@ COMMIT
 245: reject in on eth0 to 192.168.0.1 app Samba
 
 
-246: reject in on eth0:1 from 10.0.0.1 app Samba
+246: reject in on eth0 from 10.0.0.1 app Samba
 
 
 247: reject in on eth0 from 10.0.0.1 to any app Samba
@@ -5792,11 +5792,11 @@ COMMIT
 ### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
 
-### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
+### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
 
-### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0:1
--A ufw-user-input -i eth0:1 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
+### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
 
 ### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
 -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
@@ -5812,7 +5812,7 @@ COMMIT
 248: delete reject in on eth0 to 192.168.0.1 app Samba
 
 
-249: delete reject in on eth0:1 from 10.0.0.1 app Samba
+249: delete reject in on eth0 from 10.0.0.1 app Samba
 
 
 250: delete reject in on eth0 from 10.0.0.1 to any app Samba
@@ -5834,7 +5834,7 @@ COMMIT
 251: allow in on eth0 to any app Samba
 
 
-252: allow in on eth1:2 to any port 22
+252: allow in on eth1 to any port 22
 
 
 253: insert 2 allow in on eth2 to any app Samba
@@ -5860,9 +5860,9 @@ COMMIT
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
 -A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in_eth1:2
--A ufw-user-input -i eth1:2 -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -i eth1:2 -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in_eth1
+-A ufw-user-input -i eth1 -p tcp --dport 22 -j ACCEPT
+-A ufw-user-input -i eth1 -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
@@ -5872,7 +5872,7 @@ COMMIT
 254: delete allow in on eth0 to any app Samba
 
 
-255: delete allow in on eth1:2 to any port 22
+255: delete allow in on eth1 to any port 22
 
 
 256: delete allow in on eth2 to any app Samba

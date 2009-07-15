@@ -285,6 +285,10 @@ class UFWRule:
             err_msg = _("Bad interface name")
             raise UFWError(err_msg)
 
+        if ':' in str(name):
+            err_msg = _("Bad interface name: can't use interface aliases")
+            raise UFWError(err_msg)
+
         if type == "in":
             self.interface_in = name
         else:

@@ -151,22 +151,22 @@ echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
 for i in "in" ; do
     for j in allow deny limit reject ; do
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 app Samba
-        do_cmd "0" null $j $i on eth0:1 from 10.0.0.1 app Samba
+        do_cmd "0" null $j $i on eth0 from 10.0.0.1 app Samba
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 to any app Samba
         cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 app Samba
-        do_cmd "0" null delete $j $i on eth0:1 from 10.0.0.1 app Samba
+        do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 app Samba
         do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 to any app Samba
         cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
     done
     do_cmd "0" null allow $i on eth0 to any app Samba
-    do_cmd "0" null allow $i on eth1:2 to any port 22
+    do_cmd "0" null allow $i on eth1 to any port 22
     do_cmd "0" null insert 2 allow $i on eth2 to any app Samba
     cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
     do_cmd "0" null delete allow $i on eth0 to any app Samba
-    do_cmd "0" null delete allow $i on eth1:2 to any port 22
+    do_cmd "0" null delete allow $i on eth1 to any port 22
     do_cmd "0" null delete allow $i on eth2 to any app Samba
     cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 done

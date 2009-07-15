@@ -78,10 +78,11 @@ rm -f $TESTPATH/etc/ufw/applications.d/Runtest $TESTPATH/etc/ufw/applications.d/
 echo "TESTING ARGS (interfaces)" >> $TESTTMP/result
 for j in "in"; do
     for i in allow deny limit; do
+        do_cmd "1" null --dry-run $i $j on eth0:1 to any app Bind9
         do_cmd "1" null --dry-run $i on eth0 to any app Bind9
-        do_cmd "1" null --dry-run $i ina on eth0 to any app Bind9
-        do_cmd "1" null --dry-run $i in ona eth0 to any app Bind9
-        do_cmd "1" null --dry-run $i in eth0 to any app Bind9
+        do_cmd "1" null --dry-run $i $j ina on eth0 to any app Bind9
+        do_cmd "1" null --dry-run $i $j ona eth0 to any app Bind9
+        do_cmd "1" null --dry-run $i $j eth0 to any app Bind9
     done
 done
 

@@ -2750,36 +2750,24 @@ Interfaces
 182: --dry-run allow in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-183: --dry-run allow in on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+183: --dry-run allow in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
-184: --dry-run allow in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+184: --dry-run deny in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-185: --dry-run deny in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+185: --dry-run deny in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
-186: --dry-run deny in on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+186: --dry-run limit in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-187: --dry-run deny in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+187: --dry-run limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
-188: --dry-run limit in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+188: --dry-run reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-189: --dry-run limit in on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-190: --dry-run limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
-
-
-191: --dry-run reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-192: --dry-run reject in on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-193: --dry-run reject in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+189: --dry-run reject in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 

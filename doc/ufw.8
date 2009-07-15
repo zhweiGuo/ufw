@@ -143,8 +143,8 @@ instead of \fBdeny\fR.  For example:
 
 .PP
 By default, \fBufw\fR will apply rules to all available interfaces. To limit
-this, specify \fBon INTERFACE\fR.  For example, to allow all new http
-connections on eth0, use:
+this, specify \fBin on INTERFACE\fR (interface aliases are not supported).  For
+example, to allow all new http connections on eth0, use:
 
   ufw allow in on eth0 to any port 80 proto tcp
 

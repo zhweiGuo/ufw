@@ -6182,43 +6182,40 @@ Interfaces
 310: allow in on eth0
 
 
-311: allow in on eth0:1
+311: allow in on eth0 to 192.168.0.1 port 22
 
 
-312: allow in on eth0 to 192.168.0.1 port 22
+312: allow in on eth0 from 10.0.0.1 port 80
 
 
-313: allow in on eth0 from 10.0.0.1 port 80
+313: allow in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-314: allow in on eth0 to 192.168.0.1 from 10.0.0.1
+314: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-315: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+315: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-316: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+316: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-317: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+317: allow in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-318: allow in on eth0 to 192.168.0.1 port 22 proto tcp
+318: allow in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-319: allow in on eth0 from 10.0.0.1 port 80 proto tcp
+319: allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-320: allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+320: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-321: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+321: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-322: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-323: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+322: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6231,9 +6228,6 @@ Interfaces
 
 ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j ACCEPT
-
-### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0:1
--A ufw-user-input -i eth0:1 -j ACCEPT
 
 ### tuple ### allow any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
@@ -6281,46 +6275,43 @@ Interfaces
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-324: delete allow in on eth0
+323: delete allow in on eth0
 
 
-325: delete allow in on eth0:1
+324: delete allow in on eth0 to 192.168.0.1 port 22
 
 
-326: delete allow in on eth0 to 192.168.0.1 port 22
+325: delete allow in on eth0 from 10.0.0.1 port 80
 
 
-327: delete allow in on eth0 from 10.0.0.1 port 80
+326: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-328: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1
+327: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-329: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+328: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-330: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+329: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-331: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+330: delete allow in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-332: delete allow in on eth0 to 192.168.0.1 port 22 proto tcp
+331: delete allow in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-333: delete allow in on eth0 from 10.0.0.1 port 80 proto tcp
+332: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-334: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+333: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-335: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+334: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-336: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-337: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+335: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6336,46 +6327,43 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-338: deny in on eth0
+336: deny in on eth0
 
 
-339: deny in on eth0:1
+337: deny in on eth0 to 192.168.0.1 port 22
 
 
-340: deny in on eth0 to 192.168.0.1 port 22
+338: deny in on eth0 from 10.0.0.1 port 80
 
 
-341: deny in on eth0 from 10.0.0.1 port 80
+339: deny in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-342: deny in on eth0 to 192.168.0.1 from 10.0.0.1
+340: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-343: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+341: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-344: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+342: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-345: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+343: deny in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-346: deny in on eth0 to 192.168.0.1 port 22 proto tcp
+344: deny in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-347: deny in on eth0 from 10.0.0.1 port 80 proto tcp
+345: deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-348: deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+346: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-349: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+347: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-350: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-351: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+348: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6388,9 +6376,6 @@ COMMIT
 
 ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j DROP
-
-### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0:1
--A ufw-user-input -i eth0:1 -j DROP
 
 ### tuple ### deny any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
@@ -6438,46 +6423,43 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-352: delete deny in on eth0
+349: delete deny in on eth0
 
 
-353: delete deny in on eth0:1
+350: delete deny in on eth0 to 192.168.0.1 port 22
 
 
-354: delete deny in on eth0 to 192.168.0.1 port 22
+351: delete deny in on eth0 from 10.0.0.1 port 80
 
 
-355: delete deny in on eth0 from 10.0.0.1 port 80
+352: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-356: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1
+353: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-357: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+354: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-358: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+355: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-359: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+356: delete deny in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-360: delete deny in on eth0 to 192.168.0.1 port 22 proto tcp
+357: delete deny in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-361: delete deny in on eth0 from 10.0.0.1 port 80 proto tcp
+358: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-362: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+359: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-363: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+360: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-364: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-365: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+361: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6493,46 +6475,43 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-366: limit in on eth0
+362: limit in on eth0
 
 
-367: limit in on eth0:1
+363: limit in on eth0 to 192.168.0.1 port 22
 
 
-368: limit in on eth0 to 192.168.0.1 port 22
+364: limit in on eth0 from 10.0.0.1 port 80
 
 
-369: limit in on eth0 from 10.0.0.1 port 80
+365: limit in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-370: limit in on eth0 to 192.168.0.1 from 10.0.0.1
+366: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-371: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+367: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-372: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+368: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-373: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+369: limit in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-374: limit in on eth0 to 192.168.0.1 port 22 proto tcp
+370: limit in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-375: limit in on eth0 from 10.0.0.1 port 80 proto tcp
+371: limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-376: limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+372: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-377: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+373: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-378: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-379: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+374: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6547,11 +6526,6 @@ COMMIT
 -A ufw-user-input -i eth0 -m state --state NEW -m recent --set
 -A ufw-user-input -i eth0 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -i eth0 -j ufw-user-limit-accept
-
-### tuple ### limit any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0:1
--A ufw-user-input -i eth0:1 -m state --state NEW -m recent --set
--A ufw-user-input -i eth0:1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0:1 -j ufw-user-limit-accept
 
 ### tuple ### limit any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --set
@@ -6633,46 +6607,43 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-380: delete limit in on eth0
+375: delete limit in on eth0
 
 
-381: delete limit in on eth0:1
+376: delete limit in on eth0 to 192.168.0.1 port 22
 
 
-382: delete limit in on eth0 to 192.168.0.1 port 22
+377: delete limit in on eth0 from 10.0.0.1 port 80
 
 
-383: delete limit in on eth0 from 10.0.0.1 port 80
+378: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-384: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1
+379: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-385: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+380: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-386: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+381: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-387: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+382: delete limit in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-388: delete limit in on eth0 to 192.168.0.1 port 22 proto tcp
+383: delete limit in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-389: delete limit in on eth0 from 10.0.0.1 port 80 proto tcp
+384: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-390: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+385: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-391: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+386: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-392: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-393: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+387: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6688,46 +6659,43 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-394: reject in on eth0
+388: reject in on eth0
 
 
-395: reject in on eth0:1
+389: reject in on eth0 to 192.168.0.1 port 22
 
 
-396: reject in on eth0 to 192.168.0.1 port 22
+390: reject in on eth0 from 10.0.0.1 port 80
 
 
-397: reject in on eth0 from 10.0.0.1 port 80
+391: reject in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-398: reject in on eth0 to 192.168.0.1 from 10.0.0.1
+392: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-399: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+393: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-400: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+394: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-401: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+395: reject in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-402: reject in on eth0 to 192.168.0.1 port 22 proto tcp
+396: reject in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-403: reject in on eth0 from 10.0.0.1 port 80 proto tcp
+397: reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-404: reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+398: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-405: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+399: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-406: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-407: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+400: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6740,9 +6708,6 @@ COMMIT
 
 ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j REJECT
-
-### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0:1
--A ufw-user-input -i eth0:1 -j REJECT
 
 ### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset 
@@ -6790,46 +6755,43 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-408: delete reject in on eth0
+401: delete reject in on eth0
 
 
-409: delete reject in on eth0:1
+402: delete reject in on eth0 to 192.168.0.1 port 22
 
 
-410: delete reject in on eth0 to 192.168.0.1 port 22
+403: delete reject in on eth0 from 10.0.0.1 port 80
 
 
-411: delete reject in on eth0 from 10.0.0.1 port 80
+404: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-412: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1
+405: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
 
 
-413: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+406: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-414: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+407: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
 
-415: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+408: delete reject in on eth0 to 192.168.0.1 port 22 proto tcp
 
 
-416: delete reject in on eth0 to 192.168.0.1 port 22 proto tcp
+409: delete reject in on eth0 from 10.0.0.1 port 80 proto tcp
 
 
-417: delete reject in on eth0 from 10.0.0.1 port 80 proto tcp
+410: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-418: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+411: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
 
 
-419: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+412: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-420: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-
-
-421: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+413: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -6845,13 +6807,10 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-422: allow in on eth0
+414: allow in on eth0
 
 
-423: deny in on eth0
-
-
-424: allow in on eth0:0
+415: deny in on eth0
 
 
 *filter
@@ -6865,18 +6824,12 @@ COMMIT
 ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j DROP
 
-### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0:0
--A ufw-user-input -i eth0:0 -j ACCEPT
-
 ### END RULES ###
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
-425: delete deny in on eth0
-
-
-426: delete allow in on eth0:0
+416: delete deny in on eth0
 
 
 *filter

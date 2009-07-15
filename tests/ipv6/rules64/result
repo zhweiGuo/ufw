@@ -3406,19 +3406,13 @@ Interfaces
 299: allow in on eth0 to 192.168.0.1
 
 
-300: deny in on eth0:1 to 192.168.0.1
+300: deny in on eth0 from 192.168.0.1 port 22 proto tcp
 
 
-301: deny in on eth0 from 192.168.0.1 port 22 proto tcp
+301: reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-302: reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-303: reject in on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-304: limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+302: limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
 *filter
@@ -3434,9 +3428,6 @@ Interfaces
 
 ### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -d 192.168.0.1 -j ACCEPT
-
-### tuple ### deny any any 192.168.0.1 any 0.0.0.0/0 in_eth0:1
--A ufw-user-input -i eth0:1 -d 192.168.0.1 -j DROP
 
 ### tuple ### deny tcp any 0.0.0.0/0 22 192.168.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 192.168.0.1 --sport 22 -j DROP
@@ -3458,30 +3449,21 @@ COMMIT
 ### tuple ### reject any any 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any ::/0 in_eth0
 -A ufw6-user-input -i eth0 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:734 -j REJECT
 
-### tuple ### reject any any 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any ::/0 in_eth0:1
--A ufw6-user-input -i eth0:1 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:734 -j REJECT
-
 ### END RULES ###
 COMMIT
-305: delete allow in on eth0
+303: delete allow in on eth0
 
 
-306: delete allow in on eth0 to 192.168.0.1
+304: delete allow in on eth0 to 192.168.0.1
 
 
-307: delete deny in on eth0:1 to 192.168.0.1
+305: delete deny in on eth0 from 192.168.0.1 port 22 proto tcp
 
 
-308: delete deny in on eth0 from 192.168.0.1 port 22 proto tcp
+306: delete reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-309: delete reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-310: delete reject in on eth0:1 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-
-
-311: delete limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+307: delete limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
 *filter

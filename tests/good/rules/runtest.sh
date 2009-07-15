@@ -251,7 +251,6 @@ echo "Interfaces" >> $TESTTMP/result
 for i in "in" ; do
     for j in allow deny limit reject ; do
         do_cmd "0" null $j $i on eth0
-        do_cmd "0" null $j $i on eth0:1
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 port 80
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1
@@ -267,7 +266,6 @@ for i in "in" ; do
         cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
         do_cmd "0" null delete $j $i on eth0
-        do_cmd "0" null delete $j $i on eth0:1
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22
         do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 port 80
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1
@@ -284,10 +282,8 @@ for i in "in" ; do
     done
     do_cmd "0" null allow $i on eth0
     do_cmd "0" null deny $i on eth0
-    do_cmd "0" null allow $i on eth0:0
     cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
     do_cmd "0" null delete deny $i on eth0
-    do_cmd "0" null delete allow $i on eth0:0
     cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 done
 
