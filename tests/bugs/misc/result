@@ -25,3 +25,22 @@ Bug #337705
 ERROR: Could not find required libraries. Aborting.
 
 
+Bug (Samba IPV4 tuple text wrong when IPV6 is enabled
+2: allow in on eth1 to any app Samba
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth1
+-A ufw-user-input -i eth1 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth1
+-A ufw-user-input -i eth1 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in_eth1
+-A ufw6-user-input -i eth1 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in_eth1
+-A ufw6-user-input -i eth1 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+

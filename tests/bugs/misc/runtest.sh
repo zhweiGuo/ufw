@@ -32,5 +32,11 @@ sed -i 's/import ufw.frontend/import ufw.nonexistent/' $TESTPATH/usr/sbin/ufw
 do_cmd "1" help
 sed -i 's/import ufw.nonexistent/import ufw.frontend/' $TESTPATH/usr/sbin/ufw
 
+echo "Bug (Samba IPV4 tuple text wrong when IPV6 is enabled" >> $TESTTMP/result
+sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
+do_cmd "0" allow in on eth1 to any app Samba
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
 
 exit 0
