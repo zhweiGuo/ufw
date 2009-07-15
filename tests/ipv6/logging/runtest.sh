@@ -67,4 +67,13 @@ echo "contents of user*.rules:" >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
+echo "TESTING LOG RULES (interfaces)" >> $TESTTMP/result
+do_cmd "0" null allow log in on eth0
+do_cmd "0" null allow log in on eth0 from $from to $to port 24 proto tcp
+do_cmd "0" null deny log-all in on eth0 from $from to $to port 25 proto tcp
+echo "contents of user*.rules:" >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+
 exit 0

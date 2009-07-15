@@ -130,7 +130,7 @@ cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 do_cmd "0" null allow Samba
 do_cmd "0" null allow 22
-do_cmd "0" null insert 2 allow from any to any app Samba
+do_cmd "0" null insert 2 allow log-all from any to any app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 to any app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
@@ -139,7 +139,7 @@ cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 do_cmd "0" null delete allow Samba
 do_cmd "0" null delete allow 22
-do_cmd "0" null delete allow from any to any app Samba
+do_cmd "0" null delete allow log-all from any to any app Samba
 do_cmd "0" null delete allow from 192.168.0.1 to 10.0.0.1 app Samba
 do_cmd "0" null delete allow from 192.168.0.1 to any app Samba
 do_cmd "0" null delete allow from 192.168.0.1 app Samba to 10.0.0.1

@@ -1472,3 +1472,51 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 COMMIT
+TESTING LOG RULES (interfaces)
+148: allow log in on eth0
+
+
+149: allow log in on eth0 from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+
+
+150: deny log-all in on eth0 from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+
+
+contents of user*.rules:
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
+-A ufw-user-logging-input -i eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i eth0 -j RETURN
+-A ufw-user-input -i eth0 -j ufw-user-logging-input
+-A ufw-user-input -i eth0 -j ACCEPT
+
+### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 in_eth0
+-A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
+-A ufw-user-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j ufw-user-logging-input
+-A ufw-user-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j ACCEPT
+
+### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 in_eth0
+-A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j RETURN
+-A ufw-user-input -i eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ufw-user-logging-input
+-A ufw-user-input -i eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j DROP
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+COMMIT

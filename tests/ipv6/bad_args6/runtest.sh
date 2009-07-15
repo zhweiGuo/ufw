@@ -180,6 +180,7 @@ for i in "in" ; do
         do_cmd "1" null --dry-run $j $i eth0 to 2001:db8:3:4:5:6:7:8
         do_cmd "1" null --dry-run $j ina eth0 to 2001:db8:3:4:5:6:7:8
         do_cmd "1" null --dry-run $j on eth0 to 2001:db8:3:4:5:6:7:8
+        do_cmd "1" null --dry-run $j $i on eth0 log to 2001:db8:3:4:5:6:7:8
     done
 done
 

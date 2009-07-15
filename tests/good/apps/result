@@ -5474,7 +5474,7 @@ COMMIT
 214: allow 22
 
 
-215: insert 2 allow from any to any app Samba
+215: insert 2 allow log-all from any to any app Samba
 
 
 216: insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
@@ -5542,7 +5542,7 @@ COMMIT
 221: delete allow 22
 
 
-222: delete allow from any to any app Samba
+222: delete allow log-all from any to any app Samba
 
 
 223: delete allow from 192.168.0.1 to 10.0.0.1 app Samba

@@ -170,7 +170,7 @@ cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
 echo "'both' rule in ipv6 section" >> $TESTTMP/result
 do_cmd "0" null delete allow 8888
-do_cmd "0" null insert 4 allow 8888
+do_cmd "0" null insert 4 allow log 8888
 cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
@@ -178,7 +178,7 @@ do_cmd "0" null delete allow to 127.0.0.1 port 22
 do_cmd "0" null delete allow to 127.0.0.1 port 23
 do_cmd "0" null delete allow to ::1 port 24
 do_cmd "0" null delete allow to ::1 port 25
-do_cmd "0" null delete allow 8888
+do_cmd "0" null delete allow log 8888
 cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 

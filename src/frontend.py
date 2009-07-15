@@ -132,18 +132,6 @@ def parse_command(argv):
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
-        # strip out 'on' as in 'allow in on eth0 ...'
-        if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
-            err_msg = _("Invalid interface clause")
-
-            if argv[2].lower() != "in" and argv[2].lower() != "out":
-                raise UFWError(err_msg)
-            if nargs < 4 or argv[3].lower() != "on":
-                raise UFWError(err_msg)
-                
-            del argv[3]
-            nargs = len(argv)
-
         if nargs > 2 and (argv[2].lower() == "log" or \
                           argv[2].lower() == 'log-all'):
             if nargs < 4:
@@ -152,6 +140,26 @@ def parse_command(argv):
 
             # strip out 'log' or 'log-all' and parse as normal
             del argv[2]
+            nargs = len(argv)
+
+        if "log" in argv:
+            err_msg = _("Option 'log' not allowed here")
+            raise UFWError(err_msg)
+
+        if "log-all" in argv:
+            err_msg = _("Option 'log-all' not allowed here")
+            raise UFWError(err_msg)
+
+        # strip out 'on' as in 'allow in on eth0 ...'
+        if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
+            err_msg = _("Invalid interface clause")
+
+            if argv[2].lower() != "in" and argv[2].lower() != "out":
+                raise UFWError(err_msg)
+            if nargs < 4 or argv[3].lower() != "on":
+                raise UFWError(err_msg)
+
+            del argv[3]
             nargs = len(argv)
 
         if nargs < 3 or nargs > 14:

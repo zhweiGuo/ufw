@@ -3303,7 +3303,7 @@ COMMIT
 291: delete allow 8888
 
 
-292: insert 4 allow 8888
+292: insert 4 allow log 8888
 
 
 *filter
@@ -3322,8 +3322,14 @@ COMMIT
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
 
-### tuple ### allow any 8888 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow_log any 8888 0.0.0.0/0 any 0.0.0.0/0
+-A ufw-user-logging-input -p tcp --dport 8888 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p tcp --dport 8888 -j RETURN
+-A ufw-user-input -p tcp --dport 8888 -j ufw-user-logging-input
 -A ufw-user-input -p tcp --dport 8888 -j ACCEPT
+-A ufw-user-logging-input -p udp --dport 8888 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p udp --dport 8888 -j RETURN
+-A ufw-user-input -p udp --dport 8888 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 8888 -j ACCEPT
 
 ### END RULES ###
@@ -3341,8 +3347,14 @@ COMMIT
 -A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
 
-### tuple ### allow any 8888 ::/0 any ::/0
+### tuple ### allow_log any 8888 ::/0 any ::/0
+-A ufw6-user-logging-input -p tcp --dport 8888 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-input -p tcp --dport 8888 -j RETURN
+-A ufw6-user-input -p tcp --dport 8888 -j ufw6-user-logging-input
 -A ufw6-user-input -p tcp --dport 8888 -j ACCEPT
+-A ufw6-user-logging-input -p udp --dport 8888 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-input -p udp --dport 8888 -j RETURN
+-A ufw6-user-input -p udp --dport 8888 -j ufw6-user-logging-input
 -A ufw6-user-input -p udp --dport 8888 -j ACCEPT
 
 ### tuple ### allow any 25 ::1 any ::/0
@@ -3363,7 +3375,7 @@ COMMIT
 296: delete allow to ::1 port 25
 
 
-297: delete allow 8888
+297: delete allow log 8888
 
 
 *filter
