@@ -75,4 +75,14 @@ EOM
 do_cmd "1" null --dry-run allow runtest
 rm -f $TESTPATH/etc/ufw/applications.d/Runtest $TESTPATH/etc/ufw/applications.d/RunTest
 
+echo "TESTING ARGS (interfaces)" >> $TESTTMP/result
+for j in "in"; do
+    for i in allow deny limit; do
+        do_cmd "1" null --dry-run $i on eth0 to any app Bind9
+        do_cmd "1" null --dry-run $i ina on eth0 to any app Bind9
+        do_cmd "1" null --dry-run $i in ona eth0 to any app Bind9
+        do_cmd "1" null --dry-run $i in eth0 to any app Bind9
+    done
+done
+
 exit 0

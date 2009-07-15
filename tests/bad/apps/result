@@ -282,3 +282,40 @@ TESTING APPLICATION INTEGRATION (case sensitive)
 92: --dry-run allow runtest
 
 
+TESTING ARGS (interfaces)
+93: --dry-run allow on eth0 to any app Bind9
+
+
+94: --dry-run allow ina on eth0 to any app Bind9
+
+
+95: --dry-run allow in ona eth0 to any app Bind9
+
+
+96: --dry-run allow in eth0 to any app Bind9
+
+
+97: --dry-run deny on eth0 to any app Bind9
+
+
+98: --dry-run deny ina on eth0 to any app Bind9
+
+
+99: --dry-run deny in ona eth0 to any app Bind9
+
+
+100: --dry-run deny in eth0 to any app Bind9
+
+
+101: --dry-run limit on eth0 to any app Bind9
+
+
+102: --dry-run limit ina on eth0 to any app Bind9
+
+
+103: --dry-run limit in ona eth0 to any app Bind9
+
+
+104: --dry-run limit in eth0 to any app Bind9
+
+
