@@ -18,17 +18,17 @@ source "$TESTPATH/../testlib.sh"
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
 
 echo "TESTING ARGS (logging)" >> $TESTTMP/result
-do_cmd "0"  logging on 
+do_cmd "0"  logging on
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-do_cmd "0"  logging off 
+do_cmd "0"  logging off
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-do_cmd "0"  LOGGING ON 
+do_cmd "0"  LOGGING ON
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-do_cmd "0"  LOGGING OFF 
+do_cmd "0"  LOGGING OFF
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
-do_cmd "0"  enable 
+do_cmd "0"  enable
 do_cmd "0"  default allow
 echo "ipv4:" >> $TESTTMP/result
 iptables -L -n | grep policy >> $TESTTMP/result
@@ -55,16 +55,16 @@ ip6tables -L -n | grep policy >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 
 do_cmd "0"  default deny
-do_cmd "0"  disable 
+do_cmd "0"  disable
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
-do_cmd "0"  enable 
+do_cmd "0"  enable
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
-do_cmd "0"  disable 
+do_cmd "0"  disable
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
-do_cmd "0"  ENABLE 
+do_cmd "0"  ENABLE
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
-do_cmd "0"  DISABLE 
+do_cmd "0"  DISABLE
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
 
 echo "TESTING ARGS (allow/deny to/from)" >> $TESTTMP/result

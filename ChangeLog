@@ -7,8 +7,10 @@ ufw (0.28) UNRELEASED; urgency=low
   * adjust help command for proper translation and bash completion support
   * add limit command to help (LP: #358964)
   * add shell-completion/bash. Based on work by Didier Roche
+  * tests/*: updated with 'nostats' option so redundant tests are counted
+    in test results. Update many root tests to use 'nostats'
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 04 Jun 2009 18:21:28 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 15 Jul 2009 09:30:25 -0500
 
 ufw (0.27.1) RELEASED; urgency=low
 

@@ -1,11 +1,7 @@
 0: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 1: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 TESTING LOG RULES
@@ -91,13 +87,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 5: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 6: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 7: delete allow log 23
@@ -213,13 +205,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 13: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 14: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 15: delete allow log-all 23
@@ -335,13 +323,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 21: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 22: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 23: delete deny log 23
@@ -457,13 +441,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 29: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 30: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 31: delete deny log-all 23
@@ -559,13 +539,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 37: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 38: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 39: delete limit log 23
@@ -661,13 +637,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 45: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 46: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 47: delete limit log-all 23
@@ -783,13 +755,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 53: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 54: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 55: delete reject log 23
@@ -905,13 +873,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 61: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 62: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 63: delete reject log-all 23
@@ -968,7 +932,5 @@ COMMIT
 ### END RULES ###
 COMMIT
 66: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 

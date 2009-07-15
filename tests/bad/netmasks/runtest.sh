@@ -25,42 +25,42 @@ for i in 16a 33 -1; do
 done
 
 echo "TESTING INVALID DOTTED" >> $TESTTMP/result
-do_cmd "1" null --dry-run allow to 192.168.0.0/256.255.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.256.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.256.256.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.256 
-do_cmd "1" null --dry-run allow to 192.168.0.0/256.256.256.256 
-do_cmd "1" null --dry-run allow from 192.168.0.0/256.255.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.256.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.256.256.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.256 
-do_cmd "1" null --dry-run allow from 192.168.0.0/256.256.256.256 
-do_cmd "1" null --dry-run allow from 192.168.0.0/33 to 192.168.0.0/256.256.256.256 
-do_cmd "1" null --dry-run allow to 192.168.0.0/.255.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255. 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/s55.255.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.2s5.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.25s.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.s55 
-do_cmd "1" null --dry-run allow to 192.168.0.0/s55.s55.s55.s55 
-do_cmd "1" null --dry-run allow to 192.168.0.0/-1.255.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.-1.255.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.-1.255 
-do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.-1 
-do_cmd "1" null --dry-run allow to 192.168.0.0/-1.-1.-1.-1 
-do_cmd "1" null --dry-run allow from 192.168.0.0/.255.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255. 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/s55.255.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.2s5.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.25s.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.s55 
-do_cmd "1" null --dry-run allow from 192.168.0.0/s55.s55.s55.s55 
-do_cmd "1" null --dry-run allow from 192.168.0.0/-1.255.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.-1.255.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.-1.255 
-do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.-1 
-do_cmd "1" null --dry-run allow from 192.168.0.0/-1.-1.-1.-1 
+do_cmd "1" null --dry-run allow to 192.168.0.0/256.255.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.256.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.256.256.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.256
+do_cmd "1" null --dry-run allow to 192.168.0.0/256.256.256.256
+do_cmd "1" null --dry-run allow from 192.168.0.0/256.255.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.256.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.256.256.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.256
+do_cmd "1" null --dry-run allow from 192.168.0.0/256.256.256.256
+do_cmd "1" null --dry-run allow from 192.168.0.0/33 to 192.168.0.0/256.256.256.256
+do_cmd "1" null --dry-run allow to 192.168.0.0/.255.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/s55.255.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.2s5.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.25s.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.s55
+do_cmd "1" null --dry-run allow to 192.168.0.0/s55.s55.s55.s55
+do_cmd "1" null --dry-run allow to 192.168.0.0/-1.255.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.-1.255.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.-1.255
+do_cmd "1" null --dry-run allow to 192.168.0.0/255.255.255.-1
+do_cmd "1" null --dry-run allow to 192.168.0.0/-1.-1.-1.-1
+do_cmd "1" null --dry-run allow from 192.168.0.0/.255.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/s55.255.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.2s5.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.25s.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.s55
+do_cmd "1" null --dry-run allow from 192.168.0.0/s55.s55.s55.s55
+do_cmd "1" null --dry-run allow from 192.168.0.0/-1.255.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.-1.255.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.-1.255
+do_cmd "1" null --dry-run allow from 192.168.0.0/255.255.255.-1
+do_cmd "1" null --dry-run allow from 192.168.0.0/-1.-1.-1.-1
 
 exit 0

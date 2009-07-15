@@ -1,12 +1,8 @@
 Setting IPV6 to yes
 0: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 1: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 TESTING ARGS (logging)
@@ -248,13 +244,9 @@ Status: active
 
 Setting IPV6 to no
 32: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 33: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 TESTING ARGS (logging)
@@ -452,13 +444,9 @@ Checking status
 Checking reject
 Setting IPV6 to yes
 63: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 64: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 65: reject 113
@@ -539,13 +527,9 @@ Status: active
 
 Setting IPV6 to no
 73: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 74: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 75: reject 113
@@ -607,38 +591,26 @@ Status: active
 
 Checking flush builtins
 83: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 iptables -I INPUT -j ACCEPT -m comment --comment ufw_test_builtins
 84: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 85: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 iptables -I INPUT -j ACCEPT -m comment --comment ufw_test_builtins
 86: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           /* ufw_test_builtins */ 
 Testing status numbered
 Setting IPV6 to yes
 87: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 88: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 89: allow 53
@@ -814,13 +786,9 @@ Status: active
 
 Setting IPV6 to no
 117: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 118: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 119: allow 53
@@ -959,7 +927,5 @@ Status: active
 
 
 143: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 

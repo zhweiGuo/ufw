@@ -16,7 +16,7 @@
 
 source "$TESTPATH/../testlib.sh"
 
-do_cmd "0" enable
+do_cmd "0" nostats enable
 echo "TESTING EQUIVALENT PORTS" >> $TESTTMP/result
 do_cmd "0" allow http
 do_cmd "0" delete allow 80/tcp

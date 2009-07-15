@@ -32,8 +32,8 @@ do
 
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
 	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
-	do_cmd "0"  disable
-	do_cmd "0"  enable
+	do_cmd "0" nostats disable
+	do_cmd "0" nostats enable
 
 	do_cmd "0"  allow Apache
 	for loc in any addr ; do
@@ -87,8 +87,8 @@ sed -i 's/8888/80/g' $TESTPATH/etc/ufw/applications.d/apache
 echo "TESTING APPLICATION RULES (v6 delete app rules)" >> $TESTTMP/result
 echo "Setting IPV6 to yes" >> $TESTTMP/result
 sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
-do_cmd "0"  disable
-do_cmd "0"  enable
+do_cmd "0" nostats disable
+do_cmd "0" nostats enable
 do_cmd "0"  allow Apache
 do_cmd "0"  allow from 2001:db8::/32 to any app Apache
 do_cmd "0" status verbose
@@ -156,8 +156,8 @@ echo "TESTING INSERT" >> $TESTTMP/result
 for ipv6 in no yes ; do
     echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
     sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
-    do_cmd "0"  disable
-    do_cmd "0"  enable
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
     do_cmd "0" allow Apache
     do_cmd "0" allow Bind9
     do_cmd "0" insert 1 allow Samba
@@ -167,8 +167,8 @@ for ipv6 in no yes ; do
 
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
-    do_cmd "0"  disable
-    do_cmd "0"  enable
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
     diff $TESTTMP/save.1 $TESTTMP/save.2 || {
@@ -195,8 +195,8 @@ for ipv6 in no yes ; do
 
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
-    do_cmd "0"  disable
-    do_cmd "0"  enable
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
     diff $TESTTMP/save.1 $TESTTMP/save.2 || {

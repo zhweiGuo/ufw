@@ -1,11 +1,7 @@
 0: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 1: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 Bug #247352
@@ -39,14 +35,10 @@ Could not delete non-existent rule
 Bug #251355
 Setting IPV6 to no
 4: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 /usr/share/ufw/ufw-init flush-all:
 5: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 /usr/share/ufw/ufw-init force-reload:
@@ -64,13 +56,9 @@ ACCEPT     all      ::/0                 ::/0
 Bug #260881
 Setting IPV6 to no
 6: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 7: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 8: allow Apache
@@ -96,13 +84,9 @@ iptables -L -n:
 Bug #263308
 Setting IPV6 to yes
 11: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 12: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 13: allow to any from any
@@ -194,13 +178,9 @@ Status: active
 Bug #273278
 Setting IPV6 to yes
 27: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 28: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 29: status verbose
@@ -242,13 +222,9 @@ New profiles: skip
 Bug #251136
 Setting IPV6 to yes
 34: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 35: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 36: status
@@ -296,13 +272,9 @@ Status: active
 Bug #344971
 Setting IPV6 to yes
 44: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 45: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 46: allow 3
@@ -376,7 +348,5 @@ Status: active
 
 
 56: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 

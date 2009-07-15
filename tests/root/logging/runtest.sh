@@ -17,25 +17,25 @@
 source "$TESTPATH/../testlib.sh"
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
 
-do_cmd "0"  disable
-do_cmd "0"  enable
+do_cmd "0" nostats disable
+do_cmd "0" nostats enable
 
 echo "TESTING LOG RULES" >> $TESTTMP/result
 from="2001:db8::/32"
 to="2001:db8:3:4:5:6:7:8"
 for i in allow deny limit reject ; do
     for j in log log-all ; do
-        do_cmd "0" null $i $j 23
-        do_cmd "0" null $i $j Samba
-        do_cmd "0" null $i $j from $from to $to port smtp
+        do_cmd "0" nostats $i $j 23
+        do_cmd "0" nostats $i $j Samba
+        do_cmd "0" nostats $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
         cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 
         iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
         ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
-        do_cmd "0"  disable
-        do_cmd "0"  enable
+        do_cmd "0" nostats disable
+        do_cmd "0" nostats enable
         iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
         ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
         diff $TESTTMP/save.1 $TESTTMP/save.2 || {
@@ -43,9 +43,9 @@ for i in allow deny limit reject ; do
             exit 1
         }
 
-        do_cmd "0" null delete $i $j 23
-        do_cmd "0" null delete $i $j Samba
-        do_cmd "0" null delete $i $j from $from to $to port smtp
+        do_cmd "0" nostats delete $i $j 23
+        do_cmd "0" nostats delete $i $j Samba
+        do_cmd "0" nostats delete $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
         cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
         cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result

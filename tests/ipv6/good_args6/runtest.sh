@@ -18,10 +18,10 @@ source "$TESTPATH/../testlib.sh"
 sed -i 's/IPV6=no/IPV6=yes/' $TESTPATH/etc/default/ufw
 
 echo "TESTING ARGS (logging)" >> $TESTTMP/result
-do_cmd "0" --dry-run logging on 
-do_cmd "0" --dry-run logging off 
-do_cmd "0" --dry-run LOGGING ON 
-do_cmd "0" --dry-run LOGGING OFF 
+do_cmd "0" --dry-run logging on
+do_cmd "0" --dry-run logging off
+do_cmd "0" --dry-run LOGGING ON
+do_cmd "0" --dry-run LOGGING OFF
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
 do_cmd "0" --dry-run default allow
@@ -32,10 +32,10 @@ do_cmd "0" --dry-run DEFAULT DENY
 do_cmd "0" --dry-run DEFAULT REJECT
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result || exit 1
-do_cmd "0" --dry-run enable 
-do_cmd "0" --dry-run disable 
-do_cmd "0" --dry-run ENABLE 
-do_cmd "0" --dry-run DISABLE 
+do_cmd "0" --dry-run enable
+do_cmd "0" --dry-run disable
+do_cmd "0" --dry-run ENABLE
+do_cmd "0" --dry-run DISABLE
 
 echo "TESTING ARGS (status)" >> $TESTTMP/result || exit 1
 do_cmd "0" --dry-run status

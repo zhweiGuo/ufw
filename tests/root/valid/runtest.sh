@@ -17,13 +17,13 @@
 source "$TESTPATH/../testlib.sh"
 
 echo "TESTING ARGS (logging)" >> $TESTTMP/result
-do_cmd "0"  logging on 
+do_cmd "0"  logging on
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-do_cmd "0"  logging off 
+do_cmd "0"  logging off
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-do_cmd "0"  LOGGING ON 
+do_cmd "0"  LOGGING ON
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-do_cmd "0"  LOGGING OFF 
+do_cmd "0"  LOGGING OFF
 grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
@@ -45,24 +45,24 @@ do_cmd "0"  default deny
 do_cmd "0"  disable
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
-do_cmd "0"  enable 
+do_cmd "0"  enable
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
-do_cmd "0"  disable 
+do_cmd "0"  disable
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
-do_cmd "0"  ENABLE 
+do_cmd "0"  ENABLE
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
-do_cmd "0"  DISABLE 
+do_cmd "0"  DISABLE
 cat $TESTPATH/etc/ufw/ufw.conf | egrep '^ENABLED' >> $TESTTMP/result
 
 echo "TESTING ARGS (allow/deny port)" >> $TESTTMP/result
-do_cmd "0"  allow 25 
-do_cmd "0"  deny 25 
-do_cmd "0"  deny 1 
-do_cmd "0"  deny 65535 
+do_cmd "0"  allow 25
+do_cmd "0"  deny 25
+do_cmd "0"  deny 1
+do_cmd "0"  deny 65535
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-do_cmd "0"  delete deny 25 
-do_cmd "0"  delete deny 1 
-do_cmd "0"  delete deny 65535 
+do_cmd "0"  delete deny 25
+do_cmd "0"  delete deny 1
+do_cmd "0"  delete deny 65535
 grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
 
 

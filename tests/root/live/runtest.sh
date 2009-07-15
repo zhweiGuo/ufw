@@ -20,13 +20,13 @@ for ipv6 in yes no
 do
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
 	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
-	do_cmd "0"  disable 
-	do_cmd "0"  enable 
+	do_cmd "0" nostats disable
+	do_cmd "0" nostats enable
 
 	echo "TESTING ARGS (logging)" >> $TESTTMP/result
-	do_cmd "0"  logging on 
+	do_cmd "0"  logging on
 	grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
-	do_cmd "0"  logging off 
+	do_cmd "0"  logging off
 	grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
 
 	echo "TESTING ARGS (allow/deny to/from)" >> $TESTTMP/result
@@ -81,8 +81,8 @@ for ipv6 in yes no
 do
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
 	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
-	do_cmd "0" disable
-	do_cmd "0" enable
+	do_cmd "0" nostats disable
+	do_cmd "0" nostats enable
 	do_cmd "0" reject 113
 	do_cmd "0" reject 114/tcp
 	do_cmd "0" reject 115/udp
@@ -101,13 +101,13 @@ echo "Checking flush builtins" >> $TESTTMP/result
 for ans in yes no
 do
         str="ufw_test_builtins"
-        do_cmd "0"  disable
+        do_cmd "0" nostats disable
         sed -i "s/MANAGE_BUILTINS=.*/MANAGE_BUILTINS=$ans/" $TESTPATH/etc/default/ufw
 
         iptables -D INPUT -j ACCEPT -m comment --comment $str 2>/dev/null
         echo iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
-        do_cmd "0" enable
+        do_cmd "0" nostats enable
         iptables -n -L INPUT | grep "$str" >> $TESTTMP/result
 done
 
@@ -116,8 +116,8 @@ for ipv6 in yes no
 do
 	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
 	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
-	do_cmd "0"  disable 
-	do_cmd "0"  enable 
+	do_cmd "0" nostats disable
+	do_cmd "0" nostats enable
 
 	do_cmd "0" allow 53
 	do_cmd "0" allow 23/tcp

@@ -1,6 +1,4 @@
 0: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 TESTING EQUIVALENT PORTS
@@ -815,7 +813,5 @@ Rule deleted
 
 
 153: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 

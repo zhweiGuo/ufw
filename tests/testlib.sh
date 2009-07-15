@@ -24,13 +24,18 @@ do_cmd() {
 		shift
 	fi
 
+	do_stats="yes"
 	cmd_results_file="$TESTTMP/result"
 	if [ "$1" = "null" ]; then
 		cmd_results_file="/dev/null"
 		shift
+	elif [ "$1" = "nostats" ]; then
+		do_stats="no"
+		cmd_results_file="/dev/null"
+		shift
 	fi
 
-        echo "$count: $@" >> $TESTTMP/result
+       	echo "$count: $@" >> $TESTTMP/result
         $TESTPATH/usr/sbin/ufw "$@" >> $cmd_results_file 2>&1
 	rc="$?"
 	if [ "$rc" != "$expected" ]; then
@@ -41,13 +46,15 @@ do_cmd() {
         echo "" >> $TESTTMP/result
         echo "" >> $TESTTMP/result
 
-        individual=$(cat $statsdir/individual)
-        let individual=individual+1
-        echo $individual > $statsdir/individual
+	if [ "$do_stats" = "yes" ]; then
+        	individual=$(cat $statsdir/individual)
+        	let individual=individual+1
+        	echo $individual > $statsdir/individual
+	fi
 }
 
 cleanup() {
-    do_cmd "0" disable
+    do_cmd "0" nostats disable
     $TESTPATH/usr/share/ufw/ufw-init flush-all
 }
 

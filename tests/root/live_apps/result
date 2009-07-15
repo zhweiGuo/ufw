@@ -2,13 +2,9 @@ TESTING APPLICATION RULES
 Adding and deleting app rules
 Setting IPV6 to yes
 0: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 1: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 2: allow Apache
@@ -207,13 +203,9 @@ Status: active
 
 Setting IPV6 to no
 27: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 28: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 29: allow Apache
@@ -385,13 +377,9 @@ Status: active
 Adding and deleting updated app rules
 Setting IPV6 to yes
 54: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 55: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 56: allow Apache
@@ -669,13 +657,9 @@ Status: active
 
 Setting IPV6 to no
 85: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 86: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 87: allow Apache
@@ -910,13 +894,9 @@ Status: active
 TESTING APPLICATION RULES (v6 delete app rules)
 Setting IPV6 to yes
 116: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 117: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 118: allow Apache
@@ -1190,13 +1170,9 @@ New profiles: skip
 TESTING INSERT
 Setting IPV6 to no
 151: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 152: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 153: allow Apache
@@ -1257,13 +1233,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 157: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 158: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 159: delete allow Apache
@@ -1398,13 +1370,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 170: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 171: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 172: delete allow Samba
@@ -1466,13 +1434,9 @@ COMMIT
 COMMIT
 Setting IPV6 to yes
 179: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 180: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 181: allow Apache
@@ -1553,13 +1517,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 185: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 186: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 187: delete allow Apache
@@ -1711,13 +1671,9 @@ COMMIT
 ### END RULES ###
 COMMIT
 198: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
 199: enable
-WARN: Checks disabled
-Firewall is active and enabled on system startup
 
 
 200: delete allow Samba
@@ -1780,7 +1736,5 @@ COMMIT
 ### END RULES ###
 COMMIT
 207: disable
-WARN: Checks disabled
-Firewall stopped and disabled on system startup
 
 
