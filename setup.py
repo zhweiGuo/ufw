@@ -73,6 +73,11 @@ class Install(_install, object):
                              "s%#PREFIX#%" + real_prefix + "%g",
                              os.path.join('staging', file)])
 
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
+                             os.path.join('staging', file)])
+
         # Now byte-compile everything
         super(Install, self).run()
 
@@ -174,12 +179,36 @@ shutil.copytree('src', 'staging')
 os.unlink(os.path.join('staging', 'ufw-init'))
 os.unlink(os.path.join('staging', 'ufw-init-functions'))
 
-exe = 'iptables'
-(rc, out) = cmd([exe, '-V'])
+iptables_exe = ''
+iptables_dir = ''
+found = False
+required_binaries = ['iptables', 'ip6tables', 'iptables-restore',
+                     'ip6tables-restore']
+for dir in ['/sbin', '/bin', '/usr/sbin', '/usr/bin', '/usr/local/sbin', \
+            '/usr/local/bin']:
+    for e in required_binaries:
+        if not os.path.exists(os.path.join(dir, e)):
+            break
+
+        if e == required_binaries[-1]:
+            found = True
+            break
+    if found:
+        iptables_dir = dir
+        iptables_exe = os.path.join(iptables_dir, "iptables")
+        break
+
+if not found:
+    print >> sys.stderr, "ERROR: could not find all required binaries:" % \
+                         (required_binaries)
+    sys.exit(1)
+
+(rc, out) = cmd([iptables_exe, '-V'])
 if rc != 0:
-    raise OSError(errno.ENOENT, "Could not find version for '%s'" % (exe))
+    raise OSError(errno.ENOENT, "Could not find version for '%s'" % \
+                  (iptables_exe))
 version = re.sub('^v', '', re.split('\s', out)[1])
-print "Found '%s' version '%s'" % (exe, version)
+print "Found '%s' version '%s'" % (iptables_exe, version)
 if version < "1.4":
     print >> sys.stderr, "WARN: version '%s' has limited IPv6 support. See README for details." % (version)
 

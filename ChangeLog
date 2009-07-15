@@ -9,6 +9,8 @@ ufw (0.28) UNRELEASED; urgency=low
   * add shell-completion/bash. Based on work by Didier Roche
   * tests/*: updated with 'nostats' option so redundant tests are counted
     in test results. Update many root tests to use 'nostats'
+  * look for location of iptables and set IPTABLES_BIN in common.py. Adjust
+    calls to ip[6]tables* to use IPTABLES_BIN
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 15 Jul 2009 09:30:25 -0500
 

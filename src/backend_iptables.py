@@ -146,14 +146,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         out = "IPV4:\n"
         for table in ['filter', 'nat', 'mangle', 'raw']:
-            (rc, tmp) = cmd(['iptables', '-L', '-n', '-v', '-x', '-t', table])
+            (rc, tmp) = cmd([self.iptables, '-L', '-n', '-v', '-x', '-t', \
+                             table])
             out += tmp
             if rc != 0:
                 raise UFWError(out)
 
         out += "\n\nIPV6:\n"
         for table in ['filter', 'mangle', 'raw']:
-            (rc, tmp) = cmd(['ip6tables', '-L', '-n', '-v', '-x', '-t', table])
+            (rc, tmp) = cmd([self.ip6tables, '-L', '-n', '-v', '-x', '-t', \
+                             table])
             out += tmp
             if rc != 0:
                 raise UFWError(out)
@@ -171,13 +173,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return out
 
         # Is the firewall loaded at all?
-        (rc, out) = cmd(['iptables', '-L', 'ufw-user-input', '-n'])
+        (rc, out) = cmd([self.iptables, '-L', 'ufw-user-input', '-n'])
         if rc != 0:
             return _("Status: inactive")
 
         err_msg = _("problem running")
         if self.use_ipv6():
-            (rc, out6) = cmd(['ip6tables', '-L', 'ufw6-user-input', '-n'])
+            (rc, out6) = cmd([self.ip6tables, '-L', 'ufw6-user-input', '-n'])
             if rc != 0:
                 raise UFWError(err_msg + " ip6tables")
 
@@ -347,10 +349,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return False
 
         prefix = "ufw"
-        exe = "iptables"
+        exe = self.iptables
         if v6:
             prefix = "ufw6"
-            exe = "ip6tables"
+            exe = self.ip6tables
 
         for chain in [ 'input', 'output', 'forward', 'limit', 'limit-accept' ]:
             if v6 and (chain == "limit" or chain == "limit-accept"):
@@ -381,13 +383,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             # then restore the system rules
             (rc, out) = cmd_pipe(['cat', self.files['rules']], \
-                                 ['iptables-restore', '-n'])
+                                 [self.iptables-restore, '-n'])
             if rc != 0:
                 raise UFWError(err_msg + " iptables")
 
             if self.use_ipv6():
                 (rc, out) = cmd_pipe(['cat', self.files['rules6']], \
-                                     ['ip6tables-restore', '-n'])
+                                     [self.ip6tables-restore, '-n'])
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
@@ -590,7 +592,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s %s" % \
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
                         dapp, sapp)
-                     
+
                 if r.interface_in != "":
                     tstr += " in_%s" % (r.interface_in)
                 if r.interface_out != "":
@@ -787,10 +789,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 rstr = _("Rule added")
 
             if flag != "":
-                exe = "iptables"
+                exe = self.iptables
                 chain_prefix = "ufw"
                 if rule.v6:
-                    exe = "ip6tables"
+                    exe = self.ip6tables
                     chain_prefix = "ufw6"
                     rstr += " (v6)"
                 chain = chain_prefix + "-user-input"
@@ -845,9 +847,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def _chain_cmd(self, chain, args, fail_ok=False):
         '''Perform command on chain'''
-        exe = "iptables"
+        exe = self.iptables
         if chain.startswith("ufw6"):
-            exe = "ip6tables"
+            exe = self.ip6tables
         (rc, out) = cmd([exe] + args)
         if rc != 0:
            err_msg = _("Could not perform '%s'") % (args)

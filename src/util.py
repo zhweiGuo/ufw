@@ -514,9 +514,8 @@ def _address4_to_network(addr):
 
     return network + "/" + orig_nm
 
-def get_iptables_version():
+def get_iptables_version(exe="/sbin/iptables"):
     '''Return iptables version'''
-    exe = 'iptables'
     (rc, out) = cmd([exe, '-V'])
     if rc != 0:
         raise OSError(errno.ENOENT, "Error running '%s'" % (exe))

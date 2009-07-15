@@ -23,7 +23,7 @@ from stat import *
 import sys
 import ufw.util
 from ufw.util import warn, debug
-from ufw.common import UFWError, config_dir, UFWRule
+from ufw.common import UFWError, config_dir, iptables_dir, UFWRule
 import ufw.applications
 
 class UFWBackend:
@@ -55,7 +55,14 @@ class UFWBackend:
             raise
 
         self.profiles = ufw.applications.get_profiles(self.files['apps'])
-        self.iptables_version = ufw.util.get_iptables_version()
+
+        self.iptables = os.path.join(iptables_dir, "iptables")
+        self.iptables_restore = os.path.join(iptables_dir, "iptables-restore")
+        self.ip6tables = os.path.join(iptables_dir, "iptables")
+        self.ip6tables_restore = os.path.join(iptables_dir, \
+                                              "ip6tables-restore")
+
+        self.iptables_version = ufw.util.get_iptables_version(self.iptables)
 
     def _is_enabled(self):
         if self.defaults.has_key('enabled') and \
@@ -562,4 +569,5 @@ class UFWBackend:
 
     def update_logging(self, level):
         raise UFWError("UFWBackend.update_logging: need to override")
+
 
