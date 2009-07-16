@@ -455,8 +455,8 @@ Usage: %(progname)s %(command)s
 %(commands)s:
  %(enable)-31s enables the firewall
  %(disable)-31s disables the firewall
- %(default)-31s set default policy to %(uallow)s, %(udeny)s or %(ureject)s
- %(logging)-31s set logging to %(off)s, %(on)s or %(level)s
+ %(default)-31s set default policy
+ %(logging)-31s set logging to %(level)s
  %(allow)-31s add allow %(rule)s
  %(deny)-31s add deny %(rule)s
  %(reject)-31s add reject %(rule)s
@@ -473,19 +473,14 @@ Usage: %(progname)s %(command)s
  %(applist)-31s list application profiles
  %(appinfo)-31s show information on %(profile)s
  %(appupdate)-31s update %(profile)s
- %(appdefault)-31s set profile policy to %(uallow)s, %(udeny)s, %(ureject)s, or\n%(uskip)37s
+ %(appdefault)-31s set default application policy
 ''' % ({'progname': ufw.common.programName, \
          'command': "COMMAND", \
          'commands': "Commands", \
          'enable': "enable", \
          'disable': "disable", \
          'default': "default ARG", \
-         'uallow': "ALLOW", \
-         'udeny': "DENY", \
-         'ureject': "REJECT", \
-         'logging': "logging ARG", \
-         'off': "OFF", \
-         'on': "ON", \
+         'logging': "logging LEVEL", \
          'level': "LEVEL", \
          'allow': "allow ARGS", \
          'rule': "rule", \
@@ -507,8 +502,7 @@ Usage: %(progname)s %(command)s
          'appinfo': "app info PROFILE", \
          'profile': "PROFILE", \
          'appupdate': "app update PROFILE", \
-         'appdefault': "app default ARG", \
-         'uskip': "SKIP"}))
+         'appdefault': "app default ARG"}))
 
     return (msg)
 
