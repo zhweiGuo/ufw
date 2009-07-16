@@ -450,35 +450,66 @@ def parse_application_command(argv):
 def get_command_help():
     '''Print help message'''
     msg = _('''
-Usage: %s %s''' % (ufw.common.programName, "COMMAND") + '''
+Usage: %(progname)s %(command)s
 
-%s''' % ("Commands:") + '''
- %-31s enables the firewall''' % ("enable") + '''
- %-31s disables the firewall''' % ("disable") + '''
- %-31s set default policy to %s, %s or %s''' % ("default ARG", "ALLOW", \
-                                                "DENY", "REJECT") + '''
- %-31s set logging to %s, %s or %s''' % ("logging ARG", "OFF", "ON", \
-                                         "LEVEL") + '''
- %-31s add allow %s''' % ("allow ARG", "RULE") + '''
- %-31s add deny %s''' % ("deny ARG", "RULE") + '''
- %-31s add reject %s''' % ("reject ARG", "RULE") + '''
- %-31s add limit %s''' % ("limit ARG", "RULE") + '''
- %-31s delete %s''' % ("delete RULE", "RULE") + '''
- %-31s insert %s at %s''' % ("insert NUM RULE", "RULE", "NUM") + '''
- %-31s show firewall status''' % ("status") + '''
- %-31s show firewall status as numbered list of %s''' % ("status numbered", \
-                                                         "RULES") + '''
- %-31s show firewall report''' % ("show ARG") + '''
- %-31s display version information''' % ("version") + '''
+%(commands)s:
+ %(enable)-31s enables the firewall
+ %(disable)-31s disables the firewall
+ %(default)-31s set default policy to %(uallow)s, %(udeny)s or %(ureject)s
+ %(logging)-31s set logging to %(off)s, %(on)s or %(level)s
+ %(allow)-31s add allow %(rule)s
+ %(deny)-31s add deny %(rule)s
+ %(reject)-31s add reject %(rule)s
+ %(limit)-31s add limit %(rule)s
+ %(delete)-31s delete %(urule)s
+ %(insert)-31s insert %(urule)s at %(number)s
+ %(status)-31s show firewall status
+ %(statusnum)-31s show firewall status as numbered list of %(rules)s
+ %(statusverbose)-31s show verbose firewall status
+ %(show)-31s show firewall report
+ %(version)-31s display version information
 
-%s''' % ("Application profile commands:") + '''
- %-31s list application profiles''' % ("app list") + '''
- %-31s show information on %s''' % ("app info PROFILE", "PROFILE") + '''
- %-31s update %s''' % ("app update PROFILE", "PROFILE") + '''
- %-31s set profile policy to %s, %s, %s, or\n%37s''' % ("app default ARG", \
-                                                     "ALLOW", "DENY", \
-                                                     "REJECT", "SKIP") + '''
-''')
+%(appcommands)s:
+ %(applist)-31s list application profiles
+ %(appinfo)-31s show information on %(profile)s
+ %(appupdate)-31s update %(profile)s
+ %(appdefault)-31s set profile policy to %(uallow)s, %(udeny)s, %(ureject)s, or\n%(uskip)37s
+''' % ({'progname': ufw.common.programName, \
+         'command': "COMMAND", \
+         'commands': "Commands", \
+         'enable': "enable", \
+         'disable': "disable", \
+         'default': "default ARG", \
+         'uallow': "ALLOW", \
+         'udeny': "DENY", \
+         'ureject': "REJECT", \
+         'logging': "logging ARG", \
+         'off': "OFF", \
+         'on': "ON", \
+         'level': "LEVEL", \
+         'allow': "allow ARGS", \
+         'rule': "rule", \
+         'deny': "deny ARGS", \
+         'reject': "reject ARGS", \
+         'limit': "limit ARGS", \
+         'delete': "delete RULE", \
+         'urule': "RULE", \
+         'insert': "insert NUM RULE", \
+         'number': "NUM", \
+         'status': "status", \
+         'statusnum': "status numbered", \
+         'rules': "RULES", \
+         'statusverbose': "status verbose", \
+         'show': "show ARG", \
+         'version': "version", \
+         'appcommands': "Application profile commands", \
+         'applist': "app list", \
+         'appinfo': "app info PROFILE", \
+         'profile': "PROFILE", \
+         'appupdate': "app update PROFILE", \
+         'appdefault': "app default ARG", \
+         'uskip': "SKIP"}))
+
     return (msg)
 
 
