@@ -15,6 +15,9 @@ ufw (0.28) UNRELEASED; urgency=low
     up with ::/0 in the tuple line in user.rules (IPV4) when not specifying a
     destination or source address and IPV6 is enabled
   * make insert rule logic more robust
+  * update setup.py to install user rules and init script helpers into
+    /lib, rather than /var/lib and /usr/share/ufw. Update tests
+    backend_iptables.py, ufw-init and documentation accordingly. (LP: #400208)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 15 Jul 2009 09:30:25 -0500
 

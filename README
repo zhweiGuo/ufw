@@ -50,7 +50,7 @@ boot process for the firewall to start when you restart your system. Depending
 on your needs, this can be as simple as adding the following to a startup
 script (eg rc.local for systems that use it):
 
-/usr/share/ufw/ufw-init start
+/lib/ufw/ufw-init start
 
 For systems that use SysV initscripts, an example script is provided in
 doc/initscript.example. Consult your distribution's documentation for the
@@ -63,9 +63,9 @@ Basic Layout
 /etc/defaults/ufw 		high level configuration
 /etc/ufw/before[6].rules 	rules evaluated before UI added rules
 /etc/ufw/after[6].rules 	rules evaluated after UI added rules
-/var/lib/ufw/user[6].rules	UI added rules (not to be modified)
+/lib/ufw/user[6].rules		UI added rules (not to be modified)
 /etc/ufw/sysctl.conf 		kernel network tunables
-/usr/share/ufw/ufw-init		start script
+/lib/ufw/ufw-init		start script
 
 
 Usage
@@ -131,7 +131,7 @@ chains will stay in the table, even after disabling ufw. This is to make sure
 that the primary chains don't move around other non-ufw rules and chains. To
 completely flush the built-in chains with this configuration, you can use:
 
-# /usr/share/ufw/ufw-init flush-all
+# /lib/ufw/ufw-init flush-all
 
 Alternately, ufw may also take full control of the firewall by setting
 MANAGE_BUILTINS=yes in /etc/defaults/ufw. This will flush all the built-in
@@ -194,7 +194,7 @@ See 'man iptables' for details.
 
 Remote Management
 -----------------
-On /usr/share/ufw/ufw-init start and 'ufw enable' the chains are flushed, so
+On /lib/ufw/ufw-init start and 'ufw enable' the chains are flushed, so
 ssh may drop. This is needed so ufw is in a consistent state. Once the ufw is
 'enabled' it will insert rules into the existing chains, and therefore not
 flush the chains (but will when modifying a rule or changing the default
@@ -237,7 +237,7 @@ command will be added automatically.
 
 Distributions
 -------------
-While it certainly ok to use /usr/share/ufw/ufw-init as the initscript for
+While it certainly ok to use /lib/ufw/ufw-init as the initscript for
 ufw, this script is meant to be used by ufw itself, and therefore not
 particularly user friendly. See doc/initscript.example for a simple
 implementation that can be adapted to your distribution.

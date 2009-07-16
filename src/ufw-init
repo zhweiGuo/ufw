@@ -17,8 +17,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-if [ -s "#PREFIX#/share/ufw/ufw-init-functions" ]; then
-    . "#PREFIX#/share/ufw/ufw-init-functions"
+if [ -s "#STATE_PREFIX#/ufw-init-functions" ]; then
+    . "#STATE_PREFIX#/ufw-init-functions"
 else
     echo "Could not find $s (aborting)"
     exit 1

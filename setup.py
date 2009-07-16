@@ -48,11 +48,13 @@ class Install(_install, object):
             return
 
         real_confdir = os.path.join('/etc')
-        real_statedir = os.path.join('/var', 'lib', 'ufw')
+        real_statedir = os.path.join('/lib', 'ufw')
+        real_transdir = os.path.join('/var', 'lib', 'ufw')
         real_prefix = self.prefix
         if self.home != None:
             real_confdir = self.home + real_confdir
             real_statedir = self.home + real_statedir
+            real_transdir = self.home + real_transdir
             real_prefix = self.home + '/usr'
 
         # Update the modules' paths
@@ -88,31 +90,34 @@ class Install(_install, object):
 
         script = os.path.join(prefix, 'sbin', 'ufw')
         manpage = os.path.join(prefix, 'share', 'man', 'man8', 'ufw.8')
-        init_helper = os.path.join(prefix, 'share', 'ufw', 'ufw-init')
-        init_helper_functions = os.path.join(prefix, 'share', 'ufw', \
-                                             'ufw-init-functions')
 
-        for dir in [ script, manpage, init_helper_functions ]:
-            self.mkpath(os.path.dirname(dir))
+        for f in [ script, manpage ]:
+            self.mkpath(os.path.dirname(f))
 
         self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
-        self.copy_file('src/ufw-init', init_helper)
-        self.copy_file('src/ufw-init-functions', init_helper_functions)
 
-        # Install state files
+        # Install state files and helper scripts
         statedir = real_statedir
         if self.root != None:
             statedir = self.root + real_statedir
+        self.mkpath(statedir)
 
         user_rules = os.path.join(statedir, 'user.rules')
         user6_rules = os.path.join(statedir, 'user6.rules')
-        self.mkpath(statedir)
         self.copy_file('conf/user.rules', user_rules)
         self.copy_file('conf/user6.rules', user6_rules)
 
+        init_helper = os.path.join(statedir, 'ufw-init')
+        init_helper_functions = os.path.join(statedir, 'ufw-init-functions')
+        self.copy_file('src/ufw-init', init_helper)
+        self.copy_file('src/ufw-init-functions', init_helper_functions)
+
         # Install translations
-        i18ndir = os.path.join(statedir, 'messages')
+        transdir = real_transdir
+        if self.root != None:
+            transdir = self.root + real_transdir
+        i18ndir = os.path.join(transdir, 'messages')
         self.mkpath(i18ndir)
         self.copy_tree('po', i18ndir)
 

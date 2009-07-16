@@ -46,8 +46,8 @@ do
 		do_cmd "0" deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
 	fi
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
 	echo "TESTING ARGS (delete allow/deny to/from)" >> $TESTTMP/result
 	do_cmd "0" delete allow 53
@@ -66,8 +66,8 @@ do
 		do_cmd "0" delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
 	fi
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 done
 
 
@@ -87,14 +87,14 @@ do
 	do_cmd "0" reject 114/tcp
 	do_cmd "0" reject 115/udp
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 	do_cmd "0" delete reject 113
 	do_cmd "0" delete reject 114/tcp
 	do_cmd "0" delete reject 115/udp
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 done
 
 echo "Checking flush builtins" >> $TESTTMP/result
@@ -182,8 +182,8 @@ do
 	do_cmd "0" insert 8 allow $i on eth2 to any app Samba
 
 	do_cmd "0" status numbered
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
 	# delete what we added
         do_cmd "0" delete allow $i on eth1
@@ -200,8 +200,8 @@ do
 	do_cmd "0" delete allow $i on eth0 to any app Samba
 	do_cmd "0" delete allow $i on eth2 to any app Samba
 
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
     done
 done
 cleanup

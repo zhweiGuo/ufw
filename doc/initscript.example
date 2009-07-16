@@ -10,7 +10,7 @@ config_prefix="/etc"
 
 [ -x $prefix/sbin/ufw ] || exit 0
 
-for s in "$prefix/share/ufw/ufw-init-functions" "$config_prefix/ufw/ufw.conf" ; do
+for s in "/lib/ufw/ufw-init-functions" "$config_prefix/ufw/ufw.conf" ; do
     if [ -s "$s" ]; then
         . "$s"
     else

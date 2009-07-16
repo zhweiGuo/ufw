@@ -145,14 +145,14 @@ do_cmd "0" null allow to ::1 port 25
 
 echo "ipv4 rule in ipv4 section" >> $TESTTMP/result
 do_cmd "0" null insert 2 allow to 127.0.0.1 port 8888
-cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 echo "ipv6 rule in ipv6 section" >> $TESTTMP/result
 do_cmd "0" null delete allow to 127.0.0.1 port 8888
 do_cmd "0" null insert 4 allow to ::1 port 8888
-cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 echo "ipv6 rule in ipv4 section" >> $TESTTMP/result
 do_cmd "0" null delete allow to ::1 port 8888
@@ -165,22 +165,22 @@ do_cmd "1" null insert 4 allow to 127.0.0.1 port 8888
 echo "'both' rule in ipv4 section" >> $TESTTMP/result
 do_cmd "0" null delete allow to 127.0.0.1 port 8888
 do_cmd "0" null insert 2 allow 8888
-cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 echo "'both' rule in ipv6 section" >> $TESTTMP/result
 do_cmd "0" null delete allow 8888
 do_cmd "0" null insert 4 allow log 8888
-cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 do_cmd "0" null delete allow to 127.0.0.1 port 22
 do_cmd "0" null delete allow to 127.0.0.1 port 23
 do_cmd "0" null delete allow to ::1 port 24
 do_cmd "0" null delete allow to ::1 port 25
 do_cmd "0" null delete allow log 8888
-cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 echo "Interfaces" >> $TESTTMP/result
 #for i in "in" out ; do
@@ -190,15 +190,15 @@ for i in "in" ; do
     do_cmd "0" null deny $i on eth0 from 192.168.0.1 port 22 proto tcp
     do_cmd "0" null reject $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
     do_cmd "0" null limit $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
-    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTSTATE/user6.rules >> $TESTTMP/result
     do_cmd "0" null delete allow $i on eth0
     do_cmd "0" null delete allow $i on eth0 to 192.168.0.1
     do_cmd "0" null delete deny $i on eth0 from 192.168.0.1 port 22 proto tcp
     do_cmd "0" null delete reject $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
     do_cmd "0" null delete limit $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
-    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTSTATE/user6.rules >> $TESTTMP/result
 done
 
 

@@ -19,6 +19,7 @@ tests="installation bad good bugs util"
 CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
+export TESTSTATE="$TESTPATH/lib/ufw"
 
 STOPONFAIL="no"
 STOPONSKIP="no"

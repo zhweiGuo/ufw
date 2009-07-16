@@ -55,6 +55,6 @@ do_cmd() {
 
 cleanup() {
     do_cmd "0" nostats disable
-    $TESTPATH/usr/share/ufw/ufw-init flush-all
+    $TESTSTATE/ufw-init flush-all
 }
 

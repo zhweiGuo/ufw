@@ -29,8 +29,8 @@ for i in allow deny limit reject ; do
         do_cmd "0" nostats $i $j Samba
         do_cmd "0" nostats $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-        cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+        cat $TESTSTATE/user.rules >> $TESTTMP/result
+        cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
         iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
         ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
@@ -47,14 +47,14 @@ for i in allow deny limit reject ; do
         do_cmd "0" nostats delete $i $j Samba
         do_cmd "0" nostats delete $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-        cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+        cat $TESTSTATE/user.rules >> $TESTTMP/result
+        cat $TESTSTATE/user6.rules >> $TESTTMP/result
     done
 done
 
 echo "contents of user*.rules:" >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 cleanup
 exit 0

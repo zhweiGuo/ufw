@@ -162,8 +162,8 @@ for ipv6 in no yes ; do
     do_cmd "0" allow Bind9
     do_cmd "0" insert 1 allow Samba
     do_cmd "0" insert 2 reject 'Dovecot POP3'
-    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
@@ -180,8 +180,8 @@ for ipv6 in no yes ; do
     do_cmd "0" delete allow Bind9
     do_cmd "0" delete allow Samba
     do_cmd "0" delete reject 'Dovecot POP3'
-    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
     do_cmd "0" allow Samba
     do_cmd "0" allow 22
@@ -190,8 +190,8 @@ for ipv6 in no yes ; do
     do_cmd "0" insert 2 allow from 192.168.0.1 to any app Samba
     do_cmd "0" insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
     do_cmd "0" insert 2 allow from any app Samba to 10.0.0.1
-    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
@@ -211,8 +211,8 @@ for ipv6 in no yes ; do
     do_cmd "0" delete allow from 192.168.0.1 to any app Samba
     do_cmd "0" delete allow from 192.168.0.1 app Samba to 10.0.0.1
     do_cmd "0" delete allow from any app Samba to 10.0.0.1
-    cat $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTSTATE/user6.rules >> $TESTTMP/result
 done
 
 echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
@@ -223,26 +223,26 @@ for i in "in" ; do
         do_cmd "1" null $j $i on eth0:1 from 10.0.0.1 app Samba
         do_cmd "0" $j $i on eth0 from 10.0.0.1 to any app Samba
         do_cmd "0" status
-        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
         do_cmd "0" delete $j $i on eth0 to 192.168.0.1 app Samba
         do_cmd "0" delete $j $i on eth0 from 10.0.0.1 to any app Samba
         do_cmd "0" status
-        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
     done
     do_cmd "0" allow $i on eth0 to any app Bind9
     do_cmd "0" insert 1 allow $i on eth2 to any app Samba
     do_cmd "0" status
-    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
     do_cmd "0" delete allow $i on eth0 to any app Bind9
     do_cmd "0" delete allow $i on eth2 to any app Samba
     do_cmd "0" status
-    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
-    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 done
 
 cleanup

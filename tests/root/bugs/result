@@ -37,11 +37,11 @@ Setting IPV6 to no
 4: disable
 
 
-/usr/share/ufw/ufw-init flush-all:
+/lib/ufw/ufw-init flush-all:
 5: enable
 
 
-/usr/share/ufw/ufw-init force-reload:
+/lib/ufw/ufw-init force-reload:
 ip6tables -L -n:
 Chain INPUT (policy DROP)
 target     prot opt source               destination         
