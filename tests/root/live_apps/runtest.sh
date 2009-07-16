@@ -215,6 +215,36 @@ for ipv6 in no yes ; do
     cat $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
 done
 
+echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
+#for i in "in" out ; do
+for i in "in" ; do
+    for j in allow deny limit reject ; do
+        do_cmd "0" $j $i on eth0 to 192.168.0.1 app Samba
+        do_cmd "1" null $j $i on eth0:1 from 10.0.0.1 app Samba
+        do_cmd "0" $j $i on eth0 from 10.0.0.1 to any app Samba
+        do_cmd "0" status
+        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+        do_cmd "0" delete $j $i on eth0 to 192.168.0.1 app Samba
+        do_cmd "0" delete $j $i on eth0 from 10.0.0.1 to any app Samba
+        do_cmd "0" status
+        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    done
+    do_cmd "0" allow $i on eth0 to any app Bind9
+    do_cmd "0" insert 1 allow $i on eth2 to any app Samba
+    do_cmd "0" status
+    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+    do_cmd "0" delete allow $i on eth0 to any app Bind9
+    do_cmd "0" delete allow $i on eth2 to any app Samba
+    do_cmd "0" status
+    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+done
+
 cleanup
 
 exit 0

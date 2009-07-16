@@ -154,6 +154,56 @@ do
 	do_cmd "0" status numbered
 done
 
+echo "Testing interfaces" >> $TESTTMP/result
+for ipv6 in yes no
+do
+    #for i in "in" out ; do
+    for i in "in" ; do
+	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+	do_cmd "0" nostats disable
+	do_cmd "0" nostats enable
+
+        do_cmd "0" allow $i on eth1
+        do_cmd "1" null deny $i on eth1:1
+        do_cmd "0" reject $i on eth1 to 192.168.0.1 port 22
+        do_cmd "0" limit $i on eth1 from 10.0.0.1 port 80
+        do_cmd "0" allow $i on eth1 to 192.168.0.1 from 10.0.0.1
+        do_cmd "0" deny $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" reject $i on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+        do_cmd "0" limit $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+	do_cmd "0" allow log $i on eth0
+	do_cmd "0" allow log $i on eth0 from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+	do_cmd "0" deny log-all $i on eth0 from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+	do_cmd "0" allow $i on eth0 to any app Samba
+
+	do_cmd "0" status numbered
+	do_cmd "0" insert 8 allow $i on eth2 to any app Samba
+
+	do_cmd "0" status numbered
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+
+	# delete what we added
+        do_cmd "0" delete allow $i on eth1
+        do_cmd "0" delete reject $i on eth1 to 192.168.0.1 port 22
+        do_cmd "0" delete limit $i on eth1 from 10.0.0.1 port 80
+        do_cmd "0" delete allow $i on eth1 to 192.168.0.1 from 10.0.0.1
+        do_cmd "0" delete deny $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" delete reject $i on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+        do_cmd "0" delete limit $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+	do_cmd "0" delete allow log $i on eth0
+	do_cmd "0" delete allow log $i on eth0 from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+	do_cmd "0" delete deny log-all $i on eth0 from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+	do_cmd "0" delete allow $i on eth0 to any app Samba
+	do_cmd "0" delete allow $i on eth2 to any app Samba
+
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTPATH/var/lib/ufw/user6.rules >> $TESTTMP/result
+    done
+done
 cleanup
 
 exit 0

@@ -1735,6 +1735,281 @@ COMMIT
 
 ### END RULES ###
 COMMIT
-207: disable
+TESTING APPLICATION INTEGRATION (interfaces)
+207: allow in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule added
+
+
+208: allow in on eth0:1 from 10.0.0.1 app Samba
+
+
+209: allow in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+210: status
+WARN: Checks disabled
+Status: active
+
+To                         Action  From
+--                         ------  ----
+192.168.0.1 Samba on eth0  ALLOW   Anywhere
+Samba on eth0              ALLOW   10.0.0.1
+
+
+
+### tuple ### allow udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+211: delete allow in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+212: delete allow in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+213: status
+WARN: Checks disabled
+Status: active
+
+
+214: deny in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule added
+
+
+215: deny in on eth0:1 from 10.0.0.1 app Samba
+
+
+216: deny in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+217: status
+WARN: Checks disabled
+Status: active
+
+To                         Action  From
+--                         ------  ----
+192.168.0.1 Samba on eth0  DENY    Anywhere
+Samba on eth0              DENY    10.0.0.1
+
+
+
+### tuple ### deny udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+218: delete deny in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+219: delete deny in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+220: status
+WARN: Checks disabled
+Status: active
+
+
+221: limit in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule added
+
+
+222: limit in on eth0:1 from 10.0.0.1 app Samba
+
+
+223: limit in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+224: status
+WARN: Checks disabled
+Status: active
+
+To                         Action  From
+--                         ------  ----
+192.168.0.1 Samba on eth0  LIMIT   Anywhere
+Samba on eth0              LIMIT   10.0.0.1
+
+
+
+### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+--
+### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+--
+### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+--
+### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+225: delete limit in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+226: delete limit in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+227: status
+WARN: Checks disabled
+Status: active
+
+
+228: reject in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule added
+
+
+229: reject in on eth0:1 from 10.0.0.1 app Samba
+
+
+230: reject in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+231: status
+WARN: Checks disabled
+Status: active
+
+To                         Action  From
+--                         ------  ----
+192.168.0.1 Samba on eth0  REJECT  Anywhere
+Samba on eth0              REJECT  10.0.0.1
+
+
+
+### tuple ### reject udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+
+### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+
+### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+
+### tuple ### reject tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+232: delete reject in on eth0 to 192.168.0.1 app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+233: delete reject in on eth0 from 10.0.0.1 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+234: status
+WARN: Checks disabled
+Status: active
+
+
+235: allow in on eth0 to any app Bind9
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+236: insert 1 allow in on eth2 to any app Samba
+WARN: Checks disabled
+Rule inserted
+Rule inserted (v6)
+
+
+237: status
+WARN: Checks disabled
+Status: active
+
+To                         Action  From
+--                         ------  ----
+Samba on eth2              ALLOW   Anywhere
+Bind9 on eth0              ALLOW   Anywhere
+Samba (v6) on eth2         ALLOW   Anywhere (v6)
+Bind9 (v6) on eth0         ALLOW   Anywhere (v6)
+
+
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
+-A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
+-A ufw-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in_eth0
+-A ufw-user-input -i eth0 -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+-A ufw-user-input -i eth0 -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in_eth2
+-A ufw6-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in_eth2
+-A ufw6-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow any 53 ::/0 any ::/0 Bind9 - in_eth0
+-A ufw6-user-input -i eth0 -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+-A ufw6-user-input -i eth0 -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
+238: delete allow in on eth0 to any app Bind9
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+239: delete allow in on eth2 to any app Samba
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+240: status
+WARN: Checks disabled
+Status: active
+
+
+241: disable
 
 
