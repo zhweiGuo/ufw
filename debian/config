@@ -5,7 +5,7 @@
 db_version 2.0
 
 CONFFILE="/etc/ufw/ufw.conf"
-USER_PATH="/var/lib/ufw"
+USER_PATH="/lib/ufw"
 TEMPLATE_PATH="/usr/share/ufw"
 
 has_existing() {
@@ -28,6 +28,15 @@ has_existing() {
         return 1
     fi
 }
+
+# https://bugs.launchpad.net/ufw/+bug/400208
+OLD_USER_PATH="/var/lib/ufw"
+if dpkg --compare-versions "$2" lt 0.28-1 ; then
+    for f in user.rules user6.rules
+    do
+        test -f $OLD_USER_PATH/$f && mv -f $OLD_USER_PATH/$f $USER_PATH
+    done
+fi
 
 # If ufw is enabled (eg during an upgrade), then update debconf
 if [ -f "$CONFFILE" ]; then

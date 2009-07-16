@@ -4,6 +4,14 @@ ufw (0.28-1) UNRELEASED; urgency=low
     - filtering by interface (LP: #247450)
     - ufw help does not mention 'limit' command (LP: #358964)
     - install rules files 0640 (LP: #393187)
+  * install user rules and init script helper to /lib/ufw (LP: #400208)
+    - debian/config: update USER_PATH and migrate user rules files from
+      /var/lib/ufw to /lib/ufw
+    - debian/dirs: use lib/ufw
+    - debian/postinst: update USER_PATH
+    - debian/postrm: update USER_PATH
+    - debian/rules: update for new path
+    - debian/ufw.init: update for new path
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 11 Jul 2009 09:31:38 -0500
 
