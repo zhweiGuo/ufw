@@ -32,9 +32,10 @@ has_existing() {
 # https://bugs.launchpad.net/ufw/+bug/400208
 OLD_USER_PATH="/var/lib/ufw"
 if dpkg --compare-versions "$2" lt 0.28-1 ; then
+    test -d $USER_PATH || mkdir $USER_PATH
     for f in user.rules user6.rules
     do
-        test -f $OLD_USER_PATH/$f && mv -f $OLD_USER_PATH/$f $USER_PATH
+        test -f $OLD_USER_PATH/$f && mv -f $OLD_USER_PATH/$f $USER_PATH/$f
     done
 fi
 
