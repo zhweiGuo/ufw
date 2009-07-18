@@ -45,7 +45,7 @@ msgstr "Se ha encontrado la configuración existente"
 #. Type: error
 #. Description
 #: ../templates:2001
-msgid "An existing configuration for ufw has been found. Existing rules must by managed manually."
+msgid "An existing configuration for ufw has been found. Existing rules must be managed manually."
 msgstr "Se ha encontrado una configuración de ufw existente. Las reglas existentes se deberán gestionar manualmente."
 
 #. Type: error

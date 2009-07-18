@@ -28,7 +28,7 @@ msgstr "Äldre inställningar funna"
 #. Description
 #: ../templates:2001
 msgid ""
-"An existing configuration for ufw has been found. Existing rules must by "
+"An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
 "Äldre inställningar för ufw har hittats. Existerande regler måste hanteras "

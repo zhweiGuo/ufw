@@ -12,6 +12,7 @@ ufw (0.28-1) UNRELEASED; urgency=low
     - debian/postrm: update USER_PATH
     - debian/rules: update for new path
     - debian/ufw.init: update for new path
+  * debian/po: fix typo in translations
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 11 Jul 2009 09:31:38 -0500
 

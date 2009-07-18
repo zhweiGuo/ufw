@@ -24,7 +24,7 @@ msgstr "Nalezena existující konfigurace"
 #. Description
 #: ../templates:2001
 msgid ""
-"An existing configuration for ufw has been found. Existing rules must by "
+"An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
 "Pro ufw byla nalezena existující konfigurace. Existující pravidla musí být "

@@ -27,7 +27,7 @@ msgstr "Найдены предыдущие настройки программ�
 #. Description
 #: ../templates:2001
 msgid ""
-"An existing configuration for ufw has been found. Existing rules must by "
+"An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
 "Найдены предыдущие настройки ufw. Существующие правила нужно "

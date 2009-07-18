@@ -27,7 +27,7 @@ msgstr "Konfigurazioa aurkituta"
 #. Description
 #: ../templates:2001
 msgid ""
-"An existing configuration for ufw has been found. Existing rules must by "
+"An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
 "Aurreko ufw konfigurazio bat aurkitu da. Dauden arauak eskuz kudeatu "
