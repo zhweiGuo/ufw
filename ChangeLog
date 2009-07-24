@@ -1,4 +1,4 @@
-ufw (0.28) UNRELEASED; urgency=low
+ufw (0.28) RELEASED; urgency=low
 
   * translation fixes
   * add interface rules
