@@ -11,7 +11,7 @@ Template: ufw/existing_configuration
 Type: error
 _Description: Existing configuration found
  An existing configuration for ufw has been found.
- Existing rules must by managed manually.
+ Existing rules must be managed manually.
  .
  You should read the ufw(8) manpage for details about ufw configuration.
 

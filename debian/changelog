@@ -1,3 +1,9 @@
+ufw (0.28-2) unstable; urgency=low
+
+  * debian/templates: also fix typo in master template
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 25 Jul 2009 07:01:56 -0500
+
 ufw (0.28-1) unstable; urgency=low
 
   * new upstream release. Fixes:
