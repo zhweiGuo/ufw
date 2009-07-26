@@ -600,7 +600,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 os.write(fd, tstr + "\n")
 
             chain = "%s-user-input" % (chain_prefix)
-            if r.interface_out != "":
+            if r.direction == "out":
                 chain = "%s-user-output" % (chain_prefix)
             rule_str = "-A %s %s\n" % (chain, r.format_rule())
 
@@ -799,7 +799,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     chain_prefix = "ufw6"
                     rstr += " (v6)"
                 chain = "%s-user-input" % (chain_prefix)
-                if rule.interface_out != "":
+                if rule.direction == "out":
                     chain = "%s-user-output" % (chain_prefix)
           
 

@@ -132,6 +132,26 @@ def parse_command(argv):
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
+        rule_direction = "in"
+        # strip out direction if not an interface rule
+        if nargs > 3 and argv[3] != "on" and (argv[2].lower() == "in" or \
+                                              argv[2].lower() == "out"):
+            rule_direction = argv[2].lower()
+            del argv[2]
+            nargs = len(argv)
+
+        # strip out 'on' as in 'allow in on eth0 ...'
+        if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
+            err_msg = _("Invalid interface clause")
+
+            if argv[2].lower() != "in" and argv[2].lower() != "out":
+                raise UFWError(err_msg)
+            if nargs < 4 or argv[3].lower() != "on":
+                raise UFWError(err_msg)
+
+            del argv[3]
+            nargs = len(argv)
+
         if nargs > 2 and (argv[2].lower() == "log" or \
                           argv[2].lower() == 'log-all'):
             if nargs < 4:
@@ -150,25 +170,14 @@ def parse_command(argv):
             err_msg = _("Option 'log-all' not allowed here")
             raise UFWError(err_msg)
 
-        # strip out 'on' as in 'allow in on eth0 ...'
-        if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
-            err_msg = _("Invalid interface clause")
-
-            if argv[2].lower() != "in" and argv[2].lower() != "out":
-                raise UFWError(err_msg)
-            if nargs < 4 or argv[3].lower() != "on":
-                raise UFWError(err_msg)
-
-            del argv[3]
-            nargs = len(argv)
-
         if nargs < 3 or nargs > 14:
             raise ValueError()
 
         rule_action = action
         if logtype != "":
             rule_action += "_" + logtype
-        rule = ufw.common.UFWRule(rule_action, "any", "any")
+        rule = ufw.common.UFWRule(rule_action, "any", "any", \
+                                  direction=rule_direction)
         if remove:
             rule.remove = remove
         elif insert_pos != "":

@@ -19,9 +19,9 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] PORT[/protocol]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBin|out on INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
@@ -99,6 +99,14 @@ check /etc/services for the port and protocol if specifying a service by name.
 Eg:
 
   ufw allow smtp
+
+\fBufw\fR supports both ingress and egress filtering and users may optionally
+specify a direction of either \fBin\fR or \fBout\fR for either incoming or
+outgoing traffic. If no direction is supplied, the rule applies to incoming
+traffic. Eg:
+
+  ufw allow in http
+  ufw reject out smtp
 .PP
 Users can also use a fuller syntax, specifying the source and destination
 addresses and ports. This syntax is based on OpenBSD's PF syntax. For example:
@@ -145,7 +153,7 @@ instead of \fBdeny\fR.  For example:
 By default, \fBufw\fR will apply rules to all available interfaces. To limit
 this, specify \fBDIRECTION on INTERFACE\fR, where DIRECTION is one of \fBin\fR
 or \fBout\fR (interface aliases are not supported).  For example, to allow all
-new http connections on eth0, use:
+new incoming http connections on eth0, use:
 
   ufw allow in on eth0 to any port 80 proto tcp
 
