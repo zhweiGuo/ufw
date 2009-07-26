@@ -210,12 +210,13 @@ def parse_command(argv):
         elif nargs % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
-        elif not 'from' in argv and not 'to' in argv and not 'in' in argv:
+        elif not 'from' in argv and not 'to' in argv and not 'in' in argv and \
+             not 'out' in argv:
             err_msg = _("Need 'to' or 'from' clause")
             raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in' ]
+            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in', 'out' ]
 
             # quick check
             if argv.count("to") > 1 or \
@@ -223,6 +224,7 @@ def parse_command(argv):
                argv.count("proto") > 1 or \
                argv.count("port") > 2 or \
                argv.count("in") > 1 or \
+               argv.count("out") > 1 or \
                argv.count("app") > 2 or \
                argv.count("app") > 0 and argv.count("proto") > 0:
                 err_msg = _("Improper rule syntax")
@@ -243,15 +245,17 @@ def parse_command(argv):
                     else:
                         err_msg = _("Invalid 'proto' clause")
                         raise UFWError(err_msg)
-                elif arg == "in":
+                elif arg == "in" or arg == "out":
                     if i+1 < nargs:
                         try:
-                            # for now, hardcode to 'in'
-                            rule.set_interface("in", argv[i+1])
+                            if arg == "in":
+                                rule.set_interface("in", argv[i+1])
+                            elif arg == "out":
+                                rule.set_interface("out", argv[i+1])
                         except Exception:
                             raise
                     else:
-                        err_msg = _("Invalid 'in' clause")
+                        err_msg = _("Invalid '%s' clause") % (arg)
                         raise UFWError(err_msg)
                 elif arg == "from":
                     if i+1 < nargs:

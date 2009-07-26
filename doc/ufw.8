@@ -21,7 +21,7 @@ ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBin on INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBin|out on INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
@@ -143,8 +143,9 @@ instead of \fBdeny\fR.  For example:
 
 .PP
 By default, \fBufw\fR will apply rules to all available interfaces. To limit
-this, specify \fBin on INTERFACE\fR (interface aliases are not supported).  For
-example, to allow all new http connections on eth0, use:
+this, specify \fBDIRECTION on INTERFACE\fR, where DIRECTION is one of \fBin\fR
+or \fBout\fR (interface aliases are not supported).  For example, to allow all
+new http connections on eth0, use:
 
   ufw allow in on eth0 to any port 80 proto tcp
 

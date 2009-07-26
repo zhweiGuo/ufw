@@ -599,8 +599,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     tstr += " out_%s" % (r.interface_out)
                 os.write(fd, tstr + "\n")
 
-            rule_str = "-A " + chain_prefix + "-user-input " + \
-                       r.format_rule() + "\n"
+            chain = "%s-user-input" % (chain_prefix)
+            if r.interface_out != "":
+                chain = "%s-user-output" % (chain_prefix)
+            rule_str = "-A %s %s\n" % (chain, r.format_rule())
+
             for s in self._get_rules_from_formatted(rule_str, chain_prefix):
                 os.write(fd, s)
 
@@ -795,7 +798,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     exe = self.ip6tables
                     chain_prefix = "ufw6"
                     rstr += " (v6)"
-                chain = chain_prefix + "-user-input"
+                chain = "%s-user-input" % (chain_prefix)
+                if rule.interface_out != "":
+                    chain = "%s-user-output" % (chain_prefix)
+          
 
                 # Is the firewall running?
                 err_msg = _("Could not update running firewall")
