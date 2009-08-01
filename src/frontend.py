@@ -132,7 +132,12 @@ def parse_command(argv):
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
+        # set/strip 
         rule_direction = "in"
+        if nargs > 2 and (argv[2].lower() == "in" or \
+                          argv[2].lower() == "out"):
+            rule_direction = argv[2].lower()
+
         # strip out direction if not an interface rule
         if nargs > 3 and argv[3] != "on" and (argv[2].lower() == "in" or \
                                               argv[2].lower() == "out"):
@@ -141,6 +146,7 @@ def parse_command(argv):
             nargs = len(argv)
 
         # strip out 'on' as in 'allow in on eth0 ...'
+        has_interface = False
         if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
             err_msg = _("Invalid interface clause")
 
@@ -151,15 +157,20 @@ def parse_command(argv):
 
             del argv[3]
             nargs = len(argv)
+            has_interface = True
 
-        if nargs > 2 and (argv[2].lower() == "log" or \
-                          argv[2].lower() == 'log-all'):
-            if nargs < 4:
-                raise ValueError()
-            logtype = argv[2].lower()
-
+        log_idx = 0
+        if has_interface and nargs > 4 and (argv[4].lower() == "log" or \
+                                            argv[4].lower() == 'log-all'):
+            log_idx = 4
+        elif nargs > 3 and (argv[2].lower() == "log" or \
+                           argv[2].lower() == 'log-all'):
+            log_idx = 2
+            
+        if log_idx > 0:
+            logtype = argv[log_idx].lower()
             # strip out 'log' or 'log-all' and parse as normal
-            del argv[2]
+            del argv[log_idx]
             nargs = len(argv)
 
         if "log" in argv:

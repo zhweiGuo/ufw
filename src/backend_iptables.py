@@ -172,18 +172,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 out += "> " + _("Checking ip6tables\n")
             return out
 
-        # Is the firewall loaded at all?
-        (rc, out) = cmd([self.iptables, '-L', 'ufw-user-input', '-n'])
-        if rc != 0:
-            return _("Status: inactive")
-
         err_msg = _("problem running")
-        if self.use_ipv6():
-            (rc, out6) = cmd([self.ip6tables, '-L', 'ufw6-user-input', '-n'])
+        have_rules = False
+        for direction in ["input", "output"]:
+            # Is the firewall loaded at all?
+            (rc, out) = cmd([self.iptables, '-L', \
+                            'ufw-user-%s' % (direction), '-n'])
             if rc != 0:
-                raise UFWError(err_msg + " ip6tables")
+                return _("Status: inactive")
 
-        if out == "" and out6 == "":
+            if self.use_ipv6():
+                (rc, out6) = cmd([self.ip6tables, '-L', \
+                                 'ufw6-user-%s' % (direction), '-n'])
+                if rc != 0:
+                    raise UFWError(err_msg + " ip6tables")
+
+            if out != "" or out6 != "":
+                have_rules = True
+                break
+
+        if not have_rules:
             return _("Status: active")
 
         str = ""
@@ -300,7 +308,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         if verbose:
             (level, logging_str) = self.get_loglevel()
-            policy_str = _("Default: %s") % (self.get_default_policy())
+            policy_str = _("Default: %s (incoming), %s (outgoing)") % \
+                           (self.get_default_policy(), self.get_default_policy("output"))
             app_policy_str = self.get_default_application_policy()
             return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
                      ({'log': logging_str, 'pol': policy_str, \
@@ -502,22 +511,31 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         warn(warn_msg)
                         continue
                     else:
+                        # set direction to "in" to support upgrades
+                        # from old format, which only had 6 or 8 fields
+                        type = "in"
+                        interface = ""
+                        if len(tmp) == 7 or len(tmp) == 9:
+                            if '_' in tmp[-1]:
+                                (type, interface) = tmp[-1].split('_')
+                            else:
+                                type = tmp[-1]
                         try:
                             if len(tmp) < 8:
                                 rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5])
+                                               tmp[4], tmp[5], type)
                             else:
                                 rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5])
+                                               tmp[4], tmp[5], type)
                                 # Removed leading [sd]app_ and unescape spaces
                                 pat_space = re.compile('%20')
                                 if tmp[6] != "-":
                                     rule.dapp = pat_space.sub(' ', tmp[6])
                                 if tmp[7] != "-":
                                     rule.sapp = pat_space.sub(' ', tmp[7])
-                            if len(tmp) == 7 or len(tmp) == 9:
-                                (type, interface) = tmp[-1].split('_')
+                            if interface != "":
                                 rule.set_interface(type, interface)
+
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
                                         (tuple)
@@ -574,12 +592,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 action += "_" + r.logtype
 
             if r.dapp == "" and r.sapp == "":
-                tstr = "\n### tuple ### %s %s %s %s %s %s" % \
-                     (action, r.protocol, r.dport, r.dst, r.sport, r.src)
+                tstr = "\n### tuple ### %s %s %s %s %s %s %s" % \
+                     (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
+                      r.direction)
                 if r.interface_in != "":
-                    tstr += " in_%s" % (r.interface_in)
+                    tstr += "_%s" % (r.interface_in)
                 if r.interface_out != "":
-                    tstr += " out_%s" % (r.interface_out)
+                    tstr += "_%s" % (r.interface_out)
                 os.write(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -589,14 +608,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 sapp = "-"
                 if r.sapp:
                     sapp = pat_space.sub('%20', r.sapp)
-                tstr = "\n### tuple ### %s %s %s %s %s %s %s %s" % \
+                tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % \
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                        dapp, sapp)
+                        dapp, sapp, r.direction)
 
                 if r.interface_in != "":
-                    tstr += " in_%s" % (r.interface_in)
+                    tstr += "_%s" % (r.interface_in)
                 if r.interface_out != "":
-                    tstr += " out_%s" % (r.interface_out)
+                    tstr += "_%s" % (r.interface_out)
                 os.write(fd, tstr + "\n")
 
             chain = "%s-user-input" % (chain_prefix)
