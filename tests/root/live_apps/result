@@ -98,7 +98,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -287,7 +287,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -473,7 +473,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -552,7 +552,7 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -741,7 +741,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -804,7 +804,7 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -914,7 +914,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -934,7 +934,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -954,7 +954,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -998,7 +998,7 @@ WARN: Checks disabled
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -1028,7 +1028,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -1043,7 +1043,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -1063,7 +1063,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -1078,7 +1078,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -1098,7 +1098,7 @@ Rule updated (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -1131,7 +1131,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 To                         Action  From
@@ -1163,7 +1163,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -1203,19 +1203,19 @@ Rule inserted
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
 -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1322,37 +1322,37 @@ Rule inserted
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
@@ -1471,19 +1471,19 @@ Rule inserted (v6)
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
 -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1498,19 +1498,19 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba -
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 ::/0 any ::/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 ::/0 any ::/0 Dovecot%20POP3 - in
 -A ufw6-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 ::/0 any ::/0 Apache -
+### tuple ### allow tcp 80 ::/0 any ::/0 Apache - in
 -A ufw6-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 ::/0 any ::/0 Bind9 -
+### tuple ### allow any 53 ::/0 any ::/0 Bind9 - in
 -A ufw6-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw6-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1613,37 +1613,37 @@ Rule inserted
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
@@ -1658,13 +1658,13 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba -
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 ::/0 any ::/0
+### tuple ### allow any 22 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw6-user-input -p udp --dport 22 -j ACCEPT
 

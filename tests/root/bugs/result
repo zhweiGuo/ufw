@@ -15,7 +15,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
@@ -187,7 +187,7 @@ Setting IPV6 to yes
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -201,7 +201,7 @@ Default policy changed to 'allow'
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: allow
+Default: allow (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -215,7 +215,7 @@ Default policy changed to 'deny'
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
