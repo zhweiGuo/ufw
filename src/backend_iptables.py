@@ -402,7 +402,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
-    def _get_rules_from_formatted(self, frule, prefix):
+    def _get_rules_from_formatted(self, frule, prefix, suffix):
         '''Return list of iptables rules appropriate for sending'''
         snippets = []
 
@@ -445,13 +445,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     lstr = '-m state --state NEW ' + lstr
                 snippets[i] = pat_log.sub(r'\1-j \2\4', s)
                 snippets.insert(i, pat_log.sub(r'\1-j ' + prefix + \
-                                               '-user-logging-input', s))
+                                               '-user-logging-' + suffix, s))
                 snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
-                                                 '-user-logging-input',
+                                                 '-user-logging-' + suffix,
                                                  pat_log.sub(r'\1-j RETURN', \
                                                  s)))
                 snippets.insert(i, pat_chain.sub(r'\1 ' + prefix + \
-                                                 '-user-logging-input',
+                                                 '-user-logging-' + suffix,
                                                  pat_log.sub(r'\1' + lstr, s)))
 
         # adjust for limit
@@ -470,12 +470,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return snippets
 
-    def _get_lists_from_formatted(self, frule, prefix):
+    def _get_lists_from_formatted(self, frule, prefix, suffix):
         '''Return list of iptables rules appropriate for sending as arguments
            to cmd()
         '''
         snippets = []
-        str_snippets = self._get_rules_from_formatted(frule, prefix)
+        str_snippets = self._get_rules_from_formatted(frule, prefix, suffix)
 
         # split the string such that the log prefix can contain spaces
         pat = re.compile(r'(.*) --log-prefix (".* ")(.*)')
@@ -618,12 +618,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     tstr += "_%s" % (r.interface_out)
                 os.write(fd, tstr + "\n")
 
-            chain = "%s-user-input" % (chain_prefix)
+            chain_suffix = "input"
             if r.direction == "out":
-                chain = "%s-user-output" % (chain_prefix)
+                chain_suffix = "output"
+            chain = "%s-user-%s" % (chain_prefix, chain_suffix)
             rule_str = "-A %s %s\n" % (chain, r.format_rule())
 
-            for s in self._get_rules_from_formatted(rule_str, chain_prefix):
+            for s in self._get_rules_from_formatted(rule_str, chain_prefix, \
+                                                    chain_suffix):
                 os.write(fd, s)
 
         # Write footer
@@ -817,9 +819,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     exe = self.ip6tables
                     chain_prefix = "ufw6"
                     rstr += " (v6)"
-                chain = "%s-user-input" % (chain_prefix)
+                chain_suffix = "input"
                 if rule.direction == "out":
-                    chain = "%s-user-output" % (chain_prefix)
+                    chain_suffix = "output"
+                chain = "%s-user-%s" % (chain_prefix, chain_suffix)
           
 
                 # Is the firewall running?
@@ -831,7 +834,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 rule_str = "%s %s %s" % (flag, chain, rule.format_rule())
                 pat_log = re.compile(r'(-A +)(ufw6?-user-[a-z\-]+)(.*)')
                 for s in self._get_lists_from_formatted(rule_str, \
-                                                               chain_prefix):
+                                                        chain_prefix, \
+                                                        chain_suffix):
                     (rc, out) = cmd([exe] + s)
                     if rc != 0:
                         msg(out, sys.stderr)
