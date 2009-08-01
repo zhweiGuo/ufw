@@ -11,4 +11,6 @@ nftables backend (long term)
 
 Delete rule be rule number (LP: #367571)
 
+Clean up the rules parsing and tuples read and write
+
 Copyright 2008-2009 Canonical Ltd.
