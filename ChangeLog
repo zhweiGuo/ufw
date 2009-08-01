@@ -1,8 +1,10 @@
 ufw (0.29) UNRELEASED; urgency=low
 
-  * add egress filtering support
+  * add egress filtering support:
+    - CLI command allows specifying direction in simple and extended syntax
+    - status reporting shows outgoing policy and outgoing rules
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 26 Jul 2009 10:04:27 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 01 Aug 2009 17:41:03 -0400
 
 ufw (0.28) RELEASED; urgency=low
 
