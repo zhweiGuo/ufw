@@ -119,6 +119,11 @@ def parse_command(argv):
             action = "show-raw"
 
     if action == "default":
+        direction = "incoming"
+        if nargs > 3:
+            if argv[3].lower() != "incoming" and argv[3].lower() != "outgoing":
+                raise ValueError()
+            direction = argv[3].lower()
         if nargs < 3:
             raise ValueError()
         elif argv[2].lower() == "deny":
@@ -129,6 +134,8 @@ def parse_command(argv):
             action = "default-reject"
         else:
             raise ValueError()
+
+        action += "-%s" % (direction)
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
@@ -602,11 +609,11 @@ class UFWFrontend:
 
         return res
 
-    def set_default_policy(self, policy):
+    def set_default_policy(self, policy, direction):
         '''Sets default policy of firewall'''
         res = ""
         try:
-            res = self.backend.set_default_policy(policy)
+            res = self.backend.set_default_policy(policy, direction)
             if self.backend._is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
@@ -840,12 +847,12 @@ class UFWFrontend:
                 res = self.set_loglevel("on")
         elif action == "logging-off":
             res = self.set_loglevel("off")
-        elif action == "default-allow":
-            res = self.set_default_policy("allow")
-        elif action == "default-deny":
-            res = self.set_default_policy("deny")
-        elif action == "default-reject":
-            res = self.set_default_policy("reject")
+        elif action.startswith("default-"):
+            err_msg = _("Unsupported default policy")
+            tmp = action.split('-')
+            if len(tmp) != 3:
+                raise UFWError(err_msg)
+            res = self.set_default_policy(tmp[1], tmp[2])
         elif action == "status":
             res = self.get_status()
         elif action == "status-verbose":

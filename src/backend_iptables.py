@@ -85,30 +85,39 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rstr
 
-    def set_default_policy(self, policy):
+    def set_default_policy(self, policy, direction):
         '''Sets default policy of firewall'''
         if not self.dryrun:
             if policy != "allow" and policy != "deny" and policy != "reject":
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
+            if direction != "incoming" and direction != "outgoing":
+                err_msg = _("Unsupported policy for direction '%s'") % \
+                            (direction)
+                raise UFWError(err_msg)
+
+            chain = "INPUT"
+            if direction == "outgoing":
+                chain = "OUTPUT"
+
             old_log_str = ''
             new_log_str = ''
             if policy == "allow":
                 self.set_default(self.files['defaults'], \
-                                            "DEFAULT_INPUT_POLICY", \
+                                            "DEFAULT_%s_POLICY" % (chain), \
                                             "\"ACCEPT\"")
                 old_log_str = 'UFW BLOCK'
                 new_log_str = 'UFW ALLOW'
             elif policy == "reject":
                 self.set_default(self.files['defaults'], \
-                                            "DEFAULT_INPUT_POLICY", \
+                                            "DEFAULT_%s_POLICY" % (chain), \
                                             "\"REJECT\"")
                 old_log_str = 'UFW ALLOW'
                 new_log_str = 'UFW BLOCK'
             else:
                 self.set_default(self.files['defaults'], \
-                                            "DEFAULT_INPUT_POLICY", \
+                                            "DEFAULT_%s_POLICY" % (chain), \
                                             "\"DROP\"")
                 old_log_str = 'UFW ALLOW'
                 new_log_str = 'UFW BLOCK'
@@ -130,7 +139,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                 ufw.util.close_files(fns)
 
-        rstr = _("Default policy changed to '%s'\n") % (policy)
+        rstr = _("Default %s policy changed to '%s'\n") % (direction, policy)
         rstr += _("(be sure to update your rules accordingly)")
 
         return rstr
@@ -173,32 +182,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return out
 
         err_msg = _("problem running")
-        have_rules = False
         for direction in ["input", "output"]:
             # Is the firewall loaded at all?
-            (rc, out) = cmd([self.iptables, '-L', \
-                            'ufw-user-%s' % (direction), '-n'])
+            (rc, out) = cmd([self.iptables, '-S', \
+                            'ufw-user-%s' % (direction)])
             if rc != 0:
                 return _("Status: inactive")
 
             if self.use_ipv6():
-                (rc, out6) = cmd([self.ip6tables, '-L', \
-                                 'ufw6-user-%s' % (direction), '-n'])
+                (rc, out6) = cmd([self.ip6tables, '-S', \
+                                 'ufw6-user-%s' % (direction)])
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
-            if out != "" or out6 != "":
-                have_rules = True
-                break
-
-        if not have_rules:
-            return _("Status: active")
-
         str = ""
+        str_out = ""
         rules = self.rules + self.rules6
         count = 1
         app_rules = {}
         for r in rules:
+            tmp_str = ""
             location = {}
             tuple = ""
             show_proto = True
@@ -281,35 +284,58 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if loc == 'src' and r.interface_out != "":
                     location[loc] += " on %s" % (r.interface_out)
 
-            if show_count:
-                str += "[%2d] " % (count)
-
             attribs = []
             attrib_str = ""
             if r.logtype or r.direction.lower() == "out":
                 if r.logtype:
                     attribs.append(r.logtype.lower())
-                if r.direction.lower() == "out":
-                    attribs.append(r.direction.lower())
-                attrib_str = " (%s)" % (', '.join(attribs))
-            str += "%-26s %-8s%s%s\n" % (location['dst'], r.action.upper(), \
-                    location['src'], attrib_str)
+                if show_count and r.direction == "out":
+                    attribs.append(r.direction)
+                if len(attribs) > 0:
+                    attrib_str = " (%s)" % (', '.join(attribs))
+
+            # now contruct the rule output string
+            if show_count:
+                tmp_str += "[%2d] " % (count)
+
+            tmp_str += "%-26s %-12s%s%s\n" % (location['dst'], \
+                                             " ".join([r.action.upper(), \
+                                                       r.direction.upper()]), \
+                                             location['src'], attrib_str)
+
+            # Show the list in the order given if a numbered list, otherwise
+            # split incoming and outgoing rules
+            if show_count:
+                str += tmp_str
+            else:
+                if r.direction == "out":
+                    str_out += tmp_str
+                else:
+                    str += tmp_str
             count += 1
 
-        if str != "":
-            header = "\n\n"
+        if str != "" or str_out != "":
+            full_str = "\n\n"
             if show_count:
-                header += "     "
+                full_str += "     "
             str_to = _("To")
             str_from = _("From")
             str_action = _("Action")
-            header += "%-26s %-8s%s\n" % (str_to, str_action, str_from)
+            rules_header = "%-26s %-12s%s\n" % (str_to, str_action, str_from)
             if show_count:
-                header += "     "
-            header += "%-26s %-8s%s\n" % ("-" * len(str_to), \
-                                          "-" * len(str_action), \
-                                          "-" * len(str_from))
-            str = header + str
+                rules_header += "     "
+            rules_header += "%-26s %-12s%s\n" % ("-" * len(str_to), \
+                                                 "-" * len(str_action), \
+                                                 "-" * len(str_from))
+            full_str += rules_header
+            if str != "":
+                full_str += str
+            if str != "" and str_out != "":
+                full_str += _("\n")
+            if str_out != "":
+                full_str += str_out
+
+            str = full_str
 
         if verbose:
             (level, logging_str) = self.get_loglevel()
