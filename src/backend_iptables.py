@@ -284,11 +284,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if show_count:
                 str += "[%2d] " % (count)
 
-            log_str = ""
-            if r.logtype:
-                log_str = " (%s)" % (r.logtype.lower())
+            attribs = []
+            attrib_str = ""
+            if r.logtype or r.direction.lower() == "out":
+                if r.logtype:
+                    attribs.append(r.logtype.lower())
+                if r.direction.lower() == "out":
+                    attribs.append(r.direction.lower())
+                attrib_str = " (%s)" % (', '.join(attribs))
             str += "%-26s %-8s%s%s\n" % (location['dst'], r.action.upper(), \
-                    location['src'], log_str)
+                    location['src'], attrib_str)
             count += 1
 
         if str != "":
