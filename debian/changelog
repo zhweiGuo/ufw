@@ -1,3 +1,17 @@
+ufw (0.28-3) UNRELEASED; urgency=low
+
+  * Debconf translation updates:
+    - Galician (thanks to Marce Villarino. closes: #538383)
+    - Japanese (thanks to Hideki Yamane. closes: #539595)
+    - Portuguese (thanks to Américo Monteiro. closes: #538908)
+    - Basque (thanks to Piarres Beobide. closes: #539077)
+    - Czech (thanks to Michal Simunek)
+    - Slovak (thanks to Ivan Masár. closes: #534450)
+    - Swedish (thanks to Martin Bagge. closes: #538336)
+    - verify/update the above to fix typo in template (closes: #534231)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 02 Aug 2009 23:48:23 -0500
+
 ufw (0.28-2) unstable; urgency=low
 
   * debian/templates: also fix typo in master template

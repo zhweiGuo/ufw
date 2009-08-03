@@ -1,55 +1,45 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) 2009 Jamie Strandboge <jamie@ubuntu.com>
+# This file is distributed under the same license as the ufw package.
+# Hideki Yamane (Debian-JP), 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ufw\n"
+"Project-Id-Version: ufw 0.28-1\n"
 "Report-Msgid-Bugs-To: ufw@packages.debian.org\n"
 "POT-Creation-Date: 2009-07-24 15:31-0500\n"
-"PO-Revision-Date: 2009-07-24 23:56+0100\n"
-"Last-Translator: Martin Bagge <brother@bsnet.se>\n"
-"Language-Team: Swedish <debian-l10n-swedish@lists.debian.org>\n"
+"PO-Revision-Date: 2009-07-26 21:32+0900\n"
+"Last-Translator: Hideki Yamane (Debian-JP) <henrich@debian.or.jp>\n"
+"Language-Team: Japanese <debian-japanese@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Swedish\n"
-"X-Poedit-Country: Sweden\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
 #. Type: error
 #. Description
 #: ../templates:2001
 msgid "Existing configuration found"
-msgstr "Äldre inställningar funna"
+msgstr "既存の設定が見つかりました"
 
 #. Type: error
 #. Description
 #: ../templates:2001
-#| msgid ""
-#| "An existing configuration for ufw has been found. Existing rules must be "
-#| "managed manually."
 msgid ""
 "An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
-"Inställningar för en tidigare version av ufw har hittats. Existerande regler "
-"måste hanteras manuellt."
+"ufw の既存の設定が見つかりました。既存のルールは手動で管理する必要があります。"
 
 #. Type: error
 #. Description
 #: ../templates:2001
 msgid "You should read the ufw(8) manpage for details about ufw configuration."
-msgstr ""
-"Du bör läsa manualsidan ufw(8) för detaljerad information om ufws "
-"inställningar."
+msgstr "ufw の設定の詳細については、ufw(8) の man ページを読んでください。"
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "Start ufw automatically?"
-msgstr "Starta ufw automatiskt?"
+msgstr "ufw を自動的に開始しますか?"
 
 #. Type: boolean
 #. Description
@@ -58,20 +48,20 @@ msgid ""
 "If you choose this option, the rules you are about to set will be enabled "
 "during system startup so that this host is protected as early as possible."
 msgstr ""
-"Om du väljer detta alternativ kommer reglerna du anger att aktiveras vid "
-"systemets uppstart för att försäkra att värden är så skyddad som möjligt."
+"このオプションを選んだ場合、適用しようとしているルールはシステム起動時に"
+"有効になるので、可能な限り早くにこのホストは保護されることになります。"
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "To protect this host immediately, you must start ufw manually."
-msgstr "För att skydda värden omedelbart måste du starta ufw manuellt."
+msgstr "このホストを今すぐに保護するには、ufw を手動で開始する必要があります。"
 
 #. Type: multiselect
 #. Description
 #: ../templates:4001
 msgid "Authorized services:"
-msgstr "Tillåtna tjänster:"
+msgstr "許可するサービス:"
 
 #. Type: multiselect
 #. Description
@@ -79,19 +69,19 @@ msgstr "Tillåtna tjänster:"
 msgid ""
 "Please choose the services that should be available for incoming connections."
 msgstr ""
-"Ange vilka tjänster som ska vara tillgängliga för inkommande anslutningar."
+"外部からの接続を可能にする必要があるサービスを選んでください。"
 
 #. Type: multiselect
 #. Description
 #: ../templates:4001
 msgid "Other services may be specified in the next configuration step."
-msgstr "Andra tjänster kan anges i nästa inställningssteg."
+msgstr "他のサービスについては次の設定項目で指定します。"
 
 #. Type: string
 #. Description
 #: ../templates:5001
 msgid "Additional authorized services:"
-msgstr "Ytterligare tillåtna tjänster:"
+msgstr "許可するサービスの追加:"
 
 #. Type: string
 #. Description
@@ -101,9 +91,8 @@ msgid ""
 "to open. You may use a service name (as found in /etc/services), a port "
 "number, or a port number with protocol."
 msgstr ""
-"Ange en lista separerad med mellanslag över ytterligare portar som du vill "
-"ha öppna. Du kan ange tjänstenamn (enligt vad som specificeras i /etc/"
-"services), ett portnummer eller ett portnummer tillsammans med protokoll."
+"追加で開放したいポートを空白で区切ったリストで入力してください。(/etc/services "
+"に記述がある) サービス名、ポート番号、ポート番号とプロトコルが使えます。"
 
 #. Type: string
 #. Description
@@ -112,5 +101,6 @@ msgid ""
 "Example: to allow a web server, port 53 and tcp port 22, you should enter "
 "\"www 53 22/tcp\"."
 msgstr ""
-"Exempel: för att tillåta en webbserver, port 53 och tcp-port 22 kan du ange "
-"\"www 53 22/tcp\"."
+"例: ウェブサーバと53番ポート、そして tcpの22番ポートを許可するには、"
+"「www 53 22/tcp」と入力してください。"
+

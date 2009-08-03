@@ -1,55 +1,50 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) 2009
+# This file is distributed under the same license as the ufw package.
 #
+# Marce Villarino <mvillarino@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: ufw@packages.debian.org\n"
 "POT-Creation-Date: 2009-07-24 15:31-0500\n"
-"PO-Revision-Date: 2009-07-24 23:56+0100\n"
-"Last-Translator: Martin Bagge <brother@bsnet.se>\n"
-"Language-Team: Swedish <debian-l10n-swedish@lists.debian.org>\n"
+"PO-Revision-Date: 2009-07-25 14:08+0200\n"
+"Last-Translator: Marce Villarino <mvillarino@gmail.com>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Swedish\n"
-"X-Poedit-Country: Sweden\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Lokalize 0.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Type: error
 #. Description
 #: ../templates:2001
 msgid "Existing configuration found"
-msgstr "Äldre inställningar funna"
+msgstr "Achouse unha configuraciÃ³n xa existente"
 
 #. Type: error
 #. Description
 #: ../templates:2001
-#| msgid ""
-#| "An existing configuration for ufw has been found. Existing rules must be "
-#| "managed manually."
 msgid ""
 "An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
-"Inställningar för en tidigare version av ufw har hittats. Existerande regler "
-"måste hanteras manuellt."
+"Atopouse unha configuraciÃ³n de ufw preexistente. As regras xa existentes "
+"deben xestionarse manualmente."
 
 #. Type: error
 #. Description
 #: ../templates:2001
 msgid "You should read the ufw(8) manpage for details about ufw configuration."
 msgstr ""
-"Du bör läsa manualsidan ufw(8) för detaljerad information om ufws "
-"inställningar."
+"DeberÃ­a ler a pÃ¡xina de manual de ufw(8) para coÃ±ecer mÃ¡is detalles acerca "
+"da configuraciÃ³n de ufw."
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "Start ufw automatically?"
-msgstr "Starta ufw automatiskt?"
+msgstr "Desexa iniciar ufw automaticamente?"
 
 #. Type: boolean
 #. Description
@@ -58,20 +53,22 @@ msgid ""
 "If you choose this option, the rules you are about to set will be enabled "
 "during system startup so that this host is protected as early as possible."
 msgstr ""
-"Om du väljer detta alternativ kommer reglerna du anger att aktiveras vid "
-"systemets uppstart för att försäkra att värden är så skyddad som möjligt."
+"Se escolle esta opciÃ³n activaranse durante o arrinque do sistema as regras "
+"que estÃ¡ a piques de estabelecer, de tal xeito que este servidor estarÃ¡ "
+"protexido tan axiÃ±a como se poda."
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "To protect this host immediately, you must start ufw manually."
-msgstr "För att skydda värden omedelbart måste du starta ufw manuellt."
+msgstr ""
+"Para protexer esta mÃ¡quina inmediatamente debe iniciar manualmente ufw."
 
 #. Type: multiselect
 #. Description
 #: ../templates:4001
 msgid "Authorized services:"
-msgstr "Tillåtna tjänster:"
+msgstr "Servizos autorizados:"
 
 #. Type: multiselect
 #. Description
@@ -79,19 +76,19 @@ msgstr "Tillåtna tjänster:"
 msgid ""
 "Please choose the services that should be available for incoming connections."
 msgstr ""
-"Ange vilka tjänster som ska vara tillgängliga för inkommande anslutningar."
+"Escolla os servizos que deben estar dispoÃ±Ã­beis para as conexiÃ³ns entrantes."
 
 #. Type: multiselect
 #. Description
 #: ../templates:4001
 msgid "Other services may be specified in the next configuration step."
-msgstr "Andra tjänster kan anges i nästa inställningssteg."
+msgstr "Poden especificarse outros servizos no seguinte paso da configuraciÃ³n."
 
 #. Type: string
 #. Description
 #: ../templates:5001
 msgid "Additional authorized services:"
-msgstr "Ytterligare tillåtna tjänster:"
+msgstr "Servizos adicionais autorizados:"
 
 #. Type: string
 #. Description
@@ -101,9 +98,10 @@ msgid ""
 "to open. You may use a service name (as found in /etc/services), a port "
 "number, or a port number with protocol."
 msgstr ""
-"Ange en lista separerad med mellanslag över ytterligare portar som du vill "
-"ha öppna. Du kan ange tjänstenamn (enligt vad som specificeras i /etc/"
-"services), ett portnummer eller ett portnummer tillsammans med protokoll."
+"Introduza unha lista delimitada por espazos cos portos adicionais que desexa "
+"abrir. Pode empregar o nome do servizo (tal como aparece en /etc/services), "
+"o "
+"nÃºmero de porto, ou un nÃºmero de porto xunto co protocolo."
 
 #. Type: string
 #. Description
@@ -112,5 +110,6 @@ msgid ""
 "Example: to allow a web server, port 53 and tcp port 22, you should enter "
 "\"www 53 22/tcp\"."
 msgstr ""
-"Exempel: för att tillåta en webbserver, port 53 och tcp-port 22 kan du ange "
-"\"www 53 22/tcp\"."
+"Exemplo: para permitir un servidor web, o porto 53 e o porto tcp 22, deberÃ­a "
+"escribir: Â«www 53 22/tcpÂ»."
+

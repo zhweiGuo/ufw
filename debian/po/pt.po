@@ -5,10 +5,10 @@
 # Américo Monteiro <a_monteiro@netcabo.pt>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: ufw 0.27.1-2\n"
+"Project-Id-Version: ufw 0.28-1\n"
 "Report-Msgid-Bugs-To: ufw@packages.debian.org\n"
-"POT-Creation-Date: 2009-06-16 23:11+0100\n"
-"PO-Revision-Date: 2009-06-17 00:16+0100\n"
+"POT-Creation-Date: 2009-07-24 15:31-0500\n"
+"PO-Revision-Date: 2009-07-25 16:16+0100\n"
 "Last-Translator: Américo Monteiro <a_monteiro@netcabo.pt>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,9 @@ msgstr "Foi encontrada configuração existente"
 #. Type: error
 #. Description
 #: ../templates:2001
+#| msgid ""
+#| "An existing configuration for ufw has been found. Existing rules must be "
+#| "managed manually."
 msgid ""
 "An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
@@ -36,7 +39,9 @@ msgstr ""
 #. Description
 #: ../templates:2001
 msgid "You should read the ufw(8) manpage for details about ufw configuration."
-msgstr "Você deverá ler o manual do ufw(8) para detalhes acerca da configuração do ufw."
+msgstr ""
+"Você deverá ler o manual do ufw(8) para detalhes acerca da configuração do "
+"ufw."
 
 #. Type: boolean
 #. Description
@@ -52,14 +57,16 @@ msgid ""
 "during system startup so that this host is protected as early as possible."
 msgstr ""
 "Se você escolher esta opção, as regras que está prestes a definir irão ser "
-"activadas durante o arranque do sistema para que esta máquina fique protegida "
-"o mais cedo possível."
+"activadas durante o arranque do sistema para que esta máquina fique "
+"protegida o mais cedo possível."
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "To protect this host immediately, you must start ufw manually."
-msgstr "para proteger esta máquina imediatamente, você deve arrancar manualmente o ufw."
+msgstr ""
+"Para proteger esta máquina imediatamente, você deve arrancar manualmente o "
+"ufw."
 
 #. Type: multiselect
 #. Description
@@ -71,7 +78,8 @@ msgstr "Serviços autorizados:"
 #. Description
 #: ../templates:4001
 msgid "Please choose the services that should be available for incoming connections."
-msgstr "Por favor escolha os serviços que deverão estar disponíveis para ligações "
+msgstr ""
+"Por favor escolha os serviços que deverão estar disponíveis para ligações "
 "recebidas."
 
 #. Type: multiselect
@@ -95,9 +103,8 @@ msgid ""
 "number, or a port number with protocol."
 msgstr ""
 "Por favor indique uma lista separada por espaços de quaisquer portos "
-"adicionais que deseja abrir. Você pode usar um nome de serviço (conforme "
-" /etc/services), um número de porto, ou um número de porto "
-"com protocolo."
+"adicionais que deseja abrir. Você pode usar um nome de serviço (conforme  /"
+"etc/services), um número de porto, ou um número de porto com protocolo."
 
 #. Type: string
 #. Description
@@ -108,3 +115,4 @@ msgid ""
 msgstr ""
 "Exemplo: para permitir um servidor web, porto 53 e porto tcp 22, você deve "
 "indicar \"www 53 22/tcp\"."
+
