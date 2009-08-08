@@ -11,7 +11,7 @@ use interface for the user.
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBenable|disable|reload\fR
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject
+ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject [incoming|outgoing]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off|LEVEL
 .TP
@@ -45,10 +45,11 @@ unloads firewall and disables firewall on boot
 \fBreload\fR
 reloads firewall
 .TP
-\fBdefault\fR allow|deny|reject
-change the default policy for incoming traffic. Note that existing rules will
-have to be migrated manually when changing the default policy. See
-\fBRULE SYNTAX\fR for more on \fBdeny\fR and \fBreject\fR.
+\fBdefault\fR allow|deny|reject DIRECTION
+change the default policy for traffic going DIRECTION, where DIRECTION is one
+of \fBincoming\fR or \fBoutgoing\fR. Note that existing rules will have to be
+migrated manually when changing the default policy. See \fBRULE SYNTAX\fR for
+more on \fBdeny\fR and \fBreject\fR.
 .TP
 \fBlogging\fR on|off|LEVEL
 toggle logging. Logged packets use the LOG_KERN syslog facility. Specifying a

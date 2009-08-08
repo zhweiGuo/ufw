@@ -91,25 +91,25 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-53                         ALLOW   Anywhere
-23/tcp                     ALLOW   Anywhere
-25/tcp                     ALLOW   Anywhere
-80/tcp                     DENY    Anywhere
-192.168.0.1 25/tcp         DENY    10.0.0.0/8
-Anywhere                   ALLOW   10.0.0.0/8
-Anywhere                   ALLOW   172.16.0.0/12
-Anywhere                   ALLOW   192.168.0.0/16
-514/udp                    DENY    1.2.3.4
-1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
-22/tcp                     LIMIT   Anywhere
-53                         ALLOW   Anywhere (v6)
-23/tcp                     ALLOW   Anywhere (v6)
-25/tcp                     ALLOW   Anywhere (v6)
-80/tcp                     DENY    Anywhere (v6)
-25/tcp                     DENY    2001:db8::/32
-2001:db8:3:4:5:6:7:8       DENY    2001:db8::/32 26
+To                         Action      From
+--                         ------      ----
+53                         ALLOW       Anywhere
+23/tcp                     ALLOW       Anywhere
+25/tcp                     ALLOW       Anywhere
+80/tcp                     DENY        Anywhere
+192.168.0.1 25/tcp         DENY        10.0.0.0/8
+Anywhere                   ALLOW       10.0.0.0/8
+Anywhere                   ALLOW       172.16.0.0/12
+Anywhere                   ALLOW       192.168.0.0/16
+514/udp                    DENY        1.2.3.4
+1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp
+22/tcp                     LIMIT       Anywhere
+53                         ALLOW       Anywhere (v6)
+23/tcp                     ALLOW       Anywhere (v6)
+25/tcp                     ALLOW       Anywhere (v6)
+80/tcp                     DENY        Anywhere (v6)
+25/tcp                     DENY        2001:db8::/32
+2001:db8:3:4:5:6:7:8       DENY        2001:db8::/32 26
 
 
 
@@ -320,19 +320,19 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-53                         ALLOW   Anywhere
-23/tcp                     ALLOW   Anywhere
-25/tcp                     ALLOW   Anywhere
-80/tcp                     DENY    Anywhere
-192.168.0.1 25/tcp         DENY    10.0.0.0/8
-Anywhere                   ALLOW   10.0.0.0/8
-Anywhere                   ALLOW   172.16.0.0/12
-Anywhere                   ALLOW   192.168.0.0/16
-514/udp                    DENY    1.2.3.4
-1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
-22/tcp                     LIMIT   Anywhere
+To                         Action      From
+--                         ------      ----
+53                         ALLOW       Anywhere
+23/tcp                     ALLOW       Anywhere
+25/tcp                     ALLOW       Anywhere
+80/tcp                     DENY        Anywhere
+192.168.0.1 25/tcp         DENY        10.0.0.0/8
+Anywhere                   ALLOW       10.0.0.0/8
+Anywhere                   ALLOW       172.16.0.0/12
+Anywhere                   ALLOW       192.168.0.0/16
+514/udp                    DENY        1.2.3.4
+1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp
+22/tcp                     LIMIT       Anywhere
 
 
 
@@ -471,14 +471,14 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-113                        REJECT  Anywhere
-114/tcp                    REJECT  Anywhere
-115/udp                    REJECT  Anywhere
-113                        REJECT  Anywhere (v6)
-114/tcp                    REJECT  Anywhere (v6)
-115/udp                    REJECT  Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+113                        REJECT      Anywhere
+114/tcp                    REJECT      Anywhere
+115/udp                    REJECT      Anywhere
+113                        REJECT      Anywhere (v6)
+114/tcp                    REJECT      Anywhere (v6)
+115/udp                    REJECT      Anywhere (v6)
 
 
 
@@ -551,11 +551,11 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-113                        REJECT  Anywhere
-114/tcp                    REJECT  Anywhere
-115/udp                    REJECT  Anywhere
+To                         Action      From
+--                         ------      ----
+113                        REJECT      Anywhere
+114/tcp                    REJECT      Anywhere
+115/udp                    REJECT      Anywhere
 
 
 
@@ -687,25 +687,25 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] 53                         ALLOW   Anywhere
-[ 2] 23/tcp                     ALLOW   Anywhere
-[ 3] 25/tcp                     ALLOW   Anywhere
-[ 4] 80/tcp                     DENY    Anywhere
-[ 5] 192.168.0.1 25/tcp         DENY    10.0.0.0/8
-[ 6] Anywhere                   ALLOW   10.0.0.0/8
-[ 7] Anywhere                   ALLOW   172.16.0.0/12
-[ 8] Anywhere                   ALLOW   192.168.0.0/16
-[ 9] 514/udp                    DENY    1.2.3.4
-[10] 1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
-[11] 22/tcp                     LIMIT   Anywhere
-[12] 53                         ALLOW   Anywhere (v6)
-[13] 23/tcp                     ALLOW   Anywhere (v6)
-[14] 25/tcp                     ALLOW   Anywhere (v6)
-[15] 80/tcp                     DENY    Anywhere (v6)
-[16] 25/tcp                     DENY    2001:db8::/32
-[17] 2001:db8:3:4:5:6:7:8       DENY    2001:db8::/32 26
+     To                         Action      From
+     --                         ------      ----
+[ 1] 53                         ALLOW IN    Anywhere
+[ 2] 23/tcp                     ALLOW IN    Anywhere
+[ 3] 25/tcp                     ALLOW IN    Anywhere
+[ 4] 80/tcp                     DENY IN     Anywhere
+[ 5] 192.168.0.1 25/tcp         DENY IN     10.0.0.0/8
+[ 6] Anywhere                   ALLOW IN    10.0.0.0/8
+[ 7] Anywhere                   ALLOW IN    172.16.0.0/12
+[ 8] Anywhere                   ALLOW IN    192.168.0.0/16
+[ 9] 514/udp                    DENY IN     1.2.3.4
+[10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp
+[11] 22/tcp                     LIMIT IN    Anywhere
+[12] 53                         ALLOW IN    Anywhere (v6)
+[13] 23/tcp                     ALLOW IN    Anywhere (v6)
+[14] 25/tcp                     ALLOW IN    Anywhere (v6)
+[15] 80/tcp                     DENY IN     Anywhere (v6)
+[16] 25/tcp                     DENY IN     2001:db8::/32
+[17] 2001:db8:3:4:5:6:7:8       DENY IN     2001:db8::/32 26
 
 
 
@@ -850,19 +850,19 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] 53                         ALLOW   Anywhere
-[ 2] 23/tcp                     ALLOW   Anywhere
-[ 3] 25/tcp                     ALLOW   Anywhere
-[ 4] 80/tcp                     DENY    Anywhere
-[ 5] 192.168.0.1 25/tcp         DENY    10.0.0.0/8
-[ 6] Anywhere                   ALLOW   10.0.0.0/8
-[ 7] Anywhere                   ALLOW   172.16.0.0/12
-[ 8] Anywhere                   ALLOW   192.168.0.0/16
-[ 9] 514/udp                    DENY    1.2.3.4
-[10] 1.2.3.4 5469/udp           ALLOW   1.2.3.5 5469/udp
-[11] 22/tcp                     LIMIT   Anywhere
+     To                         Action      From
+     --                         ------      ----
+[ 1] 53                         ALLOW IN    Anywhere
+[ 2] 23/tcp                     ALLOW IN    Anywhere
+[ 3] 25/tcp                     ALLOW IN    Anywhere
+[ 4] 80/tcp                     DENY IN     Anywhere
+[ 5] 192.168.0.1 25/tcp         DENY IN     10.0.0.0/8
+[ 6] Anywhere                   ALLOW IN    10.0.0.0/8
+[ 7] Anywhere                   ALLOW IN    172.16.0.0/12
+[ 8] Anywhere                   ALLOW IN    192.168.0.0/16
+[ 9] 514/udp                    DENY IN     1.2.3.4
+[10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp
+[11] 22/tcp                     LIMIT IN    Anywhere
 
 
 
@@ -999,22 +999,22 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] Anywhere on eth1           ALLOW   Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT  Anywhere
-[ 3] Anywhere on eth1           LIMIT   10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW   10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY    10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT  10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT   10.0.0.1 80
-[ 8] Anywhere on eth0           ALLOW   Anywhere (log)
-[ 9] 10.0.0.1 24/tcp on eth0    ALLOW   192.168.0.1 (log)
-[10] 10.0.0.1 25/tcp on eth0    DENY    192.168.0.1 (log-all)
-[11] Samba on eth0              ALLOW   Anywhere
-[12] Anywhere (v6) on eth1      ALLOW   Anywhere (v6)
-[13] Anywhere (v6) on eth0      ALLOW   Anywhere (v6) (log)
-[14] Samba (v6) on eth0         ALLOW   Anywhere (v6)
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
+[ 8] Anywhere on eth0           ALLOW IN    Anywhere (log)
+[ 9] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
+[10] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
+[11] Samba on eth0              ALLOW IN    Anywhere
+[12] Anywhere (v6) on eth1      ALLOW IN    Anywhere (v6)
+[13] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6) (log)
+[14] Samba (v6) on eth0         ALLOW IN    Anywhere (v6)
 
 
 
@@ -1028,24 +1028,24 @@ Rule inserted (v6)
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] Anywhere on eth1           ALLOW   Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT  Anywhere
-[ 3] Anywhere on eth1           LIMIT   10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW   10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY    10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT  10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT   10.0.0.1 80
-[ 8] Samba on eth2              ALLOW   Anywhere
-[ 9] Anywhere on eth0           ALLOW   Anywhere (log)
-[10] 10.0.0.1 24/tcp on eth0    ALLOW   192.168.0.1 (log)
-[11] 10.0.0.1 25/tcp on eth0    DENY    192.168.0.1 (log-all)
-[12] Samba on eth0              ALLOW   Anywhere
-[13] Anywhere (v6) on eth1      ALLOW   Anywhere (v6)
-[14] Samba (v6) on eth2         ALLOW   Anywhere (v6)
-[15] Anywhere (v6) on eth0      ALLOW   Anywhere (v6) (log)
-[16] Samba (v6) on eth0         ALLOW   Anywhere (v6)
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
+[ 8] Samba on eth2              ALLOW IN    Anywhere
+[ 9] Anywhere on eth0           ALLOW IN    Anywhere (log)
+[10] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
+[11] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
+[12] Samba on eth0              ALLOW IN    Anywhere
+[13] Anywhere (v6) on eth1      ALLOW IN    Anywhere (v6)
+[14] Samba (v6) on eth2         ALLOW IN    Anywhere (v6)
+[15] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6) (log)
+[16] Samba (v6) on eth0         ALLOW IN    Anywhere (v6)
 
 
 
@@ -1251,19 +1251,19 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] Anywhere on eth1           ALLOW   Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT  Anywhere
-[ 3] Anywhere on eth1           LIMIT   10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW   10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY    10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT  10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT   10.0.0.1 80
-[ 8] Anywhere on eth0           ALLOW   Anywhere (log)
-[ 9] 10.0.0.1 24/tcp on eth0    ALLOW   192.168.0.1 (log)
-[10] 10.0.0.1 25/tcp on eth0    DENY    192.168.0.1 (log-all)
-[11] Samba on eth0              ALLOW   Anywhere
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
+[ 8] Anywhere on eth0           ALLOW IN    Anywhere (log)
+[ 9] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
+[10] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
+[11] Samba on eth0              ALLOW IN    Anywhere
 
 
 
@@ -1276,20 +1276,20 @@ Rule inserted
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] Anywhere on eth1           ALLOW   Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT  Anywhere
-[ 3] Anywhere on eth1           LIMIT   10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW   10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY    10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT  10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT   10.0.0.1 80
-[ 8] Samba on eth2              ALLOW   Anywhere
-[ 9] Anywhere on eth0           ALLOW   Anywhere (log)
-[10] 10.0.0.1 24/tcp on eth0    ALLOW   192.168.0.1 (log)
-[11] 10.0.0.1 25/tcp on eth0    DENY    192.168.0.1 (log-all)
-[12] Samba on eth0              ALLOW   Anywhere
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
+[ 8] Samba on eth2              ALLOW IN    Anywhere
+[ 9] Anywhere on eth0           ALLOW IN    Anywhere (log)
+[10] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
+[11] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
+[12] Samba on eth0              ALLOW IN    Anywhere
 
 
 

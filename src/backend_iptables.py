@@ -298,9 +298,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if show_count:
                 tmp_str += "[%2d] " % (count)
 
+            dir_str = r.direction.upper()
+            if r.direction == "in" and not verbose and not show_count:
+                dir_str = ""
             tmp_str += "%-26s %-12s%s%s\n" % (location['dst'], \
                                              " ".join([r.action.upper(), \
-                                                       r.direction.upper()]), \
+                                                       dir_str]), \
                                              location['src'], attrib_str)
 
             # Show the list in the order given if a numbered list, otherwise

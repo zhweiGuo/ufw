@@ -27,7 +27,7 @@ Firewall is active and enabled on system startup
 
 5: default allow
 WARN: Checks disabled
-Default policy changed to 'allow'
+Default incoming policy changed to 'allow'
 (be sure to update your rules accordingly)
 
 
@@ -40,7 +40,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 6: default deny
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
@@ -53,7 +53,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 7: DEFAULT ALLOW
 WARN: Checks disabled
-Default policy changed to 'allow'
+Default incoming policy changed to 'allow'
 (be sure to update your rules accordingly)
 
 
@@ -66,7 +66,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 8: DEFAULT DENY
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
@@ -79,7 +79,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 9: default deny
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
