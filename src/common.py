@@ -93,7 +93,7 @@ class UFWRule:
         return rule
 
     def format_rule(self):
-        '''Format rule for for later parsing'''
+        '''Format rule for later parsing'''
         str = ""
 
         if self.interface_in != "":
