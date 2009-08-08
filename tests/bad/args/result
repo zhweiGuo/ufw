@@ -1478,10 +1478,10 @@ TESTING ARGS (interfaces)
 479: --dry-run allow in on eth0 any from to any proto
 
 
-480: --dry-run allow in on eth0 log
+480: --dry-run allow log in on eth0
 
 
-481: --dry-run allow in on eth0 log-all
+481: --dry-run allow log-all in on eth0
 
 
 482: --dry-run deny in on eth0:1
@@ -1517,10 +1517,10 @@ TESTING ARGS (interfaces)
 492: --dry-run deny in on eth0 any from to any proto
 
 
-493: --dry-run deny in on eth0 log
+493: --dry-run deny log in on eth0
 
 
-494: --dry-run deny in on eth0 log-all
+494: --dry-run deny log-all in on eth0
 
 
 495: --dry-run limit in on eth0:1
@@ -1556,9 +1556,9 @@ TESTING ARGS (interfaces)
 505: --dry-run limit in on eth0 any from to any proto
 
 
-506: --dry-run limit in on eth0 log
+506: --dry-run limit log in on eth0
 
 
-507: --dry-run limit in on eth0 log-all
+507: --dry-run limit log-all in on eth0
 
 

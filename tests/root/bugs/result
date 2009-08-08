@@ -15,7 +15,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
@@ -125,16 +125,16 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Anywhere                   ALLOW   Anywhere
-Anywhere/tcp               ALLOW   Anywhere/tcp
-192.168.1.1                ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.1.1/udp
-192.168.1.2                ALLOW   192.168.1.1
-192.168.1.2/udp            ALLOW   192.168.1.1/udp
-Anywhere (v6)              ALLOW   Anywhere (v6)
-Anywhere/tcp (v6)          ALLOW   Anywhere/tcp (v6)
+To                         Action      From
+--                         ------      ----
+Anywhere                   ALLOW       Anywhere
+Anywhere/tcp               ALLOW       Anywhere/tcp
+192.168.1.1                ALLOW       Anywhere
+Anywhere                   ALLOW       192.168.1.1/udp
+192.168.1.2                ALLOW       192.168.1.1
+192.168.1.2/udp            ALLOW       192.168.1.1/udp
+Anywhere (v6)              ALLOW       Anywhere (v6)
+Anywhere/tcp (v6)          ALLOW       Anywhere/tcp (v6)
 
 
 
@@ -187,13 +187,13 @@ Setting IPV6 to yes
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
 30: default allow
 WARN: Checks disabled
-Default policy changed to 'allow'
+Default incoming policy changed to 'allow'
 (be sure to update your rules accordingly)
 
 
@@ -201,13 +201,13 @@ Default policy changed to 'allow'
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: allow
+Default: allow (incoming), allow (outgoing)
 New profiles: skip
 
 
 32: default deny
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
@@ -215,7 +215,7 @@ Default policy changed to 'deny'
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -305,16 +305,16 @@ Rule inserted (v6)
 WARN: Checks disabled
 Status: active
 
-     To                         Action  From
-     --                         ------  ----
-[ 1] 1                          ALLOW   Anywhere
-[ 2] 2                          ALLOW   Anywhere
-[ 3] 3                          ALLOW   Anywhere
-[ 4] 4                          ALLOW   Anywhere
-[ 5] 1                          ALLOW   Anywhere (v6)
-[ 6] 2                          ALLOW   Anywhere (v6)
-[ 7] 3                          ALLOW   Anywhere (v6)
-[ 8] 4                          ALLOW   Anywhere (v6)
+     To                         Action      From
+     --                         ------      ----
+[ 1] 1                          ALLOW IN    Anywhere
+[ 2] 2                          ALLOW IN    Anywhere
+[ 3] 3                          ALLOW IN    Anywhere
+[ 4] 4                          ALLOW IN    Anywhere
+[ 5] 1                          ALLOW IN    Anywhere (v6)
+[ 6] 2                          ALLOW IN    Anywhere (v6)
+[ 7] 3                          ALLOW IN    Anywhere (v6)
+[ 8] 4                          ALLOW IN    Anywhere (v6)
 
 
 

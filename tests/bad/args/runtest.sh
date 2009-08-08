@@ -266,8 +266,8 @@ for j in "in"; do
         do_cmd "1" null --dry-run $i $j on eth0 from any to
         do_cmd "1" null --dry-run $i $j on eth0 any from
         do_cmd "1" null --dry-run $i $j on eth0 any from to any proto
-        do_cmd "1" null --dry-run $i $j on eth0 log
-        do_cmd "1" null --dry-run $i $j on eth0 log-all
+        do_cmd "1" null --dry-run $i log $j on eth0
+        do_cmd "1" null --dry-run $i log-all $j on eth0
     done
 done
 

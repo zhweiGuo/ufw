@@ -119,6 +119,11 @@ def parse_command(argv):
             action = "show-raw"
 
     if action == "default":
+        direction = "incoming"
+        if nargs > 3:
+            if argv[3].lower() != "incoming" and argv[3].lower() != "outgoing":
+                raise ValueError()
+            direction = argv[3].lower()
         if nargs < 3:
             raise ValueError()
         elif argv[2].lower() == "deny":
@@ -130,27 +135,25 @@ def parse_command(argv):
         else:
             raise ValueError()
 
+        action += "-%s" % (direction)
+
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
-        if nargs > 2 and (argv[2].lower() == "log" or \
-                          argv[2].lower() == 'log-all'):
-            if nargs < 4:
-                raise ValueError()
-            logtype = argv[2].lower()
+        # set/strip 
+        rule_direction = "in"
+        if nargs > 2 and (argv[2].lower() == "in" or \
+                          argv[2].lower() == "out"):
+            rule_direction = argv[2].lower()
 
-            # strip out 'log' or 'log-all' and parse as normal
+        # strip out direction if not an interface rule
+        if nargs > 3 and argv[3] != "on" and (argv[2].lower() == "in" or \
+                                              argv[2].lower() == "out"):
+            rule_direction = argv[2].lower()
             del argv[2]
             nargs = len(argv)
 
-        if "log" in argv:
-            err_msg = _("Option 'log' not allowed here")
-            raise UFWError(err_msg)
-
-        if "log-all" in argv:
-            err_msg = _("Option 'log-all' not allowed here")
-            raise UFWError(err_msg)
-
         # strip out 'on' as in 'allow in on eth0 ...'
+        has_interface = False
         if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
             err_msg = _("Invalid interface clause")
 
@@ -161,6 +164,29 @@ def parse_command(argv):
 
             del argv[3]
             nargs = len(argv)
+            has_interface = True
+
+        log_idx = 0
+        if has_interface and nargs > 4 and (argv[4].lower() == "log" or \
+                                            argv[4].lower() == 'log-all'):
+            log_idx = 4
+        elif nargs > 3 and (argv[2].lower() == "log" or \
+                           argv[2].lower() == 'log-all'):
+            log_idx = 2
+            
+        if log_idx > 0:
+            logtype = argv[log_idx].lower()
+            # strip out 'log' or 'log-all' and parse as normal
+            del argv[log_idx]
+            nargs = len(argv)
+
+        if "log" in argv:
+            err_msg = _("Option 'log' not allowed here")
+            raise UFWError(err_msg)
+
+        if "log-all" in argv:
+            err_msg = _("Option 'log-all' not allowed here")
+            raise UFWError(err_msg)
 
         if nargs < 3 or nargs > 14:
             raise ValueError()
@@ -168,7 +194,8 @@ def parse_command(argv):
         rule_action = action
         if logtype != "":
             rule_action += "_" + logtype
-        rule = ufw.common.UFWRule(rule_action, "any", "any")
+        rule = ufw.common.UFWRule(rule_action, "any", "any", \
+                                  direction=rule_direction)
         if remove:
             rule.remove = remove
         elif insert_pos != "":
@@ -210,12 +237,13 @@ def parse_command(argv):
         elif nargs % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
-        elif not 'from' in argv and not 'to' in argv and not 'in' in argv:
+        elif not 'from' in argv and not 'to' in argv and not 'in' in argv and \
+             not 'out' in argv:
             err_msg = _("Need 'to' or 'from' clause")
             raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in' ]
+            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in', 'out' ]
 
             # quick check
             if argv.count("to") > 1 or \
@@ -223,6 +251,7 @@ def parse_command(argv):
                argv.count("proto") > 1 or \
                argv.count("port") > 2 or \
                argv.count("in") > 1 or \
+               argv.count("out") > 1 or \
                argv.count("app") > 2 or \
                argv.count("app") > 0 and argv.count("proto") > 0:
                 err_msg = _("Improper rule syntax")
@@ -243,15 +272,17 @@ def parse_command(argv):
                     else:
                         err_msg = _("Invalid 'proto' clause")
                         raise UFWError(err_msg)
-                elif arg == "in":
+                elif arg == "in" or arg == "out":
                     if i+1 < nargs:
                         try:
-                            # for now, hardcode to 'in'
-                            rule.set_interface("in", argv[i+1])
+                            if arg == "in":
+                                rule.set_interface("in", argv[i+1])
+                            elif arg == "out":
+                                rule.set_interface("out", argv[i+1])
                         except Exception:
                             raise
                     else:
-                        err_msg = _("Invalid 'in' clause")
+                        err_msg = _("Invalid '%s' clause") % (arg)
                         raise UFWError(err_msg)
                 elif arg == "from":
                     if i+1 < nargs:
@@ -578,11 +609,11 @@ class UFWFrontend:
 
         return res
 
-    def set_default_policy(self, policy):
+    def set_default_policy(self, policy, direction):
         '''Sets default policy of firewall'''
         res = ""
         try:
-            res = self.backend.set_default_policy(policy)
+            res = self.backend.set_default_policy(policy, direction)
             if self.backend._is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
@@ -816,12 +847,12 @@ class UFWFrontend:
                 res = self.set_loglevel("on")
         elif action == "logging-off":
             res = self.set_loglevel("off")
-        elif action == "default-allow":
-            res = self.set_default_policy("allow")
-        elif action == "default-deny":
-            res = self.set_default_policy("deny")
-        elif action == "default-reject":
-            res = self.set_default_policy("reject")
+        elif action.startswith("default-"):
+            err_msg = _("Unsupported default policy")
+            tmp = action.split('-')
+            if len(tmp) != 3:
+                raise UFWError(err_msg)
+            res = self.set_default_policy(tmp[1], tmp[2])
         elif action == "status":
             res = self.get_status()
         elif action == "status-verbose":

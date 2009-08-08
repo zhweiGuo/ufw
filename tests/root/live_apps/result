@@ -72,25 +72,25 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Apache                     ALLOW   Anywhere
-Samba                      ALLOW   Anywhere
-Anywhere                   ALLOW   Samba
-Samba                      ALLOW   Bind9
-Samba                      ALLOW   22
-Apache                     ALLOW   88
-Apache (v6)                ALLOW   Anywhere (v6)
-Samba (v6)                 ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   Samba (v6)
-Samba (v6)                 ALLOW   Bind9 (v6)
-Samba (v6)                 ALLOW   22
-Apache (v6)                ALLOW   88
-2001:db8::/32 Samba        ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   2001:db8::/32 Samba
-2001:db8::/32 Samba        ALLOW   2001:db8::/32 Bind9
-2001:db8::/32 Samba        ALLOW   2001:db8::/32 22
-2001:db8::/32 Apache       ALLOW   2001:db8::/32 88
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere
+Samba                      ALLOW       Anywhere
+Anywhere                   ALLOW       Samba
+Samba                      ALLOW       Bind9
+Samba                      ALLOW       22
+Apache                     ALLOW       88
+Apache (v6)                ALLOW       Anywhere (v6)
+Samba (v6)                 ALLOW       Anywhere (v6)
+Anywhere (v6)              ALLOW       Samba (v6)
+Samba (v6)                 ALLOW       Bind9 (v6)
+Samba (v6)                 ALLOW       22
+Apache (v6)                ALLOW       88
+2001:db8::/32 Samba        ALLOW       Anywhere (v6)
+Anywhere (v6)              ALLOW       2001:db8::/32 Samba
+2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
+2001:db8::/32 Samba        ALLOW       2001:db8::/32 22
+2001:db8::/32 Apache       ALLOW       2001:db8::/32 88
 
 
 
@@ -98,40 +98,40 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-137,138/udp (Samba)        ALLOW   Anywhere
-139,445/tcp (Samba)        ALLOW   Anywhere
-Anywhere                   ALLOW   137,138/udp (Samba)
-Anywhere                   ALLOW   139,445/tcp (Samba)
-137,138/udp (Samba)        ALLOW   53/udp (Bind9)
-139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
-137,138/udp (Samba)        ALLOW   22/udp
-139,445/tcp (Samba)        ALLOW   22/tcp
-80/tcp (Apache)            ALLOW   88/tcp
-80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
-137,138/udp (Samba (v6))   ALLOW   Anywhere (v6)
-139,445/tcp (Samba (v6))   ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   137,138/udp (Samba (v6))
-Anywhere (v6)              ALLOW   139,445/tcp (Samba (v6))
-137,138/udp (Samba (v6))   ALLOW   53/udp (Bind9 (v6))
-139,445/tcp (Samba (v6))   ALLOW   53/tcp (Bind9 (v6))
-137,138/udp (Samba (v6))   ALLOW   22/udp
-139,445/tcp (Samba (v6))   ALLOW   22/tcp
-80/tcp (Apache (v6))       ALLOW   88/tcp
-2001:db8::/32 137,138/udp (Samba) ALLOW   Anywhere (v6)
-2001:db8::/32 139,445/tcp (Samba) ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   2001:db8::/32 137,138/udp (Samba)
-Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
-2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 53/udp (Bind9)
-2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 53/tcp (Bind9)
-2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 22/udp
-2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 22/tcp
-2001:db8::/32 80/tcp (Apache) ALLOW   2001:db8::/32 88/tcp
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+137,138/udp (Samba)        ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    137,138/udp (Samba)
+Anywhere                   ALLOW IN    139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW IN    53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW IN    53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW IN    22/udp
+139,445/tcp (Samba)        ALLOW IN    22/tcp
+80/tcp (Apache)            ALLOW IN    88/tcp
+80/tcp (Apache (v6))       ALLOW IN    Anywhere (v6)
+137,138/udp (Samba (v6))   ALLOW IN    Anywhere (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    Anywhere (v6)
+Anywhere (v6)              ALLOW IN    137,138/udp (Samba (v6))
+Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
+137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
+139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
+137,138/udp (Samba (v6))   ALLOW IN    22/udp
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
+80/tcp (Apache (v6))       ALLOW IN    88/tcp
+2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
+Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
+Anywhere (v6)              ALLOW IN    2001:db8::/32 139,445/tcp (Samba)
+2001:db8::/32 137,138/udp (Samba) ALLOW IN    2001:db8::/32 53/udp (Bind9)
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    2001:db8::/32 53/tcp (Bind9)
+2001:db8::/32 137,138/udp (Samba) ALLOW IN    2001:db8::/32 22/udp
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    2001:db8::/32 22/tcp
+2001:db8::/32 80/tcp (Apache) ALLOW IN    2001:db8::/32 88/tcp
 
 
 
@@ -267,19 +267,19 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Apache                     ALLOW   Anywhere
-Samba                      ALLOW   Anywhere
-Anywhere                   ALLOW   Samba
-Samba                      ALLOW   Bind9
-Samba                      ALLOW   22
-Apache                     ALLOW   88
-192.168.2.0/24 Samba       ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.2.0/24 Samba
-192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 Bind9
-192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 22
-192.168.2.0/24 Apache      ALLOW   192.168.2.0/24 88
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere
+Samba                      ALLOW       Anywhere
+Anywhere                   ALLOW       Samba
+Samba                      ALLOW       Bind9
+Samba                      ALLOW       22
+Apache                     ALLOW       88
+192.168.2.0/24 Samba       ALLOW       Anywhere
+Anywhere                   ALLOW       192.168.2.0/24 Samba
+192.168.2.0/24 Samba       ALLOW       192.168.2.0/24 Bind9
+192.168.2.0/24 Samba       ALLOW       192.168.2.0/24 22
+192.168.2.0/24 Apache      ALLOW       192.168.2.0/24 88
 
 
 
@@ -287,30 +287,30 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-137,138/udp (Samba)        ALLOW   Anywhere
-139,445/tcp (Samba)        ALLOW   Anywhere
-Anywhere                   ALLOW   137,138/udp (Samba)
-Anywhere                   ALLOW   139,445/tcp (Samba)
-137,138/udp (Samba)        ALLOW   53/udp (Bind9)
-139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
-137,138/udp (Samba)        ALLOW   22/udp
-139,445/tcp (Samba)        ALLOW   22/tcp
-80/tcp (Apache)            ALLOW   88/tcp
-192.168.2.0/24 137,138/udp (Samba) ALLOW   Anywhere
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.2.0/24 137,138/udp (Samba)
-Anywhere                   ALLOW   192.168.2.0/24 139,445/tcp (Samba)
-192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 53/udp (Bind9)
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 53/tcp (Bind9)
-192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 22/udp
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 22/tcp
-192.168.2.0/24 80/tcp (Apache) ALLOW   192.168.2.0/24 88/tcp
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+137,138/udp (Samba)        ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    137,138/udp (Samba)
+Anywhere                   ALLOW IN    139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW IN    53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW IN    53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW IN    22/udp
+139,445/tcp (Samba)        ALLOW IN    22/tcp
+80/tcp (Apache)            ALLOW IN    88/tcp
+192.168.2.0/24 137,138/udp (Samba) ALLOW IN    Anywhere
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    192.168.2.0/24 137,138/udp (Samba)
+Anywhere                   ALLOW IN    192.168.2.0/24 139,445/tcp (Samba)
+192.168.2.0/24 137,138/udp (Samba) ALLOW IN    192.168.2.0/24 53/udp (Bind9)
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    192.168.2.0/24 53/tcp (Bind9)
+192.168.2.0/24 137,138/udp (Samba) ALLOW IN    192.168.2.0/24 22/udp
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    192.168.2.0/24 22/tcp
+192.168.2.0/24 80/tcp (Apache) ALLOW IN    192.168.2.0/24 88/tcp
 
 
 
@@ -447,25 +447,25 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Apache                     ALLOW   Anywhere
-Samba                      ALLOW   Anywhere
-Anywhere                   ALLOW   Samba
-Samba                      ALLOW   Bind9
-Samba                      ALLOW   22
-Apache                     ALLOW   88
-Apache (v6)                ALLOW   Anywhere (v6)
-Samba (v6)                 ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   Samba (v6)
-Samba (v6)                 ALLOW   Bind9 (v6)
-Samba (v6)                 ALLOW   22
-Apache (v6)                ALLOW   88
-2001:db8::/32 Samba        ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   2001:db8::/32 Samba
-2001:db8::/32 Samba        ALLOW   2001:db8::/32 Bind9
-2001:db8::/32 Samba        ALLOW   2001:db8::/32 22
-2001:db8::/32 Apache       ALLOW   2001:db8::/32 88
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere
+Samba                      ALLOW       Anywhere
+Anywhere                   ALLOW       Samba
+Samba                      ALLOW       Bind9
+Samba                      ALLOW       22
+Apache                     ALLOW       88
+Apache (v6)                ALLOW       Anywhere (v6)
+Samba (v6)                 ALLOW       Anywhere (v6)
+Anywhere (v6)              ALLOW       Samba (v6)
+Samba (v6)                 ALLOW       Bind9 (v6)
+Samba (v6)                 ALLOW       22
+Apache (v6)                ALLOW       88
+2001:db8::/32 Samba        ALLOW       Anywhere (v6)
+Anywhere (v6)              ALLOW       2001:db8::/32 Samba
+2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
+2001:db8::/32 Samba        ALLOW       2001:db8::/32 22
+2001:db8::/32 Apache       ALLOW       2001:db8::/32 88
 
 
 
@@ -473,40 +473,40 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-137,138/udp (Samba)        ALLOW   Anywhere
-139,445/tcp (Samba)        ALLOW   Anywhere
-Anywhere                   ALLOW   137,138/udp (Samba)
-Anywhere                   ALLOW   139,445/tcp (Samba)
-137,138/udp (Samba)        ALLOW   53/udp (Bind9)
-139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
-137,138/udp (Samba)        ALLOW   22/udp
-139,445/tcp (Samba)        ALLOW   22/tcp
-80/tcp (Apache)            ALLOW   88/tcp
-80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
-137,138/udp (Samba (v6))   ALLOW   Anywhere (v6)
-139,445/tcp (Samba (v6))   ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   137,138/udp (Samba (v6))
-Anywhere (v6)              ALLOW   139,445/tcp (Samba (v6))
-137,138/udp (Samba (v6))   ALLOW   53/udp (Bind9 (v6))
-139,445/tcp (Samba (v6))   ALLOW   53/tcp (Bind9 (v6))
-137,138/udp (Samba (v6))   ALLOW   22/udp
-139,445/tcp (Samba (v6))   ALLOW   22/tcp
-80/tcp (Apache (v6))       ALLOW   88/tcp
-2001:db8::/32 137,138/udp (Samba) ALLOW   Anywhere (v6)
-2001:db8::/32 139,445/tcp (Samba) ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   2001:db8::/32 137,138/udp (Samba)
-Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
-2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 53/udp (Bind9)
-2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 53/tcp (Bind9)
-2001:db8::/32 137,138/udp (Samba) ALLOW   2001:db8::/32 22/udp
-2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 22/tcp
-2001:db8::/32 80/tcp (Apache) ALLOW   2001:db8::/32 88/tcp
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+137,138/udp (Samba)        ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    137,138/udp (Samba)
+Anywhere                   ALLOW IN    139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW IN    53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW IN    53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW IN    22/udp
+139,445/tcp (Samba)        ALLOW IN    22/tcp
+80/tcp (Apache)            ALLOW IN    88/tcp
+80/tcp (Apache (v6))       ALLOW IN    Anywhere (v6)
+137,138/udp (Samba (v6))   ALLOW IN    Anywhere (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    Anywhere (v6)
+Anywhere (v6)              ALLOW IN    137,138/udp (Samba (v6))
+Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
+137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
+139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
+137,138/udp (Samba (v6))   ALLOW IN    22/udp
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
+80/tcp (Apache (v6))       ALLOW IN    88/tcp
+2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
+Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
+Anywhere (v6)              ALLOW IN    2001:db8::/32 139,445/tcp (Samba)
+2001:db8::/32 137,138/udp (Samba) ALLOW IN    2001:db8::/32 53/udp (Bind9)
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    2001:db8::/32 53/tcp (Bind9)
+2001:db8::/32 137,138/udp (Samba) ALLOW IN    2001:db8::/32 22/udp
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    2001:db8::/32 22/tcp
+2001:db8::/32 80/tcp (Apache) ALLOW IN    2001:db8::/32 88/tcp
 
 
 
@@ -526,25 +526,25 @@ Firewall reloaded
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Apache                     ALLOW   Anywhere
-Samba                      ALLOW   Anywhere
-Anywhere                   ALLOW   Samba
-Samba                      ALLOW   Bind9
-Samba                      ALLOW   22
-Apache                     ALLOW   88
-Apache (v6)                ALLOW   Anywhere (v6)
-Samba (v6)                 ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   Samba (v6)
-Samba (v6)                 ALLOW   Bind9 (v6)
-Samba (v6)                 ALLOW   22
-Apache (v6)                ALLOW   88
-2001:db8::/32 Samba        ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   2001:db8::/32 Samba
-2001:db8::/32 Samba        ALLOW   2001:db8::/32 Bind9
-2001:db8::/32 Samba        ALLOW   2001:db8::/32 22
-2001:db8::/32 Apache       ALLOW   2001:db8::/32 88
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere
+Samba                      ALLOW       Anywhere
+Anywhere                   ALLOW       Samba
+Samba                      ALLOW       Bind9
+Samba                      ALLOW       22
+Apache                     ALLOW       88
+Apache (v6)                ALLOW       Anywhere (v6)
+Samba (v6)                 ALLOW       Anywhere (v6)
+Anywhere (v6)              ALLOW       Samba (v6)
+Samba (v6)                 ALLOW       Bind9 (v6)
+Samba (v6)                 ALLOW       22
+Apache (v6)                ALLOW       88
+2001:db8::/32 Samba        ALLOW       Anywhere (v6)
+Anywhere (v6)              ALLOW       2001:db8::/32 Samba
+2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
+2001:db8::/32 Samba        ALLOW       2001:db8::/32 22
+2001:db8::/32 Apache       ALLOW       2001:db8::/32 88
 
 
 
@@ -552,40 +552,40 @@ Anywhere (v6)              ALLOW   2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-8888/tcp (Apache)          ALLOW   Anywhere
-138,9999/udp (Samba)       ALLOW   Anywhere
-139,445/tcp (Samba)        ALLOW   Anywhere
-Anywhere                   ALLOW   138,9999/udp (Samba)
-Anywhere                   ALLOW   139,445/tcp (Samba)
-138,9999/udp (Samba)       ALLOW   53/udp (Bind9)
-139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
-138,9999/udp (Samba)       ALLOW   22/udp
-139,445/tcp (Samba)        ALLOW   22/tcp
-8888/tcp (Apache)          ALLOW   88/tcp
-8888/tcp (Apache (v6))     ALLOW   Anywhere (v6)
-138,9999/udp (Samba (v6))  ALLOW   Anywhere (v6)
-139,445/tcp (Samba (v6))   ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   138,9999/udp (Samba (v6))
-Anywhere (v6)              ALLOW   139,445/tcp (Samba (v6))
-138,9999/udp (Samba (v6))  ALLOW   53/udp (Bind9 (v6))
-139,445/tcp (Samba (v6))   ALLOW   53/tcp (Bind9 (v6))
-138,9999/udp (Samba (v6))  ALLOW   22/udp
-139,445/tcp (Samba (v6))   ALLOW   22/tcp
-8888/tcp (Apache (v6))     ALLOW   88/tcp
-2001:db8::/32 138,9999/udp (Samba) ALLOW   Anywhere (v6)
-2001:db8::/32 139,445/tcp (Samba) ALLOW   Anywhere (v6)
-Anywhere (v6)              ALLOW   2001:db8::/32 138,9999/udp (Samba)
-Anywhere (v6)              ALLOW   2001:db8::/32 139,445/tcp (Samba)
-2001:db8::/32 138,9999/udp (Samba) ALLOW   2001:db8::/32 53/udp (Bind9)
-2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 53/tcp (Bind9)
-2001:db8::/32 138,9999/udp (Samba) ALLOW   2001:db8::/32 22/udp
-2001:db8::/32 139,445/tcp (Samba) ALLOW   2001:db8::/32 22/tcp
-2001:db8::/32 8888/tcp (Apache) ALLOW   2001:db8::/32 88/tcp
+To                         Action      From
+--                         ------      ----
+8888/tcp (Apache)          ALLOW IN    Anywhere
+138,9999/udp (Samba)       ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    138,9999/udp (Samba)
+Anywhere                   ALLOW IN    139,445/tcp (Samba)
+138,9999/udp (Samba)       ALLOW IN    53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW IN    53/tcp (Bind9)
+138,9999/udp (Samba)       ALLOW IN    22/udp
+139,445/tcp (Samba)        ALLOW IN    22/tcp
+8888/tcp (Apache)          ALLOW IN    88/tcp
+8888/tcp (Apache (v6))     ALLOW IN    Anywhere (v6)
+138,9999/udp (Samba (v6))  ALLOW IN    Anywhere (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    Anywhere (v6)
+Anywhere (v6)              ALLOW IN    138,9999/udp (Samba (v6))
+Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
+138,9999/udp (Samba (v6))  ALLOW IN    53/udp (Bind9 (v6))
+139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
+138,9999/udp (Samba (v6))  ALLOW IN    22/udp
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
+8888/tcp (Apache (v6))     ALLOW IN    88/tcp
+2001:db8::/32 138,9999/udp (Samba) ALLOW IN    Anywhere (v6)
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
+Anywhere (v6)              ALLOW IN    2001:db8::/32 138,9999/udp (Samba)
+Anywhere (v6)              ALLOW IN    2001:db8::/32 139,445/tcp (Samba)
+2001:db8::/32 138,9999/udp (Samba) ALLOW IN    2001:db8::/32 53/udp (Bind9)
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    2001:db8::/32 53/tcp (Bind9)
+2001:db8::/32 138,9999/udp (Samba) ALLOW IN    2001:db8::/32 22/udp
+2001:db8::/32 139,445/tcp (Samba) ALLOW IN    2001:db8::/32 22/tcp
+2001:db8::/32 8888/tcp (Apache) ALLOW IN    2001:db8::/32 88/tcp
 
 
 
@@ -721,19 +721,19 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Apache                     ALLOW   Anywhere
-Samba                      ALLOW   Anywhere
-Anywhere                   ALLOW   Samba
-Samba                      ALLOW   Bind9
-Samba                      ALLOW   22
-Apache                     ALLOW   88
-192.168.2.0/24 Samba       ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.2.0/24 Samba
-192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 Bind9
-192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 22
-192.168.2.0/24 Apache      ALLOW   192.168.2.0/24 88
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere
+Samba                      ALLOW       Anywhere
+Anywhere                   ALLOW       Samba
+Samba                      ALLOW       Bind9
+Samba                      ALLOW       22
+Apache                     ALLOW       88
+192.168.2.0/24 Samba       ALLOW       Anywhere
+Anywhere                   ALLOW       192.168.2.0/24 Samba
+192.168.2.0/24 Samba       ALLOW       192.168.2.0/24 Bind9
+192.168.2.0/24 Samba       ALLOW       192.168.2.0/24 22
+192.168.2.0/24 Apache      ALLOW       192.168.2.0/24 88
 
 
 
@@ -741,30 +741,30 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-137,138/udp (Samba)        ALLOW   Anywhere
-139,445/tcp (Samba)        ALLOW   Anywhere
-Anywhere                   ALLOW   137,138/udp (Samba)
-Anywhere                   ALLOW   139,445/tcp (Samba)
-137,138/udp (Samba)        ALLOW   53/udp (Bind9)
-139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
-137,138/udp (Samba)        ALLOW   22/udp
-139,445/tcp (Samba)        ALLOW   22/tcp
-80/tcp (Apache)            ALLOW   88/tcp
-192.168.2.0/24 137,138/udp (Samba) ALLOW   Anywhere
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.2.0/24 137,138/udp (Samba)
-Anywhere                   ALLOW   192.168.2.0/24 139,445/tcp (Samba)
-192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 53/udp (Bind9)
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 53/tcp (Bind9)
-192.168.2.0/24 137,138/udp (Samba) ALLOW   192.168.2.0/24 22/udp
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 22/tcp
-192.168.2.0/24 80/tcp (Apache) ALLOW   192.168.2.0/24 88/tcp
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+137,138/udp (Samba)        ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    137,138/udp (Samba)
+Anywhere                   ALLOW IN    139,445/tcp (Samba)
+137,138/udp (Samba)        ALLOW IN    53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW IN    53/tcp (Bind9)
+137,138/udp (Samba)        ALLOW IN    22/udp
+139,445/tcp (Samba)        ALLOW IN    22/tcp
+80/tcp (Apache)            ALLOW IN    88/tcp
+192.168.2.0/24 137,138/udp (Samba) ALLOW IN    Anywhere
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    192.168.2.0/24 137,138/udp (Samba)
+Anywhere                   ALLOW IN    192.168.2.0/24 139,445/tcp (Samba)
+192.168.2.0/24 137,138/udp (Samba) ALLOW IN    192.168.2.0/24 53/udp (Bind9)
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    192.168.2.0/24 53/tcp (Bind9)
+192.168.2.0/24 137,138/udp (Samba) ALLOW IN    192.168.2.0/24 22/udp
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    192.168.2.0/24 22/tcp
+192.168.2.0/24 80/tcp (Apache) ALLOW IN    192.168.2.0/24 88/tcp
 
 
 
@@ -784,19 +784,19 @@ Firewall reloaded
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Apache                     ALLOW   Anywhere
-Samba                      ALLOW   Anywhere
-Anywhere                   ALLOW   Samba
-Samba                      ALLOW   Bind9
-Samba                      ALLOW   22
-Apache                     ALLOW   88
-192.168.2.0/24 Samba       ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.2.0/24 Samba
-192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 Bind9
-192.168.2.0/24 Samba       ALLOW   192.168.2.0/24 22
-192.168.2.0/24 Apache      ALLOW   192.168.2.0/24 88
+To                         Action      From
+--                         ------      ----
+Apache                     ALLOW       Anywhere
+Samba                      ALLOW       Anywhere
+Anywhere                   ALLOW       Samba
+Samba                      ALLOW       Bind9
+Samba                      ALLOW       22
+Apache                     ALLOW       88
+192.168.2.0/24 Samba       ALLOW       Anywhere
+Anywhere                   ALLOW       192.168.2.0/24 Samba
+192.168.2.0/24 Samba       ALLOW       192.168.2.0/24 Bind9
+192.168.2.0/24 Samba       ALLOW       192.168.2.0/24 22
+192.168.2.0/24 Apache      ALLOW       192.168.2.0/24 88
 
 
 
@@ -804,30 +804,30 @@ Anywhere                   ALLOW   192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-8888/tcp (Apache)          ALLOW   Anywhere
-138,9999/udp (Samba)       ALLOW   Anywhere
-139,445/tcp (Samba)        ALLOW   Anywhere
-Anywhere                   ALLOW   138,9999/udp (Samba)
-Anywhere                   ALLOW   139,445/tcp (Samba)
-138,9999/udp (Samba)       ALLOW   53/udp (Bind9)
-139,445/tcp (Samba)        ALLOW   53/tcp (Bind9)
-138,9999/udp (Samba)       ALLOW   22/udp
-139,445/tcp (Samba)        ALLOW   22/tcp
-8888/tcp (Apache)          ALLOW   88/tcp
-192.168.2.0/24 138,9999/udp (Samba) ALLOW   Anywhere
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   Anywhere
-Anywhere                   ALLOW   192.168.2.0/24 138,9999/udp (Samba)
-Anywhere                   ALLOW   192.168.2.0/24 139,445/tcp (Samba)
-192.168.2.0/24 138,9999/udp (Samba) ALLOW   192.168.2.0/24 53/udp (Bind9)
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 53/tcp (Bind9)
-192.168.2.0/24 138,9999/udp (Samba) ALLOW   192.168.2.0/24 22/udp
-192.168.2.0/24 139,445/tcp (Samba) ALLOW   192.168.2.0/24 22/tcp
-192.168.2.0/24 8888/tcp (Apache) ALLOW   192.168.2.0/24 88/tcp
+To                         Action      From
+--                         ------      ----
+8888/tcp (Apache)          ALLOW IN    Anywhere
+138,9999/udp (Samba)       ALLOW IN    Anywhere
+139,445/tcp (Samba)        ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    138,9999/udp (Samba)
+Anywhere                   ALLOW IN    139,445/tcp (Samba)
+138,9999/udp (Samba)       ALLOW IN    53/udp (Bind9)
+139,445/tcp (Samba)        ALLOW IN    53/tcp (Bind9)
+138,9999/udp (Samba)       ALLOW IN    22/udp
+139,445/tcp (Samba)        ALLOW IN    22/tcp
+8888/tcp (Apache)          ALLOW IN    88/tcp
+192.168.2.0/24 138,9999/udp (Samba) ALLOW IN    Anywhere
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    Anywhere
+Anywhere                   ALLOW IN    192.168.2.0/24 138,9999/udp (Samba)
+Anywhere                   ALLOW IN    192.168.2.0/24 139,445/tcp (Samba)
+192.168.2.0/24 138,9999/udp (Samba) ALLOW IN    192.168.2.0/24 53/udp (Bind9)
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    192.168.2.0/24 53/tcp (Bind9)
+192.168.2.0/24 138,9999/udp (Samba) ALLOW IN    192.168.2.0/24 22/udp
+192.168.2.0/24 139,445/tcp (Samba) ALLOW IN    192.168.2.0/24 22/tcp
+192.168.2.0/24 8888/tcp (Apache) ALLOW IN    192.168.2.0/24 88/tcp
 
 
 
@@ -914,14 +914,14 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
-80/tcp (Apache (v6))       ALLOW   2001:db8::/32
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+80/tcp (Apache (v6))       ALLOW IN    Anywhere (v6)
+80/tcp (Apache (v6))       ALLOW IN    2001:db8::/32
 
 
 
@@ -934,13 +934,13 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+80/tcp (Apache (v6))       ALLOW IN    Anywhere (v6)
 
 
 
@@ -954,7 +954,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -998,17 +998,17 @@ WARN: Checks disabled
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-80/tcp (Apache)            ALLOW   Anywhere
-137,138/udp (Samba)        DENY    Anywhere
-139,445/tcp (Samba)        DENY    Anywhere
-80/tcp (Apache (v6))       ALLOW   Anywhere (v6)
-137,138/udp (Samba (v6))   DENY    Anywhere (v6)
-139,445/tcp (Samba (v6))   DENY    Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+80/tcp (Apache)            ALLOW IN    Anywhere
+137,138/udp (Samba)        DENY IN     Anywhere
+139,445/tcp (Samba)        DENY IN     Anywhere
+80/tcp (Apache (v6))       ALLOW IN    Anywhere (v6)
+137,138/udp (Samba (v6))   DENY IN     Anywhere (v6)
+139,445/tcp (Samba (v6))   DENY IN     Anywhere (v6)
 
 
 
@@ -1028,7 +1028,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -1043,13 +1043,13 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-24/tcp (RunTest2)          ALLOW   Anywhere
-24/tcp (RunTest2 (v6))     ALLOW   Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+24/tcp (RunTest2)          ALLOW IN    Anywhere
+24/tcp (RunTest2 (v6))     ALLOW IN    Anywhere (v6)
 
 
 
@@ -1063,7 +1063,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -1078,13 +1078,13 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-26/tcp (runtest)           ALLOW   Anywhere
-26/tcp (runtest (v6))      ALLOW   Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+26/tcp (runtest)           ALLOW IN    Anywhere
+26/tcp (runtest (v6))      ALLOW IN    Anywhere (v6)
 
 
 
@@ -1098,13 +1098,13 @@ Rule updated (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-26/tcp (runtest)           DENY    Anywhere
-26/tcp (runtest (v6))      DENY    Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+26/tcp (runtest)           DENY IN     Anywhere
+26/tcp (runtest (v6))      DENY IN     Anywhere (v6)
 
 
 
@@ -1131,19 +1131,19 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
-To                         Action  From
---                         ------  ----
-Anywhere                   REJECT  137,138/udp (Samba)
-Anywhere                   REJECT  139,445/tcp (Samba)
-137,138/udp (Samba)        REJECT  Anywhere
-139,445/tcp (Samba)        REJECT  Anywhere
-Anywhere (v6)              REJECT  137,138/udp (Samba (v6))
-Anywhere (v6)              REJECT  139,445/tcp (Samba (v6))
-137,138/udp (Samba (v6))   REJECT  Anywhere (v6)
-139,445/tcp (Samba (v6))   REJECT  Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+Anywhere                   REJECT IN   137,138/udp (Samba)
+Anywhere                   REJECT IN   139,445/tcp (Samba)
+137,138/udp (Samba)        REJECT IN   Anywhere
+139,445/tcp (Samba)        REJECT IN   Anywhere
+Anywhere (v6)              REJECT IN   137,138/udp (Samba (v6))
+Anywhere (v6)              REJECT IN   139,445/tcp (Samba (v6))
+137,138/udp (Samba (v6))   REJECT IN   Anywhere (v6)
+139,445/tcp (Samba (v6))   REJECT IN   Anywhere (v6)
 
 
 
@@ -1163,7 +1163,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny
+Default: deny (incoming), allow (outgoing)
 New profiles: skip
 
 
@@ -1203,19 +1203,19 @@ Rule inserted
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
 -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1322,37 +1322,37 @@ Rule inserted
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
@@ -1471,19 +1471,19 @@ Rule inserted (v6)
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
 -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1498,19 +1498,19 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba -
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 ::/0 any ::/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 ::/0 any ::/0 Dovecot%20POP3 - in
 -A ufw6-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 ::/0 any ::/0 Apache -
+### tuple ### allow tcp 80 ::/0 any ::/0 Apache - in
 -A ufw6-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 ::/0 any ::/0 Bind9 -
+### tuple ### allow any 53 ::/0 any ::/0 Bind9 - in
 -A ufw6-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw6-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1613,37 +1613,37 @@ Rule inserted
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
@@ -1658,13 +1658,13 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 ::/0 any ::/0 Samba -
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba -
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 ::/0 any ::/0
+### tuple ### allow any 22 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw6-user-input -p udp --dport 22 -j ACCEPT
 
@@ -1753,10 +1753,10 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-192.168.0.1 Samba on eth0  ALLOW   Anywhere
-Samba on eth0              ALLOW   10.0.0.1
+To                         Action      From
+--                         ------      ----
+192.168.0.1 Samba on eth0  ALLOW       Anywhere
+Samba on eth0              ALLOW       10.0.0.1
 
 
 
@@ -1805,10 +1805,10 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-192.168.0.1 Samba on eth0  DENY    Anywhere
-Samba on eth0              DENY    10.0.0.1
+To                         Action      From
+--                         ------      ----
+192.168.0.1 Samba on eth0  DENY        Anywhere
+Samba on eth0              DENY        10.0.0.1
 
 
 
@@ -1857,10 +1857,10 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-192.168.0.1 Samba on eth0  LIMIT   Anywhere
-Samba on eth0              LIMIT   10.0.0.1
+To                         Action      From
+--                         ------      ----
+192.168.0.1 Samba on eth0  LIMIT       Anywhere
+Samba on eth0              LIMIT       10.0.0.1
 
 
 
@@ -1915,10 +1915,10 @@ Rule added
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-192.168.0.1 Samba on eth0  REJECT  Anywhere
-Samba on eth0              REJECT  10.0.0.1
+To                         Action      From
+--                         ------      ----
+192.168.0.1 Samba on eth0  REJECT      Anywhere
+Samba on eth0              REJECT      10.0.0.1
 
 
 
@@ -1966,12 +1966,12 @@ Rule inserted (v6)
 WARN: Checks disabled
 Status: active
 
-To                         Action  From
---                         ------  ----
-Samba on eth2              ALLOW   Anywhere
-Bind9 on eth0              ALLOW   Anywhere
-Samba (v6) on eth2         ALLOW   Anywhere (v6)
-Bind9 (v6) on eth0         ALLOW   Anywhere (v6)
+To                         Action      From
+--                         ------      ----
+Samba on eth2              ALLOW       Anywhere
+Bind9 on eth0              ALLOW       Anywhere
+Samba (v6) on eth2         ALLOW       Anywhere (v6)
+Bind9 (v6) on eth0         ALLOW       Anywhere (v6)
 
 
 
