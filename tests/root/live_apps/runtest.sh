@@ -216,8 +216,7 @@ for ipv6 in no yes ; do
 done
 
 echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
-#for i in "in" out ; do
-for i in "in" ; do
+for i in "in" "out" ; do
     for j in allow deny limit reject ; do
         do_cmd "0" $j $i on eth0 to 192.168.0.1 app Samba
         do_cmd "1" null $j $i on eth0:1 from 10.0.0.1 app Samba
