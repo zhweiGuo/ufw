@@ -448,7 +448,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if pat_port.search(frule):
                 if pat_reject.search(frule):
                     snippets.append(pat_proto.sub('-p tcp ', \
-                        pat_reject.sub(r'-j \1 --reject-with tcp-reset ', \
+                        pat_reject.sub(r'-j \1 --reject-with tcp-reset', \
                         frule)))
                 else:
                     snippets.append(pat_proto.sub('-p tcp ', frule))

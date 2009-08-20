@@ -2922,7 +2922,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### reject any 116 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
@@ -2937,7 +2937,7 @@ COMMIT
 ### RULES ###
 
 ### tuple ### reject any 116 ::/0 any ::/0 in
--A ufw6-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
@@ -3087,7 +3087,7 @@ WARN: Checks disabled
 ### RULES ###
 
 ### tuple ### reject any 25 ::/0 any 2001:db8::/32 in
--A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp --dport 25 -s 2001:db8::/32 -j REJECT
 
 ### END RULES ###
