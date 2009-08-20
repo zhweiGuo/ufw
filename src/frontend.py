@@ -121,9 +121,15 @@ def parse_command(argv):
     if action == "default":
         direction = "incoming"
         if nargs > 3:
-            if argv[3].lower() != "incoming" and argv[3].lower() != "outgoing":
+            if argv[3].lower() != "incoming" and argv[3].lower() != "input" and
+               argv[3].lower() != "output" and argv[3].lower() != "outgoing":
                 raise ValueError()
-            direction = argv[3].lower()
+            if argv[3].lower().startswith("in"):
+                direction = "incoming"
+            elif argv[3].lower().startswith("out"):
+                direction = "outgoing"
+            else:
+                direction = argv[3].lower()
         if nargs < 3:
             raise ValueError()
         elif argv[2].lower() == "deny":
