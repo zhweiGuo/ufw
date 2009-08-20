@@ -173,8 +173,7 @@ for i in allow deny limit; do
 done
 
 echo "TESTING BAD INTERFACES" >> $TESTTMP/result
-#for i in "in" out ; do
-for i in "in" ; do
+for i in "in" "out"; do
     for j in allow deny limit reject; do
         do_cmd "1" null --dry-run $j $i on e%th0 to 2001:db8:3:4:5:6:7:8
         do_cmd "1" null --dry-run $j $i eth0 to 2001:db8:3:4:5:6:7:8

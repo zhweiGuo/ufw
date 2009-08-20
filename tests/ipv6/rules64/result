@@ -3412,7 +3412,7 @@ Interfaces
 301: reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-302: limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+302: allow in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
 *filter
@@ -3449,6 +3449,9 @@ COMMIT
 ### tuple ### reject any any 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any ::/0 in_eth0
 -A ufw6-user-input -i eth0 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:734 -j REJECT
 
+### tuple ### allow tcp any ::/0 22 2001:0db8:85a3:08d3:1319:8a2e:0370:734 in_eth0
+-A ufw6-user-input -i eth0 -p tcp -s 2001:0db8:85a3:08d3:1319:8a2e:0370:734 --sport 22 -j ACCEPT
+
 ### END RULES ###
 COMMIT
 303: delete allow in on eth0
@@ -3463,7 +3466,97 @@ COMMIT
 306: delete reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
 
 
-307: delete limit in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+307: delete allow in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### END RULES ###
+COMMIT
+308: allow out on eth0
+
+
+309: allow out on eth0 to 192.168.0.1
+
+
+310: deny out on eth0 from 192.168.0.1 port 22 proto tcp
+
+
+311: reject out on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+
+
+312: allow out on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -j ACCEPT
+
+### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -d 192.168.0.1 -j ACCEPT
+
+### tuple ### deny tcp any 0.0.0.0/0 22 192.168.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 192.168.0.1 --sport 22 -j DROP
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+
+### tuple ### allow any any ::/0 any ::/0 out_eth0
+-A ufw6-user-output -o eth0 -j ACCEPT
+
+### tuple ### reject any any 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any ::/0 out_eth0
+-A ufw6-user-output -o eth0 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:734 -j REJECT
+
+### tuple ### allow tcp any ::/0 22 2001:0db8:85a3:08d3:1319:8a2e:0370:734 out_eth0
+-A ufw6-user-output -o eth0 -p tcp -s 2001:0db8:85a3:08d3:1319:8a2e:0370:734 --sport 22 -j ACCEPT
+
+### END RULES ###
+COMMIT
+313: delete allow out on eth0
+
+
+314: delete allow out on eth0 to 192.168.0.1
+
+
+315: delete deny out on eth0 from 192.168.0.1 port 22 proto tcp
+
+
+316: delete reject out on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+
+
+317: delete allow out on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
 
 
 *filter

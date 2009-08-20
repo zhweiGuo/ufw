@@ -103,9 +103,8 @@ for i in 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any; do
 done
 
 echo "Interfaces" >> $TESTTMP/result
-#for i in "in" out ; do
-for i in "in" ; do
-    for j in allow deny limit reject ; do
+for i in "in" "out" ; do
+    for j in allow deny reject ; do
         do_cmd "0" null --dry-run $j $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
         do_cmd "0" null --dry-run $j $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
     done

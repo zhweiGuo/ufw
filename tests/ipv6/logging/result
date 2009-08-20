@@ -1362,6 +1362,15 @@ TESTING LOG RULES (interfaces)
 56: deny in on eth0 log-all from 2001:db8::/32 to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
 
 
+57: allow out on eth0 log
+
+
+58: allow out on eth0 log from 2001:db8::/32 to 2001:db8:3:4:5:6:7:8 port 24 proto tcp
+
+
+59: deny out on eth0 log-all from 2001:db8::/32 to 2001:db8:3:4:5:6:7:8 port 25 proto tcp
+
+
 contents of user*.rules:
 *filter
 :ufw-user-input - [0:0]
@@ -1376,6 +1385,12 @@ contents of user*.rules:
 -A ufw-user-logging-input -i eth0 -j RETURN
 -A ufw-user-input -i eth0 -j ufw-user-logging-input
 -A ufw-user-input -i eth0 -j ACCEPT
+
+### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -j RETURN
+-A ufw-user-output -o eth0 -j ufw-user-logging-output
+-A ufw-user-output -o eth0 -j ACCEPT
 
 ### END RULES ###
 -A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
@@ -1405,6 +1420,24 @@ COMMIT
 -A ufw6-user-logging-input -i eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j RETURN
 -A ufw6-user-input -i eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ufw6-user-logging-input
 -A ufw6-user-input -i eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
+
+### tuple ### allow_log any any ::/0 any ::/0 out_eth0
+-A ufw6-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-output -o eth0 -j RETURN
+-A ufw6-user-output -o eth0 -j ufw6-user-logging-output
+-A ufw6-user-output -o eth0 -j ACCEPT
+
+### tuple ### allow_log tcp 24 2001:db8:3:4:5:6:7:8 any 2001:db8::/32 out_eth0
+-A ufw6-user-logging-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 24 -s 2001:db8::/32 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 24 -s 2001:db8::/32 -j RETURN
+-A ufw6-user-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 24 -s 2001:db8::/32 -j ufw6-user-logging-output
+-A ufw6-user-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 24 -s 2001:db8::/32 -j ACCEPT
+
+### tuple ### deny_log-all tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32 out_eth0
+-A ufw6-user-logging-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw6-user-logging-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j RETURN
+-A ufw6-user-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j ufw6-user-logging-output
+-A ufw6-user-output -o eth0 -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j DROP
 
 ### END RULES ###
 COMMIT

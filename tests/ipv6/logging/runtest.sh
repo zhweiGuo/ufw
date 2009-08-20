@@ -71,6 +71,9 @@ echo "TESTING LOG RULES (interfaces)" >> $TESTTMP/result
 do_cmd "0" null allow in on eth0 log
 do_cmd "0" null allow in on eth0 log from $from to $to port 24 proto tcp
 do_cmd "0" null deny  in on eth0 log-all from $from to $to port 25 proto tcp
+do_cmd "0" null allow out on eth0 log
+do_cmd "0" null allow out on eth0 log from $from to $to port 24 proto tcp
+do_cmd "0" null deny  out on eth0 log-all from $from to $to port 25 proto tcp
 echo "contents of user*.rules:" >> $TESTTMP/result
 cat $TESTSTATE/user.rules >> $TESTTMP/result
 cat $TESTSTATE/user6.rules >> $TESTTMP/result

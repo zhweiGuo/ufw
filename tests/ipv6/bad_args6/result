@@ -919,3 +919,63 @@ TESTING BAD INTERFACES
 302: --dry-run reject log in on eth0 to 2001:db8:3:4:5:6:7:8
 
 
+303: --dry-run allow out on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+304: --dry-run allow out eth0 to 2001:db8:3:4:5:6:7:8
+
+
+305: --dry-run allow ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+306: --dry-run allow on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+307: --dry-run allow log out on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+308: --dry-run deny out on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+309: --dry-run deny out eth0 to 2001:db8:3:4:5:6:7:8
+
+
+310: --dry-run deny ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+311: --dry-run deny on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+312: --dry-run deny log out on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+313: --dry-run limit out on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+314: --dry-run limit out eth0 to 2001:db8:3:4:5:6:7:8
+
+
+315: --dry-run limit ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+316: --dry-run limit on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+317: --dry-run limit log out on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+318: --dry-run reject out on e%th0 to 2001:db8:3:4:5:6:7:8
+
+
+319: --dry-run reject out eth0 to 2001:db8:3:4:5:6:7:8
+
+
+320: --dry-run reject ina eth0 to 2001:db8:3:4:5:6:7:8
+
+
+321: --dry-run reject on eth0 to 2001:db8:3:4:5:6:7:8
+
+
+322: --dry-run reject log out on eth0 to 2001:db8:3:4:5:6:7:8
+
+
