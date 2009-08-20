@@ -1182,72 +1182,327 @@ Rule deleted
 Rule deleted (v6)
 
 
-Setting IPV6 to no
+Setting IPV6 to yes
 172: disable
 
 
 173: enable
 
 
-174: allow in on eth1
+174: allow out on eth1
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+175: deny out on eth1:1
+
+
+176: reject out on eth1 to 192.168.0.1 port 22
 WARN: Checks disabled
 Rule added
 
 
-175: deny in on eth1:1
-
-
-176: reject in on eth1 to 192.168.0.1 port 22
+177: limit out on eth1 from 10.0.0.1 port 80
 WARN: Checks disabled
 Rule added
 
 
-177: limit in on eth1 from 10.0.0.1 port 80
+178: allow out on eth1 to 192.168.0.1 from 10.0.0.1
 WARN: Checks disabled
 Rule added
 
 
-178: allow in on eth1 to 192.168.0.1 from 10.0.0.1
+179: deny out on eth1 to 192.168.0.1 port 22 from 10.0.0.1
 WARN: Checks disabled
 Rule added
 
 
-179: deny in on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+180: reject out on eth1 to 192.168.0.1 from 10.0.0.1 port 80
 WARN: Checks disabled
 Rule added
 
 
-180: reject in on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+181: limit out on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 WARN: Checks disabled
 Rule added
 
 
-181: limit in on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+182: allow out on eth0 log
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+183: allow out on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
 WARN: Checks disabled
 Rule added
 
 
-182: allow in on eth0 log
+184: deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rule added
 
 
-183: allow in on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+185: allow out on eth0 to any app Samba
 WARN: Checks disabled
 Rule added
-
-
-184: deny in on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
-WARN: Checks disabled
-Rule added
-
-
-185: allow in on eth0 to any app Samba
-WARN: Checks disabled
-Rule added
+Rule added (v6)
 
 
 186: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 8] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
+[ 9] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
+[10] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
+[11] Samba                      ALLOW OUT   Anywhere on eth0 (out)
+[12] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth1 (out)
+[13] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth0 (log, out)
+[14] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth0 (out)
+
+
+
+187: insert 8 allow out on eth2 to any app Samba
+WARN: Checks disabled
+Rule inserted
+Rule inserted (v6)
+
+
+188: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 8] Samba                      ALLOW OUT   Anywhere on eth2 (out)
+[ 9] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
+[10] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
+[11] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
+[12] Samba                      ALLOW OUT   Anywhere on eth0 (out)
+[13] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth1 (out)
+[14] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth2 (out)
+[15] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth0 (log, out)
+[16] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth0 (out)
+
+
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth1
+-A ufw-user-output -o eth1 -j ACCEPT
+
+### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
+--
+### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+--
+### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+
+### tuple ### deny any 22 192.168.0.1 any 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+-A ufw-user-output -o eth1 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+--
+### tuple ### reject any any 192.168.0.1 80 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+--
+### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+--
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+-A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+-A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -j RETURN
+--
+### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 out_eth0
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
+--
+### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 out_eth0
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j RETURN
+--
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow any any ::/0 any ::/0 out_eth1
+-A ufw6-user-output -o eth1 -j ACCEPT
+
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - out_eth2
+-A ufw6-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - out_eth2
+-A ufw6-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow_log any any ::/0 any ::/0 out_eth0
+-A ufw6-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-output -o eth0 -j RETURN
+--
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - out_eth0
+-A ufw6-user-output -o eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - out_eth0
+-A ufw6-user-output -o eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+189: delete allow out on eth1
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+190: delete reject out on eth1 to 192.168.0.1 port 22
+WARN: Checks disabled
+Rule deleted
+
+
+191: delete limit out on eth1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule deleted
+
+
+192: delete allow out on eth1 to 192.168.0.1 from 10.0.0.1
+WARN: Checks disabled
+Rule deleted
+
+
+193: delete deny out on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+WARN: Checks disabled
+Rule deleted
+
+
+194: delete reject out on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule deleted
+
+
+195: delete limit out on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule deleted
+
+
+196: delete allow out on eth0 log
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+197: delete allow out on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+WARN: Checks disabled
+Rule deleted
+
+
+198: delete deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+WARN: Checks disabled
+Rule deleted
+
+
+199: delete allow out on eth0 to any app Samba
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+200: delete allow out on eth2 to any app Samba
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+Setting IPV6 to no
+201: disable
+
+
+202: enable
+
+
+203: allow in on eth1
+WARN: Checks disabled
+Rule added
+
+
+204: deny in on eth1:1
+
+
+205: reject in on eth1 to 192.168.0.1 port 22
+WARN: Checks disabled
+Rule added
+
+
+206: limit in on eth1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule added
+
+
+207: allow in on eth1 to 192.168.0.1 from 10.0.0.1
+WARN: Checks disabled
+Rule added
+
+
+208: deny in on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+WARN: Checks disabled
+Rule added
+
+
+209: reject in on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule added
+
+
+210: limit in on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule added
+
+
+211: allow in on eth0 log
+WARN: Checks disabled
+Rule added
+
+
+212: allow in on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+WARN: Checks disabled
+Rule added
+
+
+213: deny in on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+WARN: Checks disabled
+Rule added
+
+
+214: allow in on eth0 to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+215: status numbered
 WARN: Checks disabled
 Status: active
 
@@ -1267,12 +1522,12 @@ Status: active
 
 
 
-187: insert 8 allow in on eth2 to any app Samba
+216: insert 8 allow in on eth2 to any app Samba
 WARN: Checks disabled
 Rule inserted
 
 
-188: status numbered
+217: status numbered
 WARN: Checks disabled
 Status: active
 
@@ -1343,66 +1598,287 @@ Status: active
 ### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth0
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-189: delete allow in on eth1
+218: delete allow in on eth1
 WARN: Checks disabled
 Rule deleted
 
 
-190: delete reject in on eth1 to 192.168.0.1 port 22
+219: delete reject in on eth1 to 192.168.0.1 port 22
 WARN: Checks disabled
 Rule deleted
 
 
-191: delete limit in on eth1 from 10.0.0.1 port 80
+220: delete limit in on eth1 from 10.0.0.1 port 80
 WARN: Checks disabled
 Rule deleted
 
 
-192: delete allow in on eth1 to 192.168.0.1 from 10.0.0.1
+221: delete allow in on eth1 to 192.168.0.1 from 10.0.0.1
 WARN: Checks disabled
 Rule deleted
 
 
-193: delete deny in on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+222: delete deny in on eth1 to 192.168.0.1 port 22 from 10.0.0.1
 WARN: Checks disabled
 Rule deleted
 
 
-194: delete reject in on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+223: delete reject in on eth1 to 192.168.0.1 from 10.0.0.1 port 80
 WARN: Checks disabled
 Rule deleted
 
 
-195: delete limit in on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+224: delete limit in on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 WARN: Checks disabled
 Rule deleted
 
 
-196: delete allow in on eth0 log
+225: delete allow in on eth0 log
 WARN: Checks disabled
 Rule deleted
 
 
-197: delete allow in on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+226: delete allow in on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
 WARN: Checks disabled
 Rule deleted
 
 
-198: delete deny in on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+227: delete deny in on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rule deleted
 
 
-199: delete allow in on eth0 to any app Samba
+228: delete allow in on eth0 to any app Samba
 WARN: Checks disabled
 Rule deleted
 
 
-200: delete allow in on eth2 to any app Samba
+229: delete allow in on eth2 to any app Samba
 WARN: Checks disabled
 Rule deleted
 
 
-201: disable
+Setting IPV6 to no
+230: disable
+
+
+231: enable
+
+
+232: allow out on eth1
+WARN: Checks disabled
+Rule added
+
+
+233: deny out on eth1:1
+
+
+234: reject out on eth1 to 192.168.0.1 port 22
+WARN: Checks disabled
+Rule added
+
+
+235: limit out on eth1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule added
+
+
+236: allow out on eth1 to 192.168.0.1 from 10.0.0.1
+WARN: Checks disabled
+Rule added
+
+
+237: deny out on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+WARN: Checks disabled
+Rule added
+
+
+238: reject out on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule added
+
+
+239: limit out on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule added
+
+
+240: allow out on eth0 log
+WARN: Checks disabled
+Rule added
+
+
+241: allow out on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+WARN: Checks disabled
+Rule added
+
+
+242: deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+WARN: Checks disabled
+Rule added
+
+
+243: allow out on eth0 to any app Samba
+WARN: Checks disabled
+Rule added
+
+
+244: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 8] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
+[ 9] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
+[10] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
+[11] Samba                      ALLOW OUT   Anywhere on eth0 (out)
+
+
+
+245: insert 8 allow out on eth2 to any app Samba
+WARN: Checks disabled
+Rule inserted
+
+
+246: status numbered
+WARN: Checks disabled
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
+[ 8] Samba                      ALLOW OUT   Anywhere on eth2 (out)
+[ 9] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
+[10] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
+[11] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
+[12] Samba                      ALLOW OUT   Anywhere on eth0 (out)
+
+
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth1
+-A ufw-user-output -o eth1 -j ACCEPT
+
+### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
+--
+### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+--
+### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+
+### tuple ### deny any 22 192.168.0.1 any 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+-A ufw-user-output -o eth1 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+--
+### tuple ### reject any any 192.168.0.1 80 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+--
+### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 out_eth1
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+--
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+-A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+-A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -j RETURN
+--
+### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 out_eth0
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
+--
+### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 out_eth0
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j RETURN
+--
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+247: delete allow out on eth1
+WARN: Checks disabled
+Rule deleted
+
+
+248: delete reject out on eth1 to 192.168.0.1 port 22
+WARN: Checks disabled
+Rule deleted
+
+
+249: delete limit out on eth1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule deleted
+
+
+250: delete allow out on eth1 to 192.168.0.1 from 10.0.0.1
+WARN: Checks disabled
+Rule deleted
+
+
+251: delete deny out on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+WARN: Checks disabled
+Rule deleted
+
+
+252: delete reject out on eth1 to 192.168.0.1 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule deleted
+
+
+253: delete limit out on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+WARN: Checks disabled
+Rule deleted
+
+
+254: delete allow out on eth0 log
+WARN: Checks disabled
+Rule deleted
+
+
+255: delete allow out on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+WARN: Checks disabled
+Rule deleted
+
+
+256: delete deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+WARN: Checks disabled
+Rule deleted
+
+
+257: delete allow out on eth0 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+258: delete allow out on eth2 to any app Samba
+WARN: Checks disabled
+Rule deleted
+
+
+259: disable
 
 
