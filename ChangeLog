@@ -4,6 +4,10 @@ ufw (0.29) UNRELEASED; urgency=low
     - CLI command allows specifying direction in simple and extended syntax
     - status reporting shows outgoing policy and outgoing rules
     - allow changing default outgoing policy
+    - connection tracking for outgoing packets is now put in its own chain,
+      rather than configured in before*.rules
+    - DEFAULT_OUTPUT_POLICY can now also be set to ACCEPT_NO_CONNTRACK
+    - update documentation for the above
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 01 Aug 2009 17:41:03 -0400
 

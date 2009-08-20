@@ -1,5 +1,6 @@
-ufw (0.28-3) UNRELEASED; urgency=low
+ufw (0.29-1) UNRELEASED; urgency=low
 
+  * new upstream release which adds egress filtering support (LP: #382932)
   * Debconf translation updates:
     - Galician (thanks to Marce Villarino. closes: #538383)
     - Japanese (thanks to Hideki Yamane. closes: #539595)
