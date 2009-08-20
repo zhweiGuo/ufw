@@ -483,7 +483,7 @@ To                         Action      From
 
 
 ### tuple ### reject any 113 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -p udp --dport 113 -j REJECT
 --
 ### tuple ### reject tcp 114 0.0.0.0/0 any 0.0.0.0/0 in
@@ -493,7 +493,7 @@ To                         Action      From
 -A ufw-user-input -p udp --dport 115 -j REJECT
 
 ### tuple ### reject any 113 ::/0 any ::/0 in
--A ufw6-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp --dport 113 -j REJECT
 --
 ### tuple ### reject tcp 114 ::/0 any ::/0 in
@@ -560,7 +560,7 @@ To                         Action      From
 
 
 ### tuple ### reject any 113 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -p udp --dport 113 -j REJECT
 --
 ### tuple ### reject tcp 114 0.0.0.0/0 any 0.0.0.0/0 in
@@ -1053,7 +1053,7 @@ Status: active
 -A ufw-user-input -i eth1 -j ACCEPT
 
 ### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 in_eth1
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
 --
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth1
@@ -1068,7 +1068,7 @@ Status: active
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
 --
 ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 in_eth1
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 --
 ### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 in_eth1
@@ -1297,7 +1297,7 @@ Status: active
 -A ufw-user-input -i eth1 -j ACCEPT
 
 ### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 in_eth1
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
 --
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth1
@@ -1312,7 +1312,7 @@ Status: active
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
 --
 ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 in_eth1
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 --
 ### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 in_eth1

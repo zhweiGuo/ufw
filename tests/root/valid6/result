@@ -27,7 +27,7 @@ Firewall is active and enabled on system startup
 
 5: default allow
 WARN: Checks disabled
-Default policy changed to 'allow'
+Default incoming policy changed to 'allow'
 (be sure to update your rules accordingly)
 
 
@@ -45,7 +45,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 6: default deny
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
@@ -63,7 +63,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 7: DEFAULT ALLOW
 WARN: Checks disabled
-Default policy changed to 'allow'
+Default incoming policy changed to 'allow'
 (be sure to update your rules accordingly)
 
 
@@ -81,7 +81,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 8: DEFAULT DENY
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
@@ -99,7 +99,7 @@ DEFAULT_FORWARD_POLICY="DROP"
 DEFAULT_APPLICATION_POLICY="SKIP"
 9: default deny
 WARN: Checks disabled
-Default policy changed to 'deny'
+Default incoming policy changed to 'deny'
 (be sure to update your rules accordingly)
 
 
@@ -842,7 +842,7 @@ Rules updated (v6)
 
 
 ### tuple ### reject any any ::/0 80 2001:db8::/32 in
--A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp -s 2001:db8::/32 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp -s 2001:db8::/32 --sport 80 -j REJECT
 132: delete reject from 2001:db8::/32 port 80
 WARN: Checks disabled
@@ -855,7 +855,7 @@ Rules updated (v6)
 
 
 ### tuple ### reject any 25 2001:db8:3:4:5:6:7:8 any ::/0 in
--A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -j REJECT
 134: delete reject to 2001:db8:3:4:5:6:7:8 port 25
 WARN: Checks disabled
@@ -868,7 +868,7 @@ Rules updated (v6)
 
 
 ### tuple ### reject any any 2001:db8:3:4:5:6:7:8 80 2001:db8::/32 in
--A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 -s 2001:db8::/32 --sport 80 -j REJECT
 136: delete reject to 2001:db8:3:4:5:6:7:8 from 2001:db8::/32 port 80
 WARN: Checks disabled
@@ -881,7 +881,7 @@ Rules updated (v6)
 
 
 ### tuple ### reject any 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32 in
--A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -j REJECT
 138: delete reject to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32
 WARN: Checks disabled
@@ -894,7 +894,7 @@ Rules updated (v6)
 
 
 ### tuple ### reject any 25 2001:db8:3:4:5:6:7:8 80 2001:db8::/32 in
--A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw6-user-input -p udp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 --sport 80 -j REJECT
 140: delete reject to 2001:db8:3:4:5:6:7:8 port 25 from 2001:db8::/32 port 80
 WARN: Checks disabled

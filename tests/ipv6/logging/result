@@ -914,7 +914,7 @@ contents of user*.rules:
 -A ufw-user-logging-input -p tcp --dport 23 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp --dport 23 -j RETURN
 -A ufw-user-input -p tcp --dport 23 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset
 -A ufw-user-logging-input -p udp --dport 23 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp --dport 23 -j RETURN
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
@@ -947,7 +947,7 @@ COMMIT
 -A ufw6-user-logging-input -p tcp --dport 23 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp --dport 23 -j RETURN
 -A ufw6-user-input -p tcp --dport 23 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset
 -A ufw6-user-logging-input -p udp --dport 23 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp --dport 23 -j RETURN
 -A ufw6-user-input -p udp --dport 23 -j ufw6-user-logging-input
@@ -1070,7 +1070,7 @@ contents of user*.rules:
 -A ufw-user-logging-input -p tcp --dport 23 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp --dport 23 -j RETURN
 -A ufw-user-input -p tcp --dport 23 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset 
+-A ufw-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset
 -A ufw-user-logging-input -p udp --dport 23 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp --dport 23 -j RETURN
 -A ufw-user-input -p udp --dport 23 -j ufw-user-logging-input
@@ -1103,7 +1103,7 @@ COMMIT
 -A ufw6-user-logging-input -p tcp --dport 23 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp --dport 23 -j RETURN
 -A ufw6-user-input -p tcp --dport 23 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset 
+-A ufw6-user-input -p tcp --dport 23 -j REJECT --reject-with tcp-reset
 -A ufw6-user-logging-input -p udp --dport 23 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp --dport 23 -j RETURN
 -A ufw6-user-input -p udp --dport 23 -j ufw6-user-logging-input
