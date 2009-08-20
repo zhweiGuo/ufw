@@ -28,10 +28,6 @@
 -A ufw-before-input -m state --state INVALID -j ufw-logging-deny
 -A ufw-before-input -m state --state INVALID -j DROP
 
-# connection tracking for outbound
--A ufw-before-output -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
--A ufw-before-output -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-
 # ok icmp codes
 -A ufw-before-input -p icmp --icmp-type destination-unreachable -j ACCEPT
 -A ufw-before-input -p icmp --icmp-type source-quench -j ACCEPT

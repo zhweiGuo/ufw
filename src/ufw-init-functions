@@ -77,7 +77,7 @@ chains_command() {
         exe="ip6tables"
     fi
 
-    for c in ufw$type-logging-deny ufw$type-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
+    for c in ufw$type-logging-deny ufw$type-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-conntrack-output ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
             $exe $flag $c || true
@@ -174,6 +174,8 @@ ufw_start() {
             fi
             if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
                 $exe -P OUTPUT DROP || error="yes"
+            elif [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT_NO_CONNTRACK" ]; then
+                $exe -P OUTPUT ACCEPT || error="yes"
             else
                 $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY || error="yes"
             fi
@@ -291,6 +293,17 @@ ufw_start() {
             fi
             if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
                 $exe -A ufw${type}-reject-forward -j REJECT || error="yes"
+            fi
+
+            # now setup the outgoing connection tracking chains
+            if ! $exe -L ufw${type}-conntrack-output -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-conntrack-output || error="yes"
+                $exe -A OUTPUT -j ufw${type}-conntrack-output || error="yes"
+            fi
+
+            if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
+                $exe -A ufw${type}-conntrack-output -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT || error="yes"
+                $exe -A ufw${type}-conntrack-output -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT || error="yes"
             fi
         done
 

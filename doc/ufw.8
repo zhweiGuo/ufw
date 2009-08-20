@@ -320,7 +320,12 @@ currently not enabled.
 
 .SH NOTES
 .PP
-On installation, \fBufw\fR is disabled with a default policy of deny.
+On installation, \fBufw\fR is disabled with a default incoming policy of deny
+and a default outgoing policy of allow, with connection tracking. Having a
+default outgoing policy of allow without connection tracking can be achieved
+by setting DEFAULT_OUTPUT_POLICY=ACCEPT_NO_CONNTRACK in
+#CONFIG_PREFIX#/defaults/ufw.
+
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
 rules, add the more specific rules first with more general rules later.

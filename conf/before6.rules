@@ -33,10 +33,6 @@
 -A ufw6-before-input -m state --state INVALID -j ufw6-logging-deny
 -A ufw6-before-input -m state --state INVALID -j DROP
 
-# connection tracking for outbound
--A ufw6-before-output -p tcp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
--A ufw6-before-output -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-
 # ok icmp codes
 -A ufw6-before-input -p icmpv6 --icmpv6-type destination-unreachable -j ACCEPT
 -A ufw6-before-input -p icmpv6 --icmpv6-type packet-too-big -j ACCEPT
