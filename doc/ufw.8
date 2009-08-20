@@ -11,7 +11,7 @@ use interface for the user.
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBenable|disable|reload\fR
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject
+ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject [incoming|outgoing]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off|LEVEL
 .TP
@@ -19,9 +19,9 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] PORT[/protocol]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBlog|log-all\fR] [\fBin on INTERFACE\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
@@ -45,10 +45,11 @@ unloads firewall and disables firewall on boot
 \fBreload\fR
 reloads firewall
 .TP
-\fBdefault\fR allow|deny|reject
-change the default policy for incoming traffic. Note that existing rules will
-have to be migrated manually when changing the default policy. See
-\fBRULE SYNTAX\fR for more on \fBdeny\fR and \fBreject\fR.
+\fBdefault\fR allow|deny|reject DIRECTION
+change the default policy for traffic going DIRECTION, where DIRECTION is one
+of \fBincoming\fR or \fBoutgoing\fR. Note that existing rules will have to be
+migrated manually when changing the default policy. See \fBRULE SYNTAX\fR for
+more on \fBdeny\fR and \fBreject\fR.
 .TP
 \fBlogging\fR on|off|LEVEL
 toggle logging. Logged packets use the LOG_KERN syslog facility. Specifying a
@@ -99,6 +100,14 @@ check /etc/services for the port and protocol if specifying a service by name.
 Eg:
 
   ufw allow smtp
+
+\fBufw\fR supports both ingress and egress filtering and users may optionally
+specify a direction of either \fBin\fR or \fBout\fR for either incoming or
+outgoing traffic. If no direction is supplied, the rule applies to incoming
+traffic. Eg:
+
+  ufw allow in http
+  ufw reject out smtp
 .PP
 Users can also use a fuller syntax, specifying the source and destination
 addresses and ports. This syntax is based on OpenBSD's PF syntax. For example:
@@ -143,8 +152,9 @@ instead of \fBdeny\fR.  For example:
 
 .PP
 By default, \fBufw\fR will apply rules to all available interfaces. To limit
-this, specify \fBin on INTERFACE\fR (interface aliases are not supported).  For
-example, to allow all new http connections on eth0, use:
+this, specify \fBDIRECTION on INTERFACE\fR, where DIRECTION is one of \fBin\fR
+or \fBout\fR (interface aliases are not supported).  For example, to allow all
+new incoming http connections on eth0, use:
 
   ufw allow in on eth0 to any port 80 proto tcp
 

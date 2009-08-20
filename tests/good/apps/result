@@ -267,7 +267,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -288,7 +288,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
@@ -309,7 +309,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full -
+### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
@@ -330,7 +330,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -352,7 +352,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -368,10 +368,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -392,7 +392,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD -
+### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -413,7 +413,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### allow tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
@@ -434,7 +434,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### allow udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
@@ -455,7 +455,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -476,7 +476,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### deny tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
@@ -497,7 +497,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full -
+### tuple ### deny tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j DROP -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
@@ -518,7 +518,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 
@@ -540,7 +540,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -556,10 +556,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -580,7 +580,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD -
+### tuple ### deny udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -601,7 +601,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### deny tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
@@ -622,7 +622,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### deny udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
@@ -643,7 +643,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### limit tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
@@ -666,7 +666,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### limit tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp --dport 443 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Secure'
 -A ufw-user-input -p tcp --dport 443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Secure'
 -A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
@@ -689,7 +689,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full -
+### tuple ### limit tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
@@ -712,7 +712,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p tcp --dport 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p tcp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
@@ -738,7 +738,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -756,12 +756,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### limit tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -784,7 +784,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD -
+### tuple ### limit udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 -m state --state NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
@@ -807,7 +807,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### limit tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m state --state NEW -m recent --set -m comment --comment 'dapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
@@ -830,7 +830,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### limit udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m state --state NEW -m recent --set -m comment --comment 'dapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
@@ -854,7 +854,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -875,7 +875,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### allow tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
@@ -896,7 +896,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full -
+### tuple ### allow tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
@@ -917,7 +917,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -939,7 +939,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -955,10 +955,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -979,7 +979,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD -
+### tuple ### allow udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -1000,7 +1000,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### allow tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
@@ -1021,7 +1021,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### allow udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
@@ -1042,7 +1042,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -1063,7 +1063,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp --dport 443 -j ACCEPT -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
@@ -1084,7 +1084,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full -
+### tuple ### allow tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
@@ -1105,7 +1105,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -1127,7 +1127,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -1143,10 +1143,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -1167,7 +1167,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD -
+### tuple ### allow udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -1188,7 +1188,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### allow tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
@@ -1209,7 +1209,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### allow udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ACCEPT -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
@@ -1230,7 +1230,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache
+### tuple ### allow tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -1251,7 +1251,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure
+### tuple ### allow tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j ACCEPT -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
@@ -1272,7 +1272,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full
+### tuple ### allow tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
@@ -1293,7 +1293,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9
+### tuple ### allow any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9 in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
 
@@ -1315,7 +1315,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba
+### tuple ### allow udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -1331,10 +1331,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba
+### tuple ### allow udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba
+### tuple ### allow tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -1355,7 +1355,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD
+### tuple ### allow udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD in
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -1376,7 +1376,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP
+### tuple ### allow tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP in
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
@@ -1397,7 +1397,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP
+### tuple ### allow udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP in
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ACCEPT -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
@@ -1418,7 +1418,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache
+### tuple ### allow tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache in
 -A ufw-user-input -p tcp --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -1439,7 +1439,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure
+### tuple ### allow tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure in
 -A ufw-user-input -p tcp --sport 443 -j ACCEPT -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
@@ -1460,7 +1460,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full
+### tuple ### allow tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -j ACCEPT -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
@@ -1481,7 +1481,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9
+### tuple ### allow any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9 in
 -A ufw-user-input -p tcp --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p udp --sport 53 -j ACCEPT -m comment --comment 'sapp_Bind9'
 
@@ -1503,7 +1503,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -1519,10 +1519,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -1543,7 +1543,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD
+### tuple ### allow udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
 -A ufw-user-input -p udp --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -1564,7 +1564,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP
+### tuple ### allow tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP in
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j ACCEPT -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
@@ -1585,7 +1585,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP
+### tuple ### allow udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP in
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j ACCEPT -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
@@ -1606,7 +1606,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 8080 192.168.0.2 80 192.168.0.1 - Apache
+### tuple ### allow tcp 8080 192.168.0.2 80 192.168.0.1 - Apache in
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -1627,7 +1627,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD
+### tuple ### allow udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD in
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -1648,7 +1648,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba
+### tuple ### allow udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -1664,10 +1664,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba
+### tuple ### allow udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
-### tuple ### allow tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba
+### tuple ### allow tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -1688,7 +1688,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 192.168.0.2 137,138 192.168.0.1 - Samba
+### tuple ### allow udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -1704,10 +1704,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 192.168.0.2 137,138 192.168.0.1 - Samba
+### tuple ### allow udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba
+### tuple ### allow tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -1728,7 +1728,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache
+### tuple ### allow tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
@@ -1749,7 +1749,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 192.168.0.1 8080 192.168.0.2 Apache -
+### tuple ### allow tcp 80 192.168.0.1 8080 192.168.0.2 Apache - in
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -1770,7 +1770,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD -
+### tuple ### allow udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD - in
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -1791,7 +1791,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### allow udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -1807,10 +1807,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### allow udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
-### tuple ### allow tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### allow tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -1831,7 +1831,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### allow udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -1847,10 +1847,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### allow udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### allow tcp 139,445 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -1871,7 +1871,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full
+### tuple ### allow tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
@@ -1892,7 +1892,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba
+### tuple ### allow udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -1908,10 +1908,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba
+### tuple ### allow udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
-### tuple ### allow tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba
+### tuple ### allow tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -1932,7 +1932,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache
+### tuple ### allow tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache in
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -j ACCEPT -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -1953,7 +1953,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD
+### tuple ### allow udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
 -A ufw-user-input -p udp --dport 10123 --sport 123 -j ACCEPT -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -1974,7 +1974,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba
+### tuple ### allow udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -1990,10 +1990,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba
+### tuple ### allow udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
-### tuple ### allow tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba
+### tuple ### allow tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -2014,7 +2014,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -2030,10 +2030,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -2054,7 +2054,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache
+### tuple ### allow tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j ACCEPT -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
@@ -2075,7 +2075,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -2096,7 +2096,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD -
+### tuple ### allow udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 --sport 10123 -j ACCEPT -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -2117,7 +2117,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### allow udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -2133,10 +2133,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### allow udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### allow tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -2157,7 +2157,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -2173,10 +2173,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -2197,7 +2197,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full
+### tuple ### allow tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j ACCEPT -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
@@ -2218,7 +2218,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba
+### tuple ### allow udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -2234,10 +2234,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba
+### tuple ### allow udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba
+### tuple ### allow tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -2258,7 +2258,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache -
+### tuple ### deny tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -2279,7 +2279,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### deny tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
@@ -2300,7 +2300,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full -
+### tuple ### deny tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
@@ -2321,7 +2321,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 -
+### tuple ### deny any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 
@@ -2343,7 +2343,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -2359,10 +2359,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### deny tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -2383,7 +2383,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD -
+### tuple ### deny udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -2404,7 +2404,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### deny tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
@@ -2425,7 +2425,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### deny udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j DROP -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
@@ -2446,7 +2446,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -2467,7 +2467,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### deny tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp --dport 443 -j DROP -m comment --comment 'dapp_Apache%20Secure'
 
 ### END RULES ###
@@ -2488,7 +2488,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full -
+### tuple ### deny tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j DROP -m comment --comment 'dapp_Apache%20Full'
 
 ### END RULES ###
@@ -2509,7 +2509,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j DROP -m comment --comment 'dapp_Bind9'
 
@@ -2531,7 +2531,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -2547,10 +2547,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -2571,7 +2571,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD -
+### tuple ### deny udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -2592,7 +2592,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### deny tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20TCP'
 
 ### END RULES ###
@@ -2613,7 +2613,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### deny udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j DROP -m comment --comment 'dapp_Multi%20UDP'
 
 ### END RULES ###
@@ -2634,7 +2634,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache
+### tuple ### deny tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -2655,7 +2655,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure
+### tuple ### deny tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j DROP -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
@@ -2676,7 +2676,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full
+### tuple ### deny tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
@@ -2697,7 +2697,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9
+### tuple ### deny any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9 in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
 
@@ -2719,7 +2719,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba
+### tuple ### deny udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -2735,10 +2735,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba
+### tuple ### deny udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba
+### tuple ### deny tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -2759,7 +2759,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD
+### tuple ### deny udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD in
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -2780,7 +2780,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP
+### tuple ### deny tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP in
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
@@ -2801,7 +2801,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP
+### tuple ### deny udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP in
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j DROP -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
@@ -2822,7 +2822,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache
+### tuple ### deny tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache in
 -A ufw-user-input -p tcp --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -2843,7 +2843,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure
+### tuple ### deny tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure in
 -A ufw-user-input -p tcp --sport 443 -j DROP -m comment --comment 'sapp_Apache%20Secure'
 
 ### END RULES ###
@@ -2864,7 +2864,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full
+### tuple ### deny tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -j DROP -m comment --comment 'sapp_Apache%20Full'
 
 ### END RULES ###
@@ -2885,7 +2885,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9
+### tuple ### deny any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9 in
 -A ufw-user-input -p tcp --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p udp --sport 53 -j DROP -m comment --comment 'sapp_Bind9'
 
@@ -2907,7 +2907,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### deny udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -2923,10 +2923,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### deny udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba
+### tuple ### deny tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -2947,7 +2947,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD
+### tuple ### deny udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
 -A ufw-user-input -p udp --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -2968,7 +2968,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP
+### tuple ### deny tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP in
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j DROP -m comment --comment 'sapp_Multi%20TCP'
 
 ### END RULES ###
@@ -2989,7 +2989,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP
+### tuple ### deny udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP in
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j DROP -m comment --comment 'sapp_Multi%20UDP'
 
 ### END RULES ###
@@ -3010,7 +3010,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 8080 192.168.0.2 80 192.168.0.1 - Apache
+### tuple ### deny tcp 8080 192.168.0.2 80 192.168.0.1 - Apache in
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -3031,7 +3031,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD
+### tuple ### deny udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD in
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -3052,7 +3052,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba
+### tuple ### deny udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -3068,10 +3068,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba
+### tuple ### deny udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
-### tuple ### deny tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba
+### tuple ### deny tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -3092,7 +3092,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 192.168.0.2 137,138 192.168.0.1 - Samba
+### tuple ### deny udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -3108,10 +3108,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 192.168.0.2 137,138 192.168.0.1 - Samba
+### tuple ### deny udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba
+### tuple ### deny tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -3132,7 +3132,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache
+### tuple ### deny tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
@@ -3153,7 +3153,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 192.168.0.1 8080 192.168.0.2 Apache -
+### tuple ### deny tcp 80 192.168.0.1 8080 192.168.0.2 Apache - in
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -3174,7 +3174,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD -
+### tuple ### deny udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD - in
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -3195,7 +3195,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### deny udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -3211,10 +3211,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### deny udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
-### tuple ### deny tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### deny tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -3235,7 +3235,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### deny udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -3251,10 +3251,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### deny udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### deny tcp 139,445 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -3275,7 +3275,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full
+### tuple ### deny tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
@@ -3296,7 +3296,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba
+### tuple ### deny udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -3312,10 +3312,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba
+### tuple ### deny udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
-### tuple ### deny tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba
+### tuple ### deny tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -3336,7 +3336,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache
+### tuple ### deny tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache in
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -j DROP -m comment --comment 'sapp_Apache'
 
 ### END RULES ###
@@ -3357,7 +3357,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD
+### tuple ### deny udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
 -A ufw-user-input -p udp --dport 10123 --sport 123 -j DROP -m comment --comment 'sapp_OpenNTPD'
 
 ### END RULES ###
@@ -3378,7 +3378,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba
+### tuple ### deny udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -3394,10 +3394,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba
+### tuple ### deny udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
-### tuple ### deny tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba
+### tuple ### deny tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j DROP -m comment --comment 'dapp_Bind9,sapp_Samba'
 
 ### END RULES ###
@@ -3418,7 +3418,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### deny udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -3434,10 +3434,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### deny udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba
+### tuple ### deny tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
@@ -3458,7 +3458,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache
+### tuple ### deny tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j DROP -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 
 ### END RULES ###
@@ -3479,7 +3479,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache -
+### tuple ### deny tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -j DROP -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -3500,7 +3500,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD -
+### tuple ### deny udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 --sport 10123 -j DROP -m comment --comment 'dapp_OpenNTPD'
 
 ### END RULES ###
@@ -3521,7 +3521,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### deny udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -3537,10 +3537,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### deny udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### deny tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j DROP -m comment --comment 'dapp_Samba,sapp_Bind9'
 
 ### END RULES ###
@@ -3561,7 +3561,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -3577,10 +3577,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### deny tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -3601,7 +3601,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full
+### tuple ### deny tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j DROP -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 
 ### END RULES ###
@@ -3622,7 +3622,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba
+### tuple ### deny udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -3638,10 +3638,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba
+### tuple ### deny udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba
+### tuple ### deny tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j DROP -m comment --comment 'dapp_Samba,sapp_Samba'
 
 ### END RULES ###
@@ -3662,7 +3662,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache -
+### tuple ### limit tcp 80 192.168.0.0/16 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
@@ -3685,7 +3685,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### limit tcp 443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Secure'
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Secure'
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
@@ -3708,7 +3708,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full -
+### tuple ### limit tcp 80,443 192.168.0.0/16 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
@@ -3731,7 +3731,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 -
+### tuple ### limit any 53 192.168.0.0/16 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p tcp -d 192.168.0.0/16 --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
@@ -3757,7 +3757,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -3775,12 +3775,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba -
+### tuple ### limit tcp 139,445 192.168.0.0/16 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -3803,7 +3803,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD -
+### tuple ### limit udp 123 192.168.0.0/16 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -m state --state NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp -d 192.168.0.0/16 --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
@@ -3826,7 +3826,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### limit tcp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'dapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
@@ -3849,7 +3849,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### limit udp 1234,5678 192.168.0.0/16 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'dapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -d 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
@@ -3872,7 +3872,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### limit tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp --dport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
@@ -3895,7 +3895,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure -
+### tuple ### limit tcp 443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Secure - in
 -A ufw-user-input -p tcp --dport 443 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Secure'
 -A ufw-user-input -p tcp --dport 443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Secure'
 -A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Secure'
@@ -3918,7 +3918,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full -
+### tuple ### limit tcp 80,443 0.0.0.0/0 any 0.0.0.0/0 Apache%20Full - in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full'
@@ -3941,7 +3941,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p tcp --dport 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p tcp --dport 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9'
@@ -3967,7 +3967,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -3985,12 +3985,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### limit tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -4013,7 +4013,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD -
+### tuple ### limit udp 123 0.0.0.0/0 any 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 -m state --state NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
@@ -4036,7 +4036,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP -
+### tuple ### limit tcp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20TCP - in
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m state --state NEW -m recent --set -m comment --comment 'dapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20TCP'
@@ -4059,7 +4059,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP -
+### tuple ### limit udp 1234,5678 0.0.0.0/0 any 0.0.0.0/0 Multi%20UDP - in
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m state --state NEW -m recent --set -m comment --comment 'dapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --dports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'dapp_Multi%20UDP'
@@ -4082,7 +4082,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache
+### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.0/16 - Apache in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
@@ -4105,7 +4105,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure
+### tuple ### limit tcp any 0.0.0.0/0 443 192.168.0.0/16 - Apache%20Secure in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache%20Secure'
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Secure'
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Secure'
@@ -4128,7 +4128,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full
+### tuple ### limit tcp any 0.0.0.0/0 80,443 192.168.0.0/16 - Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Full'
@@ -4151,7 +4151,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9
+### tuple ### limit any any 0.0.0.0/0 53 192.168.0.0/16 - Bind9 in
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -m state --state NEW -m recent --set -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p tcp -s 192.168.0.0/16 --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
@@ -4177,7 +4177,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba
+### tuple ### limit udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4195,12 +4195,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba
+### tuple ### limit udp any 0.0.0.0/0 137,138 192.168.0.0/16 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba
+### tuple ### limit tcp any 0.0.0.0/0 139,445 192.168.0.0/16 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4223,7 +4223,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD
+### tuple ### limit udp any 0.0.0.0/0 123 192.168.0.0/16 - OpenNTPD in
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -m state --state NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp -s 192.168.0.0/16 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
@@ -4246,7 +4246,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP
+### tuple ### limit tcp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20TCP in
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'sapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20TCP'
@@ -4269,7 +4269,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP
+### tuple ### limit udp any 0.0.0.0/0 1234,5678 192.168.0.0/16 - Multi%20UDP in
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m state --state NEW -m recent --set -m comment --comment 'sapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -s 192.168.0.0/16 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20UDP'
@@ -4292,7 +4292,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache
+### tuple ### limit tcp any 0.0.0.0/0 80 0.0.0.0/0 - Apache in
 -A ufw-user-input -p tcp --sport 80 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
@@ -4315,7 +4315,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure
+### tuple ### limit tcp any 0.0.0.0/0 443 0.0.0.0/0 - Apache%20Secure in
 -A ufw-user-input -p tcp --sport 443 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache%20Secure'
 -A ufw-user-input -p tcp --sport 443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Secure'
 -A ufw-user-input -p tcp --sport 443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Secure'
@@ -4338,7 +4338,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full
+### tuple ### limit tcp any 0.0.0.0/0 80,443 0.0.0.0/0 - Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --sports 80,443 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache%20Full'
@@ -4361,7 +4361,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9
+### tuple ### limit any any 0.0.0.0/0 53 0.0.0.0/0 - Bind9 in
 -A ufw-user-input -p tcp --sport 53 -m state --state NEW -m recent --set -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p tcp --sport 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Bind9'
 -A ufw-user-input -p tcp --sport 53 -j ufw-user-limit-accept -m comment --comment 'sapp_Bind9'
@@ -4387,7 +4387,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### limit udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4405,12 +4405,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### limit udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba
+### tuple ### limit tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4433,7 +4433,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD
+### tuple ### limit udp any 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
 -A ufw-user-input -p udp --sport 123 -m state --state NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp --sport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
@@ -4456,7 +4456,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP
+### tuple ### limit tcp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20TCP in
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -m state --state NEW -m recent --set -m comment --comment 'sapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20TCP'
 -A ufw-user-input -p tcp -m multiport --sports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20TCP'
@@ -4479,7 +4479,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP
+### tuple ### limit udp any 0.0.0.0/0 1234,5678 0.0.0.0/0 - Multi%20UDP in
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -m state --state NEW -m recent --set -m comment --comment 'sapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Multi%20UDP'
 -A ufw-user-input -p udp -m multiport --sports 1234,5678 -j ufw-user-limit-accept -m comment --comment 'sapp_Multi%20UDP'
@@ -4502,7 +4502,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 8080 192.168.0.2 80 192.168.0.1 - Apache
+### tuple ### limit tcp 8080 192.168.0.2 80 192.168.0.1 - Apache in
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp -d 192.168.0.2 --dport 8080 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
@@ -4525,7 +4525,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD
+### tuple ### limit udp 10123 192.168.0.2 123 192.168.0.1 - OpenNTPD in
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -m state --state NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp -d 192.168.0.2 --dport 10123 -s 192.168.0.1 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
@@ -4548,7 +4548,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba
+### tuple ### limit udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
@@ -4566,12 +4566,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba
+### tuple ### limit udp 53 192.168.0.2 137,138 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
 
-### tuple ### limit tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba
+### tuple ### limit tcp 53 192.168.0.2 139,445 192.168.0.1 Bind9 Samba in
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
@@ -4594,7 +4594,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 192.168.0.2 137,138 192.168.0.1 - Samba
+### tuple ### limit udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4612,12 +4612,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 192.168.0.2 137,138 192.168.0.1 - Samba
+### tuple ### limit udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba
+### tuple ### limit tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4640,7 +4640,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache
+### tuple ### limit tcp 80,443 192.168.0.2 80 192.168.0.1 Apache%20Full Apache in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
@@ -4663,7 +4663,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 192.168.0.1 8080 192.168.0.2 Apache -
+### tuple ### limit tcp 80 192.168.0.1 8080 192.168.0.2 Apache - in
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 80 -s 192.168.0.2 --sport 8080 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
@@ -4686,7 +4686,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD -
+### tuple ### limit udp 123 192.168.0.1 10123 192.168.0.2 OpenNTPD - in
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -m state --state NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp -d 192.168.0.1 --dport 123 -s 192.168.0.2 --sport 10123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
@@ -4709,7 +4709,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### limit udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
@@ -4727,12 +4727,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### limit udp 137,138 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
 
-### tuple ### limit tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9
+### tuple ### limit tcp 139,445 192.168.0.1 53 192.168.0.2 Samba Bind9 in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
@@ -4755,7 +4755,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### limit udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -4773,12 +4773,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### limit udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 192.168.0.1 22 192.168.0.2 Samba -
+### tuple ### limit tcp 139,445 192.168.0.1 22 192.168.0.2 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -4801,7 +4801,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full
+### tuple ### limit tcp 80 192.168.0.1 80,443 192.168.0.2 Apache Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
@@ -4824,7 +4824,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba
+### tuple ### limit udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
@@ -4842,12 +4842,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba
+### tuple ### limit udp 137,138 192.168.0.1 137,138 192.168.0.1 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
 
-### tuple ### limit tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba
+### tuple ### limit tcp 139,445 192.168.0.1 139,445 192.168.0.1 Samba Samba in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -d 192.168.0.1 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
@@ -4870,7 +4870,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache
+### tuple ### limit tcp 8080 0.0.0.0/0 80 0.0.0.0/0 - Apache in
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -m state --state NEW -m recent --set -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Apache'
 -A ufw-user-input -p tcp --dport 8080 --sport 80 -j ufw-user-limit-accept -m comment --comment 'sapp_Apache'
@@ -4893,7 +4893,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD
+### tuple ### limit udp 10123 0.0.0.0/0 123 0.0.0.0/0 - OpenNTPD in
 -A ufw-user-input -p udp --dport 10123 --sport 123 -m state --state NEW -m recent --set -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 10123 --sport 123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 10123 --sport 123 -j ufw-user-limit-accept -m comment --comment 'sapp_OpenNTPD'
@@ -4916,7 +4916,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba
+### tuple ### limit udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
@@ -4934,12 +4934,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba
+### tuple ### limit udp 53 0.0.0.0/0 137,138 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 53 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
 
-### tuple ### limit tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba
+### tuple ### limit tcp 53 0.0.0.0/0 139,445 0.0.0.0/0 Bind9 Samba in
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -m state --state NEW -m recent --set -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Bind9,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 53 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Bind9,sapp_Samba'
@@ -4962,7 +4962,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### limit udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -4980,12 +4980,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba
+### tuple ### limit udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba
+### tuple ### limit tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
@@ -5008,7 +5008,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache
+### tuple ### limit tcp 80,443 0.0.0.0/0 80 0.0.0.0/0 Apache%20Full Apache in
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
 -A ufw-user-input -p tcp -m multiport --dports 80,443 -m multiport --sports 80 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache%20Full,sapp_Apache'
@@ -5031,7 +5031,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache -
+### tuple ### limit tcp 80 0.0.0.0/0 8080 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache'
 -A ufw-user-input -p tcp --dport 80 --sport 8080 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache'
@@ -5054,7 +5054,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD -
+### tuple ### limit udp 123 0.0.0.0/0 10123 0.0.0.0/0 OpenNTPD - in
 -A ufw-user-input -p udp --dport 123 --sport 10123 -m state --state NEW -m recent --set -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 123 --sport 10123 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_OpenNTPD'
 -A ufw-user-input -p udp --dport 123 --sport 10123 -j ufw-user-limit-accept -m comment --comment 'dapp_OpenNTPD'
@@ -5077,7 +5077,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### limit udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
@@ -5095,12 +5095,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### limit udp 137,138 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
 
-### tuple ### limit tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9
+### tuple ### limit tcp 139,445 0.0.0.0/0 53 0.0.0.0/0 Samba Bind9 in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Bind9'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 53 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Bind9'
@@ -5123,7 +5123,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -5141,12 +5141,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### limit udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba -
+### tuple ### limit tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
@@ -5169,7 +5169,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full
+### tuple ### limit tcp 80 0.0.0.0/0 80,443 0.0.0.0/0 Apache Apache%20Full in
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -m state --state NEW -m recent --set -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
 -A ufw-user-input -p tcp -m multiport --dports 80 -m multiport --sports 80,443 -j ufw-user-limit-accept -m comment --comment 'dapp_Apache,sapp_Apache%20Full'
@@ -5192,7 +5192,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba
+### tuple ### limit udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
@@ -5210,12 +5210,12 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba
+### tuple ### limit udp 137,138 0.0.0.0/0 137,138 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
 
-### tuple ### limit tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba
+### tuple ### limit tcp 139,445 0.0.0.0/0 139,445 0.0.0.0/0 Samba Samba in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba,sapp_Samba'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba,sapp_Samba'
@@ -5239,7 +5239,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest -
+### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest - in
 -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
 
 ### END RULES ###
@@ -5260,7 +5260,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest -
+### tuple ### allow tcp 23 0.0.0.0/0 any 0.0.0.0/0 runtest - in
 -A ufw-user-input -p tcp --dport 23 -j ACCEPT -m comment --comment 'dapp_runtest'
 
 ### END RULES ###
@@ -5287,7 +5287,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
 ### END RULES ###
@@ -5313,7 +5313,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -5329,10 +5329,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -5367,7 +5367,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### reject udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -5383,10 +5383,10 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### reject udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### reject tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
@@ -5422,19 +5422,19 @@ TESTING INSERT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 -
+### tuple ### reject tcp 110 0.0.0.0/0 any 0.0.0.0/0 Dovecot%20POP3 - in
 -A ufw-user-input -p tcp --dport 110 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Dovecot%20POP3'
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache -
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 Apache - in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT -m comment --comment 'dapp_Apache'
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 -
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 Bind9 - in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 -A ufw-user-input -p udp --dport 53 -j ACCEPT -m comment --comment 'dapp_Bind9'
 
@@ -5497,37 +5497,37 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 0.0.0.0/0 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 0.0.0.0/0 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba
+### tuple ### allow udp any 10.0.0.1 137,138 192.168.0.1 - Samba in
 -A ufw-user-input -p udp -m multiport --sports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba
+### tuple ### allow tcp any 10.0.0.1 139,445 192.168.0.1 - Samba in
 -A ufw-user-input -p tcp -m multiport --sports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow udp 137,138 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p udp -m multiport --dports 137,138 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba -
+### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 

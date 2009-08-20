@@ -82,9 +82,9 @@ cat $TESTSTATE/user.rules >> $TESTTMP/result
 cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
 echo "TESTING LOG RULES (interfaces)" >> $TESTTMP/result
-do_cmd "0" null allow log in on eth0
-do_cmd "0" null allow log in on eth0 from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
-do_cmd "0" null deny log-all in on eth0 from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+do_cmd "0" null allow in on eth0 log
+do_cmd "0" null allow in on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+do_cmd "0" null deny in on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
 echo "contents of user*.rules:" >> $TESTTMP/result
 cat $TESTSTATE/user.rules >> $TESTTMP/result
 cat $TESTSTATE/user6.rules >> $TESTTMP/result

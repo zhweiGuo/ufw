@@ -173,9 +173,9 @@ do
         do_cmd "0" reject $i on eth1 to 192.168.0.1 from 10.0.0.1 port 80
         do_cmd "0" limit $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
-	do_cmd "0" allow log $i on eth0
-	do_cmd "0" allow log $i on eth0 from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
-	do_cmd "0" deny log-all $i on eth0 from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+	do_cmd "0" allow $i on eth0 log
+	do_cmd "0" allow $i on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+	do_cmd "0" deny $i on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
 	do_cmd "0" allow $i on eth0 to any app Samba
 
 	do_cmd "0" status numbered
@@ -194,9 +194,9 @@ do
         do_cmd "0" delete reject $i on eth1 to 192.168.0.1 from 10.0.0.1 port 80
         do_cmd "0" delete limit $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
 
-	do_cmd "0" delete allow log $i on eth0
-	do_cmd "0" delete allow log $i on eth0 from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
-	do_cmd "0" delete deny log-all $i on eth0 from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+	do_cmd "0" delete allow $i on eth0 log
+	do_cmd "0" delete allow $i on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+	do_cmd "0" delete deny $i on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
 	do_cmd "0" delete allow $i on eth0 to any app Samba
 	do_cmd "0" delete allow $i on eth2 to any app Samba
 

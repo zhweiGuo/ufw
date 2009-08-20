@@ -39,7 +39,7 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0"):
+                 sport="any", src="0.0.0.0/0", direction="in"):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -64,6 +64,7 @@ class UFWRule:
             self.set_port(sport, "src")
             self.set_src(src)
             self.set_dst(dst)
+            self.set_direction(direction)
         except UFWError:
             raise
 
@@ -87,11 +88,12 @@ class UFWRule:
         rule.logtype = self.logtype
         rule.interface_in = self.interface_in
         rule.interface_out = self.interface_out
+        rule.direction = self.direction
 
         return rule
 
     def format_rule(self):
-        '''Format rule for for later parsing'''
+        '''Format rule for later parsing'''
         str = ""
 
         if self.interface_in != "":
@@ -310,6 +312,14 @@ class UFWRule:
             err_msg = _("Invalid log type '%s'") % (logtype)
             raise UFWError(err_msg)
 
+    def set_direction(self, direction):
+        '''Sets direction of the rule'''
+        if direction == "in" or direction == "out":
+            self.direction = direction
+        else:
+            err_msg = _("Unsupported direction '%s'") % (direction)
+            raise UFWError(err_msg)
+
     def normalize(self):
         '''Normalize src and dst to standard form'''
         changed = False
@@ -383,6 +393,8 @@ class UFWRule:
         if x.interface_in != y.interface_in:
             return 1
         if x.interface_out != y.interface_out:
+            return 1
+        if x.direction != y.direction:
             return 1
         if x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")

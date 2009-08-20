@@ -9,7 +9,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 53 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 53 -j ACCEPT
 -A ufw-user-input -p udp --dport 53 -j ACCEPT
 
@@ -24,7 +24,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 53 ::/0 any ::/0
+### tuple ### allow any 53 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 53 -j ACCEPT
 -A ufw6-user-input -p udp --dport 53 -j ACCEPT
 
@@ -44,7 +44,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -58,7 +58,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 ::/0 any ::/0
+### tuple ### allow tcp 25 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -77,7 +77,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -91,7 +91,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 ::/0 any ::/0
+### tuple ### allow tcp 25 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -110,7 +110,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
@@ -124,7 +124,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 ::/0 any ::/0
+### tuple ### deny tcp 80 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
@@ -143,7 +143,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8
+### tuple ### deny tcp 25 192.168.0.1 any 10.0.0.0/8 in
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### END RULES ###
@@ -162,7 +162,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 25 ::/0 any 2001:db8::/32
+### tuple ### deny tcp 25 ::/0 any 2001:db8::/32 in
 -A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j DROP
 
 ### END RULES ###
@@ -180,7 +180,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
@@ -194,7 +194,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 80 ::/0 any ::/0
+### tuple ### deny tcp 80 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 80 -j DROP
 
 ### END RULES ###
@@ -240,7 +240,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp --dport 22 -j ufw-user-limit-accept
@@ -264,7 +264,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny any 53 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 53 -j DROP
 -A ufw-user-input -p udp --dport 53 -j DROP
 
@@ -279,7 +279,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny any 53 ::/0 any ::/0
+### tuple ### deny any 53 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 53 -j DROP
 -A ufw6-user-input -p udp --dport 53 -j DROP
 
@@ -299,7 +299,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
@@ -313,7 +313,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 80 ::/0 any ::/0
+### tuple ### allow tcp 80 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 80 -j ACCEPT
 
 ### END RULES ###
@@ -332,7 +332,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8
+### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
 
 ### END RULES ###
@@ -353,7 +353,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12
+### tuple ### allow any any 0.0.0.0/0 any 172.16.0.0/12 in
 -A ufw-user-input -s 172.16.0.0/12 -j ACCEPT
 
 ### END RULES ###
@@ -374,7 +374,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16 in
 -A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
 ### END RULES ###
@@ -395,7 +395,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4
+### tuple ### deny udp 514 0.0.0.0/0 any 1.2.3.4 in
 -A ufw-user-input -p udp --dport 514 -s 1.2.3.4 -j DROP
 
 ### END RULES ###
@@ -416,7 +416,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5
+### tuple ### allow udp 5469 1.2.3.4 5469 1.2.3.5 in
 -A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
 
 ### END RULES ###
@@ -438,7 +438,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -452,7 +452,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 ::/0 any ::/0
+### tuple ### allow tcp 25 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -498,7 +498,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 25 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -512,7 +512,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 ::/0 any ::/0
+### tuple ### allow tcp 25 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 25 -j ACCEPT
 
 ### END RULES ###
@@ -558,7 +558,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
@@ -572,7 +572,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 ::/0 any ::/0
+### tuple ### allow udp 69 ::/0 any ::/0 in
 -A ufw6-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
@@ -618,7 +618,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 69 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
@@ -632,7 +632,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 ::/0 any ::/0
+### tuple ### allow udp 69 ::/0 any ::/0 in
 -A ufw6-user-input -p udp --dport 69 -j ACCEPT
 
 ### END RULES ###
@@ -678,7 +678,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
@@ -693,7 +693,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 ::/0 any ::/0
+### tuple ### allow any 22 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 22 -j ACCEPT
 -A ufw6-user-input -p udp --dport 22 -j ACCEPT
 
@@ -740,7 +740,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 -j ACCEPT
 
 ### END RULES ###
@@ -754,7 +754,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 22 ::/0 any ::/0
+### tuple ### allow tcp 22 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 22 -j ACCEPT
 
 ### END RULES ###
@@ -800,7 +800,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 22 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
@@ -814,7 +814,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 ::/0 any ::/0
+### tuple ### allow udp 22 ::/0 any ::/0 in
 -A ufw6-user-input -p udp --dport 22 -j ACCEPT
 
 ### END RULES ###
@@ -861,7 +861,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0
+### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
 
 ### END RULES ###
@@ -875,7 +875,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 ::/0 22 ::/0
+### tuple ### allow tcp 25 ::/0 22 ::/0 in
 -A ufw6-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
 
 ### END RULES ###
@@ -921,7 +921,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0
+### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0 in
 -A ufw-user-input -p udp --dport 69 --sport 22 -j ACCEPT
 
 ### END RULES ###
@@ -935,7 +935,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 ::/0 22 ::/0
+### tuple ### allow udp 69 ::/0 22 ::/0 in
 -A ufw6-user-input -p udp --dport 69 --sport 22 -j ACCEPT
 
 ### END RULES ###
@@ -981,7 +981,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 53 0.0.0.0/0
+### tuple ### allow any 22 0.0.0.0/0 53 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
 -A ufw-user-input -p udp --dport 22 --sport 53 -j ACCEPT
 
@@ -996,7 +996,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 ::/0 53 ::/0
+### tuple ### allow any 22 ::/0 53 ::/0 in
 -A ufw6-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
 -A ufw6-user-input -p udp --dport 22 --sport 53 -j ACCEPT
 
@@ -1044,7 +1044,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -j ACCEPT
 
 ### END RULES ###
@@ -1066,7 +1066,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.0/16 any 0.0.0.0/0
+### tuple ### allow any any 192.168.0.0/16 any 0.0.0.0/0 in
 -A ufw-user-input -d 192.168.0.0/16 -j ACCEPT
 
 ### END RULES ###
@@ -1087,7 +1087,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0
+### tuple ### allow any any 192.168.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1108,7 +1108,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -j ACCEPT
 
 ### END RULES ###
@@ -1130,7 +1130,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.0/16 in
 -A ufw-user-input -s 192.168.0.0/16 -j ACCEPT
 
 ### END RULES ###
@@ -1151,7 +1151,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1
+### tuple ### allow any any 0.0.0.0/0 any 192.168.0.1 in
 -A ufw-user-input -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1172,7 +1172,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 192.168.0.2 any 192.168.0.1
+### tuple ### allow any any 192.168.0.2 any 192.168.0.1 in
 -A ufw-user-input -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1191,7 +1191,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1/0 any ::/0
+### tuple ### allow any any ::1/0 any ::/0 in
 -A ufw6-user-input -d ::1/0 -j ACCEPT
 
 ### END RULES ###
@@ -1207,7 +1207,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1/32 any ::/0
+### tuple ### allow any any ::1/32 any ::/0 in
 -A ufw6-user-input -d ::1/32 -j ACCEPT
 
 ### END RULES ###
@@ -1223,7 +1223,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1 any ::/0
+### tuple ### allow any any ::1 any ::/0 in
 -A ufw6-user-input -d ::1 -j ACCEPT
 
 ### END RULES ###
@@ -1239,7 +1239,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::/0 any ::1/0
+### tuple ### allow any any ::/0 any ::1/0 in
 -A ufw6-user-input -s ::1/0 -j ACCEPT
 
 ### END RULES ###
@@ -1255,7 +1255,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::/0 any ::1/32
+### tuple ### allow any any ::/0 any ::1/32 in
 -A ufw6-user-input -s ::1/32 -j ACCEPT
 
 ### END RULES ###
@@ -1271,7 +1271,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::/0 any ::1
+### tuple ### allow any any ::/0 any ::1 in
 -A ufw6-user-input -s ::1 -j ACCEPT
 
 ### END RULES ###
@@ -1287,7 +1287,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any any ::1/16 any ::1/32
+### tuple ### allow any any ::1/16 any ::1/32 in
 -A ufw6-user-input -d ::1/16 -s ::1/32 -j ACCEPT
 
 ### END RULES ###
@@ -1845,7 +1845,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 34,35 192.168.0.1
+### tuple ### allow tcp any 0.0.0.0/0 34,35 192.168.0.1 in
 -A ufw-user-input -p tcp -m multiport --sports 34,35 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1866,7 +1866,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 34,35:39 192.168.0.1
+### tuple ### allow udp any 0.0.0.0/0 34,35:39 192.168.0.1 in
 -A ufw-user-input -p udp -m multiport --sports 34,35:39 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1887,7 +1887,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any 0.0.0.0/0 35:39 192.168.0.1
+### tuple ### allow tcp any 0.0.0.0/0 35:39 192.168.0.1 in
 -A ufw-user-input -p tcp -m multiport --sports 35:39 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1908,7 +1908,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23,210 192.168.0.1
+### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23,210 192.168.0.1 in
 -A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23,210 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1929,7 +1929,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 24 192.168.0.2 34,35 192.168.0.1
+### tuple ### allow tcp 24 192.168.0.2 34,35 192.168.0.1 in
 -A ufw-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1950,7 +1950,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24 192.168.0.2 34,35:39 192.168.0.1
+### tuple ### allow udp 24 192.168.0.2 34,35:39 192.168.0.1 in
 -A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
@@ -1969,7 +1969,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
@@ -1985,7 +1985,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
@@ -2001,7 +2001,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
@@ -2017,7 +2017,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
@@ -2033,7 +2033,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
@@ -2049,7 +2049,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
 
 ### END RULES ###
@@ -2067,7 +2067,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
@@ -2081,7 +2081,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35 ::/0 any ::/0
+### tuple ### allow tcp 34,35 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
@@ -2100,7 +2100,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2114,7 +2114,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35:39 ::/0 any ::/0
+### tuple ### allow tcp 34,35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2133,7 +2133,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2147,7 +2147,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 ::/0 any ::/0
+### tuple ### allow tcp 35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2166,7 +2166,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
@@ -2180,7 +2180,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 15:19,21,22,23 ::/0 any ::/0
+### tuple ### allow tcp 15:19,21,22,23 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
@@ -2199,7 +2199,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
@@ -2213,7 +2213,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35 ::/0 any ::/0
+### tuple ### allow udp 34,35 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 34,35 -j ACCEPT
 
 ### END RULES ###
@@ -2232,7 +2232,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2246,7 +2246,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35:39 ::/0 any ::/0
+### tuple ### allow udp 34,35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 34,35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2265,7 +2265,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2279,7 +2279,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 35:39 ::/0 any ::/0
+### tuple ### allow udp 35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 35:39 -j ACCEPT
 
 ### END RULES ###
@@ -2298,7 +2298,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
@@ -2312,7 +2312,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 ::/0 any ::/0
+### tuple ### allow udp 15:19,21,22,23 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
 ### END RULES ###
@@ -2331,7 +2331,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 34,35 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
@@ -2345,7 +2345,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 34,35 ::/0 any ::/0
+### tuple ### deny tcp 34,35 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
@@ -2364,7 +2364,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
@@ -2378,7 +2378,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 34,35:39 ::/0 any ::/0
+### tuple ### deny tcp 34,35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
@@ -2397,7 +2397,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
@@ -2411,7 +2411,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 35:39 ::/0 any ::/0
+### tuple ### deny tcp 35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
@@ -2430,7 +2430,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
@@ -2444,7 +2444,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 15:19,21,22,23 ::/0 any ::/0
+### tuple ### deny tcp 15:19,21,22,23 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
@@ -2463,7 +2463,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 34,35 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny udp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
@@ -2477,7 +2477,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 34,35 ::/0 any ::/0
+### tuple ### deny udp 34,35 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 34,35 -j DROP
 
 ### END RULES ###
@@ -2496,7 +2496,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
@@ -2510,7 +2510,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 34,35:39 ::/0 any ::/0
+### tuple ### deny udp 34,35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 34,35:39 -j DROP
 
 ### END RULES ###
@@ -2529,7 +2529,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny udp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
@@ -2543,7 +2543,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 35:39 ::/0 any ::/0
+### tuple ### deny udp 35:39 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 35:39 -j DROP
 
 ### END RULES ###
@@ -2562,7 +2562,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### deny udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
@@ -2576,7 +2576,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 15:19,21,22,23 ::/0 any ::/0
+### tuple ### deny udp 15:19,21,22,23 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j DROP
 
 ### END RULES ###
@@ -2595,7 +2595,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 34,35 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit tcp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -m multiport --dports 34,35 -j ufw-user-limit-accept
@@ -2619,7 +2619,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit tcp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -m multiport --dports 34,35:39 -j ufw-user-limit-accept
@@ -2643,7 +2643,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit tcp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -m multiport --dports 35:39 -j ufw-user-limit-accept
@@ -2667,7 +2667,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -m state --state NEW -m recent --set
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
@@ -2691,7 +2691,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 34,35 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit udp 34,35 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 34,35 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -m multiport --dports 34,35 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp -m multiport --dports 34,35 -j ufw-user-limit-accept
@@ -2715,7 +2715,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit udp 34,35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp -m multiport --dports 34,35:39 -j ufw-user-limit-accept
@@ -2739,7 +2739,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 35:39 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit udp 35:39 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 35:39 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -m multiport --dports 35:39 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp -m multiport --dports 35:39 -j ufw-user-limit-accept
@@ -2763,7 +2763,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### limit udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m state --state NEW -m recent --set
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
@@ -2788,7 +2788,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 113 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### reject tcp 113 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2802,7 +2802,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 113 ::/0 any ::/0
+### tuple ### reject tcp 113 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2822,7 +2822,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 113 0.0.0.0/0 25 0.0.0.0/0
+### tuple ### reject tcp 113 0.0.0.0/0 25 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 113 --sport 25 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2836,7 +2836,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 113 ::/0 25 ::/0
+### tuple ### reject tcp 113 ::/0 25 ::/0 in
 -A ufw6-user-input -p tcp --dport 113 --sport 25 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2882,7 +2882,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 53 10.0.0.1 113 192.168.0.1
+### tuple ### reject tcp 53 10.0.0.1 113 192.168.0.1 in
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 53 -s 192.168.0.1 --sport 113 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2921,7 +2921,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject any 116 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### reject any 116 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset 
 -A ufw-user-input -p udp --dport 116 -j REJECT
 
@@ -2936,7 +2936,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject any 116 ::/0 any ::/0
+### tuple ### reject any 116 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset 
 -A ufw6-user-input -p udp --dport 116 -j REJECT
 
@@ -2956,7 +2956,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### reject tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2970,7 +2970,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 15:19,21,22,23 ::/0 any ::/0
+### tuple ### reject tcp 15:19,21,22,23 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -2989,7 +2989,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 116 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### reject tcp 116 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -3003,7 +3003,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 116 ::/0 any ::/0
+### tuple ### reject tcp 116 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 116 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -3022,7 +3022,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### reject udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j REJECT
 
 ### END RULES ###
@@ -3036,7 +3036,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 15:19,21,22,23 ::/0 any ::/0
+### tuple ### reject udp 15:19,21,22,23 ::/0 any ::/0 in
 -A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j REJECT
 
 ### END RULES ###
@@ -3055,7 +3055,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 116 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### reject udp 116 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
@@ -3069,7 +3069,7 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 116 ::/0 any ::/0
+### tuple ### reject udp 116 ::/0 any ::/0 in
 -A ufw6-user-input -p udp --dport 116 -j REJECT
 
 ### END RULES ###
@@ -3086,7 +3086,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject any 25 ::/0 any 2001:db8::/32
+### tuple ### reject any 25 ::/0 any 2001:db8::/32 in
 -A ufw6-user-input -p tcp --dport 25 -s 2001:db8::/32 -j REJECT --reject-with tcp-reset 
 -A ufw6-user-input -p udp --dport 25 -s 2001:db8::/32 -j REJECT
 
@@ -3103,7 +3103,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### reject tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
@@ -3119,7 +3119,7 @@ WARN: Checks disabled
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342
+### tuple ### reject udp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
 -A ufw6-user-input -p udp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j REJECT
 
 ### END RULES ###
@@ -3152,15 +3152,15 @@ ipv4 rule in ipv4 section
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
 
-### tuple ### allow any 8888 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 8888 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 8888 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 8888 -j ACCEPT
 
-### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
 
@@ -3175,11 +3175,11 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 24 ::1 any ::/0
+### tuple ### allow any 24 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
 
-### tuple ### allow any 25 ::1 any ::/0
+### tuple ### allow any 25 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
 
@@ -3200,11 +3200,11 @@ ipv6 rule in ipv6 section
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
 
-### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
 
@@ -3219,15 +3219,15 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 24 ::1 any ::/0
+### tuple ### allow any 24 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
 
-### tuple ### allow any 8888 ::1 any ::/0
+### tuple ### allow any 8888 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 8888 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 8888 -j ACCEPT
 
-### tuple ### allow any 25 ::1 any ::/0
+### tuple ### allow any 25 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
 
@@ -3262,15 +3262,15 @@ ipv4 rule in ipv6 section
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
 
-### tuple ### allow any 8888 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow any 8888 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 8888 -j ACCEPT
 -A ufw-user-input -p udp --dport 8888 -j ACCEPT
 
-### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
 
@@ -3285,15 +3285,15 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 24 ::1 any ::/0
+### tuple ### allow any 24 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
 
-### tuple ### allow any 25 ::1 any ::/0
+### tuple ### allow any 25 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
 
-### tuple ### allow any 8888 ::/0 any ::/0
+### tuple ### allow any 8888 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 8888 -j ACCEPT
 -A ufw6-user-input -p udp --dport 8888 -j ACCEPT
 
@@ -3314,15 +3314,15 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 22 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 22 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 22 -j ACCEPT
 
-### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0
+### tuple ### allow any 23 127.0.0.1 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp -d 127.0.0.1 --dport 23 -j ACCEPT
 -A ufw-user-input -p udp -d 127.0.0.1 --dport 23 -j ACCEPT
 
-### tuple ### allow_log any 8888 0.0.0.0/0 any 0.0.0.0/0
+### tuple ### allow_log any 8888 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-logging-input -p tcp --dport 8888 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p tcp --dport 8888 -j RETURN
 -A ufw-user-input -p tcp --dport 8888 -j ufw-user-logging-input
@@ -3343,11 +3343,11 @@ COMMIT
 :ufw6-user-forward - [0:0]
 ### RULES ###
 
-### tuple ### allow any 24 ::1 any ::/0
+### tuple ### allow any 24 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 24 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 24 -j ACCEPT
 
-### tuple ### allow_log any 8888 ::/0 any ::/0
+### tuple ### allow_log any 8888 ::/0 any ::/0 in
 -A ufw6-user-logging-input -p tcp --dport 8888 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p tcp --dport 8888 -j RETURN
 -A ufw6-user-input -p tcp --dport 8888 -j ufw6-user-logging-input
@@ -3357,7 +3357,7 @@ COMMIT
 -A ufw6-user-input -p udp --dport 8888 -j ufw6-user-logging-input
 -A ufw6-user-input -p udp --dport 8888 -j ACCEPT
 
-### tuple ### allow any 25 ::1 any ::/0
+### tuple ### allow any 25 ::1 any ::/0 in
 -A ufw6-user-input -p tcp -d ::1 --dport 25 -j ACCEPT
 -A ufw6-user-input -p udp -d ::1 --dport 25 -j ACCEPT
 

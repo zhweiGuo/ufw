@@ -9,7 +9,7 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0
+### tuple ### allow any any 96.0.0.0/4 any 0.0.0.0/0 in
 -A ufw-user-input -d 96.0.0.0/4 -j ACCEPT
 
 ### END RULES ###
