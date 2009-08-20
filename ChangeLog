@@ -9,7 +9,7 @@ ufw (0.29) UNRELEASED; urgency=low
     - DEFAULT_OUTPUT_POLICY can now also be set to ACCEPT_NO_CONNTRACK
     - update documentation for the above
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 01 Aug 2009 17:41:03 -0400
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:26 -0500
 
 ufw (0.28) RELEASED; urgency=low
 

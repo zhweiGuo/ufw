@@ -12,7 +12,7 @@ ufw (0.29-1) UNRELEASED; urgency=low
     - Swedish (thanks to Martin Bagge. closes: #538336)
     - verify/update the above to fix typo in template (closes: #534231)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 02 Aug 2009 23:48:23 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:42 -0500
 
 ufw (0.28-2) unstable; urgency=low
 
