@@ -5891,3 +5891,323 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+257: allow out on eth0 to 192.168.0.1 app Samba
+
+
+258: allow out on eth0 from 10.0.0.1 app Samba
+
+
+259: allow out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+260: delete allow out on eth0 to 192.168.0.1 app Samba
+
+
+261: delete allow out on eth0 from 10.0.0.1 app Samba
+
+
+262: delete allow out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+263: deny out on eth0 to 192.168.0.1 app Samba
+
+
+264: deny out on eth0 from 10.0.0.1 app Samba
+
+
+265: deny out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+
+### tuple ### deny tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'sapp_Samba'
+
+### tuple ### deny udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j DROP -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+266: delete deny out on eth0 to 192.168.0.1 app Samba
+
+
+267: delete deny out on eth0 from 10.0.0.1 app Samba
+
+
+268: delete deny out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+269: limit out on eth0 to 192.168.0.1 app Samba
+
+
+270: limit out on eth0 from 10.0.0.1 app Samba
+
+
+271: limit out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+
+### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+
+### tuple ### limit udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+
+### tuple ### limit tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+
+### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+
+### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+272: delete limit out on eth0 to 192.168.0.1 app Samba
+
+
+273: delete limit out on eth0 from 10.0.0.1 app Samba
+
+
+274: delete limit out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+275: reject out on eth0 to 192.168.0.1 app Samba
+
+
+276: reject out on eth0 from 10.0.0.1 app Samba
+
+
+277: reject out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### reject udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+
+### tuple ### reject tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+
+### tuple ### reject udp any 0.0.0.0/0 137,138 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --sports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'sapp_Samba'
+
+### tuple ### reject tcp any 0.0.0.0/0 139,445 10.0.0.1 - Samba out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --sports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'sapp_Samba'
+
+### tuple ### reject udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j REJECT -m comment --comment 'dapp_Samba'
+
+### tuple ### reject tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+278: delete reject out on eth0 to 192.168.0.1 app Samba
+
+
+279: delete reject out on eth0 from 10.0.0.1 app Samba
+
+
+280: delete reject out on eth0 from 10.0.0.1 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+281: allow out on eth0 to any app Samba
+
+
+282: allow out on eth1 to any port 22
+
+
+283: insert 2 allow out on eth2 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth0
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+-A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
+-A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 out_eth1
+-A ufw-user-output -o eth1 -p tcp --dport 22 -j ACCEPT
+-A ufw-user-output -o eth1 -p udp --dport 22 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+284: delete allow out on eth0 to any app Samba
+
+
+285: delete allow out on eth1 to any port 22
+
+
+286: delete allow out on eth2 to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT

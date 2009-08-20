@@ -40,7 +40,7 @@ grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 do_cmd "0" null delete allow in on eth1 to any app Samba
 sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
 
-echo "Bug (inserted Samba rules out of order whenIPV6 is enabled" >> $TESTTMP/result
+echo "Bug (inserted Samba rules out of order when IPV6 is enabled" >> $TESTTMP/result
 sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
 do_cmd "0" allow in on eth0
 do_cmd "0" allow to 192.168.0.2

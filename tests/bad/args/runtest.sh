@@ -253,7 +253,7 @@ do_cmd "0" null delete allow 22
 do_cmd "0" null delete allow 23
 
 echo "TESTING ARGS (interfaces)" >> $TESTTMP/result
-for j in "in"; do
+for j in "in" "out"; do
     for i in allow deny limit; do
         do_cmd "1" null --dry-run $i $j on eth0:1
         do_cmd "1" null --dry-run $i $j on e%th0

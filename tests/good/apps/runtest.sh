@@ -147,8 +147,7 @@ do_cmd "0" null delete allow from any app Samba to 10.0.0.1
 cat $TESTSTATE/user.rules >> $TESTTMP/result
 
 echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
-#for i in "in" out ; do
-for i in "in" ; do
+for i in "in" "out" ; do
     for j in allow deny limit reject ; do
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 app Samba
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 app Samba

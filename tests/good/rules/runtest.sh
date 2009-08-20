@@ -247,8 +247,7 @@ echo "Man page (interface)" >> $TESTTMP/result
 do_cmd "0" null --dry-run allow in on eth0 to any port 80 proto tcp
 
 echo "Interfaces" >> $TESTTMP/result
-#for i in "in" out ; do
-for i in "in" ; do
+for i in "in" "out" ; do
     for j in allow deny limit reject ; do
         do_cmd "0" null $j $i on eth0
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22

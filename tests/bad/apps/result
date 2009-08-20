@@ -328,3 +328,48 @@ TESTING ARGS (interfaces)
 107: --dry-run limit in eth0 to any app Bind9
 
 
+108: --dry-run allow out on eth0:1 to any app Bind9
+
+
+109: --dry-run allow on eth0 to any app Bind9
+
+
+110: --dry-run allow out ina on eth0 to any app Bind9
+
+
+111: --dry-run allow out ona eth0 to any app Bind9
+
+
+112: --dry-run allow out eth0 to any app Bind9
+
+
+113: --dry-run deny out on eth0:1 to any app Bind9
+
+
+114: --dry-run deny on eth0 to any app Bind9
+
+
+115: --dry-run deny out ina on eth0 to any app Bind9
+
+
+116: --dry-run deny out ona eth0 to any app Bind9
+
+
+117: --dry-run deny out eth0 to any app Bind9
+
+
+118: --dry-run limit out on eth0:1 to any app Bind9
+
+
+119: --dry-run limit on eth0 to any app Bind9
+
+
+120: --dry-run limit out ina on eth0 to any app Bind9
+
+
+121: --dry-run limit out ona eth0 to any app Bind9
+
+
+122: --dry-run limit out eth0 to any app Bind9
+
+

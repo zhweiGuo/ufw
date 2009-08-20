@@ -1562,3 +1562,120 @@ TESTING ARGS (interfaces)
 507: --dry-run limit log-all in on eth0
 
 
+508: --dry-run allow out on eth0:1
+
+
+509: --dry-run allow out on e%th0
+
+
+510: --dry-run allow on eth0
+
+
+511: --dry-run allow ina on eth0
+
+
+512: --dry-run allow out ona eth0
+
+
+513: --dry-run allow out eth0
+
+
+514: --dry-run allow out on eth0 to
+
+
+515: --dry-run allow out on eth0 from
+
+
+516: --dry-run allow out on eth0 from any to
+
+
+517: --dry-run allow out on eth0 any from
+
+
+518: --dry-run allow out on eth0 any from to any proto
+
+
+519: --dry-run allow log out on eth0
+
+
+520: --dry-run allow log-all out on eth0
+
+
+521: --dry-run deny out on eth0:1
+
+
+522: --dry-run deny out on e%th0
+
+
+523: --dry-run deny on eth0
+
+
+524: --dry-run deny ina on eth0
+
+
+525: --dry-run deny out ona eth0
+
+
+526: --dry-run deny out eth0
+
+
+527: --dry-run deny out on eth0 to
+
+
+528: --dry-run deny out on eth0 from
+
+
+529: --dry-run deny out on eth0 from any to
+
+
+530: --dry-run deny out on eth0 any from
+
+
+531: --dry-run deny out on eth0 any from to any proto
+
+
+532: --dry-run deny log out on eth0
+
+
+533: --dry-run deny log-all out on eth0
+
+
+534: --dry-run limit out on eth0:1
+
+
+535: --dry-run limit out on e%th0
+
+
+536: --dry-run limit on eth0
+
+
+537: --dry-run limit ina on eth0
+
+
+538: --dry-run limit out ona eth0
+
+
+539: --dry-run limit out eth0
+
+
+540: --dry-run limit out on eth0 to
+
+
+541: --dry-run limit out on eth0 from
+
+
+542: --dry-run limit out on eth0 from any to
+
+
+543: --dry-run limit out on eth0 any from
+
+
+544: --dry-run limit out on eth0 any from to any proto
+
+
+545: --dry-run limit log out on eth0
+
+
+546: --dry-run limit log-all out on eth0
+
+

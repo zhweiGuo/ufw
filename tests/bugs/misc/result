@@ -47,7 +47,7 @@ Rules updated (v6)
 3: delete allow in on eth1 to any app Samba
 
 
-Bug (inserted Samba rules out of order whenIPV6 is enabled
+Bug (inserted Samba rules out of order when IPV6 is enabled
 4: allow in on eth0
 WARN: Checks disabled
 Rules updated

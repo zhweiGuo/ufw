@@ -6845,3 +6845,669 @@ COMMIT
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 COMMIT
+417: allow out on eth0
+
+
+418: allow out on eth0 to 192.168.0.1 port 22
+
+
+419: allow out on eth0 from 10.0.0.1 port 80
+
+
+420: allow out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+421: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+422: allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+423: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+424: allow out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+425: allow out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+426: allow out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+427: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+428: allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+429: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -j ACCEPT
+
+### tuple ### allow any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j ACCEPT
+
+### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+
+### tuple ### allow any 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+
+### tuple ### allow any any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+
+### tuple ### allow any 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+
+### tuple ### allow tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
+
+### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
+
+### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
+
+### tuple ### allow udp 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+
+### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
+
+### tuple ### allow udp 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+430: delete allow out on eth0
+
+
+431: delete allow out on eth0 to 192.168.0.1 port 22
+
+
+432: delete allow out on eth0 from 10.0.0.1 port 80
+
+
+433: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+434: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+435: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+436: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+437: delete allow out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+438: delete allow out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+439: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+440: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+441: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+442: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+443: deny out on eth0
+
+
+444: deny out on eth0 to 192.168.0.1 port 22
+
+
+445: deny out on eth0 from 10.0.0.1 port 80
+
+
+446: deny out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+447: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+448: deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+449: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+450: deny out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+451: deny out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+452: deny out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+453: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+454: deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+455: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -j DROP
+
+### tuple ### deny any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j DROP
+
+### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
+-A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j DROP
+
+### tuple ### deny any any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
+
+### tuple ### deny any 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+
+### tuple ### deny any any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+
+### tuple ### deny any 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+
+### tuple ### deny tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
+
+### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
+
+### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
+
+### tuple ### deny udp 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+
+### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
+
+### tuple ### deny udp 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+456: delete deny out on eth0
+
+
+457: delete deny out on eth0 to 192.168.0.1 port 22
+
+
+458: delete deny out on eth0 from 10.0.0.1 port 80
+
+
+459: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+460: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+461: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+462: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+463: delete deny out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+464: delete deny out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+465: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+466: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+467: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+468: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+469: limit out on eth0
+
+
+470: limit out on eth0 to 192.168.0.1 port 22
+
+
+471: limit out on eth0 from 10.0.0.1 port 80
+
+
+472: limit out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+473: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+474: limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+475: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+476: limit out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+477: limit out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+478: limit out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+479: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+480: limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+481: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### limit any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -j ufw-user-limit-accept
+
+### tuple ### limit any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+
+### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+
+### tuple ### limit any any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
+
+### tuple ### limit any 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+
+### tuple ### limit any any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+
+### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+
+### tuple ### limit tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+
+### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+
+### tuple ### limit tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
+
+### tuple ### limit udp 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+
+### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+
+### tuple ### limit udp 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+482: delete limit out on eth0
+
+
+483: delete limit out on eth0 to 192.168.0.1 port 22
+
+
+484: delete limit out on eth0 from 10.0.0.1 port 80
+
+
+485: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+486: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+487: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+488: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+489: delete limit out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+490: delete limit out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+491: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+492: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+493: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+494: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+495: reject out on eth0
+
+
+496: reject out on eth0 to 192.168.0.1 port 22
+
+
+497: reject out on eth0 from 10.0.0.1 port 80
+
+
+498: reject out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+499: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+500: reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+501: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+502: reject out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+503: reject out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+504: reject out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+505: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+506: reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+507: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -j REJECT
+
+### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset 
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j REJECT
+
+### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw-user-output -o eth0 -p udp -s 10.0.0.1 --sport 80 -j REJECT
+
+### tuple ### reject any any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
+
+### tuple ### reject any 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT --reject-with tcp-reset 
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT
+
+### tuple ### reject any any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+
+### tuple ### reject any 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset 
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT
+
+### tuple ### reject tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
+
+### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+
+### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+
+### tuple ### reject udp 22 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT
+
+### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
+
+### tuple ### reject udp 22 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+508: delete reject out on eth0
+
+
+509: delete reject out on eth0 to 192.168.0.1 port 22
+
+
+510: delete reject out on eth0 from 10.0.0.1 port 80
+
+
+511: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1
+
+
+512: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+
+
+513: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
+
+
+514: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+
+
+515: delete reject out on eth0 to 192.168.0.1 port 22 proto tcp
+
+
+516: delete reject out on eth0 from 10.0.0.1 port 80 proto tcp
+
+
+517: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
+
+
+518: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+
+
+519: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
+
+
+520: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+521: allow out on eth0
+
+
+522: deny out on eth0
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -j DROP
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
+523: delete deny out on eth0
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+COMMIT
