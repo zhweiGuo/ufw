@@ -3,6 +3,7 @@ ufw (0.28-3) UNRELEASED; urgency=low
   * Debconf translation updates:
     - Galician (thanks to Marce Villarino. closes: #538383)
     - Japanese (thanks to Hideki Yamane. closes: #539595)
+    - Italian (thanks to Luca Monducci. closes: #540204)
     - Portuguese (thanks to Américo Monteiro. closes: #538908)
     - Basque (thanks to Piarres Beobide. closes: #539077)
     - Czech (thanks to Michal Simunek)
