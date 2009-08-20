@@ -139,7 +139,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                 ufw.util.close_files(fns)
 
-        rstr = _("Default %s policy changed to '%s'\n") % (direction, policy)
+        rstr = _("Default %(direction)s policy changed to '%(policy)s'\n") % \
+                 (direction, policy)
         rstr += _("(be sure to update your rules accordingly)")
 
         return rstr
@@ -342,8 +343,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         if verbose:
             (level, logging_str) = self.get_loglevel()
-            policy_str = _("Default: %s (incoming), %s (outgoing)") % \
-                           (self.get_default_policy(), self.get_default_policy("output"))
+            policy_str = _("Default: %(in)s (incoming), %(out)s (outgoing)") \
+                           % (self.get_default_policy(), \
+                              self.get_default_policy("output"))
             app_policy_str = self.get_default_application_policy()
             return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
                      ({'log': logging_str, 'pol': policy_str, \
