@@ -18,8 +18,8 @@ source "$TESTPATH/../testlib.sh"
 
 echo "TESTING GOOD DEFAULT POLICY" >> $TESTTMP/result
 for i in INPUT OUTPUT FORWARD; do
-    for j in ACCEPT ACCEPT_NO_CONNTRACK DROP REJECT; do
-        if [ "$i" = "FORWARD" ] && [ "$j" = "ACCEPT_NO_CONNTRACK" ]; then
+    for j in ACCEPT ACCEPT_NO_TRACK DROP REJECT; do
+        if [ "$i" = "FORWARD" ] && [ "$j" = "ACCEPT_NO_TRACK" ]; then
             continue
         fi
         echo "Setting DEFAULT_${i}_POLICY to $j" >> $TESTTMP/result

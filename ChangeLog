@@ -10,7 +10,7 @@ ufw (0.29) UNRELEASED; urgency=low
     - add state RELATED,ESTABLISHED rule to ufw-before-output in before*.rules
       like we do with ufw-before-input, to increase performance
     - DEFAULT_OUTPUT_POLICY and DEFAULT_INPUT_POLICY can now also be set to
-      ACCEPT_NO_CONNTRACK, which avoids adding connection tracking rules for
+      ACCEPT_NO_TRACK, which avoids adding connection tracking rules for
       state NEW
     - update documentation for the above
 

@@ -6,18 +6,16 @@
 # the changes to take affect.
 IPV6=no
 
-# Set the default input policy to ACCEPT, ACCEPT_NO_CONNTRACK, DROP, or
-# REJECT. ACCEPT enables connection tracking for NEW inbound packets on the
-# INPUT chain, whereas ACCEPT_NO_CONNTRACK does not use connection tracking.
-# Please note that if you change this you will most likely want to adjust your
-# rules.
+# Set the default input policy to ACCEPT, ACCEPT_NO_TRACK, DROP, or REJECT.
+# ACCEPT enables connection tracking for NEW inbound packets on the INPUT
+# chain, whereas ACCEPT_NO_TRACK does not use connection tracking. Please note
+# that if you change this you will most likely want to adjust your rules.
 DEFAULT_INPUT_POLICY="DROP"
 
-# Set the default output policy to ACCEPT, ACCEPT_NO_CONNTRACK, DROP, or
-# REJECT. ACCEPT enables connection tracking for NEW outbound packets on the
-# OUTPUT chain, whereas ACCEPT_NO_CONNTRACK does not use connection tracking.
-# Please note that if you change this you will most likely want to adjust your
-# rules.
+# Set the default output policy to ACCEPT, ACCEPT_NO_TRACK, DROP, or REJECT.
+# ACCEPT enables connection tracking for NEW outbound packets on the OUTPUT
+# chain, whereas ACCEPT_NO_TRACK does not use connection tracking. Please note
+# that if you change this you will most likely want to adjust your rules.
 DEFAULT_OUTPUT_POLICY="ACCEPT"
 
 # Set the default forward policy to ACCEPT, DROP or REJECT.  Please note that

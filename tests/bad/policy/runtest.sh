@@ -29,8 +29,8 @@ for i in INPUT OUTPUT FORWARD; do
     done
 done
 
-echo "Setting DEFAULT_FORWARD_POLICY to ACCEPT_NO_CONNTRACK" >> $TESTTMP/result
-sed -i "s/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY=ACCEPT_NO_CONNTRACK/" $TESTPATH/etc/default/ufw
+echo "Setting DEFAULT_FORWARD_POLICY to ACCEPT_NO_TRACK" >> $TESTTMP/result
+sed -i "s/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY=ACCEPT_NO_TRACK/" $TESTPATH/etc/default/ufw
 #do_cmd "1" null --dry-run status
 do_cmd "1" --dry-run status
 sed -i "s/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY=DROP/" $TESTPATH/etc/default/ufw

@@ -64,7 +64,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         rstr = ""
         if self.defaults[policy] == "accept":
             rstr = "allow"
-        elif self.defaults[policy] == "accept_no_conntrack":
+        elif self.defaults[policy] == "accept_no_track":
             rstr = "allow-without-tracking"
         elif self.defaults[policy] == "reject":
             rstr = "reject"

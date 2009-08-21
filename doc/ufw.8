@@ -321,9 +321,9 @@ currently not enabled.
 .SH NOTES
 .PP
 On installation, \fBufw\fR is disabled with a default incoming policy of deny
-and a default outgoing policy of allow, with connection tracking. Having a
-default outgoing policy of allow without connection tracking can be achieved
-by setting DEFAULT_OUTPUT_POLICY=ACCEPT_NO_CONNTRACK in
+and a default outgoing policy of allow, with stateful tracking for NEW
+connections. Having a default policy of allow without stateful tracking can be
+achieved by using ACCEPT_NO_TRACK instead of ACCEPT in
 #CONFIG_PREFIX#/defaults/ufw.
 
 .PP

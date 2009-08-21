@@ -3,7 +3,7 @@ Setting DEFAULT_INPUT_POLICY to ACCEPT
 0: --dry-run status
 
 
-Setting DEFAULT_INPUT_POLICY to ACCEPT_NO_CONNTRACK
+Setting DEFAULT_INPUT_POLICY to ACCEPT_NO_TRACK
 1: --dry-run status
 
 
@@ -19,7 +19,7 @@ Setting DEFAULT_OUTPUT_POLICY to ACCEPT
 4: --dry-run status
 
 
-Setting DEFAULT_OUTPUT_POLICY to ACCEPT_NO_CONNTRACK
+Setting DEFAULT_OUTPUT_POLICY to ACCEPT_NO_TRACK
 5: --dry-run status
 
 
