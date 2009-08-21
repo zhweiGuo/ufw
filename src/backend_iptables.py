@@ -187,14 +187,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         err_msg = _("problem running")
         for direction in ["input", "output"]:
             # Is the firewall loaded at all?
-            (rc, out) = cmd([self.iptables, '-S', \
-                            'ufw-user-%s' % (direction)])
-            if rc != 0:
+            (rc, out) = cmd([self.iptables, '-L', \
+                            'ufw-user-%s' % (direction), '-n'])
+            if rc == 1:
                 return _("Status: inactive")
+            else:
+                raise UFWError(err_msg + " iptables: %s\n" % (out))
 
             if self.use_ipv6():
-                (rc, out6) = cmd([self.ip6tables, '-S', \
-                                 'ufw6-user-%s' % (direction)])
+                (rc, out6) = cmd([self.ip6tables, '-L', \
+                                 'ufw6-user-%s' % (direction), '-n'])
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
