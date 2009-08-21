@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-20 17:36-0500\n"
+"POT-Creation-Date: 2009-08-21 15:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,7 +102,7 @@ msgstr ""
 msgid "New profiles:"
 msgstr ""
 
-#: src/backend_iptables.py:94 src/backend.py:240
+#: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
 msgstr ""
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Could not perform '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:934 src/backend.py:495
+#: src/backend_iptables.py:934 src/backend.py:508
 #, python-format
 msgid "Invalid log level '%s'"
 msgstr ""
@@ -344,51 +344,61 @@ msgstr ""
 msgid "'%(f)s' file '%(name)s' does not exist"
 msgstr ""
 
-#: src/backend.py:193
+#: src/backend.py:194
+#, python-format
+msgid "Missing policy for '%s'"
+msgstr ""
+
+#: src/backend.py:199
+#, python-format
+msgid "Invalid policy '%(policy)s' for '%(chain)s'"
+msgstr ""
+
+#: src/backend.py:206
 msgid "Invalid option"
 msgstr ""
 
-#: src/backend.py:243
+#: src/backend.py:256
 #, python-format
 msgid "Default application policy changed to '%s'"
 msgstr ""
 
-#: src/backend.py:325
+#: src/backend.py:338
 msgid "No rules found for application profile"
 msgstr ""
 
-#: src/backend.py:384
+#: src/backend.py:397
 #, python-format
 msgid "Rules updated for profile '%s'"
 msgstr ""
 
-#: src/backend.py:390
+#: src/backend.py:403
 msgid "Couldn't update application rules"
 msgstr ""
 
-#: src/backend.py:412
+#: src/backend.py:425
 #, python-format
 msgid "Found multiple matches for '%s'. Please use exact profile name"
 msgstr ""
 
-#: src/backend.py:413
+#: src/backend.py:426
 #, python-format
 msgid "Could not find a profile matching '%s'"
 msgstr ""
 
-#: src/backend.py:479
+#: src/backend.py:492
 msgid "Logging: "
 msgstr ""
 
-#: src/backend.py:483
+#: src/backend.py:496
 msgid "unknown"
 msgstr ""
 
-#: src/backend.py:513
+#: src/backend.py:526
 msgid "Logging disabled"
 msgstr ""
 
-#: src/backend.py:515
+#: src/backend.py:528
 msgid "Logging enabled"
 msgstr ""
 
