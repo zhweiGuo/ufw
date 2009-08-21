@@ -22,11 +22,13 @@ do_cmd "1" null --dry-run logging foo
 do_cmd "1" null --dry-run loggin on
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
-do_cmd "1" null --dry-run default
-do_cmd "1" null --dry-run default foo
-do_cmd "1" null --dry-run default accept
-do_cmd "1" null --dry-run defaul allow
-do_cmd "1" null --dry-run default limit
+for i in "" "input" "incoming" "output" "outgoing"; do
+    do_cmd "1" null --dry-run default $i
+    do_cmd "1" null --dry-run default foo $i
+    do_cmd "1" null --dry-run default accept $i
+    do_cmd "1" null --dry-run defaul allow $i
+    do_cmd "1" null --dry-run default limit $i
+done
 
 echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 # bad

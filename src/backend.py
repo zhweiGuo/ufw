@@ -187,6 +187,19 @@ class UFWBackend:
 
             orig.close()
 
+        # do some default policy sanity checking
+        policies = ['accept', 'accept_no_conntrack', 'drop', 'reject']
+        for c in [ 'input', 'output', 'forward' ]:
+            if not self.defaults.has_key('default_%s_policy' % (c)):
+                err_msg = _("Missing policy for '%s'" % (c))
+                raise UFWError(err_msg)
+            p = self.defaults['default_%s_policy' % (c)]
+            if p not in policies or \
+               (p == 'accept_no_conntrack' and c == 'forward'):
+                err_msg = _("Invalid policy '%(policy)s' for '%(chain)s'" % \
+                            ({'policy': p, 'chain': c}))
+                raise UFWError(err_msg)
+
     def set_default(self, f, opt, value):
         '''Sets option in defaults file'''
         if not re.match(r'^[\w_]+$', opt):

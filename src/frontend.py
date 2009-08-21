@@ -121,7 +121,7 @@ def parse_command(argv):
     if action == "default":
         direction = "incoming"
         if nargs > 3:
-            if argv[3].lower() != "incoming" and argv[3].lower() != "input" and
+            if argv[3].lower() != "incoming" and argv[3].lower() != "input" and \
                argv[3].lower() != "output" and argv[3].lower() != "outgoing":
                 raise ValueError()
             if argv[3].lower().startswith("in"):
@@ -145,7 +145,7 @@ def parse_command(argv):
 
     if action == "allow" or action == "deny" or action == "reject" or \
        action == "limit":
-        # set/strip 
+        # set/strip
         rule_direction = "in"
         if nargs > 2 and (argv[2].lower() == "in" or \
                           argv[2].lower() == "out"):
@@ -179,7 +179,7 @@ def parse_command(argv):
         elif nargs > 3 and (argv[2].lower() == "log" or \
                            argv[2].lower() == 'log-all'):
             log_idx = 2
-            
+
         if log_idx > 0:
             logtype = argv[log_idx].lower()
             # strip out 'log' or 'log-all' and parse as normal

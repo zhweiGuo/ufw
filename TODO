@@ -3,14 +3,13 @@ TODO
 DBus support so frontend can send messages to ufw which can then be protected
 via policy kit
 
-Egress filtering
+Provide a very simple GUI, possibly with NetworkManager integration. This GUI
+would not replace gufw, which aims to expose the full functionality of ufw.
 
 MAC address filtering (ie ebtables)
 
 nftables backend (long term)
 
 Delete rule be rule number (LP: #367571)
-
-Clean up the rules parsing and tuples read and write
 
 Copyright 2008-2009 Canonical Ltd.

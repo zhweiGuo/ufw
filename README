@@ -82,8 +82,8 @@ http://doc.ubuntu.com/ubuntu/serverguide/C/firewall.html
 
 Chains
 ------
-ufw uses several chains to allow ease of use and flexibility. The chains are
-(more or less) organized as follows:
+ufw uses several chains to allow ease of use and flexibility. Control flow
+through the various chains is (essentially) as follows:
 
 INPUT ->
   ufw-before-logging-input ->
@@ -99,7 +99,8 @@ OUTPUT ->
       ufw-user-output ->
         ufw-after-output ->
           ufw-after-logging-output ->
-            ufw-reject-output -> return to OUTPUT
+            ufw-reject-output ->
+               ufw-conntrack-output -> return to OUTPUT
 
 FORWARD ->
   ufw-before-logging-forward ->

@@ -1,0 +1,45 @@
+TESTING GOOD DEFAULT POLICY
+Setting DEFAULT_INPUT_POLICY to ACCEPT
+0: --dry-run status
+
+
+Setting DEFAULT_INPUT_POLICY to ACCEPT_NO_CONNTRACK
+1: --dry-run status
+
+
+Setting DEFAULT_INPUT_POLICY to DROP
+2: --dry-run status
+
+
+Setting DEFAULT_INPUT_POLICY to REJECT
+3: --dry-run status
+
+
+Setting DEFAULT_OUTPUT_POLICY to ACCEPT
+4: --dry-run status
+
+
+Setting DEFAULT_OUTPUT_POLICY to ACCEPT_NO_CONNTRACK
+5: --dry-run status
+
+
+Setting DEFAULT_OUTPUT_POLICY to DROP
+6: --dry-run status
+
+
+Setting DEFAULT_OUTPUT_POLICY to REJECT
+7: --dry-run status
+
+
+Setting DEFAULT_FORWARD_POLICY to ACCEPT
+8: --dry-run status
+
+
+Setting DEFAULT_FORWARD_POLICY to DROP
+9: --dry-run status
+
+
+Setting DEFAULT_FORWARD_POLICY to REJECT
+10: --dry-run status
+
+
