@@ -191,7 +191,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             'ufw-user-%s' % (direction), '-n'])
             if rc == 1:
                 return _("Status: inactive")
-            else:
+            elif rc != 0:
                 raise UFWError(err_msg + " iptables: %s\n" % (out))
 
             if self.use_ipv6():
