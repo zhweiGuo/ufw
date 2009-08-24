@@ -31,4 +31,11 @@ for i in INPUT OUTPUT FORWARD; do
     done
 done
 
+echo "TESTING ARGS (default)" >> $TESTTMP/result
+for i in "" incoming outgoing input output; do
+    for j in allow deny reject ALLOW DENY REJECT; do
+        do_cmd "0" --dry-run default $j $i
+    done
+done
+
 exit 0
