@@ -98,7 +98,7 @@ class Install(_install, object):
 
         self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
-        self.copy_file('doc/ufw-rules.8', manpage_f)
+        self.copy_file('doc/ufw-framework.8', manpage_f)
 
         # Install state files and helper scripts
         statedir = real_statedir
