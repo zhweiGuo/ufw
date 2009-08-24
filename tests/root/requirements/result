@@ -1,0 +1,74 @@
+0: /home/jamie/bzr-pulls/ufw-trunk/tests/testarea/../check-requirements
+Has iptables: pass
+Has ip6tables: pass
+
+== IPv4 ==
+Creating 'ufw-check-requirements'... done
+Inserting RETURN at top of 'ufw-check-requirements'... done
+TCP: pass
+UDP: pass
+destination port: pass
+source port: pass
+ACCEPT: pass
+DROP: pass
+REJECT: pass
+LOG: pass
+hashlimit: pass
+limit: pass
+state (NEW): pass
+state (RELATED): pass
+state (ESTABLISHED): pass
+state (INVALID): pass
+state (new, recent set): pass
+state (new, recent update): pass
+state (new, limit): pass
+interface (input): pass
+interface (output): pass
+multiport: pass
+comment: pass
+addrtype (LOCAL): pass
+addrtype (MULTICAST): pass
+addrtype (BROADCAST): pass
+icmp (destination-unreachable): pass
+icmp (source-quench): pass
+icmp (time-exceeded): pass
+icmp (parameter-problem): pass
+icmp (echo-request): pass
+
+== IPv6 ==
+Creating 'ufw-check-requirements6'... done
+Inserting RETURN at top of 'ufw-check-requirements6'... done
+TCP: pass
+UDP: pass
+destination port: pass
+source port: pass
+ACCEPT: pass
+DROP: pass
+REJECT: pass
+LOG: pass
+hashlimit: pass
+limit: pass
+state (NEW): pass
+state (RELATED): pass
+state (ESTABLISHED): pass
+state (INVALID): pass
+state (new, recent set): pass
+state (new, recent update): pass
+state (new, limit): pass
+interface (input): pass
+interface (output): pass
+multiport: pass
+comment: pass
+icmpv6 (destination-unreachable): pass
+icmpv6 (packet-too-big): pass
+icmpv6 (time-exceeded): pass
+icmpv6 (parameter-problem): pass
+icmpv6 (echo-request): pass
+icmpv6 with hl (neighbor-solicitation): pass
+icmpv6 with hl (neighbor-advertisement): pass
+icmpv6 with hl (router-solicitation): pass
+icmpv6 with hl (router-advertisement): pass
+
+All tests passed
+
+

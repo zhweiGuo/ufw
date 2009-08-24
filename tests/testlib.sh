@@ -53,6 +53,41 @@ do_cmd() {
 	fi
 }
 
+do_extcmd() {
+	if [ "$1" = "0" ] || [ "$1" = "1" ]; then
+		expected="$1"
+		shift
+	fi
+
+	do_stats="yes"
+	cmd_results_file="$TESTTMP/result"
+	if [ "$1" = "null" ]; then
+		cmd_results_file="/dev/null"
+		shift
+	elif [ "$1" = "nostats" ]; then
+		do_stats="no"
+		cmd_results_file="/dev/null"
+		shift
+	fi
+
+       	echo "$count: $@" >> $TESTTMP/result
+        $@ >> $cmd_results_file 2>&1
+	rc="$?"
+	if [ "$rc" != "$expected" ]; then
+		echo "Command '$@' exited with '$rc', but expected '$expected'"
+		exit 1
+	fi
+        let count=count+1
+        echo "" >> $TESTTMP/result
+        echo "" >> $TESTTMP/result
+
+	if [ "$do_stats" = "yes" ]; then
+        	individual=$(cat $statsdir/individual)
+        	let individual=individual+1
+        	echo $individual > $statsdir/individual
+	fi
+}
+
 cleanup() {
     do_cmd "0" nostats disable
     $TESTSTATE/ufw-init flush-all

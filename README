@@ -28,7 +28,9 @@ Linux kernel configured with the following modules (not exhaustive):
   ufw will give a warning when users try to use this functionality, but ufw
   will otherwise work fine.
 
-ufw has been widely tested on Linux 2.6.24 and higher kernels.
+ufw has been widely tested on Linux 2.6.24 and higher kernels. You may also
+use the check-requirements script in the tests/ directory to see if your
+system has all the required iptables/netfilter functionality.
 
 
 Install

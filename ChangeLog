@@ -13,6 +13,9 @@ ufw (0.29) UNRELEASED; urgency=low
       ACCEPT_NO_TRACK, which avoids adding connection tracking rules for
       state NEW
     - update documentation for the above
+  * add tests/check-requirements and integrate into test suite. This script
+    can be used to make sure that your system has all the required iptables
+    and netfilter functionality as described in README
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:26 -0500
 
