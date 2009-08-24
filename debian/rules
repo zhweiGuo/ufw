@@ -56,9 +56,6 @@ endif
 	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
 	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.Debian.pre-0.27.1
 
-	# add lintian override
-	cp $(CURDIR)/debian/binary.lintian-overrides $(CURDIR)/debian/ufw/usr/share/lintian/overrides/ufw
-
 	# Add the shell-completion file
 	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw
 

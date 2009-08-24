@@ -3,6 +3,5 @@ etc/init.d
 etc/ufw
 lib/ufw
 usr/share/doc/ufw
-usr/share/lintian/overrides
 usr/share/ufw
 var/lib/ufw

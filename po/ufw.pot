@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-21 15:03-0500\n"
+"POT-Creation-Date: 2009-08-22 10:38-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,8 +130,8 @@ msgid "Checking raw ip6tables\n"
 msgstr ""
 
 #: src/backend_iptables.py:157 src/backend_iptables.py:187
-#: src/backend_iptables.py:360 src/backend_iptables.py:370
-#: src/backend_iptables.py:417
+#: src/backend_iptables.py:362 src/backend_iptables.py:372
+#: src/backend_iptables.py:419
 msgid "problem running"
 msgstr ""
 
@@ -147,28 +147,28 @@ msgstr ""
 msgid "Status: inactive"
 msgstr ""
 
-#: src/backend_iptables.py:327
+#: src/backend_iptables.py:329
 msgid "To"
 msgstr ""
 
-#: src/backend_iptables.py:328
+#: src/backend_iptables.py:330
 msgid "From"
 msgstr ""
 
-#: src/backend_iptables.py:329
+#: src/backend_iptables.py:331
 msgid "Action"
 msgstr ""
 
-#: src/backend_iptables.py:340
+#: src/backend_iptables.py:342
 msgid "\n"
 msgstr ""
 
-#: src/backend_iptables.py:348
+#: src/backend_iptables.py:350
 #, python-format
 msgid "Default: %(in)s (incoming), %(out)s (outgoing)"
 msgstr ""
 
-#: src/backend_iptables.py:352
+#: src/backend_iptables.py:354
 #, python-format
 msgid ""
 "Status: active\n"
@@ -177,123 +177,123 @@ msgid ""
 "%(app)s%(status)s"
 msgstr ""
 
-#: src/backend_iptables.py:356
+#: src/backend_iptables.py:358
 #, python-format
 msgid "Status: active%s"
 msgstr ""
 
-#: src/backend_iptables.py:362 src/backend_iptables.py:372
+#: src/backend_iptables.py:364 src/backend_iptables.py:374
 msgid "running ufw-init"
 msgstr ""
 
-#: src/backend_iptables.py:384
+#: src/backend_iptables.py:386
 msgid "Could not set LOGLEVEL"
 msgstr ""
 
-#: src/backend_iptables.py:390
+#: src/backend_iptables.py:392
 msgid "Could not load logging rules"
 msgstr ""
 
-#: src/backend_iptables.py:539 src/backend.py:180
+#: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
 msgstr ""
 
-#: src/backend_iptables.py:548
+#: src/backend_iptables.py:550
 #, python-format
 msgid "Skipping malformed tuple (bad length): %s"
 msgstr ""
 
-#: src/backend_iptables.py:578
+#: src/backend_iptables.py:580
 #, python-format
 msgid "Skipping malformed tuple: %s"
 msgstr ""
 
-#: src/backend_iptables.py:699
+#: src/backend_iptables.py:701
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
 msgstr ""
 
-#: src/backend_iptables.py:703
+#: src/backend_iptables.py:705
 #, python-format
 msgid "Skipping unsupported IPv6 '%s' rule"
 msgstr ""
 
-#: src/backend_iptables.py:706
+#: src/backend_iptables.py:708
 msgid "Must specify 'tcp' or 'udp' with multiple ports"
 msgstr ""
 
-#: src/backend_iptables.py:718
+#: src/backend_iptables.py:720
 msgid "Skipping IPv6 application rule. Need at least iptables 1.4"
 msgstr ""
 
-#: src/backend_iptables.py:723
+#: src/backend_iptables.py:725
 #, python-format
 msgid "Invalid position '%d'"
 msgstr ""
 
-#: src/backend_iptables.py:727
+#: src/backend_iptables.py:729
 msgid "Cannot specify insert and delete"
 msgstr ""
 
-#: src/backend_iptables.py:730
+#: src/backend_iptables.py:732
 #, python-format
 msgid "Cannot insert rule at position '%d'"
 msgstr ""
 
-#: src/backend_iptables.py:788
+#: src/backend_iptables.py:790
 msgid "Skipping inserting existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:799 src/frontend.py:694
+#: src/backend_iptables.py:801 src/frontend.py:694
 msgid "Could not delete non-existent rule"
 msgstr ""
 
-#: src/backend_iptables.py:804
+#: src/backend_iptables.py:806
 msgid "Skipping adding existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:818
+#: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:823
+#: src/backend_iptables.py:825
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:825
+#: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:833
+#: src/backend_iptables.py:835
 msgid "Rule inserted"
 msgstr ""
 
-#: src/backend_iptables.py:835
+#: src/backend_iptables.py:837
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:845
+#: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
 msgstr ""
 
-#: src/backend_iptables.py:848
+#: src/backend_iptables.py:850
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:851
+#: src/backend_iptables.py:853
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:867 src/backend_iptables.py:939
+#: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
 msgstr ""
 
-#: src/backend_iptables.py:922
+#: src/backend_iptables.py:924
 #, python-format
 msgid "Could not perform '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:934 src/backend.py:508
+#: src/backend_iptables.py:936 src/backend.py:508
 #, python-format
 msgid "Invalid log level '%s'"
 msgstr ""
