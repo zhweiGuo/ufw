@@ -62,6 +62,9 @@ endif
 	# Add the shell-completion file
 	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw
 
+	# useful for debugging
+	cp $(CURDIR)/tests/check-requirements $(CURDIR)/debian/ufw/usr/share/ufw
+
 binary-arch: build
 
 binary-indep: build install

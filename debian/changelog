@@ -11,6 +11,8 @@ ufw (0.29-1) UNRELEASED; urgency=low
     - Slovak (thanks to Ivan Masár. closes: #534450)
     - Swedish (thanks to Martin Bagge. closes: #538336)
     - verify/update the above to fix typo in template (closes: #534231)
+  * debian/rules: install tests/check-requirements into /usr/share/ufw
+  * update ucf md5sums for before.rules and before6.rules
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:42 -0500
 
