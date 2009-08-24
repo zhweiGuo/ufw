@@ -1,4 +1,4 @@
-0: /home/jamie/bzr-pulls/ufw-trunk/tests/testarea/../check-requirements
+0: ./tests/check-requirements
 Has iptables: pass
 Has ip6tables: pass
 

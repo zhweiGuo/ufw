@@ -19,82 +19,45 @@ WARN: Checks disabled
 Logging disabled
 
 
-TESTING ARGS (default)
-4: --dry-run default allow
-WARN: Checks disabled
-Default incoming policy changed to 'allow'
-(be sure to update your rules accordingly)
-
-
-5: --dry-run default deny
-WARN: Checks disabled
-Default incoming policy changed to 'deny'
-(be sure to update your rules accordingly)
-
-
-6: --dry-run default reject
-WARN: Checks disabled
-Default incoming policy changed to 'reject'
-(be sure to update your rules accordingly)
-
-
-7: --dry-run DEFAULT ALLOW
-WARN: Checks disabled
-Default incoming policy changed to 'allow'
-(be sure to update your rules accordingly)
-
-
-8: --dry-run DEFAULT DENY
-WARN: Checks disabled
-Default incoming policy changed to 'deny'
-(be sure to update your rules accordingly)
-
-
-9: --dry-run DEFAULT REJECT
-WARN: Checks disabled
-Default incoming policy changed to 'reject'
-(be sure to update your rules accordingly)
-
-
 TESTING ARGS (enable/disable)
-10: --dry-run enable
+4: --dry-run enable
 WARN: Checks disabled
 > running ufw-init
 Firewall is active and enabled on system startup
 
 
-11: --dry-run disable
+5: --dry-run disable
 WARN: Checks disabled
 > running ufw-init
 Firewall stopped and disabled on system startup
 
 
-12: --dry-run ENABLE
+6: --dry-run ENABLE
 WARN: Checks disabled
 > running ufw-init
 Firewall is active and enabled on system startup
 
 
-13: --dry-run DISABLE
+7: --dry-run DISABLE
 WARN: Checks disabled
 > running ufw-init
 Firewall stopped and disabled on system startup
 
 
 TESTING ARGS (status)
-14: --dry-run status
+8: --dry-run status
 WARN: Checks disabled
 > Checking iptables
 
 
 
-15: --dry-run status verbose
+9: --dry-run status verbose
 WARN: Checks disabled
 > Checking iptables
 
 
 
-16: --dry-run show raw
+10: --dry-run show raw
 WARN: Checks disabled
 > Checking raw iptables
 > Checking raw ip6tables

@@ -16,6 +16,6 @@
 
 source "$TESTPATH/../testlib.sh"
 
-do_extcmd "0" $TESTPATH/../check-requirements
+do_extcmd "0" ./tests/check-requirements
 
 exit 0
