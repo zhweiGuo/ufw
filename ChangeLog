@@ -16,6 +16,7 @@ ufw (0.29) UNRELEASED; urgency=low
   * add tests/check-requirements and integrate into test suite. This script
     can be used to make sure that your system has all the required iptables
     and netfilter functionality as described in README
+  * add doc/ufw-framework.8
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:26 -0500
 

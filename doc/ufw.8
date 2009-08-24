@@ -1,4 +1,4 @@
-.TH UFW: "8" "January 2009" "" ""
+.TH UFW: "8" "" "August 2009" "August 2009"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -345,28 +345,27 @@ tables using:
 
 See the \fBiptables\fR and \fBip6tables\fR documentation for more details.
 .PP
-Currently, \fBufw\fR is a front-end for \fBiptables-restore\fR, with its
-rules saved in #CONFIG_PREFIX#/ufw/before.rules, #CONFIG_PREFIX#/ufw/after.rules
-and #STATE_PREFIX#/user.rules. Administrators can customize \fBbefore.rules\fR
-and \fBafter.rules\fR as desired using the standard \fBiptables-restore\fR
-syntax. Rules are evaluated as follows: \fBbefore.rules\fR first,
-\fBuser.rules\fR next, and \fBafter.rules\fR last. IPv6 rules are evaluated in
-the same way, with the rules files named \fBbefore6.rules\fR, \fBuser6.rules\fR
-and \fBafter6.rules\fR. Please note that \fBufw status\fR only shows rules
-added with \fBufw\fR and not the rules found in the #CONFIG_PREFIX#/ufw rules
-files.
-.PP
-\fBufw\fR will read in #CONFIG_PREFIX#/ufw/sysctl.conf on boot when enabled.
-Please note that #CONFIG_PREFIX#/ufw/sysctl.conf overrides values in the
-system systcl.conf (usually #CONFIG_PREFIX#/sysctl.conf).  To change this
-behavior, modify #CONFIG_PREFIX#/default/ufw.
-.PP
 If the default policy is set to REJECT, \fBufw\fB may interfere with rules
 added outside of the ufw framework. See README for details.
+.PP
+IPv6 is blocked by default only IPv6 traffic on the loopback interface is
+allowed. To change this behavior, set IPV6 to 'yes' in
+#CONFIG_PREFIX#/defaults/ufw and reload \fBufw\fR. Once IPv6 is enabled,
+you may specify rules in the same way as for IPv4 rules, and they will be
+displayed with \fBufw status\fR. Rules that match both IPv4 and IPv6 addresses
+apply to both IP versions. For example, when IPv6 is enabled, the following
+rule will allow access to port 22 for both IPv4 and IPv6 traffic:
+
+  ufw allow 22
+
+.PP
+In addition to the command-line interface, \fBufw\fR also provides a
+framework which allows adminstrators to take full advantage of netfilter.
+See the \fBufw-framework\fR manual page for more information.
 
 .SH SEE ALSO
 .PP
-\fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables-restore\fR(8), \fBip6tables-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
+\fBufw-framework\fR, \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables-restore\fR(8), \fBip6tables-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
 
 .SH AUTHOR
 .PP

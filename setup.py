@@ -90,12 +90,15 @@ class Install(_install, object):
 
         script = os.path.join(prefix, 'sbin', 'ufw')
         manpage = os.path.join(prefix, 'share', 'man', 'man8', 'ufw.8')
+        manpage_f = os.path.join(prefix, 'share', 'man', 'man8', \
+                                 'ufw-framework.8')
 
-        for f in [ script, manpage ]:
+        for f in [ script, manpage, manpage_f ]:
             self.mkpath(os.path.dirname(f))
 
         self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
+        self.copy_file('doc/ufw-rules.8', manpage_f)
 
         # Install state files and helper scripts
         statedir = real_statedir
@@ -156,7 +159,8 @@ class Install(_install, object):
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, script, \
-                      manpage, sysctl, init_helper, init_helper_functions ]:
+                      manpage, manpage_f, sysctl, init_helper, \
+                      init_helper_functions ]:
             print "Updating " + file
             subprocess.call(["sed",
                              "-i",
