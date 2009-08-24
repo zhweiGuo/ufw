@@ -169,13 +169,17 @@ for i in "" 6; do
         exe="ip6tables"
         c="${chain}6"
     fi
-    $exe -F $c || {
-        echo "ERROR: could not flush '$c'" >&2
-        error="yes"
+    $exe -F $c >/dev/null 2>&1 || {
+        if [ -z "$error" ]; then
+            echo "ERROR: could not flush '$c'" >&2
+            error="yes"
+        fi
     }
-    $exe -X $c || {
-        error="yes"
-        echo "ERROR: could not remove '$c'" >&2
+    $exe -X $c >/dev/null 2>&1 || {
+        if [ -z "$error" ]; then
+            error="yes"
+            echo "ERROR: could not remove '$c'" >&2
+        fi
     }
 done
 
