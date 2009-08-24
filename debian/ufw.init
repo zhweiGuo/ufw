@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 
 ### BEGIN INIT INFO
 # Provides:          ufw
@@ -8,6 +8,8 @@
 # Default-Stop:      
 # Short-Description: start firewall
 ### END INIT INFO
+
+set -e
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
