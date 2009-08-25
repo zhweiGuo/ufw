@@ -155,7 +155,7 @@ def verify_profile(name, profile):
         if not profile.has_key(f):
             err_msg = _("Profile '%(fn)s' missing required field '%(f)s'") % \
                         ({'fn': name, 'f': f})
-                        
+
             raise UFWError(err_msg)
         elif not profile[f]:
             err_msg = _("Profile '%(fn)s' has empty required field '%(f)s'") \
