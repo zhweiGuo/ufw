@@ -221,7 +221,5 @@ Ports:
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_bug407810'
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_bug407810'
 24: delete allow bug407810
-WARN: Checks disabled
-Rules updated
 
 
