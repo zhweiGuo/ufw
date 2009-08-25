@@ -1,6 +1,11 @@
-ufw (0.29-1) UNRELEASED; urgency=low
+ufw (0.29-1) unstable; urgency=low
 
-  * new upstream release which adds egress filtering support (LP: #382932)
+  * new upstream release:
+    - adds egress filtering support (LP: #382932)
+    - new translations
+    - new man page: ufw-framework.8
+    - new check-requirements to help debug systems with custom kernels
+    - fixes deletion of non-existent application rules (LP: #407810)
   * Debconf translation updates:
     - Galician (thanks to Marce Villarino. closes: #538383)
     - Japanese (thanks to Hideki Yamane. closes: #539595)
@@ -15,7 +20,7 @@ ufw (0.29-1) UNRELEASED; urgency=low
   * update ucf md5sums for before.rules and before6.rules
   * remove no longer used lintian override
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:42 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 25 Aug 2009 09:12:26 -0500
 
 ufw (0.28-2) unstable; urgency=low
 

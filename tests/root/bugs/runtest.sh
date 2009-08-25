@@ -117,6 +117,16 @@ do_cmd "0"  delete allow 2
 do_cmd "0"  delete allow 1
 do_cmd "0"  status
 
+echo "Bug #407810" >> $TESTTMP/result
+cp "$TESTPATH/etc/ufw/applications.d/samba" "$TESTPATH/etc/ufw/applications.d/bug407810"
+sed -i 's/Samba/bug407810/' "$TESTPATH/etc/ufw/applications.d/bug407810"
+do_cmd "0" app info bug407810
+do_cmd "0" null allow bug407810
+grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
+rm -f "$TESTPATH/etc/ufw/applications.d/bug407810"
+do_cmd "0" null delete allow bug407810
+grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
+
 # teardown
 cleanup
 
