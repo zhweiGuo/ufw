@@ -881,19 +881,34 @@ class UFWFrontend:
         elif action == "allow" or action == "deny" or action == "reject" or \
              action == "limit":
             # allow case insensitive matches for application rules
-            try:
-                if rule.dapp != "":
+            if rule.dapp != "":
+                try:
                     tmp = self.backend.find_application_name(rule.dapp)
                     if tmp != rule.dapp:
                         rule.dapp = tmp
                         rule.set_port(tmp, "dst")
-                if rule.sapp != "":
+                except UFWError, e:
+                    # allow for the profile being deleted (LP: #407810)
+                    if not rule.remove:
+                        error(e.value)
+                    if not ufw.applications.valid_profile_name(rule.dapp):
+                        err_msg = _("Invalid profile name")
+                        raise UFWError(err_msg)
+
+            if rule.sapp != "":
+                try:
                     tmp = self.backend.find_application_name(rule.sapp)
                     if tmp != rule.sapp:
                         rule.sapp = tmp
-                        rule.set_port(tmp, "src")
-            except UFWError, e:
-                error(e.value)
+                        rule.set_port(tmp, "dst")
+                except UFWError, e:
+                    # allow for the profile being deleted (LP: #407810)
+                    if not rule.remove:
+                        error(e.value)
+                    if not ufw.applications.valid_profile_name(rule.sapp):
+                        err_msg = _("Invalid profile name")
+                        raise UFWError(err_msg)
+
             res = self.set_rule(rule, ip_version)
         else:
             err_msg = _("Unsupported action '%s'") % (action)

@@ -200,3 +200,28 @@ Rules updated
 Rules updated (v6)
 
 
+Bug #407810
+22: app info bug407810
+WARN: Checks disabled
+Profile: bug407810
+Title: LanManager-like file and printer server for Unix
+Description: The bug407810 software suite is a collection of programs that
+implements the SMB/CIFS protocol for unix systems, allowing you to serve
+files and printers to Windows, NT, OS/2 and DOS clients. This protocol is
+sometimes also referred to as the LanManager or NetBIOS protocol.
+
+Ports:
+  137,138/udp
+  139,445/tcp
+
+
+23: allow bug407810
+
+
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_bug407810'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_bug407810'
+24: delete allow bug407810
+WARN: Checks disabled
+Rules updated
+
+

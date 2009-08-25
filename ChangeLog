@@ -17,8 +17,12 @@ ufw (0.29) UNRELEASED; urgency=low
     can be used to make sure that your system has all the required iptables
     and netfilter functionality as described in README
   * add doc/ufw-framework.8
+  * allow deletion of non-existent application rules introduced in 0.24.
+    (LP: #407810)
+  * translations import from https://translations.launchpad.net/ufw:
+    - TODO
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2009 18:49:26 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 25 Aug 2009 09:12:10 -0500
 
 ufw (0.28) RELEASED; urgency=low
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-22 10:38-0500\n"
+"POT-Creation-Date: 2009-08-25 10:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -648,7 +648,7 @@ msgstr ""
 msgid "Unsupported default policy"
 msgstr ""
 
-#: src/frontend.py:878 src/frontend.py:1000
+#: src/frontend.py:878 src/frontend.py:1015
 msgid "Firewall reloaded"
 msgstr ""
 
@@ -656,71 +656,71 @@ msgstr ""
 msgid "Firewall not enabled (skipping reload)"
 msgstr ""
 
-#: src/frontend.py:899 src/frontend.py:1071
+#: src/frontend.py:895 src/frontend.py:909 src/frontend.py:946
+msgid "Invalid profile name"
+msgstr ""
+
+#: src/frontend.py:914 src/frontend.py:1086
 #, python-format
 msgid "Unsupported action '%s'"
 msgstr ""
 
-#: src/frontend.py:918
+#: src/frontend.py:933
 msgid "Available applications:"
 msgstr ""
 
-#: src/frontend.py:931
-msgid "Invalid profile name"
-msgstr ""
-
-#: src/frontend.py:939
+#: src/frontend.py:954
 #, python-format
 msgid "Could not find profile '%s'"
 msgstr ""
 
-#: src/frontend.py:944
+#: src/frontend.py:959
 msgid "Invalid profile"
 msgstr ""
 
-#: src/frontend.py:947
+#: src/frontend.py:962
 #, python-format
 msgid "Profile: %s\n"
 msgstr ""
 
-#: src/frontend.py:948
+#: src/frontend.py:963
 #, python-format
 msgid "Title: %s\n"
 msgstr ""
 
-#: src/frontend.py:951
+#: src/frontend.py:966
 #, python-format
 msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
 
-#: src/frontend.py:957
+#: src/frontend.py:972
 msgid "Ports:"
 msgstr ""
 
-#: src/frontend.py:959
+#: src/frontend.py:974
 msgid "Port:"
 msgstr ""
 
-#: src/frontend.py:1002
+#: src/frontend.py:1017
 msgid "Skipped reloading firewall"
 msgstr ""
 
-#: src/frontend.py:1012
+#: src/frontend.py:1027
 msgid "Cannot specify 'all' with '--add-new'"
 msgstr ""
 
-#: src/frontend.py:1027
+#: src/frontend.py:1042
 #, python-format
 msgid "Unknown policy '%s'"
 msgstr ""
 
-#: src/frontend.py:1080
+#: src/frontend.py:1095
 msgid "Command may disrupt existing ssh connections."
 msgstr ""
 
-#: src/frontend.py:1081
+#: src/frontend.py:1096
 #, python-format
 msgid " Proceed with operation (%(yes)s|%(no)s)? "
 msgstr ""
