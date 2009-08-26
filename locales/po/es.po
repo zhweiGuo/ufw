@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-07-12 15:11+0000\n"
-"Last-Translator: Ricardo Pérez López <ricpelo@gmail.com>\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2009-08-26 22:57+0000\n"
+"Last-Translator: Jamie Strandboge <jamie@ubuntu.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2009-08-26 23:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
@@ -162,7 +162,7 @@ msgstr "<emph>Acción</emph>"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
@@ -202,9 +202,7 @@ msgstr "No se han podido cargar las reglas de registro"
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
-"El archivo '%s' no se puede abrir. Verifique sus permisos sobre el archivo "
-"'%s'"
+msgstr "No se puede abrir '%s' para lectura"
 
 #: src/backend_iptables.py:550
 #, python-format
@@ -412,68 +410,68 @@ msgstr "Registro desactivado"
 msgid "Logging enabled"
 msgstr "Registro activado"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr "Puerto erróneo '%s'"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr "Protocolo '%s' no soportado"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr "Dirección de orígen errónea"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr "Dirección de destino errónea"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
 msgstr "Tipo de interfaz incorrecto"
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
 msgstr "Nombre de interfaz incorrecto"
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr "La posición «%s» insertada no es una posición válida"
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr "Tipo de registro «%s» incorrecto"
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr "No se pudo normalizar la dirección de origen"
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr "No se pudo normalizar la dirección de destino"
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr "Ninguna coincidencia"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr "Se ha encontrado una coincidencia exacta"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
