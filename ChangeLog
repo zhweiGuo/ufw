@@ -1,4 +1,4 @@
-ufw (0.29) UNRELEASED; urgency=low
+ufw (0.29) RELEASED; urgency=low
 
   * add egress filtering support:
     - CLI command allows specifying direction in simple and extended syntax
