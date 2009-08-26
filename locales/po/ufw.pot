@@ -1,17 +1,20 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
@@ -399,68 +402,68 @@ msgstr ""
 msgid "Logging enabled"
 msgstr ""
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr ""
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr ""
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr ""
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr ""
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
 msgstr ""
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
 msgstr ""
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr ""
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr ""
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr ""
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr ""
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
