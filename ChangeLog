@@ -1,3 +1,9 @@
+ufw (0.30) UNRELEASED; urgency=low
+
+  * bump version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 26 Aug 2009 16:52:08 -0500
+
 ufw (0.29) RELEASED; urgency=low
 
   * add egress filtering support:
