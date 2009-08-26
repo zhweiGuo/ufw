@@ -4,4 +4,3 @@ etc/ufw
 lib/ufw
 usr/share/doc/ufw
 usr/share/ufw
-var/lib/ufw
