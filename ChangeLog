@@ -1,6 +1,7 @@
 ufw (0.30) UNRELEASED; urgency=low
 
-  * bump version
+  * import Launchpad translation:
+    - po/es.po
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 26 Aug 2009 16:52:08 -0500
 
