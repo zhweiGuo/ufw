@@ -1,12 +1,16 @@
-#, fuzzy
+# Catalan translation for ufw
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2009-04-21 15:15+0000\n"
+"Last-Translator: Xan <dxpublica@telefonica.net>\n"
+"Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,7 +19,7 @@ msgstr ""
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
-msgstr ""
+msgstr ": Almenys es necessita python 2.5)\n"
 
 #: src/ufw:111
 msgid "Aborted"
@@ -102,7 +106,7 @@ msgstr ""
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "Política '%s' no suportada"
 
 #: src/backend_iptables.py:98
 #, python-format
@@ -116,7 +120,7 @@ msgstr ""
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
-msgstr ""
+msgstr "(aneu amb compte d'actualitzar les vostres regles consegüentment)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
@@ -134,11 +138,11 @@ msgstr ""
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "Verificant iptables\n"
 
 #: src/backend_iptables.py:184
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "Verificant ip6tables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
@@ -146,15 +150,15 @@ msgstr ""
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "A"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "Des de"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Acció"
 
 #: src/backend_iptables.py:342
 msgid "\n"
@@ -194,7 +198,7 @@ msgstr ""
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
+msgstr "No es pot obrir '%s' per a llegir"
 
 #: src/backend_iptables.py:550
 #, python-format
@@ -251,15 +255,15 @@ msgstr ""
 
 #: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
-msgstr ""
+msgstr "No es pot actualitzar l'arxiu de regles"
 
 #: src/backend_iptables.py:825
 msgid "Rules updated"
-msgstr ""
+msgstr "Regles actualitzades"
 
 #: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Regles actualitzades (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
@@ -267,7 +271,7 @@ msgstr ""
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
-msgstr ""
+msgstr "Regla actualitzada"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
@@ -275,15 +279,15 @@ msgstr ""
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
-msgstr ""
+msgstr "Regla esborrada"
 
 #: src/backend_iptables.py:853
 msgid "Rule added"
-msgstr ""
+msgstr "Regla afegida"
 
 #: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
-msgstr ""
+msgstr "No es pot actualitzar el tallafocs en execució"
 
 #: src/backend_iptables.py:924
 #, python-format
@@ -297,7 +301,7 @@ msgstr ""
 
 #: src/backend.py:95
 msgid "Checks disabled"
-msgstr ""
+msgstr "Comprovació desactivada"
 
 #: src/backend.py:101
 msgid "ERROR: this script should not be SUID"
@@ -309,7 +313,7 @@ msgstr ""
 
 #: src/backend.py:109
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "Necessiteu ser root per executar aquest programa"
 
 #: src/backend.py:119
 #, python-format
@@ -353,7 +357,7 @@ msgstr ""
 
 #: src/backend.py:206
 msgid "Invalid option"
-msgstr ""
+msgstr "Opció invàlida"
 
 #: src/backend.py:256
 #, python-format
@@ -402,12 +406,12 @@ msgstr ""
 #: src/common.py:177
 #, python-format
 msgid "Bad port '%s'"
-msgstr ""
+msgstr "Port '%s' incorrecte"
 
 #: src/common.py:237
 #, python-format
 msgid "Unsupported protocol '%s'"
-msgstr ""
+msgstr "Protocol '%s' no suportat"
 
 #: src/common.py:265
 msgid "Bad source address"
@@ -454,11 +458,11 @@ msgstr ""
 
 #: src/common.py:368
 msgid "No match"
-msgstr ""
+msgstr "Cap coincidència"
 
 #: src/common.py:400
 msgid "Found exact match"
-msgstr ""
+msgstr "S'ha trobat una coincidència exacta"
 
 #: src/common.py:403
 #, python-format
@@ -608,7 +612,7 @@ msgstr ""
 #: src/frontend.py:689 src/frontend.py:787 src/frontend.py:797
 #, python-format
 msgid "Invalid IP version '%s'"
-msgstr ""
+msgstr "La versió de la IP '%s' no és vàlida"
 
 #: src/frontend.py:720
 msgid "Invalid position '"
@@ -616,7 +620,7 @@ msgstr ""
 
 #: src/frontend.py:794
 msgid "IPv6 support not enabled"
-msgstr ""
+msgstr "El suport per a IPv6 no està habilitat"
 
 #: src/frontend.py:805
 msgid "Rule changed after normalization"

@@ -1,12 +1,16 @@
-#, fuzzy
+# Danish translation for ufw
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2009-01-21 14:37+0000\n"
+"Last-Translator: Joe Hansen <Unknown>\n"
+"Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,7 +19,7 @@ msgstr ""
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
-msgstr ""
+msgstr ": Kræver mindst python 2.5)\n"
 
 #: src/ufw:111
 msgid "Aborted"
@@ -102,7 +106,7 @@ msgstr ""
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "Ikke understøttet politik »%s«"
 
 #: src/backend_iptables.py:98
 #, python-format
@@ -116,7 +120,7 @@ msgstr ""
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
-msgstr ""
+msgstr "(vær sikker på at opdatere dine regler tilsvarende)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
@@ -146,15 +150,15 @@ msgstr ""
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "Til"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "Fra"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Handling"
 
 #: src/backend_iptables.py:342
 msgid "\n"
@@ -194,7 +198,7 @@ msgstr ""
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
+msgstr "Kunne ikke åbne »%s« for skrivning"
 
 #: src/backend_iptables.py:550
 #, python-format
@@ -208,7 +212,7 @@ msgstr ""
 
 #: src/backend_iptables.py:701
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
-msgstr ""
+msgstr "Tilføjelse af IPv6-regel mislykkedes: IPv6 er ikke slået til"
 
 #: src/backend_iptables.py:705
 #, python-format
@@ -251,15 +255,15 @@ msgstr ""
 
 #: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
-msgstr ""
+msgstr "Kunne ikke opdatere regelfil"
 
 #: src/backend_iptables.py:825
 msgid "Rules updated"
-msgstr ""
+msgstr "Regler opdateret"
 
 #: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Regler opdateret (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
@@ -267,7 +271,7 @@ msgstr ""
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
-msgstr ""
+msgstr "Regel opdateret"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
@@ -275,15 +279,15 @@ msgstr ""
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
-msgstr ""
+msgstr "Regel slettet"
 
 #: src/backend_iptables.py:853
 msgid "Rule added"
-msgstr ""
+msgstr "Regel tilføjet"
 
 #: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
-msgstr ""
+msgstr "Kunne ikke opdatere kørende brandmur"
 
 #: src/backend_iptables.py:924
 #, python-format
@@ -301,15 +305,15 @@ msgstr ""
 
 #: src/backend.py:101
 msgid "ERROR: this script should not be SUID"
-msgstr ""
+msgstr "FEJL: Dette skript bør ikke være SUID"
 
 #: src/backend.py:104
 msgid "ERROR: this script should not be SGID"
-msgstr ""
+msgstr "FEJL: Dette skript bør ikke være SGID"
 
 #: src/backend.py:109
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "Du skal være administrator (root) for at køre dette skript"
 
 #: src/backend.py:119
 #, python-format
@@ -329,12 +333,12 @@ msgstr ""
 #: src/backend.py:152
 #, python-format
 msgid "%s is world writable!"
-msgstr ""
+msgstr "%s er verdensskrivbar!"
 
 #: src/backend.py:156
 #, python-format
 msgid "%s is group writable!"
-msgstr ""
+msgstr "%s er gruppeskrivbar!"
 
 #: src/backend.py:169
 #, python-format
@@ -353,7 +357,7 @@ msgstr ""
 
 #: src/backend.py:206
 msgid "Invalid option"
-msgstr ""
+msgstr "Ugyldig tilvalg"
 
 #: src/backend.py:256
 #, python-format
@@ -393,29 +397,29 @@ msgstr ""
 
 #: src/backend.py:526
 msgid "Logging disabled"
-msgstr ""
+msgstr "Log slået fra"
 
 #: src/backend.py:528
 msgid "Logging enabled"
-msgstr ""
+msgstr "Log slået til"
 
 #: src/common.py:177
 #, python-format
 msgid "Bad port '%s'"
-msgstr ""
+msgstr "Dårlig port »%s«"
 
 #: src/common.py:237
 #, python-format
 msgid "Unsupported protocol '%s'"
-msgstr ""
+msgstr "Ikke understøttet protokol »%s«"
 
 #: src/common.py:265
 msgid "Bad source address"
-msgstr ""
+msgstr "Dårlig kildeadresse"
 
 #: src/common.py:275
 msgid "Bad destination address"
-msgstr ""
+msgstr "Dårlig destinationsadresse"
 
 #: src/common.py:283
 msgid "Bad interface type"
@@ -454,11 +458,11 @@ msgstr ""
 
 #: src/common.py:368
 msgid "No match"
-msgstr ""
+msgstr "Ingen match"
 
 #: src/common.py:400
 msgid "Found exact match"
-msgstr ""
+msgstr "Fandt præcis match"
 
 #: src/common.py:403
 #, python-format
@@ -484,7 +488,7 @@ msgstr ""
 
 #: src/frontend.py:227 src/frontend.py:241
 msgid "Bad port"
-msgstr ""
+msgstr "Dårlig port"
 
 #: src/frontend.py:232 src/frontend.py:346
 msgid "Port ranges must be numeric"
@@ -492,7 +496,7 @@ msgstr ""
 
 #: src/frontend.py:244
 msgid "Wrong number of arguments"
-msgstr ""
+msgstr "Forkert antal argumenter"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
@@ -535,7 +539,7 @@ msgstr ""
 
 #: src/frontend.py:367
 msgid "Mixed IP versions for 'from' and 'to'"
-msgstr ""
+msgstr "Forskellige IP-versioner for »fra« og »til«"
 
 #: src/frontend.py:381 src/frontend.py:388 src/frontend.py:394
 msgid "Could not find protocol"
@@ -603,12 +607,12 @@ msgstr ""
 
 #: src/frontend.py:614
 msgid "Firewall stopped and disabled on system startup"
-msgstr ""
+msgstr "Brandmur stoppet og slået fra ved systemopstart"
 
 #: src/frontend.py:689 src/frontend.py:787 src/frontend.py:797
 #, python-format
 msgid "Invalid IP version '%s'"
-msgstr ""
+msgstr "Ugyldig ip-version »%s«"
 
 #: src/frontend.py:720
 msgid "Invalid position '"
@@ -616,7 +620,7 @@ msgstr ""
 
 #: src/frontend.py:794
 msgid "IPv6 support not enabled"
-msgstr ""
+msgstr "IPv6-understøttelse er ikke slået til"
 
 #: src/frontend.py:805
 msgid "Rule changed after normalization"

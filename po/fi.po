@@ -1,12 +1,16 @@
-#, fuzzy
+# Finnish translation for ufw
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-11-17 14:50+0000\n"
+"Last-Translator: Pauli Kettunen <Unknown>\n"
+"Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -130,15 +134,15 @@ msgstr ""
 #: src/backend_iptables.py:362 src/backend_iptables.py:372
 #: src/backend_iptables.py:419
 msgid "problem running"
-msgstr ""
+msgstr "ongelma ajettaessa"
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "Tarkistetaan iptables\n"
 
 #: src/backend_iptables.py:184
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "Tarkistetaan ip6tables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
@@ -146,15 +150,15 @@ msgstr ""
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "Vastaanottaja"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "Lähettäjä"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Toiminto"
 
 #: src/backend_iptables.py:342
 msgid "\n"
@@ -297,7 +301,7 @@ msgstr ""
 
 #: src/backend.py:95
 msgid "Checks disabled"
-msgstr ""
+msgstr "Tarkastukset eivät ole päällä"
 
 #: src/backend.py:101
 msgid "ERROR: this script should not be SUID"
@@ -319,7 +323,7 @@ msgstr ""
 #: src/backend.py:139
 #, python-format
 msgid "Couldn't stat '%s'"
-msgstr ""
+msgstr "Ei voitu luoda statistiikka '%s'"
 
 #: src/backend.py:145
 #, python-format
@@ -353,7 +357,7 @@ msgstr ""
 
 #: src/backend.py:206
 msgid "Invalid option"
-msgstr ""
+msgstr "Virheellinen valinta"
 
 #: src/backend.py:256
 #, python-format

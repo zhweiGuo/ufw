@@ -1,12 +1,16 @@
-#, fuzzy
+# Portuguese translation for ufw
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-07-18 15:14+0000\n"
+"Last-Translator: Bruno Guerreiro <Unknown>\n"
+"Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -102,7 +106,7 @@ msgstr ""
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "Política não suportada '%s'"
 
 #: src/backend_iptables.py:98
 #, python-format
@@ -134,11 +138,11 @@ msgstr ""
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "A verificar iptables\n"
 
 #: src/backend_iptables.py:184
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "A verificar ip6tables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
@@ -146,15 +150,15 @@ msgstr ""
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "Para"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "De"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Acção"
 
 #: src/backend_iptables.py:342
 msgid "\n"
@@ -255,11 +259,11 @@ msgstr ""
 
 #: src/backend_iptables.py:825
 msgid "Rules updated"
-msgstr ""
+msgstr "Regras actualizado"
 
 #: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Regras actualizado (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
@@ -267,7 +271,7 @@ msgstr ""
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
-msgstr ""
+msgstr "Regra actualizada"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
@@ -275,11 +279,11 @@ msgstr ""
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
-msgstr ""
+msgstr "Regra eliminada"
 
 #: src/backend_iptables.py:853
 msgid "Rule added"
-msgstr ""
+msgstr "Regra adicionada"
 
 #: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
@@ -301,15 +305,15 @@ msgstr ""
 
 #: src/backend.py:101
 msgid "ERROR: this script should not be SUID"
-msgstr ""
+msgstr "ERRO: esse script não deve ser SUID"
 
 #: src/backend.py:104
 msgid "ERROR: this script should not be SGID"
-msgstr ""
+msgstr "ERRO: esse script não deve ser SGID"
 
 #: src/backend.py:109
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "Precisa ser root para executar esse script"
 
 #: src/backend.py:119
 #, python-format
@@ -334,7 +338,7 @@ msgstr ""
 #: src/backend.py:156
 #, python-format
 msgid "%s is group writable!"
-msgstr ""
+msgstr "%s é grupo gravável!"
 
 #: src/backend.py:169
 #, python-format
@@ -353,7 +357,7 @@ msgstr ""
 
 #: src/backend.py:206
 msgid "Invalid option"
-msgstr ""
+msgstr "Opção invalida"
 
 #: src/backend.py:256
 #, python-format
@@ -393,11 +397,11 @@ msgstr ""
 
 #: src/backend.py:526
 msgid "Logging disabled"
-msgstr ""
+msgstr "Registo desactivado"
 
 #: src/backend.py:528
 msgid "Logging enabled"
-msgstr ""
+msgstr "Registo activado"
 
 #: src/common.py:177
 #, python-format
@@ -407,7 +411,7 @@ msgstr ""
 #: src/common.py:237
 #, python-format
 msgid "Unsupported protocol '%s'"
-msgstr ""
+msgstr "Protocolo não suportado '%s'"
 
 #: src/common.py:265
 msgid "Bad source address"
@@ -454,11 +458,11 @@ msgstr ""
 
 #: src/common.py:368
 msgid "No match"
-msgstr ""
+msgstr "Não corresponde"
 
 #: src/common.py:400
 msgid "Found exact match"
-msgstr ""
+msgstr "Foi encontrada uma ocorrência exacta"
 
 #: src/common.py:403
 #, python-format
@@ -492,7 +496,7 @@ msgstr ""
 
 #: src/frontend.py:244
 msgid "Wrong number of arguments"
-msgstr ""
+msgstr "Número incorreto de argumentos"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
@@ -505,7 +509,7 @@ msgstr ""
 #: src/frontend.py:270
 #, python-format
 msgid "Invalid token '%s'"
-msgstr ""
+msgstr "Símbolo inválido '%s'"
 
 #: src/frontend.py:279
 msgid "Invalid 'proto' clause"
@@ -535,7 +539,7 @@ msgstr ""
 
 #: src/frontend.py:367
 msgid "Mixed IP versions for 'from' and 'to'"
-msgstr ""
+msgstr "Versões IP misturadas para 'de' e 'para'"
 
 #: src/frontend.py:381 src/frontend.py:388 src/frontend.py:394
 msgid "Could not find protocol"

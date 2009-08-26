@@ -1,12 +1,16 @@
-#, fuzzy
+# Dutch translation for ufw
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2009-05-08 13:34+0000\n"
+"Last-Translator: A.J. Baudrez <a.baudrez@gmail.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,47 +27,47 @@ msgstr ""
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "Profielenmap bestaat niet"
 
 #: src/applications.py:64
 #, python-format
 msgid "Skipping '%s': couldn't stat"
-msgstr ""
+msgstr "Overslaan van '%s': onmogelijk te bepalen"
 
 #: src/applications.py:69
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "Overslaan van '%s': te groot"
 
 #: src/applications.py:74
 #, python-format
 msgid "Skipping '%s': too many files read already"
-msgstr ""
+msgstr "Overslaan van '%s': reeds te veel bestanden gelezen"
 
 #: src/applications.py:84
 #, python-format
 msgid "Skipping '%s': couldn't process"
-msgstr ""
+msgstr "Overslaan van '%s': kon niet verwerken"
 
 #: src/applications.py:91
 #, python-format
 msgid "Skipping '%s': name too long"
-msgstr ""
+msgstr "Overslaan van '%s': naam te lang"
 
 #: src/applications.py:96
 #, python-format
 msgid "Skipping '%s': invalid name"
-msgstr ""
+msgstr "Overslaan van '%s': ongeldige naam"
 
 #: src/applications.py:102
 #, python-format
 msgid "Skipping '%s': also in /etc/services"
-msgstr ""
+msgstr "Overslaan van '%s': reeds in /etc/services"
 
 #: src/applications.py:111
 #, python-format
 msgid "Skipping '%s': field too long"
-msgstr ""
+msgstr "Overslaan van '%s': veld te lang"
 
 #: src/applications.py:116
 #, python-format
@@ -208,7 +212,7 @@ msgstr ""
 
 #: src/backend_iptables.py:701
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
-msgstr ""
+msgstr "Het toevoegen van IPv6-regel gefaald: IPv6 niet ingeschakeld"
 
 #: src/backend_iptables.py:705
 #, python-format
@@ -297,19 +301,19 @@ msgstr ""
 
 #: src/backend.py:95
 msgid "Checks disabled"
-msgstr ""
+msgstr "Controles geannuleerd"
 
 #: src/backend.py:101
 msgid "ERROR: this script should not be SUID"
-msgstr ""
+msgstr "FOUT: dit script zou geen SUID moeten zijn"
 
 #: src/backend.py:104
 msgid "ERROR: this script should not be SGID"
-msgstr ""
+msgstr "FOUT: dit script zou geen SGID moeten zijn"
 
 #: src/backend.py:109
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "U moet als root aangemeld zijn om dit script te kunnen uitvoeren"
 
 #: src/backend.py:119
 #, python-format

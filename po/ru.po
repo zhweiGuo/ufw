@@ -1,12 +1,16 @@
-#, fuzzy
+# Russian translation for ufw
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2009-08-13 18:04+0000\n"
+"Last-Translator: Sergei Sedov <sedov@webmail.perm.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,15 +19,15 @@ msgstr ""
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
-msgstr ""
+msgstr ": Требуется версия python не ниже версии 2.5)\n"
 
 #: src/ufw:111
 msgid "Aborted"
-msgstr ""
+msgstr "Прервано"
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "Каталог профилей не существует"
 
 #: src/applications.py:64
 #, python-format
@@ -102,7 +106,7 @@ msgstr ""
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "Неподдерживаемое правило '%s'"
 
 #: src/backend_iptables.py:98
 #, python-format
@@ -116,7 +120,7 @@ msgstr ""
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
-msgstr ""
+msgstr "(не забудьте соответствующим образом обновить ваши правила)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
@@ -134,11 +138,11 @@ msgstr ""
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "Проверка iptables\n"
 
 #: src/backend_iptables.py:184
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "Проверка ip6tables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
@@ -146,15 +150,15 @@ msgstr ""
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "До"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "От"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Действие"
 
 #: src/backend_iptables.py:342
 msgid "\n"
@@ -194,26 +198,26 @@ msgstr ""
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
+msgstr "Не могу открыть '%s' для чтения"
 
 #: src/backend_iptables.py:550
 #, python-format
 msgid "Skipping malformed tuple (bad length): %s"
-msgstr ""
+msgstr "Пропуск некорректных элементов (неверная длина): %s"
 
 #: src/backend_iptables.py:580
 #, python-format
 msgid "Skipping malformed tuple: %s"
-msgstr ""
+msgstr "Пропуск некорректных элементов: %s"
 
 #: src/backend_iptables.py:701
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
-msgstr ""
+msgstr "Не удалось добавить правило IPv6: IPv6 не активирован"
 
 #: src/backend_iptables.py:705
 #, python-format
 msgid "Skipping unsupported IPv6 '%s' rule"
-msgstr ""
+msgstr "Пропуск неподдерживаемого правила IPv6 '%s'"
 
 #: src/backend_iptables.py:708
 msgid "Must specify 'tcp' or 'udp' with multiple ports"
@@ -251,15 +255,15 @@ msgstr ""
 
 #: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
-msgstr ""
+msgstr "Не могу обновить файл правил"
 
 #: src/backend_iptables.py:825
 msgid "Rules updated"
-msgstr ""
+msgstr "Правила обновлены"
 
 #: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Правила обновлены (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
@@ -267,7 +271,7 @@ msgstr ""
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
-msgstr ""
+msgstr "Правило обновлено"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
@@ -275,15 +279,15 @@ msgstr ""
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
-msgstr ""
+msgstr "Правило удалено"
 
 #: src/backend_iptables.py:853
 msgid "Rule added"
-msgstr ""
+msgstr "Правило добавлено"
 
 #: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
-msgstr ""
+msgstr "Не могу обновить запущенный брандмауэр"
 
 #: src/backend_iptables.py:924
 #, python-format
@@ -297,19 +301,19 @@ msgstr ""
 
 #: src/backend.py:95
 msgid "Checks disabled"
-msgstr ""
+msgstr "Проверки отключены"
 
 #: src/backend.py:101
 msgid "ERROR: this script should not be SUID"
-msgstr ""
+msgstr "ОШИБКА: этот скрипт не должен быть SUID"
 
 #: src/backend.py:104
 msgid "ERROR: this script should not be SGID"
-msgstr ""
+msgstr "ОШИБКА: этот скрипт не должен быть SGID"
 
 #: src/backend.py:109
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "Для запуска этого скрипта требуются права администратора"
 
 #: src/backend.py:119
 #, python-format
@@ -329,12 +333,12 @@ msgstr ""
 #: src/backend.py:152
 #, python-format
 msgid "%s is world writable!"
-msgstr ""
+msgstr "доступ на запись в %s разрешена всем!"
 
 #: src/backend.py:156
 #, python-format
 msgid "%s is group writable!"
-msgstr ""
+msgstr "доступ на запись в %s разрешена группе!"
 
 #: src/backend.py:169
 #, python-format
@@ -353,7 +357,7 @@ msgstr ""
 
 #: src/backend.py:206
 msgid "Invalid option"
-msgstr ""
+msgstr "неверная опция"
 
 #: src/backend.py:256
 #, python-format
@@ -393,29 +397,29 @@ msgstr ""
 
 #: src/backend.py:526
 msgid "Logging disabled"
-msgstr ""
+msgstr "Журналирование отключено"
 
 #: src/backend.py:528
 msgid "Logging enabled"
-msgstr ""
+msgstr "Журналирование включено"
 
 #: src/common.py:177
 #, python-format
 msgid "Bad port '%s'"
-msgstr ""
+msgstr "Некорректный порт '%s'"
 
 #: src/common.py:237
 #, python-format
 msgid "Unsupported protocol '%s'"
-msgstr ""
+msgstr "Неподдерживаемый протокол '%s'"
 
 #: src/common.py:265
 msgid "Bad source address"
-msgstr ""
+msgstr "Некорректный адрес источника"
 
 #: src/common.py:275
 msgid "Bad destination address"
-msgstr ""
+msgstr "Некорректный адрес назначения"
 
 #: src/common.py:283
 msgid "Bad interface type"
@@ -454,11 +458,11 @@ msgstr ""
 
 #: src/common.py:368
 msgid "No match"
-msgstr ""
+msgstr "Нет соответствия"
 
 #: src/common.py:400
 msgid "Found exact match"
-msgstr ""
+msgstr "Найдено точное соответствие"
 
 #: src/common.py:403
 #, python-format
@@ -484,7 +488,7 @@ msgstr ""
 
 #: src/frontend.py:227 src/frontend.py:241
 msgid "Bad port"
-msgstr ""
+msgstr "Некорректный порт"
 
 #: src/frontend.py:232 src/frontend.py:346
 msgid "Port ranges must be numeric"
@@ -492,7 +496,7 @@ msgstr ""
 
 #: src/frontend.py:244
 msgid "Wrong number of arguments"
-msgstr ""
+msgstr "Неверное количество аргументов"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
@@ -500,16 +504,16 @@ msgstr ""
 
 #: src/frontend.py:263
 msgid "Improper rule syntax"
-msgstr ""
+msgstr "Некорректный синтакс правила"
 
 #: src/frontend.py:270
 #, python-format
 msgid "Invalid token '%s'"
-msgstr ""
+msgstr "Некорректный символ '%s'"
 
 #: src/frontend.py:279
 msgid "Invalid 'proto' clause"
-msgstr ""
+msgstr "Неверное условие 'proto'"
 
 #: src/frontend.py:291
 #, python-format
@@ -518,11 +522,11 @@ msgstr ""
 
 #: src/frontend.py:310
 msgid "Invalid 'from' clause"
-msgstr ""
+msgstr "Неверное условие 'from'"
 
 #: src/frontend.py:329
 msgid "Invalid 'to' clause"
-msgstr ""
+msgstr "Неверное условие 'to'"
 
 #: src/frontend.py:334
 #, python-format
@@ -531,11 +535,11 @@ msgstr ""
 
 #: src/frontend.py:358
 msgid "Invalid 'port' clause"
-msgstr ""
+msgstr "Неверное условие 'port'"
 
 #: src/frontend.py:367
 msgid "Mixed IP versions for 'from' and 'to'"
-msgstr ""
+msgstr "Смешение версий IP для 'from' и 'to'"
 
 #: src/frontend.py:381 src/frontend.py:388 src/frontend.py:394
 msgid "Could not find protocol"
@@ -543,12 +547,12 @@ msgstr ""
 
 #: src/frontend.py:401
 msgid "Protocol mismatch (from/to)"
-msgstr ""
+msgstr "Несоответствие протокола (from/to)"
 
 #: src/frontend.py:408
 #, python-format
 msgid "Protocol mismatch with specified protocol %s"
-msgstr ""
+msgstr "Несоответствие протокола с указанным протоколом %s"
 
 #: src/frontend.py:420
 #, python-format
@@ -603,12 +607,12 @@ msgstr ""
 
 #: src/frontend.py:614
 msgid "Firewall stopped and disabled on system startup"
-msgstr ""
+msgstr "Фаервол остановлен и деактивирован при загрузке"
 
 #: src/frontend.py:689 src/frontend.py:787 src/frontend.py:797
 #, python-format
 msgid "Invalid IP version '%s'"
-msgstr ""
+msgstr "Некорректная версия IP '%s'"
 
 #: src/frontend.py:720
 msgid "Invalid position '"
@@ -616,7 +620,7 @@ msgstr ""
 
 #: src/frontend.py:794
 msgid "IPv6 support not enabled"
-msgstr ""
+msgstr "Поддержка IPv6 не активирована"
 
 #: src/frontend.py:805
 msgid "Rule changed after normalization"
