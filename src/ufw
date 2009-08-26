@@ -37,7 +37,7 @@ version = "#VERSION#"
 
 # Internationalization
 gettext.bindtextdomain(ufw.common.programName, \
-                       os.path.join(ufw.common.state_dir, 'messages'))
+                       os.path.join(ufw.common.trans_dir, 'messages'))
 gettext.textdomain(ufw.common.programName)
 _ = gettext.gettext
 

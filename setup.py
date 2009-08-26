@@ -49,13 +49,12 @@ class Install(_install, object):
 
         real_confdir = os.path.join('/etc')
         real_statedir = os.path.join('/lib', 'ufw')
-        real_transdir = os.path.join('/var', 'lib', 'ufw')
         real_prefix = self.prefix
         if self.home != None:
             real_confdir = self.home + real_confdir
             real_statedir = self.home + real_statedir
-            real_transdir = self.home + real_transdir
             real_prefix = self.home + '/usr'
+        real_transdir = os.path.join(real_prefix, 'share', 'ufw')
 
         # Update the modules' paths
         for file in [ 'common.py' ]:
@@ -78,6 +77,11 @@ class Install(_install, object):
             subprocess.call(["sed",
                              "-i",
                              "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
+                             os.path.join('staging', file)])
+
+            subprocess.call(["sed",
+                             "-i",
+                             "s%#TRANSLATIONS_PREFIX#%" + real_transdir + "%g",
                              os.path.join('staging', file)])
 
         # Now byte-compile everything
@@ -122,7 +126,7 @@ class Install(_install, object):
             transdir = self.root + real_transdir
         i18ndir = os.path.join(transdir, 'messages')
         self.mkpath(i18ndir)
-        self.copy_tree('po', i18ndir)
+        self.copy_tree('locales/mo', i18ndir)
 
         # Install configuration files
         confdir = real_confdir

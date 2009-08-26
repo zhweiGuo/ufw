@@ -1,5 +1,5 @@
 SRCS     = src/ufw $(wildcard src/*.py)
-POTFILES = po/ufw.pot
+POTFILES = locales/po/ufw.pot
 TMPDIR   = ./tmp
 EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
@@ -8,18 +8,23 @@ TARBALLS = ../tarballs
 TARSRC   = $(TARBALLS)/$(SRCVER)
 TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 
-translations: $(POTFILES)
-$(POTFILES): $(SRCS)
-	xgettext -d ufw -L Python -o $@ $(SRCS)
-
-test:
-	./run_tests.sh -s
-
 all:
 	# Use setup.py to install. See README for details
 	exit 1
 
 install: all
+
+translations: $(POTFILES)
+$(POTFILES): $(SRCS)
+	xgettext -d ufw -L Python -o $@ $(SRCS)
+	make -c po/Makefile all
+
+mo:
+	make -C locales all
+
+test:
+	./run_tests.sh -s
+
 
 # These are only used in development
 clean:

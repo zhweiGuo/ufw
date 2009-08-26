@@ -19,6 +19,7 @@ ufw (0.29-1) unstable; urgency=low
   * debian/rules: install tests/check-requirements into /usr/share/ufw
   * update ucf md5sums for before.rules and before6.rules
   * remove no longer used lintian override
+  * debian/dirs: remove unused /var/lib/ufw
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 25 Aug 2009 09:12:26 -0500
 
