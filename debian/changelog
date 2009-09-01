@@ -1,3 +1,11 @@
+ufw (0.29-2) unstable; urgency=low
+
+  * Debconf translation updates:
+    - unfuzzied Italian (closes: #540204)
+    - ran debconf-updatepo
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 01 Sep 2009 16:26:07 -0500
+
 ufw (0.29-1) unstable; urgency=low
 
   * new upstream release:
