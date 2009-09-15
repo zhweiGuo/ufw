@@ -216,16 +216,19 @@ class UFWBackend:
         pat = re.compile(r'^' + opt + '=')
         for line in fns['orig']:
             if pat.search(line):
-                os.write(fd, opt + "=" + value + "\n")
+                ufw.util.write_to_file(fd, opt + "=" + value + "\n")
                 found = True
             else:
-                os.write(fd, line)
+                ufw.util.write_to_file(fd, line)
 
         # Add the entry if not found
         if not found:
-            os.write(fd, opt + "=" + value + "\n")
+            ufw.util.write_to_file(fd, opt + "=" + value + "\n")
 
-        ufw.util.close_files(fns)
+        try:
+            ufw.util.close_files(fns)
+        except Exception:
+            raise
 
         # Now that the files are written out, update value in memory
         self.defaults[opt.lower()] = value.lower().strip('"\'')

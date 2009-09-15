@@ -218,6 +218,19 @@ def open_files(f):
     return { "orig": orig, "origname": f, "tmp": tmp, "tmpname": tmpname }
 
 
+def write_to_file(fd, s):
+    '''Write to the file descriptor and error out of 0 bytes written. Intended
+       to be used with open_files() and close_files().'''
+    if s == "":
+        return
+
+    if not fd:
+        raise OSError(errno.ENOENT, "Not a valid file descriptor")
+
+    if os.write(fd, s) <= 0:
+        raise OSError(errno.EIO, "Could not write to file descriptor")
+
+
 def close_files(fns, update = True):
     '''Closes the specified files (as returned by open_files), and update
        original file with the temporary file.

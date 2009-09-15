@@ -135,11 +135,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                 for line in fns['orig']:
                     if pat.search(line):
-                        os.write(fd, pat.sub(new_log_str, line))
+                        ufw.util.write_to_file(fd, pat.sub(new_log_str, line))
                     else:
-                        os.write(fd, line)
+                        ufw.util.write_to_file(fd, line)
 
-                ufw.util.close_files(fns)
+                try:
+                    ufw.util.close_files(fns)
+                except Exception:
+                    raise
 
         rstr = _("Default %(direction)s policy changed to '%(policy)s'\n") % \
                  ({'direction': direction, 'policy': policy})
@@ -613,17 +616,17 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             fd = fns['tmp']
 
         # Write header
-        os.write(fd, "*filter\n")
-        os.write(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
-        os.write(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
-        os.write(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, "*filter\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
 
         if chain_prefix == "ufw":
             # Rate limiting only supported with IPv4
-            os.write(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
-            os.write(fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
+            ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit-accept - [0:0]\n")
 
-        os.write(fd, "### RULES ###\n")
+        ufw.util.write_to_file(fd, "### RULES ###\n")
 
         # Write rules
         for r in rules:
@@ -639,7 +642,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     tstr += "_%s" % (r.interface_in)
                 if r.interface_out != "":
                     tstr += "_%s" % (r.interface_out)
-                os.write(fd, tstr + "\n")
+                ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
                 dapp = "-"
@@ -656,7 +659,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     tstr += "_%s" % (r.interface_in)
                 if r.interface_out != "":
                     tstr += "_%s" % (r.interface_out)
-                os.write(fd, tstr + "\n")
+                ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"
             if r.direction == "out":
@@ -666,25 +669,28 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             for s in self._get_rules_from_formatted(rule_str, chain_prefix, \
                                                     chain_suffix):
-                os.write(fd, s)
+                ufw.util.write_to_file(fd, s)
 
         # Write footer
-        os.write(fd, "\n### END RULES ###\n")
+        ufw.util.write_to_file(fd, "\n### END RULES ###\n")
 
         if chain_prefix == "ufw":
             # Rate limiting only supported with IPv4
-            os.write(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
+            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
                          "--limit 3/minute -j LOG --log-prefix " + \
                          "\"[UFW LIMIT BLOCK] \"\n")
-            os.write(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
-            os.write(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
+            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
+            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
 
-        os.write(fd, "COMMIT\n")
+        ufw.util.write_to_file(fd, "COMMIT\n")
 
-        if self.dryrun:
-            ufw.util.close_files(fns, False)
-        else:
-            ufw.util.close_files(fns)
+        try:
+            if self.dryrun:
+                ufw.util.close_files(fns, False)
+            else:
+                ufw.util.close_files(fns)
+        except Exception:
+            raise
 
     def set_rule(self, rule, allow_reload=True):
         '''Updates firewall with rule by:
