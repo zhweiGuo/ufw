@@ -206,6 +206,12 @@ class UFWBackend:
             err_msg = _("Invalid option")
             raise UFWError(err_msg)
 
+	# Perform this here so we can present a nice error to the user rather
+        # than a traceback
+        if not os.access(f, os.W_OK):
+            err_msg = _("'%s' is not writable" % (f))
+            raise UFWError(err_msg)
+
         try:
             fns = ufw.util.open_files(f)
         except Exception:
@@ -237,21 +243,33 @@ class UFWBackend:
         '''Sets default application policy of firewall'''
         if not self.dryrun:
             if policy == "allow":
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_APPLICATION_POLICY", \
                                             "\"ACCEPT\"")
+                except Exception:
+                    raise
             elif policy == "deny":
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_APPLICATION_POLICY", \
                                             "\"DROP\"")
+                except Exception:
+                    raise
             elif policy == "reject":
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_APPLICATION_POLICY", \
                                             "\"REJECT\"")
+                except Exception:
+                    raise
             elif policy == "skip":
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_APPLICATION_POLICY", \
                                             "\"SKIP\"")
+                except Exception:
+                    raise
             else:
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
@@ -519,8 +537,8 @@ class UFWBackend:
            else:
                new_level = self.defaults['loglevel']
 
-        self.set_default(self.files['conf'], "LOGLEVEL", new_level)
         try:
+            self.set_default(self.files['conf'], "LOGLEVEL", new_level)
             self.update_logging(new_level)
         except:
             raise

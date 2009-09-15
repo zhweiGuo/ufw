@@ -223,3 +223,16 @@ Ports:
 24: delete allow bug407810
 
 
+Bug #430053
+25: allow 12345
+
+
+26: allow 12345
+
+
+27: default deny
+
+
+28: logging medium
+
+

@@ -87,4 +87,23 @@ rm -f "$TESTPATH/etc/ufw/applications.d/bug407810"
 do_cmd "0" null delete allow bug407810
 grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
 
+echo "Bug #430053" >> $TESTTMP/result
+chmod 444 $TESTSTATE/user.rules
+do_cmd "1" null allow 12345
+chmod 644 $TESTSTATE/user.rules
+
+sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
+chmod 444 $TESTSTATE/user6.rules
+do_cmd "1" null allow 12345
+chmod 644 $TESTSTATE/user6.rules
+sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
+
+chmod 444 $TESTPATH/etc/default/ufw
+do_cmd "1" null default deny
+chmod 644 $TESTPATH/etc/default/ufw
+
+chmod 444 $TESTPATH/etc/ufw/ufw.conf
+do_cmd "1" null logging medium
+chmod 644 $TESTPATH/etc/ufw/ufw.conf
+
 exit 0

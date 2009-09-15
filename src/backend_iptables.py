@@ -106,21 +106,30 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             old_log_str = ''
             new_log_str = ''
             if policy == "allow":
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_%s_POLICY" % (chain), \
                                             "\"ACCEPT\"")
+                except Exception:
+                    raise
                 old_log_str = 'UFW BLOCK'
                 new_log_str = 'UFW ALLOW'
             elif policy == "reject":
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_%s_POLICY" % (chain), \
                                             "\"REJECT\"")
+                except Exception:
+                    raise
                 old_log_str = 'UFW ALLOW'
                 new_log_str = 'UFW BLOCK'
             else:
-                self.set_default(self.files['defaults'], \
+                try:
+                    self.set_default(self.files['defaults'], \
                                             "DEFAULT_%s_POLICY" % (chain), \
                                             "\"DROP\"")
+                except Exception:
+                    raise
                 old_log_str = 'UFW ALLOW'
                 new_log_str = 'UFW BLOCK'
 
@@ -599,6 +608,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if v6:
             rules_file = self.files['rules6']
 
+        # Perform this here so we can present a nice error to the user rather
+        # than a traceback
+        if not os.access(rules_file, os.W_OK):
+            err_msg = _("'%s' is not writable" % (rules_file))
+            raise UFWError(err_msg)
+
         try:
             fns = ufw.util.open_files(rules_file)
         except Exception:
@@ -822,6 +837,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Update the user rules file
         try:
             self._write_rules(rule.v6)
+        except UFWError:
+            raise
         except Exception:
             err_msg = _("Couldn't update rules file")
             UFWError(err_msg)
