@@ -1,3 +1,17 @@
+ufw (0.29-3) UNRELEASED; urgency=low
+
+  * use upstart intead of sysv initscript
+    - debian/control: Bump build-dependency on debhelper for Upstart-aware
+      dh_installinit. Add Build-Dep on lsb-release
+    - add debian/ufw.upstart.ubuntu
+    - move debian/ufw.init to debian/ufw.init.debian
+    - debian/ufw.init: rename to debian/ufw.init.debian and update insserv
+      info to reflect reality
+    - debian/rules: use upstart if Ubuntu and sysv if Debian
+    - debian/postinst and debian/postrm: remove calls to update-rc.d
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Sep 2009 13:32:39 -0500
+
 ufw (0.29-2) unstable; urgency=low
 
   * Debconf translation updates:

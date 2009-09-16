@@ -2,10 +2,10 @@
 
 ### BEGIN INIT INFO
 # Provides:          ufw
-# Required-Start:    mountall
-# Required-Stop:     
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
 # Default-Start:     S
-# Default-Stop:      
+# Default-Stop:      1
 # Short-Description: start firewall
 ### END INIT INFO
 

@@ -7,6 +7,7 @@
 PYTHON  := /usr/bin/python
 PYVERS  := $(shell pyversions -vr)
 UBUVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
+OS      := $(shell lsb_release -i -s)
 
 build: build-stamp
 
@@ -19,6 +20,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 	rm -rf $(CURDIR)/build
+	rm -f $(CURDIR)/debian/ufw.init $(CURDIR)/debian/ufw.upstart
 	-find . -name '*.py[co]' | xargs rm -f
 	dh_clean
 	debconf-updatepo
@@ -71,7 +73,13 @@ binary-indep: build install
 	dh_installdocs
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
-	dh_installinit --noscripts
+	if [ "$(OS)" = "Ubuntu" ]; then \
+		cp $(CURDIR)/debian/ufw.upstart.ubuntu $(CURDIR)/debian/ufw.upstart ; \
+		dh_installinit --no-start --no-restart-on-upgrade ; \
+	else \
+		cp $(CURDIR)/debian/ufw.init.debian $(CURDIR)/debian/ufw.init ; \
+		dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1" ; \
+	fi
 	dh_installman
 	dh_installdebconf
 

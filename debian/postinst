@@ -90,8 +90,6 @@ case "$1" in
             rm -f /etc/rc6.d/K39ufw
         fi
 
-        update-rc.d ufw start 39 S . stop 39 1 . > /dev/null
-
         # configure ufw with debconf values
         db_get ufw/enable
         enabled="$RET"
