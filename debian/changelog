@@ -1,3 +1,14 @@
+ufw (0.29-2ubuntu1) unstable; urgency=low
+
+  * use upstart intead of sysv initscript
+    - debian/control: Bump build-dependency on debhelper for Upstart-aware
+      dh_installinit. Add Build-Dep on lsb-release
+    - add debian/ufw.upstart
+    - debian/rules:
+    - debian/postinst and debian/postrm: remove calls to update-rc.d
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Sep 2009 13:32:39 -0500
+
 ufw (0.29-2) unstable; urgency=low
 
   * Debconf translation updates:
