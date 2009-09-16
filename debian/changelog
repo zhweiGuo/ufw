@@ -1,6 +1,6 @@
 ufw (0.29-3) UNRELEASED; urgency=low
 
-  * use upstart intead of sysv initscript
+  * use upstart instead of sysv initscript
     - debian/control: Bump build-dependency on debhelper for Upstart-aware
       dh_installinit. Add Build-Dep on lsb-release
     - add debian/ufw.upstart.ubuntu
