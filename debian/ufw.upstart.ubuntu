@@ -1,0 +1,16 @@
+# ufw - Uncomplicated Firewall
+#
+# The Uncomplicated Firewall is a front-end for iptables, to make managing a
+# Netfilter firewall easier.
+
+description	"Uncomplicated firewall"
+
+start on net-device-added INTERFACE=lo
+stop on runlevel [!023456]
+
+pre-start script
+    grep -q -i '^ENABLED=no' /etc/ufw/ufw.conf && exit 1
+    exec /lib/ufw/ufw-init start
+end script
+
+post-stop exec /lib/ufw/ufw-init stop
