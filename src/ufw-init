@@ -30,7 +30,7 @@ start)
     # process multiple error strings
     ret=0
     output=`ufw_start` || ret="$?"
-    echo "$output" | while read line ; do
+    test -n "$output" && echo "$output" | while read line ; do
         echo "$line"
     done
     exit "$ret"
