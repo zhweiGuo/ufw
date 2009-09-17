@@ -13,7 +13,8 @@ start on net-device-added INTERFACE=lo
 stop on runlevel [!023456]
 
 pre-start script
-    grep -q -i '^ENABLED=yes' /etc/ufw/ufw.conf || exit 1
+    # only start if ufw is enabled
+    grep -q -i '^ENABLED=yes' /etc/ufw/ufw.conf
     exec /lib/ufw/ufw-init start
 end script
 
