@@ -206,7 +206,7 @@ class UFWBackend:
             err_msg = _("Invalid option")
             raise UFWError(err_msg)
 
-	# Perform this here so we can present a nice error to the user rather
+        # Perform this here so we can present a nice error to the user rather
         # than a traceback
         if not os.access(f, os.W_OK):
             err_msg = _("'%s' is not writable" % (f))
