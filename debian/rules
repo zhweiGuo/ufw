@@ -7,7 +7,7 @@
 PYTHON  := /usr/bin/python
 PYVERS  := $(shell pyversions -vr)
 UBUVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
-OS      := $(shell lsb_release -i -s)
+DISTRIB := $(shell lsb_release -i -s)
 
 build: build-stamp
 
@@ -73,7 +73,7 @@ binary-indep: build install
 	dh_installdocs
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
-	if [ "$(OS)" = "Ubuntu" ]; then \
+	if [ "$(DISTRIB)" = "Ubuntu" ]; then \
 		cp $(CURDIR)/debian/ufw.upstart.ubuntu $(CURDIR)/debian/ufw.upstart ; \
 		dh_installinit --no-start --no-restart-on-upgrade ; \
 	else \
