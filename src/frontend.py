@@ -987,8 +987,14 @@ class UFWFrontend:
         allow_reload = True
         trigger_reload = False
 
-        if self.backend.do_checks and ufw.util.under_ssh():
-            # Don't reload the firewall if running under ssh
+        try:
+            if self.backend.do_checks and ufw.util.under_ssh():
+                # Don't reload the firewall if running under ssh
+                allow_reload = False
+        except:
+            # If for some reason we get an exception trying to find the parent
+            # pid, err on the side of caution and don't automatically reload
+            # the firewall. LP: #424528
             allow_reload = False
 
         if profile == "all":
