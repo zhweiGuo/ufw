@@ -1,3 +1,7 @@
+#
+# Example Upstart script
+#
+
 # ufw - Uncomplicated Firewall
 #
 # The Uncomplicated Firewall is a front-end for iptables, to make managing a
