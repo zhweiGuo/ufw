@@ -1,7 +1,12 @@
-ufw (0.30-1) UNRELEASED; urgency=low
+ufw (0.29-4) unstable; urgency=low
 
-  * new upstream release
-  * use upstart instead of sysv initscript on Ubuntu
+  * debian/rules: add missing dot for update-rc.d invocation (closes: #547330)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 18 Sep 2009 13:26:53 -0500
+
+ufw (0.29-3) unstable; urgency=low
+
+  * use upstart instead of sysv initscript on Ubuntu (LP: #431804)
     - debian/control: Bump build-dependency on debhelper for Upstart-aware
       dh_installinit. Add Build-Dep on lsb-release
     - add debian/ufw.upstart.ubuntu
@@ -10,6 +15,11 @@ ufw (0.30-1) UNRELEASED; urgency=low
       info to reflect reality
     - debian/rules: use upstart if Ubuntu and sysv if Debian
     - debian/postinst and debian/postrm: remove calls to update-rc.d
+  * error out when filesystem is read-only. Merge from trunk (LP: #430053)
+  * catch exception if can't find parent pid when refreshing application
+    profiles. Merge from trunk (LP: #424528)
+  * add doc/upstart.example and update README for Debian users who want to
+    use upstart
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Sep 2009 13:32:39 -0500
 

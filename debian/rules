@@ -78,7 +78,7 @@ binary-indep: build install
 		dh_installinit --no-start --no-restart-on-upgrade ; \
 	else \
 		cp $(CURDIR)/debian/ufw.init.debian $(CURDIR)/debian/ufw.init ; \
-		dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1" ; \
+		dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1 ." ; \
 	fi
 	dh_installman
 	dh_installdebconf
