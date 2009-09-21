@@ -394,13 +394,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 # Add the loglevel if not valid
                 try:
                     self.set_loglevel("low")
-                except:
+                except Exception:
                     err_msg = _("Could not set LOGLEVEL")
                     raise UFWError(err_msg)
             else:
                 try:
                     self.update_logging(self.defaults['loglevel'])
-                except:
+                except Exception:
                     err_msg = _("Could not load logging rules")
                     raise UFWError(err_msg)
 
@@ -439,7 +439,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 for c in self.chains['user']:
                     self._chain_cmd(c, ['-F', c])
                     self._chain_cmd(c, ['-Z', c])
-            except:
+            except Exception:
                 raise UFWError(err_msg)
 
             # then restore the system rules
@@ -966,7 +966,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
            self.chains['after'] + self.chains['misc']:
             try:
                 self._chain_cmd(c, ['-L', c, '-n'])
-            except:
+            except Exception:
                 raise UFWError(err_msg)
 
         # Flush all the logging chains except 'user'
@@ -975,7 +975,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                self.chains['misc']:
                 self._chain_cmd(c, ['-F', c])
                 self._chain_cmd(c, ['-Z', c])
-        except:
+        except Exception:
             raise UFWError(err_msg)
 
         if level == "off":
@@ -1009,14 +1009,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             try:
                                 self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
                                                     '--log-prefix', msg] + largs)
-                            except:
+                            except Exception:
                                 raise
                         elif self.loglevels[level] >= self.loglevels["medium"]:
                             msg = "[UFW ALLOW] "
                             try:
                                 self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
                                                     '--log-prefix', msg] + largs)
-                            except:
+                            except Exception:
                                 raise
 
             # Setup the miscellaneous logging chains
@@ -1036,12 +1036,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             self._chain_cmd(c, ['-I', c, '-m', 'state', \
                                                 '--state', 'INVALID', \
                                                 '-j', 'RETURN'] + largs)
-                        except:
+                        except Exception:
                             raise
                 try:
                     self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
                                         '--log-prefix', msg] + largs)
-                except:
+                except Exception:
                     raise
 
         # Setup the audit logging chains
@@ -1062,7 +1062,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 try:
                     self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
                                         '--log-prefix', msg] + largs)
-                except:
+                except Exception:
                     raise UFWError(err_msg)
 
 

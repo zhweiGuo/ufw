@@ -352,7 +352,7 @@ def get_ppid(p=os.getpid()):
     '''
     try:
         pid = int(p)
-    except:
+    except Exception:
         raise ValueError("pid must be an integer")
 
     name = os.path.join("/proc", str(pid), "stat")
@@ -391,7 +391,7 @@ def under_ssh(pid=os.getpid()):
 
     try:
         exe = file(path).readlines()[0].split()[1]
-    except:
+    except Exception:
         err_msg = _("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
     debug("under_ssh: exe is '%s'" % (exe))

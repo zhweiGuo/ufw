@@ -540,7 +540,7 @@ class UFWBackend:
         try:
             self.set_default(self.files['conf'], "LOGLEVEL", new_level)
             self.update_logging(new_level)
-        except:
+        except Exception:
             raise
 
         if new_level == "off":
