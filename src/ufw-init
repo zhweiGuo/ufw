@@ -31,8 +31,8 @@ start)
     ret=0
     output=`ufw_start` || ret="$?"
     test -n "$output" && echo "$output" | while read line ; do
-        if [ "$2" = "quiet" ] && echo "$line" | grep -q "Skip starting"; then
-            continue
+        if [ "$2" = "quiet" ] || [ "$QUIET" = "yes" ]; then
+            echo "$line" | grep -q "Skip starting" && continue
         fi
         echo "$line"
     done
