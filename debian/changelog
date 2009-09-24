@@ -1,3 +1,14 @@
+fw (0.29-5) unstable; urgency=low
+
+  * reduce console output when using Upstart so that ufw is quiet when
+    ufw is disabled or enabled and no errors
+    - src/ufw-init: add add 'quiet' option on start
+    - debian/ufw.upstart.ubuntu: use 'quiet' option on start
+  * Debconf translation updates:
+    - Vietnamese (thanks to Clytie Siddall. closes: #547919)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 23 Sep 2009 18:06:56 -0500
+
 ufw (0.29-4) unstable; urgency=low
 
   * debian/rules: add missing dot for update-rc.d invocation (closes: #547330)
