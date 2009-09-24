@@ -10,5 +10,5 @@ stop on runlevel [!023456]
 
 console output
 
-pre-start exec /lib/ufw/ufw-init start
+pre-start exec /lib/ufw/ufw-init start quiet
 post-stop exec /lib/ufw/ufw-init stop
