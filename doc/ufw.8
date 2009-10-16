@@ -61,8 +61,9 @@ show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
 extra information. In the status output, 'Anywhere' is synonymous with 'any'
 and '0.0.0.0/0'.
 .TP
-\fBshow\fR
-show the running firewall in raw iptables format.
+\fBshow\fR ARG
+display information about the firewall. Currently only \fBraw\fR is supported,
+which shows the running firewall in raw iptables format.
 .TP
 \fBallow\fR ARGS
 add allow rule.  See \fBRULE SYNTAX\fR

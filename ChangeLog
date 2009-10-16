@@ -6,6 +6,7 @@ ufw (0.30) UNRELEASED; urgency=low
   * error out when filesystem is read-only (LP: #430053)
   * catch exception if can't find parent pid when refreshing application
     profiles (LP: #424528)
+  * update manpage to clarify 'show' command (LP: #453083)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 26 Aug 2009 16:52:08 -0500
 
