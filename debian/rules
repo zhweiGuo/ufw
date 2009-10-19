@@ -6,8 +6,13 @@
 
 PYTHON  := /usr/bin/python
 PYVERS  := $(shell pyversions -vr)
-UBUVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
+PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
 DISTRIB := $(shell lsb_release -i -s)
+
+ifneq (,$(filter $(DISTRIB),Ubuntu))
+  DISTRIB_VERSION_MAJOR := $(shell lsb_release -s -r | cut -d '.' -f 1)
+  DISTRIB_VERSION_MINOR := $(shell lsb_release -s -r | cut -d '.' -f 2)
+endif
 
 build: build-stamp
 
@@ -32,7 +37,7 @@ install: build
 	dh_installdirs
 
 	# make sure the version is in sync with our changelog
-	sed -i "s/^ufw_version = .*/ufw_version = '$(UBUVERS)'/" ./setup.py
+	sed -i "s/^ufw_version = .*/ufw_version = '$(PKGVERS)'/" ./setup.py
 
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	./run_tests.sh
@@ -73,12 +78,21 @@ binary-indep: build install
 	dh_installdocs
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
-	if [ "$(DISTRIB)" = "Ubuntu" ]; then \
-		cp $(CURDIR)/debian/ufw.upstart.ubuntu $(CURDIR)/debian/ufw.upstart ; \
-		dh_installinit --no-start --no-restart-on-upgrade ; \
-	else \
+
+	: # only use upstart in Ubuntu 9.10 and higher
+	if [ "$(DISTRIB)" != "Ubuntu" ]; then \
 		cp $(CURDIR)/debian/ufw.init.debian $(CURDIR)/debian/ufw.init ; \
 		dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1 ." ; \
+	else \
+		if [ "$(DISTRIB_VERSION_MAJOR)" = "9" ] && \
+			[ "$(DISTRIB_VERSION_MINOR)" = "10" ] || \
+			[ "$(DISTRIB_VERSION_MAJOR)" -gt "9" ]; then \
+			cp $(CURDIR)/debian/ufw.upstart.ubuntu $(CURDIR)/debian/ufw.upstart ; \
+			dh_installinit --no-start --no-restart-on-upgrade ; \
+		else \
+			cp $(CURDIR)/debian/ufw.init.debian $(CURDIR)/debian/ufw.init ; \
+			dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1 ." ; \
+		fi \
 	fi
 	dh_installman
 	dh_installdebconf

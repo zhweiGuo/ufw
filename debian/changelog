@@ -1,4 +1,11 @@
-fw (0.29-5) unstable; urgency=low
+ufw (0.30-1) UNRELEASED; urgency=low
+
+  * new upstream release
+  * debian/rules: only install upstart on Ubuntu 9.10 and later
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 17 Oct 2009 23:05:56 -0500
+
+ufw (0.29-5) unstable; urgency=low
 
   * reduce console output when using Upstart so that ufw is quiet when
     ufw is disabled or enabled and no errors
