@@ -16,6 +16,7 @@
 
 testdir="tests"
 tests="installation bad bugs good util"
+
 CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
@@ -24,37 +25,37 @@ export TESTSTATE="$TESTPATH/lib/ufw"
 STOPONFAIL="no"
 STOPONSKIP="no"
 if [ "$1" = "-s" ]; then
-	shift
-	STOPONFAIL="yes"
+    shift
+    STOPONFAIL="yes"
 elif [ "$1" = "-S" ]; then
-	shift
-	STOPONFAIL="yes"
-	STOPONSKIP="yes"
+    shift
+    STOPONFAIL="yes"
+    STOPONSKIP="yes"
 fi
 
 if [ -e "/proc/sys/net/ipv6" ]; then
-	tests="$tests ipv6"
+    tests="$tests ipv6"
 fi
 
 subclass=""
 if [ ! -z "$1" ]; then
-	tmp="$1"
-	if echo "$tmp" | egrep -q '/' ; then
-		subclass=`basename $tmp`
-		tests=`dirname $tmp`
-	else
-		tests="$tmp"
-	fi
+    tmp="$1"
+    if echo "$tmp" | egrep -q '/' ; then
+        subclass=`basename $tmp`
+        tests=`dirname $tmp`
+    else
+        tests="$tmp"
+    fi
 fi
 
 if [ ! -d "$testdir" ]; then
-	echo "Couldn't find '$testdir' directory"
-	exit 1
+    echo "Couldn't find '$testdir' directory"
+    exit 1
 fi
 
 if [ ! -e "./setup.py" ]; then
-	echo "Couldn't find setup.py"
-	exit 1
+    echo "Couldn't find setup.py"
+    exit 1
 fi
 
 skipped=0
@@ -68,97 +69,97 @@ echo "0" > $statsdir/individual
 
 for class in $tests
 do
-	for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
-	do
-		if [ ! -z "$subclass" ]; then
-			if [ "$d" != "$testdir/$class/$subclass" ]; then
-				continue
-			fi
-		fi
+    for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
+    do
+        if [ ! -z "$subclass" ]; then
+            if [ "$d" != "$testdir/$class/$subclass" ]; then
+                continue
+            fi
+        fi
 
-		if [ $skipped -gt 0 ]; then
-			if [ "$STOPONSKIP" = "yes" ]; then
-				echo ""
-				echo "STOPONSKIP set, exiting on skip"
-				exit 1
-			fi
-		fi
-		thistest=`basename $d`
-		echo ""
-		echo "Performing tests '$class/$thistest'"
+        if [ $skipped -gt 0 ]; then
+            if [ "$STOPONSKIP" = "yes" ]; then
+                echo ""
+                echo "STOPONSKIP set, exiting on skip"
+                exit 1
+            fi
+        fi
+        thistest=`basename $d`
+        echo ""
+        echo "Performing tests '$class/$thistest'"
 
-		if [ ! -x "$CUR/$testdir/$class/$thistest/runtest.sh" ]; then
-			skipped=$(($skipped + 1))
-			echo "    WARNING: couldn't find '$CUR/$testdir/$class/$thistest/runtest.sh' (skipping)"
-			continue
-		fi
+        if [ ! -x "$CUR/$testdir/$class/$thistest/runtest.sh" ]; then
+            skipped=$(($skipped + 1))
+            echo "    WARNING: couldn't find '$CUR/$testdir/$class/$thistest/runtest.sh' (skipping)"
+            continue
+        fi
 
-		echo "- installing"
-		if [ -d "$testdir/testarea" ]; then
-			rm -rf $testdir/testarea
-		fi
-		tmpdir=`mktemp -d`
-		mv "$tmpdir" "$testdir/testarea"
+        echo "- installing"
+        if [ -d "$testdir/testarea" ]; then
+            rm -rf $testdir/testarea
+        fi
+        tmpdir=`mktemp -d`
+        mv "$tmpdir" "$testdir/testarea"
 
-		mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
+        mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
 
-		install_dir="$CUR/$testdir/testarea"
-		python ./setup.py install --home="$install_dir" > /dev/null
-		if [ "$?" != "0" ]; then
-			exit 1
-		fi
+        install_dir="$CUR/$testdir/testarea"
+        python ./setup.py install --home="$install_dir" > /dev/null
+        if [ "$?" != "0" ]; then
+            exit 1
+        fi
 
-		# this is to allow root to run the tests without error.  I don't
-		# like building things as root, but some people do...
-		sed -i 's/self.do_checks = True/self.do_checks = False/' $testdir/testarea/lib/python/ufw/backend.py
+        # this is to allow root to run the tests without error.  I don't
+        # like building things as root, but some people do...
+        sed -i 's/self.do_checks = True/self.do_checks = False/' $testdir/testarea/lib/python/ufw/backend.py
 
-		cp -rL $testdir/$class/$thistest/orig/* $testdir/testarea/etc || exit 1
-		cp -f $testdir/$class/$thistest/runtest.sh $testdir/testarea || exit 1
+        cp -rL $testdir/$class/$thistest/orig/* $testdir/testarea/etc || exit 1
+        cp -f $testdir/$class/$thistest/runtest.sh $testdir/testarea || exit 1
 
-		echo "- result: "
-		numtests=$(($numtests + 1))
-		# now run the test
-		PYTHONPATH="$PYTHONPATH:$install_dir/lib/python" $CUR/$testdir/testarea/runtest.sh
-		if [ "$?" != "0" ];then
-			echo "    ** FAIL **"
-			errors=$(($errors + 1))
-		else
-			if [ ! -f "$TESTTMP/result" ]; then
-				skipped=$(($skipped + 1))
-				echo "    WARNING: couldn't find '$TESTTMP/result' (skipping)"
-				continue
-			else
-				# fix discrepencies between python versions
-				sed -i 's/^usage:/Usage:/' $TESTTMP/result
-				sed -i 's/^options:/Options:/' $TESTTMP/result
-			fi
-			if [ ! -f "$testdir/$class/$thistest/result" ]; then
-				skipped=$(($skipped + 1))
-				echo "    WARNING: couldn't find '$testdir/$class/$thistest/result' (skipping)"
-				continue
-			fi
-			diffs=`diff $testdir/$class/$thistest/result $TESTTMP/result`
-			if [ -z "$diffs" ]; then
-				echo "    PASS"
-			else
-				errors=$(($errors + 1))
-				echo "    FAIL:"
-				echo "$diffs"
-			fi
-		fi
-		chmod 755 "$testdir/testarea"
-		if [ $errors -gt 0 ]; then
-			if [ "$STOPONFAIL" = "yes" ]; then
-				echo ""
-				echo "FAILED $class/$thistest -- result found in $TESTTMP/result"
-				exit 1
-			fi
-		fi
-	done
+        echo "- result: "
+        numtests=$(($numtests + 1))
+        # now run the test
+        PYTHONPATH="$PYTHONPATH:$install_dir/lib/python" $CUR/$testdir/testarea/runtest.sh
+        if [ "$?" != "0" ];then
+            echo "    ** FAIL **"
+            errors=$(($errors + 1))
+        else
+            if [ ! -f "$TESTTMP/result" ]; then
+                skipped=$(($skipped + 1))
+                echo "    WARNING: couldn't find '$TESTTMP/result' (skipping)"
+                continue
+            else
+                # fix discrepencies between python versions
+                sed -i 's/^usage:/Usage:/' $TESTTMP/result
+                sed -i 's/^options:/Options:/' $TESTTMP/result
+            fi
+            if [ ! -f "$testdir/$class/$thistest/result" ]; then
+                skipped=$(($skipped + 1))
+                echo "    WARNING: couldn't find '$testdir/$class/$thistest/result' (skipping)"
+                continue
+            fi
+            diffs=`diff $testdir/$class/$thistest/result $TESTTMP/result`
+            if [ -z "$diffs" ]; then
+                echo "    PASS"
+            else
+                errors=$(($errors + 1))
+                echo "    FAIL:"
+                echo "$diffs"
+            fi
+        fi
+        chmod 755 "$testdir/testarea"
+        if [ $errors -gt 0 ]; then
+            if [ "$STOPONFAIL" = "yes" ]; then
+                echo ""
+                echo "FAILED $class/$thistest -- result found in $TESTTMP/result"
+                exit 1
+            fi
+        fi
+    done
 done
 
 if [ -d "$testdir/testarea" ]; then
-	rm -rf $testdir/testarea
+    rm -rf $testdir/testarea
 fi
 
 individual=$(cat $statsdir/individual)
@@ -172,14 +173,14 @@ echo "Skipped:             $skipped"
 echo "Errors:              $errors"
 
 if [ "$errors" != "0" ]; then
-	exit 1
+    exit 1
 fi
 
 # cleanup
 rm -rf $statsdir
 
 if [ "$skipped" != "0" ]; then
-	exit 2
+    exit 2
 fi
 
 exit 0
