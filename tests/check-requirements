@@ -31,6 +31,26 @@ runcmd() {
     fi
 }
 
+# check python
+found_python="no"
+echo -n "Has python: "
+for exe in python2.6 python2.5 python; do
+    if ! which $exe >/dev/null 2>&1; then
+        continue
+    fi
+    v=`$exe --version 2>&1 | cut -f 2 -d ' '`
+    if echo "$v" | grep -q "^2.[56]"; then
+        echo "pass (binary: $exe, version: $v)"
+        found_python="yes"
+        break
+    fi
+done
+if [ "$found_python" != "yes" ]; then
+    echo "ERROR: could not find valid python" >&2
+    error="yes"
+fi
+
+
 # check binaries
 for i in "" 6; do
     exe="iptables"
