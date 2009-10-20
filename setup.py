@@ -15,9 +15,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-
+#
 # Install with:
 # python ./setup.py install --root="/tmp/ufw"
+#
+# To specify a different interpreter for ufw:
+# python2.5 ./setup.py install --root="/tmp/ufw"
+# python2.6 ./setup.py install --root="/tmp/ufw"
+#
 
 from distutils.command.install import install as _install
 from distutils.core import setup
@@ -100,6 +105,12 @@ class Install(_install, object):
         for f in [ script, manpage, manpage_f ]:
             self.mkpath(os.path.dirname(f))
 
+        # update the interpreter to that of the one the user specified for setup
+        print "Updating staging/ufw to use %s" % (sys.executable)
+        subprocess.call(["sed",
+                         "-i",
+                         "1s%^#.*python.*%#! /usr/bin/env " + sys.executable + "%g",
+                         'staging/ufw'])
         self.copy_file('staging/ufw', script)
         self.copy_file('doc/ufw.8', manpage)
         self.copy_file('doc/ufw-framework.8', manpage_f)
@@ -185,6 +196,11 @@ class Install(_install, object):
                              "-i",
                              "s%#VERSION#%" + ufw_version + "%g",
                              file])
+
+if sys.version_info[0] < 2 or \
+   (sys.version_info[0] == 2 and sys.version_info[1] < 5):
+    print >> sys.stderr, "ERROR: Need at least python 2.5"
+    sys.exit(1)
 
 if os.path.exists('staging'):
     shutil.rmtree('staging')

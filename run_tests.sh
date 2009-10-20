@@ -17,6 +17,26 @@
 testdir="tests"
 tests="installation bad bugs good util"
 
+ipt_major=`iptables --version | sed 's/.* v//' | cut -d '.' -f 1 | sed 's/\([0-9]\+\).*/\\1/'`
+ipt_minor=`iptables --version | sed 's/.* v//' | cut -d '.' -f 2 | sed 's/\([0-9]\+\).*/\\1/'`
+ipt_micro=`iptables --version | sed 's/.* v//' | cut -d '.' -f 3 | sed 's/\([0-9]\+\).*/\\1/'`
+
+get_result_path() {
+    d="$1"
+    f="$d/result"
+
+    f_micro="$f.$ipt_major.$ipt_minor.$ipt_micro"
+    f_minor="$f.$ipt_major.$ipt_minor"
+
+    if [ -f "$f.$ipt_major.$ipt_minor.$ipt_micro" ]; then
+        f="$f_micro"
+    elif [ -f "$f.$ipt_major.$ipt_minor" ]; then
+        f="$f_minor"
+    fi
+
+    echo "$f"
+}
+
 CUR=`pwd`
 export TESTPATH="$CUR/$testdir/testarea"
 export TESTTMP="$CUR/$testdir/testarea/tmp"
@@ -32,6 +52,27 @@ elif [ "$1" = "-S" ]; then
     STOPONFAIL="yes"
     STOPONSKIP="yes"
 fi
+
+interpreter=""
+if [ "$1" = "-i" ]; then
+    shift
+    if [ -z "$1" ]; then
+        echo "Specified '-i' without an interpreter. Aborting" &>2
+        exit
+    fi
+    interpreter="$1"
+    shift
+fi
+if [ -z "$interpreter" ]; then
+    for exe in python python2.6 python2.5; do
+        if which $exe >/dev/null 2>&1; then
+            interpreter="$exe"
+            break
+        fi
+    done
+fi
+echo "Interpreter: $interpreter"
+echo ""
 
 if [ -e "/proc/sys/net/ipv6" ]; then
     tests="$tests ipv6"
@@ -104,8 +145,9 @@ do
         mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
 
         install_dir="$CUR/$testdir/testarea"
-        python ./setup.py install --home="$install_dir" > /dev/null
+        setup_output=`$interpreter ./setup.py install --home="$install_dir" 2>&1`
         if [ "$?" != "0" ]; then
+            echo "$setup_output"
             exit 1
         fi
 
@@ -138,7 +180,9 @@ do
                 echo "    WARNING: couldn't find '$testdir/$class/$thistest/result' (skipping)"
                 continue
             fi
-            diffs=`diff $testdir/$class/$thistest/result $TESTTMP/result`
+
+            result_file=`get_result_path $testdir/$class/$thistest`
+            diffs=`diff -w $result_file $TESTTMP/result`
             if [ -z "$diffs" ]; then
                 echo "    PASS"
             else
