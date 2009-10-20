@@ -11,7 +11,7 @@ Vcs-Bzr: https://bazaar.launchpad.net/~jdstrand/ufw/ufw-debian
 
 Package: ufw
 Architecture: all
-Depends: debconf, ${python:Depends}, ${misc:Depends}, iptables (>= 1.4.0), ucf
+Depends: debconf, ${python:Depends}, ${misc:Depends}, iptables, ucf
 XB-Python-Version: ${python:Versions}
 Description: program for managing a Netfilter firewall
  The Uncomplicated FireWall is a front-end for iptables, to make managing a

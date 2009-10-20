@@ -40,11 +40,10 @@ install: build
 	sed -i "s/^ufw_version = .*/ufw_version = '$(PKGVERS)'/" ./setup.py
 
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	./run_tests.sh
+	./run_tests.sh -i $(PYTHON)
 endif
 
-	python ./setup.py install \
-		--root=$(CURDIR)/debian/ufw
+	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/ufw
 
 	# these shouldn't be conffiles
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
