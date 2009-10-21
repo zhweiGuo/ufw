@@ -48,7 +48,7 @@ do_cmd() {
 # PYTHONPATH="`pwd`/lib/python" python ./test_util.py ...
 script="tests/testarea/test_normalization.py"
 cat > $script << EOM
-#!/usr/bin/python
+#! /usr/bin/env $interpreter
 
 import sys
 import ufw.util
@@ -222,7 +222,7 @@ do_cmd "1" no 192.168.0.1/e1 192.168.0.1/e1
 
 echo "TEST HUMAN SORTING" >> $TESTTMP/result
 cat > $script << EOM
-#!/usr/bin/python
+#! /usr/bin/env $interpreter
 
 import sys
 import ufw.util

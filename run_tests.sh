@@ -71,6 +71,9 @@ if [ -z "$interpreter" ]; then
         fi
     done
 fi
+# export the interpreter so the tests can use it too
+export interpreter="$interpreter"
+
 echo "Interpreter: $interpreter"
 echo ""
 

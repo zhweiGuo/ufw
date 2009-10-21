@@ -48,7 +48,7 @@ do_cmd() {
 # PYTHONPATH="`pwd`/lib/python" python ./test_util.py ...
 script="tests/testarea/test_addresses.py"
 cat > $script << EOM
-#!/usr/bin/python
+#! /usr/bin/env $interpreter
 
 import sys
 import ufw.util
