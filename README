@@ -13,7 +13,7 @@ perhaps 'Unbearable Firewall'. Have fun!
 
 Requirements
 ------------
-python 2.5 or 2.6 (known to work with 2.5.2+ and 2.6.2+)
+python 2.5 or 2.6 (known to work with 2.5+ and 2.6.2+)
 iptables 1.4*
 Linux kernel configured with the following modules (not exhaustive):
   addrtype
