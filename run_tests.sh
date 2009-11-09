@@ -38,8 +38,8 @@ get_result_path() {
 }
 
 CUR=`pwd`
-export TESTPATH="$CUR/$testdir/testarea"
-export TESTTMP="$CUR/$testdir/testarea/tmp"
+export TESTPATH="$testdir/testarea"
+export TESTTMP="$testdir/testarea/tmp"
 export TESTSTATE="$TESTPATH/lib/ufw"
 
 STOPONFAIL="no"
@@ -132,22 +132,22 @@ do
         echo ""
         echo "Performing tests '$class/$thistest'"
 
-        if [ ! -x "$CUR/$testdir/$class/$thistest/runtest.sh" ]; then
+        if [ ! -x "$testdir/$class/$thistest/runtest.sh" ]; then
             skipped=$(($skipped + 1))
-            echo "    WARNING: couldn't find '$CUR/$testdir/$class/$thistest/runtest.sh' (skipping)"
+            echo "    WARNING: couldn't find '$testdir/$class/$thistest/runtest.sh' (skipping)"
             continue
         fi
 
         echo "- installing"
-        if [ -d "$testdir/testarea" ]; then
-            rm -rf $testdir/testarea
+        if [ -d "$TESTPATH" ]; then
+            rm -rf "$TESTPATH"
         fi
         tmpdir=`mktemp -d`
-        mv "$tmpdir" "$testdir/testarea"
+        mv "$tmpdir" "$TESTPATH"
 
-        mkdir -p $testdir/testarea/usr/sbin $testdir/testarea/etc $testdir/testarea/tmp || exit 1
+        mkdir -p "$TESTPATH/usr/sbin" "$TESTPATH/etc" "$TESTPATH/tmp" || exit 1
 
-        install_dir="$CUR/$testdir/testarea"
+        install_dir="$TESTPATH"
         setup_output=`$interpreter ./setup.py install --home="$install_dir" 2>&1`
         if [ "$?" != "0" ]; then
             echo "$setup_output"
@@ -156,15 +156,15 @@ do
 
         # this is to allow root to run the tests without error.  I don't
         # like building things as root, but some people do...
-        sed -i 's/self.do_checks = True/self.do_checks = False/' $testdir/testarea/lib/python/ufw/backend.py
+        sed -i 's/self.do_checks = True/self.do_checks = False/' "$TESTPATH/lib/python/ufw/backend.py"
 
-        cp -rL $testdir/$class/$thistest/orig/* $testdir/testarea/etc || exit 1
-        cp -f $testdir/$class/$thistest/runtest.sh $testdir/testarea || exit 1
+        cp -rL $testdir/$class/$thistest/orig/* "$TESTPATH/etc" || exit 1
+        cp -f $testdir/$class/$thistest/runtest.sh "$TESTPATH" || exit 1
 
         echo "- result: "
         numtests=$(($numtests + 1))
         # now run the test
-        PYTHONPATH="$PYTHONPATH:$install_dir/lib/python" $CUR/$testdir/testarea/runtest.sh
+        PYTHONPATH="$PYTHONPATH:$install_dir/lib/python" "$TESTPATH/runtest.sh"
         if [ "$?" != "0" ];then
             echo "    ** FAIL **"
             errors=$(($errors + 1))
@@ -194,7 +194,7 @@ do
                 echo "$diffs"
             fi
         fi
-        chmod 755 "$testdir/testarea"
+        chmod 755 "$TESTPATH"
         if [ $errors -gt 0 ]; then
             if [ "$STOPONFAIL" = "yes" ]; then
                 echo ""
@@ -205,8 +205,8 @@ do
     done
 done
 
-if [ -d "$testdir/testarea" ]; then
-    rm -rf $testdir/testarea
+if [ -d "$TESTPATH" ]; then
+    rm -rf "$TESTPATH"
 fi
 
 individual=$(cat $statsdir/individual)
