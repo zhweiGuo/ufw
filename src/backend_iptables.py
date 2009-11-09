@@ -636,6 +636,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
         ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
 
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-before-logging-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-before-logging-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-before-logging-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-after-logging-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-after-logging-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-after-logging-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-deny - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
+
         if chain_prefix == "ufw":
             # Rate limiting only supported with IPv4
             ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
@@ -689,23 +701,30 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Write footer
         ufw.util.write_to_file(fd, "\n### END RULES ###\n")
 
-        # TODO
-        #ufw.util.write_to_file(fd, "### LOGGING ###\n")
-        #try:
-        #    lrules_t = self._get_logging_rules(self.defaults['loglevel'])
-        #except Exception:
-        #    raise
-        #for c, r, q in lrules_t:
-        #    ...
-        #ufw.util.write_to_file(fd, "### END LOGGING ###\n")
+        # Add logging rules, skipping any delete ('-D') rules
+        ufw.util.write_to_file(fd, "\n### LOGGING ###\n")
+        try:
+            lrules_t = self._get_logging_rules(self.defaults['loglevel'])
+        except Exception:
+            raise
+        for c, r, q in lrules_t:
+            if len(r) > 0 and r[0] == '-D':
+                continue
+            if c.startswith(chain_prefix + "-"):
+                ufw.util.write_to_file(fd,
+                    " ".join(r).replace('[', '"[').replace('] ', '] "') + \
+                    "\n")
+        ufw.util.write_to_file(fd, "### END LOGGING ###\n")
 
         if chain_prefix == "ufw":
+            ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
             # Rate limiting only supported with IPv4
             ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
                          "--limit 3/minute -j LOG --log-prefix " + \
                          "\"[UFW LIMIT BLOCK] \"\n")
             ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
             ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
+            ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
 
         ufw.util.write_to_file(fd, "COMMIT\n")
 
@@ -969,6 +988,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             rules_t = self._get_logging_rules(level)
         except Exception:
             raise
+
+        # Update the user rules file
+        try:
+            self._write_rules(v6=False)
+            self._write_rules(v6=True)
+        except UFWError:
+            raise
+        except Exception:
+            err_msg = _("Couldn't update rules file for logging")
+            UFWError(err_msg)
 
         # make sure all the chains are here, it's redundant but helps make
         # sure the chains are in a consistent state
