@@ -56,5 +56,22 @@ echo "contents of user*.rules:" >> $TESTTMP/result
 cat $TESTSTATE/user.rules >> $TESTTMP/result
 cat $TESTSTATE/user6.rules >> $TESTTMP/result
 
+echo "Verify iptables-restore headers" >> $TESTTMP/result
+for ipv6 in yes no ; do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
+    for i in "" off on low medium high full ; do
+        if [ -n "$i" ]; then
+            do_cmd "0" nostats logging $i
+        fi
+        do_extcmd "0" nostats $TESTPATH/lib/ufw/ufw-init flush-all
+        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
+        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
+        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
+    done
+done
+
 cleanup
 exit 0

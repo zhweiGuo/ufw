@@ -203,6 +203,55 @@ do
 	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
     done
 done
+
+echo "Compare enable and ufw-init" >> $TESTTMP/result
+sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
+do_cmd "0" nostats disable
+do_cmd "0" null enable
+do_cmd "0" nostats allow 23/tcp
+do_cmd "0" nostats logging medium
+iptables-save | grep '^-' > $TESTTMP/ipt.enable
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
+
+do_cmd "0" null disable
+iptables-save | grep '^-' > $TESTTMP/ipt.disable
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.disable
+
+sed -i 's/^ENABLED=no/ENABLED=yes/' $TESTPATH/etc/ufw/ufw.conf
+do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
+iptables-save | grep '^-' > $TESTTMP/ipt.start
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
+
+do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
+iptables-save | grep '^-' > $TESTTMP/ipt.stop
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.stop
+
+diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
+	echo "'ufw enable' and 'ufw-init start' are different"
+	exit 1
+}
+
+diff $TESTTMP/ip6t.enable $TESTTMP/ip6t.start || {
+	echo "'ufw enable' and 'ufw-init start' are different (ipv6)"
+	exit 1
+}
+
+diff $TESTTMP/ipt.disable $TESTTMP/ipt.stop || {
+	echo "'ufw disable' and 'ufw-init stop' are different"
+	exit 1
+}
+
+diff $TESTTMP/ip6t.disable $TESTTMP/ip6t.stop || {
+	echo "'ufw disable' and 'ufw-init stop' are different (ipv6)"
+	exit 1
+}
+do_cmd "0" nostats enable
+do_cmd "0" nostats delete allow 23/tcp
+do_cmd "0" nostats logging low
+do_cmd "0" nostats disable
+sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
+
+
 cleanup
 
 exit 0
