@@ -909,7 +909,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         c = pat_log.sub(r'\2', " ".join(s))
                         (rc, out) = cmd([exe, '-D', c, '-j', 'RETURN'])
                         if rc != 0:
-                            debug("FAILOK: " + err_msg)
+                            debug("FAILOK: -D %s -j RETURN" % (c))
 
         return rstr
 
