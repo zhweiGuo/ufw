@@ -1879,6 +1879,40 @@ WARN: Checks disabled
 Rule deleted
 
 
+Compare enable and ufw-init
 259: disable
+
+
+260: enable
+
+
+261: allow 23/tcp
+
+
+262: logging medium
+
+
+263: disable
+
+
+264: tests/testarea/lib/ufw/ufw-init start
+
+
+265: tests/testarea/lib/ufw/ufw-init stop
+
+
+266: enable
+
+
+267: delete allow 23/tcp
+
+
+268: logging low
+
+
+269: disable
+
+
+270: disable
 
 

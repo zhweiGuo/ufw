@@ -636,6 +636,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-output - [0:0]\n")
         ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-forward - [0:0]\n")
 
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-before-logging-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-before-logging-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-before-logging-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-logging-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-after-logging-input - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-after-logging-output - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-after-logging-forward - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-deny - [0:0]\n")
+        ufw.util.write_to_file(fd, ":" + chain_prefix + "-logging-allow - [0:0]\n")
+
         if chain_prefix == "ufw":
             # Rate limiting only supported with IPv4
             ufw.util.write_to_file(fd, ":" + chain_prefix + "-user-limit - [0:0]\n")
@@ -689,13 +701,30 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Write footer
         ufw.util.write_to_file(fd, "\n### END RULES ###\n")
 
+        # Add logging rules, skipping any delete ('-D') rules
+        ufw.util.write_to_file(fd, "\n### LOGGING ###\n")
+        try:
+            lrules_t = self._get_logging_rules(self.defaults['loglevel'])
+        except Exception:
+            raise
+        for c, r, q in lrules_t:
+            if len(r) > 0 and r[0] == '-D':
+                continue
+            if c.startswith(chain_prefix + "-"):
+                ufw.util.write_to_file(fd,
+                    " ".join(r).replace('[', '"[').replace('] ', '] "') + \
+                    "\n")
+        ufw.util.write_to_file(fd, "### END LOGGING ###\n")
+
         if chain_prefix == "ufw":
+            ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
             # Rate limiting only supported with IPv4
             ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
                          "--limit 3/minute -j LOG --log-prefix " + \
                          "\"[UFW LIMIT BLOCK] \"\n")
             ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
             ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
+            ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
 
         ufw.util.write_to_file(fd, "COMMIT\n")
 
@@ -886,7 +915,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if rule.direction == "out":
                     chain_suffix = "output"
                 chain = "%s-user-%s" % (chain_prefix, chain_suffix)
-          
 
                 # Is the firewall running?
                 err_msg = _("Could not update running firewall")
@@ -955,9 +983,21 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if not self._is_enabled():
             return
 
-        if level not in self.loglevels.keys():
-            err_msg = _("Invalid log level '%s'") % (level)
-            raise UFWError(err_msg)
+        rules_t = []
+        try:
+            rules_t = self._get_logging_rules(level)
+        except Exception:
+            raise
+
+        # Update the user rules file
+        try:
+            self._write_rules(v6=False)
+            self._write_rules(v6=True)
+        except UFWError:
+            raise
+        except Exception:
+            err_msg = _("Couldn't update rules file for logging")
+            UFWError(err_msg)
 
         # make sure all the chains are here, it's redundant but helps make
         # sure the chains are in a consistent state
@@ -978,18 +1018,37 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             raise UFWError(err_msg)
 
+        # Add logging rules to running firewall
+        for c, r, q in rules_t:
+            fail_ok = False
+            if len(r) > 0 and r[0] == '-D':
+                fail_ok = True
+            try:
+                if q == 'delete_first' and len(r) > 1:
+                    self._chain_cmd(c, ['-D'] + r[1:], fail_ok=True)
+                self._chain_cmd(c, r, fail_ok)
+            except Exception:
+                raise UFWError(err_msg)
+
+    def _get_logging_rules(self, level):
+        '''Get rules for specified logging level'''
+        rules_t = []
+
+        if level not in self.loglevels.keys():
+            err_msg = _("Invalid log level '%s'") % (level)
+            raise UFWError(err_msg)
+
         if level == "off":
             # when off, insert a RETURN rule at the top of user rules, thus
             # preserving the rules
             for c in self.chains['user']:
-                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'], fail_ok=True)
-                self._chain_cmd(c, ['-I', c, '-j', 'RETURN'])
-            return
+                rules_t.append([c, ['-I', c, '-j', 'RETURN'], 'delete_first'])
+            return rules_t
         else:
             # when on, remove the RETURN rule at the top of user rules, thus
             # honoring the log rules
             for c in self.chains['user']:
-                self._chain_cmd(c, ['-D', c, '-j', 'RETURN'], fail_ok=True)
+                rules_t.append([c, ['-D', c, '-j', 'RETURN'], ''])
 
         limit_args = ['-m', 'limit', '--limit', '3/min', '--limit-burst', '10']
 
@@ -1006,18 +1065,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if self.get_default_policy(t) == "reject" or \
                            self.get_default_policy(t) == "deny":
                             msg = "[UFW BLOCK] "
-                            try:
-                                self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
-                                                    '--log-prefix', msg] + largs)
-                            except Exception:
-                                raise
+                            rules_t.append([c, ['-A', c, '-j', 'LOG', \
+                                                '--log-prefix', msg] +
+                                                largs, ''])
                         elif self.loglevels[level] >= self.loglevels["medium"]:
                             msg = "[UFW ALLOW] "
-                            try:
-                                self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
-                                                    '--log-prefix', msg] + largs)
-                            except Exception:
-                                raise
+                            rules_t.append([c, ['-A', c, '-j', 'LOG', \
+                                                '--log-prefix', msg] + largs, ''])
 
             # Setup the miscellaneous logging chains
             largs = []
@@ -1032,17 +1086,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     msg = "[UFW BLOCK] "
                     if self.loglevels[level] >= self.loglevels["medium"]:
                         # only log INVALID in medium and higher
-                        try:
-                            self._chain_cmd(c, ['-I', c, '-m', 'state', \
-                                                '--state', 'INVALID', \
-                                                '-j', 'RETURN'] + largs)
-                        except Exception:
-                            raise
-                try:
-                    self._chain_cmd(c, ['-A', c, '-j', 'LOG', \
-                                        '--log-prefix', msg] + largs)
-                except Exception:
-                    raise
+                        rules_t.append([c, ['-I', c, '-m', 'state', \
+                                            '--state', 'INVALID', \
+                                            '-j', 'RETURN'] + largs, ''])
+                rules_t.append([c, ['-A', c, '-j', 'LOG', \
+                                    '--log-prefix', msg] + largs, ''])
 
         # Setup the audit logging chains
         if self.loglevels[level] >= self.loglevels["medium"]:
@@ -1059,10 +1107,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             msg = "[UFW AUDIT] "
             for c in self.chains['before']:
-                try:
-                    self._chain_cmd(c, ['-I', c, '-j', 'LOG', \
-                                        '--log-prefix', msg] + largs)
-                except Exception:
-                    raise UFWError(err_msg)
+                rules_t.append([c, ['-I', c, '-j', 'LOG', \
+                                    '--log-prefix', msg] + largs, ''])
 
-
+        return rules_t

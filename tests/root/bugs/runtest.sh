@@ -116,6 +116,7 @@ do_cmd "0"  delete allow 3
 do_cmd "0"  delete allow 2
 do_cmd "0"  delete allow 1
 do_cmd "0"  status
+sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 
 echo "Bug #407810" >> $TESTTMP/result
 cp "$TESTPATH/etc/ufw/applications.d/samba" "$TESTPATH/etc/ufw/applications.d/bug407810"
@@ -126,6 +127,37 @@ grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
 rm -f "$TESTPATH/etc/ufw/applications.d/bug407810"
 do_cmd "0" null delete allow bug407810
 grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
+
+echo "Bug #459925" >> $TESTTMP/result
+for ipv6 in yes no ; do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    for i in "" off on low medium high full ; do
+        do_cmd "0" nostats disable
+        do_cmd "0" null enable
+        if [ -n "$i" ]; then
+            do_cmd "0" null logging $i
+        fi
+        iptables-save | grep '^-' > $TESTTMP/ipt.enable
+        ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
+
+        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
+        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
+        iptables-save | grep '^-' > $TESTTMP/ipt.start
+        ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
+
+        diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
+            echo "'ufw enable' and 'ufw-init start' are different for loglevel '$i'"
+            exit 1
+        }
+
+        diff $TESTTMP/ip6t.enable $TESTTMP/ip6t.start || {
+            echo "'ufw enable' and 'ufw-init start' are different for loglevel '$i' (ipv6)"
+            exit 1
+        }
+
+    done
+done
 
 # teardown
 cleanup
