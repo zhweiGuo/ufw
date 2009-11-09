@@ -104,11 +104,11 @@ do
         do_cmd "0" nostats disable
         sed -i "s/MANAGE_BUILTINS=.*/MANAGE_BUILTINS=$ans/" $TESTPATH/etc/default/ufw
 
-        iptables -D INPUT -j ACCEPT -m comment --comment $str 2>/dev/null
         echo iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         do_cmd "0" nostats enable
         iptables -n -L INPUT | grep "$str" >> $TESTTMP/result
+        iptables -D INPUT -j ACCEPT -m comment --comment $str 2>/dev/null
 done
 
 echo "Testing status numbered" >> $TESTTMP/result
