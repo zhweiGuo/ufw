@@ -154,6 +154,9 @@ do
             exit 1
         fi
 
+        # make the installed user rules files available to tests
+        find "$TESTPATH" -name "user*.rules" -exec cp {} {}.orig \;
+
         # this is to allow root to run the tests without error.  I don't
         # like building things as root, but some people do...
         sed -i 's/self.do_checks = True/self.do_checks = False/' "$TESTPATH/lib/python/ufw/backend.py"
