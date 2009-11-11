@@ -38,3 +38,59 @@ Bug #430053
 5: logging medium
 
 
+Bug #480789
+6: --dry-run logging on
+
+
+7: allow 22
+
+
+checking for 'INVALID -j RETURN' in user.rules
+checking for 'INVALID -j RETURN' in user6.rules
+8: delete allow 22
+
+
+9: --dry-run logging low
+
+
+10: allow 22
+
+
+checking for 'INVALID -j RETURN' in user.rules
+checking for 'INVALID -j RETURN' in user6.rules
+11: delete allow 22
+
+
+12: --dry-run logging medium
+
+
+13: allow 22
+
+
+checking for 'INVALID -j RETURN' in user.rules
+checking for 'INVALID -j RETURN' in user6.rules
+14: delete allow 22
+
+
+15: --dry-run logging high
+
+
+16: allow 22
+
+
+checking for 'INVALID -j RETURN' in user.rules
+checking for 'INVALID -j RETURN' in user6.rules
+17: delete allow 22
+
+
+18: --dry-run logging full
+
+
+19: allow 22
+
+
+checking for 'INVALID -j RETURN' in user.rules
+checking for 'INVALID -j RETURN' in user6.rules
+20: delete allow 22
+
+

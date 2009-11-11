@@ -57,4 +57,27 @@ chmod 444 $TESTPATH/etc/ufw/ufw.conf
 do_cmd "$expected" null logging medium
 chmod 644 $TESTPATH/etc/ufw/ufw.conf
 
+echo "Bug #480789" >> $TESTTMP/result
+sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
+for i in on low medium high full ; do
+    do_cmd "0" null --dry-run logging $i
+    e="1"
+    if [ "$i" = "low" ] || [ "$i" = "on" ]; then
+        e="0"
+    fi
+    do_cmd "0" nostats allow 22
+    for j in user.rules user6.rules ; do
+        echo "checking for 'INVALID -j RETURN' in $j" >> $TESTTMP/result
+        grep -q 'logging-deny .* INVALID -j RETURN' $TESTPATH/lib/ufw/$j
+        rc="$?"
+        if [ "$rc" != "$e" ]; then
+            echo "$i: got '$rc', expected '$e'"
+            exit 1
+        fi
+    done
+    do_cmd "0" nostats delete allow 22
+done
+sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
+
+
 exit 0

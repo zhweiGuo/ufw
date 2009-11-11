@@ -1084,7 +1084,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     msg = "[UFW ALLOW] "
                 elif c.endswith("deny"):
                     msg = "[UFW BLOCK] "
-                    if self.loglevels[level] >= self.loglevels["medium"]:
+                    if self.loglevels[level] < self.loglevels["medium"]:
                         # only log INVALID in medium and higher
                         rules_t.append([c, ['-I', c, '-m', 'state', \
                                             '--state', 'INVALID', \
