@@ -17,7 +17,7 @@ install: all
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
 	xgettext -d ufw -L Python -o $@ $(SRCS)
-	make -c po/Makefile all
+	make -f po/Makefile all
 
 mo:
 	make -C locales all
