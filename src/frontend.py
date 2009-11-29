@@ -25,6 +25,7 @@ from ufw.common import UFWError
 import ufw.util
 from ufw.util import error, warn
 from ufw.backend_iptables import UFWBackendIptables
+import ufw.parser
 
 def allowed_command(cmd):
     '''Return command if it is allowed, otherwise raise an exception'''
@@ -38,6 +39,49 @@ def allowed_command(cmd):
     return cmd.lower()
 
 def parse_command(argv):
+    '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
+    p = ufw.parser.UFWParser()
+
+    # Basic commands
+    for i in ['enable', 'disable', 'help', '--help', 'version', '--version', 'reload']:
+        p.register_command(ufw.parser.UFWCommandBasic(i))
+
+    # Rule commands
+    for i in ['allow', 'limit', 'deny' , 'reject']:
+        p.register_command(ufw.parser.UFWCommandRule(i))
+    p.register_command(ufw.parser.UFWCommandRule('insert'))
+    p.register_command(ufw.parser.UFWCommandRule('delete'))
+
+    # Miscellaneous commands
+    p.register_command(ufw.parser.UFWCommandDefault('default'))
+    p.register_command(ufw.parser.UFWCommandLogging('logging'))
+    p.register_command(ufw.parser.UFWCommandStatus('status'))
+    p.register_command(ufw.parser.UFWCommandShow('show'))
+
+    #print sys.argv
+    if len(sys.argv) < 2:
+        print >> sys.stderr, "ERROR: not enough args"
+        sys.exit(1)
+
+    pr = p.parse_command(sys.argv[1:])
+    try:
+        pr = p.parse_command(sys.argv[1:])
+    except UFWError, e:
+        print >> sys.stderr, "ERROR: %s" % (e)
+        sys.exit(1)
+#    except Exception:
+#        print >> sys.stderr, "Invalid syntax"
+#        sys.exit(1)
+
+    # TODO: clean this up
+    if pr.rule != None:
+        return (pr.action, pr.rule, pr.iptype, pr.dryrun)
+#    elif pr.appname:
+#        return (r.action, r.appname, r.dryrun)
+    else:
+        return (pr.action, "", "", pr.dryrun)
+
+def parse_command_old(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
     action = ""
     rule = ""
