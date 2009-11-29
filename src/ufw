@@ -62,29 +62,24 @@ if __name__ == "__main__":
     app_action = False
     profile = ""
 
-    if len(sys.argv) > 1 and sys.argv[1].lower() == "app":
-        try:
+    idx = 1
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
+        idx +=1
+    try:
+        if len(sys.argv) > idx and sys.argv[idx].lower() == "app":
 	    (action, profile, dryrun) = \
-                ufw.frontend.parse_application_command(sys.argv)
+                ufw.frontend.parse_command(sys.argv)
             app_action = True
-        except ValueError:
-            msg(ufw.frontend.get_command_help())
-            sys.exit(1)
-        except UFWError, e:
-            error(e.value)
-        except Exception:
-            raise
-    else:
-        try:
+        else:
             (action, rule, ip_version, dryrun) = \
                 ufw.frontend.parse_command(sys.argv)
-        except ValueError:
-            msg(ufw.frontend.get_command_help())
-            sys.exit(1)
-        except UFWError, e:
-            error(e.value)
-        except Exception:
-            raise
+    except ValueError:
+        msg(ufw.frontend.get_command_help())
+        sys.exit(1)
+    except UFWError, e:
+        error(e.value)
+    except Exception:
+        raise
 
     if action == "help" or action == "--help":
         msg(ufw.frontend.get_command_help())
