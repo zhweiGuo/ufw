@@ -14,8 +14,10 @@ ufw (0.30) UNRELEASED; urgency=low
   * write loglevel rules to user rules (LP: #459925)
   * properly log INVALID packets for medium and higher (LP: #480789)
   * Makefile: clean up POTFILES target
+  * generate binary translations in setup.py rather than shipping them in
+    source (LP: #490366)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 09 Nov 2009 15:13:01 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 30 Nov 2009 10:08:23 -0600
 
 ufw (0.29) RELEASED; urgency=low
 
