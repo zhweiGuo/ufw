@@ -59,7 +59,7 @@ chmod 644 $TESTPATH/etc/ufw/ufw.conf
 
 echo "Bug #480789" >> $TESTTMP/result
 sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
-for i in on low medium high full ; do
+for i in low on medium high full ; do
     do_cmd "0" null --dry-run logging $i
     e="1"
     if [ "$i" = "low" ] || [ "$i" = "on" ]; then
