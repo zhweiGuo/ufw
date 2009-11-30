@@ -31,6 +31,7 @@ clean:
 	rm -rf ./staging
 	rm -rf ./tests/testarea
 	rm -rf $(TMPDIR)
+	rm -f ./locales/mo/*.mo
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc

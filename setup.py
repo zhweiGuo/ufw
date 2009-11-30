@@ -137,6 +137,8 @@ class Install(_install, object):
             transdir = self.root + real_transdir
         i18ndir = os.path.join(transdir, 'messages')
         self.mkpath(i18ndir)
+        if len(os.listdir('locales/mo')) == 0:
+            subprocess.call(["make", "mo"])
         self.copy_tree('locales/mo', i18ndir)
 
         # Install configuration files
