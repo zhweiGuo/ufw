@@ -108,11 +108,11 @@ delete_chains() {
 
 ufw_start() {
     out=""
-    if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
-        echo "Firewall already started, use 'force-reload'"
-        return 0
-    fi
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+        if iptables -L ufw-user-input -n >/dev/null 2>&1 ; then
+            echo "Firewall already started, use 'force-reload'"
+            return 0
+        fi
         for m in $IPT_MODULES
         do
             modprobe $m || true
