@@ -1,13 +1,24 @@
 ufw (0.30-1) UNRELEASED; urgency=low
 
   * new upstream release
-  * debian/rules:
-    - only install upstart on Ubuntu 9.10 and later
-    - use $(PYTHON) with setup.py and test suite
   * debian/control: drop versioned depends on iptables. This helps with
     backporting now that the test suite can handle it
+  * debian/ufw.upstart.ubuntu: start before an interface receives traffic
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 17 Oct 2009 23:05:56 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Dec 2009 09:25:51 -0600
+
+ufw (0.29.1-1) unstable; urgency=low
+
+  * new upstream release, fixing LP: #459925 and LP: #480789
+  * debian/postinst: run 'ufw logging <log level>' to update the user
+    rules for logging (this action does nothing when ufw is not enabled)
+  * debian/ufw.upstart.ubuntu: don't use 'quiet' since we also now look for
+    QUIET
+  * debian/rules:
+    - only install upstart on Ubuntu 9.10 and later
+    - use $(PYTHON) with setup.py
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 11 Nov 2009 14:26:56 -0600
 
 ufw (0.29-5) unstable; urgency=low
 
