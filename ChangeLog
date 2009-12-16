@@ -18,7 +18,7 @@ ufw (0.30) UNRELEASED; urgency=low
     source (LP: #490366)
   * src/ufw-init-functions: don't run 'already started' check unless
     ENABLED. This should improve boot speed such that iptables is not
-    needlessly called which results in an uneeded modprobe.
+    needlessly called which results in an unneeded modprobe.
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Dec 2009 09:24:55 -0600
 
