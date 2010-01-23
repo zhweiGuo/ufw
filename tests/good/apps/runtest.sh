@@ -91,13 +91,13 @@ rm -f $TESTPATH/etc/ufw/applications.d/runtest
 
 echo "TESTING APPLICATION INTEGRATION (update)" >> $TESTTMP/result
 do_cmd "0" app default allow
-do_cmd "0" app --dry-run update --add-new Apache
+do_cmd "0" --dry-run app update --add-new Apache
 do_cmd "0" app default deny
-do_cmd "0" app --dry-run update --add-new Samba
+do_cmd "0" --dry-run app update --add-new Samba
 do_cmd "0" app default skip
-do_cmd "0" app --dry-run update --add-new Bind9
+do_cmd "0" --dry-run app update --add-new Bind9
 do_cmd "0" app default reject
-do_cmd "0" app --dry-run update --add-new Samba
+do_cmd "0" --dry-run app update --add-new Samba
 
 echo "TESTING APPLICATION INTEGRATION (exact vs multi)" >> $TESTTMP/result
 cat > $TESTPATH/etc/ufw/applications.d/Runtest2 << EOM

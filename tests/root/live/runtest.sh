@@ -74,7 +74,7 @@ done
 echo "Checking status" >> $TESTTMP/result
 do_cmd "0" null status
 do_cmd "0" null status verbose
-do_cmd "0" null status raw
+do_cmd "0" null status numbered
 
 echo "Checking reject" >> $TESTTMP/result
 for ipv6 in yes no
