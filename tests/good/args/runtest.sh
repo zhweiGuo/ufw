@@ -31,6 +31,64 @@ do_cmd "0" --dry-run DISABLE
 echo "TESTING ARGS (status)" >> $TESTTMP/result || exit 1
 do_cmd "0" --dry-run status
 do_cmd "0" --dry-run status verbose
+do_cmd "0" --dry-run status numbered
+
+echo "TESTING ARGS (show)" >> $TESTTMP/result || exit 1
 do_cmd "0" --dry-run show raw
+
+echo "Testing parser" >> $TESTTMP/result || exit 1
+echo "Basic" >> $TESTTMP/result || exit 1
+cmds="enable disable help --help version --version reload"
+for i in $cmds; do
+    do_cmd "0" null --dry-run $i
+done
+
+echo "Application" >> $TESTTMP/result || exit 1
+cmds="list info default update"
+do_cmd "0" null --dry-run app list
+do_cmd "0" null --dry-run app info Apache
+do_cmd "0" null --dry-run app update Apache
+do_cmd "0" null --dry-run app update --add-new Apache
+do_cmd "0" null --dry-run app default skip
+
+echo "Logging" >> $TESTTMP/result || exit 1
+cmds="on off low medium high full"
+for i in $cmds; do
+    do_cmd "0" null --dry-run logging $i
+done
+
+echo "Default" >> $TESTTMP/result || exit 1
+cmds="allow deny reject"
+for i in $cmds; do
+    do_cmd "0" null --dry-run default $i
+    do_cmd "0" null --dry-run default $i incoming
+    do_cmd "0" null --dry-run default $i outgoing
+done
+
+echo "Status" >> $TESTTMP/result || exit 1
+for i in "" verbose numbered; do
+    do_cmd "0" null --dry-run status $i
+done
+
+echo "Show" >> $TESTTMP/result || exit 1
+cmds="raw"
+for i in $cmds; do
+    do_cmd "0" null --dry-run show $i
+done
+
+echo "Rules" >> $TESTTMP/result || exit 1
+do_cmd "0" null allow 80
+do_cmd "0" null --dry-run insert 1 allow 53
+do_cmd "0" null delete allow 80
+do_cmd "0" null --dry-run allow in 53
+do_cmd "0" null --dry-run allow log 53
+do_cmd "0" null --dry-run allow in log 53
+
+do_cmd "0" null deny to any port 80 from any proto tcp
+do_cmd "0" null --dry-run insert 1 deny to any port 53 from any proto udp
+do_cmd "0" null delete deny to any port 80 from any proto tcp
+do_cmd "0" null --dry-run deny out to any port 53 from any proto udp
+do_cmd "0" null --dry-run deny log-all to any port 53 from any proto udp
+do_cmd "0" null --dry-run deny out log-all to any port 53 from any proto udp
 
 exit 0

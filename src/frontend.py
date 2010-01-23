@@ -1,7 +1,7 @@
 #
 # frontend.py: frontend interface for ufw
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -25,464 +25,71 @@ from ufw.common import UFWError
 import ufw.util
 from ufw.util import error, warn
 from ufw.backend_iptables import UFWBackendIptables
-
-def allowed_command(cmd):
-    '''Return command if it is allowed, otherwise raise an exception'''
-    allowed_cmds = ['enable', 'disable', 'help', '--help', 'default', \
-                    'logging', 'status', 'version', '--version', 'allow', \
-                    'deny', 'reject', 'limit', 'reload', 'show' ]
-
-    if not cmd.lower() in allowed_cmds:
-        raise ValueError()
-
-    return cmd.lower()
+import ufw.parser
 
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
-    action = ""
-    rule = ""
-    type = ""
-    from_type = "any"
-    to_type = "any"
-    from_service = ""
-    to_service = ""
-    dryrun = False
-    insert_pos = ""
-    logtype = ""
-    loglevel = ""
+    p = ufw.parser.UFWParser()
 
-    if len(argv) > 1 and argv[1].lower() == "--dry-run":
-        dryrun = True
-        argv.remove(argv[1])
+    # Basic commands
+    for i in ['enable', 'disable', 'help', '--help', 'version', '--version', 'reload']:
+        p.register_command(ufw.parser.UFWCommandBasic(i))
 
-    remove = False
-    if len(argv) > 1 and argv[1].lower() == "delete":
-        remove = True
-        argv.remove(argv[1])
+    # Application commands
+    for i in ['list', 'info', 'default', 'update']:
+        p.register_command(ufw.parser.UFWCommandApp(i))
 
-    nargs = len(argv)
+    # Logging commands
+    for i in ['on', 'off', 'low', 'medium', 'high', 'full']:
+        p.register_command(ufw.parser.UFWCommandLogging(i))
 
-    if nargs < 2:
-        raise ValueError()
+    # Default commands
+    for i in ['allow', 'deny', 'reject']:
+        p.register_command(ufw.parser.UFWCommandDefault(i))
 
-    if argv[1].lower() in ['insert']:
-        action = argv[1].lower()
+    # Status commands ('status', 'status verbose', 'status numbered')
+    for i in [None, 'verbose', 'numbered']:
+        p.register_command(ufw.parser.UFWCommandStatus(i))
+
+    # Show commands
+    for i in ['raw']:
+        p.register_command(ufw.parser.UFWCommandShow(i))
+
+    # Rule commands
+    rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
+    for i in rule_commands:
+        p.register_command(ufw.parser.UFWCommandRule(i))
+
+    # Don't require the user to have to specify 'rule' as the command. Instead
+    # insert 'rule' into the arguments if this is a rule command.
+    if len(argv) > 2:
+        idx = 1
+        if argv[idx].lower() == "--dry-run":
+            idx = 2
+        if argv[idx].lower() != "default" and \
+           argv[idx].lower() in rule_commands:
+            argv.insert(idx, 'rule')
+
+    if len(argv) < 2:
+        print >> sys.stderr, "ERROR: not enough args"
+        sys.exit(1)
+
+    try:
+        pr = p.parse_command(argv[1:])
+    except UFWError, e:
+        print >> sys.stderr, "ERROR: %s" % (e)
+        sys.exit(1)
+    except Exception:
+        print >> sys.stderr, "Invalid syntax"
+        raise
+        sys.exit(1)
+
+    if pr.data.has_key('type') and pr.data['type'] == 'rule':
+        return (pr.action, pr.data['rule'], pr.data['iptype'], pr.dryrun)
+    elif pr.data.has_key('type') and pr.data['type'] == 'app':
+        return (pr.action, pr.data['name'], pr.dryrun)
     else:
-        action = allowed_command(argv[1])
-
-    if action == "insert":
-        if nargs < 4:
-            raise ValueError()
-        insert_pos = argv[2]
-
-        # Using position '0' adds rule at end, which is potentially confusing
-        # for the end user
-        if insert_pos == "0":
-            err_msg = _("Cannot insert rule at position '%s'") % (insert_pos)
-            raise UFWError(err_msg)
-
-        # strip out 'insert NUM' and parse as normal
-        del argv[2]
-        del argv[1]
-        action = allowed_command(argv[1])
-        nargs = len(argv)
-
-        # error if use insert with non-rule commands
-        if action != "allow" and action != "deny" and action != "reject" and \
-           action != "limit":
-            raise ValueError()
-
-    if action == "logging":
-        if nargs < 3:
-            raise ValueError()
-        elif argv[2].lower() == "off":
-            action = "logging-off"
-        elif argv[2].lower() == "on" or argv[2].lower() == "low" or \
-             argv[2].lower() == "medium" or argv[2].lower() == "high" or \
-             argv[2].lower() == "full":
-            action = "logging-on"
-            if argv[2].lower() != "on":
-                action += "_" + argv[2].lower()
-        else:
-            raise ValueError()
-
-    if action == "status" and nargs > 2:
-        if argv[2].lower() == "verbose":
-            action = "status-verbose"
-        elif argv[2].lower() == "numbered":
-            action = "status-numbered"
-
-    if action == "show":
-        if nargs == 2:
-            raise ValueError()
-        elif argv[2].lower() == "raw":
-            action = "show-raw"
-
-    if action == "default":
-        direction = "incoming"
-        if nargs > 3:
-            if argv[3].lower() != "incoming" and argv[3].lower() != "input" and \
-               argv[3].lower() != "output" and argv[3].lower() != "outgoing":
-                raise ValueError()
-            if argv[3].lower().startswith("in"):
-                direction = "incoming"
-            elif argv[3].lower().startswith("out"):
-                direction = "outgoing"
-            else:
-                direction = argv[3].lower()
-        if nargs < 3:
-            raise ValueError()
-        elif argv[2].lower() == "deny":
-            action = "default-deny"
-        elif argv[2].lower() == "allow":
-            action = "default-allow"
-        elif argv[2].lower() == "reject":
-            action = "default-reject"
-        else:
-            raise ValueError()
-
-        action += "-%s" % (direction)
-
-    if action == "allow" or action == "deny" or action == "reject" or \
-       action == "limit":
-        # set/strip
-        rule_direction = "in"
-        if nargs > 2 and (argv[2].lower() == "in" or \
-                          argv[2].lower() == "out"):
-            rule_direction = argv[2].lower()
-
-        # strip out direction if not an interface rule
-        if nargs > 3 and argv[3] != "on" and (argv[2].lower() == "in" or \
-                                              argv[2].lower() == "out"):
-            rule_direction = argv[2].lower()
-            del argv[2]
-            nargs = len(argv)
-
-        # strip out 'on' as in 'allow in on eth0 ...'
-        has_interface = False
-        if nargs > 2 and (argv.count('in') > 0 or argv.count('out') > 0):
-            err_msg = _("Invalid interface clause")
-
-            if argv[2].lower() != "in" and argv[2].lower() != "out":
-                raise UFWError(err_msg)
-            if nargs < 4 or argv[3].lower() != "on":
-                raise UFWError(err_msg)
-
-            del argv[3]
-            nargs = len(argv)
-            has_interface = True
-
-        log_idx = 0
-        if has_interface and nargs > 4 and (argv[4].lower() == "log" or \
-                                            argv[4].lower() == 'log-all'):
-            log_idx = 4
-        elif nargs > 3 and (argv[2].lower() == "log" or \
-                           argv[2].lower() == 'log-all'):
-            log_idx = 2
-
-        if log_idx > 0:
-            logtype = argv[log_idx].lower()
-            # strip out 'log' or 'log-all' and parse as normal
-            del argv[log_idx]
-            nargs = len(argv)
-
-        if "log" in argv:
-            err_msg = _("Option 'log' not allowed here")
-            raise UFWError(err_msg)
-
-        if "log-all" in argv:
-            err_msg = _("Option 'log-all' not allowed here")
-            raise UFWError(err_msg)
-
-        if nargs < 3 or nargs > 14:
-            raise ValueError()
-
-        rule_action = action
-        if logtype != "":
-            rule_action += "_" + logtype
-        rule = ufw.common.UFWRule(rule_action, "any", "any", \
-                                  direction=rule_direction)
-        if remove:
-            rule.remove = remove
-        elif insert_pos != "":
-            try:
-                rule.set_position(insert_pos)
-            except Exception:
-                raise
-        if nargs == 3:
-            # Short form where only app or port/proto is given
-            if ufw.applications.valid_profile_name(argv[2]):
-                # Check if name collision with /etc/services. If so, use
-                # /etc/services instead of application profile
-                try:
-                    ufw.util.get_services_proto(argv[2])
-                except Exception:
-                    type = "both"
-                    rule.dapp = argv[2]
-                    rule.set_port(argv[2], "dst")
-            if rule.dapp == "":
-                try:
-                    (port, proto) = ufw.util.parse_port_proto(argv[2])
-                except UFWError:
-                    err_msg = _("Bad port")
-                    raise UFWError(err_msg)
-
-                if not re.match('^\d([0-9,:]*\d+)*$', port):
-                    if ',' in port or ':' in port:
-                        err_msg = _("Port ranges must be numeric")
-                        raise UFWError(err_msg)
-                    to_service = port
-
-                try:
-                    rule.set_protocol(proto)
-                    rule.set_port(port, "dst")
-                    type = "both"
-                except UFWError:
-                    err_msg = _("Bad port")
-                    raise UFWError(err_msg)
-        elif nargs % 2 != 0:
-            err_msg = _("Wrong number of arguments")
-            raise UFWError(err_msg)
-        elif not 'from' in argv and not 'to' in argv and not 'in' in argv and \
-             not 'out' in argv:
-            err_msg = _("Need 'to' or 'from' clause")
-            raise UFWError(err_msg)
-        else:
-            # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in', 'out' ]
-
-            # quick check
-            if argv.count("to") > 1 or \
-               argv.count("from") > 1 or \
-               argv.count("proto") > 1 or \
-               argv.count("port") > 2 or \
-               argv.count("in") > 1 or \
-               argv.count("out") > 1 or \
-               argv.count("app") > 2 or \
-               argv.count("app") > 0 and argv.count("proto") > 0:
-                err_msg = _("Improper rule syntax")
-                raise UFWError(err_msg)
-
-            i = 1
-            loc = ""
-            for arg in argv[1:]:
-                if i % 2 == 0 and argv[i] not in keys:
-                    err_msg = _("Invalid token '%s'") % (argv[i])
-                    raise UFWError(err_msg)
-                if arg == "proto":
-                    if i+1 < nargs:
-                        try:
-                            rule.set_protocol(argv[i+1])
-                        except Exception:
-                            raise
-                    else:
-                        err_msg = _("Invalid 'proto' clause")
-                        raise UFWError(err_msg)
-                elif arg == "in" or arg == "out":
-                    if i+1 < nargs:
-                        try:
-                            if arg == "in":
-                                rule.set_interface("in", argv[i+1])
-                            elif arg == "out":
-                                rule.set_interface("out", argv[i+1])
-                        except Exception:
-                            raise
-                    else:
-                        err_msg = _("Invalid '%s' clause") % (arg)
-                        raise UFWError(err_msg)
-                elif arg == "from":
-                    if i+1 < nargs:
-                        try:
-                            faddr = argv[i+1].lower()
-                            if faddr == "any":
-                                faddr = "0.0.0.0/0"
-                                from_type = "any"
-                            else:
-                                if ufw.util.valid_address(faddr, "6"):
-                                    from_type = "v6"
-                                else:
-                                    from_type = "v4"
-                            rule.set_src(faddr)
-                        except Exception:
-                            raise
-                        loc = "src"
-                    else:
-                        err_msg = _("Invalid 'from' clause")
-                        raise UFWError(err_msg)
-                elif arg == "to":
-                    if i+1 < nargs:
-                        try:
-                            saddr = argv[i+1].lower()
-                            if saddr == "any":
-                                saddr = "0.0.0.0/0"
-                                to_type = "any"
-                            else:
-                                if ufw.util.valid_address(saddr, "6"):
-                                    to_type = "v6"
-                                else:
-                                    to_type = "v4"
-                            rule.set_dst(saddr)
-                        except Exception:
-                            raise
-                        loc = "dst"
-                    else:
-                        err_msg = _("Invalid 'to' clause")
-                        raise UFWError(err_msg)
-                elif arg == "port" or arg == "app":
-                    if i+1 < nargs:
-                        if loc == "":
-                            err_msg = _("Need 'from' or 'to' with '%s'") % \
-                                        (arg)
-                            raise UFWError(err_msg)
-
-                        tmp = argv[i+1]
-                        if arg == "app":
-                            if loc == "src":
-                                rule.sapp = tmp
-                            else:
-                                rule.dapp = tmp
-                        elif not re.match('^\d([0-9,:]*\d+)*$', tmp):
-                            if ',' in tmp or ':' in tmp:
-                                err_msg = _("Port ranges must be numeric")
-                                raise UFWError(err_msg)
-
-                            if loc == "src":
-                                from_service = tmp
-                            else:
-                                to_service = tmp
-                        try:
-                            rule.set_port(tmp, loc)
-                        except Exception:
-                            raise
-                    else:
-                        err_msg = _("Invalid 'port' clause")
-                        raise UFWError(err_msg)
-                i += 1
-
-            # Figure out the type of rule (IPv4, IPv6, or both) this is
-            if from_type == "any" and to_type == "any":
-                type = "both"
-            elif from_type != "any" and to_type != "any" and \
-                 from_type != to_type:
-                err_msg = _("Mixed IP versions for 'from' and 'to'")
-                raise UFWError(err_msg)
-            elif from_type != "any":
-                type = from_type
-            elif to_type != "any":
-                type = to_type
-
-    # Adjust protocol
-    if to_service != "" or from_service != "":
-        proto = ""
-        if to_service != "":
-            try:
-                proto = ufw.util.get_services_proto(to_service)
-            except Exception:
-                err_msg = _("Could not find protocol")
-                raise UFWError(err_msg)
-        if from_service != "":
-            if proto == "any" or proto == "":
-                try:
-                    proto = ufw.util.get_services_proto(from_service)
-                except Exception:
-                    err_msg = _("Could not find protocol")
-                    raise UFWError(err_msg)
-            else:
-                try:
-                    tmp = ufw.util.get_services_proto(from_service)
-                except Exception:
-                    err_msg = _("Could not find protocol")
-                    raise UFWError(err_msg)
-                if proto == "any" or proto == tmp:
-                    proto = tmp
-                elif tmp == "any":
-                    pass
-                else:
-                    err_msg = _("Protocol mismatch (from/to)")
-                    raise UFWError(err_msg)
-
-        # Verify found proto with specified proto
-        if rule.protocol == "any":
-            rule.set_protocol(proto)
-        elif proto != "any" and rule.protocol != proto:
-            err_msg = _("Protocol mismatch with specified protocol %s") % \
-                        (rule.protocol)
-            raise UFWError(err_msg)
-
-    # Verify protocol not specified with application rule
-    if rule and rule.protocol != "any" and \
-       (rule.sapp != "" or rule.dapp != ""):
-        app = ""
-        if rule.dapp:
-            app = rule.dapp
-        else:
-            app = rule.sapp
-        err_msg = _("Improper rule syntax ('%s' specified with app rule)") % \
-                   (rule.protocol)
-        raise UFWError(err_msg)
-
-    return (action, rule, type, dryrun)
-
-
-def parse_application_command(argv):
-    '''Parse applications command. Returns tuple for action and profile name'''
-    name = ""
-    action = ""
-    dryrun = False
-    addnew = False
-
-    if len(argv) < 3 or argv[1].lower() != "app":
-        raise ValueError()
-
-    argv.remove("app")
-    nargs = len(argv)
-
-    if len(argv) > 1 and argv[1].lower() == "--dry-run":
-        dryrun = True
-        argv.remove(argv[1])
-
-    app_cmds = ['list', 'info', 'default', 'update']
-
-    if not argv[1].lower() in app_cmds:
-        raise ValueError()
-    else:
-        action = argv[1].lower()
-
-    if action == "info" or action == "update":
-        if nargs >= 4 and argv[2] == "--add-new":
-            addnew = True
-            argv.remove("--add-new")
-            nargs = len(argv)
-
-        if nargs < 3:
-            raise ValueError()
-
-        # Handle quoted name with spaces in it by stripping Python's ['...']
-        # list as string text.
-        name = str(argv[2]).strip("[']")
-
-        if addnew:
-            action += "-with-new"
-
-    if action == "list" and nargs != 2:
-        raise ValueError()
-
-    if action == "default":
-        if nargs < 3:
-            raise ValueError()
-        if argv[2].lower() == "allow":
-            action = "default-allow"
-        elif argv[2].lower() == "deny":
-            action = "default-deny"
-        elif argv[2].lower() == "reject":
-            action = "default-reject"
-        elif argv[2].lower() == "skip":
-            action = "default-skip"
-        else:
-            raise ValueError()
-
-    return (action, name, dryrun)
-
+        return (pr.action, "", "", pr.dryrun)
 
 def get_command_help():
     '''Print help message'''
@@ -1064,7 +671,7 @@ class UFWFrontend:
 
     def do_application_action(self, action, profile):
         '''Perform action on profile. action and profile are usually based on
-           return values from parse_applications_command().
+           return values from parse_command().
         '''
         res = ""
         if action == "default-allow":

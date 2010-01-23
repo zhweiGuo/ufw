@@ -57,10 +57,154 @@ WARN: Checks disabled
 
 
 
-10: --dry-run show raw
+10: --dry-run status numbered
+WARN: Checks disabled
+> Checking iptables
+
+
+
+TESTING ARGS (show)
+11: --dry-run show raw
 WARN: Checks disabled
 > Checking raw iptables
 > Checking raw ip6tables
 
+
+
+Testing parser
+Basic
+12: --dry-run enable
+
+
+13: --dry-run disable
+
+
+14: --dry-run help
+
+
+15: --dry-run --help
+
+
+16: --dry-run version
+
+
+17: --dry-run --version
+
+
+18: --dry-run reload
+
+
+Application
+19: --dry-run app list
+
+
+20: --dry-run app info Apache
+
+
+21: --dry-run app update Apache
+
+
+22: --dry-run app update --add-new Apache
+
+
+23: --dry-run app default skip
+
+
+Logging
+24: --dry-run logging on
+
+
+25: --dry-run logging off
+
+
+26: --dry-run logging low
+
+
+27: --dry-run logging medium
+
+
+28: --dry-run logging high
+
+
+29: --dry-run logging full
+
+
+Default
+30: --dry-run default allow
+
+
+31: --dry-run default allow incoming
+
+
+32: --dry-run default allow outgoing
+
+
+33: --dry-run default deny
+
+
+34: --dry-run default deny incoming
+
+
+35: --dry-run default deny outgoing
+
+
+36: --dry-run default reject
+
+
+37: --dry-run default reject incoming
+
+
+38: --dry-run default reject outgoing
+
+
+Status
+39: --dry-run status
+
+
+40: --dry-run status verbose
+
+
+41: --dry-run status numbered
+
+
+Show
+42: --dry-run show raw
+
+
+Rules
+43: allow 80
+
+
+44: --dry-run insert 1 allow 53
+
+
+45: delete allow 80
+
+
+46: --dry-run allow in 53
+
+
+47: --dry-run allow log 53
+
+
+48: --dry-run allow in log 53
+
+
+49: deny to any port 80 from any proto tcp
+
+
+50: --dry-run insert 1 deny to any port 53 from any proto udp
+
+
+51: delete deny to any port 80 from any proto tcp
+
+
+52: --dry-run deny out to any port 53 from any proto udp
+
+
+53: --dry-run deny log-all to any port 53 from any proto udp
+
+
+54: --dry-run deny out log-all to any port 53 from any proto udp
 
 

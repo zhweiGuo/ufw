@@ -273,4 +273,13 @@ for j in "in" "out"; do
     done
 done
 
+echo "TESTING ARGS (status)" >> $TESTTMP/result
+do_cmd "1" null --dry-run status foo
+do_cmd "1" null --dry-run status numbere
+do_cmd "1" null --dry-run status erbose
+
+echo "TESTING ARGS (show)" >> $TESTTMP/result
+do_cmd "1" null --dry-run show
+do_cmd "1" null --dry-run show ra
+
 exit 0

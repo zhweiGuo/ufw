@@ -10403,7 +10403,7 @@ WARN: Checks disabled
 Default application policy changed to 'allow'
 
 
-197: app --dry-run update --add-new Apache
+197: --dry-run app update --add-new Apache
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10451,7 +10451,7 @@ WARN: Checks disabled
 Default application policy changed to 'deny'
 
 
-199: app --dry-run update --add-new Samba
+199: --dry-run app update --add-new Samba
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10540,7 +10540,7 @@ WARN: Checks disabled
 Default application policy changed to 'skip'
 
 
-201: app --dry-run update --add-new Bind9
+201: --dry-run app update --add-new Bind9
 WARN: Checks disabled
 
 
@@ -10549,7 +10549,7 @@ WARN: Checks disabled
 Default application policy changed to 'reject'
 
 
-203: app --dry-run update --add-new Samba
+203: --dry-run app update --add-new Samba
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]

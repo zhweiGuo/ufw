@@ -1739,3 +1739,20 @@ TESTING ARGS (interfaces)
 566: --dry-run limit log-all out on eth0
 
 
+TESTING ARGS (status)
+567: --dry-run status foo
+
+
+568: --dry-run status numbere
+
+
+569: --dry-run status erbose
+
+
+TESTING ARGS (show)
+570: --dry-run show
+
+
+571: --dry-run show ra
+
+

@@ -21,6 +21,7 @@ ufw (0.30) UNRELEASED; urgency=low
     needlessly called which results in an unneeded modprobe.
   * manpage fixes thanks to Loic Minier
   * set "default" sysctl values before "all" values. Thanks to Loic Minier
+  * clean up parser to make it easier to add new functionality
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 14 Jan 2010 07:24:36 -0600
 

@@ -438,7 +438,7 @@ Checking status
 61: status verbose
 
 
-62: status raw
+62: status numbered
 
 
 Checking reject
