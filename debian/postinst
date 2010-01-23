@@ -90,6 +90,19 @@ case "$1" in
             rm -f /etc/rc6.d/K39ufw
         fi
 
+        if dpkg --compare-versions "$2" lt 0.29.1-1 && [ -f /etc/ufw/ufw.conf ]; then
+            level=`grep '^LOGLEVEL=.*' /etc/ufw/ufw.conf | cut -f 2 -d '=' | tr A-Z a-z`
+            if grep -q "^# AUTOMATICALLY ADDED ON UPGRADE" /etc/ufw/ufw.conf ; then
+                # Reload the firewall since older versions of ufw didn't
+                # have the new logging chains. This does nothing if ufw
+                # is not enabled.
+                /lib/ufw/ufw-init stop || true
+                /lib/ufw/ufw-init start || true
+            fi
+
+            test -n "$level" && ufw logging "$level" >/dev/null || true
+        fi
+
         # configure ufw with debconf values
         db_get ufw/enable
         enabled="$RET"
