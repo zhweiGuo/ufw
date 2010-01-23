@@ -16,7 +16,7 @@ enable_ufw() {
         return 1
     fi
 
-    sed -i "s/^ENABLED=.*/ENABLED=$ans/" /etc/ufw/ufw.conf
+    test -f /etc/ufw/ufw.conf && sed -i "s/^ENABLED=.*/ENABLED=$ans/" /etc/ufw/ufw.conf
 }
 
 allow_port() {
@@ -56,7 +56,7 @@ case "$1" in
         for f in before.rules before6.rules after.rules after6.rules
         do
             ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
-            chmod 640 $RULES_PATH/$f
+            test -f $RULES_PATH/$f && chmod 640 $RULES_PATH/$f
         done
 
         for f in user.rules user6.rules

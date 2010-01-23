@@ -4,6 +4,8 @@ ufw (0.30-1) UNRELEASED; urgency=low
   * debian/control: drop versioned depends on iptables. This helps with
     backporting now that the test suite can handle it
   * debian/ufw.upstart.ubuntu: start before an interface receives traffic
+  * debian/postinst: don't sed or chmod a file that doesn't exist
+    (LP: #503039)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 16 Dec 2009 09:25:51 -0600
 
