@@ -2,3 +2,4 @@ build
 build/*
 staging
 tmp
+tests/testarea

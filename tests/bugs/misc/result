@@ -39,7 +39,7 @@ Bug #430053
 
 
 Bug #480789
-6: --dry-run logging on
+6: --dry-run logging low
 
 
 7: allow 22
@@ -50,7 +50,7 @@ checking for 'INVALID -j RETURN' in user6.rules
 8: delete allow 22
 
 
-9: --dry-run logging low
+9: --dry-run logging on
 
 
 10: allow 22
