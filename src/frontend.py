@@ -62,20 +62,20 @@ def parse_command(argv):
 
     # Don't require the user to have to specify 'rule' as the command. Instead
     # insert 'rule' into the arguments if this is a rule command.
-    if len(sys.argv) > 2:
+    if len(argv) > 2:
         idx = 1
-        if sys.argv[idx].lower() == "--dry-run":
+        if argv[idx].lower() == "--dry-run":
             idx = 2
-        if sys.argv[idx].lower() != "default" and \
-           sys.argv[idx].lower() in rule_commands:
-            sys.argv.insert(idx, 'rule')
+        if argv[idx].lower() != "default" and \
+           argv[idx].lower() in rule_commands:
+            argv.insert(idx, 'rule')
 
-    if len(sys.argv) < 2:
+    if len(argv) < 2:
         print >> sys.stderr, "ERROR: not enough args"
         sys.exit(1)
 
     try:
-        pr = p.parse_command(sys.argv[1:])
+        pr = p.parse_command(argv[1:])
     except UFWError, e:
         print >> sys.stderr, "ERROR: %s" % (e)
         sys.exit(1)
@@ -671,7 +671,7 @@ class UFWFrontend:
 
     def do_application_action(self, action, profile):
         '''Perform action on profile. action and profile are usually based on
-           return values from parse_applications_command().
+           return values from parse_command().
         '''
         res = ""
         if action == "default-allow":

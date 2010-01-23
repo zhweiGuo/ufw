@@ -544,6 +544,8 @@ class UFWCommandStatus(UFWCommand):
                 r.action = "status-verbose"
             elif argv[1].lower() == "numbered":
                 r.action = "status-numbered"
+            else:
+                raise ValueError()
         return r
 
 class UFWCommandShow(UFWCommand):
@@ -558,6 +560,8 @@ class UFWCommandShow(UFWCommand):
             raise ValueError()
         elif argv[1].lower() == "raw":
             action = "show-raw"
+        else:
+            raise ValueError()
 
         return UFWParserResponse(action)
 
