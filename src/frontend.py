@@ -1,7 +1,7 @@
 #
 # frontend.py: frontend interface for ufw
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -35,21 +35,40 @@ def parse_command(argv):
     for i in ['enable', 'disable', 'help', '--help', 'version', '--version', 'reload']:
         p.register_command(ufw.parser.UFWCommandBasic(i))
 
-    # Rule commands
-    for i in ['allow', 'limit', 'deny' , 'reject']:
-        p.register_command(ufw.parser.UFWCommandRule(i))
-    p.register_command(ufw.parser.UFWCommandRule('insert'))
-    p.register_command(ufw.parser.UFWCommandRule('delete'))
-
     # Application commands
     for i in ['list', 'info', 'default', 'update']:
         p.register_command(ufw.parser.UFWCommandApp(i))
 
-    # Miscellaneous commands
-    p.register_command(ufw.parser.UFWCommandDefault('default'))
-    p.register_command(ufw.parser.UFWCommandLogging('logging'))
-    p.register_command(ufw.parser.UFWCommandStatus('status'))
-    p.register_command(ufw.parser.UFWCommandShow('show'))
+    # Logging commands
+    for i in ['on', 'off', 'low', 'medium', 'high', 'full']:
+        p.register_command(ufw.parser.UFWCommandLogging(i))
+
+    # Default commands
+    for i in ['allow', 'deny', 'reject']:
+        p.register_command(ufw.parser.UFWCommandDefault(i))
+
+    # Status commands ('status', 'status verbose', 'status numbered')
+    for i in [None, 'verbose', 'numbered']:
+        p.register_command(ufw.parser.UFWCommandStatus(i))
+
+    # Show commands
+    for i in ['raw']:
+        p.register_command(ufw.parser.UFWCommandShow(i))
+
+    # Rule commands
+    rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
+    for i in rule_commands:
+        p.register_command(ufw.parser.UFWCommandRule(i))
+
+    # Don't require the user to have to specify 'rule' as the command. Instead
+    # insert 'rule' into the arguments if this is a rule command.
+    if len(sys.argv) > 2:
+        idx = 1
+        if sys.argv[idx].lower() == "--dry-run":
+            idx = 2
+        if sys.argv[idx].lower() != "default" and \
+           sys.argv[idx].lower() in rule_commands:
+            sys.argv.insert(idx, 'rule')
 
     if len(sys.argv) < 2:
         print >> sys.stderr, "ERROR: not enough args"
@@ -62,6 +81,7 @@ def parse_command(argv):
         sys.exit(1)
     except Exception:
         print >> sys.stderr, "Invalid syntax"
+        raise
         sys.exit(1)
 
     if pr.data.has_key('type') and pr.data['type'] == 'rule':

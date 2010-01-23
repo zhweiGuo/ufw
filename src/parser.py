@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009 Canonical Ltd.
+# Copyright 2009-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -29,7 +29,7 @@
 #
 # 1. Register the new command with an existing UFWCommand via
 #    register_command(). Eg
-#    parser.register_command(UFWCommandCommand('new_command'))
+#    parser.register_command(UFWCommandNewcommand('new_command'))
 # 2. Update UFWCommandExisting.parse() for new_command
 # 3. Update UFWCommandExisting.help() for new_command
 #
@@ -55,7 +55,7 @@ class UFWCommand:
             raise ValueError()
 
         r = UFWParserResponse(argv[0].lower())
-        
+
         return r
 
     def help(self, args):
@@ -78,6 +78,9 @@ class UFWCommandRule(UFWCommand):
         insert_pos = ""
         logtype = ""
         remove = False
+
+        if len(argv) > 0 and argv[0].lower() == "rule":
+            argv.remove(argv[0])
 
         # TODO: break this out
         if len(argv) > 0:
@@ -388,8 +391,8 @@ class UFWCommandRule(UFWCommand):
                 app = rule.dapp
             else:
                 app = rule.sapp
-            err_msg = _("Improper rule syntax ('%s' specified with app rule)") % \
-                       (rule.protocol)
+            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
+                        % (rule.protocol)
             raise UFWError(err_msg)
 
         r = UFWParserResponse(action)
@@ -454,7 +457,7 @@ class UFWCommandApp(UFWCommand):
         r = UFWParserResponse(action)
         r.data['type'] = self.type
         r.data['name'] = name
-        
+
         return r
 
 
@@ -534,7 +537,9 @@ class UFWCommandStatus(UFWCommand):
 
     def parse(self, argv):
         r = UFWCommand.parse(self, argv)
-        if len(argv) > 1:
+        if len(argv) == 1:
+            r.action = "status"
+        elif len(argv) > 1:
             if argv[1].lower() == "verbose":
                 r.action = "status-verbose"
             elif argv[1].lower() == "numbered":
@@ -593,21 +598,29 @@ class UFWParser:
             dryrun = True
             args.remove(args[0])
 
-        cmd = args[0]
-        if len(args) > 1 and cmd in self.commands.keys():
-            type = args[0]
-            cmd = args[1]
+        cmd = ""
+        type = ""
+
+        tmp = args[0].lower()
+        if len(args) > 1 and tmp in self.commands.keys() and \
+            args[1].lower() in self.commands[tmp].keys():
+            type = tmp
+            cmd = args[1].lower()
         else:
             # Discover the type
+            cmd = tmp
             for i in self.commands.keys():
                 if cmd in self.commands[i]:
                     type = i
                     break
+            if type == "":
+                type = 'rule'
 
         try:
             action = self.allowed_command(type, cmd)
         except Exception:
             err_msg = _("Invalid command '%s'") % (cmd)
+            raise
             raise UFWError(err_msg)
 
         cmd = self.commands[type][action]
@@ -615,9 +628,15 @@ class UFWParser:
         response.dryrun = dryrun
 
         return response
-    
+
     def register_command(self, c):
-        key = "%s" % (c.command)
+        '''Register a command with the parser'''
+        if c.command == None or c.command == '':
+            # If the command is empty, then use 'type' as command
+            key = "%s" % (c.type)
+        else:
+            key = "%s" % (c.command)
+
         if not self.commands.has_key(c.type):
             self.commands[c.type] = {}
         if self.commands[c.type].has_key(key):
