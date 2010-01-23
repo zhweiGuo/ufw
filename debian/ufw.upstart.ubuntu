@@ -5,10 +5,14 @@
 
 description	"Uncomplicated firewall"
 
-start on net-device-added INTERFACE=lo
+# Make sure we start before an interface receives traffic
+start on (starting network-interface
+          or starting network-manager
+          or starting networking)
+
 stop on runlevel [!023456]
 
 console output
 
-pre-start exec /lib/ufw/ufw-init start
+pre-start exec /lib/ufw/ufw-init start quiet
 post-stop exec /lib/ufw/ufw-init stop

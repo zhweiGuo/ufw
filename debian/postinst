@@ -16,7 +16,7 @@ enable_ufw() {
         return 1
     fi
 
-    sed -i "s/^ENABLED=.*/ENABLED=$ans/" /etc/ufw/ufw.conf
+    test -f /etc/ufw/ufw.conf && sed -i "s/^ENABLED=.*/ENABLED=$ans/" /etc/ufw/ufw.conf
 }
 
 allow_port() {
@@ -56,7 +56,7 @@ case "$1" in
         for f in before.rules before6.rules after.rules after6.rules
         do
             ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
-            chmod 640 $RULES_PATH/$f
+            test -f $RULES_PATH/$f && chmod 640 $RULES_PATH/$f
         done
 
         for f in user.rules user6.rules
@@ -88,6 +88,19 @@ case "$1" in
             # remove these symlinks for existing installations
             rm -f /etc/rc0.d/K39ufw
             rm -f /etc/rc6.d/K39ufw
+        fi
+
+        if dpkg --compare-versions "$2" lt 0.29.1-1 && [ -f /etc/ufw/ufw.conf ]; then
+            level=`grep '^LOGLEVEL=.*' /etc/ufw/ufw.conf | cut -f 2 -d '=' | tr A-Z a-z`
+            if grep -q "^# AUTOMATICALLY ADDED ON UPGRADE" /etc/ufw/ufw.conf ; then
+                # Reload the firewall since older versions of ufw didn't
+                # have the new logging chains. This does nothing if ufw
+                # is not enabled.
+                /lib/ufw/ufw-init stop || true
+                /lib/ufw/ufw-init start || true
+            fi
+
+            test -n "$level" && ufw logging "$level" >/dev/null || true
         fi
 
         # configure ufw with debconf values

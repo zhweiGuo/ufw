@@ -17,7 +17,6 @@ install: all
 translations: $(POTFILES)
 $(POTFILES): $(SRCS)
 	xgettext -d ufw -L Python -o $@ $(SRCS)
-	make -f po/Makefile all
 
 mo:
 	make -C locales all
@@ -32,6 +31,7 @@ clean:
 	rm -rf ./staging
 	rm -rf ./tests/testarea
 	rm -rf $(TMPDIR)
+	rm -f ./locales/mo/*.mo
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
