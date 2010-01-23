@@ -3,3 +3,4 @@ build/*
 staging
 tmp
 tests/testarea
+locales/mo/*.mo
