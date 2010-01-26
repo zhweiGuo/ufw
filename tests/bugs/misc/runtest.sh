@@ -79,5 +79,19 @@ for i in low on medium high full ; do
 done
 sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
 
+echo "Bug #512131" >> $TESTTMP/result
+for i in off low on medium high full off ; do
+    do_cmd "0" null logging $i
+    e="0"
+    if [ "$i" = "off" ]; then
+        e="1"
+    fi
+    grep -q 'UFW LIMIT BLOCK' $TESTPATH/lib/ufw/user.rules
+    rc="$?"
+    if [ "$rc" != "$e" ]; then
+        echo "$i: got '$rc', expected '$e'"
+        exit 1
+    fi
+done
 
 exit 0

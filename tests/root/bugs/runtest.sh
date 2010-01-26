@@ -134,10 +134,10 @@ for ipv6 in yes no ; do
     sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
     for i in "" off on low medium high full ; do
         do_cmd "0" nostats disable
-        do_cmd "0" null enable
         if [ -n "$i" ]; then
             do_cmd "0" null logging $i
         fi
+        do_cmd "0" null enable
         iptables-save | grep '^-' > $TESTTMP/ipt.enable
         ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
 
@@ -157,6 +157,21 @@ for ipv6 in yes no ; do
         }
 
     done
+done
+
+echo "Bug #512131" >> $TESTTMP/result
+for i in low on medium high full off off ; do
+    do_cmd "0" null logging $i
+    e="0"
+    if [ "$i" = "off" ]; then
+        e="1"
+    fi
+    iptables-save | grep -q 'UFW LIMIT BLOCK' $TESTPATH/lib/ufw/user.rules
+    rc="$?"
+    if [ "$rc" != "$e" ]; then
+        echo "$i: got '$rc', expected '$e'"
+        exit 1
+    fi
 done
 
 # teardown

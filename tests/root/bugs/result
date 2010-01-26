@@ -40,7 +40,7 @@ WARN: Checks disabled
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -409,10 +409,10 @@ Setting IPV6 to yes
 63: disable
 
 
-64: enable
+64: logging off
 
 
-65: logging off
+65: enable
 
 
 66: tests/testarea/lib/ufw/ufw-init stop
@@ -424,10 +424,10 @@ Setting IPV6 to yes
 68: disable
 
 
-69: enable
+69: logging on
 
 
-70: logging on
+70: enable
 
 
 71: tests/testarea/lib/ufw/ufw-init stop
@@ -439,10 +439,10 @@ Setting IPV6 to yes
 73: disable
 
 
-74: enable
+74: logging low
 
 
-75: logging low
+75: enable
 
 
 76: tests/testarea/lib/ufw/ufw-init stop
@@ -454,10 +454,10 @@ Setting IPV6 to yes
 78: disable
 
 
-79: enable
+79: logging medium
 
 
-80: logging medium
+80: enable
 
 
 81: tests/testarea/lib/ufw/ufw-init stop
@@ -469,10 +469,10 @@ Setting IPV6 to yes
 83: disable
 
 
-84: enable
+84: logging high
 
 
-85: logging high
+85: enable
 
 
 86: tests/testarea/lib/ufw/ufw-init stop
@@ -484,10 +484,10 @@ Setting IPV6 to yes
 88: disable
 
 
-89: enable
+89: logging full
 
 
-90: logging full
+90: enable
 
 
 91: tests/testarea/lib/ufw/ufw-init stop
@@ -512,10 +512,10 @@ Setting IPV6 to no
 97: disable
 
 
-98: enable
+98: logging off
 
 
-99: logging off
+99: enable
 
 
 100: tests/testarea/lib/ufw/ufw-init stop
@@ -527,10 +527,10 @@ Setting IPV6 to no
 102: disable
 
 
-103: enable
+103: logging on
 
 
-104: logging on
+104: enable
 
 
 105: tests/testarea/lib/ufw/ufw-init stop
@@ -542,10 +542,10 @@ Setting IPV6 to no
 107: disable
 
 
-108: enable
+108: logging low
 
 
-109: logging low
+109: enable
 
 
 110: tests/testarea/lib/ufw/ufw-init stop
@@ -557,10 +557,10 @@ Setting IPV6 to no
 112: disable
 
 
-113: enable
+113: logging medium
 
 
-114: logging medium
+114: enable
 
 
 115: tests/testarea/lib/ufw/ufw-init stop
@@ -572,10 +572,10 @@ Setting IPV6 to no
 117: disable
 
 
-118: enable
+118: logging high
 
 
-119: logging high
+119: enable
 
 
 120: tests/testarea/lib/ufw/ufw-init stop
@@ -587,10 +587,10 @@ Setting IPV6 to no
 122: disable
 
 
-123: enable
+123: logging full
 
 
-124: logging full
+124: enable
 
 
 125: tests/testarea/lib/ufw/ufw-init stop
@@ -599,6 +599,28 @@ Setting IPV6 to no
 126: tests/testarea/lib/ufw/ufw-init start
 
 
-127: disable
+Bug #512131
+127: logging low
+
+
+128: logging on
+
+
+129: logging medium
+
+
+130: logging high
+
+
+131: logging full
+
+
+132: logging off
+
+
+133: logging off
+
+
+134: disable
 
 

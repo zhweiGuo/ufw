@@ -94,3 +94,25 @@ checking for 'INVALID -j RETURN' in user6.rules
 20: delete allow 22
 
 
+Bug #512131
+21: logging off
+
+
+22: logging low
+
+
+23: logging on
+
+
+24: logging medium
+
+
+25: logging high
+
+
+26: logging full
+
+
+27: logging off
+
+

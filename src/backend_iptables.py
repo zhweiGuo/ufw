@@ -57,6 +57,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             self.chains['misc'].append(chain_prefix + "-logging-deny")
             self.chains['misc'].append(chain_prefix + "-logging-allow")
 
+        # The default log rate limiting rule
+        self.ufw_user_limit_log = ['ufw-user-limit', '-m', 'limit', \
+                                   '--limit', '3/minute', '-j', 'LOG', \
+                                   '--log-prefix']
+        self.ufw_user_limit_log_text = "[UFW LIMIT BLOCK]"
+
     def get_default_policy(self, primary="input"):
         '''Get current policy'''
         policy = "default_" + primary + "_policy"
@@ -716,14 +722,17 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     "\n")
         ufw.util.write_to_file(fd, "### END LOGGING ###\n")
 
+        # Rate limiting only supported with IPv4
         if chain_prefix == "ufw":
             ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
-            # Rate limiting only supported with IPv4
-            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -m limit " + \
-                         "--limit 3/minute -j LOG --log-prefix " + \
-                         "\"[UFW LIMIT BLOCK] \"\n")
-            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit -j REJECT\n")
-            ufw.util.write_to_file(fd, "-A " + chain_prefix + "-user-limit-accept -j ACCEPT\n")
+            if self.defaults['loglevel'] != "off":
+                ufw.util.write_to_file(fd, "-A " + \
+                         " ".join(self.ufw_user_limit_log) + \
+                         " \"" + self.ufw_user_limit_log_text + " \"\n")
+            ufw.util.write_to_file(fd, "-A " + chain_prefix + \
+                         "-user-limit -j REJECT\n")
+            ufw.util.write_to_file(fd, "-A " + chain_prefix + \
+                         "-user-limit-accept -j ACCEPT\n")
             ufw.util.write_to_file(fd, "### END RATE LIMITING ###\n")
 
         ufw.util.write_to_file(fd, "COMMIT\n")
@@ -980,7 +989,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def update_logging(self, level):
         '''Update loglevel of running firewall'''
-        if not self._is_enabled():
+        if self.dryrun:
             return
 
         rules_t = []
@@ -998,6 +1007,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             err_msg = _("Couldn't update rules file for logging")
             UFWError(err_msg)
+
+        # Don't update the running firewall if not enabled
+        if not self._is_enabled():
+            return
 
         # make sure all the chains are here, it's redundant but helps make
         # sure the chains are in a consistent state
@@ -1029,6 +1042,17 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 self._chain_cmd(c, r, fail_ok)
             except Exception:
                 raise UFWError(err_msg)
+
+        # Always delete this and re-add it so that we don't have extras
+        self._chain_cmd('ufw-user-limit', ['-D'] + self.ufw_user_limit_log + \
+                            [self.ufw_user_limit_log_text + " "], \
+                            fail_ok=True)
+
+        if self.defaults["loglevel"] != "off":
+            self._chain_cmd('ufw-user-limit', ['-I'] + \
+                            self.ufw_user_limit_log + \
+                            [self.ufw_user_limit_log_text + " "], \
+                            fail_ok=True)
 
     def _get_logging_rules(self, level):
         '''Get rules for specified logging level'''

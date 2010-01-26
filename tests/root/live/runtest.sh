@@ -207,9 +207,9 @@ done
 echo "Compare enable and ufw-init" >> $TESTTMP/result
 sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 do_cmd "0" nostats disable
-do_cmd "0" null enable
 do_cmd "0" nostats allow 23/tcp
 do_cmd "0" nostats logging medium
+do_cmd "0" null enable
 iptables-save | grep '^-' > $TESTTMP/ipt.enable
 ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
 

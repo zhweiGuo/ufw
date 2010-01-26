@@ -1883,13 +1883,13 @@ Compare enable and ufw-init
 259: disable
 
 
-260: enable
+260: allow 23/tcp
 
 
-261: allow 23/tcp
+261: logging medium
 
 
-262: logging medium
+262: enable
 
 
 263: disable

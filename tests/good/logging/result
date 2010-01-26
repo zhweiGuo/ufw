@@ -1,58 +1,58 @@
 TESTING LOGLEVELS
-0: logging off
+0: --dry-run logging off
 
 
 LOGLEVEL=off
-1: logging low
+1: --dry-run logging low
 
 
 LOGLEVEL=low
-2: logging medium
+2: --dry-run logging medium
 
 
 LOGLEVEL=medium
-3: logging high
+3: --dry-run logging high
 
 
 LOGLEVEL=high
-4: logging full
+4: --dry-run logging full
 
 
 LOGLEVEL=full
-5: logging OFF
+5: --dry-run logging OFF
 
 
 LOGLEVEL=off
-6: logging LOW
+6: --dry-run logging LOW
 
 
 LOGLEVEL=low
-7: logging MEDIUM
+7: --dry-run logging MEDIUM
 
 
 LOGLEVEL=medium
-8: logging HIGH
+8: --dry-run logging HIGH
 
 
 LOGLEVEL=high
-9: logging FULL
+9: --dry-run logging FULL
 
 
 LOGLEVEL=full
 TESTING LOGLEVELS ('on')
-10: logging off
+10: --dry-run logging off
 
 
 LOGLEVEL=off
-11: logging on
+11: --dry-run logging on
 
 
 LOGLEVEL=low
-12: logging medium
+12: --dry-run logging medium
 
 
 LOGLEVEL=medium
-13: logging on
+13: --dry-run logging on
 
 
 LOGLEVEL=medium
@@ -183,7 +183,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -252,7 +252,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -389,7 +389,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -458,7 +458,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -595,7 +595,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -664,7 +664,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -801,7 +801,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -870,7 +870,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1031,7 +1031,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1100,7 +1100,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1261,7 +1261,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1330,7 +1330,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1467,7 +1467,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1536,7 +1536,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1673,7 +1673,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1742,7 +1742,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1812,7 +1812,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1885,7 +1885,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -1936,7 +1936,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -2036,7 +2036,7 @@ contents of user*.rules:
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
