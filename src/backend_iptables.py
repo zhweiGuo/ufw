@@ -383,6 +383,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             (rc, out) = cmd([self.files['init'], 'force-stop'])
             if rc != 0:
+                debug(out)
                 raise UFWError(err_msg + " ufw-init")
 
     def start_firewall(self):
@@ -393,6 +394,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         else:
             (rc, out) = cmd([self.files['init'], 'start'])
             if rc != 0:
+                debug(out)
                 raise UFWError(err_msg + " ufw-init")
 
             if not self.defaults.has_key('loglevel') or \
