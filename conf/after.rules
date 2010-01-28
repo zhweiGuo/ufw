@@ -16,15 +16,15 @@
 # End required lines
 
 # don't log noisy services by default
--A ufw-after-input -p udp --dport 137 -j RETURN
--A ufw-after-input -p udp --dport 138 -j RETURN
--A ufw-after-input -p tcp --dport 139 -j RETURN
--A ufw-after-input -p tcp --dport 445 -j RETURN
--A ufw-after-input -p udp --dport 67 -j RETURN
--A ufw-after-input -p udp --dport 68 -j RETURN
+-A ufw-after-input -p udp --dport 137 -j ufw-skip-to-policy-input
+-A ufw-after-input -p udp --dport 138 -j ufw-skip-to-policy-input
+-A ufw-after-input -p tcp --dport 139 -j ufw-skip-to-policy-input
+-A ufw-after-input -p tcp --dport 445 -j ufw-skip-to-policy-input
+-A ufw-after-input -p udp --dport 67 -j ufw-skip-to-policy-input
+-A ufw-after-input -p udp --dport 68 -j ufw-skip-to-policy-input
 
 # don't log noisy broadcast
--A ufw-after-input -m addrtype --dst-type BROADCAST -j RETURN
+-A ufw-after-input -m addrtype --dst-type BROADCAST -j ufw-skip-to-policy-input
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT

@@ -91,9 +91,15 @@ do_cmd "0" null deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 pr
 echo "contents of user*.rules:" >> $TESTTMP/result
 cat $TESTSTATE/user.rules >> $TESTTMP/result
 cat $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" null delete allow in on eth0 log
+do_cmd "0" null delete allow in on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+do_cmd "0" null delete deny in on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
+do_cmd "0" null delete allow out on eth0 log
+do_cmd "0" null delete allow out on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
+do_cmd "0" null delete deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 port 25 proto tcp
 
 echo "TESTING WRITING LOGLEVELS" >> $TESTTMP/result
-for i in off low medium high full; do
+for i in off low medium high full on; do
     do_cmd "0" null logging $i
     do_cmd "0" --dry-run allow 22
 done

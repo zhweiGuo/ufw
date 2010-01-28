@@ -95,27 +95,33 @@ through the various chains is (essentially) as follows:
 
 INPUT ->
   ufw-before-logging-input ->
-    ufw-before-input ->
-      ufw-user-input -> ufw-user-logging-input (possibly) ->
-        ufw-after-input ->
-          ufw-after-logging-input ->
-            ufw-reject-input -> return to INPUT
+  ufw-before-input ->
+    ufw-user-input ->
+      ufw-user-logging-input (rule specific) ->
+  ufw-after-input ->
+  ufw-after-logging-input ->
+  ufw-reject-input ->
+  ufw-skip-to-policy-input -> return to INPUT
 
 OUTPUT ->
   ufw-before-logging-output ->
-    ufw-before-output ->
-      ufw-user-output ->
-        ufw-after-output ->
-          ufw-after-logging-output ->
-            ufw-reject-output -> return to OUTPUT
+  ufw-before-output ->
+    ufw-user-output ->
+      ufw-user-logging-output (rule specific) ->
+  ufw-after-output ->
+  ufw-after-logging-output ->
+  ufw-reject-output ->
+  ufw-skip-to-policy -> return to OUTPUT
 
 FORWARD ->
   ufw-before-logging-forward ->
-    ufw-before-forward ->
-      ufw-user-forward ->
-        ufw-after-forward ->
-          ufw-after-logging-forward ->
-            ufw-reject-forward -> return to FORWARD
+  ufw-before-forward ->
+    ufw-user-forward ->
+      ufw-user-logging-forward (not used) ->
+  ufw-after-forward ->
+  ufw-after-logging-forward ->
+  ufw-reject-forward ->
+  ufw-skip-to-policy-forward -> return to FORWARD
 
 The 'before' chains are setup in 'before.rules', the 'after' chains in
 'after.rules' and the 'user' chains are maintained by ufw. If an administrator

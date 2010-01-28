@@ -29,16 +29,16 @@ grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
 echo "TESTING ARGS (default)" >> $TESTTMP/result
 do_cmd "0"  enable
 do_cmd "0"  default allow
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  default deny
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT ALLOW
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT DENY
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 
 do_cmd "0"  default deny

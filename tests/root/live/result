@@ -1917,381 +1917,670 @@ Verify toplevel chains
 270: logging off
 
 
-271: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+271: disable
 
 
-272: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+272: enable
 
 
-273: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+273: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-274: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+274: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-275: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+275: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-276: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+276: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-277: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+277: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-278: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+278: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-279: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+279: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
 
 
-280: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+280: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-281: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+281: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-282: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+282: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-283: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+283: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-284: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+284: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-285: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+285: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-286: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+286: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
 
 
-287: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+287: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-288: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+288: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-289: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+289: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-290: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+290: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-291: logging on
+291: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-292: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+292: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
 
 
-293: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+293: logging on
 
 
-294: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+294: disable
 
 
-295: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+295: enable
 
 
-296: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+296: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-297: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+297: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-298: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+298: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-299: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+299: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-300: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+300: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-301: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+301: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-302: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+302: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
 
 
-303: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+303: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-304: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+304: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-305: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+305: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-306: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+306: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-307: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+307: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-308: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+308: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-309: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+309: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
 
 
-310: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+310: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-311: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+311: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-312: logging low
+312: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-313: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+313: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-314: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+314: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-315: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+315: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
 
 
-316: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+316: logging low
 
 
-317: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+317: disable
 
 
-318: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+318: enable
 
 
-319: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+319: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-320: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+320: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-321: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+321: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-322: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+322: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-323: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+323: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-324: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+324: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-325: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+325: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
 
 
-326: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+326: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-327: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+327: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-328: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+328: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-329: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+329: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-330: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+330: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-331: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+331: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-332: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+332: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
 
 
-333: logging medium
+333: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-334: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+334: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-335: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+335: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-336: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+336: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-337: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+337: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-338: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+338: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
 
 
-339: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+339: logging medium
 
 
-340: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+340: disable
 
 
-341: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+341: enable
 
 
-342: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+342: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-343: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+343: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-344: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+344: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-345: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+345: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-346: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+346: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-347: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+347: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-348: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+348: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
 
 
-349: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+349: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-350: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+350: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-351: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+351: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-352: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+352: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-353: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+353: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-354: logging high
+354: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-355: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+355: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
 
 
-356: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+356: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-357: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+357: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-358: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+358: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-359: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+359: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-360: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+360: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-361: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+361: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
 
 
-362: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+362: logging high
 
 
-363: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+363: disable
 
 
-364: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+364: enable
 
 
-365: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+365: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-366: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+366: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-367: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+367: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-368: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+368: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-369: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+369: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-370: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+370: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-371: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+371: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
 
 
-372: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+372: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-373: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+373: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-374: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+374: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-375: logging full
+375: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-376: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+376: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-377: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+377: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-378: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+378: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
 
 
-379: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+379: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-380: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+380: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-381: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+381: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-382: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+382: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-383: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+383: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-384: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+384: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
 
 
-385: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+385: logging full
 
 
-386: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+386: disable
 
 
-387: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+387: enable
 
 
-388: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+388: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-389: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+389: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-390: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+390: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-391: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+391: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-392: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+392: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-393: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+393: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-394: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+394: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
 
 
-395: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+395: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-396: disable
+396: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+397: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+398: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+399: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+400: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+401: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+402: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+403: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+404: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+405: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+406: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+407: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+Verify secondary chains
+408: logging off
+
+
+409: disable
+
+
+410: enable
+
+
+411: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+
+
+412: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+
+
+413: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+
+
+414: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+
+
+415: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+
+
+416: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+
+
+417: iptables -L ufw-user-limit -n | egrep -q '0 references'
+
+
+418: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+
+
+419: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+
+
+420: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+
+
+421: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+
+
+422: logging on
+
+
+423: disable
+
+
+424: enable
+
+
+425: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+
+
+426: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+
+
+427: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+
+
+428: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+
+
+429: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+
+
+430: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+
+
+431: iptables -L ufw-user-limit -n | egrep -q '0 references'
+
+
+432: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+
+
+433: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+
+
+434: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+
+
+435: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+
+
+436: logging low
+
+
+437: disable
+
+
+438: enable
+
+
+439: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+
+
+440: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+
+
+441: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+
+
+442: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+
+
+443: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+
+
+444: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+
+
+445: iptables -L ufw-user-limit -n | egrep -q '0 references'
+
+
+446: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+
+
+447: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+
+
+448: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+
+
+449: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+
+
+450: logging medium
+
+
+451: disable
+
+
+452: enable
+
+
+453: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+
+
+454: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+
+
+455: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+
+
+456: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+
+
+457: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+
+
+458: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+
+
+459: iptables -L ufw-user-limit -n | egrep -q '0 references'
+
+
+460: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+
+
+461: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+
+
+462: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+
+
+463: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+
+
+464: logging high
+
+
+465: disable
+
+
+466: enable
+
+
+467: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+
+
+468: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+
+
+469: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+
+
+470: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+
+
+471: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+
+
+472: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+
+
+473: iptables -L ufw-user-limit -n | egrep -q '0 references'
+
+
+474: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+
+
+475: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+
+
+476: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+
+
+477: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+
+
+478: logging full
+
+
+479: disable
+
+
+480: enable
+
+
+481: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+
+
+482: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+
+
+483: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+
+
+484: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+
+
+485: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+
+
+486: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+
+
+487: iptables -L ufw-user-limit -n | egrep -q '0 references'
+
+
+488: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+
+
+489: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+
+
+490: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+
+
+491: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+
+
+492: disable
 
 

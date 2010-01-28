@@ -31,27 +31,27 @@ echo "TESTING ARGS (default)" >> $TESTTMP/result
 do_cmd "0"  enable
 do_cmd "0"  default allow
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep policy >> $TESTTMP/result
+ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  default deny
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep policy >> $TESTTMP/result
+ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT ALLOW
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep policy >> $TESTTMP/result
+ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT DENY
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep policy >> $TESTTMP/result
+iptables -L -n | grep 'policy ' >> $TESTTMP/result
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep policy >> $TESTTMP/result
+ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 
 do_cmd "0"  default deny

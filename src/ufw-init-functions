@@ -2,7 +2,7 @@
 #
 # ufw-init-functions: functions used by ufw-init and distribution initscripts
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -78,7 +78,7 @@ chains_command() {
         exe="ip6tables"
     fi
 
-    for c in ufw$type-logging-deny ufw$type-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-track-output ufw$type-track-input ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
+    for c in ufw$type-logging-deny ufw$type-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-skip-to-policy-input ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-skip-to-policy-forward ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-track-output ufw$type-track-input ufw$type-skip-to-policy-output ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe $flag $c" >&2
             $exe $flag $c || true
@@ -286,6 +286,16 @@ ufw_start() {
             if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
                 $exe -A ufw${type}-track-output -p tcp -m state --state NEW -j ACCEPT || error="yes"
                 $exe -A ufw${type}-track-output -p udp -m state --state NEW -j ACCEPT || error="yes"
+            fi
+
+            # now setup the empty 'skip to policy' chains
+            if ! $exe -L ufw${type}-skip-to-policy-input -n >/dev/null 2>&1 ; then
+                $exe -N ufw${type}-skip-to-policy-input || error="yes"
+                $exe -N ufw${type}-skip-to-policy-output || error="yes"
+                $exe -N ufw${type}-skip-to-policy-forward || error="yes"
+                $exe -A INPUT -j ufw${type}-skip-to-policy-input || error="yes"
+                $exe -A OUTPUT -j ufw${type}-skip-to-policy-output || error="yes"
+                $exe -A FORWARD -j ufw${type}-skip-to-policy-forward || error="yes"
             fi
 
             # now ip[6]tables-restore our files

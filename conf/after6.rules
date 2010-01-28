@@ -16,12 +16,12 @@
 # End required lines
 
 # don't log noisy services by default
--A ufw6-after-input -p udp --dport 137 -j RETURN
--A ufw6-after-input -p udp --dport 138 -j RETURN
--A ufw6-after-input -p tcp --dport 139 -j RETURN
--A ufw6-after-input -p tcp --dport 445 -j RETURN
--A ufw6-after-input -p udp --dport 67 -j RETURN
--A ufw6-after-input -p udp --dport 68 -j RETURN
+-A ufw6-after-input -p udp --dport 137 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p udp --dport 138 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p tcp --dport 139 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p tcp --dport 445 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p udp --dport 67 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p udp --dport 68 -j ufw6-skip-to-policy-input
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT

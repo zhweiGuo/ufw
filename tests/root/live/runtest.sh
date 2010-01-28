@@ -254,6 +254,9 @@ sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 echo "Verify toplevel chains" >> $TESTTMP/result
 for l in off on low medium high full; do
     do_cmd "0" nostats logging $l
+    do_cmd "0" nostats disable
+    $TESTSTATE/ufw-init flush-all >/dev/null
+    do_cmd "0" nostats enable
     for b in INPUT OUTPUT FORWARD; do
         for c in before-logging before after after-logging reject track skip-to-policy ; do
             if [ "$b" = "FORWARD" ] && [ "$c" = "track" ]; then
@@ -270,6 +273,34 @@ for l in off on low medium high full; do
             echo "" >> $TESTTMP/result
             let count=count+1
         done
+    done
+done
+
+echo "Verify secondary chains" >> $TESTTMP/result
+for l in off on low medium high full; do
+    do_cmd "0" nostats logging $l
+    do_cmd "0" nostats disable
+    $TESTSTATE/ufw-init flush-all >/dev/null
+    do_cmd "0" nostats enable
+    for c in logging-deny not-local user-forward user-input user-output ; do
+        echo "$count: ! iptables -L ufw-$c -n | egrep -q '0 references'" >> $TESTTMP/result
+        iptables -L ufw-$c -n | egrep -q '0 references' && {
+            echo "'iptables -L ufw-user-input -n' had 0 references"
+            exit 1
+        }
+        echo "" >> $TESTTMP/result
+        echo "" >> $TESTTMP/result
+        let count=count+1
+    done
+    for c in logging-allow user-limit user-limit-accept user-logging-forward user-logging-input user-logging-output ; do
+        echo "$count: iptables -L ufw-$c -n | egrep -q '0 references'" >> $TESTTMP/result
+        iptables -L ufw-$c -n | egrep -q '0 references' || {
+            echo "'iptables -L ufw-user-input -n' had more than 0 references"
+            exit 1
+        }
+        echo "" >> $TESTTMP/result
+        echo "" >> $TESTTMP/result
+        let count=count+1
     done
 done
 

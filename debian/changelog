@@ -1,6 +1,6 @@
 ufw (0.30-1) UNRELEASED; urgency=low
 
-  * new upstream release. fixing LP: #512131
+  * new upstream release. fixing LP: #512131, LP: #488032
   * debian/control: drop versioned depends on iptables. This helps with
     backporting now that the test suite can handle it
   * debian/ufw.upstart.ubuntu: start before an interface receives traffic
