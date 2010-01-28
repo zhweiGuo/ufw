@@ -225,17 +225,6 @@ ufw_start() {
                 # ip[6]tables-restore down below
             fi
 
-            # setup ufw${type}-user chain
-            if [ -s "$USER_RULES" ]; then
-                $exe -N ufw${type}-user-input || error="yes"
-                $exe -N ufw${type}-user-output || error="yes"
-                $exe -N ufw${type}-user-forward || error="yes"
-                $exe -A ufw${type}-before-input -j ufw${type}-user-input || error="yes"
-                $exe -A ufw${type}-before-output -j ufw${type}-user-output || error="yes"
-                $exe -A ufw${type}-before-forward -j ufw${type}-user-forward || error="yes"
-                # ip[6]tables-restore down below
-            fi
-
             # setup ufw${type}-after-* chains
             if ! $exe -L ufw${type}-after-input -n >/dev/null 2>&1 ; then
                 $exe -N ufw${type}-after-input || error="yes"
@@ -309,15 +298,6 @@ ufw_start() {
                 out="${out}\nCouldn't find '$BEFORE_RULES'"
             fi
 
-            if [ -s "$USER_RULES" ]; then
-                if ! $exe-restore -n < $USER_RULES ; then
-                    out="${out}\nProblem running '$USER_RULES'"
-                    error="yes"
-                fi
-                # don't include the RETURN lines here, as they will
-                # be in the USER_RULES file
-            fi
-
             if [ -s "$AFTER_RULES" ]; then
                 if ! $exe-restore -n < $AFTER_RULES ; then
                     out="${out}\nProblem running '$AFTER_RULES'"
@@ -325,6 +305,22 @@ ufw_start() {
                 fi
             else
                 out="${out}\nCouldn't find '$AFTER_RULES'"
+            fi
+
+            # setup ufw${type}-user chain
+            if [ -s "$USER_RULES" ]; then
+                $exe -N ufw${type}-user-input || error="yes"
+                $exe -N ufw${type}-user-output || error="yes"
+                $exe -N ufw${type}-user-forward || error="yes"
+                $exe -A ufw${type}-before-input -j ufw${type}-user-input || error="yes"
+                $exe -A ufw${type}-before-output -j ufw${type}-user-output || error="yes"
+                $exe -A ufw${type}-before-forward -j ufw${type}-user-forward || error="yes"
+                if ! $exe-restore -n < $USER_RULES ; then
+                    out="${out}\nProblem running '$USER_RULES'"
+                    error="yes"
+                fi
+                # don't include the RETURN lines here, as they will
+                # be in the USER_RULES file
             fi
         done
 
