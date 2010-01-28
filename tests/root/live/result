@@ -1913,6 +1913,385 @@ Compare enable and ufw-init
 269: disable
 
 
-270: disable
+Verify toplevel chains
+270: logging off
+
+
+271: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+
+
+272: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+
+
+273: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+
+
+274: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+275: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+
+
+276: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+
+
+277: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+
+
+278: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+
+
+279: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+280: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+281: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+282: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+283: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+284: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+285: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+286: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+287: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+288: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+289: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+290: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+291: logging on
+
+
+292: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+
+
+293: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+
+
+294: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+
+
+295: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+296: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+
+
+297: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+
+
+298: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+
+
+299: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+
+
+300: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+301: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+302: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+303: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+304: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+305: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+306: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+307: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+308: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+309: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+310: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+311: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+312: logging low
+
+
+313: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+
+
+314: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+
+
+315: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+
+
+316: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+317: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+
+
+318: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+
+
+319: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+
+
+320: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+
+
+321: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+322: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+323: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+324: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+325: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+326: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+327: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+328: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+329: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+330: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+331: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+332: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+333: logging medium
+
+
+334: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+
+
+335: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+
+
+336: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+
+
+337: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+338: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+
+
+339: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+
+
+340: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+
+
+341: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+
+
+342: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+343: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+344: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+345: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+346: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+347: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+348: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+349: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+350: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+351: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+352: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+353: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+354: logging high
+
+
+355: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+
+
+356: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+
+
+357: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+
+
+358: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+359: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+
+
+360: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+
+
+361: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+
+
+362: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+
+
+363: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+364: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+365: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+366: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+367: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+368: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+369: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+370: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+371: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+372: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+373: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+374: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+375: logging full
+
+
+376: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+
+
+377: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+
+
+378: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+
+
+379: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+380: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+
+
+381: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+
+
+382: iptables -L INPUT -n | egrep -q 'ufw-skip-to-policy-input'
+
+
+383: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+
+
+384: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+
+
+385: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+
+
+386: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+387: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+
+
+388: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+389: iptables -L OUTPUT -n | egrep -q 'ufw-skip-to-policy-output'
+
+
+390: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+391: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+392: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+393: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+394: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+395: iptables -L FORWARD -n | egrep -q 'ufw-skip-to-policy-forward'
+
+
+396: disable
 
 

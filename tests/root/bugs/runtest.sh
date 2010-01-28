@@ -174,6 +174,22 @@ for i in low on medium high full off off ; do
     fi
 done
 
+echo "Bug #513387" >> $TESTTMP/result
+do_cmd "0" nostats disable
+$TESTSTATE/ufw-init flush-all >/dev/null
+do_cmd "0" nostats enable
+for b in INPUT OUTPUT FORWARD; do
+    suffix=`echo $b | tr [A-Z] [a-z]`
+    echo "$count: iptables -L $b -n | egrep -q 'ufw-after-logging-$suffix'" >> $TESTTMP/result
+    iptables -L "$b" -n | egrep -q "ufw-after-logging-$suffix" || {
+        echo "'iptables -L $b -n' does not contain 'ufw-after-logging-$suffix'"
+        exit 1
+    }
+    echo "" >> $TESTTMP/result
+    echo "" >> $TESTTMP/result
+    let count=count+1
+done
+
 # teardown
 cleanup
 

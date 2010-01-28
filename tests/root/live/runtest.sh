@@ -251,6 +251,27 @@ do_cmd "0" nostats logging low
 do_cmd "0" nostats disable
 sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 
+echo "Verify toplevel chains" >> $TESTTMP/result
+for l in off on low medium high full; do
+    do_cmd "0" nostats logging $l
+    for b in INPUT OUTPUT FORWARD; do
+        for c in before-logging before after after-logging reject track skip-to-policy ; do
+            if [ "$b" = "FORWARD" ] && [ "$c" = "track" ]; then
+                # FORWARD doesn't have the ufw-track-forward chain
+                continue
+            fi
+            suffix=`echo $b | tr [A-Z] [a-z]`
+            echo "$count: iptables -L $b -n | egrep -q 'ufw-$c-$suffix'" >> $TESTTMP/result
+            iptables -L $b -n | egrep -q "ufw-$c-$suffix" || {
+                echo "'iptables -L $b -n' does not contain 'ufw-$c-$suffix'"
+                exit 1
+            }
+            echo "" >> $TESTTMP/result
+            echo "" >> $TESTTMP/result
+            let count=count+1
+        done
+    done
+done
 
 cleanup
 

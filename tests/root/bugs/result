@@ -40,7 +40,7 @@ WARN: Checks disabled
 ### END LOGGING ###
 
 ### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK]" 
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
 -A ufw-user-limit -j REJECT
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
@@ -621,6 +621,22 @@ Bug #512131
 133: logging off
 
 
+Bug #513387
 134: disable
+
+
+135: enable
+
+
+136: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+
+
+137: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+
+
+138: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+139: disable
 
 
