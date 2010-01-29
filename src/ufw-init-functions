@@ -20,7 +20,7 @@ set -e
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
-for s in "/etc/default/ufw" "/etc/ufw/ufw.conf" ; do
+for s in "#CONFIG_PREFIX#/default/ufw" "#CONFIG_PREFIX#/ufw/ufw.conf" ; do
     if [ -s "$s" ]; then
         . "$s"
     else
@@ -29,8 +29,8 @@ for s in "/etc/default/ufw" "/etc/ufw/ufw.conf" ; do
     fi
 done
 
-RULES_PATH="/etc/ufw"
-USER_PATH="/lib/ufw"
+RULES_PATH="#CONFIG_PREFIX#/ufw"
+USER_PATH="#STATE_PREFIX#"
 
 flush_builtins() {
     error=""
