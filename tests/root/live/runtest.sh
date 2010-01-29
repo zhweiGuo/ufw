@@ -258,7 +258,7 @@ for l in off on low medium high full; do
     $TESTSTATE/ufw-init flush-all >/dev/null
     do_cmd "0" nostats enable
     for b in INPUT OUTPUT FORWARD; do
-        for c in before-logging before after after-logging reject track skip-to-policy ; do
+        for c in before-logging before after after-logging reject track ; do
             if [ "$b" = "FORWARD" ] && [ "$c" = "track" ]; then
                 # FORWARD doesn't have the ufw-track-forward chain
                 continue
@@ -282,7 +282,7 @@ for l in off on low medium high full; do
     do_cmd "0" nostats disable
     $TESTSTATE/ufw-init flush-all >/dev/null
     do_cmd "0" nostats enable
-    for c in logging-deny not-local user-forward user-input user-output ; do
+    for c in logging-deny not-local user-forward user-input user-output skip-to-policy-input ; do
         echo "$count: ! iptables -L ufw-$c -n | egrep -q '0 references'" >> $TESTTMP/result
         iptables -L ufw-$c -n | egrep -q '0 references' && {
             echo "'iptables -L ufw-user-input -n' had 0 references"
@@ -292,7 +292,7 @@ for l in off on low medium high full; do
         echo "" >> $TESTTMP/result
         let count=count+1
     done
-    for c in logging-allow user-limit user-limit-accept user-logging-forward user-logging-input user-logging-output ; do
+    for c in logging-allow user-limit user-limit-accept user-logging-forward user-logging-input user-logging-output skip-to-policy-output skip-to-policy-forward ; do
         echo "$count: iptables -L ufw-$c -n | egrep -q '0 references'" >> $TESTTMP/result
         iptables -L ufw-$c -n | egrep -q '0 references' || {
             echo "'iptables -L ufw-user-input -n' had more than 0 references"

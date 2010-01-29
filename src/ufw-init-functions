@@ -293,9 +293,6 @@ ufw_start() {
                 $exe -N ufw${type}-skip-to-policy-input || error="yes"
                 $exe -N ufw${type}-skip-to-policy-output || error="yes"
                 $exe -N ufw${type}-skip-to-policy-forward || error="yes"
-                $exe -A INPUT -j ufw${type}-skip-to-policy-input || error="yes"
-                $exe -A OUTPUT -j ufw${type}-skip-to-policy-output || error="yes"
-                $exe -A FORWARD -j ufw${type}-skip-to-policy-forward || error="yes"
             fi
 
             # now ip[6]tables-restore our files
@@ -332,6 +329,14 @@ ufw_start() {
                 # don't include the RETURN lines here, as they will
                 # be in the USER_RULES file
             fi
+
+            # unconditionally 'restore' ufw${type}-skip-to-policy chains
+            $exe -D ufw${type}-skip-to-policy-input -j "$DEFAULT_INPUT_POLICY" 2>/dev/null || true
+            $exe -D ufw${type}-skip-to-policy-output -j "$DEFAULT_OUTPUT_POLICY" 2>/dev/null || true
+            $exe -D ufw${type}-skip-to-policy-forward -j "$DEFAULT_FORWARD_POLICY" 2>/dev/null || true
+            $exe -A ufw${type}-skip-to-policy-input -j "$DEFAULT_INPUT_POLICY" || error="yes"
+            $exe -A ufw${type}-skip-to-policy-output -j "$DEFAULT_OUTPUT_POLICY" || error="yes"
+            $exe -A ufw${type}-skip-to-policy-forward -j "$DEFAULT_FORWARD_POLICY" || error="yes"
         done
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
