@@ -111,17 +111,22 @@ restore_file() {
     f="$2"
     if [ -s "$f" ]; then
         # On most systems, this will succeed on the first try and there will
-        # be no overhead for the extra tries. However, on very fast systems
-	# with very fast boots, the kernel may give a 'Resource temporarily
-        # unavailable' error, in which case we really need to try again.
+        # be no additional overhead. However, on systems with upstart and an
+        # optimized boot process, ufw may start very early so loading the
+        # various chains occassionally take a bit longer and iptables-restore
+	# may compain with 'Resource temporarily unavailable'. Account for that
+        # here, and try a few times if needed.
         loaded=""
-        for i in 1 2 ; do
-            $e -n < "$f" 2>/dev/null && {
-                loaded="yes"
-                break
+        count=0
+        while [ -z "$loaded" ] && [ "$count" -lt 3 ]; do
+            $e -n < "$f" 2>/dev/null || {
+                count=$((count+1))
+                sleep $count
+                continue
             }
-            sleep 1
+            loaded="yes"
         done
+        # Try again to see the error, if needed
         if [ -z "$loaded" ] && ! $e -n < $f ; then
             return 1
         fi
@@ -210,8 +215,8 @@ ufw_start() {
                 $exe -P FORWARD $DEFAULT_FORWARD_POLICY || error="yes"
             fi
 
-	    # setup all the toplevel chains. Check existence of
-	    # ufw${type}-before-logging-input first-- if it exists, don't load
+            # setup all the toplevel chains. Check existence of
+            # ufw${type}-before-logging-input first-- if it exists, don't load
             # otherwise load all of the toplevel
             if ! $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
                 cat <<EOM | $exe-restore -n || error="yes"
