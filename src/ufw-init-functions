@@ -106,6 +106,30 @@ delete_chains() {
     done
 }
 
+restore_file() {
+    e="$1"
+    f="$2"
+    if [ -s "$f" ]; then
+        # On most systems, this will succeed on the first try and there will
+        # be no overhead for the extra tries. However, on very fast systems
+	# with very fast boots, the kernel may give a 'Resource temporarily
+        # unavailable' error, in which case we really need to try again.
+        loaded=""
+        for i in 1 2 ; do
+            $e -n < "$f" 2>/dev/null && {
+                loaded="yes"
+                break
+            }
+            sleep 1
+        done
+        if [ -z "$loaded" ] && ! $e -n < $f ; then
+            return 1
+        fi
+    else
+        return 1
+    fi
+}
+
 ufw_start() {
     out=""
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
@@ -309,10 +333,13 @@ EOM
             # and sets the following:
             #   ufw-not-local
             if [ -s "$BEFORE_RULES" ]; then
-                if ! $exe-restore -n < $BEFORE_RULES ; then
+                if ! restore_file $exe-restore "$BEFORE_RULES" ; then
                     out="${out}\nProblem running '$BEFORE_RULES'"
                     error="yes"
                 fi
+            else
+                out="${out}\nCouldn't find '$BEFORE_RULES'"
+                error="yes"
             fi
 
             # now ip[6]tables-restore after*.rules. This resets the following
@@ -321,12 +348,13 @@ EOM
             #   ufw-after-output
             #   ufw-after-forward
             if [ -s "$AFTER_RULES" ]; then
-                if ! $exe-restore -n < $AFTER_RULES ; then
+                if ! restore_file $exe-restore "$AFTER_RULES" ; then
                     out="${out}\nProblem running '$AFTER_RULES'"
                     error="yes"
                 fi
             else
                 out="${out}\nCouldn't find '$AFTER_RULES'"
+                error="yes"
             fi
 
             # user chains
@@ -362,7 +390,7 @@ EOM
                 #   ufw-after-forward
                 #   ufw-user-limit
                 #   ufw-user-limit-accept
-                if ! $exe-restore -n < $USER_RULES ; then
+                if ! restore_file $exe-restore "$USER_RULES" ; then
                     out="${out}\nProblem running '$USER_RULES'"
                     error="yes"
                 fi
@@ -375,6 +403,9 @@ EOM
 -A ufw${type}-before-forward -j ufw${type}-user-forward
 COMMIT
 EOM
+            else
+                out="${out}\nCouldn't find '$USER_RULES'"
+                error="yes"
             fi
         done
 
