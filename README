@@ -100,8 +100,7 @@ INPUT ->
       ufw-user-logging-input (rule specific) ->
   ufw-after-input ->
   ufw-after-logging-input ->
-  ufw-reject-input ->
-  ufw-skip-to-policy-input -> return to INPUT
+  ufw-reject-input -> return to INPUT
 
 OUTPUT ->
   ufw-before-logging-output ->
@@ -110,8 +109,7 @@ OUTPUT ->
       ufw-user-logging-output (rule specific) ->
   ufw-after-output ->
   ufw-after-logging-output ->
-  ufw-reject-output ->
-  ufw-skip-to-policy -> return to OUTPUT
+  ufw-reject-output -> return to OUTPUT
 
 FORWARD ->
   ufw-before-logging-forward ->
@@ -120,8 +118,7 @@ FORWARD ->
       ufw-user-logging-forward (not used) ->
   ufw-after-forward ->
   ufw-after-logging-forward ->
-  ufw-reject-forward ->
-  ufw-skip-to-policy-forward -> return to FORWARD
+  ufw-reject-forward -> return to FORWARD
 
 The 'before' chains are setup in 'before.rules', the 'after' chains in
 'after.rules' and the 'user' chains are maintained by ufw. If an administrator
@@ -134,7 +131,13 @@ rejecting rules that are added outside of ufw and after ufw is started.
 There is some default configuration in both 'before.rules' and 'after.rules',
 and this configuration is not displayed with 'ufw status' (but can always
 be viewed with 'iptables -L -n' or 'iptables -L [chain] -n'. See the iptables
-man page for details.
+man page for details. There are also 3 chains (for both IPv4 and IPv6) that
+can be used to immediately go to POLICY, which are mostly useful to avoid
+logging (these chains are used in the default ufw after*.rules configuration to
+avoid logging noisy services by default):
+  ufw-skip-to-policy-input
+  ufw-skip-to-policy-output
+  ufw-skip-to-policy-forward
 
 The primary chains are ufw-before-*, ufw-after-* and ufw-reject-*. The
 treatment of iptables' built-in chains can be controlled with the
