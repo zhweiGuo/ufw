@@ -232,45 +232,48 @@ ufw_start() {
 -A FORWARD -j ufw${type}-reject-forward
 COMMIT
 EOM
-                # Add reject policy
-                if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
-                    cat <<EOM | $exe-restore -n || error="yes"
+            fi
+
+            # add reject policy
+            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
+                cat <<EOM | $exe-restore -n || error="yes"
 *filter
 -A ufw${type}-reject-input -j REJECT
 COMMIT
 EOM
-                fi
-                if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
-                    cat <<EOM | $exe-restore -n || error="yes"
+            fi
+            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
+                cat <<EOM | $exe-restore -n || error="yes"
 *filter
 -A ufw${type}-reject-output -j REJECT
 COMMIT
 EOM
-                fi
-                if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
-                    cat <<EOM | $exe-restore -n || error="yes"
+            fi
+            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
+                cat <<EOM | $exe-restore -n || error="yes"
 *filter
 -A ufw${type}-reject-forward -j REJECT || error="yes"
 COMMIT
 EOM
-                fi
-                if [ "$DEFAULT_INPUT_POLICY" = "ACCEPT" ]; then
-                    cat <<EOM | $exe-restore -n || error="yes"
+            fi
+
+            # add tracking policy
+            if [ "$DEFAULT_INPUT_POLICY" = "ACCEPT" ]; then
+                cat <<EOM | $exe-restore -n || error="yes"
 *filter
 -A ufw${type}-track-input -p tcp -m state --state NEW -j ACCEPT
 -A ufw${type}-track-input -p udp -m state --state NEW -j ACCEPT
 COMMIT
 EOM
-                fi
+            fi
 
-                if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
-                    cat <<EOM | $exe-restore -n || error="yes"
+            if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
+                cat <<EOM | $exe-restore -n || error="yes"
 *filter
 -A ufw${type}-track-output -p tcp -m state --state NEW -j ACCEPT
 -A ufw${type}-track-output -p udp -m state --state NEW -j ACCEPT
 COMMIT
 EOM
-                fi
             fi
 
             # now setup the secondary 'logging-deny' chains
@@ -297,12 +300,14 @@ COMMIT
 EOM
             fi
 
-	    # now ip[6]tables-restore before*.rules. This resets the following
-	    # chains:
-            # ufw-before-input
-            # ufw-before-output
-            # ufw-before-forward
-            # ufw-not-local
+            # now ip[6]tables-restore before*.rules. This resets the following
+            # chains:
+            #   ufw-before-input
+            #   ufw-before-output
+            #   ufw-before-forward
+            #
+            # and sets the following:
+            #   ufw-not-local
             if [ -s "$BEFORE_RULES" ]; then
                 if ! $exe-restore -n < $BEFORE_RULES ; then
                     out="${out}\nProblem running '$BEFORE_RULES'"
@@ -310,11 +315,11 @@ EOM
                 fi
             fi
 
-	    # now ip[6]tables-restore after*.rules. This resets the following
-	    # chains:
-            # ufw-after-input
-            # ufw-after-output
-            # ufw-after-forward
+            # now ip[6]tables-restore after*.rules. This resets the following
+            # chains:
+            #   ufw-after-input
+            #   ufw-after-output
+            #   ufw-after-forward
             if [ -s "$AFTER_RULES" ]; then
                 if ! $exe-restore -n < $AFTER_RULES ; then
                     out="${out}\nProblem running '$AFTER_RULES'"
@@ -324,24 +329,52 @@ EOM
                 out="${out}\nCouldn't find '$AFTER_RULES'"
             fi
 
-            # setup ufw${type}-user chain
+            # user chains
             if [ -s "$USER_RULES" ]; then
-                cat <<EOM | $exe-restore -n || error="yes"
+                # setup the secondary 'user' chains
+                if ! $exe -L ufw${type}-user-input -n >/dev/null 2>&1 ; then
+                    cat <<EOM | $exe-restore -n || error="yes"
 *filter
 :ufw${type}-user-input - [0:0]
 :ufw${type}-user-output - [0:0]
 :ufw${type}-user-forward - [0:0]
+:ufw${type}-user-logging-input - [0:0]
+:ufw${type}-user-logging-output - [0:0]
+:ufw${type}-user-logging-forward - [0:0]
+:ufw${type}-user-limit - [0:0]
+:ufw${type}-user-limit-accept - [0:0]
+COMMIT
+EOM
+                fi
+
+                # now ip[6]tables-restore user*.rules. This resets the following
+                # chains:
+                #   ufw-before-logging-input
+                #   ufw-before-logging-output
+                #   ufw-before-logging-forward
+                #   ufw-after-logging-input
+                #   ufw-after-logging-output
+                #   ufw-after-logging-forward
+                #   ufw-logging-deny
+                #   ufw-logging-allow
+                #   ufw-after-input
+                #   ufw-after-output
+                #   ufw-after-forward
+                #   ufw-user-limit
+                #   ufw-user-limit-accept
+                if ! $exe-restore -n < $USER_RULES ; then
+                    out="${out}\nProblem running '$USER_RULES'"
+                    error="yes"
+                fi
+
+                # now hooks these into the primary chains
+                cat <<EOM | $exe-restore -n || error="yes"
+*filter
 -A ufw${type}-before-input -j ufw${type}-user-input
 -A ufw${type}-before-output -j ufw${type}-user-output
 -A ufw${type}-before-forward -j ufw${type}-user-forward
 COMMIT
 EOM
-                if ! $exe-restore -n < $USER_RULES ; then
-                    out="${out}\nProblem running '$USER_RULES'"
-                    error="yes"
-                fi
-                # don't include the RETURN lines here, as they will
-                # be in the USER_RULES file
             fi
         done
 
