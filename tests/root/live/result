@@ -2581,6 +2581,103 @@ Verify secondary chains
 491: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-492: disable
+492: logging on
+
+
+493: disable
+
+
+'Resource temporarily unavailable' test
+494: disable
+
+
+495: allow 22/tcp
+
+
+496: enable
+
+
+497: ufw-init start/flush-all
+
+
+498: ufw-init start/flush-all
+
+
+499: ufw-init start/flush-all
+
+
+500: ufw-init start/flush-all
+
+
+501: ufw-init start/flush-all
+
+
+502: ufw-init start/flush-all
+
+
+503: ufw-init start/flush-all
+
+
+504: ufw-init start/flush-all
+
+
+505: ufw-init start/flush-all
+
+
+506: ufw-init start/flush-all
+
+
+507: ufw-init start/flush-all
+
+
+508: ufw-init start/flush-all
+
+
+509: ufw-init start/flush-all
+
+
+510: ufw-init start/flush-all
+
+
+511: ufw-init start/flush-all
+
+
+512: ufw-init start/flush-all
+
+
+513: ufw-init start/flush-all
+
+
+514: ufw-init start/flush-all
+
+
+515: ufw-init start/flush-all
+
+
+516: ufw-init start/flush-all
+
+
+517: ufw-init start/flush-all
+
+
+518: ufw-init start/flush-all
+
+
+519: ufw-init start/flush-all
+
+
+520: ufw-init start/flush-all
+
+
+521: ufw-init start/flush-all
+
+
+522: enable
+
+
+523: delete allow 22/tcp
+
+
+524: disable
 
 

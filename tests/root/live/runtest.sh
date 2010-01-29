@@ -303,6 +303,28 @@ for l in off on low medium high full; do
         let count=count+1
     done
 done
+do_cmd "0" nostats logging on
+do_cmd "0" nostats disable
+
+echo "'Resource temporarily unavailable' test" >> $TESTTMP/result
+do_cmd "0" nostats disable
+$TESTSTATE/ufw-init flush-all >/dev/null
+do_cmd "0" nostats allow 22/tcp
+do_cmd "0" nostats enable
+$TESTSTATE/ufw-init stop >/dev/null
+for i in `seq 1 25`; do
+    echo "$count: ufw-init start/flush-all" >> $TESTTMP/result
+    $TESTSTATE/ufw-init start >/dev/null || {
+        echo "'ufw-init start' failed"
+        exit 1
+    }
+    $TESTSTATE/ufw-init flush-all >/dev/null
+    echo "" >> $TESTTMP/result
+    echo "" >> $TESTTMP/result
+    let count=count+1
+done
+do_cmd "0" nostats enable
+do_cmd "0" nostats delete allow 22/tcp
 
 cleanup
 
