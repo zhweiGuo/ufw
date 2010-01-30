@@ -154,6 +154,7 @@ ufw_start() {
         execs="iptables"
 
         # IPv6 setup
+        # TODO: convert this to ip6tables-restore
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
             if ip6tables -L INPUT -n >/dev/null 2>&1; then
                 execs="$execs ip6tables"
@@ -193,34 +194,35 @@ ufw_start() {
             AFTER_RULES="$RULES_PATH/after${type}.rules"
             USER_RULES="$USER_PATH/user${type}.rules"
 
-            # flush the chains
-            delete_chains $type || error="yes"
+            # flush the chains (if they exist)
+            if $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                delete_chains $type || error="yes"
+            else
+                input_pol="$DEFAULT_INPUT_POLICY"
+                if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
+                    input_pol="DROP"
+                fi
 
-            # setup built-in chains' default policy
-            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
-                $exe -P INPUT DROP || error="yes"
-            else
-                $exe -P INPUT $DEFAULT_INPUT_POLICY || error="yes"
-            fi
-            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
-                $exe -P OUTPUT DROP || error="yes"
-            elif [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT_NO_TRACK" ]; then
-                $exe -P OUTPUT ACCEPT || error="yes"
-            else
-                $exe -P OUTPUT $DEFAULT_OUTPUT_POLICY || error="yes"
-            fi
-            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
-                $exe -P FORWARD DROP || error="yes"
-            else
-                $exe -P FORWARD $DEFAULT_FORWARD_POLICY || error="yes"
-            fi
+                output_pol="$DEFAULT_OUTPUT_POLICY"
+                if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
+                    output_pol="DROP"
+                fi
 
-            # setup all the toplevel chains. Check existence of
-            # ufw${type}-before-logging-input first-- if it exists, don't load
-            # otherwise load all of the toplevel
-            if ! $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                forward_pol="$DEFAULT_FORWARD_POLICY"
+                if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
+                    forward_pol="DROP"
+                fi
+
+                # setup all the toplevel chains. Check existence of
+                # ufw${type}-before-logging-input first-- if it exists, don't
+                # load otherwise load all of the toplevel
                 cat <<EOM | $exe-restore -n || error="yes"
 *filter
+# builtin chains
+:INPUT $input_pol [0:0]
+:FORWARD $forward_pol [0:0]
+:OUTPUT $output_pol [0:0]
+
 # primary chains
 :ufw${type}-before-logging-input - [0:0]
 :ufw${type}-before-logging-output - [0:0]
