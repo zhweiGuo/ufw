@@ -106,35 +106,6 @@ delete_chains() {
     done
 }
 
-restore_file() {
-    e="$1"
-    f="$2"
-    if [ -s "$f" ]; then
-        # On most systems, this will succeed on the first try and there will
-        # be no additional overhead. However, on systems with upstart and an
-        # optimized boot process, ufw may start very early so loading the
-        # various chains occassionally take a bit longer and iptables-restore
-	# may compain with 'Resource temporarily unavailable'. Account for that
-        # here, and try a few times if needed.
-        loaded=""
-        count=0
-        while [ -z "$loaded" ] && [ "$count" -lt 3 ]; do
-            $e -n < "$f" 2>/dev/null || {
-                count=$((count+1))
-                sleep $count
-                continue
-            }
-            loaded="yes"
-        done
-        # Try again to see the error, if needed
-        if [ -z "$loaded" ] && ! $e -n < $f ; then
-            return 1
-        fi
-    else
-        return 1
-    fi
-}
-
 ufw_start() {
     out=""
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
@@ -154,7 +125,6 @@ ufw_start() {
         execs="iptables"
 
         # IPv6 setup
-        # TODO: convert this to ip6tables-restore
         if [ "$IPV6" = "yes" ] || [ "$IPV6" = "YES" ]; then
             if ip6tables -L INPUT -n >/dev/null 2>&1; then
                 execs="$execs ip6tables"
@@ -167,17 +137,15 @@ ufw_start() {
                 # default DROP and accept all on loopback
                 delete_chains 6 || error="yes"
 
-                ip6tables -P INPUT DROP || error="yes"
-                ip6tables -P OUTPUT DROP || error="yes"
-                ip6tables -P FORWARD DROP || error="yes"
-
-                # delete these first so don't add multiple rules
-                ip6tables -D INPUT -i lo -j ACCEPT 2>/dev/null || true
-                ip6tables -D OUTPUT -o lo -j ACCEPT 2>/dev/null || true
-
-                ip6tables -A INPUT -i lo -j ACCEPT || error="yes"
-                ip6tables -A OUTPUT -o lo -j ACCEPT || error="yes"
-
+                cat <<EOM | ip6tables-restore || error="yes"
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+COMMIT
+EOM
                 if [ "$error" = "yes" ]; then
                     out="${out}\nProblem loading ipv6 (skipping)"
                 fi
@@ -194,35 +162,37 @@ ufw_start() {
             AFTER_RULES="$RULES_PATH/after${type}.rules"
             USER_RULES="$USER_PATH/user${type}.rules"
 
-            # flush the chains (if they exist)
-            if $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
-                delete_chains $type || error="yes"
-            else
-                input_pol="$DEFAULT_INPUT_POLICY"
-                if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
-                    input_pol="DROP"
-                fi
+            # set the default policy
+            input_pol="$DEFAULT_INPUT_POLICY"
+            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
+                input_pol="DROP"
+            fi
 
-                output_pol="$DEFAULT_OUTPUT_POLICY"
-                if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
-                    output_pol="DROP"
-                fi
+            output_pol="$DEFAULT_OUTPUT_POLICY"
+            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
+                output_pol="DROP"
+            fi
 
-                forward_pol="$DEFAULT_FORWARD_POLICY"
-                if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
-                    forward_pol="DROP"
-                fi
-
-                # setup all the toplevel chains. Check existence of
-                # ufw${type}-before-logging-input first-- if it exists, don't
-                # load otherwise load all of the toplevel
-                cat <<EOM | $exe-restore -n || error="yes"
+            forward_pol="$DEFAULT_FORWARD_POLICY"
+            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
+                forward_pol="DROP"
+            fi
+            cat <<EOM | $exe-restore -n || error="yes"
 *filter
 # builtin chains
 :INPUT $input_pol [0:0]
 :FORWARD $forward_pol [0:0]
 :OUTPUT $output_pol [0:0]
+COMMIT
+EOM
 
+            # flush the chains (if they exist)
+            if $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                delete_chains $type || error="yes"
+            else
+                # setup all the primary chains
+                cat <<EOM | $exe-restore -n || error="yes"
+*filter
 # primary chains
 :ufw${type}-before-logging-input - [0:0]
 :ufw${type}-before-logging-output - [0:0]
@@ -340,7 +310,7 @@ EOM
             # and sets the following:
             #   ufw-not-local
             if [ -s "$BEFORE_RULES" ]; then
-                if ! restore_file $exe-restore "$BEFORE_RULES" ; then
+                if ! $exe-restore -n < "$BEFORE_RULES" ; then
                     out="${out}\nProblem running '$BEFORE_RULES'"
                     error="yes"
                 fi
@@ -355,7 +325,7 @@ EOM
             #   ufw-after-output
             #   ufw-after-forward
             if [ -s "$AFTER_RULES" ]; then
-                if ! restore_file $exe-restore "$AFTER_RULES" ; then
+                if ! $exe-restore -n < "$AFTER_RULES" ; then
                     out="${out}\nProblem running '$AFTER_RULES'"
                     error="yes"
                 fi
@@ -397,7 +367,7 @@ EOM
                 #   ufw-after-forward
                 #   ufw-user-limit
                 #   ufw-user-limit-accept
-                if ! restore_file $exe-restore "$USER_RULES" ; then
+                if ! $exe-restore -n < "$USER_RULES" ; then
                     out="${out}\nProblem running '$USER_RULES'"
                     error="yes"
                 fi
