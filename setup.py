@@ -59,7 +59,7 @@ class Install(_install, object):
             real_confdir = self.home + real_confdir
             real_statedir = self.home + real_statedir
             real_prefix = self.home + '/usr'
-        real_transdir = os.path.join(real_prefix, 'share', 'ufw')
+        real_sharedir = os.path.join(real_prefix, 'share', 'ufw')
 
         # Update the modules' paths
         for file in [ 'common.py' ]:
@@ -86,7 +86,7 @@ class Install(_install, object):
 
             subprocess.call(["sed",
                              "-i",
-                             "s%#TRANSLATIONS_PREFIX#%" + real_transdir + "%g",
+                             "s%#SHARE_DIR#%" + real_sharedir + "%g",
                              os.path.join('staging', file)])
 
         # Now byte-compile everything
@@ -132,9 +132,9 @@ class Install(_install, object):
         self.copy_file('src/ufw-init-functions', init_helper_functions)
 
         # Install translations
-        transdir = real_transdir
+        transdir = real_sharedir
         if self.root != None:
-            transdir = self.root + real_transdir
+            transdir = self.root + real_sharedir
         i18ndir = os.path.join(transdir, 'messages')
         self.mkpath(i18ndir)
         if len(os.listdir('locales/mo')) == 0:
@@ -198,6 +198,17 @@ class Install(_install, object):
                              "-i",
                              "s%#VERSION#%" + ufw_version + "%g",
                              file])
+
+        # Install pristine copies of rules files
+        sharedir = real_sharedir
+        if self.root != None:
+            sharedir = self.root + real_sharedir
+        rulesdir = os.path.join(sharedir, 'iptables')
+        self.mkpath(rulesdir)
+        for file in [ before_rules, after_rules, \
+                      before6_rules, after6_rules, \
+                      user_rules, user6_rules ]:
+            self.copy_file(file, rulesdir)
 
 if sys.version_info[0] < 2 or \
    (sys.version_info[0] == 2 and sys.version_info[1] < 5):

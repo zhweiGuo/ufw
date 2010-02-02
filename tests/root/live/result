@@ -2678,6 +2678,16 @@ Verify secondary chains
 523: delete allow 22/tcp
 
 
-524: disable
+Reset test
+524: enable
+
+
+525: allow 12345
+
+
+526: reset
+
+
+527: disable
 
 

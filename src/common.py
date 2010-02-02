@@ -1,7 +1,7 @@
 #
 # common.py: common classes for ufw
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -23,7 +23,8 @@ from ufw.util import debug
 
 programName = "ufw"
 state_dir = "#STATE_PREFIX#"
-trans_dir = "#TRANSLATIONS_PREFIX#"
+share_dir = "#SHARE_DIR#"
+trans_dir = share_dir
 config_dir = "#CONFIG_PREFIX#"
 prefix_dir = "#PREFIX#"
 iptables_dir = "#IPTABLES_DIR#"

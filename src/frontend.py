@@ -32,7 +32,8 @@ def parse_command(argv):
     p = ufw.parser.UFWParser()
 
     # Basic commands
-    for i in ['enable', 'disable', 'help', '--help', 'version', '--version', 'reload']:
+    for i in ['enable', 'disable', 'help', '--help', 'version', '--version', \
+              'reload', 'reset' ]:
         p.register_command(ufw.parser.UFWCommandBasic(i))
 
     # Application commands
@@ -107,6 +108,7 @@ Usage: %(progname)s %(command)s
  %(limit)-31s add limit %(rule)s
  %(delete)-31s delete %(urule)s
  %(insert)-31s insert %(urule)s at %(number)s
+ %(reset)-31s reset firewall
  %(status)-31s show firewall status
  %(statusnum)-31s show firewall status as numbered list of %(rules)s
  %(statusverbose)-31s show verbose firewall status
@@ -135,6 +137,7 @@ Usage: %(progname)s %(command)s
          'urule': "RULE", \
          'insert': "insert NUM RULE", \
          'number': "NUM", \
+         'reset': "reset", \
          'status': "status", \
          'statusnum': "status numbered", \
          'rules': "RULES", \
@@ -171,7 +174,9 @@ class UFWFrontend:
         self.yes_full = _("yes")
 
     def set_enabled(self, enabled):
-        '''Toggles ENABLED state in of <config_dir>/ufw/ufw.conf'''
+        '''Toggles ENABLED state in <config_dir>/ufw/ufw.conf and starts or
+           stops running firewall.
+        '''
         res = ""
 
         str = "no"
@@ -466,6 +471,8 @@ class UFWFrontend:
             if len(tmp) != 3:
                 raise UFWError(err_msg)
             res = self.set_default_policy(tmp[1], tmp[2])
+        elif action == "reset":
+            res = self.reset()
         elif action == "status":
             res = self.get_status()
         elif action == "status-verbose":
@@ -715,3 +722,24 @@ class UFWFrontend:
 
         return proceed
 
+    def reset(self):
+        '''Reset the firewall'''
+        res = ""
+        prompt = _("Resetting all rules to installed defaults.")
+        if self.backend.do_checks and ufw.util.under_ssh():
+            prompt += _(" This may disrupt existing ssh connections.")
+        prompt += _(" Proceed with operation (%(yes)s|%(no)s)? ") % \
+                       ({'yes': self.yes, 'no': self.no})
+
+        if self.backend.do_checks:
+            os.write(sys.stdout.fileno(), ufw.util.wrap_text(prompt))
+            ans = sys.stdin.readline().lower().strip()
+            if ans != "y" and ans != self.yes and ans != self.yes_full:
+                res = _("Aborted")
+                return res
+
+        if self.backend._is_enabled():
+            res += self.set_enabled(False)
+        res = self.backend.reset()
+
+        return res

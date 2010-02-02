@@ -326,6 +326,32 @@ done
 do_cmd "0" nostats enable
 do_cmd "0" nostats delete allow 22/tcp
 
+echo "Reset test" >> $TESTTMP/result
+do_cmd "0" nostats enable
+do_cmd "0" nostats allow 12345
+let rules_num="0"
+for i in `ls $TESTPATH/etc/ufw/*.rules && ls $TESTSTATE/*.rules` ; do
+    let rules_num=rules_num+1
+done
+do_cmd "0" null reset
+
+let rules_bak_num="0"
+for i in `ls $TESTPATH/etc/ufw/*.rules.2* && ls $TESTSTATE/*.rules.2*` ; do
+    let rules_bak_num=rules_bak_num+1
+done
+if [ "$rules_num" != "$rules_bak_num" ]; then
+    echo "'ufw-init reset' failed ('$rules_num' != '$rules_bak_num')" >> $TESTTMP/result
+    exit 1
+fi
+iptables -L ufw-user-input -n >/dev/null 2>&1 && {
+    echo "Failed: found 'ufw-user-input', still running." >> $TESTTMP/result
+    exit 1
+}
+grep -v -q 12345 $TESTSTATE/user.rules || {
+    echo "Failed: found '12345' in user.rules" >> $TESTTMP/result
+    exit 1
+}
+
 cleanup
 
 exit 0

@@ -18,8 +18,11 @@
 
 import os
 import re
+import shutil
+import stat
 import sys
 import tempfile
+import time
 
 from ufw.common import UFWError, UFWRule, config_dir, state_dir, prefix_dir
 from ufw.util import warn, debug, msg, cmd, cmd_pipe
@@ -1137,3 +1140,59 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                     '--log-prefix', msg] + largs, ''])
 
         return rules_t
+
+    def reset(self):
+        '''Reset the firewall'''
+        res = ""
+        # First make sure we have all the original files
+        all = []
+        for i in self.files:
+            if not self.files[i].endswith('.rules'):
+                continue
+            all.append(self.files[i])
+            fn = os.path.join(ufw.common.share_dir, "iptables", \
+                              os.path.basename(self.files[i]))
+            if not os.path.isfile(fn):
+                err_msg = _("Could not find '%s'. Aborting") % (fn)
+                raise UFWError(err_msg)
+            
+        ext = time.strftime("%Y%m%d_%H%M%S")
+
+	# This implementation will intentionally traceback if someone tries to
+        # do something to take advantage of the race conditions here.
+
+        # Don't do anything if the files already exist
+        for i in all:
+            fn = "%s.%s" % (i, ext)
+            if os.path.exists(fn):
+                err_msg = _("'%s' already exists. Aborting") % (fn)
+                raise UFWError(err_msg)
+
+        # Move the old to the new
+        for i in all:
+            fn = "%s.%s" % (i, ext)
+            res += _("Backing up '%s' to '%s'\n") % (os.path.basename(i), fn)
+            os.rename(i, fn)
+
+        # Copy files into place
+        for i in all:
+            old = "%s.%s" % (i, ext)
+            shutil.copy(os.path.join(ufw.common.share_dir, "iptables", \
+                                     os.path.basename(i)), \
+                        os.path.dirname(i))
+            shutil.copymode(old, i)
+
+            try:
+                statinfo = os.stat(i)
+                mode = statinfo[stat.ST_MODE]
+            except Exception:
+                warn_msg = _("Couldn't stat '%s'") % (i)
+                warn(warn_msg)
+                continue
+
+            if mode & stat.S_IWOTH:
+                res += _("WARN: '%s' is world writable") % (i)
+            elif mode & stat.S_IROTH:
+                res += _("'WARN: %s' is world readable") % (i)
+
+        return res
