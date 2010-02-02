@@ -1,7 +1,7 @@
 #
 # backend.py: interface for backends
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -16,6 +16,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import errno
 import os
 import re
 import stat
@@ -162,7 +163,7 @@ class UFWBackend:
 
                 path = os.path.dirname(path)
                 if not path:
-                    raise
+                    raise OSError(errno.ENOENT, "Could not find '%s'" % (path))
 
         for f in self.files:
             if f != 'apps' and not os.path.isfile(self.files[f]):
@@ -603,5 +604,8 @@ class UFWBackend:
 
     def update_logging(self, level):
         raise UFWError("UFWBackend.update_logging: need to override")
+
+    def reset(self):
+        raise UFWError("UFWBackend.reset: need to override")
 
 

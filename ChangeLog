@@ -26,8 +26,9 @@ ufw (0.30) UNRELEASED; urgency=low
   * fix for noisy services getting logged. Added new 'skip-to-policy' chains
     that are now used in after*.rules (LP: #488032)
   * add rsyslog example configuration and update README
+  * add reset command (LP: #436608)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 14 Jan 2010 07:24:36 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 01 Feb 2010 23:13:55 -0800
 
 ufw (0.29) RELEASE; urgency=low
 
