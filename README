@@ -259,6 +259,8 @@ ufw, this script is meant to be used by ufw itself, and therefore not
 particularly user friendly. See doc/initscript.example for a simple
 implementation that can be adapted to your distribution.
 
+Simple rules for rsyslog support can be found in doc/rsyslog.example.
+
 
 Testing
 -------
@@ -292,4 +294,4 @@ You may also specify an interpreter for the tests. Eg:
 $ ./run_tests.sh -s -i /usr/local/bin/python2.5
 
 
-Copyright 2008-2009 Canonical Ltd.
+Copyright 2008-2010 Canonical Ltd.

@@ -1,5 +1,7 @@
 etc/bash_completion.d
 etc/init.d
+etc/logrotate.d
+etc/rsyslog.d
 etc/ufw
 lib/ufw
 usr/share/doc/ufw

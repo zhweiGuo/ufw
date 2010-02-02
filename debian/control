@@ -11,6 +11,7 @@ Vcs-Bzr: https://bazaar.launchpad.net/~jdstrand/ufw/ufw-debian
 
 Package: ufw
 Architecture: all
+Suggests: rsyslog
 Depends: debconf, ${python:Depends}, ${misc:Depends}, iptables, ucf
 XB-Python-Version: ${python:Versions}
 Description: program for managing a Netfilter firewall

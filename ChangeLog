@@ -25,6 +25,7 @@ ufw (0.30) UNRELEASED; urgency=low
   * don't log LIMIT rules if logging is off (LP: #512131)
   * fix for noisy services getting logged. Added new 'skip-to-policy' chains
     that are now used in after*.rules (LP: #488032)
+  * add rsyslog example configuration and update README
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 14 Jan 2010 07:24:36 -0600
 

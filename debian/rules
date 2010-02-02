@@ -49,7 +49,6 @@ endif
 	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.conf $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
-	cp -f $(CURDIR)/debian/sysctl.conf $(CURDIR)/debian/ufw/etc/ufw
 
 	# for ucf
 	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
@@ -77,6 +76,8 @@ binary-indep: build install
 	dh_installdocs
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
+	dh_install
+	dh_installlogrotate
 
 	: # only use upstart in Ubuntu 9.10 and higher
 	if [ "$(DISTRIB)" != "Ubuntu" ]; then \
