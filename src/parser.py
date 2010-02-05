@@ -562,6 +562,16 @@ class UFWCommandShow(UFWCommand):
             raise ValueError()
         elif argv[1].lower() == "raw":
             action = "show-raw"
+        elif argv[1].lower() == "before-rules":
+            action = "show-before"
+        elif argv[1].lower() == "user-rules":
+            action = "show-user"
+        elif argv[1].lower() == "after-rules":
+            action = "show-after"
+        elif argv[1].lower() == "logging-rules":
+            action = "show-logging"
+        elif argv[1].lower() == "builtins":
+            action = "show-builtins"
         else:
             raise ValueError()
 

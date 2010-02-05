@@ -33,9 +33,6 @@ do_cmd "0" --dry-run status
 do_cmd "0" --dry-run status verbose
 do_cmd "0" --dry-run status numbered
 
-echo "TESTING ARGS (show)" >> $TESTTMP/result || exit 1
-do_cmd "0" --dry-run show raw
-
 echo "Testing parser" >> $TESTTMP/result || exit 1
 echo "Basic" >> $TESTTMP/result || exit 1
 cmds="enable disable help --help version --version reload"
@@ -71,7 +68,7 @@ for i in "" verbose numbered; do
 done
 
 echo "Show" >> $TESTTMP/result || exit 1
-cmds="raw"
+cmds="raw builtins before-rules user-rules after-rules logging-rules"
 for i in $cmds; do
     do_cmd "0" null --dry-run show $i
 done

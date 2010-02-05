@@ -19,7 +19,7 @@ ufw [\fB\-\-dry\-run\fR] \fBreset\fR
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBshow\fR [raw]
+ufw [\fB\-\-dry\-run\fR] \fBshow\fR REPORT
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log-all\fR] PORT[/protocol]
 .TP
@@ -66,9 +66,8 @@ show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
 extra information. In the status output, 'Anywhere' is synonymous with 'any'
 and '0.0.0.0/0'.
 .TP
-\fBshow\fR ARG
-display information about the firewall. Currently only \fBraw\fR is supported,
-which shows the running firewall in raw iptables format.
+\fBshow\fR REPORT
+display information about the running firewall. See \fBREPORTS\fR
 .TP
 \fBallow\fR ARGS
 add allow rule.  See \fBRULE SYNTAX\fR
@@ -326,6 +325,20 @@ system.
 Specifying 'on' simply enables logging at log level 'low' if logging is
 currently not enabled.
 
+.SH REPORTS
+.PP
+The following reports are supported. Each is based on the running firewall and
+is in raw iptables format:
+
+  raw
+  builtins
+  before-rules
+  user-rules
+  after-rules
+  logging-rules
+
+The \fBraw\fR report shows the complete firewall, while the others show a
+subset of what is in the \fBraw\fR report.
 .SH NOTES
 .PP
 On installation, \fBufw\fR is disabled with a default incoming policy of deny

@@ -352,6 +352,20 @@ grep -v -q 12345 $TESTSTATE/user.rules || {
     exit 1
 }
 
+echo "Show" >> $TESTTMP/result || exit 1
+for ipv6 in yes no
+do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
+    cmds="raw builtins before-rules user-rules after-rules logging-rules"
+    for i in $cmds; do
+        do_cmd "0" null show $i
+    done
+done
+do_cmd "0" nostats disable
+
 cleanup
 
 exit 0

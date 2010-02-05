@@ -580,7 +580,7 @@ class UFWBackend:
     def set_default_policy(self, policy, direction):
         raise UFWError("UFWBackend.set_default_policy: need to override")
 
-    def get_running_raw(self):
+    def get_running_raw(self, set):
         raise UFWError("UFWBackend.get_running_raw: need to override")
 
     def get_status(self, verbose, show_count):

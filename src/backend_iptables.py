@@ -168,7 +168,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         return rstr
 
-    def get_running_raw(self):
+    def get_running_raw(self, set):
         '''Show current running status of firewall'''
         if self.dryrun:
             out = "> " + _("Checking raw iptables\n")
@@ -177,21 +177,77 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         err_msg = _("problem running")
 
-        out = "IPV4:\n"
-        for table in ['filter', 'nat', 'mangle', 'raw']:
-            (rc, tmp) = cmd([self.iptables, '-L', '-n', '-v', '-x', '-t', \
-                             table])
+        args = ['-n', '-v', '-x', '-L']
+        items = []
+        items6 = []
+
+        if set == "raw":
+            args.append('-t')
+            items = ['filter', 'nat', 'mangle', 'raw']
+            items6 = ['filter', 'mangle', 'raw']
+        elif set == "builtins":
+            for c in ['INPUT', 'FORWARD', 'OUTPUT']:
+                items.append('filter:%s' % c)
+                items6.append('filter:%s' % c)
+            for c in ['PREROUTING', 'INPUT', 'FORWARD', 'OUTPUT', \
+                      'POSTROUTING']:
+                items.append('mangle:%s' % c)
+                items6.append('mangle:%s' % c)
+            for c in ['OUTPUT', 'POSTROUTING']:
+                items.append('raw:%s' % c)
+                items6.append('raw:%s' % c)
+            for c in ['PREROUTING', 'POSTROUTING', 'OUTPUT']:
+                items.append('nat:%s' % c)
+        elif set == "before":
+            for b in ['input', 'forward', 'output']:
+                items.append('ufw-before-%s' % b)
+                items6.append('ufw6-before-%s' % b)
+        elif set == "user":
+            for b in ['input', 'forward', 'output']:
+                items.append('ufw-user-%s' % b)
+                items6.append('ufw6-user-%s' % b)
+            items.append('ufw-user-limit-accept')
+            items.append('ufw-user-limit')
+        elif set == "after":
+            for b in ['input', 'forward', 'output']:
+                items.append('ufw-after-%s' % b)
+                items6.append('ufw6-after-%s' % b)
+        elif set == "logging":
+            for b in ['input', 'forward', 'output']:
+                items.append('ufw-before-logging-%s' % b)
+                items6.append('ufw6-before-logging-%s' % b)
+                items.append('ufw-user-logging-%s' % b)
+                items6.append('ufw6-user-logging-%s' % b)
+                items.append('ufw-after-logging-%s' % b)
+                items6.append('ufw6-after-logging-%s' % b)
+            items.append('ufw-logging-allow')
+            items.append('ufw-logging-deny')
+            items6.append('ufw6-logging-allow')
+            items6.append('ufw6-logging-deny')
+
+        out = "IPV4 (%s):\n" % (set)
+        for i in items:
+            if ':' in i:
+                (t, c) = i.split(':')
+                out += "(%s) " % (t)
+                (rc, tmp) = cmd([self.iptables] + args + [c, '-t', t])
+            else:
+                (rc, tmp) = cmd([self.iptables] + args + [i])
             out += tmp
+            if set != "raw":
+                out += "\n"
             if rc != 0:
                 raise UFWError(out)
 
-        out += "\n\nIPV6:\n"
-        for table in ['filter', 'mangle', 'raw']:
-            (rc, tmp) = cmd([self.ip6tables, '-L', '-n', '-v', '-x', '-t', \
-                             table])
-            out += tmp
-            if rc != 0:
-                raise UFWError(out)
+        if set == "raw" or self.use_ipv6():
+            out += "\n\nIPV6:\n"
+            for i in items6:
+                (rc, tmp) = cmd([self.ip6tables] + args + [i])
+                out += tmp
+                if set != "raw":
+                    out += "\n"
+                if rc != 0:
+                    raise UFWError(out)
 
         return out
 

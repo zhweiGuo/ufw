@@ -53,7 +53,8 @@ def parse_command(argv):
         p.register_command(ufw.parser.UFWCommandStatus(i))
 
     # Show commands
-    for i in ['raw']:
+    for i in ['raw', 'before-rules', 'user-rules', 'after-rules', \
+              'logging-rules', 'builtins']:
         p.register_command(ufw.parser.UFWCommandShow(i))
 
     # Rule commands
@@ -254,10 +255,10 @@ class UFWFrontend:
 
         return out
 
-    def get_show_raw(self):
+    def get_show_raw(self, set="raw"):
         '''Shows raw output of firewall'''
         try:
-            out = self.backend.get_running_raw()
+            out = self.backend.get_running_raw(set)
         except UFWError, e:
             error(e.value)
 
@@ -472,8 +473,8 @@ class UFWFrontend:
             res = self.get_status()
         elif action == "status-verbose":
             res = self.get_status(True)
-        elif action == "show-raw":
-            res = self.get_show_raw()
+        elif action.startswith("show"):
+            res = self.get_show_raw(action.split('-')[1])
         elif action == "status-numbered":
             res = self.get_status(False, True)
         elif action == "enable":
