@@ -28,6 +28,8 @@ ufw (0.30) UNRELEASED; urgency=low
   * add rsyslog example configuration and update README
   * add reset command (LP: #436608)
   * add --force option to enable (LP: #496267)
+  * decode("utf-8") some strings in 'status' to correct formatting errors with
+    with multibyte characters
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 01 Feb 2010 23:13:55 -0800
 

@@ -406,12 +406,16 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             str_to = _("To")
             str_from = _("From")
             str_action = _("Action")
-            rules_header = "%-26s %-12s%s\n" % (str_to, str_action, str_from)
+            rules_header = "%-26s %-12s%s\n" % \
+                            (str_to.decode("utf-8", 'ignore'), \
+                             str_action.decode("utf-8", 'ignore'), \
+                             str_from.decode("utf-8", 'ignore'))
             if show_count:
                 rules_header += "     "
-            rules_header += "%-26s %-12s%s\n" % ("-" * len(str_to), \
-                                                 "-" * len(str_action), \
-                                                 "-" * len(str_from))
+            rules_header += "%-26s %-12s%s\n" % \
+                            ("-" * len(str_to.decode("utf-8", 'ignore')), \
+                             "-" * len(str_action.decode("utf-8", 'ignore')), \
+                             "-" * len(str_from.decode("utf-8", 'ignore')))
             full_str += rules_header
             if str != "":
                 full_str += str
