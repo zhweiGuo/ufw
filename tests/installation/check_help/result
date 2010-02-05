@@ -13,6 +13,7 @@ Commands:
  limit ARGS                      add limit rule
  delete RULE                     delete RULE
  insert NUM RULE                 insert RULE at NUM
+ reset                           reset firewall
  status                          show firewall status
  status numbered                 show firewall status as numbered list of RULES
  status verbose                  show verbose firewall status
