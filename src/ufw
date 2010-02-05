@@ -56,23 +56,19 @@ else:
 
 if __name__ == "__main__":
     warnings.showwarning = clean_warning
-    action = ""
-    rule = ""
-    dryrun = False
     app_action = False
-    profile = ""
+    pr = None
 
+    # Remember, will have to take --force into account if we use it with 'app'
     idx = 1
     if len(sys.argv) > 1 and sys.argv[1].lower() == "--dry-run":
         idx +=1
+
+    if len(sys.argv) > idx and sys.argv[idx].lower() == "app":
+        app_action = True
+
     try:
-        if len(sys.argv) > idx and sys.argv[idx].lower() == "app":
-	    (action, profile, dryrun) = \
-                ufw.frontend.parse_command(sys.argv)
-            app_action = True
-        else:
-            (action, rule, ip_version, dryrun) = \
-                ufw.frontend.parse_command(sys.argv)
+        pr = ufw.frontend.parse_command(sys.argv)
     except ValueError:
         msg(ufw.frontend.get_command_help())
         sys.exit(1)
@@ -81,16 +77,16 @@ if __name__ == "__main__":
     except Exception:
         raise
 
-    if action == "help" or action == "--help":
+    if pr.action == "help" or pr.action == "--help":
         msg(ufw.frontend.get_command_help())
         sys.exit(0)
-    elif action == "version" or action == "--version":
+    elif pr.action == "version" or pr.action == "--version":
         msg(ufw.common.programName + " " + version)
         msg("Copyright 2008-2010 Canonical Ltd.")
         sys.exit(0)
 
     try:
-        ui = ufw.frontend.UFWFrontend(dryrun)
+        ui = ufw.frontend.UFWFrontend(pr.dryrun)
     except UFWError, e:
         error(e.value)
     except Exception:
@@ -98,16 +94,21 @@ if __name__ == "__main__":
 
     res = ""
     try:
-        if app_action:
-            res = ui.do_application_action(action, profile)
+        if app_action and pr.data.has_key('type') and pr.data['type'] == 'app':
+            res = ui.do_application_action(pr.action, pr.data['name'])
         else:
             bailout = False
-            if action == "enable" and not ui.continue_under_ssh():
+            if pr.action == "enable" and not pr.force and \
+               not ui.continue_under_ssh():
                 res = _("Aborted")
                 bailout = True
 
             if not bailout:
-                res = ui.do_action(action, rule, ip_version)
+                if pr.data.has_key('rule'):
+                    res = ui.do_action(pr.action, pr.data['rule'], \
+                                       pr.data['iptype'])
+                else:
+                    res = ui.do_action(pr.action, "", "")
 
         if res != "":
             msg(res)

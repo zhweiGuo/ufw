@@ -236,7 +236,9 @@ do:
 before running '\fBufw enable\fR'. The rules will still be flushed, but the
 ssh port will be open after enabling the firewall. Please note that once
 ufw is 'enabled', \fBufw\fR will not flush the chains when adding or removing
-rules (but will when modifying a rule or changing the default policy).
+rules (but will when modifying a rule or changing the default policy). By
+default, \fBufw\fR will prompt when enabling the firewall while running under
+ssh. This can be disabled by using '\fBufw --force enable\fR'.
 
 .SH APPLICATION INTEGRATION
 .PP

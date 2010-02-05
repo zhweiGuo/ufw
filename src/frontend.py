@@ -85,12 +85,7 @@ def parse_command(argv):
         raise
         sys.exit(1)
 
-    if pr.data.has_key('type') and pr.data['type'] == 'rule':
-        return (pr.action, pr.data['rule'], pr.data['iptype'], pr.dryrun)
-    elif pr.data.has_key('type') and pr.data['type'] == 'app':
-        return (pr.action, pr.data['name'], pr.dryrun)
-    else:
-        return (pr.action, "", "", pr.dryrun)
+    return pr
 
 def get_command_help():
     '''Print help message'''
@@ -668,12 +663,16 @@ class UFWFrontend:
 
         args += [ policy, profile ]
         try:
-            (action, rule, ip_version, self.backend.dryrun) = \
-                parse_command(args)
+            pr = parse_command(args)
         except Exception:
             raise
 
-        rstr = self.do_action(action, rule, ip_version)
+        if pr.data.has_key('rule'):
+            rstr = self.do_action(pr.action, pr.data['rule'], \
+                                  pr.data['iptype'])
+        else:
+            rstr = self.do_action(pr.action, "", "")
+
         return rstr
 
     def do_application_action(self, action, profile):

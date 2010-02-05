@@ -208,3 +208,28 @@ Rules
 54: --dry-run deny out log-all to any port 53 from any proto udp
 
 
+TESTING ARGS (--force enable)
+55: --dry-run --force enable
+WARN: Checks disabled
+> running ufw-init
+Firewall is active and enabled on system startup
+
+
+56: --dry-run -f enable
+WARN: Checks disabled
+> running ufw-init
+Firewall is active and enabled on system startup
+
+
+57: --dry-run --force ENABLE
+WARN: Checks disabled
+> running ufw-init
+Firewall is active and enabled on system startup
+
+
+58: --dry-run -f ENABLE
+WARN: Checks disabled
+> running ufw-init
+Firewall is active and enabled on system startup
+
+

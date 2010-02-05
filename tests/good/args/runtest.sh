@@ -91,4 +91,10 @@ do_cmd "0" null --dry-run deny out to any port 53 from any proto udp
 do_cmd "0" null --dry-run deny log-all to any port 53 from any proto udp
 do_cmd "0" null --dry-run deny out log-all to any port 53 from any proto udp
 
+echo "TESTING ARGS (--force enable)" >> $TESTTMP/result || exit 1
+do_cmd "0" --dry-run --force enable
+do_cmd "0" --dry-run -f enable
+do_cmd "0" --dry-run --force ENABLE
+do_cmd "0" --dry-run -f ENABLE
+
 exit 0

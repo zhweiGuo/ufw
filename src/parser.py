@@ -482,8 +482,10 @@ class UFWCommandDefault(UFWCommand):
         action = ""
         direction = "incoming"
         if len(argv) > 2:
-            if argv[2].lower() != "incoming" and argv[2].lower() != "input" and \
-               argv[2].lower() != "output" and argv[2].lower() != "outgoing":
+            if argv[2].lower() != "incoming" and \
+               argv[2].lower() != "input" and \
+               argv[2].lower() != "output" and \
+               argv[2].lower() != "outgoing":
                 raise ValueError()
             if argv[2].lower().startswith("in"):
                 direction = "incoming"
@@ -570,6 +572,7 @@ class UFWParserResponse:
     def __init__(self, action):
         self.action = action.lower()
         self.dryrun = False
+        self.force = False
         self.data = {}
 
     def __str__(self):
@@ -602,6 +605,12 @@ class UFWParser:
             dryrun = True
             args.remove(args[0])
 
+        force = False
+        if len(args) > 0 and (args[0].lower() == "--force" or \
+                              args[0].lower() == "-f"):
+            force = True
+            args.remove(args[0])
+
         cmd = ""
         type = ""
 
@@ -630,6 +639,7 @@ class UFWParser:
         cmd = self.commands[type][action]
         response = cmd.parse(args)
         response.dryrun = dryrun
+        response.force = force
 
         return response
 

@@ -27,6 +27,7 @@ ufw (0.30) UNRELEASED; urgency=low
     that are now used in after*.rules (LP: #488032)
   * add rsyslog example configuration and update README
   * add reset command (LP: #436608)
+  * add --force option to enable (LP: #496267)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 01 Feb 2010 23:13:55 -0800
 
