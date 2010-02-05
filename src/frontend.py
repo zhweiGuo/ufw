@@ -54,7 +54,7 @@ def parse_command(argv):
 
     # Show commands
     for i in ['raw', 'before-rules', 'user-rules', 'after-rules', \
-              'logging-rules', 'builtins']:
+              'logging-rules', 'builtins', 'listening']:
         p.register_command(ufw.parser.UFWCommandShow(i))
 
     # Rule commands
@@ -474,7 +474,11 @@ class UFWFrontend:
         elif action == "status-verbose":
             res = self.get_status(True)
         elif action.startswith("show"):
-            res = self.get_show_raw(action.split('-')[1])
+            tmp = action.split('-')[1]
+            if tmp == "listening":
+                res = self.get_show_listening()
+            else:
+                res = self.get_show_raw(tmp)
         elif action == "status-numbered":
             res = self.get_status(False, True)
         elif action == "enable":

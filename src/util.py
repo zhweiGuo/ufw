@@ -1,7 +1,7 @@
 #
 # util.py: utility functions for ufw
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -366,6 +366,24 @@ def get_ppid(p=os.getpid()):
 
     return int(ppid)
 
+def get_exe(p):
+    '''Finds executable for pid. See 'man 5 proc' for details.'''
+    try:
+        pid = int(p)
+    except Exception:
+        raise ValueError("pid must be an integer")
+
+    name = os.path.join("/proc", str(pid), "exe")
+    if not os.path.isfile(name):
+        raise IOError("Couldn't find '%s'" % (name))
+
+    try:
+        exe = os.readlink(p)
+    except Exception:
+        raise
+
+    return exe
+
 
 def under_ssh(pid=os.getpid()):
     '''Determine if current process is running under ssh'''
@@ -535,3 +553,36 @@ def get_iptables_version(exe="/sbin/iptables"):
     tmp = re.split('\s', out)
     return re.sub('^v', '', tmp[1])
 
+def get_netstat_output():
+    '''Get netstat output'''
+
+    # d[proto][port] -> list of dicts:
+    #   d[proto][port][0][laddr|raddr|uid|pid|exe]
+
+    # TODO: don't hardcode this path
+    rc, report = cmd(['/bin/netstat', '-enlp'])
+    d = dict()
+    for line in report.splitlines():
+        if not line.startswith('tcp') and not line.startswith('udp'):
+            continue
+
+        tmp = line.split()
+
+        proto = tmp[0]
+        port  = tmp[3].split(':')[-1]
+
+        item = dict()
+        item['laddr'] = ':'.join(tmp[3].split(':')[:-1])
+        item['raddr'] = tmp[4]
+        item['uid']   = tmp[6]
+        item['pid']   = tmp[8].split('/')[0]
+        item['exe']   = get_exe(tmp[8].split('/')[1])
+
+        if not d.has_key(proto):
+            d[proto] = dict()
+        else:
+            if not d[proto].has_key(port):
+                d[proto][port] = []
+            d[proto][port].append(item)
+
+    return d
