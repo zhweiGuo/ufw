@@ -357,13 +357,19 @@ class UFWRule:
         if changed:
             self.updated = changed
 
-    def match(x, y):
+    def match(x, y, fuzzy=False):
         '''Check if rules match
         Return codes:
           0  match
           1  no match
          -1  match all but action
+         -2  fuzzy match
+
+        Fuzzy match will match if x is more specific than y. Eg, for protocol
+        if x is tcp and y is all or for address if y is a network and x is
+        a subset of y (where x is either an address or network).
         '''
+        is_fuzzy = False
         if not x or not y:
             raise ValueError()
 
@@ -375,14 +381,25 @@ class UFWRule:
             debug(dbg_msg)
             return 1
         if x.protocol != y.protocol:
-            debug(dbg_msg)
-            return 1
+            if fuzzy and y.protocol == "any":
+                is_fuzzy = True
+            else:
+                debug(dbg_msg)
+                return 1
         if x.src != y.src:
-            debug(dbg_msg)
-            return 1
+            if fuzzy:
+                if ('/' in y.src and ufw.util.in_network(x.src, y.src, x.v6)):
+                    is_fuzzy = True
+            else:
+                debug(dbg_msg)
+                return 1
         if x.dst != y.dst:
-            debug(dbg_msg)
-            return 1
+            if fuzzy:
+                if ('/' in y.dst and ufw.util.in_network(x.dst, y.dst, x.v6)):
+                    is_fuzzy = True
+            else:
+                debug(dbg_msg)
+                return 1
         if x.v6 != y.v6:
             debug(dbg_msg)
             return 1
@@ -398,16 +415,25 @@ class UFWRule:
             return 1
         if x.direction != y.direction:
             return 1
-        if x.action == y.action and x.logtype == y.logtype:
+        if not fuzzy and x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
+
+        if fuzzy and is_fuzzy:
+            dbg_msg = _("Found fuzzy match")
+            debug(dbg_msg)
+            return -2
+
         dbg_msg = _("Found non-action/non-logtype match " \
                     "(%(xa)s/%(ya)s %(xl)s/%(yl)s)") % \
                     ({'xa': x.action, 'ya': y.action, \
                       'xl': x.logtype, 'yl': y.logtype})
         debug(dbg_msg)
         return -1
+
+    def fuzzy_match(x, y):
+        return x.match(y, fuzzy=True)
 
     def get_app_tuple(self):
         '''Returns a tuple to identify an app rule. Tuple is:

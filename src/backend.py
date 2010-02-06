@@ -573,6 +573,20 @@ class UFWBackend:
 
         return count
 
+    def get_matching(self, rule):
+        '''See if there is a matching rule in the existing ruleset'''
+        matched = []
+        count = 0
+        for r in self.rules + self.rules6:
+            #print "JAMIE: Checking %s == %s\n" % (rule, r)
+            count += 1
+            if not rule.v6 == r.v6:
+                continue
+            if rule.fuzzy_match(r) < 1:
+                matched.append(count)
+
+        return matched
+
     # API overrides
     def get_default_policy(self):
         raise UFWError("UFWBackend.get_default_policy: need to override")

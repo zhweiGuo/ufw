@@ -267,16 +267,37 @@ class UFWFrontend:
     def get_show_listening(self):
         '''Shows listening services'''
         res = ""
-        d = ufw.util.get_netstat_output()
+        try:
+            d = ufw.util.get_netstat_output()
+        except Exception:
+            err_msg = _("Could not get listening status (are you root?)")
+            raise UFWError(err_msg)
         protocols = d.keys()
         protocols.sort()
-        for key in protocols:
-            res += "%s:\n" % (key)
-            ports = d[key].keys()
+        for proto in protocols:
+            res += "%s:\n" % (proto)
+            ports = d[proto].keys()
             ports.sort()
-            for p in ports:
-                res += "%s\n" % (str(d[key][p]))
-                res += "%s (%s) %s\n" % (p, d[key][p]['exe'], d[key][p]['laddr'])
+            for port in ports:
+                for item in d[proto][port]:
+                    addr = item['laddr']
+                    if not addr.startswith("127.") and \
+                       not addr.startswith("::1"):
+                        if addr == "0.0.0.0" or addr == "::":
+                            addr = 'ALL'
+                        res += "  %s (%s) %s" % (port, \
+                                os.path.basename(item['exe']), \
+                                addr)
+
+                        if addr == "ALL":
+                            addr = "%s/0" % (item['laddr'])
+                        rule = ufw.common.UFWRule("allow", proto[:3], port, addr)
+                        
+                        matching = self.backend.get_matching(rule)
+                        if len(matching) > 0:
+                            res += " (" + str(matching) + ")"
+
+                        res += "\n"
         return res
 
     def set_rule(self, rule, ip_version):

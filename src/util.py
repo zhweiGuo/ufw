@@ -146,7 +146,7 @@ def valid_address(addr, version="any"):
 
 def normalize_address(orig, v6):
     '''Convert address to standard form. Use no netmask for IP addresses. If
-       If netmask is specified and not all 1's, for IPv4 use cidr if possible,
+       netmask is specified and not all 1's, for IPv4 use cidr if possible,
        otherwise dotted netmask and for IPv6, use cidr.
     '''
     net = []
@@ -544,6 +544,46 @@ def _address4_to_network(addr):
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
 
     return network + "/" + orig_nm
+
+def in_network(x, y, v6):
+    '''Determine if address is in network'''
+
+    tmp = y.split('/')
+    if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
+        raise ValueError
+    orig_network = tmp[0]
+    netmask = tmp[1]
+
+    address = x
+    if '/' in x:
+        tmp = x.split('/')
+        if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
+            raise ValueError
+        address = tmp[0]
+
+    if v6:
+        if not valid_address6(address) or not valid_address6(orig_network):
+            raise ValueError()
+    else:
+        if not valid_address4(address) or not valid_address4(orig_network):
+            raise ValueError()
+
+    if _valid_cidr_netmask(netmask, v6):
+        try:
+            netmask = _cidr_to_dotted_netmask(netmask, v6)
+        except Exception:
+            raise
+
+
+    # Now apply the network's netmask to the address
+    host_bits = long(struct.unpack('>L',socket.inet_aton(address))[0])
+    nm_bits = long(struct.unpack('>L',socket.inet_aton(netmask))[0])
+    network = socket.inet_ntoa(struct.pack('>L', host_bits & nm_bits))
+
+    debug
+
+    return network == orig_network
+
 
 def get_iptables_version(exe="/sbin/iptables"):
     '''Return iptables version'''
