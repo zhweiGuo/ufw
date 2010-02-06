@@ -264,6 +264,21 @@ class UFWFrontend:
 
         return out
 
+    def get_show_listening(self):
+        '''Shows listening services'''
+        res = ""
+        d = ufw.util.get_netstat_output()
+        protocols = d.keys()
+        protocols.sort()
+        for key in protocols:
+            res += "%s:\n" % (key)
+            ports = d[key].keys()
+            ports.sort()
+            for p in ports:
+                res += "%s\n" % (str(d[key][p]))
+                res += "%s (%s) %s\n" % (p, d[key][p]['exe'], d[key][p]['laddr'])
+        return res
+
     def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
         res = ""

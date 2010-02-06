@@ -378,7 +378,7 @@ def get_exe(p):
         raise IOError("Couldn't find '%s'" % (name))
 
     try:
-        exe = os.readlink(p)
+        exe = os.readlink(name)
     except Exception:
         raise
 
@@ -553,14 +553,14 @@ def get_iptables_version(exe="/sbin/iptables"):
     tmp = re.split('\s', out)
     return re.sub('^v', '', tmp[1])
 
-def get_netstat_output():
+def get_netstat_output(exe="/bin/netstat"):
     '''Get netstat output'''
 
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
 
     # TODO: don't hardcode this path
-    rc, report = cmd(['/bin/netstat', '-enlp'])
+    rc, report = cmd([exe, '-enlp'])
     d = dict()
     for line in report.splitlines():
         if not line.startswith('tcp') and not line.startswith('udp'):
@@ -575,14 +575,19 @@ def get_netstat_output():
         item['laddr'] = ':'.join(tmp[3].split(':')[:-1])
         item['raddr'] = tmp[4]
         item['uid']   = tmp[6]
-        item['pid']   = tmp[8].split('/')[0]
-        item['exe']   = get_exe(tmp[8].split('/')[1])
+
+        idx = 8
+        if proto.startswith("udp"):
+            idx = 7
+        item['pid'] = tmp[idx].split('/')[0]
+        item['exe'] = get_exe(item['pid'])
 
         if not d.has_key(proto):
             d[proto] = dict()
+            d[proto][port] = []
         else:
             if not d[proto].has_key(port):
                 d[proto][port] = []
-            d[proto][port].append(item)
+        d[proto][port].append(item)
 
     return d
