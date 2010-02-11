@@ -72,6 +72,21 @@ if [ -n "$error" ]; then
 fi
 echo ""
 
+# check /proc
+for i in /proc/net/dev /proc/net/if_inet6; do
+    echo -n "Has $i: "
+    if [ ! -e "$i" ]; then
+        echo "no"
+        error="yes"
+    else
+        echo "pass"
+    fi
+done  
+if [ -n "$error" ]; then
+    exit 1
+fi
+echo ""
+
 # check modules
 for i in "" 6; do
     exe="iptables"
