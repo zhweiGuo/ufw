@@ -2688,6 +2688,66 @@ Reset test
 526: reset
 
 
+Show
+Setting IPV6 to yes
 527: disable
+
+
+528: enable
+
+
+529: show raw
+
+
+530: show builtins
+
+
+531: show before-rules
+
+
+532: show user-rules
+
+
+533: show after-rules
+
+
+534: show logging-rules
+
+
+535: show listening
+
+
+Setting IPV6 to no
+536: disable
+
+
+537: enable
+
+
+538: show raw
+
+
+539: show builtins
+
+
+540: show before-rules
+
+
+541: show user-rules
+
+
+542: show after-rules
+
+
+543: show logging-rules
+
+
+544: show listening
+
+
+545: disable
+
+
+546: disable
 
 
