@@ -25,6 +25,8 @@ ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
+ufw [\fB\-\-dry\-run\fR] \fBdelete\fR NUM
+.TP
 ufw [\fB\-\-dry\-run\fR] \fBapp\fR \fBlist|info|default|update\fR
 
 .SH OPTIONS
@@ -81,7 +83,7 @@ add reject rule.  See \fBRULE SYNTAX\fR
 \fBlimit\fR ARGS
 add limit rule.  Currently only IPv4 is supported.  See \fBRULE SYNTAX\fR
 .TP
-\fBdelete\fR RULE
+\fBdelete\fR RULE|NUM
 deletes the corresponding RULE
 .TP
 \fBinsert\fR NUM RULE
@@ -173,6 +175,15 @@ Use this to delete it:
 
   ufw delete deny 80/tcp
 
+You may also specify the rule by NUM, as seen in the \fBstatus numbered\fR
+output. For example, if you want to delete rule number '3', use:
+
+  ufw delete 3
+
+If you have IPv6 enabled and are deleting a generic rule that applies to both
+IPv4 and IPv6 (eg 'ufw allow 22/tcp'), deleting by rule number will delete only
+the specified rule. To delete both with the same command, prefix the original
+rule with \fBdelete\fR.
 .PP
 To insert a rule, specify the new rule as normal, but prefix the rule with
 the rule number to insert. For example, if you have four rules, and you want

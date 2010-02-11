@@ -84,10 +84,19 @@ class UFWCommandRule(UFWCommand):
 
         # TODO: break this out
         if len(argv) > 0:
-            if argv[0].lower() == "delete":
+            if argv[0].lower() == "delete" and len(argv) > 1:
                 remove = True
                 argv.remove(argv[0])
-                action = argv[0]
+                rule_num = None
+                try:
+                    rule_num = int(argv[0])
+                except Exception:
+                    action = argv[0]
+
+                # return quickly if deleting by rule number
+                if rule_num != None:
+                    r = UFWParserResponse('delete-%d' % rule_num)
+                    return r
 
             elif argv[0].lower() == "insert":
                 if len(argv) < 4:

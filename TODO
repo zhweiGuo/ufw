@@ -10,8 +10,6 @@ MAC address filtering (ie ebtables)
 
 nftables backend (long term)
 
-Delete rule be rule number (LP: #367571)
-
 Support IPv6 6to4 tunnels (LP: #502655)
 
 Copyright 2008-2010 Canonical Ltd.

@@ -129,7 +129,7 @@ Usage: %(progname)s %(command)s
          'deny': "deny ARGS", \
          'reject': "reject ARGS", \
          'limit': "limit ARGS", \
-         'delete': "delete RULE", \
+         'delete': "delete RULE|NUM", \
          'urule': "RULE", \
          'insert': "insert NUM RULE", \
          'number': "NUM", \
@@ -498,6 +498,28 @@ class UFWFrontend:
 
         return res
 
+    def delete_rule(self, number):
+        '''Delete rule'''
+        try:
+            n = int(number)
+        except Exception:
+            err_msg = _("Could not find rule '%s'") % number
+            raise UFWError(err_msg)
+
+        rules = self.backend.get_rules()
+        if n <= 0 or n > len(rules):
+            err_msg = _("Could not find rule '%d'") % n
+            raise UFWError(err_msg)
+
+        rule = rules[n-1]
+        rule.remove = True
+
+        ip_version = "v4"
+        if rule.v6:
+            ip_version = "v6"
+
+        return self.set_rule(rule, ip_version)
+
     def do_action(self, action, rule, ip_version):
         '''Perform action on rule. action, rule and ip_version are usually
            based on return values from parse_command().
@@ -542,6 +564,8 @@ class UFWFrontend:
                 res = _("Firewall reloaded")
             else:
                 res = _("Firewall not enabled (skipping reload)")
+        elif action.startswith("delete-"):
+            res = self.delete_rule(action.split('-')[1])
         elif action == "allow" or action == "deny" or action == "reject" or \
              action == "limit":
             # allow case insensitive matches for application rules
