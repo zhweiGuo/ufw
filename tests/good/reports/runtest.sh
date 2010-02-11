@@ -31,7 +31,7 @@ sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 for i in "" "in on eth0" ; do
     if [ -z "$i" ]; then
         do_cmd "0" null allow in 123
-        do_cmd "0" null allow in 123/udp
+        do_cmd "0" null allow in OpenNTPD
         do_cmd "0" null allow in 123/tcp
     else
         do_cmd "0" null allow out 123
@@ -57,7 +57,7 @@ for i in "" "in on eth0" ; do
     do_cmd "0" null allow $i to fe80::211:aaaa:bbbb port 123
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto udp
-    do_cmd "0" null allow $i to 10.0.0.0/16 port 123 proto udp
+    do_cmd "0" null allow $i to 10.0.0.0/16 app OpenNTPD
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto udp
     do_cmd "0" null allow $i to fe80::211:aaaa:bbbb port 123 proto udp
