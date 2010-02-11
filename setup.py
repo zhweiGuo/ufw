@@ -86,6 +86,11 @@ class Install(_install, object):
 
             subprocess.call(["sed",
                              "-i",
+                             "s%#NETSTAT_EXE#%" + netstat_exe + "%g",
+                             os.path.join('staging', file)])
+
+            subprocess.call(["sed",
+                             "-i",
                              "s%#SHARE_DIR#%" + real_sharedir + "%g",
                              os.path.join('staging', file)])
 
@@ -223,26 +228,41 @@ os.unlink(os.path.join('staging', 'ufw-init-functions'))
 
 iptables_exe = ''
 iptables_dir = ''
-found = False
-required_binaries = ['iptables', 'ip6tables', 'iptables-restore',
-                     'ip6tables-restore']
-for dir in ['/sbin', '/bin', '/usr/sbin', '/usr/bin', '/usr/local/sbin', \
-            '/usr/local/bin']:
-    for e in required_binaries:
-        if not os.path.exists(os.path.join(dir, e)):
+netstat_exe = ''
+
+for e in ['netstat', 'iptables']:
+    for dir in ['/sbin', '/bin', '/usr/sbin', '/usr/bin', '/usr/local/sbin', \
+                '/usr/local/bin']:
+        if e == "netstat":
+            if os.path.exists(os.path.join(dir, e)):
+                netstat_exe = os.path.join(dir, "netstat")
+                print "Found '%s'" % netstat_exe
+            else:
+                continue
+
+        if e == "iptables":
+            if os.path.exists(os.path.join(dir, e)):
+                iptables_dir = dir
+                iptables_exe = os.path.join(iptables_dir, "iptables")
+                print "Found '%s'" % iptables_exe
+            else:
+                continue
+
+        if iptables_exe != "" and netstat_exe != "":
             break
 
-        if e == required_binaries[-1]:
-            found = True
-            break
-    if found:
-        iptables_dir = dir
-        iptables_exe = os.path.join(iptables_dir, "iptables")
-        break
 
-if not found:
-    print >> sys.stderr, "ERROR: could not find all required binaries:" % \
-                         (required_binaries)
+if iptables_exe == '':
+    print >> sys.stderr, "ERROR: could not find required binary 'iptables'"
+    sys.exit(1)
+
+for e in ['ip6tables', 'iptables-restore', 'ip6tables-restore']:
+    if not os.path.exists(os.path.join(iptables_dir, e)):
+        print >> sys.stderr, "ERROR: could not find required binary '%s'" % (e)
+        sys.exit(1)
+
+if netstat_exe == '':
+    print >> sys.stderr, "ERROR: could not find required binary 'netstat'"
     sys.exit(1)
 
 (rc, out) = cmd([iptables_exe, '-V'])

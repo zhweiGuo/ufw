@@ -1,0 +1,24 @@
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       User       Inode       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      0          4301        1029/sshd       
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      0          5242        1334/cupsd      
+tcp6       0      0 :::22                   :::*                    LISTEN      0          4303        1029/sshd       
+tcp6       0      0 ::1:631                 :::*                    LISTEN      0          5241        1334/cupsd      
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           0          9482        1925/dhclient   
+udp        0      0 0.0.0.0:68              0.0.0.0:*                           0          4938        1149/dhclient   
+udp        0      0 0.0.0.0:33257           0.0.0.0:*                           105        4774        1052/avahi-daemon: 
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           105        4773        1052/avahi-daemon: 
+udp        0      0 10.0.2.101:123          0.0.0.0:*                           0          9795        2043/ntpd       
+udp        0      0 10.0.2.9:123            0.0.0.0:*                           0          9794        2043/ntpd       
+udp        0      0 127.0.0.1:123           0.0.0.0:*                           0          9793        2043/ntpd       
+udp        0      0 0.0.0.0:123             0.0.0.0:*                           0          9785        2043/ntpd       
+udp6       0      0 fe80::212:cccc:dddd:123 :::*                                0          9792        2043/ntpd       
+udp6       0      0 fe80::211:aaaa:bbbb:123 :::*                                0          9791        2043/ntpd       
+udp6       0      0 ::1:123                 :::*                                0          9790        2043/ntpd       
+udp6       0      0 :::123                  :::*                                0          9786        2043/ntpd       
+Active UNIX domain sockets (only servers)
+Proto RefCnt Flags       Type       State         I-Node   PID/Program name    Path
+unix  2      [ ACC ]     STREAM     LISTENING     5132     1280/acpid          /var/run/acpid.socket
+unix  2      [ ACC ]     STREAM     LISTENING     4625     1052/avahi-daemon:  /var/run/avahi-daemon/socket
+unix  2      [ ACC ]     STREAM     LISTENING     4982     1179/X              @/tmp/.X11-unix/X0
+unix  2      [ ACC ]     STREAM     LISTENING     4983     1179/X              /tmp/.X11-unix/X0

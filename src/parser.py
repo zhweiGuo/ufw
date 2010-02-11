@@ -572,6 +572,8 @@ class UFWCommandShow(UFWCommand):
             action = "show-logging"
         elif argv[1].lower() == "builtins":
             action = "show-builtins"
+        elif argv[1].lower() == "listening":
+            action = "show-listening"
         else:
             raise ValueError()
 

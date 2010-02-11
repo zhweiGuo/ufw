@@ -54,7 +54,7 @@ def parse_command(argv):
 
     # Show commands
     for i in ['raw', 'before-rules', 'user-rules', 'after-rules', \
-              'logging-rules', 'builtins']:
+              'logging-rules', 'builtins', 'listening']:
         p.register_command(ufw.parser.UFWCommandShow(i))
 
     # Rule commands
@@ -263,6 +263,56 @@ class UFWFrontend:
             error(e.value)
 
         return out
+
+    def get_show_listening(self):
+        '''Shows listening services'''
+        res = ""
+        try:
+            d = ufw.util.get_netstat_output(ufw.common.netstat_exe)
+        except Exception:
+            err_msg = _("Could not get listening status (are you root?)")
+            raise UFWError(err_msg)
+
+        rules = self.backend.get_rules()
+
+        protocols = d.keys()
+        protocols.sort()
+        for proto in protocols:
+            res += "%s:\n" % (proto)
+            ports = d[proto].keys()
+            ports.sort()
+            for port in ports:
+                for item in d[proto][port]:
+                    addr = item['laddr']
+                    if not addr.startswith("127.") and \
+                       not addr.startswith("::1"):
+                        ifname = ""
+
+                        res += "  %s " % port
+                        if addr == "0.0.0.0" or addr == "::":
+                            res += "* "
+                            addr = "%s/0" % (item['laddr'])
+                        else:
+                            res += "%s " % addr
+                            ifname = ufw.util.get_if_from_ip(addr)
+                        res += "(%s)" % os.path.basename(item['exe'])
+
+                        rule = ufw.common.UFWRule("allow", proto[:3], port, \
+                                                  addr)
+                        rule.set_v6(proto.endswith("6"))
+
+                        if ifname != "":
+                            rule.set_interface("in", ifname)
+
+                        matching = self.backend.get_matching(rule)
+                        if len(matching) > 0:
+                            res += "\n"
+                            for i in matching:
+                                if i > 0 and i - 1 < len(rules):
+                                    res += "   [%2d] %s\n" % (i, rules[i-1])
+
+                        res += "\n"
+        return res
 
     def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
@@ -474,7 +524,11 @@ class UFWFrontend:
         elif action == "status-verbose":
             res = self.get_status(True)
         elif action.startswith("show"):
-            res = self.get_show_raw(action.split('-')[1])
+            tmp = action.split('-')[1]
+            if tmp == "listening":
+                res = self.get_show_listening()
+            else:
+                res = self.get_show_raw(tmp)
         elif action == "status-numbered":
             res = self.get_status(False, True)
         elif action == "enable":

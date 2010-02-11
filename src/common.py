@@ -28,6 +28,7 @@ trans_dir = share_dir
 config_dir = "#CONFIG_PREFIX#"
 prefix_dir = "#PREFIX#"
 iptables_dir = "#IPTABLES_DIR#"
+netstat_exe = "#NETSTAT_EXE#"
 
 class UFWError(Exception):
     '''This class represents ufw exceptions'''
@@ -367,7 +368,7 @@ class UFWRule:
         if not x or not y:
             raise ValueError()
 
-        dbg_msg = _("No match")
+        dbg_msg = "No match '%s' '%s'" % (x, y)
         if x.dport != y.dport:
             debug(dbg_msg)
             return 1
@@ -393,21 +394,106 @@ class UFWRule:
             debug(dbg_msg)
             return 1
         if x.interface_in != y.interface_in:
+            debug(dbg_msg)
             return 1
         if x.interface_out != y.interface_out:
+            debug(dbg_msg)
             return 1
         if x.direction != y.direction:
+            debug(dbg_msg)
             return 1
         if x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
+
         dbg_msg = _("Found non-action/non-logtype match " \
                     "(%(xa)s/%(ya)s %(xl)s/%(yl)s)") % \
                     ({'xa': x.action, 'ya': y.action, \
                       'xl': x.logtype, 'yl': y.logtype})
         debug(dbg_msg)
         return -1
+
+    def fuzzy_dst_match(x, y):
+	'''This will match if x is more specific than y. Eg, for protocol if x
+	   is tcp and y is all or for address if y is a network and x is a
+           subset of y (where x is either an address or network). Returns:
+
+            0  match
+            1  no match
+           -1  fuzzy match
+
+           This is a fuzzy destination match, so source ports or addresses
+           are not considered, and (currently) only incoming.
+        '''
+        if not x or not y:
+            raise ValueError()
+
+        # Ok if exact match
+        if x.match(y) == 0:
+            return 0
+
+        dbg_msg = "No fuzzy match '%s' '%s'" % (x, y)
+
+        # Direction must match
+        if y.direction != "in":
+            debug("(direction) " + dbg_msg + " (not incoming)")
+            return 1
+
+        # Protocols must match or y 'any'
+        if x.protocol != y.protocol and y.protocol != "any":
+            debug("(protocol) " + dbg_msg)
+            return 1
+
+        # Destination ports must match or y 'any'
+        if x.dport != y.dport and y.dport != "any":
+            debug("(dport) " + dbg_msg)
+            return 1
+
+        if y.interface_in == "":
+	    # If destination interface is not specified, destination addresses
+            # must match or x must be contained in y
+
+            if x.interface_in == "" and x._is_anywhere(x.dst):
+		# if x and y interfaces are not specified, and x.dst is
+                # anywhere then ok
+                pass
+            elif x.dst != y.dst and '/' not in y.dst:
+                debug("(dst) " + dbg_msg)
+                return 1
+            elif '/' in y.dst and not ufw.util.in_network(x.dst, y.dst, x.v6):
+                debug("(dst) " + dbg_msg)
+                return 1
+        else:
+	    # If destination interface is specified, then:
+            #  if specified, both interfaces must match or
+            #  the IP of the interface must match the IP of y or
+	    #  the IP of the interface must be contained in y
+            if x.interface_in != "" and x.interface_in != y.interface_in:
+                debug("(interface) " + dbg_msg + " (%s != %s)" % (x.interface_in, y.interface_in))
+                return 1
+
+            if_ip = ufw.util.get_ip_from_if(y.interface_in, x.v6)
+            if y.dst != if_ip and '/' not in y.dst:
+                debug("(interface) " + dbg_msg + " (%s != %s)" % (x.dst, if_ip))
+                return 1
+            elif '/' in y.dst and not ufw.util.in_network(if_ip, y.dst, x.v6):
+                debug("(interface) " + dbg_msg + " (not in network)")
+                return 1
+
+        if x.v6 != y.v6 and \
+           (not x._is_anywhere(x.dst) or not y._is_anywhere(y.dst)):
+            debug("(v6) " + dbg_msg)
+            return 1
+
+        # if we made it here, it is a fuzzy match
+        return -1
+
+    def _is_anywhere(self, addr):
+        '''Check if address is anywhere'''
+        if addr == "::/0" or addr == "0.0.0.0/0":
+            return True
+        return False
 
     def get_app_tuple(self):
         '''Returns a tuple to identify an app rule. Tuple is:

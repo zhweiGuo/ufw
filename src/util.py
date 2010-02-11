@@ -1,7 +1,7 @@
 #
 # util.py: utility functions for ufw
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2010 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -17,6 +17,7 @@
 #
 
 import errno
+import fcntl
 import os
 import re
 import shutil
@@ -24,6 +25,7 @@ import socket
 import struct
 import subprocess
 import sys
+
 from tempfile import mkstemp
 
 debugging = False
@@ -146,7 +148,7 @@ def valid_address(addr, version="any"):
 
 def normalize_address(orig, v6):
     '''Convert address to standard form. Use no netmask for IP addresses. If
-       If netmask is specified and not all 1's, for IPv4 use cidr if possible,
+       netmask is specified and not all 1's, for IPv4 use cidr if possible,
        otherwise dotted netmask and for IPv6, use cidr.
     '''
     net = []
@@ -366,6 +368,24 @@ def get_ppid(p=os.getpid()):
 
     return int(ppid)
 
+def get_exe(p):
+    '''Finds executable for pid. See 'man 5 proc' for details.'''
+    try:
+        pid = int(p)
+    except Exception:
+        raise ValueError("pid must be an integer")
+
+    name = os.path.join("/proc", str(pid), "exe")
+    if not os.path.isfile(name):
+        raise IOError("Couldn't find '%s'" % (name))
+
+    try:
+        exe = os.readlink(name)
+    except Exception:
+        raise
+
+    return exe
+
 
 def under_ssh(pid=os.getpid()):
     '''Determine if current process is running under ssh'''
@@ -527,6 +547,51 @@ def _address4_to_network(addr):
 
     return network + "/" + orig_nm
 
+def in_network(x, y, v6):
+    '''Determine if address is in network'''
+    tmp = y.split('/')
+    if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
+        raise ValueError
+    orig_network = tmp[0]
+    netmask = tmp[1]
+
+    if orig_network == "0.0.0.0" or orig_network == "::":
+        return True
+
+    address = x
+    if '/' in x:
+        tmp = x.split('/')
+        if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
+            raise ValueError
+        address = tmp[0]
+
+    if address == "0.0.0.0" or address == "::":
+        return True
+
+    if v6:
+        if not valid_address6(address) or not valid_address6(orig_network):
+            return False
+    else:
+        if not valid_address4(address) or not valid_address4(orig_network):
+            return False
+
+    if _valid_cidr_netmask(netmask, v6):
+        try:
+            netmask = _cidr_to_dotted_netmask(netmask, v6)
+        except Exception:
+            raise
+
+    # Now apply the network's netmask to the address
+    host_bits = long(struct.unpack('>L',socket.inet_aton(address))[0])
+    nm_bits = long(struct.unpack('>L',socket.inet_aton(netmask))[0])
+    network = socket.inet_ntoa(struct.pack('>L', host_bits & nm_bits))
+
+    if network == orig_network:
+        return True
+    return False
+    return network == orig_network
+
+
 def get_iptables_version(exe="/sbin/iptables"):
     '''Return iptables version'''
     (rc, out) = cmd([exe, '-V'])
@@ -535,3 +600,100 @@ def get_iptables_version(exe="/sbin/iptables"):
     tmp = re.split('\s', out)
     return re.sub('^v', '', tmp[1])
 
+def get_netstat_output(exe="/bin/netstat"):
+    '''Get netstat output'''
+
+    # d[proto][port] -> list of dicts:
+    #   d[proto][port][0][laddr|raddr|uid|pid|exe]
+
+    rc, report = cmd([exe, '-enlp'])
+    d = dict()
+    for line in report.splitlines():
+        if not line.startswith('tcp') and not line.startswith('udp'):
+            continue
+
+        tmp = line.split()
+
+        proto = tmp[0]
+        port  = tmp[3].split(':')[-1]
+
+        item = dict()
+        item['laddr'] = ':'.join(tmp[3].split(':')[:-1])
+        item['raddr'] = tmp[4]
+        item['uid']   = tmp[6]
+
+        idx = 8
+        if proto.startswith("udp"):
+            idx = 7
+        item['pid'] = tmp[idx].split('/')[0]
+        item['exe'] = get_exe(item['pid'])
+
+        if not d.has_key(proto):
+            d[proto] = dict()
+            d[proto][port] = []
+        else:
+            if not d[proto].has_key(port):
+                d[proto][port] = []
+        d[proto][port].append(item)
+
+    return d
+
+def get_ip_from_if(ifname, v6=False):
+    '''Get IP address for interface'''
+    if v6:
+        proc = '/proc/net/if_inet6'
+        if not os.path.exists(proc):
+            raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
+
+        for line in file(proc).readlines():
+            tmp = line.split()
+            if ifname == tmp[5]:
+                return ":".join( \
+                           [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
+
+        raise IOError(errno.ENODEV, "No such device")
+    else:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, \
+                                struct.pack('256s', ifname[:15]))[20:24])
+
+def get_if_from_ip(addr):
+    '''Get interface for IP address'''
+    v6 = False
+    if valid_address6(addr):
+        v6 = True
+    elif not valid_address4(addr):
+        raise IOError(errno.ENODEV, "No such device")
+
+    matched = ""
+    if v6:
+        proc = '/proc/net/if_inet6'
+        if not os.path.exists(proc):
+            raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
+
+        for line in file(proc).readlines():
+            tmp = line.split()
+            if addr == ":".join( \
+                           [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ]):
+                matched = tmp[5]
+                break
+    else:
+        proc = '/proc/net/dev'
+        if not os.path.exists(proc):
+            raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
+
+        for line in file(proc).readlines():
+            if ':' not in line:
+                continue
+            ifname = line.split(':')[0].strip()
+            # this can fail for certain devices, so just skip them
+            try:
+                ip = get_ip_from_if(ifname, False)
+            except IOError:
+                continue
+
+            if ip == addr:
+                matched = ifname
+                break
+
+    return matched

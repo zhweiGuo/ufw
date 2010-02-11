@@ -359,7 +359,7 @@ do
     sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
     do_cmd "0" nostats disable
     do_cmd "0" nostats enable
-    cmds="raw builtins before-rules user-rules after-rules logging-rules"
+    cmds="raw builtins before-rules user-rules after-rules logging-rules listening"
     for i in $cmds; do
         do_cmd "0" null show $i
     done
