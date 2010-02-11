@@ -193,7 +193,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                       'POSTROUTING']:
                 items.append('mangle:%s' % c)
                 items6.append('mangle:%s' % c)
-            for c in ['OUTPUT', 'POSTROUTING']:
+            for c in ['PREROUTING', 'OUTPUT']:
                 items.append('raw:%s' % c)
                 items6.append('raw:%s' % c)
             for c in ['PREROUTING', 'POSTROUTING', 'OUTPUT']:
@@ -242,7 +242,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if set == "raw" or self.use_ipv6():
             out += "\n\nIPV6:\n"
             for i in items6:
-                (rc, tmp) = cmd([self.ip6tables] + args + [i])
+                if ':' in i:
+                    (t, c) = i.split(':')
+                    out += "(%s) " % (t)
+                    (rc, tmp) = cmd([self.iptables] + args + [c, '-t', t])
+                else:
+                    (rc, tmp) = cmd([self.ip6tables] + args + [i])
                 out += tmp
                 if set != "raw":
                     out += "\n"
