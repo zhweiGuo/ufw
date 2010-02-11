@@ -327,8 +327,8 @@ currently not enabled.
 
 .SH REPORTS
 .PP
-The following reports are supported. Each is based on the running firewall and
-is in raw iptables format:
+The following reports are supported. Each is based on the live system and with
+the exception of the \fBlistening\fR report, is in raw iptables format:
 
   raw
   builtins
@@ -336,9 +336,19 @@ is in raw iptables format:
   user-rules
   after-rules
   logging-rules
+  listening
 
 The \fBraw\fR report shows the complete firewall, while the others show a
 subset of what is in the \fBraw\fR report.
+.PP
+The \fBlistening\fR report will display the ports on the live system in the
+listening state for tcp and the open state for udp, along with the address of
+the interface and the executable listening on the port. An '*' is used in
+place of the address of the interface when the executable is bound to all
+interfaces on that port. Following this information is a list of rules which
+may affect connections on this port. The rules are listed in the order they are
+evaluated by the kernel, and the first match wins.
+
 .SH NOTES
 .PP
 On installation, \fBufw\fR is disabled with a default incoming policy of deny
