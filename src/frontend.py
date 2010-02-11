@@ -498,7 +498,7 @@ class UFWFrontend:
 
         return res
 
-    def delete_rule(self, number):
+    def delete_rule(self, number, force=False):
         '''Delete rule'''
         try:
             n = int(number)
@@ -518,9 +518,26 @@ class UFWFrontend:
         if rule.v6:
             ip_version = "v6"
 
-        return self.set_rule(rule, ip_version)
+        proceed = True
+        if not force:
+            prompt = _("Deleting:\n %(rule)s\nProceed with operation " \
+                       "(%(yes)s|%(no)s)? ") % ({'rule': rule, \
+                                                 'yes': self.yes, \
+                                                 'no': self.no})
+            os.write(sys.stdout.fileno(), prompt)
+            ans = sys.stdin.readline().lower().strip()
+            if ans != "y" and ans != self.yes and ans != self.yes_full:
+                proceed = False
 
-    def do_action(self, action, rule, ip_version):
+        res = ""
+        if proceed:
+            res = self.set_rule(rule, ip_version)
+        else:
+            res = _("Aborted")
+
+        return res
+
+    def do_action(self, action, rule, ip_version, force=False):
         '''Perform action on rule. action, rule and ip_version are usually
            based on return values from parse_command().
         '''
@@ -565,7 +582,7 @@ class UFWFrontend:
             else:
                 res = _("Firewall not enabled (skipping reload)")
         elif action.startswith("delete-"):
-            res = self.delete_rule(action.split('-')[1])
+            res = self.delete_rule(action.split('-')[1], force)
         elif action == "allow" or action == "deny" or action == "reject" or \
              action == "limit":
             # allow case insensitive matches for application rules
@@ -790,8 +807,8 @@ class UFWFrontend:
         '''If running under ssh, prompt the user for confirmation'''
         proceed = True
         if self.backend.do_checks and ufw.util.under_ssh():
-            prompt = _("Command may disrupt existing ssh connections.")
-            prompt += _(" Proceed with operation (%(yes)s|%(no)s)? ") % \
+            prompt = _("Command may disrupt existing ssh connections. " \
+                       "Proceed with operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
             os.write(sys.stdout.fileno(), prompt)
             ans = sys.stdin.readline().lower().strip()
@@ -803,10 +820,13 @@ class UFWFrontend:
     def reset(self):
         '''Reset the firewall'''
         res = ""
-        prompt = _("Resetting all rules to installed defaults.")
+        prompt = _("Resetting all rules to installed defaults. Proceed with " \
+                   "operation (%(yes)s|%(no)s)? ") % \
+                   ({'yes': self.yes, 'no': self.no})
         if self.backend.do_checks and ufw.util.under_ssh():
-            prompt += _(" This may disrupt existing ssh connections.")
-        prompt += _(" Proceed with operation (%(yes)s|%(no)s)? ") % \
+            prompt = _("Resetting all rules to installed defaults. This may " \
+                       "disrupt existing ssh connections. Proceed with " \
+                       "operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
 
         if self.backend.do_checks:

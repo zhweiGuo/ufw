@@ -106,9 +106,9 @@ if __name__ == "__main__":
             if not bailout:
                 if pr.data.has_key('rule'):
                     res = ui.do_action(pr.action, pr.data['rule'], \
-                                       pr.data['iptype'])
+                                       pr.data['iptype'], pr.force)
                 else:
-                    res = ui.do_action(pr.action, "", "")
+                    res = ui.do_action(pr.action, "", "", pr.force)
 
         if res != "":
             msg(res)
