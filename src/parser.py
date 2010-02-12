@@ -461,29 +461,31 @@ class UFWCommandRule(UFWCommand):
             if r.logtype != "":
                 res += " %s" % r.logtype
 
-            src = r.src
-            if src == "0.0.0.0/0" or src == "::/0":
-                src = "any"
-            if src == "any" and r.sport == "any" and r.sapp == "":
-                pass
-            else:
-                res += " from %s" % src
-                if r.sapp != "":
-                    res += " app %s" % r.sapp
-                elif r.sport != "any":
-                    res += " port %s" % r.sport
-        
-            dst = r.dst
-            if dst == "0.0.0.0/0" or dst == "::/0":
-                dst = "any"
-            if dst == "any" and r.dport == "any" and r.dapp == "":
-                pass
-            else:
-                res += " to %s" % dst
-                if r.dapp != "":
-                    res += " app %s" % r.dapp
-                elif r.dport != "any":
-                    res += " port %s" % r.dport
+            for i in ['src', 'dst']:
+                if i == 'src':
+                    loc = r.src
+                    port = r.sport
+                    app = r.sapp
+                else:
+                    loc = r.dst
+                    port = r.dport
+                    app = r.dapp
+
+                if loc == "0.0.0.0/0" or loc == "::/0":
+                    loc = "any"
+                if loc == "any" and port == "any" and app == "":
+                    pass
+                else:
+                    res += " from %s" % loc
+                    if app != "":
+                        res += " app %s" % app
+                    elif port != "any":
+                        res += " port %s" % port
+
+	    # If still haven't added more than action, then we have a very
+            # generic rule, so mark it as such.
+            if res == r.action:
+                res += " to any"
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
                 res += " proto %s" % r.protocol
