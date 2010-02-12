@@ -466,17 +466,19 @@ class UFWCommandRule(UFWCommand):
                     loc = r.src
                     port = r.sport
                     app = r.sapp
+                    dir = "from"
                 else:
                     loc = r.dst
                     port = r.dport
                     app = r.dapp
+                    dir = "to"
 
                 if loc == "0.0.0.0/0" or loc == "::/0":
                     loc = "any"
                 if loc == "any" and port == "any" and app == "":
                     pass
                 else:
-                    res += " from %s" % loc
+                    res += " %s %s" % (dir, loc)
                     if app != "":
                         res += " app %s" % app
                     elif port != "any":
