@@ -430,6 +430,68 @@ class UFWCommandRule(UFWCommand):
 
         return r
 
+    def get_command(r):
+        '''Get command string for rule'''
+        res = r.action
+
+        if (r.dst == "0.0.0.0/0" or r.dst == "::/0") and \
+           (r.src == "0.0.0.0/0" or r.src == "::/0") and \
+           r.sport == "any" and \
+           r.sapp == "" and \
+           r.interface_in == "" and \
+           r.interface_out == "" and \
+           r.dport != "any":
+            # Short syntax
+            if r.direction == "out":
+                res += " %s" % r.direction
+            if r.logtype != "":
+                res += " %s" % r.logtype
+            if r.dapp != "":
+                res += " %s" % r.dapp
+            else:
+                res += " %s" % r.dport
+                if r.protocol != "any":
+                    res += "/%s" % r.protocol
+        else:
+            # Full syntax
+            if r.interface_in != "":
+                res += " in on %s" % r.interface_in
+            if r.interface_out != "":
+                res += " out on %s" % r.interface_out
+            if r.logtype != "":
+                res += " %s" % r.logtype
+
+            src = r.src
+            if src == "0.0.0.0/0" or src == "::/0":
+                src = "any"
+            if src == "any" and r.sport == "any" and r.sapp == "":
+                pass
+            else:
+                res += " from %s" % src
+                if r.sapp != "":
+                    res += " app %s" % r.sapp
+                elif r.sport != "any":
+                    res += " port %s" % r.sport
+        
+            dst = r.dst
+            if dst == "0.0.0.0/0" or dst == "::/0":
+                dst = "any"
+            if dst == "any" and r.dport == "any" and r.dapp == "":
+                pass
+            else:
+                res += " to %s" % dst
+                if r.dapp != "":
+                    res += " app %s" % r.dapp
+                elif r.dport != "any":
+                    res += " port %s" % r.dport
+
+            if r.protocol != "any" and r.dapp == "" and r.sapp == "":
+                res += " proto %s" % r.protocol
+        
+        return res
+    get_command = staticmethod(get_command)
+
+
 class UFWCommandApp(UFWCommand):
     '''Class for parsing ufw application commands'''
     def __init__(self, command):

@@ -309,7 +309,10 @@ class UFWFrontend:
                             res += "\n"
                             for i in matching:
                                 if i > 0 and i - 1 < len(rules):
-                                    res += "   [%2d] %s\n" % (i, rules[i-1])
+                                    res += "   [%2d] %s\n" % (i, \
+                                        ufw.parser.UFWCommandRule.get_command(\
+                                          rules[i-1])
+                                    )
 
                         res += "\n"
         return res
@@ -520,8 +523,9 @@ class UFWFrontend:
 
         proceed = True
         if not force:
+            rstr = ufw.parser.UFWCommandRule.get_command(rule)
             prompt = _("Deleting:\n %(rule)s\nProceed with operation " \
-                       "(%(yes)s|%(no)s)? ") % ({'rule': rule, \
+                       "(%(yes)s|%(no)s)? ") % ({'rule': rstr, \
                                                  'yes': self.yes, \
                                                  'no': self.no})
             os.write(sys.stdout.fileno(), prompt)
