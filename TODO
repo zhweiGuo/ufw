@@ -10,6 +10,4 @@ MAC address filtering (ie ebtables)
 
 nftables backend (long term)
 
-Support IPv6 6to4 tunnels (LP: #502655)
-
 Copyright 2008-2010 Canonical Ltd.

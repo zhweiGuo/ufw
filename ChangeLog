@@ -32,6 +32,7 @@ ufw (0.30) UNRELEASED; urgency=low
     with multibyte characters
   * add more reports
   * add delete by rule number (LP: #367571)
+  * add support for IPv6 tunnels and 6to4 (LP: #502655)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 01 Feb 2010 23:13:55 -0800
 
