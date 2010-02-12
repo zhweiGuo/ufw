@@ -352,7 +352,7 @@ grep -v -q 12345 $TESTSTATE/user.rules || {
     exit 1
 }
 
-echo "Show" >> $TESTTMP/result || exit 1
+echo "Show" >> $TESTTMP/result
 for ipv6 in yes no
 do
     echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
@@ -364,6 +364,55 @@ do
         do_cmd "0" null show $i
     done
 done
+do_cmd "0" nostats disable
+
+echo "Delete by number" >> $TESTTMP/result
+for ipv6 in yes no
+do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
+
+    for i in 1 2 3 4; do
+        do_cmd "0" nostats allow $i
+    done
+
+    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    if [ "$ipv6" = "yes" ]; then
+        grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+    fi
+
+    for i in 4 3 2 1; do
+        grep -q "^### tuple ### allow any $i " $TESTSTATE/user.rules || {
+            echo "Failed: Could not find port '$i' user.rules" >> $TESTTMP/result
+            exit 1
+        }
+        if [ "$ipv6" = "yes" ]; then
+            grep -q "^### tuple ### allow any $i " $TESTSTATE/user6.rules || {
+                echo "Failed: Could not find port '$i' user6.rules" >> $TESTTMP/result
+                exit 1
+            }
+        fi
+
+        if [ "$ipv6" = "yes" ]; then
+            do_cmd "0" null --force delete $((i+i))
+            grep -v -q "^### tuple ### allow any $i " $TESTSTATE/user6.rules || {
+                echo "Failed: Found port '$i' user6.rules" >> $TESTTMP/result
+                exit 1
+            }
+            grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        fi
+        do_cmd "0" null --force delete $i
+        grep -v -q "^### tuple ### allow any $i " $TESTSTATE/user.rules || {
+            echo "Failed: Found port '$i' user.rules" >> $TESTTMP/result
+            exit 1
+        }
+        grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    done
+done
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 do_cmd "0" nostats disable
 
 cleanup

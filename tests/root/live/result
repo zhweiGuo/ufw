@@ -2748,6 +2748,192 @@ Setting IPV6 to no
 545: disable
 
 
+Delete by number
+Setting IPV6 to yes
 546: disable
+
+
+547: enable
+
+
+548: allow 1
+
+
+549: allow 2
+
+
+550: allow 3
+
+
+551: allow 4
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw-user-input -p udp --dport 2 -j ACCEPT
+--
+### tuple ### allow any 3 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 3 -j ACCEPT
+-A ufw-user-input -p udp --dport 3 -j ACCEPT
+--
+### tuple ### allow any 4 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 4 -j ACCEPT
+-A ufw-user-input -p udp --dport 4 -j ACCEPT
+### tuple ### allow any 1 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw6-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw6-user-input -p udp --dport 2 -j ACCEPT
+--
+### tuple ### allow any 3 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 3 -j ACCEPT
+-A ufw6-user-input -p udp --dport 3 -j ACCEPT
+--
+### tuple ### allow any 4 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 4 -j ACCEPT
+-A ufw6-user-input -p udp --dport 4 -j ACCEPT
+552: --force delete 8
+
+
+### tuple ### allow any 1 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw6-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw6-user-input -p udp --dport 2 -j ACCEPT
+--
+### tuple ### allow any 3 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 3 -j ACCEPT
+-A ufw6-user-input -p udp --dport 3 -j ACCEPT
+553: --force delete 4
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw-user-input -p udp --dport 2 -j ACCEPT
+--
+### tuple ### allow any 3 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 3 -j ACCEPT
+-A ufw-user-input -p udp --dport 3 -j ACCEPT
+554: --force delete 6
+
+
+### tuple ### allow any 1 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw6-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw6-user-input -p udp --dport 2 -j ACCEPT
+555: --force delete 3
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw-user-input -p udp --dport 2 -j ACCEPT
+556: --force delete 4
+
+
+### tuple ### allow any 1 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw6-user-input -p udp --dport 1 -j ACCEPT
+557: --force delete 2
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+558: --force delete 2
+
+
+559: --force delete 1
+
+
+Setting IPV6 to no
+560: disable
+
+
+561: enable
+
+
+562: allow 1
+
+
+563: allow 2
+
+
+564: allow 3
+
+
+565: allow 4
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw-user-input -p udp --dport 2 -j ACCEPT
+--
+### tuple ### allow any 3 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 3 -j ACCEPT
+-A ufw-user-input -p udp --dport 3 -j ACCEPT
+--
+### tuple ### allow any 4 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 4 -j ACCEPT
+-A ufw-user-input -p udp --dport 4 -j ACCEPT
+566: --force delete 4
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw-user-input -p udp --dport 2 -j ACCEPT
+--
+### tuple ### allow any 3 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 3 -j ACCEPT
+-A ufw-user-input -p udp --dport 3 -j ACCEPT
+567: --force delete 3
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+--
+### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 2 -j ACCEPT
+-A ufw-user-input -p udp --dport 2 -j ACCEPT
+568: --force delete 2
+
+
+### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 1 -j ACCEPT
+-A ufw-user-input -p udp --dport 1 -j ACCEPT
+569: --force delete 1
+
+
+570: disable
+
+
+571: disable
 
 

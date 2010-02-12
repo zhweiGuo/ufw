@@ -2592,6 +2592,168 @@ WARN: Checks disabled
 Status: active
 
 
+Delete by number
+Setting IPV6 to yes
 275: disable
+
+
+276: enable
+
+
+277: allow from any app Samba
+
+
+278: allow Samba
+
+
+279: allow 22/tcp
+
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow udp any ::/0 137,138 ::/0 - Samba in
+-A ufw6-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any ::/0 139,445 ::/0 - Samba in
+-A ufw6-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 22 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 22 -j ACCEPT
+
+280: --force delete 6
+
+
+### tuple ### allow udp any ::/0 137,138 ::/0 - Samba in
+-A ufw6-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any ::/0 139,445 ::/0 - Samba in
+-A ufw6-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+281: --force delete 3
+
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+282: --force delete 4
+
+
+### tuple ### allow udp any ::/0 137,138 ::/0 - Samba in
+-A ufw6-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any ::/0 139,445 ::/0 - Samba in
+-A ufw6-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+283: --force delete 2
+
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+284: --force delete 2
+
+
+285: --force delete 1
+
+
+Setting IPV6 to no
+286: disable
+
+
+287: enable
+
+
+288: allow from any app Samba
+
+
+289: allow Samba
+
+
+290: allow 22/tcp
+
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+291: --force delete 3
+
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+292: --force delete 2
+
+
+### tuple ### allow udp any 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+### tuple ### allow tcp any 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+
+293: --force delete 1
+
+
+294: disable
+
+
+295: disable
 
 
