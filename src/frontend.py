@@ -304,6 +304,8 @@ class UFWFrontend:
                         if ifname != "":
                             rule.set_interface("in", ifname)
 
+                        # Get the non-tuple rule from get_matching(), and then
+                        # add its corresponding CLI command.
                         matching = self.backend.get_matching(rule)
                         if len(matching) > 0:
                             res += "\n"
