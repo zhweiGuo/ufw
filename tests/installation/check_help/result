@@ -11,7 +11,7 @@ Commands:
  deny ARGS                       add deny rule
  reject ARGS                     add reject rule
  limit ARGS                      add limit rule
- delete RULE                     delete RULE
+ delete RULE|NUM                 delete RULE
  insert NUM RULE                 insert RULE at NUM
  reset                           reset firewall
  status                          show firewall status
