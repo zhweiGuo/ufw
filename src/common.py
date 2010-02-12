@@ -234,7 +234,10 @@ class UFWRule:
 
     def set_protocol(self, protocol):
         '''Sets protocol of the rule'''
-        if protocol == "tcp" or protocol == "udp" or protocol == "any":
+        if protocol == "tcp" or \
+           protocol == "udp" or \
+           protocol == "ipv6" or \
+           protocol == "any":
             self.protocol = protocol
         else:
             err_msg = _("Unsupported protocol '%s'") % (protocol)

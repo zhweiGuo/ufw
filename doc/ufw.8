@@ -182,8 +182,8 @@ output. For example, if you want to delete rule number '3', use:
 
 If you have IPv6 enabled and are deleting a generic rule that applies to both
 IPv4 and IPv6 (eg 'ufw allow 22/tcp'), deleting by rule number will delete only
-the specified rule. To delete both with the same command, prefix the original
-rule with \fBdelete\fR.
+the specified rule. To delete both with one command, prefix the original rule
+with \fBdelete\fR.
 .PP
 To insert a rule, specify the new rule as normal, but prefix the rule with
 the rule number to insert. For example, if you have four rules, and you want
@@ -390,7 +390,7 @@ See the \fBiptables\fR and \fBip6tables\fR documentation for more details.
 If the default policy is set to REJECT, \fBufw\fR may interfere with rules
 added outside of the ufw framework. See README for details.
 .PP
-IPv6 is blocked by default only IPv6 traffic on the loopback interface is
+IPv6 is blocked by default and only IPv6 traffic on the loopback interface is
 allowed. To change this behavior, set IPV6 to 'yes' in
 #CONFIG_PREFIX#/defaults/ufw and reload \fBufw\fR. Once IPv6 is enabled,
 you may specify rules in the same way as for IPv4 rules, and they will be
@@ -399,7 +399,12 @@ apply to both IP versions. For example, when IPv6 is enabled, the following
 rule will allow access to port 22 for both IPv4 and IPv6 traffic:
 
   ufw allow 22
+.PP
+IPv6 over IPv4 tunnels and 6to4 are supported by using the 'ipv6' protocol
+('41'). This protocol can only be used with the full syntax. For example:
 
+  ufw allow to 10.0.0.1 proto ipv6
+  ufw allow to 10.0.0.1 from 10.4.0.0/16 proto ipv6
 .PP
 In addition to the command-line interface, \fBufw\fR also provides a
 framework which allows administrators to take full advantage of netfilter.
