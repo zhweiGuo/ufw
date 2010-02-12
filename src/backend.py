@@ -549,6 +549,10 @@ class UFWBackend:
         else:
             return _("Logging enabled")
 
+    def get_rules(self):
+        '''Return list of all rules'''
+        return self.rules + self.rules6
+
     def get_rules_count(self, v6):
         '''Return number of ufw rules (not iptables rules)'''
         rules = []
@@ -573,19 +577,17 @@ class UFWBackend:
 
         return count
 
-    def get_rules(self):
-        '''Return list of all rules'''
-        return self.rules + self.rules6
-
     def get_rule_by_number(self, n):
         '''Return rule specified by number seen via "status numbered"'''
-        app_rules = {}
-        count = 1
-
         rules = self.get_rules()
+
+        count = 1
+        app_rules = {}
         for r in rules:
+            tuple = ""
             if r.dapp != "" or r.sapp != "":
                 tuple = r.get_app_tuple()
+
                 if app_rules.has_key(tuple):
                     debug("Skipping found tuple '%s'" % (tuple))
                     continue
