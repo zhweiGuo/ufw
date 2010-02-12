@@ -577,11 +577,32 @@ class UFWBackend:
         '''Return list of all rules'''
         return self.rules + self.rules6
 
+    def get_rule_by_number(self, n):
+        '''Return rule specified by number seen via "status numbered"'''
+        app_rules = {}
+        count = 1
+
+        rules = self.get_rules()
+        for r in rules:
+            if r.dapp != "" or r.sapp != "":
+                tuple = r.get_app_tuple()
+                if app_rules.has_key(tuple):
+                    debug("Skipping found tuple '%s'" % (tuple))
+                    continue
+                else:
+                    app_rules[tuple] = True
+            if count == int(n):
+                return r
+            count += 1
+        
+        return None
+
     def get_matching(self, rule):
-        '''See if there is a matching rule in the existing ruleset'''
+        '''See if there is a matching rule in the existing ruleset. Note this
+           does not group rules by tuples.'''
         matched = []
         count = 0
-        for r in self.rules + self.rules6:
+        for r in self.get_rules():
             count += 1
             ret = rule.fuzzy_dst_match(r)
             if ret < 1:

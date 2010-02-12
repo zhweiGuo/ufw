@@ -514,7 +514,11 @@ class UFWFrontend:
             err_msg = _("Could not find rule '%d'") % n
             raise UFWError(err_msg)
 
-        rule = rules[n-1]
+        rule = self.backend.get_rule_by_number(n)
+        if not rule:
+            err_msg = _("Could not find rule '%d'") % n
+            raise UFWError(err_msg)
+
         rule.remove = True
 
         ip_version = "v4"
