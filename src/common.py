@@ -429,6 +429,18 @@ class UFWRule:
            This is a fuzzy destination match, so source ports or addresses
            are not considered, and (currently) only incoming.
         '''
+        def _match_ports(p, to_match):
+            '''Returns True if p is an exact match or within a multi rule'''
+            for port in to_match.split(','):
+                if p == port:
+                    return True
+                if ':' in port:
+                    (low, high) = port.split(':')
+                    if int(p) >= int(low) and int(p) <= int(high):
+                        return True
+
+            return False
+
         if not x or not y:
             raise ValueError()
 
@@ -449,7 +461,7 @@ class UFWRule:
             return 1
 
         # Destination ports must match or y 'any'
-        if x.dport != y.dport and y.dport != "any":
+        if y.dport != "any" and not _match_ports(x.dport, y.dport):
             debug("(dport) " + dbg_msg)
             return 1
 
