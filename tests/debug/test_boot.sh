@@ -22,7 +22,10 @@ user_and_host="$1"
 count=0
 while /bin/true ; do
     sleep 10
-    out=`ssh -t $user_and_host 'sudo ufw status && sudo reboot' 2>&1`
+    out=`ssh -t $user_and_host 'sudo ufw status && sudo reboot' 2>&1` || {
+        echo "Ssh command exited non-zero, trying again"
+        continue
+    }
     if echo "$out" | grep -q 'inactive'; then
         echo "FAILED after $count attempts: $out"
         exit 1
