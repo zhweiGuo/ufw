@@ -207,6 +207,10 @@ for i in $(seq 1 253); do
     fi
 done
 
+echo "TEST IPv6 short notation" >> $TESTTMP/result
+do_cmd "0" yes fe80:0000:0000:0000:0211:aaaa:bbbb:d54c fe80::211:aaaa:bbbb:d54c
+do_cmd "0" yes 2001:0db8:85a3:08d3:1319:8a2e:0370:734 2001:db8:85a3:8d3:1319:8a2e:370:734
+
 echo "TEST IPv6 CIDR" >> $TESTTMP/result
 for i in $(seq 0 127); do
     do_cmd "0" yes ::1/$i ::1/$i
