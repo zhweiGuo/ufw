@@ -22,6 +22,7 @@ sed -i "s#rc, report = cmd.* '-enlp'.*#rc, report = cmd(['cat', '$TESTPATH/../go
 sed -i "s#item\['exe'\] = get_exe.*#item['exe'] = 'REMOVED_FOR_UFW_TEST'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/lib/python/ufw/util.py
+sed -i "s#\(.*\)\(return .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1return '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1return '10.0.2.101'\n\\1raise IOError\n\\1\\2#" $TESTPATH/lib/python/ufw/util.py
 
 do_cmd "0" show listening
 
