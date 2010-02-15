@@ -137,15 +137,14 @@ ufw_start() {
                 # default DROP and accept all on loopback
                 delete_chains 6 || error="yes"
 
-                cat <<EOM | ip6tables-restore || error="yes"
-*filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT DROP [0:0]
--A INPUT -i lo -j ACCEPT
--A OUTPUT -o lo -j ACCEPT
-COMMIT
-EOM
+                printf "*filter\n"\
+":INPUT DROP [0:0]\n"\
+":FORWARD DROP [0:0]\n"\
+":OUTPUT DROP [0:0]\n"\
+"-A INPUT -i lo -j ACCEPT\n"\
+"-A OUTPUT -o lo -j ACCEPT\n"\
+"COMMIT\n" | ip6tables-restore || error="yes"
+
                 if [ "$error" = "yes" ]; then
                     out="${out}\nProblem loading ipv6 (skipping)"
                 fi
@@ -177,128 +176,111 @@ EOM
             if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
                 forward_pol="DROP"
             fi
-            cat <<EOM | $exe-restore -n || error="yes"
-*filter
-# builtin chains
-:INPUT $input_pol [0:0]
-:FORWARD $forward_pol [0:0]
-:OUTPUT $output_pol [0:0]
-COMMIT
-EOM
+
+            printf "*filter\n"\
+"# builtin chains\n"\
+":INPUT %s [0:0]\n"\
+":FORWARD %s [0:0]\n"\
+":OUTPUT %s [0:0]\n"\
+"COMMIT\n" $input_pol $forward_pol $output_pol | $exe-restore -n || error="yes"
 
             # flush the chains (if they exist)
             if $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
                 delete_chains $type || error="yes"
             else
                 # setup all the primary chains
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
-# primary chains
-:ufw${type}-before-logging-input - [0:0]
-:ufw${type}-before-logging-output - [0:0]
-:ufw${type}-before-logging-forward - [0:0]
-:ufw${type}-before-input - [0:0]
-:ufw${type}-before-output - [0:0]
-:ufw${type}-before-forward - [0:0]
-:ufw${type}-after-input - [0:0]
-:ufw${type}-after-output - [0:0]
-:ufw${type}-after-forward - [0:0]
-:ufw${type}-after-logging-input - [0:0]
-:ufw${type}-after-logging-output - [0:0]
-:ufw${type}-after-logging-forward - [0:0]
-:ufw${type}-reject-input - [0:0]
-:ufw${type}-reject-output - [0:0]
-:ufw${type}-reject-forward - [0:0]
-:ufw${type}-track-input - [0:0]
-:ufw${type}-track-output - [0:0]
-
--A INPUT -j ufw${type}-before-logging-input
--A INPUT -j ufw${type}-before-input
--A INPUT -j ufw${type}-after-input
--A INPUT -j ufw${type}-after-logging-input
--A INPUT -j ufw${type}-reject-input
--A INPUT -j ufw${type}-track-input
-
--A OUTPUT -j ufw${type}-before-logging-output
--A OUTPUT -j ufw${type}-before-output
--A OUTPUT -j ufw${type}-after-output
--A OUTPUT -j ufw${type}-after-logging-output
--A OUTPUT -j ufw${type}-reject-output
--A OUTPUT -j ufw${type}-track-output
-
--A FORWARD -j ufw${type}-before-logging-forward
--A FORWARD -j ufw${type}-before-forward
--A FORWARD -j ufw${type}-after-forward
--A FORWARD -j ufw${type}-after-logging-forward
--A FORWARD -j ufw${type}-reject-forward
-COMMIT
-EOM
+                printf "*filter\n"\
+"# primary chains\n"\
+":ufw${type}-before-logging-input - [0:0]\n"\
+":ufw${type}-before-logging-output - [0:0]\n"\
+":ufw${type}-before-logging-forward - [0:0]\n"\
+":ufw${type}-before-input - [0:0]\n"\
+":ufw${type}-before-output - [0:0]\n"\
+":ufw${type}-before-forward - [0:0]\n"\
+":ufw${type}-after-input - [0:0]\n"\
+":ufw${type}-after-output - [0:0]\n"\
+":ufw${type}-after-forward - [0:0]\n"\
+":ufw${type}-after-logging-input - [0:0]\n"\
+":ufw${type}-after-logging-output - [0:0]\n"\
+":ufw${type}-after-logging-forward - [0:0]\n"\
+":ufw${type}-reject-input - [0:0]\n"\
+":ufw${type}-reject-output - [0:0]\n"\
+":ufw${type}-reject-forward - [0:0]\n"\
+":ufw${type}-track-input - [0:0]\n"\
+":ufw${type}-track-output - [0:0]\n"\
+"\n"\
+"-A INPUT -j ufw${type}-before-logging-input\n"\
+"-A INPUT -j ufw${type}-before-input\n"\
+"-A INPUT -j ufw${type}-after-input\n"\
+"-A INPUT -j ufw${type}-after-logging-input\n"\
+"-A INPUT -j ufw${type}-reject-input\n"\
+"-A INPUT -j ufw${type}-track-input\n"\
+"\n"\
+"-A OUTPUT -j ufw${type}-before-logging-output\n"\
+"-A OUTPUT -j ufw${type}-before-output\n"\
+"-A OUTPUT -j ufw${type}-after-output\n"\
+"-A OUTPUT -j ufw${type}-after-logging-output\n"\
+"-A OUTPUT -j ufw${type}-reject-output\n"\
+"-A OUTPUT -j ufw${type}-track-output\n"\
+"\n"\
+"-A FORWARD -j ufw${type}-before-logging-forward\n"\
+"-A FORWARD -j ufw${type}-before-forward\n"\
+"-A FORWARD -j ufw${type}-after-forward\n"\
+"-A FORWARD -j ufw${type}-after-logging-forward\n"\
+"-A FORWARD -j ufw${type}-reject-forward\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             # add reject policy
             if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
--A ufw${type}-reject-input -j REJECT
-COMMIT
-EOM
+                printf "*filter\n"\
+"-A ufw${type}-reject-input -j REJECT\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
             if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
--A ufw${type}-reject-output -j REJECT
-COMMIT
-EOM
+                printf "*filter\n"\
+"-A ufw${type}-reject-output -j REJECT\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
             if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
--A ufw${type}-reject-forward -j REJECT || error="yes"
-COMMIT
-EOM
+                printf "*filter\n"\
+"-A ufw${type}-reject-forward -j REJECT\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             # add tracking policy
             if [ "$DEFAULT_INPUT_POLICY" = "ACCEPT" ]; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
--A ufw${type}-track-input -p tcp -m state --state NEW -j ACCEPT
--A ufw${type}-track-input -p udp -m state --state NEW -j ACCEPT
-COMMIT
-EOM
+                printf "*filter\n"\
+"-A ufw${type}-track-input -p tcp -m state --state NEW -j ACCEPT\n"\
+"-A ufw${type}-track-input -p udp -m state --state NEW -j ACCEPT\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
--A ufw${type}-track-output -p tcp -m state --state NEW -j ACCEPT
--A ufw${type}-track-output -p udp -m state --state NEW -j ACCEPT
-COMMIT
-EOM
+                printf "*filter\n"\
+"-A ufw${type}-track-output -p tcp -m state --state NEW -j ACCEPT\n"\
+"-A ufw${type}-track-output -p udp -m state --state NEW -j ACCEPT\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             # now setup the secondary 'logging-deny' chains
             if ! $exe -L ufw${type}-logging-deny -n >/dev/null 2>&1 ; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
-:ufw${type}-logging-deny - [0:0]
-:ufw${type}-logging-allow - [0:0]
-COMMIT
-EOM
+                printf "*filter\n"\
+":ufw${type}-logging-deny - [0:0]\n"\
+":ufw${type}-logging-allow - [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             # now setup the secondary 'skip to policy' chains
             if ! $exe -L ufw${type}-skip-to-policy-input -n >/dev/null 2>&1 ; then
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
-:ufw${type}-skip-to-policy-input - [0:0]
-:ufw${type}-skip-to-policy-output - [0:0]
-:ufw${type}-skip-to-policy-forward - [0:0]
--A ufw${type}-skip-to-policy-input -j "$DEFAULT_INPUT_POLICY"
--A ufw${type}-skip-to-policy-output -j "$DEFAULT_OUTPUT_POLICY"
--A ufw${type}-skip-to-policy-forward -j "$DEFAULT_FORWARD_POLICY"
-COMMIT
-EOM
+                printf "*filter\n"\
+":ufw${type}-skip-to-policy-input - [0:0]\n"\
+":ufw${type}-skip-to-policy-output - [0:0]\n"\
+":ufw${type}-skip-to-policy-forward - [0:0]\n"\
+"-A ufw${type}-skip-to-policy-input -j %s\n"\
+"-A ufw${type}-skip-to-policy-output -j %s\n"\
+"-A ufw${type}-skip-to-policy-forward -j %s\n"\
+"COMMIT\n" $DEFAULT_INPUT_POLICY $DEFAULT_OUTPUT_POLICY $DEFAULT_FORWARD_POLICY | $exe-restore -n || error="yes"
             fi
 
             # now ip[6]tables-restore before*.rules. This resets the following
@@ -338,18 +320,16 @@ EOM
             if [ -s "$USER_RULES" ]; then
                 # setup the secondary 'user' chains
                 if ! $exe -L ufw${type}-user-input -n >/dev/null 2>&1 ; then
-                    cat <<EOM | $exe-restore -n || error="yes"
-*filter
-:ufw${type}-user-input - [0:0]
-:ufw${type}-user-output - [0:0]
-:ufw${type}-user-forward - [0:0]
-:ufw${type}-user-logging-input - [0:0]
-:ufw${type}-user-logging-output - [0:0]
-:ufw${type}-user-logging-forward - [0:0]
-:ufw${type}-user-limit - [0:0]
-:ufw${type}-user-limit-accept - [0:0]
-COMMIT
-EOM
+                    printf "*filter\n"\
+":ufw${type}-user-input - [0:0]\n"\
+":ufw${type}-user-output - [0:0]\n"\
+":ufw${type}-user-forward - [0:0]\n"\
+":ufw${type}-user-logging-input - [0:0]\n"\
+":ufw${type}-user-logging-output - [0:0]\n"\
+":ufw${type}-user-logging-forward - [0:0]\n"\
+":ufw${type}-user-limit - [0:0]\n"\
+":ufw${type}-user-limit-accept - [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
                 fi
 
                 # now ip[6]tables-restore user*.rules. This resets the following
@@ -373,13 +353,11 @@ EOM
                 fi
 
                 # now hooks these into the primary chains
-                cat <<EOM | $exe-restore -n || error="yes"
-*filter
--A ufw${type}-before-input -j ufw${type}-user-input
--A ufw${type}-before-output -j ufw${type}-user-output
--A ufw${type}-before-forward -j ufw${type}-user-forward
-COMMIT
-EOM
+                printf "*filter\n"\
+"-A ufw${type}-before-input -j ufw${type}-user-input\n"\
+"-A ufw${type}-before-output -j ufw${type}-user-output\n"\
+"-A ufw${type}-before-forward -j ufw${type}-user-forward\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
             else
                 out="${out}\nCouldn't find '$USER_RULES'"
                 error="yes"
