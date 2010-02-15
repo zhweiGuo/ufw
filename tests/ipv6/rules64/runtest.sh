@@ -99,12 +99,12 @@ do_cmd "0" --dry-run allow from 192.168.0.1 port 35:39 proto tcp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 210,23,21,15:19,22 proto udp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24 proto tcp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24 proto udp
-do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
-do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
-do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
-do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
-do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
-do_cmd "0" --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 
 # simple syntax
 for i in allow deny limit; do
@@ -134,8 +134,8 @@ for i in any tcp udp ; do
     do_cmd "0" --dry-run reject 116$p
 done
 do_cmd "0" --dry-run reject from 2001:db8::/32 to any port 25
-do_cmd "0" --dry-run reject to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
-do_cmd "0" --dry-run reject to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+do_cmd "0" --dry-run reject to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
+do_cmd "0" --dry-run reject to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 
 echo "Insert" >> $TESTTMP/result
 do_cmd "0" null allow to 127.0.0.1 port 22
@@ -187,15 +187,15 @@ for i in "in" "out" ; do
     do_cmd "0" null allow $i on eth0
     do_cmd "0" null allow $i on eth0 to 192.168.0.1
     do_cmd "0" null deny $i on eth0 from 192.168.0.1 port 22 proto tcp
-    do_cmd "0" null reject $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-    do_cmd "0" null allow $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+    do_cmd "0" null reject $i on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
+    do_cmd "0" null allow $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
     cat $TESTSTATE/user.rules >> $TESTTMP/result
     cat $TESTSTATE/user6.rules >> $TESTTMP/result
     do_cmd "0" null delete allow $i on eth0
     do_cmd "0" null delete allow $i on eth0 to 192.168.0.1
     do_cmd "0" null delete deny $i on eth0 from 192.168.0.1 port 22 proto tcp
-    do_cmd "0" null delete reject $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-    do_cmd "0" null delete allow $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+    do_cmd "0" null delete reject $i on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
+    do_cmd "0" null delete allow $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
     cat $TESTSTATE/user.rules >> $TESTTMP/result
     cat $TESTSTATE/user6.rules >> $TESTTMP/result
 done

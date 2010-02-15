@@ -3318,7 +3318,7 @@ Rules updated (v6)
 
 
 Multiports:
-134: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 proto tcp
+134: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3337,8 +3337,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any ::/0 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --sports 34,35 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp any ::/0 34,35 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --sports 34,35 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3353,7 +3353,7 @@ COMMIT
 Rules updated (v6)
 
 
-135: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 proto udp
+135: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3372,8 +3372,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any ::/0 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p udp -m multiport --sports 34,35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp any ::/0 34,35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p udp -m multiport --sports 34,35:39 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3388,7 +3388,7 @@ COMMIT
 Rules updated (v6)
 
 
-136: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 proto tcp
+136: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3407,8 +3407,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp any ::/0 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --sports 35:39 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp any ::/0 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --sports 35:39 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3423,7 +3423,7 @@ COMMIT
 Rules updated (v6)
 
 
-137: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 210,23,21,15:19,22 proto udp
+137: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 210,23,21,15:19,22 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3442,8 +3442,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any ::/0 15:19,21,22,23,210 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p udp -m multiport --sports 15:19,21,22,23,210 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp any ::/0 15:19,21,22,23,210 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p udp -m multiport --sports 15:19,21,22,23,210 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3458,7 +3458,7 @@ COMMIT
 Rules updated (v6)
 
 
-138: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+138: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3477,8 +3477,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 34,35 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 34,35 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3493,7 +3493,7 @@ COMMIT
 Rules updated (v6)
 
 
-139: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+139: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3512,8 +3512,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 34,35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 34,35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3528,7 +3528,7 @@ COMMIT
 Rules updated (v6)
 
 
-140: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+140: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3547,8 +3547,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --dports 24 -m multiport --sports 35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3563,7 +3563,7 @@ COMMIT
 Rules updated (v6)
 
 
-141: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+141: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3582,8 +3582,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 15:19,21,22,23 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3598,7 +3598,7 @@ COMMIT
 Rules updated (v6)
 
 
-142: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+142: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3617,8 +3617,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 34,35 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 34,35 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3633,7 +3633,7 @@ COMMIT
 Rules updated (v6)
 
 
-143: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+143: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3652,8 +3652,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 34,35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 34,35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3668,7 +3668,7 @@ COMMIT
 Rules updated (v6)
 
 
-144: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+144: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3687,8 +3687,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --dports 24:26 -m multiport --sports 35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3703,7 +3703,7 @@ COMMIT
 Rules updated (v6)
 
 
-145: --dry-run allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+145: --dry-run allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3722,8 +3722,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 15:19,21,22,23 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3738,7 +3738,7 @@ COMMIT
 Rules updated (v6)
 
 
-146: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 proto tcp
+146: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3757,8 +3757,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0 in
--A ufw6-user-input -p tcp -m multiport --dports 34,35 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 34,35 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3773,7 +3773,7 @@ COMMIT
 Rules updated (v6)
 
 
-147: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 proto udp
+147: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3792,8 +3792,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0 in
--A ufw6-user-input -p udp -m multiport --dports 34,35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp 34,35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3808,7 +3808,7 @@ COMMIT
 Rules updated (v6)
 
 
-148: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 proto tcp
+148: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3827,8 +3827,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0 in
--A ufw6-user-input -p tcp -m multiport --dports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3843,7 +3843,7 @@ COMMIT
 Rules updated (v6)
 
 
-149: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 210,23,21,15:19,22 proto udp
+149: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 210,23,21,15:19,22 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3862,8 +3862,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23,210 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0 in
--A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23,210 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow udp 15:19,21,22,23,210 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23,210 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
 ### END RULES ###
 
@@ -3878,7 +3878,7 @@ COMMIT
 Rules updated (v6)
 
 
-150: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+150: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3897,8 +3897,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow tcp 34,35 2001:db8:85a3:8d3:1319:8a2e:370:7341 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -3913,7 +3913,7 @@ COMMIT
 Rules updated (v6)
 
 
-151: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+151: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3932,8 +3932,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow udp 34,35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -3948,7 +3948,7 @@ COMMIT
 Rules updated (v6)
 
 
-152: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto tcp
+152: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -3967,8 +3967,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow tcp 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -3983,7 +3983,7 @@ COMMIT
 Rules updated (v6)
 
 
-153: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24 proto udp
+153: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -4002,8 +4002,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow udp 15:19,21,22,23 2001:db8:85a3:8d3:1319:8a2e:370:7341 24 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -4018,7 +4018,7 @@ COMMIT
 Rules updated (v6)
 
 
-154: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+154: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -4037,8 +4037,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 34,35 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow tcp 34,35 2001:db8:85a3:8d3:1319:8a2e:370:7341 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p tcp -m multiport --dports 34,35 -m multiport --sports 24:26 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -4053,7 +4053,7 @@ COMMIT
 Rules updated (v6)
 
 
-155: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 34,35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+155: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -4072,8 +4072,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 34,35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow udp 34,35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p udp -m multiport --dports 34,35:39 -m multiport --sports 24:26 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -4088,7 +4088,7 @@ COMMIT
 Rules updated (v6)
 
 
-156: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto tcp
+156: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -4107,8 +4107,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow tcp 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p tcp -m multiport --dports 35:39 -m multiport --sports 24:26 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -4123,7 +4123,7 @@ COMMIT
 Rules updated (v6)
 
 
-157: --dry-run allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 23,21,15:19,22 from 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 24:26 proto udp
+157: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw6-user-input - [0:0]
@@ -4142,8 +4142,8 @@ WARN: Checks disabled
 :ufw6-logging-allow - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 24:26 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 in
--A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -j ACCEPT
+### tuple ### allow udp 15:19,21,22,23 2001:db8:85a3:8d3:1319:8a2e:370:7341 24:26 2001:db8:85a3:8d3:1319:8a2e:370:7342 in
+-A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -s 2001:db8:85a3:8d3:1319:8a2e:370:7342 -j ACCEPT
 
 ### END RULES ###
 
@@ -5935,39 +5935,39 @@ Rules updated (v6)
 
 
 Interfaces
-182: --dry-run allow in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+182: --dry-run allow in on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
 
 
-183: --dry-run allow in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+183: --dry-run allow in on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
 
 
-184: --dry-run deny in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+184: --dry-run deny in on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
 
 
-185: --dry-run deny in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+185: --dry-run deny in on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
 
 
-186: --dry-run reject in on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+186: --dry-run reject in on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
 
 
-187: --dry-run reject in on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+187: --dry-run reject in on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
 
 
-188: --dry-run allow out on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+188: --dry-run allow out on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
 
 
-189: --dry-run allow out on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+189: --dry-run allow out on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
 
 
-190: --dry-run deny out on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+190: --dry-run deny out on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
 
 
-191: --dry-run deny out on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+191: --dry-run deny out on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
 
 
-192: --dry-run reject out on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
+192: --dry-run reject out on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
 
 
-193: --dry-run reject out on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+193: --dry-run reject out on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
 
 

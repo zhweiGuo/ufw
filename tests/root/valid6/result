@@ -1031,7 +1031,7 @@ WARN: Checks disabled
 Rules updated (v6)
 
 
-161: --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0001/128
+161: --dry-run allow to 2001:db8:0000:0000:0000:0000:0000:0001/128
 
 
 162: allow to any port smtp from any port smtp
@@ -1562,41 +1562,41 @@ Rules updated (v6)
 
 
 TESTING MULTIPORT
-234: allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83 proto tcp
+234: allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow tcp 80:83 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0 in
--A ufw6-user-input -p tcp -m multiport --dports 80:83 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 80:83 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p tcp -m multiport --dports 80:83 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
-235: delete allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83 proto tcp
+235: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-236: allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83,22 proto tcp
+236: allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,22 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22,80:83 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 any ::/0 in
--A ufw6-user-input -p tcp -m multiport --dports 22,80:83 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 22,80:83 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p tcp -m multiport --dports 22,80:83 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
-237: delete allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83,22 proto tcp
+237: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,22 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-238: allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 22 proto tcp
+238: allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 22 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 35:39 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 in
--A ufw6-user-input -p tcp -m multiport --dports 22 -m multiport --sports 35:39 -d 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 -s 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 -j ACCEPT
+### tuple ### allow tcp 22 2001:db8:85a3:8d3:1319:8a2e:370:7342 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --dports 22 -m multiport --sports 35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
-239: delete allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 22 proto tcp
+239: delete allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 22 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 

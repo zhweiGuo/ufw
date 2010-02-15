@@ -143,7 +143,7 @@ do
         done
 done
 
-do_cmd "0" null --dry-run allow to 2001:0db8:0000:0000:0000:0000:0000:0001/128
+do_cmd "0" null --dry-run allow to 2001:db8:0000:0000:0000:0000:0000:0001/128
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
 
@@ -296,17 +296,17 @@ do_cmd "0" delete allow from ::1/32 to ::1/128
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
 echo "TESTING MULTIPORT" >> $TESTTMP/result
-do_cmd "0" allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83 proto tcp
+do_cmd "0" allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83 proto tcp
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
-do_cmd "0" delete allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83 proto tcp
+do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83 proto tcp
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
-do_cmd "0" allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83,22 proto tcp
+do_cmd "0" allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,22 proto tcp
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
-do_cmd "0" delete allow to 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 80:83,22 proto tcp
+do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,22 proto tcp
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
-do_cmd "0" allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 22 proto tcp
+do_cmd "0" allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 22 proto tcp
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
-do_cmd "0" delete allow from 2001:0db8:85a3:08d3:1319:8a2e:0370:7341 port 35:39 to 2001:0db8:85a3:08d3:1319:8a2e:0370:7342 port 22 proto tcp
+do_cmd "0" delete allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 22 proto tcp
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 do_cmd "0" allow to any port 23,21,15:19,22 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result

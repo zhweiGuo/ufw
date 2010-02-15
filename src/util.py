@@ -176,6 +176,15 @@ def normalize_address(orig, v6):
             pass
 
     addr = net[0]
+
+    # Convert to packed binary, then convert back
+    type = socket.AF_INET
+    if v6:
+        type = socket.AF_INET6
+    addr = socket.inet_ntop(type, socket.inet_pton(type, addr))
+    if addr != net[0]:
+        changed = True
+
     if len(net) == 2:
         addr += "/" + net[1]
         if not v6:

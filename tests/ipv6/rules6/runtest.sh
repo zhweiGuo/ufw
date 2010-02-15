@@ -75,7 +75,7 @@ do_cmd "0" --dry-run allow from ::1/32 to ::1/128
 
 
 echo "Multiports:" >> $TESTTMP/result
-for i in 2001:0db8:85a3:08d3:1319:8a2e:0370:734 any; do
+for i in 2001:db8:85a3:8d3:1319:8a2e:370:734 any; do
     for j in from to; do
         k="to"
         if [ "$j" = "to" ]; then
@@ -105,8 +105,8 @@ done
 echo "Interfaces" >> $TESTTMP/result
 for i in "in" "out" ; do
     for j in allow deny reject ; do
-        do_cmd "0" null --dry-run $j $i on eth0 to 2001:0db8:85a3:08d3:1319:8a2e:0370:734
-        do_cmd "0" null --dry-run $j $i on eth0 from 2001:0db8:85a3:08d3:1319:8a2e:0370:734 port 22 proto tcp
+        do_cmd "0" null --dry-run $j $i on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
+        do_cmd "0" null --dry-run $j $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
     done
 done
 exit 0
