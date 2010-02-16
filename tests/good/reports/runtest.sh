@@ -17,12 +17,12 @@
 source "$TESTPATH/../testlib.sh"
 
 echo "show listening" >> $TESTTMP/result
-# update util.py to use our cached output
+echo "(update util.py to use our cached output)" >> $TESTTMP/result
 sed -i "s#rc, report = cmd.* '-enlp'.*#rc, report = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#item\['exe'\] = get_exe.*#item['exe'] = 'REMOVED_FOR_UFW_TEST'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/lib/python/ufw/util.py
-sed -i "s#\(.*\)\(return .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1return '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1return '10.0.2.101'\n\\1raise IOError\n\\1\\2#" $TESTPATH/lib/python/ufw/util.py
+sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n    return normalize_address(addr, v6)[0]\n    \\2#" $TESTPATH/lib/python/ufw/util.py
 
 do_cmd "0" show listening
 
@@ -49,25 +49,25 @@ for i in "" "in on eth0" ; do
     do_cmd "0" null allow $i to 10.0.0.0/16
     do_cmd "0" null allow $i to 10.0.2.0/24
     do_cmd "0" null allow $i to 10.0.3.0/24
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb
+    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123
     do_cmd "0" null allow $i to 10.0.0.0/16 port 123
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb port 123
+    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c port 123
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.0.0/16 app OpenNTPD
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto udp
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb port 123 proto udp
+    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c port 123 proto udp
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.0.0/16 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto tcp
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb port 123 proto tcp
+    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c port 123 proto tcp
 done
 
 do_cmd "0" show listening

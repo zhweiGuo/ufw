@@ -74,6 +74,13 @@ class UFWRule:
     def __str__(self):
         return self.format_rule()
 
+    def _get_attrib(self):
+        '''Print rule to stdout'''
+        res = "'%s'" % (self)
+        for k in self.__dict__:
+            res += ", %s=%s" % (k, self.__dict__[k])
+        return res
+
     def dup_rule(self):
         '''Return a duplicate of a rule'''
         rule = UFWRule(self.action, self.protocol)
@@ -490,18 +497,18 @@ class UFWRule:
 
             if_ip = ufw.util.get_ip_from_if(y.interface_in, x.v6)
             if y.dst != if_ip and '/' not in y.dst:
-                debug("(interface) " + dbg_msg + " (%s != %s)" % (x.dst, if_ip))
+                debug("(interface) " + dbg_msg + " (%s != %s)" % (y.dst, if_ip))
                 return 1
             elif '/' in y.dst and not ufw.util.in_network(if_ip, y.dst, x.v6):
                 debug("(interface) " + dbg_msg + " (not in network)")
                 return 1
 
-        if x.v6 != y.v6 and \
-           (not x._is_anywhere(x.dst) or not y._is_anywhere(y.dst)):
-            debug("(v6) " + dbg_msg)
+        if x.v6 != y.v6:
+            debug("(v6) " + dbg_msg + " (%s != %s)" % (x.dst, y.dst))
             return 1
 
         # if we made it here, it is a fuzzy match
+        debug("(fuzzy match) '%s' '%s'" % (x, y))
         return -1
 
     def _is_anywhere(self, addr):
