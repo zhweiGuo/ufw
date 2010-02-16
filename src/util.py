@@ -584,20 +584,49 @@ def in_network(x, y, v6):
         if not valid_address4(address) or not valid_address4(orig_network):
             return False
 
-    if _valid_cidr_netmask(netmask, v6):
+    if _valid_cidr_netmask(netmask, v6) and not v6:
         try:
             netmask = _cidr_to_dotted_netmask(netmask, v6)
         except Exception:
             raise
 
     # Now apply the network's netmask to the address
-    host_bits = long(struct.unpack('>L',socket.inet_aton(address))[0])
-    nm_bits = long(struct.unpack('>L',socket.inet_aton(netmask))[0])
-    network = socket.inet_ntoa(struct.pack('>L', host_bits & nm_bits))
+    if v6:
+        # TODO: there has to be a better way to do this for IPv6 while
+        # maintaining python2.5 compatibility
+        def dec2bin(n, count):
+            return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
 
-    if network == orig_network:
-        return True
-    return False
+        # Unpack and turn the pton tuple into host bits
+        tmp = struct.unpack('>8H', socket.inet_pton(socket.AF_INET6, address))
+        host_bits = 0L
+        for x in tmp:
+            host_bits = (host_bits << 16) + x
+
+        # Create netmask bits
+        nm_bits = 0L
+        for i in range(128):
+            if i < int(netmask):
+                nm_bits |= 1<<(128 - 1) - i
+
+        # Apply the netmask
+        net = host_bits & nm_bits
+
+        # Break the netmask into chunks suitable for repacking
+        lst = []
+        for i in range(16):
+            lst.append(int(dec2bin(net, 128)[i*8:i*8+8], 2))
+
+        # Create the network string
+        network = socket.inet_ntop(socket.AF_INET6, \
+                                   struct.pack('>8H', lst[0], lst[1], lst[2], \
+                                               lst[3], lst[4], lst[5], \
+                                               lst[6], lst[7]))
+    else:
+        host_bits = long(struct.unpack('>L',socket.inet_aton(address))[0])
+        nm_bits = long(struct.unpack('>L',socket.inet_aton(netmask))[0])
+        network = socket.inet_ntoa(struct.pack('>L', host_bits & nm_bits))
+
     return network == orig_network
 
 
@@ -649,6 +678,7 @@ def get_netstat_output(exe="/bin/netstat"):
 
 def get_ip_from_if(ifname, v6=False):
     '''Get IP address for interface'''
+    addr = ""
     if v6:
         proc = '/proc/net/if_inet6'
         if not os.path.exists(proc):
@@ -657,14 +687,20 @@ def get_ip_from_if(ifname, v6=False):
         for line in file(proc).readlines():
             tmp = line.split()
             if ifname == tmp[5]:
-                return ":".join( \
+                addr = ":".join( \
                            [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
 
-        raise IOError(errno.ENODEV, "No such device")
+                if tmp[2].lower() != "ff":
+                    addr = "%s/%s" % (addr, int(tmp[2].lower(), 16))
+
+        if addr == "":
+            raise IOError(errno.ENODEV, "No such device")
     else:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, \
+        addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, \
                                 struct.pack('256s', ifname[:15]))[20:24])
+
+    return normalize_address(addr, v6)[0]
 
 def get_if_from_ip(addr):
     '''Get interface for IP address'''
@@ -682,9 +718,15 @@ def get_if_from_ip(addr):
 
         for line in file(proc).readlines():
             tmp = line.split()
-            if addr == ":".join( \
-                           [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ]):
-                matched = tmp[5]
+
+            tmp_addr = ":".join( \
+                           [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
+            if tmp[2].lower() != "ff":
+                tmp_addr = "%s/%s" % (addr, int(tmp[2].lower(), 16))
+
+            if addr == tmp_addr or \
+               ('/' in tmp_addr and in_network(addr, tmp_addr, True)):
+                matched = tmp_addr
                 break
     else:
         proc = '/proc/net/dev'
