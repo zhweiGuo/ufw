@@ -41,7 +41,7 @@ show help message and exit
 don't modify anything, just show the changes
 .TP
 \fBenable\fR
-reloads firewall and enables firewall on boot
+reloads firewall and enables firewall on boot.
 .TP
 \fBdisable\fR
 unloads firewall and disables firewall on boot
@@ -61,7 +61,8 @@ LEVEL turns logging on for the specified LEVEL. The default log level is 'low'.
 See \fBLOGGING\fR for details.
 .TP
 \fBreset\fR
-Disables and resets firewall to installation defaults
+Disables and resets firewall to installation defaults. Can also give the
+\fB\-\-force\fR option to perform the reset without confirmation.
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for

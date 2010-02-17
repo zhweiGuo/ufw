@@ -569,7 +569,7 @@ class UFWFrontend:
                 raise UFWError(err_msg)
             res = self.set_default_policy(tmp[1], tmp[2])
         elif action == "reset":
-            res = self.reset()
+            res = self.reset(force)
         elif action == "status":
             res = self.get_status()
         elif action == "status-verbose":
@@ -829,7 +829,7 @@ class UFWFrontend:
 
         return proceed
 
-    def reset(self):
+    def reset(self, force=False):
         '''Reset the firewall'''
         res = ""
         prompt = _("Resetting all rules to installed defaults. Proceed with " \
@@ -841,7 +841,7 @@ class UFWFrontend:
                        "operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
 
-        if self.backend.do_checks:
+        if self.backend.do_checks and not force:
             os.write(sys.stdout.fileno(), ufw.util.wrap_text(prompt))
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
