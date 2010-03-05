@@ -28,11 +28,11 @@ case "$1" in
         for exe in iptables ip6tables
         do
             if which $exe > /dev/null 2>&1; then
-                $exe -F 2>/dev/null || true
-                $exe -X 2>/dev/null || true
                 $exe -P INPUT ACCEPT 2>/dev/null || true
                 $exe -P OUTPUT ACCEPT 2>/dev/null || true
                 $exe -P FORWARD ACCEPT 2>/dev/null || true
+                $exe -F 2>/dev/null || true
+                $exe -X 2>/dev/null || true
             fi
         done
         ;;
