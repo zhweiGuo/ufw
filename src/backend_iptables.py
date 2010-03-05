@@ -421,7 +421,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             ("-" * len(str_to.decode("utf-8", 'ignore')), \
                              "-" * len(str_action.decode("utf-8", 'ignore')), \
                              "-" * len(str_from.decode("utf-8", 'ignore')))
-            full_str += rules_header
+            full_str += rules_header.encode('utf-8', 'ignore')
             if str != "":
                 full_str += str
             if str != "" and str_out != "":
