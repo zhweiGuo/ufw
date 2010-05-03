@@ -56,7 +56,8 @@ migrated manually when changing the default policy. See \fBRULE SYNTAX\fR for
 more on \fBdeny\fR and \fBreject\fR.
 .TP
 \fBlogging\fR on|off|LEVEL
-toggle logging. Logged packets use the LOG_KERN syslog facility. Specifying a
+toggle logging. Logged packets use the LOG_KERN syslog facility. Systems
+configured for rsyslog support may also log to /var/log/ufw.log. Specifying a
 LEVEL turns logging on for the specified LEVEL. The default log level is 'low'.
 See \fBLOGGING\fR for details.
 .TP
