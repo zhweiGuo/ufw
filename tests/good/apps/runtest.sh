@@ -24,6 +24,7 @@ do_cmd "0" app info 'Apache Full'
 do_cmd "0" app info Bind9
 do_cmd "0" app info Samba
 do_cmd "0" app info 'Custom Web App'
+do_cmd "0" app info 'Custom Web App2'
 do_cmd "0" app info all
 
 echo "TESTING APPLICATION INTEGRATION (simple rules)" >> $TESTTMP/result
@@ -36,6 +37,7 @@ for target in allow deny limit ; do
     do_cmd "0" --dry-run $target OpenNTPD
     do_cmd "0" --dry-run $target 'Multi TCP'
     do_cmd "0" --dry-run $target 'Multi UDP'
+    do_cmd "0" --dry-run $target 'Custom Web App2'
 done
 
 echo "TESTING APPLICATION INTEGRATION (extended rules)" >> $TESTTMP/result
@@ -168,6 +170,13 @@ for i in "in" "out" ; do
     do_cmd "0" null delete allow $i on eth1 to any port 22
     do_cmd "0" null delete allow $i on eth2 to any app Samba
     cat $TESTSTATE/user.rules >> $TESTTMP/result
+done
+
+echo "TESTING SHIPPED APPLICATION PROFILES" >> $TESTTMP/result
+grep '^\[' $TESTPATH/etc/ufw/applications.d/ufw-* | cut -f 2 -d ':' | sed -e 's/\[//' -e 's/\]//' | \
+while read line ; do
+    do_cmd "0" null app info "$line"
+    do_cmd "0" null allow "$line"
 done
 
 exit 0

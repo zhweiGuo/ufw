@@ -16,7 +16,7 @@ ports=464/udp
 [Kerberos Full]
 title=Kerberos v5 server
 description=Kerberos v5 server
-ports=88,749/tcp,464/udp
+ports=88,749/tcp|464/udp
 
 [LDAP]
 title=LDAP server

@@ -1,0 +1,4 @@
+[PeopleNearby]
+title=People Nearby
+description=Ports allowing the 'People Nearby' functionality in empathy.
+ports=5353/udp|5298/tcp

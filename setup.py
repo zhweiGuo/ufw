@@ -164,6 +164,8 @@ class Install(_install, object):
             self.mkpath(os.path.dirname(f))
 
         self.mkpath(apps_dir)
+        for f in os.listdir('profiles'):
+            self.copy_file(os.path.join('profiles', f), apps_dir)
 
         self.copy_file('conf/ufw.defaults', defaults)
         self.copy_file('conf/ufw.conf', ufwconf)
