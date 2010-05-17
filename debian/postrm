@@ -2,6 +2,7 @@
 
 RULES_PATH="/etc/ufw"
 USER_PATH="/lib/ufw"
+UFW_CONF="/etc/ufw/ufw.conf"
 case "$1" in
     remove)
         ;;
@@ -22,19 +23,22 @@ case "$1" in
         done
         rm -f $RULES_PATH/ufw.rules $RULES_PATH/ufw.rules.dpkg-old
         rm -f $USER_PATH/user.rules $USER_PATH/user6.rules
-        rm -f /etc/ufw/ufw.conf
 
-        # go back to default accept
-        for exe in iptables ip6tables
-        do
-            if which $exe > /dev/null 2>&1; then
-                $exe -P INPUT ACCEPT 2>/dev/null || true
-                $exe -P OUTPUT ACCEPT 2>/dev/null || true
-                $exe -P FORWARD ACCEPT 2>/dev/null || true
-                $exe -F 2>/dev/null || true
-                $exe -X 2>/dev/null || true
-            fi
-        done
+        # go back to default accept, if ufw was enabled
+        if [ -f "$UFW_CONF" ] && grep -qi "^ENABLED=yes" "$UFW_CONF"; then
+            for exe in iptables ip6tables
+            do
+                if which $exe > /dev/null 2>&1; then
+                    $exe -P INPUT ACCEPT 2>/dev/null || true
+                    $exe -P OUTPUT ACCEPT 2>/dev/null || true
+                    $exe -P FORWARD ACCEPT 2>/dev/null || true
+                    $exe -F 2>/dev/null || true
+                    $exe -X 2>/dev/null || true
+                fi
+            done
+        fi
+
+        rm -f "$UFW_CONF"
         ;;
 
     upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

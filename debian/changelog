@@ -1,6 +1,7 @@
 ufw (0.30-1) UNRELEASED; urgency=low
 
   * run_tests.sh: revert temporarily disable 'skipped' check
+  * don't flush chains if ufw is not enabled (LP: #581744)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 17 Feb 2010 11:02:23 -0600
 
