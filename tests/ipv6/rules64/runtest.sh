@@ -200,5 +200,16 @@ for i in "in" "out" ; do
     cat $TESTSTATE/user6.rules >> $TESTTMP/result
 done
 
+echo "IPSec" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to 10.0.0.1 proto esp
+do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto esp
+do_cmd "0" --dry-run allow to 10.0.0.1 proto ah
+do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ah
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+do_cmd "0" --dry-run allow to any proto esp
+do_cmd "0" --dry-run allow to any proto ah
 
 exit 0

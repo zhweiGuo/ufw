@@ -109,4 +109,11 @@ for i in "in" "out" ; do
         do_cmd "0" null --dry-run $j $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
     done
 done
+
+echo "IPSec" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+
 exit 0

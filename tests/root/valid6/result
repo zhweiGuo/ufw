@@ -1637,6 +1637,147 @@ Rules updated
 Rules updated (v6)
 
 
-244: disable
+TESTING IPSec
+244: allow to 10.0.0.1 proto esp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### allow esp any 10.0.0.1 any 0.0.0.0/0 in
+-A ufw-user-input -p esp -d 10.0.0.1 -j ACCEPT
+
+245: delete allow to 10.0.0.1 proto esp
+WARN: Checks disabled
+Rules updated
+
+
+246: deny to 10.0.0.1 from 10.4.0.0/16 proto esp
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### deny esp any 10.0.0.1 any 10.4.0.0/16 in
+-A ufw-user-input -p esp -d 10.0.0.1 -s 10.4.0.0/16 -j DROP
+
+247: delete deny to 10.0.0.1 from 10.4.0.0/16 proto esp
+WARN: Checks disabled
+Rules updated
+
+
+248: limit to 10.0.0.1 proto ah
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### limit ah any 10.0.0.1 any 0.0.0.0/0 in
+-A ufw-user-input -p ah -d 10.0.0.1 -m state --state NEW -m recent --set
+-A ufw-user-input -p ah -d 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+249: delete limit to 10.0.0.1 proto ah
+WARN: Checks disabled
+Rules updated
+
+
+250: reject to 10.0.0.1 from 10.4.0.0/16 proto ah
+WARN: Checks disabled
+Rules updated
+
+
+### tuple ### reject ah any 10.0.0.1 any 10.4.0.0/16 in
+-A ufw-user-input -p ah -d 10.0.0.1 -s 10.4.0.0/16 -j REJECT
+
+251: delete reject to 10.0.0.1 from 10.4.0.0/16 proto ah
+WARN: Checks disabled
+Rules updated
+
+
+252: reject to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### reject esp any 2001:db8:85a3:8d3:1319:8a2e:370:734 any ::/0 in
+-A ufw6-user-input -p esp -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -j REJECT
+
+253: delete reject to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+254: allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow esp any 2001:db8:85a3:8d3:1319:8a2e:370:734 any 2001:db8::/32 in
+-A ufw6-user-input -p esp -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -s 2001:db8::/32 -j ACCEPT
+
+255: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+WARN: Checks disabled
+Rules updated (v6)
+
+
+256: deny to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### deny ah any 2001:db8:85a3:8d3:1319:8a2e:370:734 any ::/0 in
+-A ufw6-user-input -p ah -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -j DROP
+
+257: delete deny to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+WARN: Checks disabled
+Rules updated (v6)
+
+
+258: allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+WARN: Checks disabled
+Rules updated (v6)
+
+
+### tuple ### allow ah any 2001:db8:85a3:8d3:1319:8a2e:370:734 any 2001:db8::/32 in
+-A ufw6-user-input -p ah -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -s 2001:db8::/32 -j ACCEPT
+
+259: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+WARN: Checks disabled
+Rules updated (v6)
+
+
+260: allow to any proto esp
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+### tuple ### allow esp any 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p esp -j ACCEPT
+
+### tuple ### allow esp any ::/0 any ::/0 in
+-A ufw6-user-input -p esp -j ACCEPT
+
+261: delete allow to any proto esp
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+262: deny to any proto ah
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+### tuple ### deny ah any 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p ah -j DROP
+
+### tuple ### deny ah any ::/0 any ::/0 in
+-A ufw6-user-input -p ah -j DROP
+
+263: delete deny to any proto ah
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
+
+
+264: disable
 
 

@@ -321,5 +321,53 @@ do_cmd "0" delete allow 23,21,15:19,22/udp
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
 
+echo "TESTING IPSec" >> $TESTTMP/result
+do_cmd "0" allow to 10.0.0.1 proto esp
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" delete allow to 10.0.0.1 proto esp
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" deny to 10.0.0.1 from 10.4.0.0/16 proto esp
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" delete deny to 10.0.0.1 from 10.4.0.0/16 proto esp
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" limit to 10.0.0.1 proto ah
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" delete limit to 10.0.0.1 proto ah
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" reject to 10.0.0.1 from 10.4.0.0/16 proto ah
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+do_cmd "0" delete reject to 10.0.0.1 from 10.4.0.0/16 proto ah
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+
+do_cmd "0" reject to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" delete reject to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" deny to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" delete deny to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+
+do_cmd "0" allow to any proto esp
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" delete allow to any proto esp
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" deny to any proto ah
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+do_cmd "0" delete deny to any proto ah
+grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+
 cleanup
 exit 0

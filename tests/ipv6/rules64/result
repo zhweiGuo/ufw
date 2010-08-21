@@ -7064,3 +7064,464 @@ COMMIT
 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
 COMMIT
+IPSec
+318: --dry-run allow to 10.0.0.1 proto esp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow esp any 10.0.0.1 any 0.0.0.0/0 in
+-A ufw-user-input -p esp -d 10.0.0.1 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+319: --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto esp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow esp any 10.0.0.1 any 10.4.0.0/16 in
+-A ufw-user-input -p esp -d 10.0.0.1 -s 10.4.0.0/16 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+320: --dry-run allow to 10.0.0.1 proto ah
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow ah any 10.0.0.1 any 0.0.0.0/0 in
+-A ufw-user-input -p ah -d 10.0.0.1 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+321: --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ah
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow ah any 10.0.0.1 any 10.4.0.0/16 in
+-A ufw-user-input -p ah -d 10.0.0.1 -s 10.4.0.0/16 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+322: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto esp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow esp any 2001:db8:85a3:8d3:1319:8a2e:370:734 any ::/0 in
+-A ufw6-user-input -p esp -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Rules updated (v6)
+
+
+323: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto esp
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow esp any 2001:db8:85a3:8d3:1319:8a2e:370:734 any 2001:db8::/32 in
+-A ufw6-user-input -p esp -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Rules updated (v6)
+
+
+324: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow ah any 2001:db8:85a3:8d3:1319:8a2e:370:734 any ::/0 in
+-A ufw6-user-input -p ah -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Rules updated (v6)
+
+
+325: --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
+WARN: Checks disabled
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow ah any 2001:db8:85a3:8d3:1319:8a2e:370:734 any 2001:db8::/32 in
+-A ufw6-user-input -p ah -d 2001:db8:85a3:8d3:1319:8a2e:370:734 -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Rules updated (v6)
+
+
+326: --dry-run allow to any proto esp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow esp any 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p esp -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow esp any ::/0 any ::/0 in
+-A ufw6-user-input -p esp -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
+327: --dry-run allow to any proto ah
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow ah any 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p ah -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow ah any ::/0 any ::/0 in
+-A ufw6-user-input -p ah -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Rules updated
+Rules updated (v6)
+
+
