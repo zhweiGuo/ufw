@@ -1,0 +1,374 @@
+show listening
+(update util.py to use our cached output)
+show listening with no rules
+0: show listening
+WARN: Checks disabled
+tcp:
+  22 * (EXE_FILTERED_OUT_OF_TEST)
+tcp6:
+  22 * (EXE_FILTERED_OUT_OF_TEST)
+udp:
+  123 10.0.2.101 (EXE_FILTERED_OUT_OF_TEST)
+  123 10.0.2.9 (EXE_FILTERED_OUT_OF_TEST)
+  123 * (EXE_FILTERED_OUT_OF_TEST)
+  33257 * (EXE_FILTERED_OUT_OF_TEST)
+  5353 * (EXE_FILTERED_OUT_OF_TEST)
+  68 * (EXE_FILTERED_OUT_OF_TEST)
+  68 * (EXE_FILTERED_OUT_OF_TEST)
+udp6:
+  123 fe80::212:cccc:dddd (EXE_FILTERED_OUT_OF_TEST)
+  123 fe80::211:aaaa:bbbb (EXE_FILTERED_OUT_OF_TEST)
+  123 * (EXE_FILTERED_OUT_OF_TEST)
+
+
+
+Add rules for test
+1: allow in 123
+
+
+2: allow in OpenNTPD
+
+
+3: allow in 123/tcp
+
+
+4: allow to any
+
+
+5: allow to any proto udp
+
+
+6: allow to any proto tcp
+
+
+7: allow to 10.0.2.101
+
+
+8: allow to 10.0.2.9
+
+
+9: allow to 10.0.0.0/16
+
+
+10: allow to 10.0.2.0/24
+
+
+11: allow to 10.0.3.0/24
+
+
+12: allow to fe80::211:aaaa:bbbb:d54c
+
+
+13: allow to 10.0.2.101 port 123
+
+
+14: allow to 10.0.0.0/16 port 123
+
+
+15: allow to 10.0.2.0/24 port 123
+
+
+16: allow to 10.0.3.0/24 port 123
+
+
+17: allow to fe80::211:aaaa:bbbb:d54c port 123
+
+
+18: allow to 10.0.2.101 port 123 proto udp
+
+
+19: allow to 10.0.0.0/16 app OpenNTPD
+
+
+20: allow to 10.0.2.0/24 port 123 proto udp
+
+
+21: allow to 10.0.3.0/24 port 123 proto udp
+
+
+22: allow to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+
+
+23: allow to 10.0.2.101 port 123 proto tcp
+
+
+24: allow to 10.0.0.0/16 port 123 proto tcp
+
+
+25: allow to 10.0.2.0/24 port 123 proto tcp
+
+
+26: allow to 10.0.3.0/24 port 123 proto tcp
+
+
+27: allow to fe80::211:aaaa:bbbb:d54c port 123 proto tcp
+
+
+28: allow out 123
+
+
+29: allow out 123/udp
+
+
+30: allow out 123/tcp
+
+
+31: allow in on eth0 to any
+
+
+32: allow in on eth0 to any proto udp
+
+
+33: allow in on eth0 to any proto tcp
+
+
+34: allow in on eth0 to 10.0.2.101
+
+
+35: allow in on eth0 to 10.0.2.9
+
+
+36: allow in on eth0 to 10.0.0.0/16
+
+
+37: allow in on eth0 to 10.0.2.0/24
+
+
+38: allow in on eth0 to 10.0.3.0/24
+
+
+39: allow in on eth0 to fe80::211:aaaa:bbbb:d54c
+
+
+40: allow in on eth0 to 10.0.2.101 port 123
+
+
+41: allow in on eth0 to 10.0.0.0/16 port 123
+
+
+42: allow in on eth0 to 10.0.2.0/24 port 123
+
+
+43: allow in on eth0 to 10.0.3.0/24 port 123
+
+
+44: allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123
+
+
+45: allow in on eth0 to 10.0.2.101 port 123 proto udp
+
+
+46: allow in on eth0 to 10.0.0.0/16 app OpenNTPD
+
+
+47: allow in on eth0 to 10.0.2.0/24 port 123 proto udp
+
+
+48: allow in on eth0 to 10.0.3.0/24 port 123 proto udp
+
+
+49: allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+
+
+50: allow in on eth0 to 10.0.2.101 port 123 proto tcp
+
+
+51: allow in on eth0 to 10.0.0.0/16 port 123 proto tcp
+
+
+52: allow in on eth0 to 10.0.2.0/24 port 123 proto tcp
+
+
+53: allow in on eth0 to 10.0.3.0/24 port 123 proto tcp
+
+
+54: allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto tcp
+
+
+show listening with rules
+55: show listening
+WARN: Checks disabled
+tcp:
+  22 * (EXE_FILTERED_OUT_OF_TEST)
+   [ 4] allow to any
+   [ 6] allow to any proto tcp
+   [ 7] allow to 10.0.2.101
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [11] allow to 10.0.3.0/24
+   [27] allow in on eth0
+   [29] allow in on eth0 proto tcp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+
+tcp6:
+  22 * (EXE_FILTERED_OUT_OF_TEST)
+   [50] allow to any
+   [52] allow to any proto tcp
+   [53] allow to fe80::211:aaaa:bbbb:d54c
+   [60] allow in on eth0
+   [62] allow in on eth0 proto tcp
+   [63] allow in on eth0 to fe80::211:aaaa:bbbb:d54c
+
+udp:
+  123 10.0.2.101 (EXE_FILTERED_OUT_OF_TEST)
+   [ 1] allow 123
+   [ 2] allow OpenNTPD
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 7] allow to 10.0.2.101
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [12] allow to 10.0.2.101 port 123
+   [13] allow to 10.0.0.0/16 port 123
+   [14] allow to 10.0.2.0/24 port 123
+   [16] allow to 10.0.2.101 port 123 proto udp
+   [17] allow to 10.0.0.0/16 app OpenNTPD
+   [18] allow to 10.0.2.0/24 port 123 proto udp
+
+  123 10.0.2.9 (EXE_FILTERED_OUT_OF_TEST)
+   [ 1] allow 123
+   [ 2] allow OpenNTPD
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [13] allow to 10.0.0.0/16 port 123
+   [14] allow to 10.0.2.0/24 port 123
+   [17] allow to 10.0.0.0/16 app OpenNTPD
+   [18] allow to 10.0.2.0/24 port 123 proto udp
+   [27] allow in on eth0
+   [28] allow in on eth0 proto udp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+   [36] allow in on eth0 to 10.0.0.0/16 port 123
+   [37] allow in on eth0 to 10.0.2.0/24 port 123
+   [40] allow in on eth0 to 10.0.0.0/16 app OpenNTPD
+   [41] allow in on eth0 to 10.0.2.0/24 port 123 proto udp
+
+  123 * (EXE_FILTERED_OUT_OF_TEST)
+   [ 1] allow 123
+   [ 2] allow OpenNTPD
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 7] allow to 10.0.2.101
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [11] allow to 10.0.3.0/24
+   [12] allow to 10.0.2.101 port 123
+   [13] allow to 10.0.0.0/16 port 123
+   [14] allow to 10.0.2.0/24 port 123
+   [15] allow to 10.0.3.0/24 port 123
+   [16] allow to 10.0.2.101 port 123 proto udp
+   [17] allow to 10.0.0.0/16 app OpenNTPD
+   [18] allow to 10.0.2.0/24 port 123 proto udp
+   [19] allow to 10.0.3.0/24 port 123 proto udp
+   [27] allow in on eth0
+   [28] allow in on eth0 proto udp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+   [36] allow in on eth0 to 10.0.0.0/16 port 123
+   [37] allow in on eth0 to 10.0.2.0/24 port 123
+   [40] allow in on eth0 to 10.0.0.0/16 app OpenNTPD
+   [41] allow in on eth0 to 10.0.2.0/24 port 123 proto udp
+
+  33257 * (EXE_FILTERED_OUT_OF_TEST)
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 7] allow to 10.0.2.101
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [11] allow to 10.0.3.0/24
+   [27] allow in on eth0
+   [28] allow in on eth0 proto udp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+
+  5353 * (EXE_FILTERED_OUT_OF_TEST)
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 7] allow to 10.0.2.101
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [11] allow to 10.0.3.0/24
+   [27] allow in on eth0
+   [28] allow in on eth0 proto udp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+
+  68 * (EXE_FILTERED_OUT_OF_TEST)
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 7] allow to 10.0.2.101
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [11] allow to 10.0.3.0/24
+   [27] allow in on eth0
+   [28] allow in on eth0 proto udp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+
+  68 * (EXE_FILTERED_OUT_OF_TEST)
+   [ 4] allow to any
+   [ 5] allow to any proto udp
+   [ 7] allow to 10.0.2.101
+   [ 8] allow to 10.0.2.9
+   [ 9] allow to 10.0.0.0/16
+   [10] allow to 10.0.2.0/24
+   [11] allow to 10.0.3.0/24
+   [27] allow in on eth0
+   [28] allow in on eth0 proto udp
+   [31] allow in on eth0 to 10.0.2.9
+   [32] allow in on eth0 to 10.0.0.0/16
+   [33] allow in on eth0 to 10.0.2.0/24
+
+udp6:
+  123 fe80::212:cccc:dddd (EXE_FILTERED_OUT_OF_TEST)
+   [47] allow 123
+   [48] allow OpenNTPD
+   [50] allow to any
+   [51] allow to any proto udp
+
+  123 fe80::211:aaaa:bbbb (EXE_FILTERED_OUT_OF_TEST)
+   [47] allow 123
+   [48] allow OpenNTPD
+   [50] allow to any
+   [51] allow to any proto udp
+   [53] allow in to fe80::211:aaaa:bbbb:d54c
+   [54] allow in to fe80::211:aaaa:bbbb:d54c port 123
+   [55] allow in to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+   [60] allow in on eth0
+   [61] allow in on eth0 proto udp
+   [63] allow in on eth0 to fe80::211:aaaa:bbbb:d54c
+   [64] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123
+   [65] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+
+  123 * (EXE_FILTERED_OUT_OF_TEST)
+   [47] allow 123
+   [48] allow OpenNTPD
+   [50] allow to any
+   [51] allow to any proto udp
+   [53] allow to fe80::211:aaaa:bbbb:d54c
+   [54] allow to fe80::211:aaaa:bbbb:d54c port 123
+   [55] allow to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+   [60] allow in on eth0
+   [61] allow in on eth0 proto udp
+   [63] allow in on eth0 to fe80::211:aaaa:bbbb:d54c
+   [64] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123
+   [65] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+
+
+
+
