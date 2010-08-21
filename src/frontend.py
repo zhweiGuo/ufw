@@ -278,6 +278,8 @@ class UFWFrontend:
         protocols = d.keys()
         protocols.sort()
         for proto in protocols:
+            if not self.backend.use_ipv6() and proto in ['tcp6', 'udp6']:
+                continue
             res += "%s:\n" % (proto)
             ports = d[proto].keys()
             ports.sort()
@@ -319,6 +321,10 @@ class UFWFrontend:
                                     )
 
                         res += "\n"
+
+        if not self.backend.use_ipv6():
+            ufw.util.debug("Skipping tcp6 and udp6 (IPv6 is disabled)")
+
         return res
 
     def set_rule(self, rule, ip_version):
