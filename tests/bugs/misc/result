@@ -3,21 +3,58 @@ Bug #319226
 WARN: Checks disabled
 Available applications:
   A aZ9 _-.+
+  AIM
   Apache
   Apache Full
   Apache Secure
   Bind9
+  Bonjour
+  CIFS
   Custom Web App
+  Custom Web App2
+  DNS
+  Deluge
   Dovecot IMAP
   Dovecot POP3
   Dovecot Secure IMAP
   Dovecot Secure POP3
+  IMAP
+  IMAPS
+  IPP
+  KTorrent
+  Kerberos Admin
+  Kerberos Full
+  Kerberos KDC
+  Kerberos Password
+  LDAP
+  LPD
+  MSN
+  MSN SSL
+  Mail submission
   Multi TCP
   Multi UDP
+  NFS
   No Protocol
   OpenNTPD
+  POP3
+  POP3S
+  PeopleNearby
+  SMTP
+  SSH
   Samba
+  Socks
+  Telnet
+  Transmission
+  Transparent Proxy
+  VNC
+  WWW
+  WWW Cache
+  WWW Full
+  WWW Secure
+  XMPP
+  Yahoo
   a aZ9 _-.+
+  qBittorent
 
 
 Bug #337705
