@@ -1,5 +1,7 @@
 ufw (0.30-1) UNRELEASED; urgency=low
 
+  * New upstream release. Fixes:
+    - LP: #568877
   * run_tests.sh: revert temporarily disable 'skipped' check
   * don't flush chains if ufw is not enabled (LP: #581744)
 

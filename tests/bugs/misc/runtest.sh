@@ -94,4 +94,8 @@ for i in off low on medium high full off ; do
     fi
 done
 
+echo "Bug #568877" >> $TESTTMP/result
+do_cmd "0" null --dry-run allow in on iaslab
+
+
 exit 0
