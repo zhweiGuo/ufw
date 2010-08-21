@@ -444,7 +444,8 @@ Description: NFS and portmap server. Will also need access to mountd, statd
 and possibly others
 
 Ports:
-  2049,111
+  2049,111/tcp
+  2049,111/udp
 
 --
 
@@ -12613,3 +12614,107 @@ TESTING SHIPPED APPLICATION PROFILES
 
 
 330: allow NFS
+
+
+331: app info Telnet
+
+
+332: allow Telnet
+
+
+333: app info SSH
+
+
+334: allow SSH
+
+
+335: app info VNC
+
+
+336: allow VNC
+
+
+337: app info POP3
+
+
+338: allow POP3
+
+
+339: app info POP3S
+
+
+340: allow POP3S
+
+
+341: app info IMAP
+
+
+342: allow IMAP
+
+
+343: app info IMAPS
+
+
+344: allow IMAPS
+
+
+345: app info SMTP
+
+
+346: allow SMTP
+
+
+347: app info Mail submission
+
+
+348: allow Mail submission
+
+
+349: app info IPP
+
+
+350: allow IPP
+
+
+351: app info LPD
+
+
+352: allow LPD
+
+
+353: app info Socks
+
+
+354: allow Socks
+
+
+355: app info Transparent Proxy
+
+
+356: allow Transparent Proxy
+
+
+357: app info WWW
+
+
+358: allow WWW
+
+
+359: app info WWW Secure
+
+
+360: allow WWW Secure
+
+
+361: app info WWW Full
+
+
+362: allow WWW Full
+
+
+363: app info WWW Cache
+
+
+364: allow WWW Cache
+
+
