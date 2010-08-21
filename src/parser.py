@@ -410,9 +410,9 @@ class UFWCommandRule(UFWCommand):
                         % (rule.protocol)
             raise UFWError(err_msg)
 
-        if rule.protocol in [ 'ipv6', 'esp', 'ah' ]:
+        if rule.protocol == 'ipv6':
             if type == "v6":
-		# Can't use protocol ipv6, esp or ah with v6 addresses
+                # Can't use protocol ipv6 with v6 addresses
                 err_msg = _("Invalid IPv6 address with protocol '%s'") % \
                             (rule.protocol)
                 raise UFWError(err_msg)
