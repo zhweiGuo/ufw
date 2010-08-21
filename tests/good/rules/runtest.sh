@@ -286,4 +286,14 @@ for i in "in" "out" ; do
     cat $TESTSTATE/user.rules >> $TESTTMP/result
 done
 
+echo "Man page (ipv6)" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to 10.0.0.1 proto ipv6
+do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ipv6
+
+echo "Man page (ipsec)" >> $TESTTMP/result
+do_cmd "0" --dry-run allow to 10.0.0.1 proto esp
+do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto esp
+do_cmd "0" --dry-run allow to 10.0.0.1 proto ah
+do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ah
+
 exit 0

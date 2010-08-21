@@ -244,6 +244,8 @@ class UFWRule:
         if protocol == "tcp" or \
            protocol == "udp" or \
            protocol == "ipv6" or \
+           protocol == "esp" or \
+           protocol == "ah" or \
            protocol == "any":
             self.protocol = protocol
         else:

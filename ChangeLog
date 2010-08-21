@@ -39,6 +39,7 @@ ufw (0.30) UNRELEASED; urgency=low
   * follow iptables and don't require that an interface ends with a number
     (LP: #568877)
   * really allow IPv6 neighbor discovery (LP: #611982)
+  * add support for IPSec via the esp and ah protocols (LP: #606997)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 01 Feb 2010 23:13:55 -0800
 

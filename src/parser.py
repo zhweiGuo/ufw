@@ -224,9 +224,10 @@ class UFWCommandRule(UFWCommand):
                     err_msg = _("Bad port")
                     raise UFWError(err_msg)
 
-            # Don't specify a port with ipv6 protocol
-            if rule.protocol == "ipv6":
-                err_msg = _("Invalid port with protocol '41' (ipv6)")
+            # Don't specify a port with ipv6, esp or ah protocols
+            if rule.protocol in [ 'ipv6', 'esp', 'ah' ]:
+                err_msg = _("Invalid port with protocol '%s'") % \
+                            (rule.protocol)
                 raise UFWError(err_msg)
         elif (nargs + 1) % 2 != 0:
             err_msg = _("Wrong number of arguments")
@@ -409,18 +410,21 @@ class UFWCommandRule(UFWCommand):
                         % (rule.protocol)
             raise UFWError(err_msg)
 
-        if rule.protocol == "ipv6":
+        if rule.protocol in [ 'ipv6', 'esp', 'ah' ]:
             if type == "v6":
-                # Can't use protocol '41' (ipv6) with v6 addresses
-                err_msg = _("Invalid IPv6 address with protocol '41' (ipv6)")
+		# Can't use protocol ipv6, esp or ah with v6 addresses
+                err_msg = _("Invalid IPv6 address with protocol '%s'") % \
+                            (rule.protocol)
                 raise UFWError(err_msg)
             elif type == "both":
-                debug("Adjusting iptype to 'v4' for protocol '41'")
-                type = "both"
+                debug("Adjusting iptype to 'v4' for protocol '%s'") % \
+                      (rule.protocol)
+                type = "v4"
 
             if rule.dport != "any" or rule.sport != "any":
-                # Don't specify a port with ipv6 protocol
-                err_msg = _("Invalid port with protocol '41' (ipv6)")
+                # Don't specify a port with ipv6, esp, or ah protocol
+                err_msg = _("Invalid port with protocol '%s'") % \
+                            (rule.protocol)
                 raise UFWError(err_msg)
 
         r = UFWParserResponse(action)
@@ -491,7 +495,7 @@ class UFWCommandRule(UFWCommand):
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
                 res += " proto %s" % r.protocol
-        
+
         return res
     get_command = staticmethod(get_command)
 
