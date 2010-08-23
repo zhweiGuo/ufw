@@ -1,6 +1,10 @@
 #!/bin/sh -e
 
-. /usr/share/debconf/confmodule
+# Only source /usr/share/debconf/confmodule when not called with 'triggered'
+# to avoid LP: #618410.
+if [ "$1" != "triggered" ]; then
+    . /usr/share/debconf/confmodule
+fi
 
 RULES_PATH="/etc/ufw"
 USER_PATH="/lib/ufw"
