@@ -644,7 +644,12 @@ def get_netstat_output(exe="/bin/netstat"):
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
 
-    rc, report = cmd([exe, '-enlp'])
+    args = [exe, '-enlp']
+    rc, report = cmd([exe, '-enlp'] + ['--wide'])
+    if rc != 0:
+        # Try without '--wide'
+        rc, report = cmd([exe, '-enlp'])
+
     d = dict()
     for line in report.splitlines():
         if not line.startswith('tcp') and not line.startswith('udp'):
@@ -690,7 +695,7 @@ def get_ip_from_if(ifname, v6=False):
                 addr = ":".join( \
                            [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
 
-                if tmp[2].lower() != "ff":
+                if tmp[2].lower() != "80":
                     addr = "%s/%s" % (addr, int(tmp[2].lower(), 16))
 
         if addr == "":
