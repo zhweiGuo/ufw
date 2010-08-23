@@ -16,8 +16,8 @@ udp:
   68 * (EXE_FILTERED_OUT_OF_TEST)
   68 * (EXE_FILTERED_OUT_OF_TEST)
 udp6:
-  123 fe80::212:cccc:dddd (EXE_FILTERED_OUT_OF_TEST)
-  123 fe80::211:aaaa:bbbb (EXE_FILTERED_OUT_OF_TEST)
+  123 2001::212:cccc:dddd (EXE_FILTERED_OUT_OF_TEST)
+  123 2001::211:aaaa:bbbb (EXE_FILTERED_OUT_OF_TEST)
   123 * (EXE_FILTERED_OUT_OF_TEST)
 
 
@@ -56,7 +56,7 @@ Add rules for test
 11: allow to 10.0.3.0/24
 
 
-12: allow to fe80::211:aaaa:bbbb:d54c
+12: allow to 2001::211:aaaa:bbbb:d54c
 
 
 13: allow to 10.0.2.101 port 123
@@ -71,7 +71,7 @@ Add rules for test
 16: allow to 10.0.3.0/24 port 123
 
 
-17: allow to fe80::211:aaaa:bbbb:d54c port 123
+17: allow to 2001::211:aaaa:bbbb:d54c port 123
 
 
 18: allow to 10.0.2.101 port 123 proto udp
@@ -86,7 +86,7 @@ Add rules for test
 21: allow to 10.0.3.0/24 port 123 proto udp
 
 
-22: allow to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+22: allow to 2001::211:aaaa:bbbb:d54c port 123 proto udp
 
 
 23: allow to 10.0.2.101 port 123 proto tcp
@@ -101,7 +101,7 @@ Add rules for test
 26: allow to 10.0.3.0/24 port 123 proto tcp
 
 
-27: allow to fe80::211:aaaa:bbbb:d54c port 123 proto tcp
+27: allow to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 
 
 28: allow out 123
@@ -137,7 +137,7 @@ Add rules for test
 38: allow in on eth0 to 10.0.3.0/24
 
 
-39: allow in on eth0 to fe80::211:aaaa:bbbb:d54c
+39: allow in on eth0 to 2001::211:aaaa:bbbb:d54c
 
 
 40: allow in on eth0 to 10.0.2.101 port 123
@@ -152,7 +152,7 @@ Add rules for test
 43: allow in on eth0 to 10.0.3.0/24 port 123
 
 
-44: allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123
+44: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123
 
 
 45: allow in on eth0 to 10.0.2.101 port 123 proto udp
@@ -167,7 +167,7 @@ Add rules for test
 48: allow in on eth0 to 10.0.3.0/24 port 123 proto udp
 
 
-49: allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+49: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto udp
 
 
 50: allow in on eth0 to 10.0.2.101 port 123 proto tcp
@@ -182,7 +182,7 @@ Add rules for test
 53: allow in on eth0 to 10.0.3.0/24 port 123 proto tcp
 
 
-54: allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto tcp
+54: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 
 
 show listening with rules
@@ -207,10 +207,10 @@ tcp6:
   22 * (EXE_FILTERED_OUT_OF_TEST)
    [50] allow to any
    [52] allow to any proto tcp
-   [53] allow to fe80::211:aaaa:bbbb:d54c
+   [53] allow to 2001::211:aaaa:bbbb:d54c
    [60] allow in on eth0
    [62] allow in on eth0 proto tcp
-   [63] allow in on eth0 to fe80::211:aaaa:bbbb:d54c
+   [63] allow in on eth0 to 2001::211:aaaa:bbbb:d54c
 
 udp:
   123 10.0.2.101 (EXE_FILTERED_OUT_OF_TEST)
@@ -335,39 +335,39 @@ udp:
    [33] allow in on eth0 to 10.0.2.0/24
 
 udp6:
-  123 fe80::212:cccc:dddd (EXE_FILTERED_OUT_OF_TEST)
+  123 2001::212:cccc:dddd (EXE_FILTERED_OUT_OF_TEST)
    [47] allow 123
    [48] allow OpenNTPD
    [50] allow to any
    [51] allow to any proto udp
 
-  123 fe80::211:aaaa:bbbb (EXE_FILTERED_OUT_OF_TEST)
+  123 2001::211:aaaa:bbbb (EXE_FILTERED_OUT_OF_TEST)
    [47] allow 123
    [48] allow OpenNTPD
    [50] allow to any
    [51] allow to any proto udp
-   [53] allow in to fe80::211:aaaa:bbbb:d54c
-   [54] allow in to fe80::211:aaaa:bbbb:d54c port 123
-   [55] allow in to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+   [53] allow in to 2001::211:aaaa:bbbb:d54c
+   [54] allow in to 2001::211:aaaa:bbbb:d54c port 123
+   [55] allow in to 2001::211:aaaa:bbbb:d54c port 123 proto udp
    [60] allow in on eth0
    [61] allow in on eth0 proto udp
-   [63] allow in on eth0 to fe80::211:aaaa:bbbb:d54c
-   [64] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123
-   [65] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+   [63] allow in on eth0 to 2001::211:aaaa:bbbb:d54c
+   [64] allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123
+   [65] allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto udp
 
   123 * (EXE_FILTERED_OUT_OF_TEST)
    [47] allow 123
    [48] allow OpenNTPD
    [50] allow to any
    [51] allow to any proto udp
-   [53] allow to fe80::211:aaaa:bbbb:d54c
-   [54] allow to fe80::211:aaaa:bbbb:d54c port 123
-   [55] allow to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+   [53] allow to 2001::211:aaaa:bbbb:d54c
+   [54] allow to 2001::211:aaaa:bbbb:d54c port 123
+   [55] allow to 2001::211:aaaa:bbbb:d54c port 123 proto udp
    [60] allow in on eth0
    [61] allow in on eth0 proto udp
-   [63] allow in on eth0 to fe80::211:aaaa:bbbb:d54c
-   [64] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123
-   [65] allow in on eth0 to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+   [63] allow in on eth0 to 2001::211:aaaa:bbbb:d54c
+   [64] allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123
+   [65] allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto udp
 
 
 

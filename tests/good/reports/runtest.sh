@@ -17,8 +17,8 @@
 source "$TESTPATH/../testlib.sh"
 
 # The show listening test is a regression test that has:
-# eth0 = 10.0.2.9   fe80::0211:aaaa:bbbb
-# eth1 = 10.0.2.101 fe80::0212:cccc:dddd
+# eth0 = 10.0.2.9   2001::0211:aaaa:bbbb:d54c/112
+# eth1 = 10.0.2.101 2001::0212:cccc:dddd:e243/112
 #
 # With the following open ports (port 68 is listed twice due to eth0 and eth1):
 #tcp        0      0 0.0.0.0:22
@@ -33,8 +33,8 @@ source "$TESTPATH/../testlib.sh"
 #udp        0      0 10.0.2.9:123
 #udp        0      0 127.0.0.1:123
 #udp        0      0 0.0.0.0:123
-#udp6       0      0 fe80::212:cccc:dddd:123
-#udp6       0      0 fe80::211:aaaa:bbbb:123
+#udp6       0      0 2001::212:cccc:dddd:123
+#udp6       0      0 2001::211:aaaa:bbbb:123
 #udp6       0      0 ::1:123
 #udp6       0      0 :::123
 #
@@ -97,20 +97,20 @@ source "$TESTPATH/../testlib.sh"
 # [50] Anywhere (v6)              ALLOW IN    Anywhere (v6)
 # [51] Anywhere/udp (v6)          ALLOW IN    Anywhere/udp (v6)
 # [52] Anywhere/tcp (v6)          ALLOW IN    Anywhere/tcp (v6)
-# [53] fe80::211:aaaa:bbbb        ALLOW IN    Anywhere (v6)
-# [54] fe80::211:aaaa:bbbb 123    ALLOW IN    Anywhere (v6)
-# [55] fe80::211:aaaa:bbbb 123/udp ALLOW IN    Anywhere (v6)
-# [56] fe80::211:aaaa:bbbb 123/tcp ALLOW IN    Anywhere (v6)
+# [53] 2001::211:aaaa:bbbb:d54c/112 ALLOW IN    Anywhere (v6)
+# [54] 2001::211:aaaa:bbbb:d54c/112 123 ALLOW IN    Anywhere (v6)
+# [55] 2001::211:aaaa:bbbb:d54c/112 123/udp ALLOW IN    Anywhere (v6)
+# [56] 2001::211:aaaa:bbbb:d54c/112 123/tcp ALLOW IN    Anywhere (v6)
 # [57] 123                        ALLOW OUT   Anywhere (v6) (out)
 # [58] 123/udp                    ALLOW OUT   Anywhere (v6) (out)
 # [59] 123/tcp                    ALLOW OUT   Anywhere (v6) (out)
 # [60] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6)
 # [61] Anywhere/udp (v6) on eth0  ALLOW IN    Anywhere/udp (v6)
 # [62] Anywhere/tcp (v6) on eth0  ALLOW IN    Anywhere/tcp (v6)
-# [63] fe80::211:aaaa:bbbb on eth0 ALLOW IN    Anywhere (v6)
-# [64] fe80::211:aaaa:bbbb 123 on eth0 ALLOW IN    Anywhere (v6)
-# [65] fe80::211:aaaa:bbbb 123/udp on eth0 ALLOW IN    Anywhere (v6)
-# [66] fe80::211:aaaa:bbbb 123/tcp on eth0 ALLOW IN    Anywhere (v6)
+# [63] 2001::211:aaaa:bbbb:d54c/112 on eth0 ALLOW IN    Anywhere (v6)
+# [64] 2001::211:aaaa:bbbb:d54c/112 123 on eth0 ALLOW IN    Anywhere (v6)
+# [65] 2001::211:aaaa:bbbb:d54c/112 123/udp on eth0 ALLOW IN    Anywhere (v6)
+# [66] 2001::211:aaaa:bbbb:d54c/112 123/tcp on eth0 ALLOW IN    Anywhere (v6)
 
 echo "show listening" >> $TESTTMP/result
 echo "(update util.py to use our cached output)" >> $TESTTMP/result
@@ -146,25 +146,25 @@ for i in "" "in on eth0" ; do
     do_cmd "0" null allow $i to 10.0.0.0/16
     do_cmd "0" null allow $i to 10.0.2.0/24
     do_cmd "0" null allow $i to 10.0.3.0/24
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123
     do_cmd "0" null allow $i to 10.0.0.0/16 port 123
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c port 123
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.0.0/16 app OpenNTPD
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto udp
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c port 123 proto udp
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.0.0/16 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto tcp
-    do_cmd "0" null allow $i to fe80::211:aaaa:bbbb:d54c port 123 proto tcp
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp
 done
 
 echo "show listening with rules" >> $TESTTMP/result
