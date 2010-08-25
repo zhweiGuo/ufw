@@ -28,7 +28,6 @@ trans_dir = share_dir
 config_dir = "#CONFIG_PREFIX#"
 prefix_dir = "#PREFIX#"
 iptables_dir = "#IPTABLES_DIR#"
-netstat_exe = "#NETSTAT_EXE#"
 
 class UFWError(Exception):
     '''This class represents ufw exceptions'''
@@ -485,7 +484,8 @@ class UFWRule:
             elif x.dst != y.dst and '/' not in y.dst:
                 debug("(dst) " + dbg_msg)
                 return 1
-            elif '/' in y.dst and not ufw.util.in_network(x.dst, y.dst, x.v6):
+            elif '/' in y.dst and x.v6 == y.v6 and \
+               not ufw.util.in_network(x.dst, y.dst, x.v6):
                 debug("(dst) " + dbg_msg)
                 return 1
         else:
@@ -501,7 +501,8 @@ class UFWRule:
             if y.dst != if_ip and '/' not in y.dst:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % (y.dst, if_ip))
                 return 1
-            elif '/' in y.dst and not ufw.util.in_network(if_ip, y.dst, x.v6):
+            elif '/' in y.dst and x.v6 == y.v6 and \
+               not ufw.util.in_network(if_ip, y.dst, x.v6):
                 debug("(interface) " + dbg_msg + " (not in network)")
                 return 1
 

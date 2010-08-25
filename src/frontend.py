@@ -267,8 +267,9 @@ class UFWFrontend:
     def get_show_listening(self):
         '''Shows listening services'''
         res = ""
+        d = ufw.util.parse_netstat_output()
         try:
-            d = ufw.util.get_netstat_output(ufw.common.netstat_exe)
+            d = ufw.util.parse_netstat_output()
         except Exception:
             err_msg = _("Could not get listening status (are you root?)")
             raise UFWError(err_msg)

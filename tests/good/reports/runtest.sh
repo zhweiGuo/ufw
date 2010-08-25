@@ -33,8 +33,8 @@ source "$TESTPATH/../testlib.sh"
 #udp        0      0 10.0.2.9:123
 #udp        0      0 127.0.0.1:123
 #udp        0      0 0.0.0.0:123
-#udp6       0      0 2001::212:cccc:dddd:123
-#udp6       0      0 2001::211:aaaa:bbbb:123
+#udp6       0      0 2001::212:cccc:dddd:e243:123
+#udp6       0      0 2001::211:aaaa:bbbb:d54c:123
 #udp6       0      0 ::1:123
 #udp6       0      0 :::123
 #
@@ -114,8 +114,7 @@ source "$TESTPATH/../testlib.sh"
 
 echo "show listening" >> $TESTTMP/result
 echo "(update util.py to use our cached output)" >> $TESTTMP/result
-sed -i "s#rc, report = cmd.* '-enlp'.*#rc, report = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/lib/python/ufw/util.py
-sed -i "s#item\['exe'\] = get_exe.*#item['exe'] = 'EXE_FILTERED_OUT_OF_TEST'#" $TESTPATH/lib/python/ufw/util.py
+sed -i "s#netstat_output = get_netstat_output.*#rc, netstat_output = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n    return normalize_address(addr, v6)[0]\n    \\2#" $TESTPATH/lib/python/ufw/util.py

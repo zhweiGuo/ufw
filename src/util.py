@@ -377,24 +377,6 @@ def get_ppid(p=os.getpid()):
 
     return int(ppid)
 
-def get_exe(p):
-    '''Finds executable for pid. See 'man 5 proc' for details.'''
-    try:
-        pid = int(p)
-    except Exception:
-        raise ValueError("pid must be an integer")
-
-    name = os.path.join("/proc", str(pid), "exe")
-    if not os.path.isfile(name):
-        raise IOError("Couldn't find '%s'" % (name))
-
-    try:
-        exe = os.readlink(name)
-    except Exception:
-        raise
-
-    return exe
-
 
 def under_ssh(pid=os.getpid()):
     '''Determine if current process is running under ssh'''
@@ -463,6 +445,7 @@ def _valid_dotted_quads(nm, v6):
 
     return True
 
+
 #
 # _dotted_netmask_to_cidr()
 # Returns:
@@ -527,6 +510,7 @@ def _cidr_to_dotted_netmask(cidr, v6):
 
     return nm
 
+
 def _address4_to_network(addr):
     '''Convert an IPv4 address and netmask to a network address'''
     if '/' not in addr:
@@ -555,6 +539,7 @@ def _address4_to_network(addr):
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
 
     return network + "/" + orig_nm
+
 
 def in_network(x, y, v6):
     '''Determine if address is in network'''
@@ -638,34 +623,33 @@ def get_iptables_version(exe="/sbin/iptables"):
     tmp = re.split('\s', out)
     return re.sub('^v', '', tmp[1])
 
-def get_netstat_output(exe="/bin/netstat"):
-    '''Get netstat output'''
+
+def parse_netstat_output():
+    '''Get and parse netstat the output from get_netstat_outout()'''
 
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
 
-    rc, report = cmd([exe, '-enlp'])
+    netstat_output = get_netstat_output()
 
     d = dict()
-    for line in report.splitlines():
+    for line in netstat_output.splitlines():
         if not line.startswith('tcp') and not line.startswith('udp'):
             continue
 
         tmp = line.split()
 
         proto = tmp[0]
-        port  = tmp[3].split(':')[-1]
+        port  = tmp[1].split(':')[-1]
 
         item = dict()
-        item['laddr'] = ':'.join(tmp[3].split(':')[:-1])
-        item['raddr'] = tmp[4]
-        item['uid']   = tmp[6]
-
-        idx = 8
-        if proto.startswith("udp"):
-            idx = 7
-        item['pid'] = tmp[idx].split('/')[0]
-        item['exe'] = get_exe(item['pid'])
+        item['laddr'] = ':'.join(tmp[1].split(':')[:-1])
+        item['uid']   = tmp[3]
+        item['pid'] = tmp[5].split('/')[0]
+        if item['pid'] == '-':
+            item['exe'] = item['pid']
+        else:
+            item['exe'] = tmp[5].split('/')[1]
 
         if not d.has_key(proto):
             d[proto] = dict()
@@ -676,6 +660,7 @@ def get_netstat_output(exe="/bin/netstat"):
         d[proto][port].append(item)
 
     return d
+
 
 def get_ip_from_if(ifname, v6=False):
     '''Get IP address for interface'''
@@ -702,6 +687,7 @@ def get_ip_from_if(ifname, v6=False):
                                 struct.pack('256s', ifname[:15]))[20:24])
 
     return normalize_address(addr, v6)[0]
+
 
 def get_if_from_ip(addr):
     '''Get interface for IP address'''
@@ -749,3 +735,123 @@ def get_if_from_ip(addr):
                 break
 
     return matched
+
+
+def _get_proc_inodes():
+    proc_files = os.listdir("/proc")
+    proc_files.sort()
+    pat = re.compile(r'^[0-9]+$')
+    inodes = dict()
+    for i in proc_files:
+        if not pat.match(i):
+            continue
+
+        fd_path = os.path.join("/proc", i, "fd")
+
+        # skip stuff we can't read or that goes away
+        if not os.access(fd_path, os.F_OK | os.R_OK):
+            continue
+
+        exe_path = "-"
+        try:
+            exe_path = os.readlink(os.path.join("/proc", i, "exe"))
+        except:
+            pass
+
+        for j in os.listdir(fd_path):
+            try:
+                inode = os.stat(os.path.join(fd_path, j))[1]
+            except:
+                continue
+            inodes[inode] = "%s/%s" % (i, os.path.basename(exe_path))
+
+    return inodes
+
+
+def _read_proc_net_protocol(protocol):
+    '''Read /proc/net/(tcp|udp)[6] file and return a list of tuples '''
+    tcp_states = { 1: "ESTABLISHED",
+                   2: "SYN_SENT",
+                   3: "SYN_RECV",
+                   4: "FIN_WAIT1",
+                   5: "FIN_WAIT2",
+                   6: "TIME_WAIT",
+                   7: "CLOSE",
+                   8: "CLOSE_WAIT",
+                   9: "LAST_ACK",
+                   10: "LISTEN",
+                   11: "CLOSING"
+                 }
+
+    proc_net_fields = { 'local_addr': 1,
+                        'state': 3,
+                        'uid': 7,
+                        'inode': 9
+                      }
+
+    fn = os.path.join("/proc/net", protocol)
+    if not os.access(fn, os.F_OK | os.R_OK):
+        raise ValueError
+
+    lst = []
+    skipped_first = False
+    lines = file(fn).readlines()
+    for line in lines:
+        fields = line.split()
+        if not skipped_first:
+            skipped_first = True
+            continue
+        state = tcp_states[int(fields[proc_net_fields['state']], 16)]
+        if protocol.startswith("udp"):
+            state = "NA"
+        elif protocol.startswith("tcp") and state != "LISTEN":
+            continue
+        laddr, port = fields[proc_net_fields['local_addr']].split(':')
+        uid = fields[proc_net_fields['uid']]
+        inode = fields[proc_net_fields['inode']]
+        lst.append((laddr, int(port, 16), uid, inode, state))
+
+    return lst
+
+
+def convert_proc_address(paddr):
+    '''Convert an address from /proc/net/(tcp|udp)* to a normalized address'''
+    converted = ""
+    if len(paddr) > 8:
+        tmp = ""
+        for i in range(0,32,8):
+            tmp += "".join([ paddr[j-2:j] for j in range(i+8,i,-2) ])
+        converted = normalize_address(":".join( \
+               [ tmp[j:j+4].lower() for j in range(0,len(tmp),4) ]), \
+               True)[0]
+    else:
+        tmp = []
+        for i in [ paddr[j-2:j] for j in range(8,0,-2) ]:
+            tmp.append(str(int(i, 16)))
+        converted = normalize_address(".".join(tmp), False)[0]
+
+    return converted
+
+
+def get_netstat_output():
+    '''netstat-style output, without IPv6 address truncation'''
+    proc_net_data = dict()
+    for proto in ['tcp', 'udp', 'tcp6', 'udp6']:
+        proc_net_data[proto] = _read_proc_net_protocol(proto)
+
+    inodes = _get_proc_inodes()
+
+    protocols = proc_net_data.keys()
+    protocols.sort()
+
+    s = ""
+    for p in protocols:
+        for (laddr, port, uid, inode, state) in proc_net_data[p]:
+            addr = convert_proc_address(laddr)
+
+            exe = "-"
+            if inodes.has_key(int(inode)):
+                exe = inodes[int(inode)]
+            s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p, "%s:%s" % (addr, port), state, uid, inode, exe)
+
+    return s
