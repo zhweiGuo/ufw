@@ -67,28 +67,8 @@ for i in "" 6; do
     fi
 done
 
-echo -n "Has netstat: "
-if ! which netstat >/dev/null 2>&1 ; then
-    echo "ERROR: could not find 'netstat'" >&2
-    error="yes"
-else
-    echo "pass"
-fi
-
 if [ -n "$error" ]; then
     exit 1
-fi
-
-
-echo -n "netstat has '--wide' option: "
-if netstat -enlp --wide2 >/dev/null 2>&1 ; then
-    echo "pass"
-else
-    echo "no"
-    echo "  The 'listening' report will not be accurate with IPv6 without the -W/--wide"
-    echo "  option. For details, see:"
-    echo "  - http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=254243"
-    echo "  - https://cvs.berlios.de/cgi-bin/viewvc.cgi/net-tools/net-tools/netstat.c?r1=1.59&r2=1.60&view=patch"
 fi
 echo ""
 
@@ -101,7 +81,7 @@ for i in /proc/net/dev /proc/net/if_inet6; do
     else
         echo "pass"
     fi
-done
+done  
 if [ -n "$error" ]; then
     exit 1
 fi

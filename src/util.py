@@ -644,11 +644,7 @@ def get_netstat_output(exe="/bin/netstat"):
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
 
-    args = [exe, '-enlp']
-    rc, report = cmd([exe, '-enlp'] + ['--wide'])
-    if rc != 0:
-        # Try without '--wide'
-        rc, report = cmd([exe, '-enlp'])
+    rc, report = cmd([exe, '-enlp'])
 
     d = dict()
     for line in report.splitlines():
