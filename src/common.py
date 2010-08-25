@@ -456,7 +456,7 @@ class UFWRule:
         if x.match(y) == 0:
             return 0
 
-        dbg_msg = "No fuzzy match '%s' '%s'" % (x, y)
+        dbg_msg = "No fuzzy match '%s (v6=%s)' '%s (v6=%s)'" % (x, x.v6, y, y.v6)
 
         # Direction must match
         if y.direction != "in":
@@ -494,16 +494,18 @@ class UFWRule:
             #  the IP of the interface must match the IP of y or
 	    #  the IP of the interface must be contained in y
             if x.interface_in != "" and x.interface_in != y.interface_in:
-                debug("(interface) " + dbg_msg + " (%s != %s)" % (x.interface_in, y.interface_in))
+                debug("(interface) " + dbg_msg + " (%s != %s)" % \
+                      (x.interface_in, y.interface_in))
                 return 1
 
             if_ip = ufw.util.get_ip_from_if(y.interface_in, x.v6)
             if y.dst != if_ip and '/' not in y.dst:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % (y.dst, if_ip))
                 return 1
-            elif '/' in y.dst and x.v6 == y.v6 and \
+            elif y.dst != if_ip and '/' in y.dst and x.v6 == y.v6 and \
                not ufw.util.in_network(if_ip, y.dst, x.v6):
-                debug("(interface) " + dbg_msg + " (not in network)")
+                debug("(interface) " + dbg_msg + \
+                      " ('%s' not in network '%s')" % (if_ip, y.dst))
                 return 1
 
         if x.v6 != y.v6:
@@ -511,7 +513,7 @@ class UFWRule:
             return 1
 
         # if we made it here, it is a fuzzy match
-        debug("(fuzzy match) '%s' '%s'" % (x, y))
+        debug("(fuzzy match) '%s (v6=%s)' '%s (v6=%s)'" % (x, x.v6, y, y.v6))
         return -1
 
     def _is_anywhere(self, addr):
