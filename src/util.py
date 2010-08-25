@@ -726,7 +726,7 @@ def get_if_from_ip(addr):
 
             tmp_addr = ":".join( \
                            [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
-            if tmp[2].lower() != "ff":
+            if tmp[2].lower() != "80":
                 tmp_addr = "%s/%s" % (addr, int(tmp[2].lower(), 16))
 
             if addr == tmp_addr or \
