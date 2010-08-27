@@ -16,7 +16,7 @@
 
 let count=0
 do_cmd() {
-        if [ "$1" = "0" ] || [ "$1" = "1" ]; then
+        if [ "$1" = "0" ] || [ "$1" = "1" ] || [ "$1" = "2" ]; then
                 expected="$1"
                 shift
         fi
@@ -117,5 +117,69 @@ done
 
 do_cmd "0" any 192.168.128.128/255.255.255.129
 do_cmd "0" 4 192.168.128.128/255.255.255.129
+
+
+# if running manually, do:
+# cd tests/testarea
+# PYTHONPATH="`pwd`/lib/python" python ./test_util.py ...
+script="tests/testarea/test_in_network.py"
+cat > $script << EOM
+#! /usr/bin/env $interpreter
+
+# test_in_network.py VERSION ADDRESS NETWORK
+
+import sys
+import ufw.util
+
+if len(sys.argv) != 4:
+    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
+    print >> sys.stderr, sys.argv
+    sys.exit(3)
+
+v6 = False
+if sys.argv[1] == "6":
+    v6 = True
+
+innet = False
+try:
+    if ufw.util.in_network(sys.argv[2], sys.argv[3], v6):
+        innet = True
+except:
+    if not ufw.util.valid_address(sys.argv[2], sys.argv[1]):
+        print >> sys.stderr, "Bad address: %s" % (sys.argv[2])
+        sys.exit(2)
+    if not ufw.util.valid_address(sys.argv[3], sys.argv[1]):
+        print >> sys.stderr, "Bad address: %s" % (sys.argv[3])
+        sys.exit(2)
+    sys.exit(3)
+
+if not innet:
+    sys.exit(1)
+sys.exit(0)
+EOM
+chmod 755 $script
+
+echo "IN NETWORK" >> $TESTTMP/result
+for i in $(seq 0 31); do
+    do_cmd "0" "4" 10.2.0.1 10.2.0.1/$i
+    do_cmd "0" "4" 10.2.0.1 10.2.0.0/$i
+done
+do_cmd "0" "4" 10.2.0.1 10.2.0.1/32
+do_cmd "1" "4" 10.2.0.1 10.2.0.0/32
+do_cmd "0" "4" 11.0.0.1 10.2.0.1/7
+do_cmd "1" "4" 11.0.0.1 10.2.0.1/8
+do_cmd "2" "4" 10.2.0.1 10.2.0.1/33
+do_cmd "2" "4" 10.2.0.1234 10.2.0.1/24
+
+for i in $(seq 0 127); do
+    do_cmd "0" "6" ff80::1 ff80::1/$i
+    do_cmd "0" "6" ff80::1 ff80::0/$i
+done
+do_cmd "0" "6" ff80::1 ff80::1/128
+do_cmd "1" "6" ff80::1 ff80::0/128
+do_cmd "0" "6" ff81::1 ff80::1/15
+do_cmd "1" "6" ff81::1 ff80::1/16
+do_cmd "2" "6" ff80::1 ff80::1/129
+do_cmd "2" "6" gf80::1 ff80::1/64
 
 exit 0
