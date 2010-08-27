@@ -538,18 +538,67 @@ def _address4_to_network(addr):
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
 
-    return network + "/" + orig_nm
+    return "%s/%s" % (network, orig_nm)
+
+def _address6_to_network(addr):
+    '''Convert an IPv6 address and netmask to a network address'''
+    def dec2bin(n, count):
+        return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
+
+    if '/' not in addr:
+        debug("_address6_to_network: skipping address without a netmask")
+        return addr
+
+    tmp = addr.split('/')
+    if len(tmp) != 2 or not valid_netmask(tmp[1], True):
+        raise ValueError
+
+    orig_host = tmp[0]
+    netmask = tmp[1]
+
+    unpacked = struct.unpack('>8H', socket.inet_pton(socket.AF_INET6, \
+                                                     orig_host))
+
+    # Get the host bits
+    host_bits = 0L
+    for i in range(8):
+        n = dec2bin(unpacked[i], 16)
+        for j in range(16):
+            host_bits |= (1 & int(n[j])) <<(127-j-i*16)
+
+    # Create netmask bits
+    nm_bits = 0L
+    for i in range(128):
+        if i < int(netmask):
+            nm_bits |= 1<<(128 - 1) - i
+
+    # Apply the netmask to the host to determine the network
+    net = host_bits & nm_bits
+
+    # Break the network into chunks suitable for repacking
+    lst = []
+    for i in range(8):
+        lst.append(int(dec2bin(net, 128)[i*16:i*16+16], 2))
+
+    # Create the network string
+    network = socket.inet_ntop(socket.AF_INET6, \
+                               struct.pack('>8H', lst[0], lst[1], \
+                                           lst[2], lst[3], lst[4], \
+                                           lst[5], lst[6], lst[7]))
+
+    return "%s/%s" % (network, netmask)
 
 
 def in_network(x, y, v6):
-    '''Determine if address is in network'''
+    '''Determine if address x is in network y'''
     tmp = y.split('/')
     if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
         raise ValueError
-    orig_network = tmp[0]
+
+    orig_host = tmp[0]
     netmask = tmp[1]
 
-    if orig_network == "0.0.0.0" or orig_network == "::":
+    if orig_host == "0.0.0.0" or orig_host == "::":
         return True
 
     address = x
@@ -563,10 +612,10 @@ def in_network(x, y, v6):
         return True
 
     if v6:
-        if not valid_address6(address) or not valid_address6(orig_network):
+        if not valid_address6(address) or not valid_address6(orig_host):
             return False
     else:
-        if not valid_address4(address) or not valid_address4(orig_network):
+        if not valid_address4(address) or not valid_address4(orig_host):
             return False
 
     if _valid_cidr_netmask(netmask, v6) and not v6:
@@ -576,41 +625,16 @@ def in_network(x, y, v6):
             raise
 
     # Now apply the network's netmask to the address
-    if v6:
-        # TODO: there has to be a better way to do this for IPv6 while
-        # maintaining python2.5 compatibility
-        def dec2bin(n, count):
-            return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
-
-        # Unpack and turn the pton tuple into host bits
-        tmp = struct.unpack('>8H', socket.inet_pton(socket.AF_INET6, address))
-        host_bits = 0L
-        for x in tmp:
-            host_bits = (host_bits << 16) + x
-
-        # Create netmask bits
-        nm_bits = 0L
-        for i in range(128):
-            if i < int(netmask):
-                nm_bits |= 1<<(128 - 1) - i
-
-        # Apply the netmask
-        net = host_bits & nm_bits
-
-        # Break the netmask into chunks suitable for repacking
-        lst = []
-        for i in range(16):
-            lst.append(int(dec2bin(net, 128)[i*8:i*8+8], 2))
-
-        # Create the network string
-        network = socket.inet_ntop(socket.AF_INET6, \
-                                   struct.pack('>8H', lst[0], lst[1], lst[2], \
-                                               lst[3], lst[4], lst[5], \
-                                               lst[6], lst[7]))
+    if not v6:
+        orig_network = _address4_to_network("%s/%s" % \
+                                            (orig_host, netmask)).split('/')[0]
+        network = _address4_to_network("%s/%s" % \
+                                       (address, netmask)).split('/')[0]
     else:
-        host_bits = long(struct.unpack('>L',socket.inet_aton(address))[0])
-        nm_bits = long(struct.unpack('>L',socket.inet_aton(netmask))[0])
-        network = socket.inet_ntoa(struct.pack('>L', host_bits & nm_bits))
+        orig_network = _address6_to_network("%s/%s" % \
+                                            (orig_host, netmask)).split('/')[0]
+        network = _address6_to_network("%s/%s" % \
+                                       (address, netmask)).split('/')[0]
 
     return network == orig_network
 
@@ -713,7 +737,7 @@ def get_if_from_ip(addr):
 
             if addr == tmp_addr or \
                ('/' in tmp_addr and in_network(addr, tmp_addr, True)):
-                matched = tmp_addr
+                matched = tmp[5]
                 break
     else:
         proc = '/proc/net/dev'

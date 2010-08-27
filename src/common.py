@@ -456,7 +456,8 @@ class UFWRule:
         if x.match(y) == 0:
             return 0
 
-        dbg_msg = "No fuzzy match '%s (v6=%s)' '%s (v6=%s)'" % (x, x.v6, y, y.v6)
+        dbg_msg = "No fuzzy match '%s (v6=%s)' '%s (v6=%s)'" % \
+                   (x, x.v6, y, y.v6)
 
         # Direction must match
         if y.direction != "in":
@@ -484,9 +485,10 @@ class UFWRule:
             elif x.dst != y.dst and '/' not in y.dst:
                 debug("(dst) " + dbg_msg)
                 return 1
-            elif '/' in y.dst and x.v6 == y.v6 and \
+            elif x.dst != y.dst and '/' in y.dst and x.v6 == y.v6 and \
                not ufw.util.in_network(x.dst, y.dst, x.v6):
-                debug("(dst) " + dbg_msg)
+                debug("(dst) " + dbg_msg + " ('%s' not in network '%s')" % \
+                      (x.dst, y.dst))
                 return 1
         else:
 	    # If destination interface is specified, then:
@@ -500,7 +502,8 @@ class UFWRule:
 
             if_ip = ufw.util.get_ip_from_if(y.interface_in, x.v6)
             if y.dst != if_ip and '/' not in y.dst:
-                debug("(interface) " + dbg_msg + " (%s != %s)" % (y.dst, if_ip))
+                debug("(interface) " + dbg_msg + " (%s != %s)" % \
+                      (y.dst, if_ip))
                 return 1
             elif y.dst != if_ip and '/' in y.dst and x.v6 == y.v6 and \
                not ufw.util.in_network(if_ip, y.dst, x.v6):
