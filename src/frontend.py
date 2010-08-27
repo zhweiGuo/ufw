@@ -267,11 +267,10 @@ class UFWFrontend:
     def get_show_listening(self):
         '''Shows listening services'''
         res = ""
-        d = ufw.util.parse_netstat_output()
         try:
-            d = ufw.util.parse_netstat_output()
+            d = ufw.util.parse_netstat_output(self.backend.use_ipv6())
         except Exception:
-            err_msg = _("Could not get listening status (are you root?)")
+            err_msg = _("Could not get listening status")
             raise UFWError(err_msg)
 
         rules = self.backend.get_rules()

@@ -648,13 +648,13 @@ def get_iptables_version(exe="/sbin/iptables"):
     return re.sub('^v', '', tmp[1])
 
 
-def parse_netstat_output():
+def parse_netstat_output(v6):
     '''Get and parse netstat the output from get_netstat_outout()'''
 
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
 
-    netstat_output = get_netstat_output()
+    netstat_output = get_netstat_output(v6)
 
     d = dict()
     for line in netstat_output.splitlines():
@@ -858,11 +858,19 @@ def convert_proc_address(paddr):
     return converted
 
 
-def get_netstat_output():
+def get_netstat_output(v6):
     '''netstat-style output, without IPv6 address truncation'''
     proc_net_data = dict()
-    for proto in ['tcp', 'udp', 'tcp6', 'udp6']:
-        proc_net_data[proto] = _read_proc_net_protocol(proto)
+    proto = ['tcp', 'udp']
+    if v6:
+        proto += ['tcp6', 'udp6']
+    for p in proto:
+        try:
+            proc_net_data[p] = _read_proc_net_protocol(p)
+        except:
+            warn_msg = _("Could not get statistics for '%s'" % (p))
+            warn(warn_msg)
+            continue
 
     inodes = _get_proc_inodes()
 
