@@ -16,6 +16,14 @@
 
 source "$TESTPATH/../testlib.sh"
 
+ipt_version=`iptables -V | awk '{print $2}' | sed 's/^v//'`
+ipt_major=`echo $ipt_version | cut -d '.' -f 1`
+ipt_minor=`echo $ipt_version | cut -d '.' -f 2`
+if [ "$ipt_major" = "1" ] && [ "$ipt_minor" -lt "4" ]; then
+    echo "Skipping: iptables $ipt_version is less then 1.4"
+    exit 0
+fi
+
 # The show listening test is a regression test that has:
 # eth0 = 10.0.2.9   2001::0211:aaaa:bbbb:d54c/112
 # eth1 = 10.0.2.101 2001::0212:cccc:dddd:e243/112
