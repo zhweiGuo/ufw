@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-07-13 09:28+0000\n"
-"Last-Translator: Milo Casagrande <milo@casagrande.name>\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2009-10-03 15:11+0000\n"
+"Last-Translator: Luca Ferretti <elle.uca@ubuntu-it.org>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
@@ -82,7 +82,7 @@ msgstr "Profilo \"%s\" duplicato, usato l'ultimo trovato"
 #: src/applications.py:156
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "Al profilo \"%(fn)s\" manca il campo necessario \"%(f)s\""
 
 #: src/applications.py:161
 #, python-format
@@ -111,12 +111,12 @@ msgstr "Politica \"%s\" non supportata"
 #: src/backend_iptables.py:98
 #, python-format
 msgid "Unsupported policy for direction '%s'"
-msgstr ""
+msgstr "Politica non supportata per la direzione \"%s\""
 
 #: src/backend_iptables.py:144
 #, python-format
 msgid "Default %(direction)s policy changed to '%(policy)s'\n"
-msgstr ""
+msgstr "Politica %(direction)s predefinita cambiata in \"%(policy)s\"\n"
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
@@ -162,12 +162,12 @@ msgstr "Azione"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
 msgid "Default: %(in)s (incoming), %(out)s (outgoing)"
-msgstr ""
+msgstr "Predefinito: %(in)s (in entrata), %(out)s (in uscita)"
 
 #: src/backend_iptables.py:354
 #, python-format
@@ -280,7 +280,7 @@ msgstr "Regola aggiornata"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
-msgstr ""
+msgstr " (omesso aggiornamento firewall)"
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
@@ -333,7 +333,7 @@ msgstr "Impossibile eseguire stat su \"%s\""
 #: src/backend.py:145
 #, python-format
 msgid "uid is %(uid)s but '%(path)s' is owned by %(st_uid)s"
-msgstr ""
+msgstr "UID è %(uid)s, ma \"%(path)s\" è posseduto da %(st_uid)s"
 
 #: src/backend.py:152
 #, python-format
@@ -348,17 +348,17 @@ msgstr "%s è scrivibile dal gruppo."
 #: src/backend.py:169
 #, python-format
 msgid "'%(f)s' file '%(name)s' does not exist"
-msgstr ""
+msgstr "\"%(f)s\" il file \"%(name)s\" non esiste"
 
 #: src/backend.py:194
 #, python-format
 msgid "Missing policy for '%s'"
-msgstr ""
+msgstr "Politica mancante per \"%s\""
 
 #: src/backend.py:199
 #, python-format
 msgid "Invalid policy '%(policy)s' for '%(chain)s'"
-msgstr ""
+msgstr "Politica \"%(policy)s\" non valida per \"%(chain)s\""
 
 #: src/backend.py:206
 msgid "Invalid option"
@@ -409,71 +409,73 @@ msgstr "Registazione disabilitata"
 msgid "Logging enabled"
 msgstr "Registrazione abilitata"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr "Porta \"%s\" errata"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr "Protocollo \"%s\" non supportato"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr "Indirizzo sorgente errato"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr "Indirizzo di destinazione errato"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
 msgstr "Tipo di interfaccia errato"
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
 msgstr "Nome di interfaccia errato"
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
+"Nome di interfaccia errata: impossibile usare gli alias di interfaccia"
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr "La posizione di inserimento \"%s\" non è una posizione valida"
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr "Tipo di registrazione \"%s\" non valido"
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
-msgstr ""
+msgstr "Direzione \"%s\" non supportata"
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr "Impossibile normalizzare l'indirizzo sorgente"
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr "Impossibile normalizzare l'indirizzo di destinazione"
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr "Nessuna corrispondenza"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr "Trovata corrispondenza esatta"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
+"Trovata corrispondenza non-azione/non-logtype (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 
 #: src/frontend.py:81
 #, python-format
@@ -482,15 +484,15 @@ msgstr "Impossibile inserire la regola alla posizione \"%s\""
 
 #: src/frontend.py:164
 msgid "Invalid interface clause"
-msgstr ""
+msgstr "Clausola di intefaccia non valida"
 
 #: src/frontend.py:190
 msgid "Option 'log' not allowed here"
-msgstr ""
+msgstr "Opzione \"log\" non ammessa qui"
 
 #: src/frontend.py:194
 msgid "Option 'log-all' not allowed here"
-msgstr ""
+msgstr "Opzione \"log-all\" non ammessa qui"
 
 #: src/frontend.py:227 src/frontend.py:241
 msgid "Bad port"
@@ -524,7 +526,7 @@ msgstr "Clausola \"proto\" non valida"
 #: src/frontend.py:291
 #, python-format
 msgid "Invalid '%s' clause"
-msgstr ""
+msgstr "Clausola \"%s\" non valida"
 
 #: src/frontend.py:310
 msgid "Invalid 'from' clause"
@@ -595,6 +597,31 @@ msgid ""
 " %(appupdate)-31s update %(profile)s\n"
 " %(appdefault)-31s set default application policy\n"
 msgstr ""
+"\n"
+"Uso: %(progname)s %(command)s\n"
+"\n"
+"%(commands)s:\n"
+" %(enable)-31s abilita il firewall\n"
+" %(disable)-31s disabilita il firewall\n"
+" %(default)-31s imposta la politica predefinita\n"
+" %(logging)-31s imposta il logging a %(level)s\n"
+" %(allow)-31s aggiunge %(rule)s di ammissione\n"
+" %(deny)-31s aggiunge %(rule)s di negazione\n"
+" %(reject)-31s aggiuge %(rule)s di rigetto\n"
+" %(limit)-31s aggiunge %(rule)s di limitazione\n"
+" %(delete)-31s elimina %(urule)s\n"
+" %(insert)-31s inserisce %(urule)s a %(number)s\n"
+" %(status)-31s mostra lo stato del firewall\n"
+" %(statusnum)-31s mostra lo stato del firewall come elenco di %(rules)s\n"
+" %(statusverbose)-31s mostra lo stato del firewall in modo prolisso\n"
+" %(show)-31s mostra il rapporto del firewall\n"
+" %(version)-31s mostra informazioni sulla versione\n"
+"\n"
+"%(appcommands)s:\n"
+" %(applist)-31s elenca i profili di applicazioni\n"
+" %(appinfo)-31s mostra informazioni su %(profile)s\n"
+" %(appupdate)-31s aggiorna %(profile)s\n"
+" %(appdefault)-31s imposta la politica predefinita di applicazione\n"
 
 #: src/frontend.py:562
 msgid "n"
@@ -623,7 +650,7 @@ msgstr "Versione IP \"%s\" non valida"
 
 #: src/frontend.py:720
 msgid "Invalid position '"
-msgstr ""
+msgstr "Posizione non valida '"
 
 #: src/frontend.py:794
 msgid "IPv6 support not enabled"
@@ -648,15 +675,15 @@ msgstr ""
 
 #: src/frontend.py:835
 msgid " Some rules could not be unapplied."
-msgstr ""
+msgstr " Alcune regole non possono essere disattivate."
 
 #: src/frontend.py:837
 msgid " Attempted rules successfully unapplied."
-msgstr ""
+msgstr " Regole di prova disattivate con successo."
 
 #: src/frontend.py:857
 msgid "Unsupported default policy"
-msgstr ""
+msgstr "Politica predefinita non supportata"
 
 #: src/frontend.py:878 src/frontend.py:1015
 msgid "Firewall reloaded"

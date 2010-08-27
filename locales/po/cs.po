@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-02-08 22:44+0000\n"
-"Last-Translator: Vojtěch Látal <vojtech@latal.name>\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2010-06-17 18:23+0000\n"
+"Last-Translator: Adrian Guniš <andygun696@gmail.com>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
@@ -23,11 +23,11 @@ msgstr ": Vyžaduje alespoň python 2.5)\n"
 
 #: src/ufw:111
 msgid "Aborted"
-msgstr ""
+msgstr "Zrušeno"
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "Adresář profilů neexistuje"
 
 #: src/applications.py:64
 #, python-format
@@ -37,7 +37,7 @@ msgstr ""
 #: src/applications.py:69
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "'%s' se přeskakuje: příliš velké"
 
 #: src/applications.py:74
 #, python-format
@@ -47,22 +47,22 @@ msgstr ""
 #: src/applications.py:84
 #, python-format
 msgid "Skipping '%s': couldn't process"
-msgstr ""
+msgstr "'%s' se přeskakuje: nelze zpracovat"
 
 #: src/applications.py:91
 #, python-format
 msgid "Skipping '%s': name too long"
-msgstr ""
+msgstr "'%s' se přeskakuje: příliš dlouhý název"
 
 #: src/applications.py:96
 #, python-format
 msgid "Skipping '%s': invalid name"
-msgstr ""
+msgstr "Přeskakování '%s': neplatné jméno"
 
 #: src/applications.py:102
 #, python-format
 msgid "Skipping '%s': also in /etc/services"
-msgstr ""
+msgstr "'%s' se přeskakuje: také v /etc/services"
 
 #: src/applications.py:111
 #, python-format
@@ -120,7 +120,7 @@ msgstr ""
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
-msgstr ""
+msgstr "(ujistěte se, že patřičně upravíte svá pravidla)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
@@ -162,7 +162,7 @@ msgstr "Akce"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
@@ -403,68 +403,68 @@ msgstr "Záznam vypnutý"
 msgid "Logging enabled"
 msgstr "Záznam zapnutý"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr "Chybný port „%s”"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr "Nepodporovaný protokol „%s”"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr "Chybná zdrojová adresa"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr "Chybná cílová adresa"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
 msgstr ""
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
 msgstr ""
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr ""
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr ""
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr "Žádná shoda"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr "Nalezena přesná shoda"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""

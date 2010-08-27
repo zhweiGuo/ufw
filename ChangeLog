@@ -1,7 +1,5 @@
 ufw (0.30) UNRELEASED; urgency=low
 
-  * import Launchpad translation:
-    - po/es.po
   * add example Upstart script
   * error out when filesystem is read-only (LP: #430053)
   * catch exception if can't find parent pid when refreshing application
@@ -42,6 +40,15 @@ ufw (0.30) UNRELEASED; urgency=low
   * add support for IPSec via the esp and ah protocols (LP: #606997)
   * fix traceback in 'show listening' report (LP: #624199)
   * fix inaccuracies in 'show listening' report with IPv6 (LP: #625340)
+  * update check-requirements to not check ip6tables modules needed for the
+    'limit' command
+  * import updated Launchpad translations:
+    - po/ar.po, po/bg.po, po/ca.po, po/cs.po, po/da.po, po/de.po, po/el.po,
+      po/en_AU.po, po/en_GB.po, po/es.po, po/fi.po, po/fr.po, po/he.po,
+      po/hu.po, po/id.po, po/it.po, po/nb.po, po/nl.po, po/pl.po, po/pt_BR.po,
+      po/pt.po, po/ru.po, po/sk.po, po/sl.po, po/sr.po, po/sv.po, po/tl.po,
+      po/zh_CN.po
+    - thanks to all contributors: https://translations.launchpad.net/ufw
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Aug 2010 07:35:45 -0500
 

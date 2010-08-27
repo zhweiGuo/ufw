@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-08-13 18:04+0000\n"
-"Last-Translator: Sergei Sedov <sedov@webmail.perm.ru>\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2010-03-20 11:01+0000\n"
+"Last-Translator: LithiUm <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
@@ -32,76 +32,76 @@ msgstr "Каталог профилей не существует"
 #: src/applications.py:64
 #, python-format
 msgid "Skipping '%s': couldn't stat"
-msgstr ""
+msgstr "Пропущен '%s': нельзя собрать статистику"
 
 #: src/applications.py:69
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "Пропущено '%s': слишком большое"
 
 #: src/applications.py:74
 #, python-format
 msgid "Skipping '%s': too many files read already"
-msgstr ""
+msgstr "Пропуск '%s': слишком много файлов уже прочитано"
 
 #: src/applications.py:84
 #, python-format
 msgid "Skipping '%s': couldn't process"
-msgstr ""
+msgstr "Пропущен '%s': невозможно обработать"
 
 #: src/applications.py:91
 #, python-format
 msgid "Skipping '%s': name too long"
-msgstr ""
+msgstr "Пропущен '%s': слишком длинное имя файла"
 
 #: src/applications.py:96
 #, python-format
 msgid "Skipping '%s': invalid name"
-msgstr ""
+msgstr "Пропуск '%s': недопустимое имя"
 
 #: src/applications.py:102
 #, python-format
 msgid "Skipping '%s': also in /etc/services"
-msgstr ""
+msgstr "Пропущен '%s': информация уже находится в /etc/services"
 
 #: src/applications.py:111
 #, python-format
 msgid "Skipping '%s': field too long"
-msgstr ""
+msgstr "Пропуск '%s': поле слишком большое"
 
 #: src/applications.py:116
 #, python-format
 msgid "Skipping '%(value)s': value too long for '%(field)s'"
-msgstr ""
+msgstr "Пропущено '%(value)s': значение слишком велико '%(field)s'"
 
 #: src/applications.py:126
 #, python-format
 msgid "Duplicate profile '%s', using last found"
-msgstr ""
+msgstr "Профиль '%s' дублируется, будет использован последний найденный"
 
 #: src/applications.py:156
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "В профиле '%(fn)s' пропущено обязательное поле '%(f)s'"
 
 #: src/applications.py:161
 #, python-format
 msgid "Profile '%(fn)s' has empty required field '%(f)s'"
-msgstr ""
+msgstr "Профиль '%(fn)s' содержит пустое обязательное поле '%(f)s'"
 
 #: src/applications.py:167
 #, python-format
 msgid "No ports found in profile '%s'"
-msgstr ""
+msgstr "Не указаны порты в профиле '%s'"
 
 #: src/applications.py:180
 #, python-format
 msgid "Invalid ports in profile '%s'"
-msgstr ""
+msgstr "Неверные порты в профиле '%s'"
 
 #: src/backend_iptables.py:78
 msgid "New profiles:"
-msgstr ""
+msgstr "Новые профили:"
 
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
@@ -124,17 +124,17 @@ msgstr "(не забудьте соответствующим образом о�
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
-msgstr ""
+msgstr "Проверка рядов iptables\n"
 
 #: src/backend_iptables.py:154
 msgid "Checking raw ip6tables\n"
-msgstr ""
+msgstr "Проверка рядов ip6tables\n"
 
 #: src/backend_iptables.py:157 src/backend_iptables.py:187
 #: src/backend_iptables.py:362 src/backend_iptables.py:372
 #: src/backend_iptables.py:419
 msgid "problem running"
-msgstr ""
+msgstr "проблема при запуске"
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
@@ -146,7 +146,7 @@ msgstr "Проверка ip6tables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
-msgstr ""
+msgstr "Состояние: неактивен"
 
 #: src/backend_iptables.py:329
 msgid "To"
@@ -162,7 +162,7 @@ msgstr "Действие"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
@@ -177,23 +177,27 @@ msgid ""
 "%(pol)s\n"
 "%(app)s%(status)s"
 msgstr ""
+"Статус: включен\n"
+"%(log)s\n"
+"%(pol)s\n"
+"%(app)s%(status)s"
 
 #: src/backend_iptables.py:358
 #, python-format
 msgid "Status: active%s"
-msgstr ""
+msgstr "Статус: активно%s"
 
 #: src/backend_iptables.py:364 src/backend_iptables.py:374
 msgid "running ufw-init"
-msgstr ""
+msgstr "запускается ufw-init"
 
 #: src/backend_iptables.py:386
 msgid "Could not set LOGLEVEL"
-msgstr ""
+msgstr "Не удалось установить LOGLEVEL"
 
 #: src/backend_iptables.py:392
 msgid "Could not load logging rules"
-msgstr ""
+msgstr "Не могу загрузить правила ведения логов"
 
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
@@ -230,7 +234,7 @@ msgstr ""
 #: src/backend_iptables.py:725
 #, python-format
 msgid "Invalid position '%d'"
-msgstr ""
+msgstr "Неверная позиция '%d'"
 
 #: src/backend_iptables.py:729
 msgid "Cannot specify insert and delete"
@@ -239,19 +243,19 @@ msgstr ""
 #: src/backend_iptables.py:732
 #, python-format
 msgid "Cannot insert rule at position '%d'"
-msgstr ""
+msgstr "Не удалось вставить правило в позицию '%d'"
 
 #: src/backend_iptables.py:790
 msgid "Skipping inserting existing rule"
-msgstr ""
+msgstr "Пропуск вставки существующего правила"
 
 #: src/backend_iptables.py:801 src/frontend.py:694
 msgid "Could not delete non-existent rule"
-msgstr ""
+msgstr "Невозможно удалить несуществующее правило"
 
 #: src/backend_iptables.py:806
 msgid "Skipping adding existing rule"
-msgstr ""
+msgstr "Пропущено добавление уже существующего правила"
 
 #: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
@@ -267,7 +271,7 @@ msgstr "Правила обновлены (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
-msgstr ""
+msgstr "Правило вставлено"
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
@@ -297,7 +301,7 @@ msgstr ""
 #: src/backend_iptables.py:936 src/backend.py:508
 #, python-format
 msgid "Invalid log level '%s'"
-msgstr ""
+msgstr "Неверный уровень лога '%s'"
 
 #: src/backend.py:95
 msgid "Checks disabled"
@@ -318,17 +322,17 @@ msgstr "Для запуска этого скрипта требуются пр�
 #: src/backend.py:119
 #, python-format
 msgid "'%s' does not exist"
-msgstr ""
+msgstr "'%s' не существует"
 
 #: src/backend.py:139
 #, python-format
 msgid "Couldn't stat '%s'"
-msgstr ""
+msgstr "Невозможно вычислить размер '%s'"
 
 #: src/backend.py:145
 #, python-format
 msgid "uid is %(uid)s but '%(path)s' is owned by %(st_uid)s"
-msgstr ""
+msgstr "uid %(uid)s, но '%(path)s' занят %(st_uid)s"
 
 #: src/backend.py:152
 #, python-format
@@ -343,7 +347,7 @@ msgstr "доступ на запись в %s разрешена группе!"
 #: src/backend.py:169
 #, python-format
 msgid "'%(f)s' file '%(name)s' does not exist"
-msgstr ""
+msgstr "'%(f)s' файлы '%(name)s' не существуют"
 
 #: src/backend.py:194
 #, python-format
@@ -362,7 +366,7 @@ msgstr "неверная опция"
 #: src/backend.py:256
 #, python-format
 msgid "Default application policy changed to '%s'"
-msgstr ""
+msgstr "Правило приложения изменено на '%s'"
 
 #: src/backend.py:338
 msgid "No rules found for application profile"
@@ -371,16 +375,18 @@ msgstr ""
 #: src/backend.py:397
 #, python-format
 msgid "Rules updated for profile '%s'"
-msgstr ""
+msgstr "Правила для профиля '%s' обновлены"
 
 #: src/backend.py:403
 msgid "Couldn't update application rules"
-msgstr ""
+msgstr "Невозможно обновить правила приложения"
 
 #: src/backend.py:425
 #, python-format
 msgid "Found multiple matches for '%s'. Please use exact profile name"
 msgstr ""
+"Найдены множественные совпадения для '%s'. Используйте точное название "
+"профиля"
 
 #: src/backend.py:426
 #, python-format
@@ -389,11 +395,11 @@ msgstr ""
 
 #: src/backend.py:492
 msgid "Logging: "
-msgstr ""
+msgstr "Журналирование: "
 
 #: src/backend.py:496
 msgid "unknown"
-msgstr ""
+msgstr "Неизвестно"
 
 #: src/backend.py:526
 msgid "Logging disabled"
@@ -403,68 +409,68 @@ msgstr "Журналирование отключено"
 msgid "Logging enabled"
 msgstr "Журналирование включено"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr "Некорректный порт '%s'"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr "Неподдерживаемый протокол '%s'"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr "Некорректный адрес источника"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr "Некорректный адрес назначения"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
-msgstr ""
+msgstr "Неверный тип интерфейса"
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
-msgstr ""
+msgstr "Неверное имя интерфейса"
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr ""
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr ""
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr "Нет соответствия"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr "Найдено точное соответствие"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
@@ -492,7 +498,7 @@ msgstr "Некорректный порт"
 
 #: src/frontend.py:232 src/frontend.py:346
 msgid "Port ranges must be numeric"
-msgstr ""
+msgstr "Интервалы портов должны быть численными"
 
 #: src/frontend.py:244
 msgid "Wrong number of arguments"
@@ -500,7 +506,7 @@ msgstr "Неверное количество аргументов"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
-msgstr ""
+msgstr "Необходимо условие 'to' или 'from'"
 
 #: src/frontend.py:263
 msgid "Improper rule syntax"
@@ -543,7 +549,7 @@ msgstr "Смешение версий IP для 'from' и 'to'"
 
 #: src/frontend.py:381 src/frontend.py:388 src/frontend.py:394
 msgid "Could not find protocol"
-msgstr ""
+msgstr "Не удалось найти протокол"
 
 #: src/frontend.py:401
 msgid "Protocol mismatch (from/to)"
@@ -591,11 +597,11 @@ msgstr ""
 
 #: src/frontend.py:562
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: src/frontend.py:563
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: src/frontend.py:564
 msgid "yes"
@@ -659,25 +665,25 @@ msgstr ""
 
 #: src/frontend.py:895 src/frontend.py:909 src/frontend.py:946
 msgid "Invalid profile name"
-msgstr ""
+msgstr "Неправильное имя профиля"
 
 #: src/frontend.py:914 src/frontend.py:1086
 #, python-format
 msgid "Unsupported action '%s'"
-msgstr ""
+msgstr "Неподдерживаемое действие '%s'"
 
 #: src/frontend.py:933
 msgid "Available applications:"
-msgstr ""
+msgstr "Доступные приложения:"
 
 #: src/frontend.py:954
 #, python-format
 msgid "Could not find profile '%s'"
-msgstr ""
+msgstr "Не удалось найти профиль '%s'"
 
 #: src/frontend.py:959
 msgid "Invalid profile"
-msgstr ""
+msgstr "Неправильный профиль"
 
 #: src/frontend.py:962
 #, python-format
@@ -698,11 +704,11 @@ msgstr ""
 
 #: src/frontend.py:972
 msgid "Ports:"
-msgstr ""
+msgstr "Порты:"
 
 #: src/frontend.py:974
 msgid "Port:"
-msgstr ""
+msgstr "Порт:"
 
 #: src/frontend.py:1017
 msgid "Skipped reloading firewall"
@@ -715,11 +721,11 @@ msgstr ""
 #: src/frontend.py:1042
 #, python-format
 msgid "Unknown policy '%s'"
-msgstr ""
+msgstr "Неизвестное правило '%s'"
 
 #: src/frontend.py:1095
 msgid "Command may disrupt existing ssh connections."
-msgstr ""
+msgstr "Команда может оборвать существующие соединения ssh."
 
 #: src/frontend.py:1096
 #, python-format
@@ -738,7 +744,7 @@ msgstr ""
 #: src/util.py:376
 #, python-format
 msgid "Couldn't find '%s'"
-msgstr ""
+msgstr "Не удалось найти '%s'"
 
 #: src/util.py:382
 #, python-format

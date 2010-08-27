@@ -7,27 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-06-27 18:52+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2010-06-26 00:44+0000\n"
+"Last-Translator: Fotis Tsamis <Unknown>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
-msgstr ""
+msgstr "Χρειάζεται την python 2.5 ή νεότερη\n"
 
 #: src/ufw:111
 msgid "Aborted"
-msgstr ""
+msgstr "Ματαιώθηκε"
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "Ο κατάλογος των προφίλ δεν υπάρχει"
 
 #: src/applications.py:64
 #, python-format
@@ -37,37 +37,37 @@ msgstr ""
 #: src/applications.py:69
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "Παράκαμψη του '%s': πολύ μεγάλο"
 
 #: src/applications.py:74
 #, python-format
 msgid "Skipping '%s': too many files read already"
-msgstr ""
+msgstr "Παράκαμψη του '%s': υπάρχουν ήδη πολλά αρχεία αναγνωσμένα"
 
 #: src/applications.py:84
 #, python-format
 msgid "Skipping '%s': couldn't process"
-msgstr ""
+msgstr "Παράκαμψη του '%s': αδυναμία επεξεργασίας"
 
 #: src/applications.py:91
 #, python-format
 msgid "Skipping '%s': name too long"
-msgstr ""
+msgstr "Παράκαμψη του '%s': πολύ μεγάλο όνομα"
 
 #: src/applications.py:96
 #, python-format
 msgid "Skipping '%s': invalid name"
-msgstr ""
+msgstr "Παράκαμψη του '%s': μη έγκυρο όνομα"
 
 #: src/applications.py:102
 #, python-format
 msgid "Skipping '%s': also in /etc/services"
-msgstr ""
+msgstr "Παράκαμψη του '%s': υπάρχει ήδη στον κατάλογο /etc/services"
 
 #: src/applications.py:111
 #, python-format
 msgid "Skipping '%s': field too long"
-msgstr ""
+msgstr "Παράκαμψη του '%s': πολύ μεγάλο πεδίο"
 
 #: src/applications.py:116
 #, python-format
@@ -101,12 +101,12 @@ msgstr ""
 
 #: src/backend_iptables.py:78
 msgid "New profiles:"
-msgstr ""
+msgstr "Νέα προφίλ:"
 
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "πολιτική '%s'"
 
 #: src/backend_iptables.py:98
 #, python-format
@@ -120,49 +120,49 @@ msgstr ""
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
-msgstr ""
+msgstr "(να φροντίσετε να ανανεώσετε τους κανόνες σας ανάλογα)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
-msgstr ""
+msgstr "Έλεγχος ανεπεξέργαστων iptables\n"
 
 #: src/backend_iptables.py:154
 msgid "Checking raw ip6tables\n"
-msgstr ""
+msgstr "Έλεγχος ανεπεξέργαστων ip6tables\n"
 
 #: src/backend_iptables.py:157 src/backend_iptables.py:187
 #: src/backend_iptables.py:362 src/backend_iptables.py:372
 #: src/backend_iptables.py:419
 msgid "problem running"
-msgstr ""
+msgstr "πρόβλημα εκτέλεσης"
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "Έλεγχος iptables\n"
 
 #: src/backend_iptables.py:184
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "Έλεγχος ip6iptables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
-msgstr ""
+msgstr "Κατάσταση: ανενεργό"
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "Προς"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "Από"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Ενέργεια"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
@@ -177,6 +177,10 @@ msgid ""
 "%(pol)s\n"
 "%(app)s%(status)s"
 msgstr ""
+"Κατάσταση: ενεργό\n"
+"%(log)s\n"
+"%(pol)s\n"
+"%(app)s%(status)s"
 
 #: src/backend_iptables.py:358
 #, python-format
@@ -185,101 +189,102 @@ msgstr ""
 
 #: src/backend_iptables.py:364 src/backend_iptables.py:374
 msgid "running ufw-init"
-msgstr ""
+msgstr "εκτελείται το ufw-init"
 
 #: src/backend_iptables.py:386
 msgid "Could not set LOGLEVEL"
-msgstr ""
+msgstr "Αδύνατος ο ορισμός του LOGLEVEL"
 
 #: src/backend_iptables.py:392
 msgid "Could not load logging rules"
-msgstr ""
+msgstr "Αδύνατη η φόρτωση των κανόνων καταχώρησης"
 
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
+msgstr "Αδύνατο το άνοιγμα του '%s' για ανάγνωση"
 
 #: src/backend_iptables.py:550
 #, python-format
 msgid "Skipping malformed tuple (bad length): %s"
-msgstr ""
+msgstr "Παράλειψη δύσμορφης πλειάδας (κακό μήκος): %s"
 
 #: src/backend_iptables.py:580
 #, python-format
 msgid "Skipping malformed tuple: %s"
-msgstr ""
+msgstr "Παράλειψη δύσμορφης πλειάδας: %s"
 
 #: src/backend_iptables.py:701
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
-msgstr ""
+msgstr "Απέτυχε η προσθήκη κανόνα IPv6: το IPv6 δεν είναι ενεργοποιημένο"
 
 #: src/backend_iptables.py:705
 #, python-format
 msgid "Skipping unsupported IPv6 '%s' rule"
-msgstr ""
+msgstr "Παράκαμπτεται ο μη υποστηριζόμενος κανόνας IPv6 '%s'"
 
 #: src/backend_iptables.py:708
 msgid "Must specify 'tcp' or 'udp' with multiple ports"
-msgstr ""
+msgstr "Πρέπει να προσδιορίσετε 'tcp' ή 'udp' με πολλαπλές θύρες"
 
 #: src/backend_iptables.py:720
 msgid "Skipping IPv6 application rule. Need at least iptables 1.4"
 msgstr ""
+"Παράλειψη κανόνα IPv6 για εφαρμογή. Απαιτείται τουλάχιστον το iptables 1.4"
 
 #: src/backend_iptables.py:725
 #, python-format
 msgid "Invalid position '%d'"
-msgstr ""
+msgstr "Μη έγκυρη θέση '%d'"
 
 #: src/backend_iptables.py:729
 msgid "Cannot specify insert and delete"
-msgstr ""
+msgstr "Αδύνατος ο καθορισμός εισαγωγής και διαγραφής"
 
 #: src/backend_iptables.py:732
 #, python-format
 msgid "Cannot insert rule at position '%d'"
-msgstr ""
+msgstr "Αδύνατη η εισαγωγή κανόνα στην θέση '%d'"
 
 #: src/backend_iptables.py:790
 msgid "Skipping inserting existing rule"
-msgstr ""
+msgstr "Παράλειψη εισαγωγής  υπάρχοντος κανόνα"
 
 #: src/backend_iptables.py:801 src/frontend.py:694
 msgid "Could not delete non-existent rule"
-msgstr ""
+msgstr "Αδύνατη η διαγραφή μη υπάρχοντος κανόνα"
 
 #: src/backend_iptables.py:806
 msgid "Skipping adding existing rule"
-msgstr ""
+msgstr "Παράλειπεται η προσθήκη υπάρχοντος κανόνα"
 
 #: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
-msgstr ""
+msgstr "Αδύνατη η ενημέρωση του αρχείου κανόνων"
 
 #: src/backend_iptables.py:825
 msgid "Rules updated"
-msgstr ""
+msgstr "Οι κανόνες ενημερώθηκαν"
 
 #: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Οι κανόνες ενημερώθηκαν (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
-msgstr ""
+msgstr "Ο κανόνας εισήχθη"
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
-msgstr ""
+msgstr "Ο κανόνας ενημερώθηκε"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
-msgstr ""
+msgstr " (εγκαταλείφθηκε η επαναφόρτωση του τείχους προστασίας)"
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
-msgstr ""
+msgstr "Ο κανόνας διαγράφηκε"
 
 #: src/backend_iptables.py:853
 msgid "Rule added"
@@ -287,12 +292,12 @@ msgstr ""
 
 #: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
-msgstr ""
+msgstr "Ο κανόνας προστέθηκε"
 
 #: src/backend_iptables.py:924
 #, python-format
 msgid "Could not perform '%s'"
-msgstr ""
+msgstr "Αδύνατη η εκτέλεση '%s'"
 
 #: src/backend_iptables.py:936 src/backend.py:508
 #, python-format
@@ -403,68 +408,68 @@ msgstr ""
 msgid "Logging enabled"
 msgstr ""
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr ""
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr ""
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr ""
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr ""
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
 msgstr ""
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
 msgstr ""
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr ""
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr ""
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr ""
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr ""
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
@@ -472,7 +477,7 @@ msgstr ""
 #: src/frontend.py:81
 #, python-format
 msgid "Cannot insert rule at position '%s'"
-msgstr ""
+msgstr "Αδύνατο να εισαχθεί ο κανόνας στη θέση '%s'"
 
 #: src/frontend.py:164
 msgid "Invalid interface clause"
@@ -480,23 +485,23 @@ msgstr ""
 
 #: src/frontend.py:190
 msgid "Option 'log' not allowed here"
-msgstr ""
+msgstr "Η επιλογή 'log' δεν είναι επιτρεπτή εδώ"
 
 #: src/frontend.py:194
 msgid "Option 'log-all' not allowed here"
-msgstr ""
+msgstr "Η επιλογή 'log-all' δεν είναι επιτρεπτή εδώ"
 
 #: src/frontend.py:227 src/frontend.py:241
 msgid "Bad port"
-msgstr ""
+msgstr "Λανθασμένη θύρα"
 
 #: src/frontend.py:232 src/frontend.py:346
 msgid "Port ranges must be numeric"
-msgstr ""
+msgstr "Το εύρος θυρών πρέπει να είναι αριθμητικό"
 
 #: src/frontend.py:244
 msgid "Wrong number of arguments"
-msgstr ""
+msgstr "Λάθος αριθμός παραμέτρων"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
@@ -509,7 +514,7 @@ msgstr ""
 #: src/frontend.py:270
 #, python-format
 msgid "Invalid token '%s'"
-msgstr ""
+msgstr "Μη έγκυρο αναγνωριστικό '%s'"
 
 #: src/frontend.py:279
 msgid "Invalid 'proto' clause"
@@ -715,20 +720,20 @@ msgstr ""
 #: src/frontend.py:1042
 #, python-format
 msgid "Unknown policy '%s'"
-msgstr ""
+msgstr "Άγνωστη πολιτική '%s'"
 
 #: src/frontend.py:1095
 msgid "Command may disrupt existing ssh connections."
-msgstr ""
+msgstr "Η εντολή μπορεί να διακόψει υπάρχουσες συνδέσεις ssh."
 
 #: src/frontend.py:1096
 #, python-format
 msgid " Proceed with operation (%(yes)s|%(no)s)? "
-msgstr ""
+msgstr " Συνέχιση της διαδικασίας (%(yes)s|%(no)s); "
 
 #: src/util.py:362
 msgid "Couldn't find pid (is /proc mounted?)"
-msgstr ""
+msgstr "Αδυναμία εύρεσης του pid (είναι προσαρτημένο το /proc;)"
 
 #: src/util.py:366
 #, python-format
@@ -738,9 +743,9 @@ msgstr ""
 #: src/util.py:376
 #, python-format
 msgid "Couldn't find '%s'"
-msgstr ""
+msgstr "Αδυναμία εύρεσης του '%s'"
 
 #: src/util.py:382
 #, python-format
 msgid "Could not find executable for '%s'"
-msgstr ""
+msgstr "Αδυναμία εύρεσης εκτελέσιμου για το '%s'"

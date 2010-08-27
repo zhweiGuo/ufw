@@ -7,23 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-05-08 13:34+0000\n"
-"Last-Translator: A.J. Baudrez <a.baudrez@gmail.com>\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2009-12-08 13:12+0000\n"
+"Last-Translator: cumulus007 <cumulus0007@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
-msgstr ""
+msgstr ": Ten minste versie 2.5 van Python benodigd)\n"
 
 #: src/ufw:111
 msgid "Aborted"
-msgstr ""
+msgstr "Afgebroken"
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
@@ -67,107 +67,107 @@ msgstr "Overslaan van '%s': reeds in /etc/services"
 #: src/applications.py:111
 #, python-format
 msgid "Skipping '%s': field too long"
-msgstr "Overslaan van '%s': veld te lang"
+msgstr "'%s' overslaan: veld te lang"
 
 #: src/applications.py:116
 #, python-format
 msgid "Skipping '%(value)s': value too long for '%(field)s'"
-msgstr ""
+msgstr "'%(value)s' overslaan: waarde te lang voor '%(field)s'"
 
 #: src/applications.py:126
 #, python-format
 msgid "Duplicate profile '%s', using last found"
-msgstr ""
+msgstr "Dubbel profiel '%s', laatst gevonden wordt gebruikt"
 
 #: src/applications.py:156
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "Profiel '%(fn)s' mist vereist veld '%(f)s'"
 
 #: src/applications.py:161
 #, python-format
 msgid "Profile '%(fn)s' has empty required field '%(f)s'"
-msgstr ""
+msgstr "Profiel '%(fn)s' heeft leeg vereist veld '%(f)s'"
 
 #: src/applications.py:167
 #, python-format
 msgid "No ports found in profile '%s'"
-msgstr ""
+msgstr "Geen poorten gevonden in profiel '%s'"
 
 #: src/applications.py:180
 #, python-format
 msgid "Invalid ports in profile '%s'"
-msgstr ""
+msgstr "Ongeldige poorten in profiel '%s'"
 
 #: src/backend_iptables.py:78
 msgid "New profiles:"
-msgstr ""
+msgstr "Nieuwe profielen:"
 
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "Niet-ondersteund beleid '%s'"
 
 #: src/backend_iptables.py:98
 #, python-format
 msgid "Unsupported policy for direction '%s'"
-msgstr ""
+msgstr "Niet-ondersteund beleid voor richting '%s'"
 
 #: src/backend_iptables.py:144
 #, python-format
 msgid "Default %(direction)s policy changed to '%(policy)s'\n"
-msgstr ""
+msgstr "Standaardbeleid %(direction)s gewijzigd naar '%(policy)s'\n"
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
-msgstr ""
+msgstr "(zorg dat u uw regels overeenkomstig bijwerkt)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
-msgstr ""
+msgstr "Ruwe iptables controleren\n"
 
 #: src/backend_iptables.py:154
 msgid "Checking raw ip6tables\n"
-msgstr ""
+msgstr "Ruwe ip6tables controleren\n"
 
 #: src/backend_iptables.py:157 src/backend_iptables.py:187
 #: src/backend_iptables.py:362 src/backend_iptables.py:372
 #: src/backend_iptables.py:419
 msgid "problem running"
-msgstr ""
+msgstr "probleem met uitvoeren van"
 
 #: src/backend_iptables.py:182
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "iptables controleren\n"
 
 #: src/backend_iptables.py:184
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "Ip6tables controleren\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
-msgstr ""
+msgstr "Status: inactief"
 
 #: src/backend_iptables.py:329
 msgid "To"
-msgstr ""
+msgstr "Naar"
 
 #: src/backend_iptables.py:330
 msgid "From"
-msgstr ""
+msgstr "Van"
 
 #: src/backend_iptables.py:331
 msgid "Action"
-msgstr ""
+msgstr "Actie"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
 msgid "Default: %(in)s (incoming), %(out)s (outgoing)"
-msgstr ""
+msgstr "Standaard: %(in)s (inkomend), %(out)s (uitgaand)"
 
 #: src/backend_iptables.py:354
 #, python-format
@@ -177,127 +177,133 @@ msgid ""
 "%(pol)s\n"
 "%(app)s%(status)s"
 msgstr ""
+"Status: actief\n"
+"%(log)s\n"
+"%(pol)s\n"
+"%(app)s%(status)s"
 
 #: src/backend_iptables.py:358
 #, python-format
 msgid "Status: active%s"
-msgstr ""
+msgstr "Status: actief%s"
 
 #: src/backend_iptables.py:364 src/backend_iptables.py:374
 msgid "running ufw-init"
-msgstr ""
+msgstr "ufw-init uitvoeren"
 
 #: src/backend_iptables.py:386
 msgid "Could not set LOGLEVEL"
-msgstr ""
+msgstr "Kon LOGLEVEL niet instellen"
 
 #: src/backend_iptables.py:392
 msgid "Could not load logging rules"
-msgstr ""
+msgstr "Kon logregels niet laden"
 
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
+msgstr "Kon '%s' niet voor lezen openen"
 
 #: src/backend_iptables.py:550
 #, python-format
 msgid "Skipping malformed tuple (bad length): %s"
-msgstr ""
+msgstr "Misvormde tupel overslaan (ongeldige lengte): %s"
 
 #: src/backend_iptables.py:580
 #, python-format
 msgid "Skipping malformed tuple: %s"
-msgstr ""
+msgstr "Misvormde tupel overslaan: %s"
 
 #: src/backend_iptables.py:701
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
-msgstr "Het toevoegen van IPv6-regel gefaald: IPv6 niet ingeschakeld"
+msgstr "IPv6-regel toevoegen mislukt: IPv6 niet ingeschakeld"
 
 #: src/backend_iptables.py:705
 #, python-format
 msgid "Skipping unsupported IPv6 '%s' rule"
-msgstr ""
+msgstr "Overslaan van niet-ondersteunde IPv6 '%s'-regel"
 
 #: src/backend_iptables.py:708
 msgid "Must specify 'tcp' or 'udp' with multiple ports"
-msgstr ""
+msgstr "Moet 'tcp' of 'udp' met meerdere poorten specificeren"
 
 #: src/backend_iptables.py:720
 msgid "Skipping IPv6 application rule. Need at least iptables 1.4"
 msgstr ""
+"IPv6-programmaregel wordt genegeerd. Ten minste versie 1.4 van iptables is "
+"vereist."
 
 #: src/backend_iptables.py:725
 #, python-format
 msgid "Invalid position '%d'"
-msgstr ""
+msgstr "Ongeldige positie '%d'"
 
 #: src/backend_iptables.py:729
 msgid "Cannot specify insert and delete"
-msgstr ""
+msgstr "Kan insert en delete niet specificeren"
 
 #: src/backend_iptables.py:732
 #, python-format
 msgid "Cannot insert rule at position '%d'"
-msgstr ""
+msgstr "Kan regel niet invoeren op positie '%d'"
 
 #: src/backend_iptables.py:790
 msgid "Skipping inserting existing rule"
-msgstr ""
+msgstr "Invoeren van bestaande regel overslaan"
 
 #: src/backend_iptables.py:801 src/frontend.py:694
 msgid "Could not delete non-existent rule"
-msgstr ""
+msgstr "Kon niet-bestaande regel niet verwijderen"
 
 #: src/backend_iptables.py:806
 msgid "Skipping adding existing rule"
-msgstr ""
+msgstr "Toevoegen van bestaande regel overslaan"
 
 #: src/backend_iptables.py:820
 msgid "Couldn't update rules file"
-msgstr ""
+msgstr "Kon regelsbestand niet bijwerken"
 
 #: src/backend_iptables.py:825
 msgid "Rules updated"
-msgstr ""
+msgstr "Regels bijgewerkt"
 
 #: src/backend_iptables.py:827
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Regels bijgewerkt (v6)"
 
 #: src/backend_iptables.py:835
 msgid "Rule inserted"
-msgstr ""
+msgstr "Regel ingevoerd"
 
 #: src/backend_iptables.py:837
 msgid "Rule updated"
-msgstr ""
+msgstr "Regel bijgewerkt"
 
 #: src/backend_iptables.py:847
 msgid " (skipped reloading firewall)"
-msgstr ""
+msgstr " (herladen van firewall overgeslagen)"
 
 #: src/backend_iptables.py:850
 msgid "Rule deleted"
-msgstr ""
+msgstr "Regel verwijderd"
 
 #: src/backend_iptables.py:853
 msgid "Rule added"
-msgstr ""
+msgstr "Regel toegevoegd"
 
 #: src/backend_iptables.py:869 src/backend_iptables.py:941
 msgid "Could not update running firewall"
-msgstr ""
+msgstr "Kon draaiende firewall niet bijwerken"
 
 #: src/backend_iptables.py:924
 #, python-format
 msgid "Could not perform '%s'"
-msgstr ""
+msgstr "Kon '%s' niet uitvoeren"
 
 #: src/backend_iptables.py:936 src/backend.py:508
 #, python-format
 msgid "Invalid log level '%s'"
-msgstr ""
+msgstr "Ongeldig logniveau '%s'"
 
 #: src/backend.py:95
 msgid "Checks disabled"
@@ -313,251 +319,253 @@ msgstr "FOUT: dit script zou geen SGID moeten zijn"
 
 #: src/backend.py:109
 msgid "You need to be root to run this script"
-msgstr "U moet als root aangemeld zijn om dit script te kunnen uitvoeren"
+msgstr "U moet root zijn om dit script uit te voeren"
 
 #: src/backend.py:119
 #, python-format
 msgid "'%s' does not exist"
-msgstr ""
+msgstr "'%s' bestaat niet"
 
 #: src/backend.py:139
 #, python-format
 msgid "Couldn't stat '%s'"
-msgstr ""
+msgstr "Kon '%s' niet in statistiek brengen"
 
 #: src/backend.py:145
 #, python-format
 msgid "uid is %(uid)s but '%(path)s' is owned by %(st_uid)s"
-msgstr ""
+msgstr "uid is %(uid)s maar '%(path)s' is van %(st_uid)s"
 
 #: src/backend.py:152
 #, python-format
 msgid "%s is world writable!"
-msgstr ""
+msgstr "%s kan door iedereen bewerkt worden!"
 
 #: src/backend.py:156
 #, python-format
 msgid "%s is group writable!"
-msgstr ""
+msgstr "%s kan door de groep bewerkt worden!"
 
 #: src/backend.py:169
 #, python-format
 msgid "'%(f)s' file '%(name)s' does not exist"
-msgstr ""
+msgstr "'%(f)s' bestand '%(name)s' bestaat niet"
 
 #: src/backend.py:194
 #, python-format
 msgid "Missing policy for '%s'"
-msgstr ""
+msgstr "Missend beleid voor '%s'"
 
 #: src/backend.py:199
 #, python-format
 msgid "Invalid policy '%(policy)s' for '%(chain)s'"
-msgstr ""
+msgstr "Ongeldig beleid '%(policy)s' voor '%(chain)s'"
 
 #: src/backend.py:206
 msgid "Invalid option"
-msgstr ""
+msgstr "Ongeldige optie"
 
 #: src/backend.py:256
 #, python-format
 msgid "Default application policy changed to '%s'"
-msgstr ""
+msgstr "Standaard programmabeleid gewijzigd naar '%s'"
 
 #: src/backend.py:338
 msgid "No rules found for application profile"
-msgstr ""
+msgstr "Geen regels gevonden voor programmaprofiel"
 
 #: src/backend.py:397
 #, python-format
 msgid "Rules updated for profile '%s'"
-msgstr ""
+msgstr "Regels bijgewerkt voor profiel '%s'"
 
 #: src/backend.py:403
 msgid "Couldn't update application rules"
-msgstr ""
+msgstr "Kon programmaregels niet bijwerken"
 
 #: src/backend.py:425
 #, python-format
 msgid "Found multiple matches for '%s'. Please use exact profile name"
 msgstr ""
+"Meerdere resultaten gevonden voor '%s'. Geef de exacte profielnaam op"
 
 #: src/backend.py:426
 #, python-format
 msgid "Could not find a profile matching '%s'"
-msgstr ""
+msgstr "Geen zoekresultaten gevonden voor '%s'"
 
 #: src/backend.py:492
 msgid "Logging: "
-msgstr ""
+msgstr "Loggen: "
 
 #: src/backend.py:496
 msgid "unknown"
-msgstr ""
+msgstr "onbekend"
 
 #: src/backend.py:526
 msgid "Logging disabled"
-msgstr ""
+msgstr "Loggen uitschakeld"
 
 #: src/backend.py:528
 msgid "Logging enabled"
-msgstr ""
+msgstr "Loggen ingeschakeld"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
-msgstr ""
+msgstr "Ongeldige poort '%s'"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
-msgstr ""
+msgstr "Niet-ondersteund protocol '%s'"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
-msgstr ""
+msgstr "Ongeldig bronadres"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
-msgstr ""
+msgstr "Ongeldig bestemmingsadres"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
-msgstr ""
+msgstr "Slecht interfacetype"
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
-msgstr ""
+msgstr "Slechte interfacenaam"
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
-msgstr ""
+msgstr "Slechte interfacenaam: kan interface-aliases niet gebruiken"
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
-msgstr ""
+msgstr "Invoerpositie '%s' is geen geldige positie"
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
-msgstr ""
+msgstr "Ongeldig logtype '%s'"
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
-msgstr ""
+msgstr "Niet-ondersteunde richting '%s'"
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
-msgstr ""
+msgstr "Kon bronadres niet normaliseren"
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
-msgstr ""
+msgstr "Kon bestemmingsadres niet normaliseren"
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
-msgstr ""
+msgstr "Geen overeenkomst"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
-msgstr ""
+msgstr "Exacte overeenkomst gevonden"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
+"Niet-actie/niet-logtype-overeenkomst gevonden: (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 
 #: src/frontend.py:81
 #, python-format
 msgid "Cannot insert rule at position '%s'"
-msgstr ""
+msgstr "Kan geen regel invoeren op positie '%s'"
 
 #: src/frontend.py:164
 msgid "Invalid interface clause"
-msgstr ""
+msgstr "Ongeldige interface-clausule"
 
 #: src/frontend.py:190
 msgid "Option 'log' not allowed here"
-msgstr ""
+msgstr "Optie 'log' niet toegestaan hier"
 
 #: src/frontend.py:194
 msgid "Option 'log-all' not allowed here"
-msgstr ""
+msgstr "Optie 'log-all' niet toegestaan hier"
 
 #: src/frontend.py:227 src/frontend.py:241
 msgid "Bad port"
-msgstr ""
+msgstr "Ongeldige poort"
 
 #: src/frontend.py:232 src/frontend.py:346
 msgid "Port ranges must be numeric"
-msgstr ""
+msgstr "Poortbereik moeten numeriek zijn"
 
 #: src/frontend.py:244
 msgid "Wrong number of arguments"
-msgstr ""
+msgstr "Ongeldig aantal argumenten"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
-msgstr ""
+msgstr "'to' of 'from'-clausule vereist"
 
 #: src/frontend.py:263
 msgid "Improper rule syntax"
-msgstr ""
+msgstr "Onjuiste regelsyntaxis"
 
 #: src/frontend.py:270
 #, python-format
 msgid "Invalid token '%s'"
-msgstr ""
+msgstr "Ongeldige token '%s'"
 
 #: src/frontend.py:279
 msgid "Invalid 'proto' clause"
-msgstr ""
+msgstr "Ongeldige 'proto'-clausule"
 
 #: src/frontend.py:291
 #, python-format
 msgid "Invalid '%s' clause"
-msgstr ""
+msgstr "Ongeldige '%s'-clausule"
 
 #: src/frontend.py:310
 msgid "Invalid 'from' clause"
-msgstr ""
+msgstr "Ongeldige 'from'-clausule"
 
 #: src/frontend.py:329
 msgid "Invalid 'to' clause"
-msgstr ""
+msgstr "Ongeldige 'to'-clausule"
 
 #: src/frontend.py:334
 #, python-format
 msgid "Need 'from' or 'to' with '%s'"
-msgstr ""
+msgstr "'from' of 'to' benodigd voor '%s'"
 
 #: src/frontend.py:358
 msgid "Invalid 'port' clause"
-msgstr ""
+msgstr "Ongeldige 'port'-clausule"
 
 #: src/frontend.py:367
 msgid "Mixed IP versions for 'from' and 'to'"
-msgstr ""
+msgstr "Gemengde IP-versies voor 'from' en 'to'"
 
 #: src/frontend.py:381 src/frontend.py:388 src/frontend.py:394
 msgid "Could not find protocol"
-msgstr ""
+msgstr "Kon protocol niet vinden"
 
 #: src/frontend.py:401
 msgid "Protocol mismatch (from/to)"
-msgstr ""
+msgstr "Protocol-mismatch (from/to)"
 
 #: src/frontend.py:408
 #, python-format
 msgid "Protocol mismatch with specified protocol %s"
-msgstr ""
+msgstr "Protocol-mismatch met protocol %s"
 
 #: src/frontend.py:420
 #, python-format
 msgid "Improper rule syntax ('%s' specified with app rule)"
-msgstr ""
+msgstr "Onjuiste regelsyntaxis ('%s' gespecificeerd met programmaregel)"
 
 #: src/frontend.py:489
 #, python-format
@@ -588,106 +596,135 @@ msgid ""
 " %(appupdate)-31s update %(profile)s\n"
 " %(appdefault)-31s set default application policy\n"
 msgstr ""
+"\n"
+"Gebruik: %(progname)s %(command)s\n"
+"\n"
+"%(commands)s:\n"
+" %(enable)-31s schakelt de firewall in\n"
+" %(disable)-31s schakelt de firewall uit\n"
+" %(default)-31s standaardbeleid instellen\n"
+" %(logging)-31s loggingsniveau op %(level)s instellen\n"
+" %(allow)-31s toegangs%(rule)s toevoegen\n"
+" %(deny)-31s weigerings%(rule)s toevoegen\n"
+" %(reject)-31s afwijzings%(rule)s toevoegen\n"
+" %(limit)-31s beperkings%(rule)s toevoegen\n"
+" %(delete)-31s %(urule)s verwijderen\n"
+" %(insert)-31s %(urule)s op %(number)s invoegen\n"
+" %(status)-31s firewallstatus weergeven\n"
+" %(statusnum)-31s firewallstatus weergeven als een genummerde lijst van "
+"%(rules)s\n"
+" %(statusverbose)-31s gedetailleerde firewallstatus weergeven\n"
+" %(show)-31s firewallrapport weergeven\n"
+" %(version)-31s versie-informatie tonen\n"
+"\n"
+"%(appcommands)s:\n"
+" %(applist)-31s toepassingsprofielen weergeven\n"
+" %(appinfo)-31s informatie over %(profile)s tonen\n"
+" %(appupdate)-31s %(profile)s bijwerken\n"
+" %(appdefault)-31s standaard toepassingsbeleid instellen\n"
 
 #: src/frontend.py:562
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: src/frontend.py:563
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: src/frontend.py:564
 msgid "yes"
-msgstr ""
+msgstr "ja"
 
 #: src/frontend.py:607
 msgid "Firewall is active and enabled on system startup"
-msgstr ""
+msgstr "Firewall is actief en ingeschakeld bij het opstarten van het systeem"
 
 #: src/frontend.py:614
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
+"Firewall is gestopt en uitgeschakeld bij het opstarten van het systeem"
 
 #: src/frontend.py:689 src/frontend.py:787 src/frontend.py:797
 #, python-format
 msgid "Invalid IP version '%s'"
-msgstr ""
+msgstr "Ongeldige IP-versie '%s'"
 
 #: src/frontend.py:720
 msgid "Invalid position '"
-msgstr ""
+msgstr "Ongeldige positie '"
 
 #: src/frontend.py:794
 msgid "IPv6 support not enabled"
-msgstr ""
+msgstr "IPv6-ondersteuning niet ingeschakeld"
 
 #: src/frontend.py:805
 msgid "Rule changed after normalization"
-msgstr ""
+msgstr "Regel gewijzigd na normalisatie"
 
 #: src/frontend.py:829
 #, python-format
 msgid "Could not back out rule '%s'"
-msgstr ""
+msgstr "Kon regel '%s' niet weigeren"
 
 #: src/frontend.py:833
 msgid ""
 "\n"
 "Error applying application rules."
 msgstr ""
+"\n"
+"Fout bij toepassen van programmaregels"
 
 #: src/frontend.py:835
 msgid " Some rules could not be unapplied."
-msgstr ""
+msgstr " Sommige regels konden niet uitgeschakeld worden."
 
 #: src/frontend.py:837
 msgid " Attempted rules successfully unapplied."
-msgstr ""
+msgstr " Regels succesvol uitgeschakeld."
 
 #: src/frontend.py:857
 msgid "Unsupported default policy"
-msgstr ""
+msgstr "Niet-ondersteund standaardbeleid"
 
 #: src/frontend.py:878 src/frontend.py:1015
 msgid "Firewall reloaded"
-msgstr ""
+msgstr "Firewall herstart"
 
 #: src/frontend.py:880
 msgid "Firewall not enabled (skipping reload)"
-msgstr ""
+msgstr "Firewall niet ingeschakeld (herstarten overslaan)"
 
 #: src/frontend.py:895 src/frontend.py:909 src/frontend.py:946
 msgid "Invalid profile name"
-msgstr ""
+msgstr "Ongeldige profielnaam"
 
 #: src/frontend.py:914 src/frontend.py:1086
 #, python-format
 msgid "Unsupported action '%s'"
-msgstr ""
+msgstr "Niet-ondersteunde actie '%s'"
 
 #: src/frontend.py:933
 msgid "Available applications:"
-msgstr ""
+msgstr "Beschikbare programma's:"
 
 #: src/frontend.py:954
 #, python-format
 msgid "Could not find profile '%s'"
-msgstr ""
+msgstr "Kon profiel '%s' niet vinden"
 
 #: src/frontend.py:959
 msgid "Invalid profile"
-msgstr ""
+msgstr "Ongeldig profiel"
 
 #: src/frontend.py:962
 #, python-format
 msgid "Profile: %s\n"
-msgstr ""
+msgstr "Profiel: %s\n"
 
 #: src/frontend.py:963
 #, python-format
 msgid "Title: %s\n"
-msgstr ""
+msgstr "Titel: %s\n"
 
 #: src/frontend.py:966
 #, python-format
@@ -695,52 +732,54 @@ msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
+"Omschrijving: %s\n"
+"\n"
 
 #: src/frontend.py:972
 msgid "Ports:"
-msgstr ""
+msgstr "Poorten:"
 
 #: src/frontend.py:974
 msgid "Port:"
-msgstr ""
+msgstr "Poort:"
 
 #: src/frontend.py:1017
 msgid "Skipped reloading firewall"
-msgstr ""
+msgstr "Herstarten van firewall overgeslagen"
 
 #: src/frontend.py:1027
 msgid "Cannot specify 'all' with '--add-new'"
-msgstr ""
+msgstr "Kan 'all' niet met '--add-new' specificeren"
 
 #: src/frontend.py:1042
 #, python-format
 msgid "Unknown policy '%s'"
-msgstr ""
+msgstr "Onbekend beleid '%s'"
 
 #: src/frontend.py:1095
 msgid "Command may disrupt existing ssh connections."
-msgstr ""
+msgstr "Commando kan mogelijk actieve ssh-verbindingen verstoren"
 
 #: src/frontend.py:1096
 #, python-format
 msgid " Proceed with operation (%(yes)s|%(no)s)? "
-msgstr ""
+msgstr " Doorgaan met handeling (%(yes)s|%(no)s)? "
 
 #: src/util.py:362
 msgid "Couldn't find pid (is /proc mounted?)"
-msgstr ""
+msgstr "Kon pid niet vinden (is /proc aangekoppeld?)"
 
 #: src/util.py:366
 #, python-format
 msgid "Couldn't find parent pid for '%s'"
-msgstr ""
+msgstr "Kon ouder-pid voor '%s' niet vinden"
 
 #: src/util.py:376
 #, python-format
 msgid "Couldn't find '%s'"
-msgstr ""
+msgstr "Kan '%s' niet vinden"
 
 #: src/util.py:382
 #, python-format
 msgid "Could not find executable for '%s'"
-msgstr ""
+msgstr "Kon uitvoerbaar bestand voor '%s' niet vinden"

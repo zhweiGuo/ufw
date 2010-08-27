@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2008-08-17 08:06+0000\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2009-08-30 12:44+0000\n"
 "Last-Translator: Bruno Patri <bruno.patri@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
@@ -23,85 +23,85 @@ msgstr ": nécessite au moins la version 2.5 de python\n"
 
 #: src/ufw:111
 msgid "Aborted"
-msgstr ""
+msgstr "Annulé"
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "Le répertoire des profils n'existe pas"
 
 #: src/applications.py:64
 #, python-format
 msgid "Skipping '%s': couldn't stat"
-msgstr ""
+msgstr "« %s » ignoré : impossible à évaluer (stat)"
 
 #: src/applications.py:69
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "« %s » ignoré : trop gros"
 
 #: src/applications.py:74
 #, python-format
 msgid "Skipping '%s': too many files read already"
-msgstr ""
+msgstr "« %s » ignoré : trop de fichiers déjà lus"
 
 #: src/applications.py:84
 #, python-format
 msgid "Skipping '%s': couldn't process"
-msgstr ""
+msgstr "« %s » ignoré : traitement impossible"
 
 #: src/applications.py:91
 #, python-format
 msgid "Skipping '%s': name too long"
-msgstr ""
+msgstr "« %s » ignoré : nom trop long"
 
 #: src/applications.py:96
 #, python-format
 msgid "Skipping '%s': invalid name"
-msgstr ""
+msgstr "« %s » ignoré : nom non valable"
 
 #: src/applications.py:102
 #, python-format
 msgid "Skipping '%s': also in /etc/services"
-msgstr ""
+msgstr "« %s » ignoré : déjà dans /etc/services"
 
 #: src/applications.py:111
 #, python-format
 msgid "Skipping '%s': field too long"
-msgstr ""
+msgstr "« %s » ignoré : champ trop long"
 
 #: src/applications.py:116
 #, python-format
 msgid "Skipping '%(value)s': value too long for '%(field)s'"
-msgstr ""
+msgstr "« %(value)s » ignoré : valeur trop grande pour « %(field)s »"
 
 #: src/applications.py:126
 #, python-format
 msgid "Duplicate profile '%s', using last found"
-msgstr ""
+msgstr "Profil « %s » en doublon, utilisation du dernier trouvé"
 
 #: src/applications.py:156
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "Le champrequis « %(f)s » manque au profil « %(fn)s »"
 
 #: src/applications.py:161
 #, python-format
 msgid "Profile '%(fn)s' has empty required field '%(f)s'"
-msgstr ""
+msgstr "Le champ requis « %(f)s » est vide dans le profil « %(fn)s »"
 
 #: src/applications.py:167
 #, python-format
 msgid "No ports found in profile '%s'"
-msgstr ""
+msgstr "Aucun port trouvé dans le profil « %s »"
 
 #: src/applications.py:180
 #, python-format
 msgid "Invalid ports in profile '%s'"
-msgstr ""
+msgstr "Ports non valables dans le profile « %s »"
 
 #: src/backend_iptables.py:78
 msgid "New profiles:"
-msgstr ""
+msgstr "Nouveaux profils :"
 
 #: src/backend_iptables.py:94 src/backend.py:253
 #, python-format
@@ -124,11 +124,11 @@ msgstr "(veillez à mettre à jour vos règles en conséquence)"
 
 #: src/backend_iptables.py:153
 msgid "Checking raw iptables\n"
-msgstr ""
+msgstr "Vérification des règles iptables\n"
 
 #: src/backend_iptables.py:154
 msgid "Checking raw ip6tables\n"
-msgstr ""
+msgstr "Vérification des règles ip6tables\n"
 
 #: src/backend_iptables.py:157 src/backend_iptables.py:187
 #: src/backend_iptables.py:362 src/backend_iptables.py:372
@@ -146,7 +146,7 @@ msgstr "Vérification de ip6tables\n"
 
 #: src/backend_iptables.py:193
 msgid "Status: inactive"
-msgstr ""
+msgstr "État : inactif"
 
 #: src/backend_iptables.py:329
 msgid "To"
@@ -162,7 +162,7 @@ msgstr "Action"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
@@ -403,68 +403,68 @@ msgstr "Journalisation désactivée"
 msgid "Logging enabled"
 msgstr "Journalisation activée"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr "Port « %s » incorrect"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr "Le protocole « %s » n'est pas pris en charge"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
 msgstr "L'adresse de la source n'est pas correcte"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
 msgstr "L'adresse de destination n'est pas correcte"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
 msgstr ""
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
 msgstr ""
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr ""
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr ""
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr "Aucune correspondance n'a été trouvée"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr "Une correspondance exacte a été trouvée"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""

@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-08-25 10:20-0500\n"
-"PO-Revision-Date: 2009-07-12 18:22+0000\n"
+"POT-Creation-Date: 2009-08-26 14:15-0500\n"
+"PO-Revision-Date: 2010-05-05 23:06+0000\n"
 "Last-Translator: André Gondim <andregondim@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-26 05:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 20:20+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/ufw:46
@@ -72,7 +72,7 @@ msgstr "Ignorando '%s': campo muito extenso"
 #: src/applications.py:116
 #, python-format
 msgid "Skipping '%(value)s': value too long for '%(field)s'"
-msgstr ""
+msgstr "Ignorando '%(value)s': valor muito extenso para '%(field)s'"
 
 #: src/applications.py:126
 #, python-format
@@ -82,12 +82,12 @@ msgstr "Perfil duplicado '%s'. Utilizando o último perfil válido."
 #: src/applications.py:156
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "Perfil '%(fn)s'. Faltando campo requerido '%(f)s'"
 
 #: src/applications.py:161
 #, python-format
 msgid "Profile '%(fn)s' has empty required field '%(f)s'"
-msgstr ""
+msgstr "O Perfil '%(fn)s' tem um campo requerido vazio '%(f)s'"
 
 #: src/applications.py:167
 #, python-format
@@ -111,12 +111,12 @@ msgstr "Política '%s' não suportada"
 #: src/backend_iptables.py:98
 #, python-format
 msgid "Unsupported policy for direction '%s'"
-msgstr ""
+msgstr "Política não suportada para a direção '%s'"
 
 #: src/backend_iptables.py:144
 #, python-format
 msgid "Default %(direction)s policy changed to '%(policy)s'\n"
-msgstr ""
+msgstr "A política padrão %(direction)s mudou para '%(policy)s'\n"
 
 #: src/backend_iptables.py:146
 msgid "(be sure to update your rules accordingly)"
@@ -162,12 +162,12 @@ msgstr "Ação"
 
 #: src/backend_iptables.py:342
 msgid "\n"
-msgstr ""
+msgstr "\n"
 
 #: src/backend_iptables.py:350
 #, python-format
 msgid "Default: %(in)s (incoming), %(out)s (outgoing)"
-msgstr ""
+msgstr "Padrão: %(in)s (entradas), %(out)s (saídas)"
 
 #: src/backend_iptables.py:354
 #, python-format
@@ -193,11 +193,11 @@ msgstr "executando ufw-init"
 
 #: src/backend_iptables.py:386
 msgid "Could not set LOGLEVEL"
-msgstr "Não foi possivel definir Nível de Log"
+msgstr "Não foi possível definir Nível de Log"
 
 #: src/backend_iptables.py:392
 msgid "Could not load logging rules"
-msgstr "Não foi possivel carregar regras de registro"
+msgstr "Não foi possível carregar regras de registro"
 
 #: src/backend_iptables.py:541 src/backend.py:180
 #, python-format
@@ -238,7 +238,7 @@ msgstr "Posição inválida '%d'"
 
 #: src/backend_iptables.py:729
 msgid "Cannot specify insert and delete"
-msgstr "Não é possivel especificar Insert e Delete"
+msgstr "Não é possível especificar Insert e Delete"
 
 #: src/backend_iptables.py:732
 #, python-format
@@ -332,7 +332,7 @@ msgstr "Não é possível estado '%s'"
 #: src/backend.py:145
 #, python-format
 msgid "uid is %(uid)s but '%(path)s' is owned by %(st_uid)s"
-msgstr ""
+msgstr "A uid é %(uid)s mas '%(path)s' é de propriedade de %(st_uid)s"
 
 #: src/backend.py:152
 #, python-format
@@ -347,17 +347,17 @@ msgstr "%s está com permissão de escrita para o grupo!"
 #: src/backend.py:169
 #, python-format
 msgid "'%(f)s' file '%(name)s' does not exist"
-msgstr ""
+msgstr "'%(f)s' arquivo '%(name)s' não existe"
 
 #: src/backend.py:194
 #, python-format
 msgid "Missing policy for '%s'"
-msgstr ""
+msgstr "Faltando política para '%s'"
 
 #: src/backend.py:199
 #, python-format
 msgid "Invalid policy '%(policy)s' for '%(chain)s'"
-msgstr ""
+msgstr "Política '%(policy)s' inválida para '%(chain)s'"
 
 #: src/backend.py:206
 msgid "Invalid option"
@@ -395,7 +395,7 @@ msgstr "Não foi possível encontrar um perfil correspondente '%s'"
 
 #: src/backend.py:492
 msgid "Logging: "
-msgstr "Logando : "
+msgstr "Logando: "
 
 #: src/backend.py:496
 msgid "unknown"
@@ -409,71 +409,74 @@ msgstr "Logging deshabilitado"
 msgid "Logging enabled"
 msgstr "Logging habilitado"
 
-#: src/common.py:177
+#: src/common.py:178
 #, python-format
 msgid "Bad port '%s'"
 msgstr "Porta '%s' incorreta"
 
-#: src/common.py:237
+#: src/common.py:238
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr "Protocolo não suportado '%s'"
 
-#: src/common.py:265
+#: src/common.py:266
 msgid "Bad source address"
-msgstr "Mau endereço de origem"
+msgstr "Endereço de origem incorreto"
 
-#: src/common.py:275
+#: src/common.py:276
 msgid "Bad destination address"
-msgstr "Mau endereço de destino"
+msgstr "Endereço de destino incorreto"
 
-#: src/common.py:283
+#: src/common.py:284
 msgid "Bad interface type"
-msgstr ""
+msgstr "Tipo de interface incorreto"
 
-#: src/common.py:287
+#: src/common.py:288
 msgid "Bad interface name"
-msgstr ""
+msgstr "Nome de interface incorreto"
 
-#: src/common.py:291
+#: src/common.py:292
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
+"Nome de interface incorreto: não é possível usar aliases de interface"
 
-#: src/common.py:302
+#: src/common.py:303
 #, python-format
 msgid "Insert position '%s' is not a valid position"
-msgstr "A posição inserida '%s\" não é uma posição válida"
+msgstr "A posição inserida '%s' não é uma posição válida"
 
-#: src/common.py:312
+#: src/common.py:313
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr "Tipo '%s' de log inválido"
 
-#: src/common.py:320
+#: src/common.py:321
 #, python-format
 msgid "Unsupported direction '%s'"
-msgstr ""
+msgstr "Direção não suportada '%s'"
 
-#: src/common.py:332
+#: src/common.py:333
 msgid "Could not normalize source address"
 msgstr "Não foi possível normalizar endereço de origem"
 
-#: src/common.py:342
+#: src/common.py:343
 msgid "Could not normalize destination address"
 msgstr "Não foi possível normalizar endereço de destino"
 
-#: src/common.py:368
+#: src/common.py:369
 msgid "No match"
 msgstr "Não coincide"
 
-#: src/common.py:400
+#: src/common.py:401
 msgid "Found exact match"
 msgstr "Encontrada ocorrência exata"
 
-#: src/common.py:403
+#: src/common.py:404
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
+"Correspondência non-action/non-logtype encontrada (%(xa)s/%(ya)s "
+"%(xl)s/%(yl)s)"
 
 #: src/frontend.py:81
 #, python-format
@@ -482,19 +485,19 @@ msgstr "Não é possível inserir regra na posição '%s'"
 
 #: src/frontend.py:164
 msgid "Invalid interface clause"
-msgstr ""
+msgstr "Cláusula de interface inválida"
 
 #: src/frontend.py:190
 msgid "Option 'log' not allowed here"
-msgstr ""
+msgstr "Opção 'log' não permitida aqui"
 
 #: src/frontend.py:194
 msgid "Option 'log-all' not allowed here"
-msgstr ""
+msgstr "Opção 'log-all' não permitida aqui"
 
 #: src/frontend.py:227 src/frontend.py:241
 msgid "Bad port"
-msgstr "Má porta"
+msgstr "Porta incorreta"
 
 #: src/frontend.py:232 src/frontend.py:346
 msgid "Port ranges must be numeric"
@@ -506,7 +509,7 @@ msgstr "Número errado de argumentos"
 
 #: src/frontend.py:248
 msgid "Need 'to' or 'from' clause"
-msgstr "Precisa da cláusula \"de\" ou \"para\""
+msgstr "Precisa da cláusula 'de' ou 'para'"
 
 #: src/frontend.py:263
 msgid "Improper rule syntax"
@@ -524,7 +527,7 @@ msgstr "Cláusula 'proto' inválida"
 #: src/frontend.py:291
 #, python-format
 msgid "Invalid '%s' clause"
-msgstr ""
+msgstr "Cláusula '%s' inválida"
 
 #: src/frontend.py:310
 msgid "Invalid 'from' clause"
@@ -595,6 +598,32 @@ msgid ""
 " %(appupdate)-31s update %(profile)s\n"
 " %(appdefault)-31s set default application policy\n"
 msgstr ""
+"\n"
+"Uso: %(progname)s %(command)s\n"
+"\n"
+"%(commands)s:\n"
+" %(enable)-31s habilita o firewall\n"
+" %(disable)-31s desabilita o firewall\n"
+" %(default)-31s define a política padrão\n"
+" %(logging)-31s define o nível de registro para %(level)s\n"
+" %(allow)-31s adiciona regra allow %(rule)s\n"
+" %(deny)-31s adiciona regra deny %(rule)s\n"
+" %(reject)-31s adiciona regra reject %(rule)s\n"
+" %(limit)-31s adiciona regra limit %(rule)s\n"
+" %(delete)-31s exclui %(urule)s\n"
+" %(insert)-31s insere %(urule)s em %(number)s\n"
+" %(status)-31s mostra o status do firewall\n"
+" %(statusnum)-31s mostra o status do firewall como uma lista numerada de "
+"%(rules)s\n"
+" %(statusverbose)-31s mostra o status do firewall em modo verboso\n"
+" %(show)-31s mostra relatório do firewall\n"
+" %(version)-31s mostra informações de versão\n"
+"\n"
+"%(appcommands)s:\n"
+" %(applist)-31s lista perfis de aplicativos\n"
+" %(appinfo)-31s mostra informações sobre %(profile)s\n"
+" %(appupdate)-31s atualiza %(profile)s\n"
+" %(appdefault)-31s define a política padrão para aplicativos\n"
 
 #: src/frontend.py:562
 msgid "n"
@@ -610,7 +639,7 @@ msgstr "sim"
 
 #: src/frontend.py:607
 msgid "Firewall is active and enabled on system startup"
-msgstr "Firewall está ativo e ativado no início do sistema"
+msgstr "Firewall está ativo e habilitado na inicialização do sistema"
 
 #: src/frontend.py:614
 msgid "Firewall stopped and disabled on system startup"
@@ -656,7 +685,7 @@ msgstr " Regras tentadas foram desaplicadas com sucesso."
 
 #: src/frontend.py:857
 msgid "Unsupported default policy"
-msgstr ""
+msgstr "Política padrão não suportada"
 
 #: src/frontend.py:878 src/frontend.py:1015
 msgid "Firewall reloaded"
@@ -735,7 +764,7 @@ msgstr "O comando pode interromper conexões ssh existentes."
 #: src/frontend.py:1096
 #, python-format
 msgid " Proceed with operation (%(yes)s|%(no)s)? "
-msgstr ""
+msgstr " Continuar com a operação (%(yes)s|%(no)s)? "
 
 #: src/util.py:362
 msgid "Couldn't find pid (is /proc mounted?)"
