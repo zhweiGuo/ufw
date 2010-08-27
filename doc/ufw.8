@@ -138,11 +138,12 @@ firewalling to work.
 
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
-This will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive. Note
-that when specifying multiple ports, the ports list must be numeric, cannot
-contain spaces and must be modified as a whole. Eg, in the above example you
-cannot later try to delete just the '443' port. You cannot specify more than 15
-ports (ranges count as 2 ports, so the port count in the above example is 4).
+The above will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive.
+Note that when specifying multiple ports, the ports list must be numeric,
+cannot contain spaces and must be modified as a whole. Eg, in the above example
+you cannot later try to delete just the '443' port. You cannot specify more
+than 15 ports (ranges count as 2 ports, so the port count in the above example
+is 4).
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting
 against brute-force login attacks. \fBufw\fR will deny connections if an IP
