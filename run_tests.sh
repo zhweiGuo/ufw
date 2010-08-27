@@ -203,7 +203,9 @@ do
         if [ $errors -gt 0 ]; then
             if [ "$STOPONFAIL" = "yes" ]; then
                 echo ""
-                echo "FAILED $class/$thistest -- result found in $TESTTMP/result"
+                echo "FAILED $testdir/$class/$thistest -- result found in $TESTTMP/result"
+                echo "For more information, see:"
+                echo "diff -Naur $testdir/$class/$thistest/result $TESTTMP/result"
                 exit 1
             fi
         fi
