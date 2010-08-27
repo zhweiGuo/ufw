@@ -20,7 +20,7 @@ ipt_version=`iptables -V | awk '{print $2}' | sed 's/^v//'`
 ipt_major=`echo $ipt_version | cut -d '.' -f 1`
 ipt_minor=`echo $ipt_version | cut -d '.' -f 2`
 if [ "$ipt_major" = "1" ] && [ "$ipt_minor" -lt "4" ]; then
-    echo "Skipping: iptables $ipt_version is less then 1.4"
+    echo "Skipping: iptables $ipt_version is less than 1.4"
     exit 0
 fi
 
