@@ -1,4 +1,4 @@
-ufw (0.30) UNRELEASED; urgency=low
+ufw (0.30) RELEASED; urgency=low
 
   * add example Upstart script
   * error out when filesystem is read-only (LP: #430053)
@@ -50,7 +50,7 @@ ufw (0.30) UNRELEASED; urgency=low
       po/zh_CN.po
     - thanks to all contributors: https://translations.launchpad.net/ufw
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Aug 2010 07:35:45 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Aug 2010 15:30:43 -0500
 
 ufw (0.29) RELEASE; urgency=low
 
