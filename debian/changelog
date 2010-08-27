@@ -4,7 +4,7 @@ ufw (0.30-1) UNRELEASED; urgency=low
     - LP: #568877
     - LP: #611982
     - LP: #606997
-  * run_tests.sh: revert temporarily disable 'skipped' check
+    - LP: #624199
   * don't flush chains if ufw is not enabled (LP: #581744)
   * debian/postinst: don't source /usr/share/debconf/confmodule when $1 =
     triggered. Fix thanks to Colin Watson. (LP: #618410)
