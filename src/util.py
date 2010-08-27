@@ -729,15 +729,16 @@ def get_if_from_ip(addr):
 
         for line in file(proc).readlines():
             tmp = line.split()
+            ifname = tmp[5].strip()
 
             tmp_addr = ":".join( \
                            [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
             if tmp[2].lower() != "80":
-                tmp_addr = "%s/%s" % (addr, int(tmp[2].lower(), 16))
+                tmp_addr = "%s/%s" % (tmp_addr, int(tmp[2].lower(), 16))
 
             if addr == tmp_addr or \
                ('/' in tmp_addr and in_network(addr, tmp_addr, True)):
-                matched = tmp[5]
+                matched = ifname
                 break
     else:
         proc = '/proc/net/dev'
