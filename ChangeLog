@@ -41,6 +41,7 @@ ufw (0.30) UNRELEASED; urgency=low
   * really allow IPv6 neighbor discovery (LP: #611982)
   * add support for IPSec via the esp and ah protocols (LP: #606997)
   * fix traceback in 'show listening' report (LP: #624199)
+  * fix inaccuracies in 'show listening' report with IPv6 (LP: #625340)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Aug 2010 07:35:45 -0500
 
