@@ -39,24 +39,28 @@ for i in "" "in on eth0" ; do
     do_cmd "0" null allow $i to 10.0.0.0/16
     do_cmd "0" null allow $i to 10.0.2.0/24
     do_cmd "0" null allow $i to 10.0.3.0/24
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c
     do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123
     do_cmd "0" null allow $i to 10.0.0.0/16 port 123
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c port 123
     do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.0.0/16 app OpenNTPD
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto udp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto udp
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c port 123 proto udp
     do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
 
     do_cmd "0" null allow $i to 10.0.2.101 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.0.0/16 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.2.0/24 port 123 proto tcp
     do_cmd "0" null allow $i to 10.0.3.0/24 port 123 proto tcp
+    do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
     do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp
 done
 

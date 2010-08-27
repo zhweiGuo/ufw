@@ -45,6 +45,8 @@ source "$TESTPATH/../testlib.sh"
 #
 # The rules that are created should create the following 'status numbered'
 # output:
+#      To                         Action      From
+#      --                         ------      ----
 # [ 1] 123                        ALLOW IN    Anywhere
 # [ 2] OpenNTPD                   ALLOW IN    Anywhere
 # [ 3] 123/tcp                    ALLOW IN    Anywhere
@@ -97,23 +99,32 @@ source "$TESTPATH/../testlib.sh"
 # [50] Anywhere (v6)              ALLOW IN    Anywhere (v6)
 # [51] Anywhere/udp (v6)          ALLOW IN    Anywhere/udp (v6)
 # [52] Anywhere/tcp (v6)          ALLOW IN    Anywhere/tcp (v6)
-# [53] 2001::211:aaaa:bbbb:d54c/112 ALLOW IN    Anywhere (v6)
-# [54] 2001::211:aaaa:bbbb:d54c/112 123 ALLOW IN    Anywhere (v6)
-# [55] 2001::211:aaaa:bbbb:d54c/112 123/udp ALLOW IN    Anywhere (v6)
-# [56] 2001::211:aaaa:bbbb:d54c/112 123/tcp ALLOW IN    Anywhere (v6)
-# [57] 123                        ALLOW OUT   Anywhere (v6) (out)
-# [58] 123/udp                    ALLOW OUT   Anywhere (v6) (out)
-# [59] 123/tcp                    ALLOW OUT   Anywhere (v6) (out)
-# [60] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6)
-# [61] Anywhere/udp (v6) on eth0  ALLOW IN    Anywhere/udp (v6)
-# [62] Anywhere/tcp (v6) on eth0  ALLOW IN    Anywhere/tcp (v6)
-# [63] 2001::211:aaaa:bbbb:d54c/112 on eth0 ALLOW IN    Anywhere (v6)
-# [64] 2001::211:aaaa:bbbb:d54c/112 123 on eth0 ALLOW IN    Anywhere (v6)
-# [65] 2001::211:aaaa:bbbb:d54c/112 123/udp on eth0 ALLOW IN    Anywhere (v6)
-# [66] 2001::211:aaaa:bbbb:d54c/112 123/tcp on eth0 ALLOW IN    Anywhere (v6)
+# [53] 2001::211:aaaa:bbbb:d54c   ALLOW IN    Anywhere (v6)
+# [54] 2001::211:aaaa:bbbb:d54c/112 ALLOW IN    Anywhere (v6)
+# [55] 2001::211:aaaa:bbbb:d54c 123 ALLOW IN    Anywhere (v6)
+# [56] 2001::211:aaaa:bbbb:d54c/112 123 ALLOW IN    Anywhere (v6)
+# [57] 2001::211:aaaa:bbbb:d54c 123/udp ALLOW IN    Anywhere (v6)
+# [58] 2001::211:aaaa:bbbb:d54c/112 123/udp ALLOW IN    Anywhere (v6)
+# [59] 2001::211:aaaa:bbbb:d54c 123/tcp ALLOW IN    Anywhere (v6)
+# [60] 2001::211:aaaa:bbbb:d54c/112 123/tcp ALLOW IN    Anywhere (v6)
+# [61] 123                        ALLOW OUT   Anywhere (v6) (out)
+# [62] 123/udp                    ALLOW OUT   Anywhere (v6) (out)
+# [63] 123/tcp                    ALLOW OUT   Anywhere (v6) (out)
+# [64] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6)
+# [65] Anywhere/udp (v6) on eth0  ALLOW IN    Anywhere/udp (v6)
+# [66] Anywhere/tcp (v6) on eth0  ALLOW IN    Anywhere/tcp (v6)
+# [67] 2001::211:aaaa:bbbb:d54c on eth0 ALLOW IN    Anywhere (v6)
+# [68] 2001::211:aaaa:bbbb:d54c/112 on eth0 ALLOW IN    Anywhere (v6)
+# [69] 2001::211:aaaa:bbbb:d54c 123 on eth0 ALLOW IN    Anywhere (v6)
+# [70] 2001::211:aaaa:bbbb:d54c/112 123 on eth0 ALLOW IN    Anywhere (v6)
+# [71] 2001::211:aaaa:bbbb:d54c 123/udp on eth0 ALLOW IN    Anywhere (v6)
+# [72] 2001::211:aaaa:bbbb:d54c/112 123/udp on eth0 ALLOW IN    Anywhere (v6)
+# [73] 2001::211:aaaa:bbbb:d54c 123/tcp on eth0 ALLOW IN    Anywhere (v6)
+# [74] 2001::211:aaaa:bbbb:d54c/112 123/tcp on eth0 ALLOW IN    Anywhere (v6)
 
 echo "show listening" >> $TESTTMP/result
 echo "(update util.py to use our cached output)" >> $TESTTMP/result
+cp -f $TESTPATH/lib/python/ufw/util.py $TESTPATH/lib/python/ufw/util.py.bak
 sed -i "s#netstat_output = get_netstat_output.*#rc, netstat_output = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/lib/python/ufw/util.py
@@ -172,5 +183,59 @@ done
 
 echo "show listening with rules" >> $TESTTMP/result
 do_cmd "0" show listening
+
+# Cleanup the above rules
+for i in "" "in on eth0" ; do
+    if [ -z "$i" ]; then
+        do_cmd "0" null delete allow in 123
+        do_cmd "0" null delete allow in OpenNTPD
+        do_cmd "0" null delete allow in 123/tcp
+    else
+        do_cmd "0" null delete allow out 123
+        do_cmd "0" null delete allow out 123/udp
+        do_cmd "0" null delete allow out 123/tcp
+    fi
+
+    do_cmd "0" null delete allow $i to any
+    do_cmd "0" null delete allow $i to any proto udp
+    do_cmd "0" null delete allow $i to any proto tcp
+
+    do_cmd "0" null delete allow $i to 10.0.2.101
+    do_cmd "0" null delete allow $i to 10.0.2.9
+    do_cmd "0" null delete allow $i to 10.0.0.0/16
+    do_cmd "0" null delete allow $i to 10.0.2.0/24
+    do_cmd "0" null delete allow $i to 10.0.3.0/24
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c/112
+
+    do_cmd "0" null delete allow $i to 10.0.2.101 port 123
+    do_cmd "0" null delete allow $i to 10.0.0.0/16 port 123
+    do_cmd "0" null delete allow $i to 10.0.2.0/24 port 123
+    do_cmd "0" null delete allow $i to 10.0.3.0/24 port 123
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c port 123
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123
+
+    do_cmd "0" null delete allow $i to 10.0.2.101 port 123 proto udp
+    do_cmd "0" null delete allow $i to 10.0.0.0/16 app OpenNTPD
+    do_cmd "0" null delete allow $i to 10.0.2.0/24 port 123 proto udp
+    do_cmd "0" null delete allow $i to 10.0.3.0/24 port 123 proto udp
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c port 123 proto udp
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
+
+    do_cmd "0" null delete allow $i to 10.0.2.101 port 123 proto tcp
+    do_cmd "0" null delete allow $i to 10.0.0.0/16 port 123 proto tcp
+    do_cmd "0" null delete allow $i to 10.0.2.0/24 port 123 proto tcp
+    do_cmd "0" null delete allow $i to 10.0.3.0/24 port 123 proto tcp
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    do_cmd "0" null delete allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp
+done
+
+echo "show listening (live) with rules" >> $TESTTMP/result
+cp -f $TESTPATH/lib/python/ufw/util.py.bak $TESTPATH/lib/python/ufw/util.py
+do_cmd "0" null allow 22/tcp
+do_cmd "0" null allow 123/udp
+do_cmd "0" null show listening
+do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete allow 123/udp
 
 exit 0
