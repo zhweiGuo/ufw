@@ -346,9 +346,9 @@ udp6:
    [48] allow OpenNTPD
    [50] allow to any
    [51] allow to any proto udp
-   [53] allow in to 2001::211:aaaa:bbbb:d54c/112
-   [54] allow in to 2001::211:aaaa:bbbb:d54c/112 port 123
-   [55] allow in to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
+   [53] allow to 2001::211:aaaa:bbbb:d54c/112
+   [54] allow to 2001::211:aaaa:bbbb:d54c/112 port 123
+   [55] allow to 2001::211:aaaa:bbbb:d54c/112 port 123 proto udp
    [60] allow in on eth0
    [61] allow in on eth0 proto udp
    [63] allow in on eth0 to 2001::211:aaaa:bbbb:d54c/112
