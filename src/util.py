@@ -613,10 +613,10 @@ def in_network(x, y, v6):
 
     if v6:
         if not valid_address6(address) or not valid_address6(orig_host):
-            return False
+            raise ValueError
     else:
         if not valid_address4(address) or not valid_address4(orig_host):
-            return False
+            raise ValueError
 
     if _valid_cidr_netmask(netmask, v6) and not v6:
         try:
@@ -625,15 +625,15 @@ def in_network(x, y, v6):
             raise
 
     # Now apply the network's netmask to the address
-    if not v6:
-        orig_network = _address4_to_network("%s/%s" % \
-                                            (orig_host, netmask)).split('/')[0]
-        network = _address4_to_network("%s/%s" % \
-                                       (address, netmask)).split('/')[0]
-    else:
+    if v6:
         orig_network = _address6_to_network("%s/%s" % \
                                             (orig_host, netmask)).split('/')[0]
         network = _address6_to_network("%s/%s" % \
+                                       (address, netmask)).split('/')[0]
+    else:
+        orig_network = _address4_to_network("%s/%s" % \
+                                            (orig_host, netmask)).split('/')[0]
+        network = _address4_to_network("%s/%s" % \
                                        (address, netmask)).split('/')[0]
 
     return network == orig_network
