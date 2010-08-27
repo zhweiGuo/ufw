@@ -81,7 +81,7 @@ for i in /proc/net/dev /proc/net/if_inet6; do
     else
         echo "pass"
     fi
-done  
+done
 if [ -n "$error" ]; then
     exit 1
 fi
@@ -151,10 +151,18 @@ for i in "" 6; do
     done
 
     echo -n "state (new, recent set): "
-    runcmd $exe -A $c -m state --state NEW -m recent --set
+    if [ "$i" = "6" ]; then
+        echo "skipped -- IPv6 'limit' not supported by ufw yet"
+    else
+        runcmd $exe -A $c -m state --state NEW -m recent --set
+    fi
 
     echo -n "state (new, recent update): "
-    runcmd $exe -A $c -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
+    if [ "$i" = "6" ]; then
+        echo "skipped -- IPv6 'limit' not supported by ufw yet"
+    else
+        runcmd $exe -A $c -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
+    fi
 
     echo -n "state (new, limit): "
     runcmd $exe -A $c -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j ACCEPT
