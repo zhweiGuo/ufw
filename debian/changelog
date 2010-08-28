@@ -1,4 +1,4 @@
-ufw (0.30-1) unstable; urgency=low
+ufw (0.30.0-1) unstable; urgency=low
 
   * New upstream release. Fixes:
     - LP: #568877
