@@ -1,6 +1,7 @@
 ufw (0.30.0-1) unstable; urgency=low
 
-  * New upstream release. Fixes:
+  * New upstream release. Use 0.30.0 as the version even though upstream uses
+    0.30 in order to sync to Ubuntu. Fixes:
     - LP: #568877
     - LP: #611982
     - LP: #606997
