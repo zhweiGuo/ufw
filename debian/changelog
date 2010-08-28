@@ -21,6 +21,7 @@ ufw (0.30.0-1) unstable; urgency=low
     - don't install upstream application profiles for now
   * add rsyslog support
   * add debian/source/format
+  * debian/before6.rules.md5sum: updated for ucf
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Aug 2010 15:44:18 -0500
 
