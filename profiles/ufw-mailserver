@@ -25,6 +25,6 @@ ports=25/tcp
 
 [Mail submission]
 title=Mail server (Submission)
-description=Postfix is a high-performance mail transport agent
+description=Mail server (Submission)
 ports=587/tcp
 
