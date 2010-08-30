@@ -282,7 +282,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if rc != 0:
                     raise UFWError(err_msg + " ip6tables")
 
-        str = ""
+        s = ""
         str_out = ""
         rules = self.rules + self.rules6
         count = 1
@@ -396,15 +396,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             # Show the list in the order given if a numbered list, otherwise
             # split incoming and outgoing rules
             if show_count:
-                str += tmp_str
+                s += tmp_str
             else:
                 if r.direction == "out":
                     str_out += tmp_str
                 else:
-                    str += tmp_str
+                    s += tmp_str
             count += 1
 
-        if str != "" or str_out != "":
+        if s != "" or str_out != "":
             full_str = "\n\n"
             if show_count:
                 full_str += "     "
@@ -422,14 +422,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                              "-" * len(str_action.decode("utf-8", 'ignore')), \
                              "-" * len(str_from.decode("utf-8", 'ignore')))
             full_str += rules_header.encode('utf-8', 'ignore')
-            if str != "":
-                full_str += str
-            if str != "" and str_out != "":
+            if s != "":
+                full_str += s
+            if s != "" and str_out != "":
                 full_str += _("\n")
             if str_out != "":
                 full_str += str_out
 
-            str = full_str
+            s = full_str
 
         if verbose:
             (level, logging_str) = self.get_loglevel()
@@ -439,9 +439,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             app_policy_str = self.get_default_application_policy()
             return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
                      ({'log': logging_str, 'pol': policy_str, \
-                       'app': app_policy_str, 'status': str})
+                       'app': app_policy_str, 'status': s})
         else:
-            return _("Status: active%s") % (str)
+            return _("Status: active%s") % (s)
 
     def stop_firewall(self):
         '''Stops the firewall'''

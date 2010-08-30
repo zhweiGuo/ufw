@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-30 08:20-0500\n"
+"POT-Creation-Date: 2010-08-30 08:28-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -320,20 +320,20 @@ msgstr ""
 
 #: src/backend_iptables.py:1239
 #, python-format
-msgid "Backing up '%s' to '%s'\n"
+msgid "Backing up '%(old)s' to '%(new)s'\n"
 msgstr ""
 
-#: src/backend_iptables.py:1254 src/backend.py:140
+#: src/backend_iptables.py:1255 src/backend.py:140
 #, python-format
 msgid "Couldn't stat '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:1259
+#: src/backend_iptables.py:1260
 #, python-format
 msgid "WARN: '%s' is world writable"
 msgstr ""
 
-#: src/backend_iptables.py:1261
+#: src/backend_iptables.py:1262
 #, python-format
 msgid "'WARN: %s' is world readable"
 msgstr ""
