@@ -22,6 +22,7 @@
 # To specify a different interpreter for ufw:
 # python2.5 ./setup.py install --root="/tmp/ufw"
 # python2.6 ./setup.py install --root="/tmp/ufw"
+# python2.7 ./setup.py install --root="/tmp/ufw"
 #
 
 from distutils.command.install import install as _install
