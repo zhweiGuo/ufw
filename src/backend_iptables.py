@@ -1220,7 +1220,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if not os.path.isfile(fn):
                 err_msg = _("Could not find '%s'. Aborting") % (fn)
                 raise UFWError(err_msg)
-            
+
         ext = time.strftime("%Y%m%d_%H%M%S")
 
 	# This implementation will intentionally traceback if someone tries to
@@ -1236,7 +1236,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Move the old to the new
         for i in all:
             fn = "%s.%s" % (i, ext)
-            res += _("Backing up '%s' to '%s'\n") % (os.path.basename(i), fn)
+            res += _("Backing up '%(old)s' to '%(new)s'\n") % (\
+                     {'old': os.path.basename(i), 'new': fn})
             os.rename(i, fn)
 
         # Copy files into place
