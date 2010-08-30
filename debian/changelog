@@ -9,7 +9,7 @@ ufw (0.30.0-2) unstable; urgency=low
   * run debconf-updatepo, but adjust debian/po/de.po and debian/po/es.po to
     add correct "Language:" tag
   * profiles/ufw-mailserver: remove Postfix specific language
-    - upstream commit r705
+    - upstream commit r705, r707
   * debian/rules: do install the upstream application profiles now
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 30 Aug 2010 13:50:15 -0500
