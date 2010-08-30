@@ -11,11 +11,13 @@ msgstr ""
 "PO-Revision-Date: 2009-06-21 16:30+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. Type: error
 #. Description
@@ -30,14 +32,15 @@ msgid ""
 "An existing configuration for ufw has been found. Existing rules must be "
 "managed manually."
 msgstr ""
-"Найдены предыдущие настройки ufw. Существующие правила нужно "
-"изменять вручную."
+"Найдены предыдущие настройки ufw. Существующие правила нужно изменять "
+"вручную."
 
 #. Type: error
 #. Description
 #: ../templates:2001
 msgid "You should read the ufw(8) manpage for details about ufw configuration."
-msgstr "Подробней о настройке ufw можно прочитать в справочной странице ufw(8)."
+msgstr ""
+"Подробней о настройке ufw можно прочитать в справочной странице ufw(8)."
 
 #. Type: boolean
 #. Description
@@ -73,7 +76,8 @@ msgstr "Разрешённые службы:"
 #. Type: multiselect
 #. Description
 #: ../templates:4001
-msgid "Please choose the services that should be available for incoming connections."
+msgid ""
+"Please choose the services that should be available for incoming connections."
 msgstr "Выберите службы, которые должны быть доступны извне."
 
 #. Type: multiselect
@@ -96,9 +100,9 @@ msgid ""
 "to open. You may use a service name (as found in /etc/services), a port "
 "number, or a port number with protocol."
 msgstr ""
-"Введите через пробел дополнительные порты, которые нужно открыть. "
-"Вы можете указывать имя службы (из /etc/services), номер порта или номер "
-"порта с протоколом."
+"Введите через пробел дополнительные порты, которые нужно открыть. Вы можете "
+"указывать имя службы (из /etc/services), номер порта или номер порта с "
+"протоколом."
 
 #. Type: string
 #. Description
@@ -109,4 +113,3 @@ msgid ""
 msgstr ""
 "Пример: чтобы разрешить доступ к веб-серверу, порту 53 и tcp порту 22, нужно "
 "ввести \"www 53 22/tcp\"."
-

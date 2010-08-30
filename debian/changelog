@@ -6,6 +6,10 @@ ufw (0.30.0-2) UNRELEASED; urgency=low
     - LP: #580032
   * src/backend_iptables.py: fix gettext warning
     - upstream commit r701
+  * run debconf-updatepo, but adjust debian/po/de.po and debian/po/es.po to
+    add correct "Language:" tag
+  * profiles/ufw-mailserver: remove Postfix specific language
+    - upstream commit r705
   * debian/rules: do install the upstream application profiles now
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 30 Aug 2010 11:46:32 -0500

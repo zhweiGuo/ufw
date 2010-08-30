@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2009-06-22 19:26+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,15 +52,16 @@ msgid ""
 "If you choose this option, the rules you are about to set will be enabled "
 "during system startup so that this host is protected as early as possible."
 msgstr ""
-"Falls Sie diese Option wÃ¤hlen, werden die in KÃ¼rze erstellten Regeln wÃ¤hrend "
-"des Systemstartes aktiviert, so dass dieser Rechner so frÃ¼h wie mÃ¶glich "
-"geschÃ¼tzt wird."
+"Falls Sie diese Option wÃ¤hlen, werden die in KÃ¼rze erstellten Regeln wÃ"
+"¤hrend des Systemstartes aktiviert, so dass dieser Rechner so frÃ¼h wie "
+"mÃ¶glich geschÃ¼tzt wird."
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "To protect this host immediately, you must start ufw manually."
-msgstr "Um diesen Rechner sofort zu schÃ¼tzen, mÃ¼ssen Sie Ufw manuell starten."
+msgstr ""
+"Um diesen Rechner sofort zu schÃ¼tzen, mÃ¼ssen Sie Ufw manuell starten."
 
 #. Type: multiselect
 #. Description
@@ -73,8 +75,8 @@ msgstr "Berechtigte Dienste:"
 msgid ""
 "Please choose the services that should be available for incoming connections."
 msgstr ""
-"Bitte wÃ¤hlen Sie die Dienste aus, die fÃ¼r eingehende Verbindungen verfÃ¼gbar "
-"sein sollen."
+"Bitte wÃ¤hlen Sie die Dienste aus, die fÃ¼r eingehende Verbindungen "
+"verfÃ¼gbar sein sollen."
 
 #. Type: multiselect
 #. Description
@@ -97,9 +99,9 @@ msgid ""
 "to open. You may use a service name (as found in /etc/services), a port "
 "number, or a port number with protocol."
 msgstr ""
-"Bitte geben Sie die Liste der zusÃ¤tzlichen Ports, die geÃ¶ffnet werden sollen, "
-"durch Leerzeichen getrennt an. Sie kÃ¶nnen Dienstenamen (wie in /etc/services "
-"angegeben), Portnummern oder Portnummern mit Protokoll verwenden."
+"Bitte geben Sie die Liste der zusÃ¤tzlichen Ports, die geÃ¶ffnet werden "
+"sollen, durch Leerzeichen getrennt an. Sie kÃ¶nnen Dienstenamen (wie in /etc/"
+"services angegeben), Portnummern oder Portnummern mit Protokoll verwenden."
 
 #. Type: string
 #. Description
@@ -108,5 +110,5 @@ msgid ""
 "Example: to allow a web server, port 53 and tcp port 22, you should enter "
 "\"www 53 22/tcp\"."
 msgstr ""
-"Beispiel: um einem Webserver, Port 53 und TCP-Port 22 zu erlauben sollten Sie "
-"Â»www 53 22/tcpÂ« eingeben."
+"Beispiel: um einem Webserver, Port 53 und TCP-Port 22 zu erlauben sollten "
+"Sie Â»www 53 22/tcpÂ« eingeben."

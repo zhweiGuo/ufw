@@ -32,6 +32,7 @@ msgstr ""
 "PO-Revision-Date: 2009-06-17 13:05+0200\n"
 "Last-Translator: Francisco Javier Cuadrado <fcocuadrado@gmail.com>\n"
 "Language-Team: Debian l10n Spanish <debian-l10n-spanish@lists.debian.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,14 +46,20 @@ msgstr "Se ha encontrado la configuración existente"
 #. Type: error
 #. Description
 #: ../templates:2001
-msgid "An existing configuration for ufw has been found. Existing rules must be managed manually."
-msgstr "Se ha encontrado una configuración de ufw existente. Las reglas existentes se deberán gestionar manualmente."
+msgid ""
+"An existing configuration for ufw has been found. Existing rules must be "
+"managed manually."
+msgstr ""
+"Se ha encontrado una configuración de ufw existente. Las reglas existentes "
+"se deberán gestionar manualmente."
 
 #. Type: error
 #. Description
 #: ../templates:2001
 msgid "You should read the ufw(8) manpage for details about ufw configuration."
-msgstr "Debería leer la página del manual ufw(8) para los detalles sobre la configuración de ufw."
+msgstr ""
+"Debería leer la página del manual ufw(8) para los detalles sobre la "
+"configuración de ufw."
 
 #. Type: boolean
 #. Description
@@ -63,14 +70,20 @@ msgstr "¿Desea iniciar ufw automáticamente?"
 #. Type: boolean
 #. Description
 #: ../templates:3001
-msgid "If you choose this option, the rules you are about to set will be enabled during system startup so that this host is protected as early as possible."
-msgstr "Si escoge esta opción, las reglas que está a punto de configurar se activarán durante el inicio del sistema de modo que esta máquina este protegida lo antes posible."
+msgid ""
+"If you choose this option, the rules you are about to set will be enabled "
+"during system startup so that this host is protected as early as possible."
+msgstr ""
+"Si escoge esta opción, las reglas que está a punto de configurar se "
+"activarán durante el inicio del sistema de modo que esta máquina este "
+"protegida lo antes posible."
 
 #. Type: boolean
 #. Description
 #: ../templates:3001
 msgid "To protect this host immediately, you must start ufw manually."
-msgstr "Para proteger esta máquina inmediatamente, debe iniciar ufw manualmente."
+msgstr ""
+"Para proteger esta máquina inmediatamente, debe iniciar ufw manualmente."
 
 #. Type: multiselect
 #. Description
@@ -81,14 +94,19 @@ msgstr "Servicios autorizados:"
 #. Type: multiselect
 #. Description
 #: ../templates:4001
-msgid "Please choose the services that should be available for incoming connections."
-msgstr "Escoja los servicios que deberían estar disponibles para las conexiones entrantes."
+msgid ""
+"Please choose the services that should be available for incoming connections."
+msgstr ""
+"Escoja los servicios que deberían estar disponibles para las conexiones "
+"entrantes."
 
 #. Type: multiselect
 #. Description
 #: ../templates:4001
 msgid "Other services may be specified in the next configuration step."
-msgstr "Se pueden especificar otros servicios en el siguiente paso de la configuración."
+msgstr ""
+"Se pueden especificar otros servicios en el siguiente paso de la "
+"configuración."
 
 #. Type: string
 #. Description
@@ -99,12 +117,22 @@ msgstr "Servicios autorizados adicionales:"
 #. Type: string
 #. Description
 #: ../templates:5001
-msgid "Please enter a space separated list of any additional ports you would like to open. You may use a service name (as found in /etc/services), a port number, or a port number with protocol."
-msgstr "Introduzca una lista de los puertos que querría abrir, separados por espacios. Debe utilizar un nombre de servicio (se puede encontrar en el archivo «/etc/services»), un número de puerto o un número de puerto con un protocolo."
+msgid ""
+"Please enter a space separated list of any additional ports you would like "
+"to open. You may use a service name (as found in /etc/services), a port "
+"number, or a port number with protocol."
+msgstr ""
+"Introduzca una lista de los puertos que querría abrir, separados por "
+"espacios. Debe utilizar un nombre de servicio (se puede encontrar en el "
+"archivo «/etc/services»), un número de puerto o un número de puerto con un "
+"protocolo."
 
 #. Type: string
 #. Description
 #: ../templates:5001
-msgid "Example: to allow a web server, port 53 and tcp port 22, you should enter \"www 53 22/tcp\"."
-msgstr "Por ejemplo: para permitir un servidor web, el puerto 53 y el puerto 22 de TCP, debería introducir «www 53 22/tcp»."
-
+msgid ""
+"Example: to allow a web server, port 53 and tcp port 22, you should enter "
+"\"www 53 22/tcp\"."
+msgstr ""
+"Por ejemplo: para permitir un servidor web, el puerto 53 y el puerto 22 de "
+"TCP, debería introducir «www 53 22/tcp»."
