@@ -1,5 +1,11 @@
 ufw (0.30.0-2) UNRELEASED; urgency=low
 
+  * src/frontend.py: display unicode error messages properly. Thanks to
+    Serguey Basalaev.
+    - upstream commit r700
+    - LP: #580032
+  * src/backend_iptables.py: fix gettext warning
+    - upstream commit r701
   * debian/rules: do install the upstream application profiles now
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 30 Aug 2010 11:46:32 -0500
