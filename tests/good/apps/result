@@ -413,7 +413,7 @@ Port:
 
 Profile: Mail submission
 Title: Mail server (Submission)
-Description: Postfix is a high-performance mail transport agent
+Description: Mail server (Submission)
 
 Port:
   587/tcp
