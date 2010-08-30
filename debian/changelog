@@ -1,3 +1,9 @@
+ufw (0.30.0-2) UNRELEASED; urgency=low
+
+  * debian/rules: do install the upstream application profiles now
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 30 Aug 2010 11:46:32 -0500
+
 ufw (0.30.0-1) unstable; urgency=low
 
   * New upstream release. Use 0.30.0 as the version even though upstream uses

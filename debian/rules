@@ -110,11 +110,6 @@ binary-indep: build install
 			echo "fixed interpreter: $$i"; \
 		fi; \
 	done
-	# Don't install profiles for now
-	profiles="$(wildcard ./debian/ufw/etc/ufw/applications.d/ufw-*)";\
-	for p in $$profiles; do \
-	    rm -f $$p; \
-	done
 	DH_PYCENTRAL=include-links dh_pycentral
 	dh_compress
 	dh_fixperms
