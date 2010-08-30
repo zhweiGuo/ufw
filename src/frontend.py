@@ -79,7 +79,7 @@ def parse_command(argv):
     try:
         pr = p.parse_command(argv[1:])
     except UFWError, e:
-        print >> sys.stderr, "ERROR: %s" % (e)
+        print >> sys.stderr, "ERROR: %s" % (e.value)
         sys.exit(1)
     except Exception:
         print >> sys.stderr, "Invalid syntax"
