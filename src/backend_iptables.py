@@ -1259,6 +1259,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if mode & stat.S_IWOTH:
                 res += _("WARN: '%s' is world writable") % (i)
             elif mode & stat.S_IROTH:
-                res += _("'WARN: %s' is world readable") % (i)
+                res += _("WARN: '%s' is world readable") % (i)
 
         return res

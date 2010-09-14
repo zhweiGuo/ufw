@@ -4,6 +4,7 @@ ufw (0.30.1) UNRELEASED; urgency=low
   * fix improper display of error messages. Patch thanks to Serguey Basalaev
     (LP: #580032)
   * profiles/ufw-mailserver: remove Postfix reference
+  * fix typo in warning (LP: #637876)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 29 Aug 2010 20:38:19 -0500
 

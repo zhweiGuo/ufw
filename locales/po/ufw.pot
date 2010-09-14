@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-30 08:28-0500\n"
+"POT-Creation-Date: 2010-09-14 08:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -335,7 +335,7 @@ msgstr ""
 
 #: src/backend_iptables.py:1262
 #, python-format
-msgid "'WARN: %s' is world readable"
+msgid "WARN: '%s' is world readable"
 msgstr ""
 
 #: src/backend.py:96
