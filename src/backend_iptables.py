@@ -290,17 +290,17 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         for r in rules:
             tmp_str = ""
             location = {}
-            tuple = ""
+            tupl = ""
             show_proto = True
             if not verbose and (r.dapp != "" or r.sapp != ""):
                 show_proto = False
-                tuple = r.get_app_tuple()
+                tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tuple):
-                    debug("Skipping found tuple '%s'" % (tuple))
+                if app_rules.has_key(tupl):
+                    debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:
-                    app_rules[tuple] = True
+                    app_rules[tupl] = True
 
             for loc in [ 'dst', 'src' ]:
                 location[loc] = ""
@@ -381,7 +381,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 if len(attribs) > 0:
                     attrib_str = " (%s)" % (', '.join(attribs))
 
-            # now contruct the rule output string
+            # now construct the rule output string
             if show_count:
                 tmp_str += "[%2d] " % (count)
 
@@ -632,10 +632,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             pat_tuple = re.compile(r'^### tuple ###\s*')
             for line in orig:
                 if pat_tuple.match(line):
-                    tuple = pat_tuple.sub('', line)
-                    tmp = re.split(r'\s+', tuple.strip())
+                    tupl = pat_tuple.sub('', line)
+                    tmp = re.split(r'\s+', tupl.strip())
                     if len(tmp) < 6 or len(tmp) > 9:
-                        warn_msg = _("Skipping malformed tuple (bad length): %s") % (tuple)
+                        warn_msg = _("Skipping malformed tuple (bad length): %s") % (tupl)
                         warn(warn_msg)
                         continue
                     else:
@@ -666,7 +666,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
-                                        (tuple)
+                                        (tupl)
                             warn(warn_msg)
                             continue
                         if f == self.files['rules6']:
@@ -1033,13 +1033,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         norm = template.dup_rule()
         norm.set_v6(v6)
         norm.normalize()
-        tuple = norm.get_app_tuple()
+        tupl = norm.get_app_tuple()
 
         for r in rules:
             tmp = r.dup_rule()
             tmp.normalize()
             tmp_tuple = tmp.get_app_tuple()
-            if tmp_tuple == tuple:
+            if tmp_tuple == tupl:
                 app_rules.append(tmp)
 
         return app_rules

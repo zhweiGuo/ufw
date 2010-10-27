@@ -379,8 +379,8 @@ class UFWBackend:
                 # We assume that the rules are in app rule order. Specifically,
                 # if app rule has multiple rules, they are one after the other.
                 # If the rule ordering changes, the below will have to change.
-                tuple = r.get_app_tuple()
-                if tuple == last_tuple:
+                tupl = r.get_app_tuple()
+                if tupl == last_tuple:
                     # Skip the rule if seen this tuple already (ie, it is part
                     # of a known tuple).
                     continue
@@ -405,7 +405,7 @@ class UFWBackend:
                         else:
                             updated_rules.append(new_r)
 
-                    last_tuple = tuple
+                    last_tuple = tupl
                     updated_profile = True
             else:
                 if r.v6:
@@ -481,14 +481,14 @@ class UFWBackend:
         for i, r in enumerate(rules):
             if i >= position:
                 break
-            tuple = ""
+            tupl = ""
             if r.dapp != "" or r.sapp != "":
-                tuple = r.get_app_tuple()
+                tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tuple):
+                if app_rules.has_key(tupl):
                     tuple_offset += 1
                 else:
-                    app_rules[tuple] = True
+                    app_rules[tupl] = True
 
         rules = []
         if v6:
@@ -564,15 +564,15 @@ class UFWBackend:
         count = 0
         app_rules = {}
         for r in rules:
-            tuple = ""
+            tupl = ""
             if r.dapp != "" or r.sapp != "":
-                tuple = r.get_app_tuple()
+                tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tuple):
-                    debug("Skipping found tuple '%s'" % (tuple))
+                if app_rules.has_key(tupl):
+                    debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:
-                    app_rules[tuple] = True
+                    app_rules[tupl] = True
             count += 1
 
         return count
@@ -584,15 +584,15 @@ class UFWBackend:
         count = 1
         app_rules = {}
         for r in rules:
-            tuple = ""
+            tupl = ""
             if r.dapp != "" or r.sapp != "":
-                tuple = r.get_app_tuple()
+                tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tuple):
-                    debug("Skipping found tuple '%s'" % (tuple))
+                if app_rules.has_key(tupl):
+                    debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:
-                    app_rules[tuple] = True
+                    app_rules[tupl] = True
             if count == int(n):
                 return r
             count += 1

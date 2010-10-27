@@ -536,21 +536,21 @@ class UFWRule:
            All of these might have in_eth0 out_eth0 (or similar) if an
            interface is also defined.
         '''
-        tuple = ""
+        tupl = ""
         if self.dapp != "" or self.sapp != "":
-            tuple = "%s %s %s %s" % (self.dapp, self.dst, self.sapp, self.src)
+            tupl = "%s %s %s %s" % (self.dapp, self.dst, self.sapp, self.src)
             if self.dapp == "":
-                tuple = "%s %s %s %s" % (self.dport, self.dst, self.sapp, \
+                tupl = "%s %s %s %s" % (self.dport, self.dst, self.sapp, \
                                          self.src)
             if self.sapp == "":
-                tuple = "%s %s %s %s" % (self.dapp, self.dst, self.sport, \
+                tupl = "%s %s %s %s" % (self.dapp, self.dst, self.sport, \
                                          self.src)
 
             # add interfaces to the end, if they exist
             if self.interface_in != "":
-                tuple += " in_%s" % (self.interface_in)
+                tupl += " in_%s" % (self.interface_in)
             if self.interface_out != "":
-                tuple += " out_%s" % (self.interface_out)
+                tupl += " out_%s" % (self.interface_out)
 
-        return tuple
+        return tupl
 
