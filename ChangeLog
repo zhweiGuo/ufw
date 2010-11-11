@@ -5,6 +5,7 @@ ufw (0.30.1) UNRELEASED; urgency=low
     (LP: #580032)
   * profiles/ufw-mailserver: remove Postfix reference
   * fix typo in warning (LP: #637876)
+  * fix manpage reference to /etc/default/ufw (Closes: 601111)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 29 Aug 2010 20:38:19 -0500
 
