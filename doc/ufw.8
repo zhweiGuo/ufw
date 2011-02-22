@@ -21,9 +21,9 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBshow\fR REPORT
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log-all\fR] PORT[/protocol]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log\-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdelete\fR NUM
 .TP
@@ -146,9 +146,9 @@ than 15 ports (ranges count as 2 ports, so the port count in the above example
 is 4).
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting
-against brute-force login attacks. \fBufw\fR will deny connections if an IP
+against brute\-force login attacks. \fBufw\fR will deny connections if an IP
 address has attempted to initiate 6 or more connections in the last 30 seconds.
-See http://www.debian-administration.org/articles/187 for details.  Typical
+See http://www.debian\-administration.org/articles/187 for details.  Typical
 usage is:
 
   ufw limit ssh/tcp
@@ -201,7 +201,7 @@ To see a list of numbered rules, use:
 .PP
 \fBufw\fR supports per rule logging. By default, no logging is performed when
 a packet matches a rule. Specifying \fBlog\fR will log all new connections
-matching the rule, and \fBlog-all\fR will log all packets matching the rule.
+matching the rule, and \fBlog\-all\fR will log all packets matching the rule.
 For example, to allow and log all new ssh connections, use:
 
   ufw allow log 22/tcp
@@ -251,7 +251,7 @@ ssh port will be open after enabling the firewall. Please note that once
 ufw is 'enabled', \fBufw\fR will not flush the chains when adding or removing
 rules (but will when modifying a rule or changing the default policy). By
 default, \fBufw\fR will prompt when enabling the firewall while running under
-ssh. This can be disabled by using '\fBufw --force enable\fR'.
+ssh. This can be disabled by using '\fBufw \-\-force enable\fR'.
 
 .SH APPLICATION INTEGRATION
 .PP
@@ -300,7 +300,7 @@ The default application policy is \fBskip\fR, which means that the \fBupdate
 \-\-add\-new\fR command will do nothing. Users may also specify a policy of
 \fBallow\fR or \fBdeny\fR so the \fBupdate \-\-add\-new\fR command may
 automatically update the firewall.  \fBWARNING:\fR it may be a security to risk
-to use a default \fBallow\fR policy for applications profiles. Carefully
+to use a default \fBallow\fR policy for application profiles. Carefully
 consider the security ramifications before using a default \fBallow\fR policy.
 
 .SH LOGGING
@@ -346,10 +346,10 @@ the exception of the \fBlistening\fR report, is in raw iptables format:
 
   raw
   builtins
-  before-rules
-  user-rules
-  after-rules
-  logging-rules
+  before\-rules
+  user\-rules
+  after\-rules
+  logging\-rules
   listening
 
 The \fBraw\fR report shows the complete firewall, while the others show a
@@ -379,7 +379,7 @@ rules, add the more specific rules first with more general rules later.
 .PP
 \fBufw\fR is not intended to provide complete firewall functionality via
 its command interface, but instead provides an easy way to add or remove
-simple rules. It is currently mainly used for host-based firewalls.
+simple rules. It is currently mainly used for host\-based firewalls.
 .PP
 The status command shows basic information about the state of the firewall, as
 well as rules managed via the \fBufw\fR command. It does not show rules from the
@@ -419,13 +419,13 @@ protocols can only be used with the full syntax. For example:
   ufw allow to 10.0.0.1 proto ah
   ufw allow to 10.0.0.1 from 10.4.0.0/16 proto ah
 .PP
-In addition to the command-line interface, \fBufw\fR also provides a
+In addition to the command\-line interface, \fBufw\fR also provides a
 framework which allows administrators to take full advantage of netfilter.
-See the \fBufw-framework\fR manual page for more information.
+See the \fBufw\-framework\fR manual page for more information.
 
 .SH SEE ALSO
 .PP
-\fBufw-framework\fR, \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables-restore\fR(8), \fBip6tables-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
+\fBufw\-framework\fR, \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables\-restore\fR(8), \fBip6tables\-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
 
 .SH AUTHOR
 .PP
