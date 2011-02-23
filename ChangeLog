@@ -8,6 +8,7 @@ ufw (0.30.1) UNRELEASED; urgency=low
   * fix manpage reference to /etc/default/ufw (Closes: 601111)
   * mention quoting of application profile names with spaces (LP: #715676)
   * fix man-page hyphenation in ufw.8
+  * run_tests.sh: adjust PATH if iptables can't be found
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 29 Aug 2010 20:38:19 -0500
 

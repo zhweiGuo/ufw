@@ -19,6 +19,18 @@ export LANG=C
 testdir="tests"
 tests="installation bad bugs good util"
 
+set -e
+# Some systems may not have iptables in their PATH. Try to account for that.
+if ! which iptables >/dev/null ; then
+    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    echo "INFO: 'iptables' not in PATH. Using:"
+    echo " $PATH"
+    if ! which iptables >/dev/null; then
+        echo "ERROR: could not find iptables. Aborting."
+        exit 1
+    fi
+fi
+set +e
 ipt_major=`iptables --version | sed 's/.* v//' | cut -d '.' -f 1 | sed 's/\([0-9]\+\).*/\\1/'`
 ipt_minor=`iptables --version | sed 's/.* v//' | cut -d '.' -f 2 | sed 's/\([0-9]\+\).*/\\1/'`
 ipt_micro=`iptables --version | sed 's/.* v//' | cut -d '.' -f 3 | sed 's/\([0-9]\+\).*/\\1/'`
