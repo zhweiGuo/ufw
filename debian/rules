@@ -24,7 +24,7 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
-	rm -rf $(CURDIR)/build
+	make clean
 	rm -f $(CURDIR)/debian/ufw.init $(CURDIR)/debian/ufw.upstart
 	-find . -name '*.py[co]' | xargs rm -f
 	dh_clean
@@ -50,22 +50,8 @@ endif
 	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.conf $(CURDIR)/debian/ufw/usr/share/ufw
 	mv $(CURDIR)/debian/ufw/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
 
-	# for ucf
-	cp $(CURDIR)/debian/*md5sum $(CURDIR)/debian/ufw/usr/share/ufw
-
-	# rename, install and gzip the upstream and old Ubuntu changelog files
-	cp $(CURDIR)/ChangeLog $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
-	cp $(CURDIR)/ChangeLog.pre-0.25 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
-	cp $(CURDIR)/debian/changelog.pre-0.27.1 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.Debian.pre-0.27.1
-	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog
-	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.pre-0.25
-	gzip -9 $(CURDIR)/debian/ufw/usr/share/doc/ufw/changelog.Debian.pre-0.27.1
-
-	# Add the shell-completion file
+	# Rename and install the shell-completion file
 	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw
-
-	# useful for debugging
-	cp $(CURDIR)/tests/check-requirements $(CURDIR)/debian/ufw/usr/share/ufw
 
 binary-arch: build
 
@@ -73,6 +59,7 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs
+	dh_installchangelogs ChangeLog
 	dh_installdocs
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
@@ -96,6 +83,7 @@ binary-indep: build install
 	fi
 	dh_installman
 	dh_installdebconf
+	dh_lintian
 
 	: # Replace all '#!' calls to python with $(PYTHON)
 	: # and make them executable
@@ -110,7 +98,7 @@ binary-indep: build install
 			echo "fixed interpreter: $$i"; \
 		fi; \
 	done
-	DH_PYCENTRAL=include-links dh_pycentral
+	dh_python2
 	dh_compress
 	dh_fixperms
 	dh_installdeb

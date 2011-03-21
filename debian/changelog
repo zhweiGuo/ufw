@@ -1,3 +1,37 @@
+ufw (0.30.0-4) UNRELEASED; urgency=low
+
+  * debian/ufw.logrotate: remove upstartism thanks to Michael Biebl
+    (Closes: 607696)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 21 Mar 2011 14:45:03 -0500
+
+ufw (0.30.0-3) unstable; urgency=low
+
+  * convert to dh_python2:
+    - debian/control: remove python-central dependency
+    - debian/rules: use dh_python2 instead of dh_pycentral
+  * debian/rules: run 'make clean' in the clean target
+  * debian/ufw.init.debian: look for /lib/ufw, not /usr/sbin/ufw to see if we
+    should quit (ie, when ufw is removed and not purged). Also, only have
+    /bin and /sbin in PATH
+  * add lintian override
+    - debian/rules: add dh_lintian
+    - debian/dirs: add usr/share/lintian/overrides
+    - ignore init.d-script-possible-missing-stop
+  * debian/install, debian/rules: update to use debian/install primarily
+  * renamed debian/changelog.pre-0.27.1 to debian/changelog.Debian.pre-0.27.1
+  * no longer install upstream ChangeLog.pre-0.25
+  * grab man page updates from upstream:
+    - mention quoting of application profile names with spaces. Upstream
+      r714. (LP: #715676)
+    - fix man-page hyphenation in ufw.8. Upstream r716.
+    - fix manpage reference to /etc/defaults/ufw. Upstream r713.
+      (Closes: 601111)
+  * fix typo in warning. Upstream r711. (LP: #637876)
+  * run_tests.sh: adjust PATH if iptables can't be found. Upstream r717.
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 23 Feb 2011 08:10:55 -0600
+
 ufw (0.30.0-2) unstable; urgency=low
 
   * src/frontend.py: display unicode error messages properly. Thanks to
