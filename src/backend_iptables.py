@@ -1183,6 +1183,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         rules_t.append([c, ['-I', c, '-m', 'state', \
                                             '--state', 'INVALID', \
                                             '-j', 'RETURN'] + largs, ''])
+                    else:
+                        rules_t.append([c, ['-A', c, '-m', 'state', \
+                                            '--state', 'INVALID', \
+                                            '-j', 'LOG', \
+                                            '--log-prefix', \
+                                            "[UFW BLOCK INVALID] "] + \
+                                        largs, ''])
                 rules_t.append([c, ['-A', c, '-j', 'LOG', \
                                     '--log-prefix', msg] + largs, ''])
 
