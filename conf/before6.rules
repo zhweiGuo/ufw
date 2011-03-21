@@ -20,6 +20,11 @@
 -A ufw6-before-input -i lo -j ACCEPT
 -A ufw6-before-output -o lo -j ACCEPT
 
+# drop packets with RH0 headers
+-A ufw6-before-input -m rt --rt-type 0 -j DROP
+-A ufw6-before-forward -m rt --rt-type 0 -j DROP
+-A ufw6-before-output -m rt --rt-type 0 -j DROP
+
 # for stateless autoconfiguration (restrict NDP messages to hop limit of 255)
 -A ufw6-before-input -p icmpv6 --icmpv6-type neighbor-solicitation -m hl --hl-eq 255 -j ACCEPT
 -A ufw6-before-output -p icmpv6 --icmpv6-type neighbor-solicitation -m hl --hl-eq 255 -j ACCEPT
@@ -47,10 +52,8 @@
 -A ufw6-before-input -p udp --sport 67 --dport 68 -j ACCEPT
 
 # allow MULTICAST
--A ufw6-before-input -p icmpv6 -s ff00::1/8 -j ACCEPT
--A ufw6-before-input -p icmpv6 -d ff00::1/8 -j ACCEPT
--A ufw6-before-input -p icmpv6 -s ff00::2/8 -j ACCEPT
--A ufw6-before-input -p icmpv6 -d ff00::2/8 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -s ff00::/8 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -d ff00::/8 -j ACCEPT
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT

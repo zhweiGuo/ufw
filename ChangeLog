@@ -13,6 +13,9 @@ ufw (0.30.1) UNRELEASED; urgency=low
     addressing
   * profiles/ufw-fileserver: add svnserve profile (LP: #501140)
   * use 'UFW BLOCK INVALID' instead of 'UFW BLOCK' in medium and higher
+  * DROP packets with RH0 headers
+  * fix think-o in before6.rules where ff00::1/8 and ff00::2/8 was used
+    instead of the correct ff00::8 (LP: #720605)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 21 Mar 2011 16:27:33 -0500
 
