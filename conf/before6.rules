@@ -51,6 +51,10 @@
 # allow dhcp client to work
 -A ufw6-before-input -p udp --sport 67 --dport 68 -j ACCEPT
 
+# allow link-local
+-A ufw6-before-input -p icmpv6 -s fe08::/10 -j ACCEPT
+-A ufw6-before-input -p icmpv6 -d fe08::/10 -j ACCEPT
+
 # allow MULTICAST
 -A ufw6-before-input -p icmpv6 -s ff00::/8 -j ACCEPT
 -A ufw6-before-input -p icmpv6 -d ff00::/8 -j ACCEPT
