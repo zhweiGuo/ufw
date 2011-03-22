@@ -1188,8 +1188,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                             '--state', 'INVALID', \
                                             '-j', 'LOG', \
                                             '--log-prefix', \
-                                            "[UFW BLOCK INVALID] "] + \
+                                            re.sub(r"] $", " INVALID] ", msg)] + \
                                         largs, ''])
+                        rules_t.append([c, ['-I', c, '-m', 'state', \
+                                            '--state', 'INVALID', \
+                                            '-j', 'RETURN'] + largs, ''])
                 rules_t.append([c, ['-A', c, '-j', 'LOG', \
                                     '--log-prefix', msg] + largs, ''])
 
