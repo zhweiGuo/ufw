@@ -13,9 +13,9 @@ ufw (0.30.1) UNRELEASED; urgency=low
     addressing
   * profiles/ufw-fileserver: add svnserve profile (LP: #501140)
   * use 'UFW AUDIT INVALID' for INVALID packets in medium and higher
-  * DROP packets with RH0 headers
+  * DROP packets with RH0 headers (LP: #740249)
   * update README to discuss the default ruleset
-  * only allow mDNS multicast
+  * only allow mDNS multicast (LP: #740256)
   * allow ping replies from multicast (LP: #720605)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 21 Mar 2011 16:27:33 -0500
