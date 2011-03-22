@@ -51,13 +51,9 @@
 # allow dhcp client to work
 -A ufw6-before-input -p udp --sport 67 --dport 68 -j ACCEPT
 
-# allow link-local
--A ufw6-before-input -p icmpv6 -s fe08::/10 -j ACCEPT
--A ufw6-before-input -p icmpv6 -d fe08::/10 -j ACCEPT
-
-# allow MULTICAST
--A ufw6-before-input -p icmpv6 -s ff00::/8 -j ACCEPT
--A ufw6-before-input -p icmpv6 -d ff00::/8 -j ACCEPT
+# allow MULTICAST mDNS for service discovery (be sure the MULTICAST line above
+# is uncommented)
+-A ufw6-before-input -p udp -d ff02::fb --dport 5353 -j ACCEPT
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT
