@@ -1,7 +1,14 @@
-ufw (0.30.0-4) UNRELEASED; urgency=low
+ufw (0.30.1-1) unstable; urgency=low
 
+  * New upstream release which fixes the following:
+    - LP: #501140
+    - LP: #740249
+    - LP: #740256
+    - LP: #720605
   * debian/ufw.logrotate: remove upstartism thanks to Michael Biebl
     (Closes: 607696)
+  * debian/sysctl.conf: merge in upstream (commented out) changes surrounding
+    ipv6 forwarding and privacy addresses
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 21 Mar 2011 14:45:03 -0500
 
