@@ -55,6 +55,7 @@ Available applications:
   Yahoo
   a aZ9 _-.+
   qBittorent
+  svnserve
 
 
 1: app info Apache
@@ -643,6 +644,15 @@ Description: qBittorent BitTorrent client
 
 Port:
   6881/tcp
+
+--
+
+Profile: svnserve
+Title: Subversion server
+Description: Subversion server for access to Subversion repositories.
+
+Port:
+  3690/tcp
 
 
 TESTING APPLICATION INTEGRATION (simple rules)
@@ -12616,105 +12626,111 @@ TESTING SHIPPED APPLICATION PROFILES
 330: allow NFS
 
 
-331: app info Telnet
+331: app info svnserve
 
 
-332: allow Telnet
+332: allow svnserve
 
 
-333: app info SSH
+333: app info Telnet
 
 
-334: allow SSH
+334: allow Telnet
 
 
-335: app info VNC
+335: app info SSH
 
 
-336: allow VNC
+336: allow SSH
 
 
-337: app info POP3
+337: app info VNC
 
 
-338: allow POP3
+338: allow VNC
 
 
-339: app info POP3S
+339: app info POP3
 
 
-340: allow POP3S
+340: allow POP3
 
 
-341: app info IMAP
+341: app info POP3S
 
 
-342: allow IMAP
+342: allow POP3S
 
 
-343: app info IMAPS
+343: app info IMAP
 
 
-344: allow IMAPS
+344: allow IMAP
 
 
-345: app info SMTP
+345: app info IMAPS
 
 
-346: allow SMTP
+346: allow IMAPS
 
 
-347: app info Mail submission
+347: app info SMTP
 
 
-348: allow Mail submission
+348: allow SMTP
 
 
-349: app info IPP
+349: app info Mail submission
 
 
-350: allow IPP
+350: allow Mail submission
 
 
-351: app info LPD
+351: app info IPP
 
 
-352: allow LPD
+352: allow IPP
 
 
-353: app info Socks
+353: app info LPD
 
 
-354: allow Socks
+354: allow LPD
 
 
-355: app info Transparent Proxy
+355: app info Socks
 
 
-356: allow Transparent Proxy
+356: allow Socks
 
 
-357: app info WWW
+357: app info Transparent Proxy
 
 
-358: allow WWW
+358: allow Transparent Proxy
 
 
-359: app info WWW Secure
+359: app info WWW
 
 
-360: allow WWW Secure
+360: allow WWW
 
 
-361: app info WWW Full
+361: app info WWW Secure
 
 
-362: allow WWW Full
+362: allow WWW Secure
 
 
-363: app info WWW Cache
+363: app info WWW Full
 
 
-364: allow WWW Cache
+364: allow WWW Full
+
+
+365: app info WWW Cache
+
+
+366: allow WWW Cache
 
 
