@@ -210,6 +210,38 @@ Similarly, to see what rules are in the nat table's chains, use:
 See 'man iptables' for details.
 
 
+Default ruleset
+---------------
+Enabling ufw creates a ruleset that is intended to protect the host while
+allowing some common traffic such as DHCP, ping and mDNS. These defaults are
+setup in the before*.rules and after*.rules files (see 'man iptables' for
+terminology):
+- Default DROP on INPUT
+- Default DROP on FORWARD
+- Default ACCEPT on OUTPUT
+- ACCEPT all on lo
+- DROP packets with RH0 headers
+- ACCEPT all RELATED and ESTABLISHED on INPUT and OUTPUT
+- DROP INVALID packets (packets not associated with a known connection)
+- ACCEPT certain icmp packets:
+  - destination-unreachable, source-quench, time-exceeded, parameter-problem,
+    and echo-request for IPv4
+  - neighbor-solicitation, neighbor-advertisement, router-solicitation,
+    destination-unreachable, packet-too-big, time-exceeded, parameter-problem,
+    echo-request and echo-reply from certain MULTICAST for IPv6
+- ACCEPT mDNS (zeroconf/bonjour/avahi 224.0.0.251 for IPv4 and ff02::fb for
+  IPv6)
+- DROP non-local, broadcast and multicast traffic
+- ACCEPT DHCP client traffic
+- Silently DROP SMB/CIFS traffic
+- Silently DROP DHCP traffic not associated with host's use of DHCP client
+- Silently DROP BROADCAST (IPv4) traffic
+- Log all blocked packets not matching the default policy with rate limiting
+
+If you are using a packaged version of ufw supplied by your distribution, the
+default ruleset may be different.
+
+
 Remote Management
 -----------------
 On /lib/ufw/ufw-init start and 'ufw enable' the chains are flushed, so
@@ -295,4 +327,4 @@ You may also specify an interpreter for the tests. Eg:
 $ ./run_tests.sh -s -i /usr/local/bin/python2.5
 
 
-Copyright 2008-2010 Canonical Ltd.
+Copyright 2008-2011 Canonical Ltd.
