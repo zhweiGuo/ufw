@@ -231,6 +231,7 @@ terminology):
     echo-request and echo-reply from certain MULTICAST for IPv6
 - ACCEPT mDNS (zeroconf/bonjour/avahi 224.0.0.251 for IPv4 and ff02::fb for
   IPv6)
+- ACCEPT ping replies from IPv6 link-local (ffe8::/10) addresses
 - DROP non-local, broadcast and multicast traffic
 - ACCEPT DHCP client traffic
 - Silently DROP SMB/CIFS traffic
