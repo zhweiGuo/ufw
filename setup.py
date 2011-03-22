@@ -1,7 +1,7 @@
 #
 # ufw: front-end for Linux firewalling
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -34,7 +34,7 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.30'
+ufw_version = '0.31'
 
 def cmd(command):
     '''Try to execute the given command.'''
