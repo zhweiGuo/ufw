@@ -9,6 +9,7 @@ ufw (0.30.1-1) unstable; urgency=low
     (Closes: 607696)
   * debian/sysctl.conf: merge in upstream (commented out) changes surrounding
     ipv6 forwarding and privacy addresses
+  * debian/before*.rules.md5sum: updated for recent changes
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 21 Mar 2011 14:45:03 -0500
 
