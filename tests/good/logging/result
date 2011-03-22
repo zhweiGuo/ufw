@@ -175,6 +175,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -244,6 +245,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -381,6 +383,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -450,6 +453,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -587,6 +591,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -656,6 +661,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -793,6 +799,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -862,6 +869,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1023,6 +1031,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1092,6 +1101,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1253,6 +1263,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1322,6 +1333,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1459,6 +1471,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1528,6 +1541,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1665,6 +1679,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1734,6 +1749,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1804,6 +1820,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1877,6 +1894,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -1928,6 +1946,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -2028,6 +2047,7 @@ contents of user*.rules:
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -2191,6 +2211,7 @@ WARN: Checks disabled
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m state --state NEW -m limit --limit 3/min --limit-burst 10
@@ -2241,6 +2262,7 @@ WARN: Checks disabled
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] " -m limit --limit 3/min --limit-burst 10
@@ -2291,6 +2313,7 @@ WARN: Checks disabled
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
@@ -2341,6 +2364,7 @@ WARN: Checks disabled
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-after-logging-output -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-logging-deny -m state --state INVALID -j LOG --log-prefix "[UFW AUDIT INVALID] "
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] "
 -I ufw-before-logging-input -j LOG --log-prefix "[UFW AUDIT] "
