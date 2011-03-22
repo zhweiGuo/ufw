@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-14 08:29-0500\n"
+"POT-Creation-Date: 2011-03-22 10:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,32 +308,32 @@ msgstr ""
 msgid "Invalid log level '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:1221
+#: src/backend_iptables.py:1228
 #, python-format
 msgid "Could not find '%s'. Aborting"
 msgstr ""
 
-#: src/backend_iptables.py:1233
+#: src/backend_iptables.py:1240
 #, python-format
 msgid "'%s' already exists. Aborting"
 msgstr ""
 
-#: src/backend_iptables.py:1239
+#: src/backend_iptables.py:1246
 #, python-format
 msgid "Backing up '%(old)s' to '%(new)s'\n"
 msgstr ""
 
-#: src/backend_iptables.py:1255 src/backend.py:140
+#: src/backend_iptables.py:1262 src/backend.py:140
 #, python-format
 msgid "Couldn't stat '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:1260
+#: src/backend_iptables.py:1267
 #, python-format
 msgid "WARN: '%s' is world writable"
 msgstr ""
 
-#: src/backend_iptables.py:1262
+#: src/backend_iptables.py:1269
 #, python-format
 msgid "WARN: '%s' is world readable"
 msgstr ""
