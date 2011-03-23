@@ -228,9 +228,11 @@ terminology):
     and echo-request for IPv4
   - neighbor-solicitation, neighbor-advertisement, router-solicitation,
     destination-unreachable, packet-too-big, time-exceeded, parameter-problem,
-    echo-request and echo-reply from certain MULTICAST for IPv6
+    and echo-request
 - ACCEPT mDNS (zeroconf/bonjour/avahi 224.0.0.251 for IPv4 and ff02::fb for
-  IPv6)
+  IPv6) for service discovery
+- ACCEPT UPnP (239.255.255.250 for IPv4 and ff02::f for IPv6) for service
+  discovery
 - ACCEPT ping replies from IPv6 link-local (ffe8::/10) addresses
 - DROP non-local, broadcast and multicast traffic
 - ACCEPT DHCP client traffic

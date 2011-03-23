@@ -1,3 +1,9 @@
+ufw (0.30.2) UNRELEASED; urgency=low
+
+  * allow UPnP multicast for service discovery
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Mar 2011 21:40:34 -0500
+
 ufw (0.30.1) RELEASED; urgency=low
 
   * allow for python 2.7 (verified to work with python 2.7.1)
