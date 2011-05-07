@@ -7,6 +7,8 @@ SRCVER   = ufw-$(VERSION)
 TARBALLS = ../tarballs
 TARSRC   = $(TARBALLS)/$(SRCVER)
 TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
+PYFLAKES = $(TMPDIR)/pyflakes.out
+PYFLAKES_EXE = pyflakes
 
 all:
 	# Use setup.py to install. See README for details
@@ -24,6 +26,13 @@ mo:
 test:
 	./run_tests.sh -s
 
+check: test
+
+syntax-check: clean
+	which "$(PYFLAKES_EXE)"
+	$(shell mkdir $(TMPDIR) && pyflakes src | grep -v "undefined name '_'" > $(PYFLAKES))
+	cat "$(PYFLAKES)"
+	test ! -s "$(PYFLAKES)"
 
 # These are only used in development
 clean:
@@ -50,7 +59,7 @@ devel: evaluate
 debug: devel
 	sed -i 's/debugging = False/debugging = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
 
-tarball: clean translations
+tarball: syntax-check clean translations
 	bzr export --format dir $(TARSRC)
 	tar -zcv -C $(TARBALLS) $(EXCLUDES) -f $(TARDST) $(SRCVER)
 	rm -rf $(TARSRC)

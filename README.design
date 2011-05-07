@@ -30,5 +30,19 @@ IPv6 support is included in ufw. To keep IPv4 addressing easy to use, the IPv4
 and IPv6 configuration are kept completely separate (ie there are no IPv4
 mapped addresses).
 
+Contributing
+------------
+Before submitting patches for ufw, please do the following:
+
+$ make syntax-check    # basic syntax checker
+$ make check           # runs non-root tests
+# ./run-tests -r root  # runs root tests (modifies running firewall)
+
+CAUTION: root tests will flush the firewall and use iptables commands on the
+host.
+
+Contributions should follow PEP-8 and have an accompanying test case added to
+tests/.
+
 
 Copyright 2011 Canonical Ltd.

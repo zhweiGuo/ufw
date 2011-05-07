@@ -5,6 +5,7 @@ ufw (0.30.2) UNRELEASED; urgency=low
     for DCC
   * enable IPv6 by default
   * fix 'allow to any ipv6' when IPv6 is enabled
+  * add syntax-check to Makefile
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Mar 2011 21:40:34 -0500
 
