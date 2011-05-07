@@ -178,6 +178,10 @@ do
         cp -rL $testdir/$class/$thistest/orig/* "$TESTPATH/etc" || exit 1
         cp -f $testdir/$class/$thistest/runtest.sh "$TESTPATH" || exit 1
 
+        # Explicitly disable IPv6 here, since some tests assume it is disabled.
+        # IPv6 will be re-enabled in the individual tests that require it.
+        sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
+
         echo "- result: "
         numtests=$(($numtests + 1))
         # now run the test

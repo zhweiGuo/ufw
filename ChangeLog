@@ -3,6 +3,7 @@ ufw (0.30.2) UNRELEASED; urgency=low
   * allow UPnP multicast for service discovery
   * conf/ufw.defaults: remove IRC connection tracking, which is only required
     for DCC
+  * enable IPv6 by default
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Mar 2011 21:40:34 -0500
 
