@@ -178,7 +178,7 @@ class UFWRule:
 
         logtype = ""
         if len(tmp) > 1:
-             logtype = tmp[1]
+            logtype = tmp[1]
         self.set_logtype(logtype)
 
     def set_port(self, port, loc="dst"):
@@ -426,7 +426,7 @@ class UFWRule:
         return -1
 
     def fuzzy_dst_match(x, y):
-	'''This will match if x is more specific than y. Eg, for protocol if x
+        '''This will match if x is more specific than y. Eg, for protocol if x
 	   is tcp and y is all or for address if y is a network and x is a
            subset of y (where x is either an address or network). Returns:
 

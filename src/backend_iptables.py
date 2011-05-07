@@ -54,8 +54,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             for loc in ['before', 'user', 'after']:
                 for target in ['input', 'output', 'forward']:
-                   chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
-                   self.chains[loc].append(chain)
+                    chain = "%s-%s-logging-%s" % (chain_prefix, loc, target)
+                    self.chains[loc].append(chain)
             self.chains['misc'].append(chain_prefix + "-logging-deny")
             self.chains['misc'].append(chain_prefix + "-logging-allow")
 
@@ -1047,11 +1047,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             exe = self.ip6tables
         (rc, out) = cmd([exe] + args)
         if rc != 0:
-           err_msg = _("Could not perform '%s'") % (args)
-           if fail_ok:
-               debug("FAILOK: " + err_msg)
-           else:
-               raise UFWError(err_msg)
+            err_msg = _("Could not perform '%s'") % (args)
+            if fail_ok:
+                debug("FAILOK: " + err_msg)
+            else:
+                raise UFWError(err_msg)
 
     def update_logging(self, level):
         '''Update loglevel of running firewall'''

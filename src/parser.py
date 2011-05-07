@@ -104,7 +104,7 @@ class UFWCommandRule(UFWCommand):
                 # Using position '0' adds rule at end, which is potentially
 	        # confusing for the end user
                 if insert_pos == "0":
-		    err_msg = _("Cannot insert rule at position '%s'") % \
+                    err_msg = _("Cannot insert rule at position '%s'") % \
                                 (insert_pos)
                     raise UFWError(err_msg)
 

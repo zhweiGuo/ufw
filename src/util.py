@@ -271,7 +271,7 @@ def cmd(command):
         return [127, str(e)]
 
     out = sp.communicate()[0]
-    return [sp.returncode,out]
+    return [sp.returncode, out]
 
 
 def cmd_pipe(command1, command2):
@@ -283,7 +283,7 @@ def cmd_pipe(command1, command2):
         return [127, str(e)]
 
     out = sp2.communicate()[0]
-    return [sp2.returncode,out]
+    return [sp2.returncode, out]
 
 
 def error(msg, exit=True):
@@ -463,7 +463,7 @@ def _dotted_netmask_to_cidr(nm, v6):
             raise ValueError
 
         mbits = 0
-        bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
+        bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
         found_one = False
         for n in range(32):
             if (bits >> n) & 1 == 1:
@@ -502,7 +502,7 @@ def _cidr_to_dotted_netmask(cidr, v6):
         bits = 0L
         for n in range(32):
             if n < int(cidr):
-                bits |= 1<<31 - n
+                bits |= 1 << 31 - n
         nm = socket.inet_ntoa(struct.pack('>L', bits))
 
     if not _valid_dotted_quads(nm, v6):
@@ -532,8 +532,8 @@ def _address4_to_network(addr):
             raise
 
     # Now have dotted quad host and nm, find the network
-    host_bits = long(struct.unpack('>L',socket.inet_aton(host))[0])
-    nm_bits = long(struct.unpack('>L',socket.inet_aton(nm))[0])
+    host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
+    nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
 
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
@@ -570,7 +570,7 @@ def _address6_to_network(addr):
     nm_bits = 0L
     for i in range(128):
         if i < int(netmask):
-            nm_bits |= 1<<(128 - 1) - i
+            nm_bits |= 1 << (128 - 1) - i
 
     # Apply the netmask to the host to determine the network
     net = host_bits & nm_bits
@@ -844,14 +844,14 @@ def convert_proc_address(paddr):
     converted = ""
     if len(paddr) > 8:
         tmp = ""
-        for i in range(0,32,8):
-            tmp += "".join([ paddr[j-2:j] for j in range(i+8,i,-2) ])
+        for i in range(0, 32, 8):
+            tmp += "".join([ paddr[j-2:j] for j in range(i+8, i, -2) ])
         converted = normalize_address(":".join( \
                [ tmp[j:j+4].lower() for j in range(0,len(tmp),4) ]), \
                True)[0]
     else:
         tmp = []
-        for i in [ paddr[j-2:j] for j in range(8,0,-2) ]:
+        for i in [ paddr[j-2:j] for j in range(8, 0, -2) ]:
             tmp.append(str(int(i, 16)))
         converted = normalize_address(".".join(tmp), False)[0]
 

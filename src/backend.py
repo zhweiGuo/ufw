@@ -448,7 +448,7 @@ class UFWBackend:
         raise UFWError(err_msg)
 
     def find_other_position(self, position, v6):
-	'''Return the absolute position in the other list of the rule with the
+        '''Return the absolute position in the other list of the rule with the
 	   user position of the given list. For example, find_other_position(4,
 	   True) will return the absolute position of the rule in the ipv4 list
            matching the user specified '4' rule in the ipv6 list.
@@ -531,11 +531,11 @@ class UFWBackend:
 
         new_level = level
         if level == "on":
-           if not self.defaults.has_key('loglevel') or \
-              self.defaults['loglevel'] == "off":
-               new_level = "low"
-           else:
-               new_level = self.defaults['loglevel']
+            if not self.defaults.has_key('loglevel') or \
+               self.defaults['loglevel'] == "off":
+                new_level = "low"
+            else:
+                new_level = self.defaults['loglevel']
 
         try:
             self.set_default(self.files['conf'], "LOGLEVEL", new_level)
