@@ -417,8 +417,8 @@ class UFWCommandRule(UFWCommand):
                             (rule.protocol)
                 raise UFWError(err_msg)
             elif type == "both":
-                debug("Adjusting iptype to 'v4' for protocol '%s'") % \
-                      (rule.protocol)
+                debug("Adjusting iptype to 'v4' for protocol '%s'" % \
+                      (rule.protocol))
                 type = "v4"
 
             if rule.dport != "any" or rule.sport != "any":
