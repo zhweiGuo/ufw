@@ -29,8 +29,7 @@ test:
 check: test
 
 syntax-check: clean
-	which "$(PYFLAKES_EXE)"
-	$(shell mkdir $(TMPDIR) && pyflakes src | grep -v "undefined name '_'" > $(PYFLAKES))
+	$(shell mkdir $(TMPDIR) && $(PYFLAKES_EXE) src 2>&1 | grep -v "undefined name '_'" > $(PYFLAKES))
 	cat "$(PYFLAKES)"
 	test ! -s "$(PYFLAKES)"
 
