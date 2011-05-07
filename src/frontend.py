@@ -1,7 +1,7 @@
 #
 # frontend.py: frontend interface for ufw
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -16,7 +16,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import re
 import os
 import sys
 import warnings

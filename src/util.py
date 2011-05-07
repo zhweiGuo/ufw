@@ -1,7 +1,7 @@
 #
 # util.py: utility functions for ufw
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -258,7 +258,7 @@ def close_files(fns, update = True):
 
     try:
         os.unlink(fns['tmpname'])
-    except OSError, e:
+    except OSError:
         raise
 
 
@@ -382,7 +382,7 @@ def under_ssh(pid=os.getpid()):
     '''Determine if current process is running under ssh'''
     try:
         ppid = get_ppid(pid)
-    except IOError, e:
+    except IOError:
         warn_msg = _("Couldn't find pid (is /proc mounted?)")
         warn(warn_msg)
         return False

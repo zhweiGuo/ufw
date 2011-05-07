@@ -1,7 +1,7 @@
 #
 # backend_iptables.py: iptables backend for ufw
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -21,10 +21,9 @@ import re
 import shutil
 import stat
 import sys
-import tempfile
 import time
 
-from ufw.common import UFWError, UFWRule, config_dir, state_dir, prefix_dir
+from ufw.common import UFWError, UFWRule, config_dir, state_dir
 from ufw.util import warn, debug, msg, cmd, cmd_pipe
 import ufw.backend
 
@@ -174,8 +173,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             out = "> " + _("Checking raw iptables\n")
             out += "> " + _("Checking raw ip6tables\n")
             return out
-
-        err_msg = _("problem running")
 
         args = ['-n', '-v', '-x', '-L']
         items = []
@@ -840,7 +837,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         newrules = []
         found = False
         modified = False
-        delete = False
 
         rules = self.rules
         position = rule.position

@@ -1,7 +1,7 @@
 #
 # applications.py: common classes for ufw
 #
-# Copyright 2008-2009 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -16,10 +16,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from ConfigParser import *
+import ConfigParser
 import os
 import re
-from stat import *
+import stat
 import ufw.util
 from ufw.util import debug, warn
 from ufw.common import UFWError
@@ -29,8 +29,8 @@ def get_profiles(dir):
        profile name as key and tuples for fields
     '''
     if not os.path.isdir(dir):
-        err_msg = _("Profiles directory does not exist") % (dir)
-        raise UFWError("Error: profiles directory does not exist")
+        err_msg = _("Profiles directory does not exist")
+        raise UFWError(err_msg)
 
     max_size = 10 * 1024 * 1024  # 10MB
     profiles = {}
@@ -59,7 +59,7 @@ def get_profiles(dir):
         # benefit, just usability)
         size = 0
         try:
-            size = os.stat(abs)[ST_SIZE]
+            size = os.stat(abs)[stat.ST_SIZE]
         except Exception:
             warn_msg = _("Skipping '%s': couldn't stat") % (f)
             warn(warn_msg)
@@ -77,7 +77,7 @@ def get_profiles(dir):
 
         total_size += size
 
-        cdict = RawConfigParser()
+        cdict = ConfigParser.RawConfigParser()
         try:
             cdict.read(abs)
         except Exception:

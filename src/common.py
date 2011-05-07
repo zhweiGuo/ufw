@@ -1,7 +1,7 @@
 #
 # common.py: common classes for ufw
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -221,7 +221,7 @@ class UFWRule:
                 elif re.match(r'^\w[\w\-]+', p):
                     try:
                         p = socket.getservbyname(p)
-                    except Exception, (error):
+                    except Exception:
                         raise UFWError(err_msg)
                 else:
                     raise UFWError(err_msg)

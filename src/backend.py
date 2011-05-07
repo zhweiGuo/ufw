@@ -1,7 +1,7 @@
 #
 # backend.py: interface for backends
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -20,7 +20,6 @@ import errno
 import os
 import re
 import stat
-from stat import *
 import sys
 import ufw.util
 from ufw.util import warn, debug
@@ -135,8 +134,8 @@ class UFWBackend:
 
                 try:
                     statinfo = os.stat(path)
-                    mode = statinfo[ST_MODE]
-                except OSError, e:
+                    mode = statinfo[stat.ST_MODE]
+                except OSError:
                     err_msg = _("Couldn't stat '%s'") % (path)
                     raise UFWError(err_msg)
                 except Exception:
@@ -149,11 +148,11 @@ class UFWBackend:
                                                'st_uid': str(statinfo.st_uid)})
                     warn(warn_msg)
                     warned_owner[path] = True
-                if mode & S_IWOTH and not warned_world_write.has_key(path):
+                if mode & stat.S_IWOTH and not warned_world_write.has_key(path):
                     warn_msg = _("%s is world writable!") % (path)
                     warn(warn_msg)
                     warned_world_write[path] = True
-                if mode & S_IWGRP and not warned_group_write.has_key(path):
+                if mode & stat.S_IWGRP and not warned_group_write.has_key(path):
                     warn_msg = _("%s is group writable!") % (path)
                     warn(warn_msg)
                     warned_group_write[path] = True
