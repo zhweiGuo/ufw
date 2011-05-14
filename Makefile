@@ -56,7 +56,7 @@ devel: evaluate
 	cp -f ./tests/defaults/profiles.bad/* $(TMPDIR)/ufw/etc/ufw/applications.d
 
 debug: devel
-	sed -i 's/debugging = False/debugging = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
+	sed -i 's/DEBUGGING = False/DEBUGGING = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
 
 tarball: syntax-check clean translations
 	bzr export --format dir $(TARSRC)
