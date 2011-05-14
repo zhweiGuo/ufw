@@ -1,5 +1,4 @@
-#
-# util.py: utility functions for ufw
+'''util.py: utility functions for ufw'''
 #
 # Copyright 2008-2011 Canonical Ltd.
 #
@@ -28,7 +27,7 @@ import sys
 
 from tempfile import mkstemp
 
-debugging = False
+DEBUGGING = False
 
 
 def get_services_proto(port):
@@ -57,11 +56,11 @@ def get_services_proto(port):
     return proto
 
 
-def parse_port_proto(str):
+def parse_port_proto(p_str):
     '''Parse port or port and protocol'''
     port = ""
     proto = ""
-    tmp = str.split('/')
+    tmp = p_str.split('/')
     if len(tmp) == 1:
         port = tmp[0]
         proto = "any"
@@ -154,17 +153,18 @@ def normalize_address(orig, v6):
     net = []
     changed = False
     version = "4"
+    s_type = socket.AF_INET
     if v6:
         version = "6"
+        s_type = socket.AF_INET6
 
     if '/' in orig:
         net = orig.split('/')
         # Remove host netmasks
         if v6 and net[1] == "128":
             del net[1]
-        elif not v6:
-            if net[1] == "32" or net[1] == "255.255.255.255":
-                del net[1]
+        elif not v6 and (net[1] == "32" or net[1] == "255.255.255.255"):
+            del net[1]
     else:
         net.append(orig)
 
@@ -178,10 +178,7 @@ def normalize_address(orig, v6):
     addr = net[0]
 
     # Convert to packed binary, then convert back
-    type = socket.AF_INET
-    if v6:
-        type = socket.AF_INET6
-    addr = socket.inet_ntop(type, socket.inet_pton(type, addr))
+    addr = socket.inet_ntop(s_type, socket.inet_pton(s_type, addr))
     if addr != net[0]:
         changed = True
 
@@ -203,20 +200,20 @@ def normalize_address(orig, v6):
     return (addr, changed)
 
 
-def open_file_read(f):
+def open_file_read(fn):
     '''Opens the specified file read-only'''
     try:
-        orig = open(f, 'r')
+        orig = open(fn, 'r')
     except Exception:
         raise
 
     return orig
 
 
-def open_files(f):
+def open_files(fn):
     '''Opens the specified file read-only and a tempfile read-write.'''
     try:
-        orig = open_file_read(f)
+        orig = open_file_read(fn)
     except Exception:
         raise
 
@@ -226,19 +223,19 @@ def open_files(f):
         orig.close()
         raise
 
-    return { "orig": orig, "origname": f, "tmp": tmp, "tmpname": tmpname }
+    return { "orig": orig, "origname": fn, "tmp": tmp, "tmpname": tmpname }
 
 
-def write_to_file(fd, s):
+def write_to_file(fd, out):
     '''Write to the file descriptor and error out of 0 bytes written. Intended
        to be used with open_files() and close_files().'''
-    if s == "":
+    if out == "":
         return
 
     if not fd:
         raise OSError(errno.ENOENT, "Not a valid file descriptor")
 
-    if os.write(fd, s) <= 0:
+    if os.write(fd, out) <= 0:
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
@@ -266,9 +263,10 @@ def cmd(command):
     '''Try to execute the given command.'''
     debug(command)
     try:
-        sp = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    except OSError, e:
-        return [127, str(e)]
+        sp = subprocess.Popen(command, stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT)
+    except OSError, ex:
+        return [127, str(ex)]
 
     out = sp.communicate()[0]
     return [sp.returncode, out]
@@ -279,45 +277,45 @@ def cmd_pipe(command1, command2):
     try:
         sp1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
         sp2 = subprocess.Popen(command2, stdin=sp1.stdout)
-    except OSError, e:
-        return [127, str(e)]
+    except OSError, ex:
+        return [127, str(ex)]
 
     out = sp2.communicate()[0]
     return [sp2.returncode, out]
 
 
-def error(msg, exit=True):
+def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
-        print >> sys.stderr, "ERROR: %s" % (msg)
+        print >> sys.stderr, "ERROR: %s" % (out)
     except IOError:
         pass
 
-    if exit:
+    if do_exit:
         sys.exit(1)
 
 
-def warn(msg):
+def warn(out):
     '''Print warning message'''
     try:
-        print >> sys.stderr, "WARN: %s" % (msg)
+        print >> sys.stderr, "WARN: %s" % (out)
     except IOError:
         pass
 
 
-def msg(msg, output=sys.stdout):
+def msg(out, output=sys.stdout):
     '''Print message'''
     try:
-        print >> output, "%s" % (msg)
+        print >> output, "%s" % (out)
     except IOError:
         pass
 
 
-def debug(msg):
+def debug(out):
     '''Print debug message'''
-    if debugging:
+    if DEBUGGING:
         try:
-            print >> sys.stderr, "DEBUG: %s" % (msg)
+            print >> sys.stderr, "DEBUG: %s" % (out)
         except IOError:
             pass
 
@@ -343,7 +341,7 @@ def wrap_text(text):
     return word_wrap(text, 75)
 
 
-def human_sort(list):
+def human_sort(lst):
     '''Sorts list of strings into numeric order, with text case-insensitive.
        Modifies list in place.
 
@@ -354,15 +352,15 @@ def human_sort(list):
        ['3', '80', '443', 'a2', 'a32', 'a222', 'b1', 'http', 'telnet', 'ZZZ']
     '''
     norm = lambda t: int(t) if t.isdigit() else t.lower()
-    list.sort(key=lambda k: [ norm(c) for c in re.split('([0-9]+)', k)])
+    lst.sort(key=lambda k: [ norm(c) for c in re.split('([0-9]+)', k)])
 
 
-def get_ppid(p=os.getpid()):
+def get_ppid(mypid=os.getpid()):
     '''Finds parent process id for pid based on /proc/<pid>/stat. See
        'man 5 proc' for details.
     '''
     try:
-        pid = int(p)
+        pid = int(mypid)
     except Exception:
         raise ValueError("pid must be an integer")
 
@@ -542,8 +540,9 @@ def _address4_to_network(addr):
 
 def _address6_to_network(addr):
     '''Convert an IPv6 address and netmask to a network address'''
-    def dec2bin(n, count):
-        return "".join([str((n >> y) & 1) for y in range(count-1, -1, -1)])
+    def dec2bin(num, count):
+        '''Decimal to binary'''
+        return "".join([str((num >> y) & 1) for y in range(count-1, -1, -1)])
 
     if '/' not in addr:
         debug("_address6_to_network: skipping address without a netmask")
@@ -589,9 +588,9 @@ def _address6_to_network(addr):
     return "%s/%s" % (network, netmask)
 
 
-def in_network(x, y, v6):
+def in_network(tested_add, tested_net, v6):
     '''Determine if address x is in network y'''
-    tmp = y.split('/')
+    tmp = tested_net.split('/')
     if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
         raise ValueError
 
@@ -601,9 +600,9 @@ def in_network(x, y, v6):
     if orig_host == "0.0.0.0" or orig_host == "::":
         return True
 
-    address = x
-    if '/' in x:
-        tmp = x.split('/')
+    address = tested_add
+    if '/' in address:
+        tmp = address.split('/')
         if len(tmp) != 2 or not valid_netmask(tmp[1], v6):
             raise ValueError
         address = tmp[0]
@@ -716,17 +715,18 @@ def get_ip_from_if(ifname, v6=False):
 def get_if_from_ip(addr):
     '''Get interface for IP address'''
     v6 = False
+    proc = '/proc/net/dev'
     if valid_address6(addr):
         v6 = True
+        proc = '/proc/net/if_inet6'
     elif not valid_address4(addr):
         raise IOError(errno.ENODEV, "No such device")
 
+    if not os.path.exists(proc):
+        raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
+
     matched = ""
     if v6:
-        proc = '/proc/net/if_inet6'
-        if not os.path.exists(proc):
-            raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
-
         for line in file(proc).readlines():
             tmp = line.split()
             ifname = tmp[5].strip()
@@ -741,10 +741,6 @@ def get_if_from_ip(addr):
                 matched = ifname
                 break
     else:
-        proc = '/proc/net/dev'
-        if not os.path.exists(proc):
-            raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
-
         for line in file(proc).readlines():
             if ':' not in line:
                 continue
@@ -763,6 +759,7 @@ def get_if_from_ip(addr):
 
 
 def _get_proc_inodes():
+    '''Get inodes of files in /proc'''
     proc_files = os.listdir("/proc")
     proc_files.sort()
     pat = re.compile(r'^[0-9]+$')
@@ -780,13 +777,13 @@ def _get_proc_inodes():
         exe_path = "-"
         try:
             exe_path = os.readlink(os.path.join("/proc", i, "exe"))
-        except:
+        except Exception:
             pass
 
         for j in os.listdir(fd_path):
             try:
                 inode = os.stat(os.path.join(fd_path, j))[1]
-            except:
+            except Exception:
                 continue
             inodes[inode] = "%s/%s" % (i, os.path.basename(exe_path))
 
@@ -867,7 +864,7 @@ def get_netstat_output(v6):
     for p in proto:
         try:
             proc_net_data[p] = _read_proc_net_protocol(p)
-        except:
+        except Exception:
             warn_msg = _("Could not get statistics for '%s'" % (p))
             warn(warn_msg)
             continue
@@ -885,6 +882,8 @@ def get_netstat_output(v6):
             exe = "-"
             if inodes.has_key(int(inode)):
                 exe = inodes[int(inode)]
-            s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p, "%s:%s" % (addr, port), state, uid, inode, exe)
+            s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p,
+                                                       "%s:%s" % (addr, port),
+                                                       state, uid, inode, exe)
 
     return s
