@@ -1,5 +1,4 @@
-#
-# common.py: common classes for ufw
+'''common.py: common classes for ufw'''
 #
 # Copyright 2008-2011 Canonical Ltd.
 #
@@ -59,6 +58,7 @@ class UFWRule:
         self.logtype = ""
         self.interface_in = ""
         self.interface_out = ""
+        self.direction = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -103,54 +103,54 @@ class UFWRule:
 
     def format_rule(self):
         '''Format rule for later parsing'''
-        str = ""
+        rule_str = ""
 
         if self.interface_in != "":
-            str += " -i %s" % (self.interface_in)
+            rule_str += " -i %s" % (self.interface_in)
         if self.interface_out != "":
-            str += " -o %s" % (self.interface_out)
+            rule_str += " -o %s" % (self.interface_out)
 
         # Protocol is handled below
         if self.protocol == "any":
-            str += " -p all"
+            rule_str += " -p all"
         else:
-            str += " -p " + self.protocol
+            rule_str += " -p " + self.protocol
 
             if self.multi:
-                str += " -m multiport"
+                rule_str += " -m multiport"
                 if self.dport != "any" and self.sport != "any":
-                    str += " --dports " + self.dport
-                    str += " -m multiport"
-                    str += " --sports " + self.sport
+                    rule_str += " --dports " + self.dport
+                    rule_str += " -m multiport"
+                    rule_str += " --sports " + self.sport
                 elif self.dport != "any":
-                    str += " --dports " + self.dport
+                    rule_str += " --dports " + self.dport
                 elif self.sport != "any":
-                    str += " --sports " + self.sport
+                    rule_str += " --sports " + self.sport
 
         if self.dst != "0.0.0.0/0" and self.dst != "::/0":
-            str += " -d " + self.dst
+            rule_str += " -d " + self.dst
         if not self.multi and self.dport != "any":
-            str += " --dport " + self.dport
+            rule_str += " --dport " + self.dport
         if self.src != "0.0.0.0/0" and self.src != "::/0":
-            str += " -s " + self.src
+            rule_str += " -s " + self.src
         if not self.multi and self.sport != "any":
-            str += " --sport " + self.sport
+            rule_str += " --sport " + self.sport
 
         lstr = ""
         if self.logtype != "":
             lstr = "_" + self.logtype
         if self.action == "allow":
-            str += " -j ACCEPT%s" % (lstr)
+            rule_str += " -j ACCEPT%s" % (lstr)
         elif self.action == "reject":
-            str += " -j REJECT%s" % (lstr)
+            rule_str += " -j REJECT%s" % (lstr)
             if self.protocol == "tcp":
                 # follow TCP's default and send RST
-                str += " --reject-with tcp-reset"
+                rule_str += " --reject-with tcp-reset"
         elif self.action == "limit":
             # Caller needs to change this
-            str += " -j LIMIT%s" % (lstr)
+            rule_str += " -j LIMIT%s" % (lstr)
         else:
-            str += " -j DROP%s" % (lstr)
+            rule_str += " -j DROP%s" % (lstr)
 
         if self.dapp != "" or self.sapp != "":
             # Format the comment string, and quote it just in case
@@ -164,9 +164,9 @@ class UFWRule:
                 comment += "sapp_" + pat_space.sub('%20', self.sapp)
             comment += "'"
 
-            str += " " + comment
+            rule_str += " " + comment
 
-        return str.strip()
+        return rule_str.strip()
 
     def set_action(self, action):
         '''Sets action of the rule'''
@@ -291,9 +291,9 @@ class UFWRule:
         self.dst = tmp
         self._fix_anywhere()
 
-    def set_interface(self, type, name):
+    def set_interface(self, if_type, name):
         '''Sets an interface for rule'''
-        if type != "in" and type != "out":
+        if if_type != "in" and if_type != "out":
             err_msg = _("Bad interface type")
             raise UFWError(err_msg)
 
@@ -305,7 +305,7 @@ class UFWRule:
             err_msg = _("Bad interface name: can't use interface aliases")
             raise UFWError(err_msg)
 
-        if type == "in":
+        if if_type == "in":
             self.interface_in = name
         else:
             self.interface_out = name
@@ -343,8 +343,7 @@ class UFWRule:
                                                                  self.v6)
             except Exception:
                 raise
-                err_msg = _("Could not normalize source address")
-                raise UFWError(err_msg)
+
         if changed:
             self.updated = changed
 
@@ -437,14 +436,14 @@ class UFWRule:
            This is a fuzzy destination match, so source ports or addresses
            are not considered, and (currently) only incoming.
         '''
-        def _match_ports(p, to_match):
+        def _match_ports(test_p, to_match):
             '''Returns True if p is an exact match or within a multi rule'''
             for port in to_match.split(','):
-                if p == port:
+                if test_p == port:
                     return True
                 if ':' in port:
                     (low, high) = port.split(':')
-                    if int(p) >= int(low) and int(p) <= int(high):
+                    if int(test_p) >= int(low) and int(test_p) <= int(high):
                         return True
 
             return False
