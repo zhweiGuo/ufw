@@ -1,5 +1,4 @@
-#
-# applications.py: common classes for ufw
+'''applications.py: common classes for ufw'''
 #
 # Copyright 2008-2011 Canonical Ltd.
 #
@@ -24,25 +23,25 @@ import ufw.util
 from ufw.util import debug, warn
 from ufw.common import UFWError
 
-def get_profiles(dir):
+def get_profiles(profiles_dir):
     '''Get profiles found in profiles database.  Returns dictionary with
        profile name as key and tuples for fields
     '''
-    if not os.path.isdir(dir):
+    if not os.path.isdir(profiles_dir):
         err_msg = _("Profiles directory does not exist")
         raise UFWError(err_msg)
 
     max_size = 10 * 1024 * 1024  # 10MB
     profiles = {}
 
-    files = os.listdir(dir)
+    files = os.listdir(profiles_dir)
     files.sort()
 
     total_size = 0
     pat = re.compile(r'^\.')
     for f in files:
-        abs = dir + "/" + f
-        if not os.path.isfile(abs):
+        abs_path = profiles_dir + "/" + f
+        if not os.path.isfile(abs_path):
             continue
 
         if pat.search(f):
@@ -59,7 +58,7 @@ def get_profiles(dir):
         # benefit, just usability)
         size = 0
         try:
-            size = os.stat(abs)[stat.ST_SIZE]
+            size = os.stat(abs_path)[stat.ST_SIZE]
         except Exception:
             warn_msg = _("Skipping '%s': couldn't stat") % (f)
             warn(warn_msg)
@@ -79,7 +78,7 @@ def get_profiles(dir):
 
         cdict = ConfigParser.RawConfigParser()
         try:
-            cdict.read(abs)
+            cdict.read(abs_path)
         except Exception:
             warn_msg = _("Skipping '%s': couldn't process") % (f)
             warn(warn_msg)
@@ -184,19 +183,19 @@ def verify_profile(name, profile):
 
 def get_title(profile):
     '''Retrieve the title from the profile'''
-    str = ""
+    s = ""
     field = 'title'
     if profile.has_key(field) and profile[field]:
-        str = profile[field]
-    return str
+        s = profile[field]
+    return s
 
 def get_description(profile):
     '''Retrieve the description from the profile'''
-    str = ""
+    s = ""
     field = 'description'
     if profile.has_key(field) and profile[field]:
-        str = profile[field]
-    return str
+        s = profile[field]
+    return s
 
 def get_ports(profile):
     '''Retrieve a list of ports from a profile'''
