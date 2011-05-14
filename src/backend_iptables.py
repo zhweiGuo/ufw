@@ -490,7 +490,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             msg("> | iptables-restore")
             if self.use_ipv6():
                 msg("> | ip6tables-restore")
-        elif self._is_enabled():
+        elif self.is_enabled():
             # first flush the user logging chains
             try:
                 for c in self.chains['user']:
@@ -955,7 +955,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             rstr = _("Rules updated (v6)")
 
         # Operate on the chains
-        if self._is_enabled() and not self.dryrun:
+        if self.is_enabled() and not self.dryrun:
             flag = ""
             if modified or self._need_reload(rule.v6) or inserted:
                 rstr = ""
@@ -1076,7 +1076,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             UFWError(err_msg)
 
         # Don't update the running firewall if not enabled
-        if not self._is_enabled():
+        if not self.is_enabled():
             return
 
         # make sure all the chains are here, it's redundant but helps make

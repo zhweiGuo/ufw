@@ -174,8 +174,8 @@ class UFWFrontend:
             config_str = "yes"
 
         changed = False
-        if (enabled and not self.backend._is_enabled()) or \
-           (not enabled and self.backend._is_enabled()):
+        if (enabled and not self.backend.is_enabled()) or \
+           (not enabled and self.backend.is_enabled()):
             changed = True
 
         # Update the config files when toggling enable/disable
@@ -222,7 +222,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_default_policy(policy, direction)
-            if self.backend._is_enabled():
+            if self.backend.is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
         except UFWError, e:
@@ -591,7 +591,7 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "reload":
-            if self.backend._is_enabled():
+            if self.backend.is_enabled():
                 self.set_enabled(False)
                 self.set_enabled(True)
                 res = _("Firewall reloaded")
@@ -733,7 +733,7 @@ class UFWFrontend:
             if rstr != "":
                 rstr += "\n"
 
-        if trigger_reload and self.backend._is_enabled():
+        if trigger_reload and self.backend.is_enabled():
             if allow_reload:
                 try:
                     self.backend._reload_user_rules()
@@ -852,7 +852,7 @@ class UFWFrontend:
                 res = _("Aborted")
                 return res
 
-        if self.backend._is_enabled():
+        if self.backend.is_enabled():
             res += self.set_enabled(False)
         res = self.backend.reset()
 

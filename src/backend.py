@@ -64,8 +64,8 @@ class UFWBackend:
 
         self.iptables_version = ufw.util.get_iptables_version(self.iptables)
 
-    def _is_enabled(self):
-        '''Is firewall configured as enabled, called via super._is_enabled()'''
+    def is_enabled(self):
+        '''Is firewall configured as enabled'''
         if self.defaults.has_key('enabled') and \
            self.defaults['enabled'] == 'yes':
             return True
