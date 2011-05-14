@@ -66,22 +66,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                    '--log-prefix']
         self.ufw_user_limit_log_text = "[UFW LIMIT BLOCK]"
 
-    def get_default_policy(self, primary="input"):
-        '''Get default policy'''
-        policy = "default_" + primary + "_policy"
-
-        rstr = ""
-        if self.defaults[policy] == "accept":
-            rstr = "allow"
-        elif self.defaults[policy] == "accept_no_track":
-            rstr = "allow-without-tracking"
-        elif self.defaults[policy] == "reject":
-            rstr = "reject"
-        else:
-            rstr = "deny"
-
-        return rstr
-
     def get_default_application_policy(self):
         '''Get current policy'''
         rstr = _("New profiles:")
@@ -431,8 +415,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if verbose:
             (level, logging_str) = self.get_loglevel()
             policy_str = _("Default: %(in)s (incoming), %(out)s (outgoing)") \
-                           % ({'in': self.get_default_policy(), \
-                               'out': self.get_default_policy("output")})
+                           % ({'in': self._get_default_policy(), \
+                               'out': self._get_default_policy("output")})
             app_policy_str = self.get_default_application_policy()
             return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
                      ({'log': logging_str, 'pol': policy_str, \
@@ -1169,8 +1153,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             for c in self.chains['after']:
                 for t in ['input', 'output', 'forward']:
                     if c.endswith(t):
-                        if self.get_default_policy(t) == "reject" or \
-                           self.get_default_policy(t) == "deny":
+                        if self._get_default_policy(t) == "reject" or \
+                           self._get_default_policy(t) == "deny":
                             prefix = "[UFW BLOCK] "
                             rules_t.append([c, ['-A', c, '-j', 'LOG', \
                                                 '--log-prefix', prefix] +

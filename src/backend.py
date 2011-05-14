@@ -79,6 +79,22 @@ class UFWBackend:
             return True
         return False
 
+    def _get_default_policy(self, primary="input"):
+        '''Get default policy for specified primary chain'''
+        policy = "default_" + primary + "_policy"
+
+        rstr = ""
+        if self.defaults[policy] == "accept":
+            rstr = "allow"
+        elif self.defaults[policy] == "accept_no_track":
+            rstr = "allow-without-tracking"
+        elif self.defaults[policy] == "reject":
+            rstr = "reject"
+        else:
+            rstr = "deny"
+
+        return rstr
+
     def _do_checks(self):
         '''Perform basic security checks:
         is setuid or setgid (for non-Linux systems)
@@ -615,10 +631,6 @@ class UFWBackend:
         return matched
 
     # API overrides
-    def get_default_policy(self):
-        '''Get default policy for specified primary chain'''
-        raise UFWError("UFWBackend.get_default_policy: need to override")
-
     def set_default_policy(self, policy, direction):
         '''Set default policy for specified direction'''
         raise UFWError("UFWBackend.set_default_policy: need to override")
