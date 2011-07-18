@@ -44,5 +44,5 @@ IPT_SYSCTL=#CONFIG_PREFIX#/ufw/sysctl.conf
 # nf_conntrack_netbios_ns: NetBIOS (samba) client support
 # nf_conntrack_pptp, nf_nat_pptp: PPTP over stateful firewall/NAT
 # nf_conntrack_ftp, nf_nat_ftp: active FTP support
-IPT_MODULES="nf_conntrack_ftp nf_nat_ftp"
+IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns"
 
