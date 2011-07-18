@@ -1,7 +1,7 @@
 #
 # util.py: utility functions for ufw
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -783,7 +783,12 @@ def _get_proc_inodes():
         except:
             pass
 
-        for j in os.listdir(fd_path):
+        try:
+            dirs = os.listdir(fd_path)
+        except:
+            continue
+
+        for j in dirs:
             try:
                 inode = os.stat(os.path.join(fd_path, j))[1]
             except:
