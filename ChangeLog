@@ -7,6 +7,9 @@ ufw (0.30.2) UNRELEASED; urgency=low
   * enable IPv6 by default
   * fix 'allow to any ipv6' when IPv6 is enabled
   * update manpage references to ufw and ufw-framework to include the section
+  * update check-requirements to prompt to continue with tests that may
+    autoload modules. Add '-f' option to check-requirements and update test
+    suite accordingly (LP: #782816)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Mar 2011 21:40:34 -0500
 
