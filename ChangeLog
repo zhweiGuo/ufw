@@ -1,6 +1,6 @@
 ufw (0.30.2) UNRELEASED; urgency=low
 
-  * allow UPnP multicast for service discovery
+  * allow UPnP multicast for service discovery (LP: #764933)
   * conf/ufw.defaults:
     - remove IRC connection tracking, which is only required for DCC
     - allow nf_conntrack_netbios_ns (Samba) (LP: #360975)
