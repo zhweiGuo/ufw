@@ -64,6 +64,6 @@ for i in "" "in on eth0" ; do
     do_cmd "0" null allow $i to 2001::211:aaaa:bbbb:d54c/112 port 123 proto tcp
 done
 
-sed -i 's/debugging = False/debugging = True/' ./tmp/ufw/lib/python/ufw/util.py
+sed -i 's/DEBUGGING = False/DEBUGGING = True/' ./tmp/ufw/lib/python/ufw/util.py
 do_cmd "0" null show listening
 
