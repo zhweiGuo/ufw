@@ -26,12 +26,24 @@ mo:
 test:
 	./run_tests.sh -s
 
-check: test
-
 syntax-check: clean
 	$(shell mkdir $(TMPDIR) && $(PYFLAKES_EXE) src 2>&1 | grep -v "undefined name '_'" > $(PYFLAKES))
 	cat "$(PYFLAKES)"
 	test ! -s "$(PYFLAKES)"
+
+man-check: clean
+	$(shell mkdir $(TMPDIR) 2>/dev/null)
+	for manfile in `ls doc/*.8`; do \
+		page=$$(basename $$manfile); \
+		manout=$(TMPDIR)/$$page.out; \
+		echo "Checking $$page fr errors... "; \
+		PAGER=cat LANG='en_US.UTF-8' MANWIDTH=80 man --warnings -E UTF-8 -l doc/$$page >/dev/null 2> "$$manout"; \
+		cat "$$manout"; \
+		test ! -s "$$manout" || exit 1; \
+		echo "PASS"; \
+	done; \
+
+check: syntax-check man-check test
 
 # These are only used in development
 clean:
