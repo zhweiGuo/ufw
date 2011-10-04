@@ -1,4 +1,4 @@
-ufw (0.30.2) UNRELEASED; urgency=low
+ufw (0.31) UNRELEASED; urgency=low
 
   * allow UPnP multicast for service discovery (LP: #764933)
   * conf/ufw.defaults:
@@ -11,8 +11,10 @@ ufw (0.30.2) UNRELEASED; urgency=low
     autoload modules. Add '-f' option to check-requirements and update test
     suite accordingly (LP: #782816)
   * don't fail when running 'show listening' under fakeroot (LP: #812516)
+  * add syntax-check to Makefile
+  * add man-check to Makefile
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Mar 2011 21:40:34 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 18 Aug 2011 12:00:05 -0500
 
 ufw (0.30.1) RELEASED; urgency=low
 

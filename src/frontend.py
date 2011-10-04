@@ -1,7 +1,6 @@
+'''frontend.py: frontend interface for ufw'''
 #
-# frontend.py: frontend interface for ufw
-#
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -16,7 +15,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import re
 import os
 import sys
 import warnings
@@ -84,7 +82,6 @@ def parse_command(argv):
     except Exception:
         print >> sys.stderr, "Invalid syntax"
         raise
-        sys.exit(1)
 
     return pr
 
@@ -161,10 +158,7 @@ class UFWFrontend:
         else:
             raise UFWError("Unsupported backend type '%s'" % (backend_type))
 
-        self._init_input_strings()
-
-    def _init_input_strings(self):
-        '''Initialize input strings for translations'''
+        # Initialize input strings for translations
         self.no = _("n")
         self.yes = _("y")
         self.yes_full = _("yes")
@@ -175,20 +169,20 @@ class UFWFrontend:
         '''
         res = ""
 
-        str = "no"
+        config_str = "no"
         if enabled:
-            str = "yes"
+            config_str = "yes"
 
         changed = False
-        if (enabled and not self.backend._is_enabled()) or \
-           (not enabled and self.backend._is_enabled()):
+        if (enabled and not self.backend.is_enabled()) or \
+           (not enabled and self.backend.is_enabled()):
             changed = True
 
         # Update the config files when toggling enable/disable
         if changed:
             try:
                 self.backend.set_default(self.backend.files['conf'], \
-                                         "ENABLED", str)
+                                         "ENABLED", config_str)
             except UFWError, e:
                 error(e.value)
 
@@ -228,7 +222,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_default_policy(policy, direction)
-            if self.backend._is_enabled():
+            if self.backend.is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
         except UFWError, e:
@@ -255,10 +249,10 @@ class UFWFrontend:
 
         return out
 
-    def get_show_raw(self, set="raw"):
+    def get_show_raw(self, rules_type="raw"):
         '''Shows raw output of firewall'''
         try:
-            out = self.backend.get_running_raw(set)
+            out = self.backend.get_running_raw(rules_type)
         except UFWError, e:
             error(e.value)
 
@@ -341,12 +335,16 @@ class UFWFrontend:
             try:
                 if rule.remove:
                     if ip_version == "v4":
-                        tmprules = self.backend.get_app_rules_from_system(rule, False)
+                        tmprules = self.backend.get_app_rules_from_system(
+                                                                   rule, False)
                     elif ip_version == "v6":
-                        tmprules = self.backend.get_app_rules_from_system(rule, True)
+                        tmprules = self.backend.get_app_rules_from_system(
+                                                                   rule, True)
                     elif ip_version == "both":
-                        tmprules = self.backend.get_app_rules_from_system(rule, False)
-                        tmprules6 = self.backend.get_app_rules_from_system(rule, True)
+                        tmprules = self.backend.get_app_rules_from_system(
+                                                                   rule, False)
+                        tmprules6 = self.backend.get_app_rules_from_system(
+                                                                   rule, True)
                         # Only add rules that are different by more than v6 (we
                         # will handle 'ip_version == both' specially, below).
                         for x in tmprules:
@@ -593,7 +591,7 @@ class UFWFrontend:
         elif action == "disable":
             res = self.set_enabled(False)
         elif action == "reload":
-            if self.backend._is_enabled():
+            if self.backend.is_enabled():
                 self.set_enabled(False)
                 self.set_enabled(True)
                 res = _("Firewall reloaded")
@@ -735,7 +733,7 @@ class UFWFrontend:
             if rstr != "":
                 rstr += "\n"
 
-        if trigger_reload and self.backend._is_enabled():
+        if trigger_reload and self.backend.is_enabled():
             if allow_reload:
                 try:
                     self.backend._reload_user_rules()
@@ -854,7 +852,7 @@ class UFWFrontend:
                 res = _("Aborted")
                 return res
 
-        if self.backend._is_enabled():
+        if self.backend.is_enabled():
             res += self.set_enabled(False)
         res = self.backend.reset()
 

@@ -1,7 +1,6 @@
+'''backend.py: interface for ufw backends'''
 #
-# backend.py: interface for backends
-#
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -20,7 +19,6 @@ import errno
 import os
 import re
 import stat
-from stat import *
 import sys
 import ufw.util
 from ufw.util import warn, debug
@@ -29,17 +27,18 @@ import ufw.applications
 
 class UFWBackend:
     '''Interface for backends'''
-    def __init__(self, name, d, extra_files={}):
-        self.defaults = {}
+    def __init__(self, name, dryrun, extra_files=None):
+        self.defaults = None
         self.name = name
-        self.dryrun = d
+        self.dryrun = dryrun
         self.rules = []
         self.rules6 = []
 
         self.files = {'defaults': os.path.join(config_dir, 'default/ufw'),
                       'conf': os.path.join(config_dir, 'ufw/ufw.conf'),
                       'apps': os.path.join(config_dir, 'ufw/applications.d') }
-        self.files.update(extra_files)
+        if extra_files != None:
+            self.files.update(extra_files)
 
         self.loglevels = {'off':       0,
                           'low':     100,
@@ -65,18 +64,36 @@ class UFWBackend:
 
         self.iptables_version = ufw.util.get_iptables_version(self.iptables)
 
-    def _is_enabled(self):
+    def is_enabled(self):
+        '''Is firewall configured as enabled'''
         if self.defaults.has_key('enabled') and \
            self.defaults['enabled'] == 'yes':
             return True
         return False
 
     def use_ipv6(self):
+        '''Is firewall configured to use IPv6'''
         if self.defaults.has_key('ipv6') and \
            self.defaults['ipv6'] == 'yes' and \
            os.path.exists("/proc/sys/net/ipv6"):
             return True
         return False
+
+    def _get_default_policy(self, primary="input"):
+        '''Get default policy for specified primary chain'''
+        policy = "default_" + primary + "_policy"
+
+        rstr = ""
+        if self.defaults[policy] == "accept":
+            rstr = "allow"
+        elif self.defaults[policy] == "accept_no_track":
+            rstr = "allow-without-tracking"
+        elif self.defaults[policy] == "reject":
+            rstr = "reject"
+        else:
+            rstr = "deny"
+
+        return rstr
 
     def _do_checks(self):
         '''Perform basic security checks:
@@ -135,8 +152,8 @@ class UFWBackend:
 
                 try:
                     statinfo = os.stat(path)
-                    mode = statinfo[ST_MODE]
-                except OSError, e:
+                    mode = statinfo[stat.ST_MODE]
+                except OSError:
                     err_msg = _("Couldn't stat '%s'") % (path)
                     raise UFWError(err_msg)
                 except Exception:
@@ -149,11 +166,11 @@ class UFWBackend:
                                                'st_uid': str(statinfo.st_uid)})
                     warn(warn_msg)
                     warned_owner[path] = True
-                if mode & S_IWOTH and not warned_world_write.has_key(path):
+                if mode & stat.S_IWOTH and not warned_world_write.has_key(path):
                     warn_msg = _("%s is world writable!") % (path)
                     warn(warn_msg)
                     warned_world_write[path] = True
-                if mode & S_IWGRP and not warned_group_write.has_key(path):
+                if mode & stat.S_IWGRP and not warned_group_write.has_key(path):
                     warn_msg = _("%s is group writable!") % (path)
                     warn(warn_msg)
                     warned_group_write[path] = True
@@ -201,7 +218,7 @@ class UFWBackend:
                             ({'policy': p, 'chain': c}))
                 raise UFWError(err_msg)
 
-    def set_default(self, f, opt, value):
+    def set_default(self, fn, opt, value):
         '''Sets option in defaults file'''
         if not re.match(r'^[\w_]+$', opt):
             err_msg = _("Invalid option")
@@ -209,12 +226,12 @@ class UFWBackend:
 
         # Perform this here so we can present a nice error to the user rather
         # than a traceback
-        if not os.access(f, os.W_OK):
-            err_msg = _("'%s' is not writable" % (f))
+        if not os.access(fn, os.W_OK):
+            err_msg = _("'%s' is not writable" % (fn))
             raise UFWError(err_msg)
 
         try:
-            fns = ufw.util.open_files(f)
+            fns = ufw.util.open_files(fn)
         except Exception:
             raise
         fd = fns['tmp']
@@ -427,29 +444,30 @@ class UFWBackend:
 
         return (rstr, updated_profile)
 
-    def find_application_name(self, str):
-        '''Find the application profile name for str'''
-        if self.profiles.has_key(str):
-            return str
+    def find_application_name(self, profile_name):
+        '''Find the application profile name for profile_name'''
+        if self.profiles.has_key(profile_name):
+            return profile_name
 
         match = ""
         matches = 0
         for n in self.profiles.keys():
-            if n.lower() == str.lower():
+            if n.lower() == profile_name.lower():
                 match = n
                 matches += 1
 
-        debug_msg = "'%d' matches for '%s'" % (matches, str)
+        debug_msg = "'%d' matches for '%s'" % (matches, profile_name)
         debug(debug_msg)
         if matches == 1:
             return match
         elif matches > 1:
-            err_msg = _("Found multiple matches for '%s'. Please use exact profile name") % (str)
-        err_msg = _("Could not find a profile matching '%s'") % (str)
+            err_msg = _("Found multiple matches for '%s'. Please use exact profile name") % \
+                        (profile_name)
+        err_msg = _("Could not find a profile matching '%s'") % (profile_name)
         raise UFWError(err_msg)
 
     def find_other_position(self, position, v6):
-	'''Return the absolute position in the other list of the rule with the
+        '''Return the absolute position in the other list of the rule with the
 	   user position of the given list. For example, find_other_position(4,
 	   True) will return the absolute position of the rule in the ipv4 list
            matching the user specified '4' rule in the ipv6 list.
@@ -532,11 +550,11 @@ class UFWBackend:
 
         new_level = level
         if level == "on":
-           if not self.defaults.has_key('loglevel') or \
-              self.defaults['loglevel'] == "off":
-               new_level = "low"
-           else:
-               new_level = self.defaults['loglevel']
+            if not self.defaults.has_key('loglevel') or \
+               self.defaults['loglevel'] == "off":
+                new_level = "low"
+            else:
+                new_level = self.defaults['loglevel']
 
         try:
             self.set_default(self.files['conf'], "LOGLEVEL", new_level)
@@ -577,7 +595,7 @@ class UFWBackend:
 
         return count
 
-    def get_rule_by_number(self, n):
+    def get_rule_by_number(self, num):
         '''Return rule specified by number seen via "status numbered"'''
         rules = self.get_rules()
 
@@ -593,10 +611,10 @@ class UFWBackend:
                     continue
                 else:
                     app_rules[tupl] = True
-            if count == int(n):
+            if count == int(num):
                 return r
             count += 1
-        
+
         return None
 
     def get_matching(self, rule):
@@ -613,38 +631,39 @@ class UFWBackend:
         return matched
 
     # API overrides
-    def get_default_policy(self):
-        raise UFWError("UFWBackend.get_default_policy: need to override")
-
     def set_default_policy(self, policy, direction):
+        '''Set default policy for specified direction'''
         raise UFWError("UFWBackend.set_default_policy: need to override")
 
-    def get_running_raw(self, set):
+    def get_running_raw(self, rules_type):
+        '''Get status of running firewall'''
         raise UFWError("UFWBackend.get_running_raw: need to override")
 
     def get_status(self, verbose, show_count):
+        '''Get managed rules'''
         raise UFWError("UFWBackend.get_status: need to override")
 
-    def get_status_as_list(self):
-        raise UFWError("UFWBackend.get_status_as_list: need to override")
-
     def set_rule(self, rule, allow_reload):
+        '''Update firewall with rule'''
         raise UFWError("UFWBackend.set_rule: need to override")
 
     def start_firewall(self):
+        '''Start the firewall'''
         raise UFWError("UFWBackend.start_firewall: need to override")
 
     def stop_firewall(self):
+        '''Stop the firewall'''
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
     def get_app_rules_from_system(self, template, v6):
+        '''Get a list if rules based on template'''
         raise UFWError("UFWBackend.get_app_rules_from_system: need to " + \
                        "override")
 
     def update_logging(self, level):
+        '''Update loglevel of running firewall'''
         raise UFWError("UFWBackend.update_logging: need to override")
 
     def reset(self):
+        '''Reset the firewall'''
         raise UFWError("UFWBackend.reset: need to override")
-
-

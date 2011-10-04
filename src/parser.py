@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2010 Canonical Ltd.
+# Copyright 2009-2011 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -38,8 +38,6 @@ import re
 import ufw.util
 from common import UFWError
 from ufw.util import debug
-
-import sys
 
 class UFWCommand:
     '''Generic class for parser commands.'''
@@ -106,7 +104,7 @@ class UFWCommandRule(UFWCommand):
                 # Using position '0' adds rule at end, which is potentially
 	        # confusing for the end user
                 if insert_pos == "0":
-		    err_msg = _("Cannot insert rule at position '%s'") % \
+                    err_msg = _("Cannot insert rule at position '%s'") % \
                                 (insert_pos)
                     raise UFWError(err_msg)
 
@@ -401,11 +399,6 @@ class UFWCommandRule(UFWCommand):
         # Verify protocol not specified with application rule
         if rule and rule.protocol != "any" and \
            (rule.sapp != "" or rule.dapp != ""):
-            app = ""
-            if rule.dapp:
-                app = rule.dapp
-            else:
-                app = rule.sapp
             err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
                         % (rule.protocol)
             raise UFWError(err_msg)
