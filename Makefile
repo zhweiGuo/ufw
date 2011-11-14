@@ -36,7 +36,7 @@ man-check: clean
 	for manfile in `ls doc/*.8`; do \
 		page=$$(basename $$manfile); \
 		manout=$(TMPDIR)/$$page.out; \
-		echo "Checking $$page fr errors... "; \
+		echo "Checking $$page for errors... "; \
 		PAGER=cat LANG='en_US.UTF-8' MANWIDTH=80 man --warnings -E UTF-8 -l doc/$$page >/dev/null 2> "$$manout"; \
 		cat "$$manout"; \
 		test ! -s "$$manout" || exit 1; \
