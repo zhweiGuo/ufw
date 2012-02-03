@@ -13,6 +13,8 @@ ufw (0.31) UNRELEASED; urgency=low
   * don't fail when running 'show listening' under fakeroot (LP: #812516)
   * add syntax-check to Makefile
   * add man-check to Makefile
+  * src/util.py: use codes.open(..., 'UTF-8') to better support non-english
+    locates in third-party frontends (LP: #921758)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 18 Aug 2011 12:00:05 -0500
 
