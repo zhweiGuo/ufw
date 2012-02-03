@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import codecs
 import errno
 import fcntl
 import os
@@ -203,7 +204,7 @@ def normalize_address(orig, v6):
 def open_file_read(fn):
     '''Opens the specified file read-only'''
     try:
-        orig = open(fn, 'r')
+        orig = codecs.open(fn, 'r', 'UTF-8')
     except Exception:
         raise
 
