@@ -26,6 +26,7 @@ do_cmd "0" app info Samba
 do_cmd "0" app info 'Custom Web App'
 do_cmd "0" app info 'Custom Web App2'
 do_cmd "0" app info all
+do_cmd "0" app info 0verkill
 
 echo "TESTING APPLICATION INTEGRATION (simple rules)" >> $TESTTMP/result
 for target in allow deny limit ; do

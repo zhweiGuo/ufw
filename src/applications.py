@@ -140,9 +140,16 @@ def valid_profile_name(name):
     if name == "all":
         return False
 
+    # Don't allow integers (ports)
+    try:
+        int(name)
+        return False
+    except:
+        pass
+
     # Require first character be alpha, so we can avoid collisions with port
     # numbers.
-    if re.match(r'^[a-zA-Z][a-zA-Z0-9 _\-\.+]*$', name):
+    if re.match(r'^[a-zA-Z0-9][a-zA-Z0-9 _\-\.+]*$', name):
         return True
     return False
 
