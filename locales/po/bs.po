@@ -1,18 +1,21 @@
-#, fuzzy
+# Bosnian translation for ufw
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-03-22 10:34-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2011-05-03 16:15+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Bosnian <bs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-02-13 23:52+0000\n"
 "X-Generator: Launchpad (build 14781)\n"
-"Language: \n"
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
@@ -135,15 +138,15 @@ msgstr ""
 
 #: src/backend_iptables.py:264
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "Provjera iptables\n"
 
 #: src/backend_iptables.py:266
 msgid "Checking ip6tables\n"
-msgstr ""
+msgstr "Provjera ip6tables\n"
 
 #: src/backend_iptables.py:275
 msgid "Status: inactive"
-msgstr ""
+msgstr "Status:neaktivno"
 
 #: src/backend_iptables.py:411
 msgid "To"
@@ -151,11 +154,11 @@ msgstr ""
 
 #: src/backend_iptables.py:412
 msgid "From"
-msgstr ""
+msgstr "Od"
 
 #: src/backend_iptables.py:413
 msgid "Action"
-msgstr ""
+msgstr "Radnja"
 
 #: src/backend_iptables.py:428
 msgid "\n"
@@ -337,11 +340,11 @@ msgstr ""
 
 #: src/backend.py:96
 msgid "Checks disabled"
-msgstr ""
+msgstr "Provjere isključene"
 
 #: src/backend.py:102
 msgid "ERROR: this script should not be SUID"
-msgstr ""
+msgstr "GREŠKA:ova skripta ne treba imati SUID"
 
 #: src/backend.py:105
 msgid "ERROR: this script should not be SGID"
@@ -349,12 +352,12 @@ msgstr ""
 
 #: src/backend.py:110
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "Trebaš biti root da pokreneš ovu skriptu"
 
 #: src/backend.py:120
 #, python-format
 msgid "'%s' does not exist"
-msgstr ""
+msgstr "'%s' ne postoji"
 
 #: src/backend.py:146
 #, python-format

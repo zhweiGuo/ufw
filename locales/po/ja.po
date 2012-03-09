@@ -1,75 +1,78 @@
-#, fuzzy
+# Japanese translation for ufw
+# Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
+# This file is distributed under the same license as the ufw package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: ufw\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2011-03-22 10:34-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-09-19 15:37+0000\n"
+"Last-Translator: Fumihito YOSHIDA <hito@kugutsu.org>\n"
+"Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2012-02-13 23:52+0000\n"
 "X-Generator: Launchpad (build 14781)\n"
-"Language: \n"
 
 #: src/ufw:46
 msgid ": Need at least python 2.5)\n"
-msgstr ""
+msgstr ": 少なくとも python 2.5 が必要です)\n"
 
 #: src/ufw:103 src/frontend.py:554 src/frontend.py:854
 msgid "Aborted"
-msgstr ""
+msgstr "中断しました"
 
 #: src/applications.py:32
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "プロファイルディレクトリが存在しません"
 
 #: src/applications.py:64
 #, python-format
 msgid "Skipping '%s': couldn't stat"
-msgstr ""
+msgstr "'%s' を飛ばします: statできませんでした"
 
 #: src/applications.py:69
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "'%s' を飛ばします: 大きすぎます"
 
 #: src/applications.py:74
 #, python-format
 msgid "Skipping '%s': too many files read already"
-msgstr ""
+msgstr "'%s' を飛ばします: 読み込まれたファイルが多すぎます"
 
 #: src/applications.py:84
 #, python-format
 msgid "Skipping '%s': couldn't process"
-msgstr ""
+msgstr "'%s' を飛ばします: 処理できません"
 
 #: src/applications.py:91
 #, python-format
 msgid "Skipping '%s': name too long"
-msgstr ""
+msgstr "'%s' を飛ばします: 名前が長すぎます"
 
 #: src/applications.py:96
 #, python-format
 msgid "Skipping '%s': invalid name"
-msgstr ""
+msgstr "'%s' を飛ばします: 名前が無効です"
 
 #: src/applications.py:102
 #, python-format
 msgid "Skipping '%s': also in /etc/services"
-msgstr ""
+msgstr "'%s' を飛ばします: /etc/servicesにも存在します"
 
 #: src/applications.py:111
 #, python-format
 msgid "Skipping '%s': field too long"
-msgstr ""
+msgstr "'%s' を飛ばします: フィールドが長すぎます"
 
 #: src/applications.py:116
 #, python-format
 msgid "Skipping '%(value)s': value too long for '%(field)s'"
-msgstr ""
+msgstr "'%(value)s'を飛ばします: '%(field)s' の値が長すぎます"
 
 #: src/applications.py:126
 #, python-format
@@ -79,7 +82,7 @@ msgstr ""
 #: src/applications.py:156
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "プロファイル'%(fn)s'には必要なフィールド'%(f)s'がありません"
 
 #: src/applications.py:161
 #, python-format
@@ -89,7 +92,7 @@ msgstr ""
 #: src/applications.py:167
 #, python-format
 msgid "No ports found in profile '%s'"
-msgstr ""
+msgstr "プロファイル '%s' にポート指定が見つかりません"
 
 #: src/applications.py:180
 #, python-format
@@ -98,12 +101,12 @@ msgstr ""
 
 #: src/backend_iptables.py:87
 msgid "New profiles:"
-msgstr ""
+msgstr "新しいプロファイル:"
 
 #: src/backend_iptables.py:103 src/backend.py:275
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "サポートされていないポリシー '%s'"
 
 #: src/backend_iptables.py:107
 #, python-format
