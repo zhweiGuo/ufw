@@ -604,7 +604,7 @@ iptables -I INPUT -j ACCEPT -m comment --comment ufw_test_builtins
 86: enable
 
 
-ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0           /* ufw_test_builtins */ 
+ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            /* ufw_test_builtins */
 Testing status numbered
 Setting IPV6 to yes
 87: disable
@@ -2931,9 +2931,100 @@ Setting IPV6 to no
 569: --force delete 1
 
 
+Testing interface with '+'
+Setting IPV6 to yes
 570: disable
 
 
-571: disable
+571: enable
+
+
+572: allow in on lo+
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_lo+
+-A ufw-user-input -i lo+ -j ACCEPT
+
+### tuple ### allow any any ::/0 any ::/0 in_lo+
+-A ufw6-user-input -i lo+ -j ACCEPT
+
+573: delete allow in on lo+
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+Setting IPV6 to yes
+574: disable
+
+
+575: enable
+
+
+576: allow out on lo+
+WARN: Checks disabled
+Rule added
+Rule added (v6)
+
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_lo+
+-A ufw-user-output -o lo+ -j ACCEPT
+
+### tuple ### allow any any ::/0 any ::/0 out_lo+
+-A ufw6-user-output -o lo+ -j ACCEPT
+
+577: delete allow out on lo+
+WARN: Checks disabled
+Rule deleted
+Rule deleted (v6)
+
+
+Setting IPV6 to no
+578: disable
+
+
+579: enable
+
+
+580: allow in on lo+
+WARN: Checks disabled
+Rule added
+
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_lo+
+-A ufw-user-input -i lo+ -j ACCEPT
+
+581: delete allow in on lo+
+WARN: Checks disabled
+Rule deleted
+
+
+Setting IPV6 to no
+582: disable
+
+
+583: enable
+
+
+584: allow out on lo+
+WARN: Checks disabled
+Rule added
+
+
+### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_lo+
+-A ufw-user-output -o lo+ -j ACCEPT
+
+585: delete allow out on lo+
+WARN: Checks disabled
+Rule deleted
+
+
+586: disable
+
+
+587: disable
 
 

@@ -296,4 +296,7 @@ do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto esp
 do_cmd "0" --dry-run allow to 10.0.0.1 proto ah
 do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ah
 
+echo "Interface with '+'" >> $TESTTMP/result
+do_cmd "0" null --dry-run allow in on eth+ to any port 80 proto tcp
+
 exit 0

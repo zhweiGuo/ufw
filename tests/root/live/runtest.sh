@@ -413,8 +413,28 @@ do
 done
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
 grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
-do_cmd "0" nostats disable
 
+echo "Testing interface with '+'" >> $TESTTMP/result
+for ipv6 in yes no
+do
+    for i in "in" "out"; do
+	echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+	sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+	do_cmd "0" nostats disable
+	do_cmd "0" nostats enable
+
+        do_cmd "0" allow $i on lo+
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+
+	# delete what we added
+        do_cmd "0" delete allow $i on lo+
+	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+    done
+done
+
+do_cmd "0" nostats disable
 cleanup
 
 exit 0
