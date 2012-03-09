@@ -136,7 +136,7 @@ cp -f $TESTPATH/lib/python/ufw/util.py $TESTPATH/lib/python/ufw/util.py.bak
 sed -i "s#netstat_output = get_netstat_output.*#rc, netstat_output = cmd(['cat', '$TESTPATH/../good/reports/netstat.enlp'])#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/if_inet6'#proc = '$TESTPATH/../good/reports/proc_net_if_inet6'#" $TESTPATH/lib/python/ufw/util.py
 sed -i "s#proc = '/proc/net/dev'#proc = '$TESTPATH/../good/reports/proc_net_dev'#" $TESTPATH/lib/python/ufw/util.py
-sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n    return normalize_address(addr, v6)[0]\n    \\2#" $TESTPATH/lib/python/ufw/util.py
+sed -i "s#\(.*\)\(addr = .* 0x8915,.*\)#\\1if ifname == 'eth0':\n\\1\\1addr = '10.0.2.9'\n\\1elif ifname == 'eth1':\n\\1\\1addr = '10.0.2.101'\n\\1else:\n\\1\\1raise IOError\n\\1return normalize_address(addr, v6)[0]\n\\1\\2#" $TESTPATH/lib/python/ufw/util.py
 
 sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 

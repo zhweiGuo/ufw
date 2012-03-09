@@ -499,7 +499,14 @@ class UFWRule:
                       (x.interface_in, y.interface_in))
                 return 1
 
-            if_ip = ufw.util.get_ip_from_if(y.interface_in, x.v6)
+            try:
+                if_ip = ufw.util.get_ip_from_if(y.interface_in, x.v6)
+            except IOError:
+                debug("(interface) " + dbg_msg + " %s does not exist" % \
+                      (y.interface_in))
+                return 1
+            except Exception:
+                raise
             if y.dst != if_ip and '/' not in y.dst:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % \
                       (y.dst, if_ip))

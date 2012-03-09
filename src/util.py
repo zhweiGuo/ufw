@@ -707,8 +707,11 @@ def get_ip_from_if(ifname, v6=False):
             raise IOError(errno.ENODEV, "No such device")
     else:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, \
-                                struct.pack('256s', ifname[:15]))[20:24])
+        try:
+            addr = socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x8915, \
+                                    struct.pack('256s', ifname[:15]))[20:24])
+        except Exception:
+            raise IOError(errno.ENODEV, "No such device")
 
     return normalize_address(addr, v6)[0]
 

@@ -36,6 +36,8 @@ ufw (0.31) UNRELEASED; urgency=low
   * allow multiple interface matching via '+'. Thanks to Oliver Hookins.
     (LP: #611838)
   * allow application profiles to start with a digit (LP: #663632)
+  * don't traceback in show listening when a rule references a non-existent
+    interface (LP: #840500)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 09 Mar 2012 14:24:24 -0600
 
