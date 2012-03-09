@@ -35,8 +35,26 @@ do_cmd() {
 		shift
 	fi
 
-       	echo "$count: $@" >> $TESTTMP/result
-        $TESTPATH/usr/sbin/ufw "$@" >> $cmd_results_file 2>&1
+	# Some systems now have http/udp as valid, but not www/udp instead of
+	# the other way around (eg Debian netbase 4.47). Try to account for
+	# that.
+	modified_args=
+	if [ "$1" = "http-or-www" ]; then
+		shift
+		if egrep -q '^http\s+80/udp' /etc/services ; then
+			modified_args=`echo $@ | sed 's/ http *$/ www/'`
+		fi
+	fi
+
+	echo "$count: $@" >> $TESTTMP/result
+
+	# Some tests require the quoting behavior that the shell gives us
+	# with "$@", so only use $modified_args if we have to.
+	if [ -z "$modified_args" ]; then
+		$TESTPATH/usr/sbin/ufw "$@" >> $cmd_results_file 2>&1
+	else
+		$TESTPATH/usr/sbin/ufw $modified_args >> $cmd_results_file 2>&1
+	fi
 	rc="$?"
 	if [ "$rc" != "$expected" ]; then
 		echo "Command '$@' exited with '$rc', but expected '$expected'"

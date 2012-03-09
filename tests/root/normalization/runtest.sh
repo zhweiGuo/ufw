@@ -18,20 +18,20 @@ source "$TESTPATH/../testlib.sh"
 
 do_cmd "0" nostats enable
 echo "TESTING EQUIVALENT PORTS" >> $TESTTMP/result
-do_cmd "0" allow http
+do_cmd "0" http-or-www allow http
 do_cmd "0" delete allow 80/tcp
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow 80/tcp
-do_cmd "0" delete allow http
+do_cmd "0" http-or-www delete allow http
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
 
-do_cmd "0" allow http
+do_cmd "0" http-or-www allow http
 do_cmd "0" delete allow to any port 80 proto tcp
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow to any port 80 proto tcp
-do_cmd "0" delete allow http
+do_cmd "0" http-or-www delete allow http
 grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow 80/tcp
