@@ -1,4 +1,4 @@
-ufw (0.31) UNRELEASED; urgency=low
+ufw (0.31) RELEASED; urgency=low
 
   * allow UPnP multicast for service discovery (LP: #764933)
   * conf/ufw.defaults:
