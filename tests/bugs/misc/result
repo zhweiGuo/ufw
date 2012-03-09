@@ -158,3 +158,8 @@ Bug #568877
 28: --dry-run allow in on iaslab
 
 
+Bug #946332
+29: --dry-run
+ERROR: not enough args
+
+

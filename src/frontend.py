@@ -70,7 +70,7 @@ def parse_command(argv):
            argv[idx].lower() in rule_commands:
             argv.insert(idx, 'rule')
 
-    if len(argv) < 2:
+    if len(argv) < 2 or ('--dry-run' in argv and len(argv) < 3):
         print >> sys.stderr, "ERROR: not enough args"
         sys.exit(1)
 

@@ -97,5 +97,7 @@ done
 echo "Bug #568877" >> $TESTTMP/result
 do_cmd "0" null --dry-run allow in on iaslab
 
+echo "Bug #946332" >> $TESTTMP/result
+do_cmd "1" --dry-run
 
 exit 0
