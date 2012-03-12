@@ -71,7 +71,7 @@ interpreter=""
 if [ "$1" = "-i" ]; then
     shift
     if [ -z "$1" ]; then
-        echo "Specified '-i' without an interpreter. Aborting" &>2
+        echo "Specified '-i' without an interpreter. Aborting" >&2
         exit
     fi
     interpreter="$1"
