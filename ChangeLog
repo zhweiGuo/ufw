@@ -1,3 +1,10 @@
+ufw (0.31.1) UNRELEASED; urgency=low
+
+  * src/util.py: revert revert r752 which introduced problems with other
+    locales (LP: #953372)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 12 Mar 2012 16:54:15 -0500
+
 ufw (0.31) RELEASED; urgency=low
 
   * allow UPnP multicast for service discovery (LP: #764933)
