@@ -2,6 +2,8 @@ ufw (0.31.1) UNRELEASED; urgency=low
 
   * src/util.py: revert revert r752 which introduced problems with other
     locales (LP: #953372)
+  * add tests/check-locales. This is Debian/Ubuntu specific, but will help
+    avoid commits like r752.
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 12 Mar 2012 16:54:15 -0500
 
