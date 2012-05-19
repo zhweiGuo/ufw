@@ -36,7 +36,7 @@
 
 import re
 import ufw.util
-from common import UFWError
+from ufw.common import UFWError
 from ufw.util import debug
 
 class UFWCommand:
