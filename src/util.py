@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -265,7 +265,7 @@ def cmd(command):
     try:
         sp = subprocess.Popen(command, stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT)
-    except OSError, ex:
+    except OSError as ex:
         return [127, str(ex)]
 
     out = sp.communicate()[0]
@@ -277,7 +277,7 @@ def cmd_pipe(command1, command2):
     try:
         sp1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
         sp2 = subprocess.Popen(command2, stdin=sp1.stdout)
-    except OSError, ex:
+    except OSError as ex:
         return [127, str(ex)]
 
     out = sp2.communicate()[0]
@@ -674,11 +674,11 @@ def parse_netstat_output(v6):
         else:
             item['exe'] = tmp[5].split('/')[1]
 
-        if not d.has_key(proto):
+        if proto not in d:
             d[proto] = dict()
             d[proto][port] = []
         else:
-            if not d[proto].has_key(port):
+            if port not in d[proto]:
                 d[proto][port] = []
         d[proto][port].append(item)
 
@@ -879,7 +879,7 @@ def get_netstat_output(v6):
 
     inodes = _get_proc_inodes()
 
-    protocols = proc_net_data.keys()
+    protocols = list(proc_net_data.keys())
     protocols.sort()
 
     s = ""
@@ -888,7 +888,7 @@ def get_netstat_output(v6):
             addr = convert_proc_address(laddr)
 
             exe = "-"
-            if inodes.has_key(int(inode)):
+            if int(inode) in inodes:
                 exe = inodes[int(inode)]
             s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p,
                                                        "%s:%s" % (addr, port),

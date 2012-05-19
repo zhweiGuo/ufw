@@ -1,6 +1,6 @@
 '''applications.py: common classes for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -15,13 +15,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import ConfigParser
 import os
 import re
 import stat
 import ufw.util
 from ufw.util import debug, warn
 from ufw.common import UFWError
+
+import sys
+if sys.version_info[0] < 3:
+    import ConfigParser
+else:
+    import configparser
 
 def get_profiles(profiles_dir):
     '''Get profiles found in profiles database.  Returns dictionary with
@@ -76,7 +81,11 @@ def get_profiles(profiles_dir):
 
         total_size += size
 
-        cdict = ConfigParser.RawConfigParser()
+        if sys.version_info[0] < 3:
+            cdict = ConfigParser.RawConfigParser()
+        else:
+            cdict = configparser.RawConfigParser()
+
         try:
             cdict.read(abs_path)
         except Exception:
@@ -121,7 +130,7 @@ def get_profiles(profiles_dir):
             if skip:
                 continue
 
-            if profiles.has_key(p):
+            if p in profiles:
                 warn_msg = _("Duplicate profile '%s', using last found") % (p)
                 warn(warn_msg)
 
@@ -158,7 +167,7 @@ def verify_profile(name, profile):
     app_fields = ['title', 'description', 'ports']
 
     for f in app_fields:
-        if not profile.has_key(f):
+        if f not in profile:
             err_msg = _("Profile '%(fn)s' missing required field '%(f)s'") % \
                         ({'fn': name, 'f': f})
 
@@ -181,7 +190,7 @@ def verify_profile(name, profile):
             #    proto = "any"
             rule = ufw.common.UFWRule("ACCEPT", proto, port)
             debug(rule)
-    except Exception, e:
+    except Exception as e:
         debug(e)
         err_msg = _("Invalid ports in profile '%s'") % (name)
         raise UFWError(err_msg)
@@ -192,7 +201,7 @@ def get_title(profile):
     '''Retrieve the title from the profile'''
     s = ""
     field = 'title'
-    if profile.has_key(field) and profile[field]:
+    if field in profile and profile[field]:
         s = profile[field]
     return s
 
@@ -200,7 +209,7 @@ def get_description(profile):
     '''Retrieve the description from the profile'''
     s = ""
     field = 'description'
-    if profile.has_key(field) and profile[field]:
+    if field in profile and profile[field]:
         s = profile[field]
     return s
 
@@ -208,7 +217,7 @@ def get_ports(profile):
     '''Retrieve a list of ports from a profile'''
     ports = []
     field = 'ports'
-    if profile.has_key(field) and profile[field]:
+    if field in profile and profile[field]:
         ports = profile[field].split('|')
 
     return ports

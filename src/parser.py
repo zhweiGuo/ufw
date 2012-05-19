@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2011 Canonical Ltd.
+# Copyright 2009-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -680,7 +680,7 @@ class UFWParserResponse:
 
     def __str__(self):
         s = "action='%s'" % (self.action)
-        for i in self.data.keys():
+        for i in list(self.data.keys()):
             s += ",%s='%s'" % (i,self.data[i])
         s += "\n"
 
@@ -693,10 +693,10 @@ class UFWParser:
 
     def allowed_command(self, type, cmd):
         '''Return command if it is allowed, otherwise raise an exception'''
-        if type.lower() not in self.commands.keys():
+        if type.lower() not in list(self.commands.keys()):
             raise ValueError()
 
-        if cmd.lower() not in self.commands[type].keys():
+        if cmd.lower() not in list(self.commands[type].keys()):
             raise ValueError()
 
         return cmd.lower()
@@ -718,14 +718,14 @@ class UFWParser:
         type = ""
 
         tmp = args[0].lower()
-        if len(args) > 1 and tmp in self.commands.keys() and \
-            args[1].lower() in self.commands[tmp].keys():
+        if len(args) > 1 and tmp in list(self.commands.keys()) and \
+            args[1].lower() in list(self.commands[tmp].keys()):
             type = tmp
             cmd = args[1].lower()
         else:
             # Discover the type
             cmd = tmp
-            for i in self.commands.keys():
+            for i in list(self.commands.keys()):
                 if cmd in self.commands[i]:
                     type = i
                     break
@@ -754,9 +754,9 @@ class UFWParser:
         else:
             key = "%s" % (c.command)
 
-        if not self.commands.has_key(c.type):
+        if c.type not in self.commands:
             self.commands[c.type] = {}
-        if self.commands[c.type].has_key(key):
+        if key in self.commands[c.type]:
             err_msg = _("Command '%s' already exists") % (key)
             raise UFWError(err_msg)
         self.commands[c.type][key] = c
