@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 import errno
 import fcntl
 import os
@@ -287,7 +288,7 @@ def cmd_pipe(command1, command2):
 def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
-        print >> sys.stderr, "ERROR: %s" % (out)
+        print("ERROR: %s" % (out), file=sys.stderr)
     except IOError:
         pass
 
@@ -298,7 +299,7 @@ def error(out, do_exit=True):
 def warn(out):
     '''Print warning message'''
     try:
-        print >> sys.stderr, "WARN: %s" % (out)
+        print("WARN: %s" % (out), file=sys.stderr)
     except IOError:
         pass
 
@@ -306,7 +307,7 @@ def warn(out):
 def msg(out, output=sys.stdout):
     '''Print message'''
     try:
-        print >> output, "%s" % (out)
+        print("%s" % (out), file=output)
     except IOError:
         pass
 
@@ -315,7 +316,7 @@ def debug(out):
     '''Print debug message'''
     if DEBUGGING:
         try:
-            print >> sys.stderr, "DEBUG: %s" % (out)
+            print("DEBUG: %s" % (out), file=sys.stderr)
         except IOError:
             pass
 
