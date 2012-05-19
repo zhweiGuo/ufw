@@ -71,12 +71,12 @@ def parse_command(argv):
             argv.insert(idx, 'rule')
 
     if len(argv) < 2 or ('--dry-run' in argv and len(argv) < 3):
-        error("ERROR: not enough args")
+        error("not enough args")
 
     try:
         pr = p.parse_command(argv[1:])
     except UFWError as e:
-        error("ERROR: %s" % (e.value))
+        error("%s" % (e.value))
     except Exception:
         error("Invalid syntax", do_exit=False)
         raise
