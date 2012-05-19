@@ -215,8 +215,8 @@ class Install(_install, object):
             self.copy_file(file, rulesdir)
 
 if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 5):
-    print("ERROR: Need at least python 2.5", file=sys.stderr)
+   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
+    print("ERROR: Need at least python 2.6", file=sys.stderr)
     sys.exit(1)
 
 if os.path.exists('staging'):
@@ -256,7 +256,7 @@ for e in ['ip6tables', 'iptables-restore', 'ip6tables-restore']:
 if rc != 0:
     raise OSError(errno.ENOENT, "Could not find version for '%s'" % \
                   (iptables_exe))
-version = re.sub('^v', '', re.split('\s', out)[1])
+version = re.sub('^v', '', re.split('\s', str(out))[1])
 print("Found '%s' version '%s'" % (iptables_exe, version))
 if version < "1.4":
     print("WARN: version '%s' has limited IPv6 support. See README for details." % (version), file=sys.stderr)
