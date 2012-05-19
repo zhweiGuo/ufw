@@ -270,7 +270,7 @@ def cmd(command):
         return [127, str(ex)]
 
     out = sp.communicate()[0]
-    return [sp.returncode, out]
+    return [sp.returncode, str(out)]
 
 
 def cmd_pipe(command1, command2):
@@ -282,7 +282,7 @@ def cmd_pipe(command1, command2):
         return [127, str(ex)]
 
     out = sp2.communicate()[0]
-    return [sp2.returncode, out]
+    return [sp2.returncode, str(out)]
 
 
 def error(out, do_exit=True):
@@ -462,7 +462,7 @@ def _dotted_netmask_to_cidr(nm, v6):
             raise ValueError
 
         mbits = 0
-        bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+        bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
         found_one = False
         for n in range(32):
             if (bits >> n) & 1 == 1:
@@ -498,7 +498,7 @@ def _cidr_to_dotted_netmask(cidr, v6):
     else:
         if not _valid_cidr_netmask(cidr, v6):
             raise ValueError
-        bits = 0L
+        bits = 0
         for n in range(32):
             if n < int(cidr):
                 bits |= 1 << 31 - n
@@ -531,8 +531,8 @@ def _address4_to_network(addr):
             raise
 
     # Now have dotted quad host and nm, find the network
-    host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
-    nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+    host_bits = int(struct.unpack('>L', socket.inet_aton(host))[0])
+    nm_bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
@@ -560,14 +560,14 @@ def _address6_to_network(addr):
                                                      orig_host))
 
     # Get the host bits
-    host_bits = 0L
+    host_bits = 0
     for i in range(8):
         n = dec2bin(unpacked[i], 16)
         for j in range(16):
             host_bits |= (1 & int(n[j])) <<(127-j-i*16)
 
     # Create netmask bits
-    nm_bits = 0L
+    nm_bits = 0
     for i in range(128):
         if i < int(netmask):
             nm_bits |= 1 << (128 - 1) - i

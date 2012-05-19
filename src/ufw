@@ -17,6 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 import os
 import re
 import sys
@@ -27,7 +28,7 @@ try:
     from ufw.common import UFWError
     from ufw.util import error, warn, msg
 except Exception:
-    print >> sys.stderr, "ERROR: Could not find required libraries. Aborting."
+    print("ERROR: Could not find required libraries. Aborting.", file=sys.stderr)
     sys.exit(1)
 
 import gettext
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     except ValueError:
         msg(ufw.frontend.get_command_help())
         sys.exit(1)
-    except UFWError, e:
+    except UFWError as e:
         error(e.value)
     except Exception:
         raise
@@ -83,14 +84,14 @@ if __name__ == "__main__":
 
     try:
         ui = ufw.frontend.UFWFrontend(pr.dryrun)
-    except UFWError, e:
+    except UFWError as e:
         error(e.value)
     except Exception:
         raise
 
     res = ""
     try:
-        if app_action and pr.data.has_key('type') and pr.data['type'] == 'app':
+        if app_action and 'type' in pr.data and pr.data['type'] == 'app':
             res = ui.do_application_action(pr.action, pr.data['name'])
         else:
             bailout = False
@@ -100,7 +101,7 @@ if __name__ == "__main__":
                 bailout = True
 
             if not bailout:
-                if pr.data.has_key('rule'):
+                if 'rule' in pr.data:
                     res = ui.do_action(pr.action, pr.data['rule'], \
                                        pr.data['iptype'], pr.force)
                 else:
@@ -109,7 +110,7 @@ if __name__ == "__main__":
         if res != "":
             msg(res)
 
-    except UFWError, e:
+    except UFWError as e:
         error(e.value)
     except Exception:
         raise
