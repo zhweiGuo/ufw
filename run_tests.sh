@@ -78,7 +78,7 @@ if [ "$1" = "-i" ]; then
     shift
 fi
 if [ -z "$interpreter" ]; then
-    for exe in python python2.7 python2.6 python2.5; do
+    for exe in python python2.7 python2.6; do
         if which $exe >/dev/null 2>&1; then
             interpreter="$exe"
             break
