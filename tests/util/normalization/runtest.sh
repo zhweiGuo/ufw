@@ -50,12 +50,13 @@ script="tests/testarea/test_normalization.py"
 cat > $script << EOM
 #! /usr/bin/env $interpreter
 
+from __future__ import print_function
 import sys
 import ufw.util
 
 if len(sys.argv) != 4:
-    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
-    print >> sys.stderr, "Usage: %s no|yes <ip> <expected_ip>" % (sys.argv[0])
+    print("Wrong number of args: %d" % (len(sys.argv)), file=sys.stderr)
+    print("Usage: %s no|yes <ip> <expected_ip>" % (sys.argv[0]), file=sys.stderr)
     sys.exit(1)
 
 v6 = False
@@ -67,10 +68,10 @@ changed = False
 try:
     (norm, changed) = ufw.util.normalize_address(sys.argv[2], v6)
 except:
-    print >> sys.stderr, "Invalid address/netmask '%s'" % (sys.argv[2])
+    print("Invalid address/netmask '%s'" % (sys.argv[2]), file=sys.stderr)
     sys.exit(1)
 
-print "norm = %s, expected = %s" % (norm, sys.argv[3])
+print("norm = %s, expected = %s" % (norm, sys.argv[3]))
 if sys.argv[3] != norm:
     sys.exit(1)
 sys.exit(0)
@@ -228,12 +229,13 @@ echo "TEST HUMAN SORTING" >> $TESTTMP/result
 cat > $script << EOM
 #! /usr/bin/env $interpreter
 
+from __future__ import print_function
 import sys
 import ufw.util
 
 if len(sys.argv) != 3:
-    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
-    print >> sys.stderr, "Usage: %s <port str> <expected port str>" % (sys.argv[0])
+    print("Wrong number of args: %d" % (len(sys.argv)), file=sys.stderr)
+    print("Usage: %s <port str> <expected port str>" % (sys.argv[0]), file=sys.stderr)
     sys.exit(1)
 
 tmp = sys.argv[1].split(',')
@@ -241,10 +243,10 @@ try:
     ufw.util.human_sort(tmp)
     ports = ','.join(tmp)
 except:
-    print >> sys.stderr, "Error processing '%s'" % (sys.argv[1])
+    print("Error processing '%s'" % (sys.argv[1]), file=sys.stderr)
     sys.exit(1)
 
-print "norm = %s, expected = %s" % (str(ports), str(sys.argv[2]))
+print("norm = %s, expected = %s" % (str(ports), str(sys.argv[2])))
 if sys.argv[2] != ports:
     sys.exit(1)
 sys.exit(0)
