@@ -27,5 +27,5 @@ import gettext
 gettext.install(ufw.common.programName)
 
 if __name__ == "__main__":
-    print ufw.frontend.get_command_help()
+    print(ufw.frontend.get_command_help())
 
