@@ -236,7 +236,13 @@ def write_to_file(fd, out):
     if not fd:
         raise OSError(errno.ENOENT, "Not a valid file descriptor")
 
-    if os.write(fd, out) <= 0:
+    rc = -1
+    if sys.version_info[0] >= 3:
+        rc = os.write(fd, bytes(out, 'ascii'))
+    else:
+        rc = os.write(fd, out)
+
+    if rc <= 0:
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
