@@ -26,6 +26,7 @@ import struct
 import subprocess
 import sys
 
+from functools import reduce
 from tempfile import mkstemp
 
 DEBUGGING = False
