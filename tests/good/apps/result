@@ -28,6 +28,7 @@ Available applications:
   Kerberos KDC
   Kerberos Password
   LDAP
+  LDAPS
   LPD
   MSN
   MSN SSL
@@ -386,6 +387,15 @@ Port:
 --
 
 Profile: LDAP
+Title: LDAP server
+Description: LDAP server
+
+Port:
+  389/tcp
+
+--
+
+Profile: LDAPS
 Title: LDAP server (LDAPS)
 Description: LDAP server (LDAPS)
 
@@ -12624,10 +12634,10 @@ TESTING SHIPPED APPLICATION PROFILES
 323: allow LDAP
 
 
-324: app info LDAP
+324: app info LDAPS
 
 
-325: allow LDAP
+325: allow LDAPS
 
 
 326: app info DNS
