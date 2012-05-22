@@ -21,7 +21,7 @@ import warnings
 
 from ufw.common import UFWError
 import ufw.util
-from ufw.util import error, warn
+from ufw.util import error, warn, msg
 from ufw.backend_iptables import UFWBackendIptables
 import ufw.parser
 
@@ -538,7 +538,7 @@ class UFWFrontend:
                        "(%(yes)s|%(no)s)? ") % ({'rule': rstr, \
                                                  'yes': self.yes, \
                                                  'no': self.no})
-            os.write(sys.stdout.fileno(), prompt)
+            msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
                 proceed = False
@@ -824,7 +824,7 @@ class UFWFrontend:
             prompt = _("Command may disrupt existing ssh connections. " \
                        "Proceed with operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
-            os.write(sys.stdout.fileno(), prompt)
+            msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
                 proceed = False
@@ -844,7 +844,7 @@ class UFWFrontend:
                        ({'yes': self.yes, 'no': self.no})
 
         if self.backend.do_checks and not force:
-            os.write(sys.stdout.fileno(), ufw.util.wrap_text(prompt))
+            msg(ufw.util.wrap_text(prompt), output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
                 res = _("Aborted")

@@ -296,6 +296,7 @@ def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
         print("ERROR: %s" % (out), file=sys.stderr)
+        sys.stderr.flush()
     except IOError:
         pass
 
@@ -307,14 +308,19 @@ def warn(out):
     '''Print warning message'''
     try:
         print("WARN: %s" % (out), file=sys.stderr)
+        sys.stderr.flush()
     except IOError:
         pass
 
 
-def msg(out, output=sys.stdout):
+def msg(out, output=sys.stdout, newline=True):
     '''Print message'''
     try:
-        print("%s" % (out), file=output)
+        if newline:
+            print("%s" % (out), file=output)
+        else:
+            print("%s" % (out), file=output, end="")
+        output.flush()
     except IOError:
         pass
 
@@ -324,6 +330,7 @@ def debug(out):
     if DEBUGGING:
         try:
             print("DEBUG: %s" % (out), file=sys.stderr)
+            sys.stderr.flush()
         except IOError:
             pass
 
