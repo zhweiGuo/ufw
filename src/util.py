@@ -272,7 +272,8 @@ def cmd(command):
     debug(command)
     try:
         sp = subprocess.Popen(command, stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT)
+                              stderr=subprocess.STDOUT,
+                              universal_newlines=True)
     except OSError as ex:
         return [127, str(ex)]
 
@@ -384,7 +385,7 @@ def get_ppid(mypid=os.getpid()):
         raise IOError("Couldn't find '%s'" % (name))
 
     try:
-        ppid = file(name).readlines()[0].split()[3]
+        ppid = open(name).readlines()[0].split()[3]
     except Exception:
         raise
 
@@ -414,7 +415,7 @@ def under_ssh(pid=os.getpid()):
         raise ValueError(err_msg)
 
     try:
-        exe = file(path).readlines()[0].split()[1]
+        exe = open(path).readlines()[0].split()[1]
     except Exception:
         err_msg = _("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
@@ -476,7 +477,15 @@ def _dotted_netmask_to_cidr(nm, v6):
             raise ValueError
 
         mbits = 0
-        bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
+
+        # python3 doesn't have long(). We could technically use int() here
+        # since python2 guarantees at least 32 bits for int(), but this helps
+        # future-proof.
+        try:
+            bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+        except NameError:
+            bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
+
         found_one = False
         for n in range(32):
             if (bits >> n) & 1 == 1:
@@ -512,7 +521,15 @@ def _cidr_to_dotted_netmask(cidr, v6):
     else:
         if not _valid_cidr_netmask(cidr, v6):
             raise ValueError
-        bits = 0
+
+        # python3 doesn't have long(). We could technically use int() here
+        # since python2 guarantees at least 32 bits for int(), but this helps
+        # future-proof.
+        try:
+            bits = long(0)
+        except NameError:
+            bits = 0
+
         for n in range(32):
             if n < int(cidr):
                 bits |= 1 << 31 - n
@@ -545,8 +562,16 @@ def _address4_to_network(addr):
             raise
 
     # Now have dotted quad host and nm, find the network
-    host_bits = int(struct.unpack('>L', socket.inet_aton(host))[0])
-    nm_bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
+
+    # python3 doesn't have long(). We could technically use int() here
+    # since python2 guarantees at least 32 bits for int(), but this helps
+    # future-proof.
+    try:
+        host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
+        nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+    except NameError:
+        host_bits = int(struct.unpack('>L', socket.inet_aton(host))[0])
+        nm_bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
@@ -574,14 +599,22 @@ def _address6_to_network(addr):
                                                      orig_host))
 
     # Get the host bits
-    host_bits = 0
+    try: # python3 doesn't have long()
+        host_bits = long(0)
+    except NameError:
+        host_bits = 0
+
     for i in range(8):
         n = dec2bin(unpacked[i], 16)
         for j in range(16):
             host_bits |= (1 & int(n[j])) <<(127-j-i*16)
 
     # Create netmask bits
-    nm_bits = 0
+    try: # python3 doesn't have long()
+        nm_bits = long(0)
+    except NameError:
+        nm_bits = 0
+
     for i in range(128):
         if i < int(netmask):
             nm_bits |= 1 << (128 - 1) - i
@@ -708,7 +741,7 @@ def get_ip_from_if(ifname, v6=False):
         if not os.path.exists(proc):
             raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
 
-        for line in file(proc).readlines():
+        for line in open(proc).readlines():
             tmp = line.split()
             if ifname == tmp[5]:
                 addr = ":".join( \
@@ -745,7 +778,7 @@ def get_if_from_ip(addr):
 
     matched = ""
     if v6:
-        for line in file(proc).readlines():
+        for line in open(proc).readlines():
             tmp = line.split()
             ifname = tmp[5].strip()
 
@@ -759,7 +792,7 @@ def get_if_from_ip(addr):
                 matched = ifname
                 break
     else:
-        for line in file(proc).readlines():
+        for line in open(proc).readlines():
             if ':' not in line:
                 continue
             ifname = line.split(':')[0].strip()
@@ -840,7 +873,7 @@ def _read_proc_net_protocol(protocol):
 
     lst = []
     skipped_first = False
-    lines = file(fn).readlines()
+    lines = open(fn).readlines()
     for line in lines:
         fields = line.split()
         if not skipped_first:
