@@ -28,7 +28,13 @@ from ufw.common import UFWError
 from ufw.util import error, warn, msg
 
 import gettext
-gettext.install(ufw.common.programName)
+kwargs = {}
+if sys.version_info[0] < 3:
+    # In Python 2, ensure that the _() that gets installed into built-ins
+    # always returns unicodes.  This matches the default behavior under Python
+    # 3, although that keyword argument is not present in the Python 3 API.
+    kwargs['unicode'] = True
+gettext.install(ufw.common.programName, **kwargs)
 
 version = "#VERSION#"
 
@@ -36,7 +42,14 @@ version = "#VERSION#"
 gettext.bindtextdomain(ufw.common.programName, \
                        os.path.join(ufw.common.trans_dir, 'messages'))
 gettext.textdomain(ufw.common.programName)
-_ = gettext.gettext
+try:
+    # BAW: I'm not sure why both this and the .install() above is here, but
+    # let's roll with it for now.  This is the Python 2 version, which ensures
+    # we get unicodes.
+    _ = gettext.ugettext
+except AttributeError:
+    # Python 3 always returns unicodes.
+    _ = gettext.gettext
 
 if sys.version_info[0] < 2 or \
    (sys.version_info[0] == 2 and sys.version_info[1] < 6):
