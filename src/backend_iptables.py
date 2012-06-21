@@ -397,10 +397,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             rules_header = rules_header_fmt % (str_to, str_action, str_from)
             if show_count:
                 rules_header += "     "
-            rules_header += str(rules_header_fmt % \
-                                ("-" * len(str_to), \
-                                 "-" * len(str_action), \
-                                 "-" * len(str_from)))
+            rules_header += rules_header_fmt % \
+                            ("-" * len(str_to), \
+                             "-" * len(str_action), \
+                             "-" * len(str_from))
 
             full_str += rules_header
 
