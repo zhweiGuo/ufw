@@ -13,8 +13,8 @@ perhaps 'Unbearable Firewall'. Have fun!
 
 Requirements
 ------------
-python 2.5-2.7 (known to work with 2.5+, 2.6.2+, and 2.7.0)
-iptables 1.4*
+python 2.6-2.7, 3.1-3.2 (known to work with 2.6.2+, 2.7.0+, 3.1.2, 3.2+)*
+iptables 1.4**
 gettext
 /proc filesystem support
 Linux kernel configured with the following modules (not exhaustive):
@@ -26,10 +26,11 @@ Linux kernel configured with the following modules (not exhaustive):
   recent
   state
 
-* Systems with iptables below 1.4 will not have IPv6 application rule support.
-  ufw will give a warning when users try to use this functionality, but ufw
-  will otherwise work fine. ufw is known to work with iptables 1.3.8 in this
-  degraded mode.
+*  python2.5 is no longer supported
+** Systems with iptables below 1.4 will not have IPv6 application rule support.
+   ufw will give a warning when users try to use this functionality, but ufw
+   will otherwise work fine. ufw is known to work with iptables 1.3.8 in this
+   degraded mode.
 
 ufw has been widely tested on Linux 2.6.24 and higher kernels. You may also
 use the check-requirements script in the tests/ directory to see if your
@@ -43,8 +44,8 @@ Users can install with:
 $ python ./setup.py install --home=PREFIX
 
 The interpreter used for setup.py is the one used for ufw. So if your system
-python is 2.4, but you have python2.5 available, use something like:
-$ python2.5 ./setup.py install --home=PREFIX
+python is 2.6, but you have python2.7 available, use something like:
+$ python2.7 ./setup.py install --home=PREFIX
 
 Distributions which install to a build directory for packaging can install
 with:
@@ -327,7 +328,7 @@ and aren't run by default):
 # ./run_tests.sh -s root
 
 You may also specify an interpreter for the tests. Eg:
-$ ./run_tests.sh -s -i /usr/local/bin/python2.5
+$ ./run_tests.sh -s -i /usr/local/bin/python2.7
 
 
-Copyright 2008-2011 Canonical Ltd.
+Copyright 2008-2012 Canonical Ltd.

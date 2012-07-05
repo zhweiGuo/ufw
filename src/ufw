@@ -2,7 +2,7 @@
 #
 # ufw: front-end for Linux firewalling (cli)
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -17,21 +17,24 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 import os
 import re
 import sys
 import warnings
 
-try:
-    import ufw.frontend
-    from ufw.common import UFWError
-    from ufw.util import error, warn, msg
-except Exception:
-    print >> sys.stderr, "ERROR: Could not find required libraries. Aborting."
-    sys.exit(1)
+import ufw.frontend
+from ufw.common import UFWError
+from ufw.util import error, warn, msg
 
 import gettext
-gettext.install(ufw.common.programName)
+kwargs = {}
+if sys.version_info[0] < 3:
+    # In Python 2, ensure that the _() that gets installed into built-ins
+    # always returns unicodes.  This matches the default behavior under Python
+    # 3, although that keyword argument is not present in the Python 3 API.
+    kwargs['unicode'] = True
+gettext.install(ufw.common.programName, **kwargs)
 
 version = "#VERSION#"
 
@@ -39,20 +42,23 @@ version = "#VERSION#"
 gettext.bindtextdomain(ufw.common.programName, \
                        os.path.join(ufw.common.trans_dir, 'messages'))
 gettext.textdomain(ufw.common.programName)
-_ = gettext.gettext
+try:
+    # BAW: I'm not sure why both this and the .install() above is here, but
+    # let's roll with it for now.  This is the Python 2 version, which ensures
+    # we get unicodes.
+    _ = gettext.ugettext
+except AttributeError:
+    # Python 3 always returns unicodes.
+    _ = gettext.gettext
 
 if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 5):
-    msg(ufw.common.programName + _(": Need at least python 2.5)\n"), \
+   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
+    msg(ufw.common.programName + _(": Need at least python 2.6)\n"), \
         sys.stderr)
     sys.exit(1)
 
-if sys.version_info[0] == 2 and sys.version_info[1] < 6:
-    def clean_warning(message, category, filename, lineno, file=None):
-        warn(message)
-else:
-    def clean_warning(message, category, filename, lineno, file=None, line=""):
-        warn(message)
+def clean_warning(message, category, filename, lineno, file=None, line=""):
+    warn(message)
 
 if __name__ == "__main__":
     warnings.showwarning = clean_warning
@@ -72,7 +78,7 @@ if __name__ == "__main__":
     except ValueError:
         msg(ufw.frontend.get_command_help())
         sys.exit(1)
-    except UFWError, e:
+    except UFWError as e:
         error(e.value)
     except Exception:
         raise
@@ -82,19 +88,19 @@ if __name__ == "__main__":
         sys.exit(0)
     elif pr.action == "version" or pr.action == "--version":
         msg(ufw.common.programName + " " + version)
-        msg("Copyright 2008-2010 Canonical Ltd.")
+        msg("Copyright 2008-2012 Canonical Ltd.")
         sys.exit(0)
 
     try:
         ui = ufw.frontend.UFWFrontend(pr.dryrun)
-    except UFWError, e:
+    except UFWError as e:
         error(e.value)
     except Exception:
         raise
 
     res = ""
     try:
-        if app_action and pr.data.has_key('type') and pr.data['type'] == 'app':
+        if app_action and 'type' in pr.data and pr.data['type'] == 'app':
             res = ui.do_application_action(pr.action, pr.data['name'])
         else:
             bailout = False
@@ -104,7 +110,7 @@ if __name__ == "__main__":
                 bailout = True
 
             if not bailout:
-                if pr.data.has_key('rule'):
+                if 'rule' in pr.data:
                     res = ui.do_action(pr.action, pr.data['rule'], \
                                        pr.data['iptype'], pr.force)
                 else:
@@ -113,7 +119,7 @@ if __name__ == "__main__":
         if res != "":
             msg(res)
 
-    except UFWError, e:
+    except UFWError as e:
         error(e.value)
     except Exception:
         raise

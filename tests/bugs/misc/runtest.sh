@@ -29,7 +29,7 @@ do_cmd "0" app list
 
 echo "Bug #337705" >> $TESTTMP/result
 sed -i 's/import ufw.frontend/import ufw.nonexistent/' $TESTPATH/usr/sbin/ufw
-do_cmd "1" help
+do_cmd "1" null help
 sed -i 's/import ufw.nonexistent/import ufw.frontend/' $TESTPATH/usr/sbin/ufw
 
 echo "Bug #430053" >> $TESTTMP/result

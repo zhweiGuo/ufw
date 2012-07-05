@@ -1,6 +1,6 @@
 '''backend_iptables.py: iptables backend for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -277,7 +277,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 show_proto = False
                 tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tupl):
+                if tupl in app_rules:
                     debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:
@@ -392,17 +392,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             str_to = _("To")
             str_from = _("From")
             str_action = _("Action")
-            rules_header = "%-26s %-12s%s\n" % \
-                            (str_to.decode("utf-8", 'ignore'), \
-                             str_action.decode("utf-8", 'ignore'), \
-                             str_from.decode("utf-8", 'ignore'))
+            rules_header_fmt = "%-26s %-12s%s\n"
+
+            rules_header = rules_header_fmt % (str_to, str_action, str_from)
             if show_count:
                 rules_header += "     "
-            rules_header += "%-26s %-12s%s\n" % \
-                            ("-" * len(str_to.decode("utf-8", 'ignore')), \
-                             "-" * len(str_action.decode("utf-8", 'ignore')), \
-                             "-" * len(str_from.decode("utf-8", 'ignore')))
-            full_str += rules_header.encode('utf-8', 'ignore')
+            rules_header += rules_header_fmt % \
+                            ("-" * len(str_to), \
+                             "-" * len(str_action), \
+                             "-" * len(str_from))
+
+            full_str += rules_header
+
             if s != "":
                 full_str += s
             if s != "" and str_out != "":
@@ -446,8 +447,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 debug(out)
                 raise UFWError(err_msg + " ufw-init")
 
-            if not self.defaults.has_key('loglevel') or \
-               self.defaults['loglevel'] not in self.loglevels.keys():
+            if 'loglevel' not in self.defaults or \
+               self.defaults['loglevel'] not in list(self.loglevels.keys()):
                 # Add the loglevel if not valid
                 try:
                     self.set_loglevel("low")
@@ -1125,7 +1126,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Get rules for specified logging level'''
         rules_t = []
 
-        if level not in self.loglevels.keys():
+        if level not in list(self.loglevels.keys()):
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 

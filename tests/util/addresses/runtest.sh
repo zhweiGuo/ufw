@@ -50,14 +50,15 @@ script="tests/testarea/test_addresses.py"
 cat > $script << EOM
 #! /usr/bin/env $interpreter
 
+from __future__ import print_function
 import sys
 import ufw.util
 
 if len(sys.argv) != 3:
-    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
+    print("Wrong number of args: %d" % (len(sys.argv)), file=sys.stderr)
     sys.exit(1)
 if not ufw.util.valid_address(sys.argv[2], sys.argv[1]):
-    print >> sys.stderr, "Bad address: %s" % (sys.argv[2])
+    print("Bad address: %s" % (sys.argv[2]), file=sys.stderr)
     sys.exit(1)
 sys.exit(0)
 EOM
@@ -128,12 +129,13 @@ cat > $script << EOM
 
 # test_in_network.py VERSION ADDRESS NETWORK
 
+from __future__ import print_function
 import sys
 import ufw.util
 
 if len(sys.argv) != 4:
-    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
-    print >> sys.stderr, sys.argv
+    print("Wrong number of args: %d" % (len(sys.argv)), file=sys.stderr)
+    print(sys.argv, file=sys.stderr)
     sys.exit(3)
 
 v6 = False
@@ -146,10 +148,10 @@ try:
         innet = True
 except:
     if not ufw.util.valid_address(sys.argv[2], sys.argv[1]):
-        print >> sys.stderr, "Bad address: %s" % (sys.argv[2])
+        print("Bad address: %s" % (sys.argv[2]), file=sys.stderr)
         sys.exit(2)
     if not ufw.util.valid_address(sys.argv[3], sys.argv[1]):
-        print >> sys.stderr, "Bad address: %s" % (sys.argv[3])
+        print("Bad address: %s" % (sys.argv[3]), file=sys.stderr)
         sys.exit(2)
     sys.exit(3)
 

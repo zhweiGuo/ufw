@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from __future__ import print_function
 import errno
 import fcntl
 import os
@@ -25,6 +26,7 @@ import struct
 import subprocess
 import sys
 
+from functools import reduce
 from tempfile import mkstemp
 
 DEBUGGING = False
@@ -235,7 +237,13 @@ def write_to_file(fd, out):
     if not fd:
         raise OSError(errno.ENOENT, "Not a valid file descriptor")
 
-    if os.write(fd, out) <= 0:
+    rc = -1
+    if sys.version_info[0] >= 3:
+        rc = os.write(fd, bytes(out, 'ascii'))
+    else:
+        rc = os.write(fd, out)
+
+    if rc <= 0:
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
@@ -264,12 +272,13 @@ def cmd(command):
     debug(command)
     try:
         sp = subprocess.Popen(command, stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT)
-    except OSError, ex:
+                              stderr=subprocess.STDOUT,
+                              universal_newlines=True)
+    except OSError as ex:
         return [127, str(ex)]
 
     out = sp.communicate()[0]
-    return [sp.returncode, out]
+    return [sp.returncode, str(out)]
 
 
 def cmd_pipe(command1, command2):
@@ -277,17 +286,18 @@ def cmd_pipe(command1, command2):
     try:
         sp1 = subprocess.Popen(command1, stdout=subprocess.PIPE)
         sp2 = subprocess.Popen(command2, stdin=sp1.stdout)
-    except OSError, ex:
+    except OSError as ex:
         return [127, str(ex)]
 
     out = sp2.communicate()[0]
-    return [sp2.returncode, out]
+    return [sp2.returncode, str(out)]
 
 
 def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
-        print >> sys.stderr, "ERROR: %s" % (out)
+        print("ERROR: %s" % (out), file=sys.stderr)
+        sys.stderr.flush()
     except IOError:
         pass
 
@@ -298,15 +308,20 @@ def error(out, do_exit=True):
 def warn(out):
     '''Print warning message'''
     try:
-        print >> sys.stderr, "WARN: %s" % (out)
+        print("WARN: %s" % (out), file=sys.stderr)
+        sys.stderr.flush()
     except IOError:
         pass
 
 
-def msg(out, output=sys.stdout):
+def msg(out, output=sys.stdout, newline=True):
     '''Print message'''
     try:
-        print >> output, "%s" % (out)
+        if newline:
+            print("%s" % (out), file=output)
+        else:
+            print("%s" % (out), file=output, end="")
+        output.flush()
     except IOError:
         pass
 
@@ -315,7 +330,8 @@ def debug(out):
     '''Print debug message'''
     if DEBUGGING:
         try:
-            print >> sys.stderr, "DEBUG: %s" % (out)
+            print("DEBUG: %s" % (out), file=sys.stderr)
+            sys.stderr.flush()
         except IOError:
             pass
 
@@ -369,7 +385,7 @@ def get_ppid(mypid=os.getpid()):
         raise IOError("Couldn't find '%s'" % (name))
 
     try:
-        ppid = file(name).readlines()[0].split()[3]
+        ppid = open(name).readlines()[0].split()[3]
     except Exception:
         raise
 
@@ -399,7 +415,7 @@ def under_ssh(pid=os.getpid()):
         raise ValueError(err_msg)
 
     try:
-        exe = file(path).readlines()[0].split()[1]
+        exe = open(path).readlines()[0].split()[1]
     except Exception:
         err_msg = _("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
@@ -461,7 +477,15 @@ def _dotted_netmask_to_cidr(nm, v6):
             raise ValueError
 
         mbits = 0
-        bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+
+        # python3 doesn't have long(). We could technically use int() here
+        # since python2 guarantees at least 32 bits for int(), but this helps
+        # future-proof.
+        try:
+            bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+        except NameError:
+            bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
+
         found_one = False
         for n in range(32):
             if (bits >> n) & 1 == 1:
@@ -497,7 +521,15 @@ def _cidr_to_dotted_netmask(cidr, v6):
     else:
         if not _valid_cidr_netmask(cidr, v6):
             raise ValueError
-        bits = 0L
+
+        # python3 doesn't have long(). We could technically use int() here
+        # since python2 guarantees at least 32 bits for int(), but this helps
+        # future-proof.
+        try:
+            bits = long(0)
+        except NameError:
+            bits = 0
+
         for n in range(32):
             if n < int(cidr):
                 bits |= 1 << 31 - n
@@ -530,8 +562,16 @@ def _address4_to_network(addr):
             raise
 
     # Now have dotted quad host and nm, find the network
-    host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
-    nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+
+    # python3 doesn't have long(). We could technically use int() here
+    # since python2 guarantees at least 32 bits for int(), but this helps
+    # future-proof.
+    try:
+        host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
+        nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
+    except NameError:
+        host_bits = int(struct.unpack('>L', socket.inet_aton(host))[0])
+        nm_bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack('>L', network_bits))
@@ -559,14 +599,22 @@ def _address6_to_network(addr):
                                                      orig_host))
 
     # Get the host bits
-    host_bits = 0L
+    try: # python3 doesn't have long()
+        host_bits = long(0)
+    except NameError:
+        host_bits = 0
+
     for i in range(8):
         n = dec2bin(unpacked[i], 16)
         for j in range(16):
             host_bits |= (1 & int(n[j])) <<(127-j-i*16)
 
     # Create netmask bits
-    nm_bits = 0L
+    try: # python3 doesn't have long()
+        nm_bits = long(0)
+    except NameError:
+        nm_bits = 0
+
     for i in range(128):
         if i < int(netmask):
             nm_bits |= 1 << (128 - 1) - i
@@ -674,11 +722,11 @@ def parse_netstat_output(v6):
         else:
             item['exe'] = tmp[5].split('/')[1]
 
-        if not d.has_key(proto):
+        if proto not in d:
             d[proto] = dict()
             d[proto][port] = []
         else:
-            if not d[proto].has_key(port):
+            if port not in d[proto]:
                 d[proto][port] = []
         d[proto][port].append(item)
 
@@ -693,7 +741,7 @@ def get_ip_from_if(ifname, v6=False):
         if not os.path.exists(proc):
             raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
 
-        for line in file(proc).readlines():
+        for line in open(proc).readlines():
             tmp = line.split()
             if ifname == tmp[5]:
                 addr = ":".join( \
@@ -730,7 +778,7 @@ def get_if_from_ip(addr):
 
     matched = ""
     if v6:
-        for line in file(proc).readlines():
+        for line in open(proc).readlines():
             tmp = line.split()
             ifname = tmp[5].strip()
 
@@ -744,7 +792,7 @@ def get_if_from_ip(addr):
                 matched = ifname
                 break
     else:
-        for line in file(proc).readlines():
+        for line in open(proc).readlines():
             if ':' not in line:
                 continue
             ifname = line.split(':')[0].strip()
@@ -825,7 +873,7 @@ def _read_proc_net_protocol(protocol):
 
     lst = []
     skipped_first = False
-    lines = file(fn).readlines()
+    lines = open(fn).readlines()
     for line in lines:
         fields = line.split()
         if not skipped_first:
@@ -879,7 +927,7 @@ def get_netstat_output(v6):
 
     inodes = _get_proc_inodes()
 
-    protocols = proc_net_data.keys()
+    protocols = list(proc_net_data.keys())
     protocols.sort()
 
     s = ""
@@ -888,7 +936,7 @@ def get_netstat_output(v6):
             addr = convert_proc_address(laddr)
 
             exe = "-"
-            if inodes.has_key(int(inode)):
+            if int(inode) in inodes:
                 exe = inodes[int(inode)]
             s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p,
                                                        "%s:%s" % (addr, port),
