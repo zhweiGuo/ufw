@@ -1,4 +1,4 @@
-ufw (0.32) UNRELEASED; urgency=low
+ufw (0.32) RELEASED; urgency=low
 
   * Obsolete python2.5 in preparation for python3 support
   * Adjust gettext initialization so that _() always returns unicode. Patch
