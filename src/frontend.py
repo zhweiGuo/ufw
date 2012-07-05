@@ -85,7 +85,7 @@ def parse_command(argv):
 
 def get_command_help():
     '''Print help message'''
-    msg = _('''
+    help_msg = _('''
 Usage: %(progname)s %(command)s
 
 %(commands)s:
@@ -142,7 +142,7 @@ Usage: %(progname)s %(command)s
          'appupdate': "app update PROFILE", \
          'appdefault': "app default ARG"}))
 
-    return (msg)
+    return (help_msg)
 
 
 class UFWFrontend:
