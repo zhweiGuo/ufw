@@ -34,9 +34,11 @@ Contributing
 ------------
 Before submitting patches for ufw, please do the following:
 
-$ make syntax-check    # basic syntax checker
-$ make check           # runs non-root tests
-# ./run-tests -r root  # runs root tests (modifies running firewall)
+$ make syntax-check          # basic syntax checker
+$ make check                 # runs non-root tests
+$ make PYTHON=python3 check  # runs non-root tests with python3 interpreter
+# ./run-tests -r root        # runs root tests (modifies running firewall)
+# ./tests/check-locales      # runs locales tests (assumes Ubuntu)
 
 CAUTION: root tests will flush the firewall and use iptables commands on the
 host.
