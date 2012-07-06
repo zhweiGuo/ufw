@@ -297,7 +297,7 @@ def cmd_pipe(command1, command2):
 def _print(output, s):
     '''Implement our own print statement that will output utf-8 when
        appropriate.'''
-    try:
+    try: # python3
         writer = output.buffer
     except:
         writer = output
