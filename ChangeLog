@@ -1,3 +1,9 @@
+ufw (0.33) UNRELEASED; urgency=low
+
+  * ...
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 Jul 2012 11:29:39 -0500
+
 ufw (0.32) RELEASED; urgency=low
 
   * Obsolete python2.5 in preparation for python3 support
