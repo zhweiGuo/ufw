@@ -296,7 +296,7 @@ def cmd_pipe(command1, command2):
 def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
-        print("ERROR: %s" % (out), file=sys.stderr)
+        print("ERROR: %s" % (out.encode('utf-8', 'ignore')), file=sys.stderr)
         sys.stderr.flush()
     except IOError:
         pass
@@ -308,7 +308,7 @@ def error(out, do_exit=True):
 def warn(out):
     '''Print warning message'''
     try:
-        print("WARN: %s" % (out), file=sys.stderr)
+        print("WARN: %s" % (out.encode('utf-8', 'ignore')), file=sys.stderr)
         sys.stderr.flush()
     except IOError:
         pass
@@ -318,9 +318,9 @@ def msg(out, output=sys.stdout, newline=True):
     '''Print message'''
     try:
         if newline:
-            print("%s" % (out), file=output)
+            print("%s" % (out.encode('utf-8', 'ignore')), file=output)
         else:
-            print("%s" % (out), file=output, end="")
+            print("%s" % (out.encode('utf-8', 'ignore')), file=output, end="")
         output.flush()
     except IOError:
         pass
@@ -330,7 +330,7 @@ def debug(out):
     '''Print debug message'''
     if DEBUGGING:
         try:
-            print("DEBUG: %s" % (out), file=sys.stderr)
+            print("DEBUG: %s" % (out.encode('utf-8', 'ignore')), file=sys.stderr)
             sys.stderr.flush()
         except IOError:
             pass
