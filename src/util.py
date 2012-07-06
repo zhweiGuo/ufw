@@ -292,22 +292,29 @@ def cmd_pipe(command1, command2):
     out = sp2.communicate()[0]
     return [sp2.returncode, str(out)]
 
-
 # TODO: this is pretty horrible. We should be using only unicode strings
 #       internally and decode() when printing rather than doing this.
-def _get_printable_string(s):
-    '''Try to get a printable string'''
+def _print(output, s):
+    '''Implement our own print statement that will output utf-8 when
+       appropriate.'''
     try:
-        out = s.encode('utf-8', 'ignore').decode('utf-8')
+        writer = output.buffer
+    except:
+        writer = output
+
+    try:
+        out = s.encode('utf-8', 'ignore')
     except:
         out = s
-    return out
+
+    writer.write(bytes(out))
+    output.flush()
+
 
 def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
-        print("ERROR: %s" % (_get_printable_string(out)), file=sys.stderr)
-        sys.stderr.flush()
+        _print(sys.stderr, 'ERROR: %s\n' % out)
     except IOError:
         pass
 
@@ -318,8 +325,7 @@ def error(out, do_exit=True):
 def warn(out):
     '''Print warning message'''
     try:
-        print("WARN: %s" % (_get_printable_string(out)), file=sys.stderr)
-        sys.stderr.flush()
+        _print(sys.stderr, 'WARN: %s\n' % out)
     except IOError:
         pass
 
@@ -328,10 +334,9 @@ def msg(out, output=sys.stdout, newline=True):
     '''Print message'''
     try:
         if newline:
-            print("%s" % (_get_printable_string(out)), file=output)
+            _print(output, '%s\n' % out)
         else:
-            print("%s" % (_get_printable_string(out)), file=output, end="")
-        output.flush()
+            _print(output, '%s' % out)
     except IOError:
         pass
 
@@ -340,8 +345,7 @@ def debug(out):
     '''Print debug message'''
     if DEBUGGING:
         try:
-            print("DEBUG: %s" % (_get_printable_string(out)), file=sys.stderr)
-            sys.stderr.flush()
+            _print(sys.stderr, 'DEBUG: %s\n' % out)
         except IOError:
             pass
 
