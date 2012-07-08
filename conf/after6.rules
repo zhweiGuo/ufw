@@ -20,8 +20,8 @@
 -A ufw6-after-input -p udp --dport 138 -j ufw6-skip-to-policy-input
 -A ufw6-after-input -p tcp --dport 139 -j ufw6-skip-to-policy-input
 -A ufw6-after-input -p tcp --dport 445 -j ufw6-skip-to-policy-input
--A ufw6-after-input -p udp --dport 67 -j ufw6-skip-to-policy-input
--A ufw6-after-input -p udp --dport 68 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p udp --dport 546 -j ufw6-skip-to-policy-input
+-A ufw6-after-input -p udp --dport 547 -j ufw6-skip-to-policy-input
 
 # don't delete the 'COMMIT' line or these rules won't be processed
 COMMIT
