@@ -2,8 +2,11 @@ ufw (0.33) UNRELEASED; urgency=low
 
   * conf/after6.rules: also use correct ports for DHCPv6. Thanks to Marco
     Davids (LP: #1007326)
+  * src/util.py: add get_netfilter_capabilities() for getting the capabilities
+    set for things we want to support but may not be in all kernels/iptables
+    versions
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 Jul 2012 11:29:39 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 23 Jul 2012 22:34:20 -0500
 
 ufw (0.32) RELEASED; urgency=low
 
