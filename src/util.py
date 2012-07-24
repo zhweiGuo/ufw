@@ -726,7 +726,9 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
 
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
-    if rc != 0:
+    if rc == 3: # not root
+        raise OSError(errno.EPERM, out)
+    elif rc != 0:
         raise OSError(errno.ENOENT, out)
 
     # Now test for various capabilities. We won't test for everything, just
@@ -747,10 +749,10 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
     # Cleanup
     (rc, out) = cmd([exe, '-F', chain])
     if rc != 0:
-        raise OSError(errno.ENOTSUP, out)
+        raise OSError(errno.ENOENT, out)
     (rc, out) = cmd([exe, '-X', chain])
     if rc != 0:
-        raise OSError(errno.ENOTSUP, out)
+        raise OSError(errno.ENOENT, out)
 
     return caps
 
