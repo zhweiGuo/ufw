@@ -710,13 +710,17 @@ def get_iptables_version(exe="/sbin/iptables"):
 
 
 def get_netfilter_capabilities(exe="/sbin/iptables"):
-    '''Return capabilities set for netfilter to support new features'''
+    '''Return capabilities set for netfilter to support new features. Callers
+       must be root.'''
     def test_cap(exe, chain, rule):
         args = [exe, '-A', chain]
         (rc, out) = cmd(args + rule)
         if rc == 0:
             return True
         return False
+
+    if os.getuid() != 0:
+        raise OSError(errno.EPERM, "Must be root")
 
     caps = []
 
@@ -726,9 +730,7 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
 
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
-    if rc == 3: # not root
-        raise OSError(errno.EPERM, out)
-    elif rc != 0:
+    if rc != 0:
         raise OSError(errno.ENOENT, out)
 
     # Now test for various capabilities. We won't test for everything, just
@@ -747,9 +749,7 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
         caps.append('recent-update')
 
     # Cleanup
-    (rc, out) = cmd([exe, '-F', chain])
-    if rc != 0:
-        raise OSError(errno.ENOENT, out)
+    cmd([exe, '-F', chain])
     (rc, out) = cmd([exe, '-X', chain])
     if rc != 0:
         raise OSError(errno.ENOENT, out)
