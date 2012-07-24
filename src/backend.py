@@ -64,6 +64,37 @@ class UFWBackend:
 
         self.iptables_version = ufw.util.get_iptables_version(self.iptables)
 
+        self.caps = {}
+        self.caps['limit'] = {}
+
+        # Set defaults for dryrun, non-root, etc
+        self.caps['limit']['4'] = True
+        self.caps['limit']['6'] = False # historical default for the testsuite
+
+        # Try to get capabilities from the running system
+        if not self.dryrun:
+            try: # v4
+                nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
+                if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                    self.caps['limit']['4'] = True
+                else:
+                    self.caps['limit']['4'] = False
+            except OSError as ex:
+                # If running as non-root, continue to use the defaults
+                if ex.errno != errno.EPERM:
+                    raise
+
+            try: # v6
+                nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+                if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                    self.caps['limit']['6'] = True
+                else:
+                    self.caps['limit']['6'] = False
+            except OSError as ex:
+                # If running as non-root, continue to use the defaults
+                if ex.errno != errno.EPERM:
+                    raise
+
     def is_enabled(self):
         '''Is firewall configured as enabled'''
         if 'enabled' in self.defaults and \
