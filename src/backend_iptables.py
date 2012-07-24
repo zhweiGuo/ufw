@@ -805,7 +805,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
             if self.defaults['loglevel'] != "off":
                 ufw.util.write_to_file(fd, "-A " + \
-                         chain_prefix + "-user-limit" + \
+                         chain_prefix + "-user-limit " + \
                          " ".join(self.ufw_user_limit_log) + \
                          " \"" + self.ufw_user_limit_log_text + " \"\n")
             ufw.util.write_to_file(fd, "-A " + chain_prefix + \
