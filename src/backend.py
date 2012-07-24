@@ -71,29 +71,21 @@ class UFWBackend:
         self.caps['limit']['4'] = True
         self.caps['limit']['6'] = False # historical default for the testsuite
 
-        # Try to get capabilities from the running system
-        if not self.dryrun:
-            try: # v4
-                nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
-                if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
-                    self.caps['limit']['4'] = True
-                else:
-                    self.caps['limit']['4'] = False
-            except OSError as ex:
-                # If running as non-root, continue to use the defaults
-                if ex.errno != errno.EPERM:
-                    raise
+        # Try to get capabilities from the running system if root
+        if os.getuid() == 0 and not self.dryrun:
+            # v4
+            nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
+            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                self.caps['limit']['4'] = True
+            else:
+                self.caps['limit']['4'] = False
 
-            try: # v6
-                nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
-                if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
-                    self.caps['limit']['6'] = True
-                else:
-                    self.caps['limit']['6'] = False
-            except OSError as ex:
-                # If running as non-root, continue to use the defaults
-                if ex.errno != errno.EPERM:
-                    raise
+            # v6
+            nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                self.caps['limit']['6'] = True
+            else:
+                self.caps['limit']['6'] = False
 
     def is_enabled(self):
         '''Is firewall configured as enabled'''
