@@ -193,8 +193,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 items.append('ufw-user-limit-accept')
                 items.append('ufw-user-limit')
             if self.caps['limit']['6']:
-                items.append('ufw6-user-limit-accept')
-                items.append('ufw6-user-limit')
+                items6.append('ufw6-user-limit-accept')
+                items6.append('ufw6-user-limit')
         elif rules_type == "after":
             for b in ['input', 'forward', 'output']:
                 items.append('ufw-after-%s' % b)
