@@ -5,8 +5,9 @@ ufw (0.33) UNRELEASED; urgency=low
   * src/util.py: add get_netfilter_capabilities() for getting the capabilities
     set for things we want to support but may not be in all kernels/iptables
     versions
+  * add IPv6 limit support (LP: #951462)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 23 Jul 2012 22:34:20 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 09 Aug 2012 23:55:44 -0500
 
 ufw (0.32) RELEASED; urgency=low
 
