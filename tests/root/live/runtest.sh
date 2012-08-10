@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -15,6 +15,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 source "$TESTPATH/../testlib.sh"
+
+# This isn't available everywhere, so we will test it later
+sed -i "s/self.caps\['limit'\]\['6'\] = True/self.caps['limit']['6'] = False/" $TESTPATH/lib/python/ufw/backend.py
 
 for ipv6 in yes no
 do
