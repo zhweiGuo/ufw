@@ -72,7 +72,7 @@ class UFWBackend:
         self.caps['limit']['6'] = False # historical default for the testsuite
 
         # Try to get capabilities from the running system if root
-        if os.getuid() == 0 and not self.dryrun:
+        if self.do_checks and os.getuid() == 0 and not self.dryrun:
             # v4
             nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
             if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
