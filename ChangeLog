@@ -16,8 +16,9 @@ ufw (0.33) UNRELEASED; urgency=low
   * add 'show added' report (LP: #987784)
   * remove ACCEPT_NO_TRACK option since it never worked (LP: #787955)
   * src/backend_iptables.py: display output of ufw-init if it fails
+  * don't traceback if can't determine iptables version
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 11 Aug 2012 21:47:48 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 12 Aug 2012 10:58:04 -0500
 
 ufw (0.32) RELEASED; urgency=low
 
