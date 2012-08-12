@@ -62,7 +62,11 @@ class UFWBackend:
         self.ip6tables_restore = os.path.join(iptables_dir, \
                                               "ip6tables-restore")
 
-        self.iptables_version = ufw.util.get_iptables_version(self.iptables)
+        try:
+            self.iptables_version = ufw.util.get_iptables_version(self.iptables)
+        except OSError:
+            err_msg = _("Couldn't determine iptables version")
+            raise UFWError(err_msg)
 
         self.caps = {}
         self.caps['limit'] = {}
@@ -163,8 +167,11 @@ class UFWBackend:
                 if not pat.search(profile):
                     profiles.append(os.path.join(self.files['apps'], profile))
 
-        for path in list(self.files.values()) + [ os.path.abspath(sys.argv[0]) ] + \
+        for path in list(self.files.values()) + \
+                [ os.path.abspath(sys.argv[0]) ] + \
                 profiles:
+            if not path.startswith('/'):
+                path = "%s/%s" % (os.getcwd(), path)
             while True:
                 debug("Checking " + path)
                 if path == self.files['apps'] and \
@@ -199,9 +206,12 @@ class UFWBackend:
                 if path == "/":
                     break
 
+                last_path = path
                 path = os.path.dirname(path)
                 if not path:
-                    raise OSError(errno.ENOENT, "Could not find '%s'" % (path))
+                    raise OSError(errno.ENOENT, \
+                                  "Could not find parent for '%s'" % \
+                                  (last_path))
 
         for f in self.files:
             if f != 'apps' and not os.path.isfile(self.files[f]):
