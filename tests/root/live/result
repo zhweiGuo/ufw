@@ -3025,6 +3025,81 @@ Rule deleted
 586: disable
 
 
+Show added
+Setting IPV6 to yes
 587: disable
+
+
+588: enable
+
+
+589: limit 22/tcp
+
+
+590: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+
+
+591: deny Samba
+
+
+592: show added
+WARN: Checks disabled
+Added user rules (see 'ufw status' for running firewall):
+ufw limit 22/tcp
+ufw deny Samba
+ufw allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+
+
+593: delete limit 22/tcp
+
+
+594: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+
+
+595: delete deny Samba
+
+
+596: show added
+WARN: Checks disabled
+Added user rules (see 'ufw status' for running firewall):
+(None)
+
+
+Setting IPV6 to no
+597: disable
+
+
+598: enable
+
+
+599: limit 22/tcp
+
+
+600: deny Samba
+
+
+601: show added
+WARN: Checks disabled
+Added user rules (see 'ufw status' for running firewall):
+ufw limit 22/tcp
+ufw deny Samba
+
+
+602: delete limit 22/tcp
+
+
+603: delete deny Samba
+
+
+604: show added
+WARN: Checks disabled
+Added user rules (see 'ufw status' for running firewall):
+(None)
+
+
+605: disable
+
+
+606: disable
 
 
