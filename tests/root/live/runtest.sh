@@ -446,11 +446,15 @@ do
     do_cmd "0" nostats disable
     do_cmd "0" nostats enable
     do_cmd "0" nostats limit 22/tcp
-    do_cmd "0" nostats allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    fi
     do_cmd "0" nostats deny Samba
     do_cmd "0" show added
     do_cmd "0" nostats delete limit 22/tcp
-    do_cmd "0" nostats delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    fi
     do_cmd "0" nostats delete deny Samba
     do_cmd "0" show added
 done
