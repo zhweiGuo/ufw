@@ -432,25 +432,23 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def stop_firewall(self):
         '''Stop the firewall'''
-        err_msg = _("problem running")
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
             (rc, out) = cmd([self.files['init'], 'force-stop'])
             if rc != 0:
-                debug(out)
-                raise UFWError(err_msg + " ufw-init")
+                err_msg = _("problem running ufw-init\n%s" % out)
+                raise UFWError(err_msg)
 
     def start_firewall(self):
         '''Start the firewall'''
-        err_msg = _("problem running")
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
             (rc, out) = cmd([self.files['init'], 'start'])
             if rc != 0:
-                debug(out)
-                raise UFWError(err_msg + " ufw-init")
+                err_msg = _("problem running ufw-init\n%s" % out)
+                raise UFWError(err_msg)
 
             if 'loglevel' not in self.defaults or \
                self.defaults['loglevel'] not in list(self.loglevels.keys()):
