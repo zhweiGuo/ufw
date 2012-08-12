@@ -164,3 +164,7 @@ Bug #946332
 ERROR: not enough args
 
 
+Bug #787955
+30: --dry-run status
+
+

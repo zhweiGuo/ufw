@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2009 Canonical Ltd.
+#    Copyright 2009-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -99,5 +99,10 @@ do_cmd "0" null --dry-run allow in on iaslab
 
 echo "Bug #946332" >> $TESTTMP/result
 do_cmd "1" --dry-run
+
+echo "Bug #787955" >> $TESTTMP/result
+sed -i "s/DEFAULT_INPUT_POLICY=.*/DEFAULT_INPUT_POLICY=ACCEPT_NO_TRACK/" $TESTPATH/etc/default/ufw
+do_cmd "1" null --dry-run status
+sed -i "s/DEFAULT_INPUT_POLICY=.*/DEFAULT_INPUT_POLICY=ACCEPT/" $TESTPATH/etc/default/ufw
 
 exit 0

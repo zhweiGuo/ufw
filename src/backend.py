@@ -109,8 +109,6 @@ class UFWBackend:
         rstr = ""
         if self.defaults[policy] == "accept":
             rstr = "allow"
-        elif self.defaults[policy] == "accept_no_track":
-            rstr = "allow-without-tracking"
         elif self.defaults[policy] == "reject":
             rstr = "reject"
         else:
@@ -229,14 +227,13 @@ class UFWBackend:
             orig.close()
 
         # do some default policy sanity checking
-        policies = ['accept', 'accept_no_track', 'drop', 'reject']
+        policies = ['accept', 'drop', 'reject']
         for c in [ 'input', 'output', 'forward' ]:
             if 'default_%s_policy' % (c) not in self.defaults:
                 err_msg = _("Missing policy for '%s'" % (c))
                 raise UFWError(err_msg)
             p = self.defaults['default_%s_policy' % (c)]
-            if p not in policies or \
-               (p == 'accept_no_track' and c == 'forward'):
+            if p not in policies:
                 err_msg = _("Invalid policy '%(policy)s' for '%(chain)s'" % \
                             ({'policy': p, 'chain': c}))
                 raise UFWError(err_msg)

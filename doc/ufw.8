@@ -377,9 +377,7 @@ IPv6\-only rules after other rules.
 .PP
 On installation, \fBufw\fR is disabled with a default incoming policy of deny
 and a default outgoing policy of allow, with stateful tracking for NEW
-connections. Having a default policy of allow without stateful tracking can be
-achieved by using ACCEPT_NO_TRACK instead of ACCEPT in
-#CONFIG_PREFIX#/default/ufw.
+connections.
 
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
