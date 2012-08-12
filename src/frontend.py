@@ -52,7 +52,7 @@ def parse_command(argv):
 
     # Show commands
     for i in ['raw', 'before-rules', 'user-rules', 'after-rules', \
-              'logging-rules', 'builtins', 'listening']:
+              'logging-rules', 'builtins', 'listening', 'added']:
         p.register_command(ufw.parser.UFWCommandShow(i))
 
     # Rule commands
@@ -319,6 +319,31 @@ class UFWFrontend:
 
         return res
 
+    def get_show_added(self):
+        '''Shows added rules to the firewall'''
+        rules = self.backend.get_rules()
+
+        out = _("Added user rules (see 'ufw status' for running firewall):")
+
+        if len(rules) == 0:
+            return out + _("\n(None)")
+
+        added = []
+        for r in self.backend.get_rules():
+            rstr = ufw.parser.UFWCommandRule.get_command(r)
+
+            # Approximate the order the rules were added. Since rules is
+            # internally rules4 + rules6, IPv6 only rules will show up after
+            # other rules. In terms of rule ordering in the kernel, this is
+            # an equivalent ordering.
+            if rstr in added:
+                continue
+
+            added.append(rstr)
+            out += "\nufw %s" % rstr
+
+        return out
+
     def set_rule(self, rule, ip_version):
         '''Updates firewall with rule'''
         res = ""
@@ -580,6 +605,8 @@ class UFWFrontend:
             tmp = action.split('-')[1]
             if tmp == "listening":
                 res = self.get_show_listening()
+            elif tmp == "added":
+                res = self.get_show_added()
             else:
                 res = self.get_show_raw(tmp)
         elif action == "status-numbered":

@@ -642,7 +642,7 @@ class UFWCommandStatus(UFWCommand):
         return r
 
 class UFWCommandShow(UFWCommand):
-    '''Class for parsing ufw status commands'''
+    '''Class for parsing ufw show commands'''
     def __init__(self, command):
         type = 'show'
         UFWCommand.__init__(self, type, command)
@@ -665,6 +665,8 @@ class UFWCommandShow(UFWCommand):
             action = "show-builtins"
         elif argv[1].lower() == "listening":
             action = "show-listening"
+        elif argv[1].lower() == "added":
+            action = "show-added"
         else:
             raise ValueError()
 
