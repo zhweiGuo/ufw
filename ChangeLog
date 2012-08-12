@@ -12,8 +12,9 @@ ufw (0.33) UNRELEASED; urgency=low
       po/nb.po, po/nl.po, po/pt_BR.po, po/pt.po, po/sk.po, po/sl.po, po/sv.po,
       po/zh_CN.po, po/zh_TW.po (new, LP: #868195)
     - thanks to all contributors: https://translations.launchpad.net/ufw
+  * README.translations: updated for paths and testing
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 09 Aug 2012 23:55:44 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 11 Aug 2012 21:47:48 -0500
 
 ufw (0.32) RELEASED; urgency=low
 
