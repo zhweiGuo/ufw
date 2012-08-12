@@ -6,6 +6,12 @@ ufw (0.33) UNRELEASED; urgency=low
     set for things we want to support but may not be in all kernels/iptables
     versions
   * add IPv6 limit support (LP: #951462)
+  * import new and updated Launchpad translations:
+    - po/ast.po, po/bs.po, po/cs.po, po/de.po, po/el.po, po/en_AU.po,
+      po/en_GB.po, po/es.po, po/fi.po, po/fr.po, po/he.po, po/hu.po, po/it.po,
+      po/nb.po, po/nl.po, po/pt_BR.po, po/pt.po, po/sk.po, po/sl.po, po/sv.po,
+      po/zh_CN.po, po/zh_TW.po (new, LP: #868195)
+    - thanks to all contributors: https://translations.launchpad.net/ufw
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 09 Aug 2012 23:55:44 -0500
 
