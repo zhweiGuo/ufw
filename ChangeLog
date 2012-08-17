@@ -1,4 +1,4 @@
-ufw (0.33) UNRELEASED; urgency=low
+ufw (0.33) RELEASED; urgency=low
 
   * conf/after6.rules: also use correct ports for DHCPv6. Thanks to Marco
     Davids (LP: #1007326)
