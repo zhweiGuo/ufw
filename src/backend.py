@@ -68,6 +68,17 @@ class UFWBackend:
             err_msg = _("Couldn't determine iptables version")
             raise UFWError(err_msg)
 
+        # Initialize via initcaps only when we need it (LP: #1044361)
+        self.caps = None
+
+    def initcaps(self):
+        '''Initialize the capabilities database. This needs to be called
+           before accessing the database.'''
+
+        # Only initialize if not initialized already
+        if self.caps != None:
+            return
+
         self.caps = {}
         self.caps['limit'] = {}
 

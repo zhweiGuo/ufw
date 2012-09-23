@@ -160,6 +160,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             out += "> " + _("Checking raw ip6tables\n")
             return out
 
+        # Initialize the capabilities database
+        self.initcaps()
+
         args = ['-n', '-v', '-x', '-L']
         items = []
         items6 = []
@@ -470,6 +473,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.dryrun:
             return False
 
+        # Initialize the capabilities database
+        self.initcaps()
+
         prefix = "ufw"
         exe = self.iptables
         if v6:
@@ -684,6 +690,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         except Exception:
             raise
 
+        # Initialize the capabilities database
+        self.initcaps()
+
         chain_prefix = "ufw"
         rules = self.rules
         if v6:
@@ -830,6 +839,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         * updating user rules file
         * reloading the user rules file if rule is modified
         '''
+
+        # Initialize the capabilities database
+        self.initcaps()
+
         rstr = ""
 
         if rule.v6:
@@ -1072,6 +1085,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Update loglevel of running firewall'''
         if self.dryrun:
             return
+
+        # Initialize the capabilities database
+        self.initcaps()
 
         rules_t = []
         try:
