@@ -21,7 +21,7 @@ import re
 import stat
 import sys
 import ufw.util
-from ufw.util import warn, debug
+from ufw.util import error, warn, debug
 from ufw.common import UFWError, config_dir, iptables_dir, UFWRule
 import ufw.applications
 
@@ -89,14 +89,20 @@ class UFWBackend:
         # Try to get capabilities from the running system if root
         if self.do_checks and os.getuid() == 0 and not self.dryrun:
             # v4
-            nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
+            try:
+                nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
+            except OSError as e:
+                error("initcaps\n%s" % e)
             if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
                 self.caps['limit']['4'] = True
             else:
                 self.caps['limit']['4'] = False
 
             # v6
-            nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+            try:
+                nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+            except OSError as e:
+                error("initcaps\n%s" % e)
             if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
                 self.caps['limit']['6'] = True
             else:
