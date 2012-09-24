@@ -1075,7 +1075,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             exe = self.ip6tables
         (rc, out) = cmd([exe] + args)
         if rc != 0:
-            err_msg = _("Could not perform '%s'") % (args)
+            err_msg = _("Could not perform '%s'" % (args))
             if fail_ok:
                 debug("FAILOK: " + err_msg)
             else:
