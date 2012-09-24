@@ -1,3 +1,12 @@
+ufw (0.34) UNRELEASED; urgency=low
+
+  * refactor capabilities checks and only call when needed
+  * error out early instead of tracing back with iptables errors in
+    get_netfilter_capabilities() (LP: #1044361)
+  * fix TypeError which somehow only manifested itself when using zh_CN
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 24 Sep 2012 09:51:45 -0500
+
 ufw (0.33) RELEASED; urgency=low
 
   * conf/after6.rules: also use correct ports for DHCPv6. Thanks to Marco
