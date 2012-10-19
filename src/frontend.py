@@ -99,6 +99,7 @@ Usage: %(progname)s %(command)s
  %(limit)-31s add limit %(rule)s
  %(delete)-31s delete %(urule)s
  %(insert)-31s insert %(urule)s at %(number)s
+ %(reload)-31s reload firewall
  %(reset)-31s reset firewall
  %(status)-31s show firewall status
  %(statusnum)-31s show firewall status as numbered list of %(rules)s
@@ -128,6 +129,7 @@ Usage: %(progname)s %(command)s
          'urule': "RULE", \
          'insert': "insert NUM RULE", \
          'number': "NUM", \
+         'reload': "reload", \
          'reset': "reset", \
          'status': "status", \
          'statusnum': "status numbered", \
