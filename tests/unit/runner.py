@@ -1,19 +1,28 @@
 #!/usr/bin/python
 #
-# find_tests() and main() based on Lib/test/regrtest.py from Python 3.1
-# Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
-# Python Software Foundation; All Rights Reserved
-
-# runner.py: test runner for unit tests
+# Copyright 2012 Canonical Ltd.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 3,
+# as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# find_tests(), runtest() and main() inspired by regrtest.py from Python 3.1
+# Copyright (c) 2001-2010 Python Software Foundation; All Rights Reserved
 #
 
+
 from __future__ import print_function
-
-
 import os
 import sys
 
-# Based on 
 def find_tests(testdir=None):
     '''Find tests'''
     if not testdir:
@@ -60,10 +69,6 @@ if __name__ == '__main__':
 
     # Import this here, so we are guaranteed to get ours from topdir
     from tests.unit.support import TestFailed
-
-    #if trace:
-    #    print("TODO: trace")
-    #    sys.exit(1)
 
     passed = []
     failed = []
