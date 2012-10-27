@@ -30,6 +30,19 @@ mo:
 test:
 	./run_tests.sh -s -i $(PYTHON)
 
+unittest:
+	$(PYTHON) ./tests/unit/runner.py
+
+coverage:
+	# No python3 coverage yet
+	#$(PYTHON) ./tests/unit/runner.py
+	python -m coverage run ./tests/unit/runner.py
+
+coverage-report:
+	# No python3 coverage yet
+	#$(PYTHON) ./tests/unit/runner.py
+	python -m coverage report --show-missing --omit="tests/*"
+
 syntax-check: clean
 	$(shell mkdir $(TMPDIR) && $(PYFLAKES_EXE) src 2>&1 | grep -v "undefined name '_'" > $(PYFLAKES))
 	cat "$(PYFLAKES)"
@@ -47,7 +60,7 @@ man-check: clean
 		echo "PASS"; \
 	done; \
 
-check: syntax-check man-check test
+check: syntax-check man-check test unittest
 
 # These are only used in development
 clean:
@@ -56,6 +69,9 @@ clean:
 	rm -rf ./tests/testarea
 	rm -rf $(TMPDIR)
 	rm -f ./locales/mo/*.mo
+	rm -f ./tests/unit/*.pyc ./tests/*.pyc
+	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__
+	rm -rf ./.coverage
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc

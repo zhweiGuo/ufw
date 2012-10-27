@@ -6,3 +6,4 @@ tests/testarea
 locales/mo/*.mo
 debian/ufw
 build-stamp
+.coverage
