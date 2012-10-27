@@ -335,4 +335,17 @@ root_kern tests assume all kernel features supported by check-requirements
 are enabled. They behave just like the root tests.
 
 
+Unit Tests
+----------
+ufw unit tests are in tests/unit and can be called like so:
+$ make unittest
+
+This is equivalent to something like:
+$ python ./tests/unit/runner.py
+
+Alternatively, can install python-coverage and do:
+$ make coverage         # like 'unittest', but with -m coverage
+$ make coverage-report
+
+
 Copyright 2008-2012 Canonical Ltd.
