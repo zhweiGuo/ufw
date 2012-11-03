@@ -16,7 +16,8 @@
 
 import unittest
 import tests.unit.support
-import src.applications as applications
+import src as ufw
+import ufw.applications
 
 class ApplicationsTestCase(unittest.TestCase):
     def setUp(self):

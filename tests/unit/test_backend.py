@@ -16,7 +16,8 @@
 
 import unittest
 import tests.unit.support
-import src.backend as backend
+import src as ufw
+import ufw.backend
 
 class BackendTestCase(unittest.TestCase):
     def setUp(self):

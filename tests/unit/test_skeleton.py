@@ -16,9 +16,12 @@
 
 import unittest
 import tests.unit.support
+import src as ufw          # Always do this so we can do 'import ufw.foo'
+import ufw.common
 
 class SkeletonTestCase(unittest.TestCase):
     def setUp(self):
+
         pass
 
     def tearDown(self):
@@ -26,7 +29,10 @@ class SkeletonTestCase(unittest.TestCase):
 
     def test_example(self):
         '''Test example dummy test'''
-        pass
+        try:
+            raise ufw.common.UFWError("test")
+        except ufw.common.UFWError:
+            pass
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(

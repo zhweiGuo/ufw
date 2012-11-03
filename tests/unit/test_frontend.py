@@ -16,7 +16,8 @@
 
 import unittest
 import tests.unit.support
-import src.frontend as frontend
+import src as ufw
+import ufw.frontend
 
 class FrontendTestCase(unittest.TestCase):
     def setUp(self):

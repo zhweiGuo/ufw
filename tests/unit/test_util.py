@@ -16,7 +16,8 @@
 
 import unittest
 import support
-import src.util as util
+import src as ufw
+import ufw.util
 
 import os
 import socket
@@ -32,26 +33,26 @@ class UtilTestCase(unittest.TestCase):
 
     def test_get_services_proto(self):
         '''Test get_services_proto()'''
-        res = util.get_services_proto("echo")
+        res = ufw.util.get_services_proto("echo")
         self.assertTrue(res == "any", res)
 
-        res = util.get_services_proto("tcpmux")
+        res = ufw.util.get_services_proto("tcpmux")
         self.assertTrue(res == "tcp", res)
 
-        res = util.get_services_proto("fsp")
+        res = ufw.util.get_services_proto("fsp")
         self.assertTrue(res == "udp", res)
 
     def test_parse_port_proto(self):
         '''Test parse_port_proto()'''
-        (s, p) = util.parse_port_proto("7")
+        (s, p) = ufw.util.parse_port_proto("7")
         self.assertTrue(s == "7", s)
         self.assertTrue(p == "any", p)
 
-        (s, p) = util.parse_port_proto("7/tcp")
+        (s, p) = ufw.util.parse_port_proto("7/tcp")
         self.assertTrue(s == "7", s)
         self.assertTrue(p == "tcp", p)
 
-        (s, p) = util.parse_port_proto("7/udp")
+        (s, p) = ufw.util.parse_port_proto("7/udp")
         self.assertTrue(s == "7", s)
         self.assertTrue(p == "udp", p)
 
@@ -84,7 +85,7 @@ class UtilTestCase(unittest.TestCase):
               ]
 
         for b in bad:
-            self.assertFalse(util.valid_address6(b), b)
+            self.assertFalse(ufw.util.valid_address6(b), b)
 
         good = [
                 '2001:db8::/32',
@@ -97,7 +98,7 @@ class UtilTestCase(unittest.TestCase):
                ]
 
         for g in good:
-            self.assertTrue(util.valid_address6(g), g)
+            self.assertTrue(ufw.util.valid_address6(g), g)
 
 
     def test_valid_address4(self):
@@ -113,7 +114,7 @@ class UtilTestCase(unittest.TestCase):
               ]
 
         for b in bad:
-            self.assertFalse(util.valid_address4(b), b)
+            self.assertFalse(ufw.util.valid_address4(b), b)
 
         good = [
                 '192.168.0.0',
@@ -135,7 +136,7 @@ class UtilTestCase(unittest.TestCase):
                ]
 
         for g in good:
-            self.assertTrue(util.valid_address4(g), g)
+            self.assertTrue(ufw.util.valid_address4(g), g)
 
     def test_valid_netmask(self):
         '''Test valid_netmask()'''
@@ -148,7 +149,7 @@ class UtilTestCase(unittest.TestCase):
               ]
 
         for b in bad:
-            self.assertFalse(util.valid_netmask(b, v6=False), b)
+            self.assertFalse(ufw.util.valid_netmask(b, v6=False), b)
 
         good = [
                 '0',
@@ -163,7 +164,7 @@ class UtilTestCase(unittest.TestCase):
                ]
 
         for g in good:
-            self.assertTrue(util.valid_netmask(g, v6=False), g)
+            self.assertTrue(ufw.util.valid_netmask(g, v6=False), g)
 
 
         # v6
@@ -175,7 +176,7 @@ class UtilTestCase(unittest.TestCase):
               ]
 
         for b in bad:
-            self.assertFalse(util.valid_netmask(b, v6=True), b)
+            self.assertFalse(ufw.util.valid_netmask(b, v6=True), b)
 
         good = [
                 '0',
@@ -188,7 +189,7 @@ class UtilTestCase(unittest.TestCase):
                ]
 
         for g in good:
-            self.assertTrue(util.valid_netmask(g, v6=True), g)
+            self.assertTrue(ufw.util.valid_netmask(g, v6=True), g)
 
 
     def test_valid_address(self):
@@ -203,9 +204,9 @@ class UtilTestCase(unittest.TestCase):
               ]
 
         for b in bad:
-            self.assertFalse(util.valid_address(b, "any"), b)
-            self.assertFalse(util.valid_address(b, "4"), b)
-            self.assertFalse(util.valid_address(b, "6"), b)
+            self.assertFalse(ufw.util.valid_address(b, "any"), b)
+            self.assertFalse(ufw.util.valid_address(b, "4"), b)
+            self.assertFalse(ufw.util.valid_address(b, "6"), b)
 
         good = [
                 '192.168.0.0',
@@ -219,11 +220,11 @@ class UtilTestCase(unittest.TestCase):
                ]
 
         for g in good:
-            self.assertTrue(util.valid_address(g, "any"), g)
+            self.assertTrue(ufw.util.valid_address(g, "any"), g)
             if ':' in g:
-                self.assertTrue(util.valid_address(g, "6"), g)
+                self.assertTrue(ufw.util.valid_address(g, "6"), g)
             else:
-                self.assertTrue(util.valid_address(g, "4"), g)
+                self.assertTrue(ufw.util.valid_address(g, "4"), g)
 
 
     def test_normalize_address(self):
@@ -236,7 +237,7 @@ class UtilTestCase(unittest.TestCase):
         f = open(tmp, 'w')
         f.close()
 
-        f = util.open_file_read(tmp)
+        f = ufw.util.open_file_read(tmp)
         f.close()
 
     def test_open_files(self):

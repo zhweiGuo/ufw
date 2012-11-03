@@ -62,3 +62,31 @@ def run_unittest(*classes):
             err = "multiple errors occurred"
         raise TestFailed(err)
 
+def init_gettext():
+    '''Convenience function to setup _'''
+
+    # This is all stolen from src/ufw
+    import gettext
+    kwargs = {}
+    if sys.version_info[0] < 3:
+        # In Python 2, ensure that the _() that gets installed into built-ins
+        # always returns unicodes.  This matches the default behavior under
+        # Python 3, although that keyword argument is not present in the Python
+        # 3 API.
+        kwargs['unicode'] = True
+    gettext.install("ufw", **kwargs)
+
+    # Internationalization
+    gettext.bindtextdomain("ufw", \
+                           os.path.join('./locales/mo'))
+    gettext.textdomain("ufw")
+    try:
+        # BAW: I'm not sure why both this and the .install() above is here, but
+        # let's roll with it for now.  This is the Python 2 version, which
+        # ensures we get unicodes.
+        _ = gettext.ugettext
+    except AttributeError:
+        # Python 3 always returns unicodes.
+        _ = gettext.gettext
+
+    return _
