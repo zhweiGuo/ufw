@@ -347,5 +347,7 @@ Alternatively, can install python-coverage and do:
 $ make coverage         # like 'unittest', but with -m coverage
 $ make coverage-report
 
+To run an individual test, use:
+$ python ./tests/unit/runner.py test_<individual test script>.py
 
 Copyright 2008-2012 Canonical Ltd.

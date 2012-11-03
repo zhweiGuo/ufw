@@ -17,6 +17,7 @@
 # Copyright (c) 2001-2010 Python Software Foundation; All Rights Reserved
 
 import unittest
+import os
 import sys
 
 class Error(Exception):
@@ -24,6 +25,25 @@ class Error(Exception):
 
 class TestFailed(Error):
     '''Test failed'''
+
+def skipped(cls, s):
+    '''Test skipped'''
+    # TODO: fix newline
+    # TODO: somehow flag and count this as skipped
+    print("skipped: %s" % s)
+    return False
+
+def recursive_rm(dirPath, contents_only=False):
+    '''recursively remove directory'''
+    names = os.listdir(dirPath)
+    for name in names:
+        path = os.path.join(dirPath, name)
+        if os.path.islink(path) or not os.path.isdir(path):
+            os.unlink(path)
+        else:
+            recursive_rm(path)
+    if contents_only == False:
+        os.rmdir(dirPath)
 
 def run_unittest(*classes):
     '''Run tests from classes'''

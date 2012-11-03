@@ -23,7 +23,7 @@ from __future__ import print_function
 import os
 import sys
 
-def find_tests(testdir=None):
+def find_tests(testdir=None, testscripts=[]):
     '''Find tests'''
     if not testdir:
         if __name__ == '__main__':
@@ -34,7 +34,10 @@ def find_tests(testdir=None):
 
         testdir = os.path.dirname(fn)
 
-    names = os.listdir(testdir)
+    if len(testscripts) > 1:
+        names = testscripts[1:]
+    else:
+        names = os.listdir(testdir)
     tests = []
     for name in names:
         if name[:5] == "test_" and name[-3:] == ".py":
@@ -64,7 +67,7 @@ if __name__ == '__main__':
             sys.path[i] = testdir
 
     print("DEBUG: sys.path=%s" % sys.path)
-    tests = find_tests()
+    tests = find_tests(testscripts=sys.argv)
     print("DEBUG: test=%s" % str(tests))
 
     # Import this here, so we are guaranteed to get ours from topdir
