@@ -172,24 +172,24 @@ for i in "" 6; do
     done
 
     echo -n "hashlimit: "
-    runcmd $exe -A $c -m hashlimit -m tcp -p tcp --dport 22 --hashlimit 1/min --hashlimit-mode srcip --hashlimit-name ssh -m state --state NEW -j ACCEPT
+    runcmd $exe -A $c -m hashlimit -m tcp -p tcp --dport 22 --hashlimit 1/min --hashlimit-mode srcip --hashlimit-name ssh -m conntrack --ctstate NEW -j ACCEPT
 
     echo -n "limit: "
     runcmd $exe -A $c -m limit --limit 3/min --limit-burst 10 -j ACCEPT
 
     for j in NEW RELATED ESTABLISHED INVALID; do
         echo -n "state ($j): "
-        runcmd $exe -A $c -m state --state $j
+        runcmd $exe -A $c -m conntrack --ctstate $j
     done
 
     echo -n "state (new, recent set): "
-    runcmd runtime $exe -A $c -m state --state NEW -m recent --set
+    runcmd runtime $exe -A $c -m conntrack --ctstate NEW -m recent --set
 
     echo -n "state (new, recent update): "
-    runcmd runtime $exe -A $c -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
+    runcmd runtime $exe -A $c -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
 
     echo -n "state (new, limit): "
-    runcmd $exe -A $c -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j ACCEPT
+    runcmd $exe -A $c -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j ACCEPT
 
     echo -n "interface (input): "
     runcmd $exe -A $c -i eth0 -j ACCEPT

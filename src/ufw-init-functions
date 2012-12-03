@@ -251,15 +251,15 @@ ufw_start() {
             # add tracking policy
             if [ "$DEFAULT_INPUT_POLICY" = "ACCEPT" ]; then
                 printf "*filter\n"\
-"-A ufw${type}-track-input -p tcp -m state --state NEW -j ACCEPT\n"\
-"-A ufw${type}-track-input -p udp -m state --state NEW -j ACCEPT\n"\
+"-A ufw${type}-track-input -p tcp -m conntrack --ctstate NEW -j ACCEPT\n"\
+"-A ufw${type}-track-input -p udp -m conntrack --ctstate NEW -j ACCEPT\n"\
 "COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
                 printf "*filter\n"\
-"-A ufw${type}-track-output -p tcp -m state --state NEW -j ACCEPT\n"\
-"-A ufw${type}-track-output -p udp -m state --state NEW -j ACCEPT\n"\
+"-A ufw${type}-track-output -p tcp -m conntrack --ctstate NEW -j ACCEPT\n"\
+"-A ufw${type}-track-output -p udp -m conntrack --ctstate NEW -j ACCEPT\n"\
 "COMMIT\n" | $exe-restore -n || error="yes"
             fi
 

@@ -564,7 +564,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 lstr = '%s -j LOG --log-prefix "[UFW %s] "' % (limit_args, \
                        policy)
                 if not pat_logall.search(s):
-                    lstr = '-m state --state NEW ' + lstr
+                    lstr = '-m conntrack --ctstate NEW ' + lstr
                 snippets[i] = pat_log.sub(r'\1-j \2\4', s)
                 snippets.insert(i, pat_log.sub(r'\1-j ' + prefix + \
                                                '-user-logging-' + suffix, s))
@@ -580,9 +580,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         pat_limit = re.compile(r' -j LIMIT')
         for i, s in enumerate(snippets):
             if pat_limit.search(s):
-                tmp1 = pat_limit.sub(' -m state --state NEW -m recent --set', \
+                tmp1 = pat_limit.sub(' -m conntrack --ctstate NEW -m recent --set', \
                                      s)
-                tmp2 = pat_limit.sub(' -m state --state NEW -m recent' + \
+                tmp2 = pat_limit.sub(' -m conntrack --ctstate NEW -m recent' + \
                                      ' --update --seconds 30 --hitcount 6' + \
                                      ' -j ' + prefix + '-user-limit', s)
                 tmp3 = pat_limit.sub(' -j ' + prefix + '-user-limit-accept', s)
@@ -1212,12 +1212,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     prefix = "[UFW BLOCK] "
                     if self.loglevels[level] < self.loglevels["medium"]:
                         # only log INVALID in medium and higher
-                        rules_t.append([c, ['-I', c, '-m', 'state', \
-                                            '--state', 'INVALID', \
+                        rules_t.append([c, ['-I', c, '-m', 'conntrack', \
+                                            '--ctstate', 'INVALID', \
                                             '-j', 'RETURN'] + largs, ''])
                     else:
-                        rules_t.append([c, ['-A', c, '-m', 'state', \
-                                            '--state', 'INVALID', \
+                        rules_t.append([c, ['-A', c, '-m', 'conntrack', \
+                                            '--ctstate', 'INVALID', \
                                             '-j', 'LOG', \
                                             '--log-prefix', \
                                             "[UFW AUDIT INVALID] "] + \
@@ -1236,7 +1236,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             # loglevel medium logs all new packets with limit
             if self.loglevels[level] < self.loglevels["high"]:
-                largs = ['-m', 'state', '--state', 'NEW'] + limit_args
+                largs = ['-m', 'conntrack', '--ctstate', 'NEW'] + limit_args
 
             prefix = "[UFW AUDIT] "
             for c in self.chains['before']:
