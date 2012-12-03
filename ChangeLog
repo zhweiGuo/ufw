@@ -5,6 +5,8 @@ ufw (0.34) UNRELEASED; urgency=low
     get_netfilter_capabilities() (LP: #1044361)
   * fix TypeError which somehow only manifested itself when using zh_CN
   * add 'reload' to help (LP: #1059060)
+  * check-requirements now gives iptables output on failure. Patch thanks to
+    S. Nizio.
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 18 Oct 2012 19:19:55 -0500
 

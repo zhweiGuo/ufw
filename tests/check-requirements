@@ -29,14 +29,19 @@ runcmd() {
         runtime="yes"
         shift 1
     fi
-    if $@ >/dev/null 2>&1 ; then
+    local output ret=0
+    # make sure to always return success below because of set -e
+    output=$( "$@" 2>&1 ) || ret=$?
+    if [ $ret -eq 0 ]; then
         echo pass
     else
         if [ "$runtime" = "yes" ]; then
             echo "FAIL (no runtime support)"
+            echo "error was: $output"
             error_runtime="yes"
         else
             echo FAIL
+            echo "error was: $output"
             error="yes"
         fi
     fi
