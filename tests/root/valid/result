@@ -234,8 +234,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 27: deny 53
 WARN: Checks disabled
 Rules updated
@@ -255,8 +255,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 28: allow 80/tcp
 WARN: Checks disabled
 Rules updated
@@ -276,8 +276,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 29: allow from 10.0.0.0/8
 WARN: Checks disabled
 Rules updated
@@ -297,8 +297,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
@@ -322,8 +322,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
@@ -350,8 +350,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
@@ -381,8 +381,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
@@ -415,8 +415,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
@@ -452,8 +452,8 @@ Rules updated
 -A ufw-user-input -p tcp -d 192.168.0.1 --dport 25 -s 10.0.0.0/8 -j DROP
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 0.0.0.0/0 any 10.0.0.0/8 in
 -A ufw-user-input -s 10.0.0.0/8 -j ACCEPT
@@ -1173,8 +1173,8 @@ Rules updated
 
 
 ### tuple ### limit any any 0.0.0.0/0 any 192.168.0.1 in
--A ufw-user-input -s 192.168.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -s 192.168.0.1 -j ufw-user-limit-accept
 
 ### END RULES ###
@@ -1189,8 +1189,8 @@ Rules updated
 
 
 ### tuple ### limit any any 10.0.0.1 any 0.0.0.0/0 in
--A ufw-user-input -d 10.0.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -d 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -d 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -d 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -d 10.0.0.1 -j ufw-user-limit-accept
 
 ### END RULES ###
@@ -1205,8 +1205,8 @@ Rules updated
 
 
 ### tuple ### limit any any 10.0.0.1 any 192.168.0.1 in
--A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -d 10.0.0.1 -s 192.168.0.1 -j ufw-user-limit-accept
 
 ### END RULES ###
@@ -1221,11 +1221,11 @@ Rules updated
 
 
 ### tuple ### limit any any 0.0.0.0/0 80 192.168.0.1 in
--A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
--A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 151: delete limit from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
@@ -1237,11 +1237,11 @@ Rules updated
 
 
 ### tuple ### limit any 25 10.0.0.1 any 0.0.0.0/0 in
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -j ufw-user-limit-accept
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 153: delete limit to 10.0.0.1 port 25
 WARN: Checks disabled
 Rules updated
@@ -1253,11 +1253,11 @@ Rules updated
 
 
 ### tuple ### limit any any 10.0.0.1 80 192.168.0.1 in
--A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
--A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 155: delete limit to 10.0.0.1 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
@@ -1269,11 +1269,11 @@ Rules updated
 
 
 ### tuple ### limit any 25 10.0.0.1 any 192.168.0.1 in
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -j ufw-user-limit-accept
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 157: delete limit to 10.0.0.1 port 25 from 192.168.0.1
 WARN: Checks disabled
 Rules updated
@@ -1285,11 +1285,11 @@ Rules updated
 
 
 ### tuple ### limit any 25 10.0.0.1 80 192.168.0.1 in
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -j ufw-user-limit-accept
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 159: delete limit to 10.0.0.1 port 25 from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
@@ -1301,8 +1301,8 @@ Rules updated
 
 
 ### tuple ### limit udp any 0.0.0.0/0 80 192.168.0.1 in
--A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 161: delete limit from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
@@ -1314,8 +1314,8 @@ Rules updated
 
 
 ### tuple ### limit udp 25 10.0.0.1 any 0.0.0.0/0 in
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 163: delete limit to 10.0.0.1 port 25 proto udp
 WARN: Checks disabled
 Rules updated
@@ -1327,8 +1327,8 @@ Rules updated
 
 
 ### tuple ### limit udp any 10.0.0.1 80 192.168.0.1 in
--A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 165: delete limit to 10.0.0.1 from 192.168.0.1 port 80 proto udp
 WARN: Checks disabled
 Rules updated
@@ -1340,8 +1340,8 @@ Rules updated
 
 
 ### tuple ### limit udp 25 10.0.0.1 any 192.168.0.1 in
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 167: delete limit to 10.0.0.1 port 25 proto udp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
@@ -1353,8 +1353,8 @@ Rules updated
 
 
 ### tuple ### limit udp 25 10.0.0.1 80 192.168.0.1 in
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 169: delete limit to 10.0.0.1 port 25 proto udp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
@@ -1366,8 +1366,8 @@ Rules updated
 
 
 ### tuple ### limit tcp any 0.0.0.0/0 80 192.168.0.1 in
--A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 171: delete limit from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
@@ -1379,8 +1379,8 @@ Rules updated
 
 
 ### tuple ### limit tcp 25 10.0.0.1 any 0.0.0.0/0 in
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 173: delete limit to 10.0.0.1 port 25 proto tcp
 WARN: Checks disabled
 Rules updated
@@ -1392,8 +1392,8 @@ Rules updated
 
 
 ### tuple ### limit tcp any 10.0.0.1 80 192.168.0.1 in
--A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 175: delete limit to 10.0.0.1 from 192.168.0.1 port 80 proto tcp
 WARN: Checks disabled
 Rules updated
@@ -1405,8 +1405,8 @@ Rules updated
 
 
 ### tuple ### limit tcp 25 10.0.0.1 any 192.168.0.1 in
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 177: delete limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1
 WARN: Checks disabled
 Rules updated
@@ -1418,8 +1418,8 @@ Rules updated
 
 
 ### tuple ### limit tcp 25 10.0.0.1 80 192.168.0.1 in
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -d 10.0.0.1 --dport 25 -s 192.168.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 179: delete limit to 10.0.0.1 port 25 proto tcp from 192.168.0.1 port 80
 WARN: Checks disabled
 Rules updated
