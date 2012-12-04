@@ -9,6 +9,8 @@ ufw (0.34) UNRELEASED; urgency=low
     S. Nizio.
   * use conntrack instead of state module. Patch based on work by S. Nizio.
     (LP: #1065297)
+  * don't use get_netfilter_capabilities() with ipv6 if ipv6 is disabled
+    (LP: #1039729)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 18 Oct 2012 19:19:55 -0500
 
