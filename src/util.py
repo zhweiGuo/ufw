@@ -737,12 +737,12 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
     # the stuff we know isn't supported everywhere but we want to support.
 
     # recent-set
-    if test_cap(exe, chain, ['-m', 'state', '--state', 'NEW', \
+    if test_cap(exe, chain, ['-m', 'conntrack', '--ctstate', 'NEW', \
                              '-m', 'recent', '--set']):
         caps.append('recent-set')
 
     # recent-update
-    if test_cap(exe, chain, ['-m', 'state', '--state', 'NEW', \
+    if test_cap(exe, chain, ['-m', 'conntrack', '--ctstate', 'NEW', \
                              '-m', 'recent', '--update', \
                              '--seconds', '30', \
                              '--hitcount', '6']):
