@@ -399,7 +399,10 @@ def get_ppid(mypid=os.getpid()):
         raise IOError("Couldn't find '%s'" % (name))
 
     try:
-        ppid = open(name).readlines()[0].split()[3]
+        # LP: #1101304
+        # 9983 (cmd) S 923 ...
+        # 9983 (cmd with spaces) S 923 ...
+        ppid = open(name).readlines()[0].split(')')[1].split()[1]
     except Exception:
         raise
 
