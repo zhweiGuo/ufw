@@ -34,7 +34,7 @@ flush-all)
     # optional
     ;;
 *)
+    echo "'$1' not supported"
     echo "Usage: before.init {start|stop|flush-all|status}"
-    exit 1
     ;;
 esac
