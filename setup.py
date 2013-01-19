@@ -156,6 +156,8 @@ class Install(_install, object):
         before6_rules = os.path.join(confdir, 'ufw', 'before6.rules')
         after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
         apps_dir = os.path.join(confdir, 'ufw', 'applications.d')
+        init_before_hook = os.path.join(confdir, 'ufw', 'before.init')
+        init_after_hook = os.path.join(confdir, 'ufw', 'after.init')
 
         for f in [ defaults, ufwconf ]:
             self.mkpath(os.path.dirname(f))
@@ -171,17 +173,21 @@ class Install(_install, object):
         self.copy_file('conf/after.rules', after_rules)
         self.copy_file('conf/before6.rules', before6_rules)
         self.copy_file('conf/after6.rules', after6_rules)
+        self.copy_file('src/before.init', init_before_hook)
+        self.copy_file('src/after.init', init_after_hook)
 
         # Update the installed rules files' permissions
         for file in [ before_rules, after_rules, before6_rules, after6_rules, \
-                      user_rules, user6_rules ]:
+                      user_rules, user6_rules, init_before_hook, \
+                      init_after_hook ]:
             os.chmod(file, 0o640)
 
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, script, \
                       manpage, manpage_f, sysctl, init_helper, \
-                      init_helper_functions ]:
+                      init_helper_functions, init_before_hook, \
+                      init_after_hook ]:
             print("Updating " + file)
             subprocess.call(["sed",
                              "-i",

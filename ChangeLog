@@ -12,8 +12,10 @@ ufw (0.34) UNRELEASED; urgency=low
   * don't use get_netfilter_capabilities() with ipv6 if ipv6 is disabled
     (LP: #1039729, LP: #1062521)
   * fix parse error when finding PPID (LP: #1101304)
+  * implement before and after hooks in /etc/ufw/(before|after).init
+    (LP: #1075975)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 18 Jan 2013 16:07:02 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 19 Jan 2013 16:14:40 -0600
 
 ufw (0.33) RELEASED; urgency=low
 
