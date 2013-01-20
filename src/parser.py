@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2012 Canonical Ltd.
+# Copyright 2009-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -493,6 +493,22 @@ class UFWCommandRule(UFWCommand):
     get_command = staticmethod(get_command)
 
 
+class UFWCommandRouteRule(UFWCommandRule):
+    '''Class for parsing ufw route rule commands'''
+    def __init__(self, command):
+        UFWCommandRule.__init__(self, command)
+        self.type = 'route'
+
+    def parse(self, argv):
+        assert(argv[0] == "route")
+
+        # UFWCommandRule.parse() is applicable to us as well
+        argv[0] = "rule"
+        r = UFWCommandRule.parse(self, argv)
+        r.data['rule'].forward = True
+
+        return r
+
 class UFWCommandApp(UFWCommand):
     '''Class for parsing ufw application commands'''
     def __init__(self, command):
@@ -575,6 +591,8 @@ class UFWCommandDefault(UFWCommand):
         if len(argv) > 2:
             if argv[2].lower() != "incoming" and \
                argv[2].lower() != "input" and \
+               argv[2].lower() != "routed" and \
+               argv[2].lower() != "forward" and \
                argv[2].lower() != "output" and \
                argv[2].lower() != "outgoing":
                 raise ValueError()
@@ -582,6 +600,8 @@ class UFWCommandDefault(UFWCommand):
                 direction = "incoming"
             elif argv[2].lower().startswith("out"):
                 direction = "outgoing"
+            elif argv[2].lower() == "routed" or argv[2].lower() == "forward":
+                direction = "routed"
             else:
                 direction = argv[2].lower()
 
