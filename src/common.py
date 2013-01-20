@@ -1,6 +1,6 @@
 '''common.py: common classes for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -40,7 +40,7 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0", direction="in"):
+                 sport="any", src="0.0.0.0/0", direction="in", forward=False):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -59,6 +59,7 @@ class UFWRule:
         self.interface_in = ""
         self.interface_out = ""
         self.direction = ""
+        self.forward = forward
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -98,6 +99,7 @@ class UFWRule:
         rule.interface_in = self.interface_in
         rule.interface_out = self.interface_out
         rule.direction = self.direction
+        rule.forward = self.forward 
 
         return rule
 
@@ -412,6 +414,9 @@ class UFWRule:
         if x.direction != y.direction:
             debug(dbg_msg)
             return 1
+        if x.forward != y.forward:
+            debug(dbg_msg)
+            return 1
         if x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
@@ -461,6 +466,11 @@ class UFWRule:
         # Direction must match
         if y.direction != "in":
             debug("(direction) " + dbg_msg + " (not incoming)")
+            return 1
+
+        # forward must match
+        if y.forward != x.forward:
+            debug(dbg_msg + " (forward does not match)")
             return 1
 
         # Protocols must match or y 'any'
