@@ -502,10 +502,35 @@ class UFWCommandRouteRule(UFWCommandRule):
     def parse(self, argv):
         assert(argv[0] == "route")
 
-        # UFWCommandRule.parse() is applicable to us as well
-        argv[0] = "rule"
-        r = UFWCommandRule.parse(self, argv)
+        # Let's use as much as UFWCommandRule.parse() as possible. The only
+        # difference with our rules is that argv[0] is 'route' and we support
+        # both 'in on <interface>' and 'out on <interface>' in our rules.
+        # Because UFWCommandRule.parse() expects that the interface clause is
+        # specified first, strip out the second clause and add it later
+        rule_argv = None
+        interface = None
+        strip = None
+
+        # eg: ['route', 'allow', 'in', 'on', 'eth0', 'out', 'on', 'eth1']
+        s = " ".join(argv)
+        if " in on " in s and " out on " in s:
+            strip = "out"
+            if argv.index("in") > argv.index("out"):
+                strip = "in"
+            # Remove 2nd interface clause from argv and add it to the rule
+            # later. Because we searched for " <strip> on " in our joined
+            # string we are guaranteed to have argv[argv.index(<strip>) + 2]
+            # exist.
+            interface = argv[argv.index(strip) + 2]
+            rule_argv = argv[0:argv.index(strip)] + argv[argv.index(strip)+3:]
+        else:
+            rule_argv = argv
+
+        rule_argv[0] = "rule"
+        r = UFWCommandRule.parse(self, rule_argv)
         r.data['rule'].forward = True
+        if strip and interface:
+            r.data['rule'].set_interface(strip, interface)
 
         return r
 
