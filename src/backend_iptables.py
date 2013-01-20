@@ -88,7 +88,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
-            if direction != "incoming" and direction != "outgoing":
+            if direction != "incoming" and direction != "outgoing" and \
+               direction != "routed":
                 err_msg = _("Unsupported policy for direction '%s'") % \
                             (direction)
                 raise UFWError(err_msg)
@@ -96,6 +97,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             chain = "INPUT"
             if direction == "outgoing":
                 chain = "OUTPUT"
+            elif direction == "routed":
+                chain = "FORWARD"
 
             old_log_str = ''
             new_log_str = ''
