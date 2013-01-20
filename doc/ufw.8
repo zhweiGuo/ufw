@@ -1,4 +1,4 @@
-.TH UFW: "8" "" "August 2009" "August 2009"
+.TH UFW: "8" "" "January 2013" "January 2013"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -23,7 +23,7 @@ ufw [\fB\-\-dry\-run\fR] \fBshow\fR REPORT
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] PORT[/protocol]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log\-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] [\fBroute\fR] \fBallow|deny|reject|limit\fR [\fBin|out on INTERFACE\fR] [\fBlog|log\-all\fR] [\fBproto\fR protocol] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdelete\fR NUM
 .TP
@@ -119,7 +119,8 @@ traffic. Eg:
   ufw reject out smtp
 .PP
 Users can also use a fuller syntax, specifying the source and destination
-addresses and ports. This syntax is based on OpenBSD's PF syntax. For example:
+addresses and ports. This syntax is loosely based on OpenBSD's PF syntax. For
+example:
 
   ufw deny proto tcp to any port 80
 
@@ -144,6 +145,25 @@ cannot contain spaces and must be modified as a whole. Eg, in the above example
 you cannot later try to delete just the '443' port. You cannot specify more
 than 15 ports (ranges count as 2 ports, so the port count in the above example
 is 4).
+
+Rules for traffic not destined for the host itself but instead for traffic that
+should be routed/forwarded through the firewall should specify the route
+keyword before the rule. For example:
+
+  ufw route allow in on eth1 out on eth2
+
+This will allow all traffic routed to eth2 and coming in on eth1 to traverse
+the firewall.
+
+  ufw route allow in on eth0 out on eth1 to 12.34.45.67 port 80 proto tcp
+
+This rule allows any packets coming in on eth0 to traverse the firewall out
+on eth1 to tcp port 80 on 12.34.45.67.
+
+Note that routing rules for traffic passing through the firewall differ
+significantly from PF syntax and instead take into account netfilter FORWARD
+chain conventions.
+
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting
 against brute\-force login attacks. \fBufw\fR will deny connections if an IP
@@ -435,7 +455,7 @@ See the \fBufw\-framework\fR manual page for more information.
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2009, Canonical Ltd.
+ufw is Copyright 2008-2013, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>
