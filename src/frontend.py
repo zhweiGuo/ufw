@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -59,6 +59,7 @@ def parse_command(argv):
     rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
     for i in rule_commands:
         p.register_command(ufw.parser.UFWCommandRule(i))
+        p.register_command(ufw.parser.UFWCommandRouteRule(i))
 
     # Don't require the user to have to specify 'rule' as the command. Instead
     # insert 'rule' into the arguments if this is a rule command.
@@ -67,6 +68,7 @@ def parse_command(argv):
         if argv[idx].lower() == "--dry-run":
             idx = 2
         if argv[idx].lower() != "default" and \
+           argv[idx].lower() != "route" and \
            argv[idx].lower() in rule_commands:
             argv.insert(idx, 'rule')
 
