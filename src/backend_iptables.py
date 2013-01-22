@@ -763,18 +763,21 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if r.logtype != "":
                 action += "_" + r.logtype
 
-            if r.dapp == "" and r.sapp == "":
-                tstr = "\n### tuple ### %s %s %s %s %s %s " % \
-                     (action, r.protocol, r.dport, r.dst, r.sport, r.src)
-                if r.interface_in == "" and r.interface_out == "":
-                    tstr += r.direction
-                elif r.interface_in != "" and r.interface_out != "":
-                    tstr += "in_%s!out_%s" % (r.interface_in, r.interface_out)
+            ifaces = ""
+            if r.interface_in == "" and r.interface_out == "":
+                ifaces = r.direction
+            elif r.interface_in != "" and r.interface_out != "":
+                ifaces = "in_%s!out_%s" % (r.interface_in, r.interface_out)
+            else:
+                if r.interface_in != "":
+                    ifaces += "%s_%s" % (r.direction, r.interface_in)
                 else:
-                    if r.interface_in != "":
-                        tstr += "%s_%s" % (r.direction, r.interface_in)
-                    if r.interface_out != "":
-                        tstr += "%s_%s" % (r.direction, r.interface_out)
+                    ifaces += "%s_%s" % (r.direction, r.interface_out)
+
+            if r.dapp == "" and r.sapp == "":
+                tstr = "\n### tuple ### %s %s %s %s %s %s %s" % \
+                     (action, r.protocol, r.dport, r.dst, r.sport, r.src,
+                      ifaces)
                 ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -786,12 +789,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     sapp = pat_space.sub('%20', r.sapp)
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % \
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                        dapp, sapp, r.direction)
-
-                if r.interface_in != "":
-                    tstr += "_%s" % (r.interface_in)
-                if r.interface_out != "":
-                    tstr += "_%s" % (r.interface_out)
+                        dapp, sapp, ifaces)
                 ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"
