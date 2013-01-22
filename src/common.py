@@ -299,6 +299,10 @@ class UFWRule:
             err_msg = _("Bad interface type")
             raise UFWError(err_msg)
 
+        if '!' in str(name):
+            err_msg = _("Bad interface name: reserved character: '!'")
+            raise UFWError(err_msg)
+
         if not re.match(r'^[a-zA-Z][a-zA-Z0-9:]*[a-zA-Z0-9]', str(name)):
             err_msg = _("Bad interface name")
             raise UFWError(err_msg)

@@ -647,12 +647,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                             else:
                                 dtype = tmp[-1]
                         try:
+                            action = tmp[0]
+                            forward = False
+                            # route rules use 'route:<action> ...' 
+                            if ':' in action:
+                                forward = True
+                                action = action.split(':')[1]
                             if len(tmp) < 8:
-                                rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype)
+                                rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
+                                               tmp[4], tmp[5], dtype, forward)
                             else:
-                                rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype)
+                                rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
+                                               tmp[4], tmp[5], dtype, forward)
                                 # Removed leading [sd]app_ and unescape spaces
                                 pat_space = re.compile('%20')
                                 if tmp[6] != "-":
@@ -751,17 +757,24 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Write rules
         for r in rules:
             action = r.action
+            # route rules use 'route:<action> ...' 
+            if r.forward:
+                action = "route:" + r.action
             if r.logtype != "":
                 action += "_" + r.logtype
 
             if r.dapp == "" and r.sapp == "":
-                tstr = "\n### tuple ### %s %s %s %s %s %s %s" % \
-                     (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                      r.direction)
-                if r.interface_in != "":
-                    tstr += "_%s" % (r.interface_in)
-                if r.interface_out != "":
-                    tstr += "_%s" % (r.interface_out)
+                tstr = "\n### tuple ### %s %s %s %s %s %s " % \
+                     (action, r.protocol, r.dport, r.dst, r.sport, r.src)
+                if r.interface_in == "" and r.interface_out == "":
+                    tstr += r.direction
+                elif r.interface_in != "" and r.interface_out != "":
+                    tstr += "in_%s!out_%s" % (r.interface_in, r.interface_out)
+                else:
+                    if r.interface_in != "":
+                        tstr += "%s_%s" % (r.direction, r.interface_in)
+                    if r.interface_out != "":
+                        tstr += "%s_%s" % (r.direction, r.interface_out)
                 ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -782,7 +795,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"
-            if r.direction == "out":
+            if r.forward:
+                chain_suffix = "forward"
+            elif r.direction == "out":
                 chain_suffix = "output"
             chain = "%s-user-%s" % (chain_prefix, chain_suffix)
             rule_str = "-A %s %s\n" % (chain, r.format_rule())
