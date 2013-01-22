@@ -523,6 +523,14 @@ class UFWCommandRouteRule(UFWCommandRule):
             # exist.
             interface = argv[argv.index(strip) + 2]
             rule_argv = argv[0:argv.index(strip)] + argv[argv.index(strip)+3:]
+        elif not re.search(r' (in|out) on ', s) and \
+             not re.search(r' app (in|out) ', s) and \
+             (" in " in s or " out " in s):
+            # Specifying a direction without an interface doesn't make any
+            # sense with route rules. application names could be 'in' or 'out'
+            # so don't artificially limit those names.
+            err_msg = _("Invalid interface clause for route rule")
+            raise UFWError(err_msg)
         else:
             rule_argv = argv
 
