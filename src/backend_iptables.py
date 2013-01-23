@@ -627,6 +627,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 raise UFWError(err_msg)
 
             pat_tuple = re.compile(r'^### tuple ###\s*')
+            pat_iface_in = re.compile(r'in_\w+')
+            pat_iface_out = re.compile(r'out_\w+')
             for line in orig:
                 if pat_tuple.match(line):
                     tupl = pat_tuple.sub('', line)
@@ -638,14 +640,32 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         continue
                     else:
                         # set direction to "in" to support upgrades
-                        # from old format, which only had 6 or 8 fields
+                        # from old format, which only had 6 or 8 fields.
                         dtype = "in"
-                        interface = ""
+                        interface_in = ""
+                        interface_out = ""
                         if len(tmp) == 7 or len(tmp) == 9:
+                            wmsg = _("Skipping malformed tuple (iface): %s") \
+                                     % (tupl)
+                            dtype = tmp[-1].split('_')[0]
                             if '_' in tmp[-1]:
-                                (dtype, interface) = tmp[-1].split('_')
-                            else:
-                                dtype = tmp[-1]
+                                if '!' in tmp[-1] and \
+                                   pat_iface_in.search(tmp[-1]) and \
+                                   pat_iface_out.search(tmp[-1]):
+                                    # in_eth0!out_eth1
+                                    interface_in = \
+                                        tmp[-1].split('!')[0].partition('_')[2]
+                                    interface_out = \
+                                        tmp[-1].split('!')[1].partition('_')[2]
+                                elif tmp[-1].startswith("in_"):
+                                    # in_eth0
+                                    interface_in = tmp[-1].partition('_')[2]
+                                elif tmp[-1].startswith("out_"):
+                                    # out_eth0
+                                    interface_out = tmp[-1].partition('_')[2]
+                                else:
+                                    warn(wmsg)
+                                    continue
                         try:
                             action = tmp[0]
                             forward = False
@@ -665,8 +685,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                     rule.dapp = pat_space.sub(' ', tmp[6])
                                 if tmp[7] != "-":
                                     rule.sapp = pat_space.sub(' ', tmp[7])
-                            if interface != "":
-                                rule.set_interface(dtype, interface)
+                            if interface_in != "":
+                                rule.set_interface("in", interface_in)
+                            if interface_out != "":
+                                rule.set_interface("out", interface_out)
 
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
