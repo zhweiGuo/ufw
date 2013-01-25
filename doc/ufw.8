@@ -134,21 +134,21 @@ with the address 192.168.0.1.
   ufw deny proto tcp from 2001:db8::/32 to any port 25
 
 This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 25 on this
-host. Note that IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6
-firewalling to work.
+host. IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6 firewalling
+to work.
 
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
 The above will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive.
-Note that when specifying multiple ports, the ports list must be numeric,
-cannot contain spaces and must be modified as a whole. Eg, in the above example
-you cannot later try to delete just the '443' port. You cannot specify more
-than 15 ports (ranges count as 2 ports, so the port count in the above example
-is 4).
+When specifying multiple ports, the ports list must be numeric, cannot contain
+spaces and must be modified as a whole. Eg, in the above example you cannot
+later try to delete just the '443' port. You cannot specify more than 15 ports
+(ranges count as 2 ports, so the port count in the above example is 4).
 
 Rules for traffic not destined for the host itself but instead for traffic that
-should be routed/forwarded through the firewall should specify the route
-keyword before the rule. For example:
+should be routed/forwarded through the firewall should specify the \fBroute\fR
+keyword before the rule (routing rules differ significantly from PF syntax and
+instead take into account netfilter FORWARD chain conventions). For example:
 
   ufw route allow in on eth1 out on eth2
 
@@ -160,9 +160,21 @@ the firewall.
 This rule allows any packets coming in on eth0 to traverse the firewall out
 on eth1 to tcp port 80 on 12.34.45.67.
 
-Note that routing rules for traffic passing through the firewall differ
-significantly from PF syntax and instead take into account netfilter FORWARD
-chain conventions.
+In addition to routing rules and policy, you must also setup IP forwarding.
+This may be done by setting the following in #CONFIG_PREFIX#/ufw/sysctl.conf:
+
+  net/ipv4/ip_forward=1                                                          
+  net/ipv6/conf/default/forwarding=1                                             
+  net/ipv6/conf/all/forwarding=1 
+
+then restarting the firewall:
+
+  ufw disable
+  ufw enable
+
+Be aware that setting kernel tunables is operating system specific and
+\fBufw\fR sysctl settings may be overridden. See the \fBsysctl\fR manual page
+for details.
 
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting

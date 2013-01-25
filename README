@@ -86,6 +86,7 @@ ufw default allow|deny		updates default policy
 ufw logging on|off		updates backend logging (*.rules)
 ufw status			displays firewall status (user.rules only)
 ufw allow|deny|limit RULE	add RULE to firewall
+ufw route allow|deny|limit RULE	add routing (FORWARD) RULE to firewall
 
 See 'man ufw' and also Ubuntu's tutorial at:
 http://doc.ubuntu.com/ubuntu/serverguide/C/firewall.html
@@ -336,4 +337,4 @@ root_kern tests assume all kernel features supported by check-requirements
 are enabled. They behave just like the root tests.
 
 
-Copyright 2008-2012 Canonical Ltd.
+Copyright 2008-2013 Canonical Ltd.
