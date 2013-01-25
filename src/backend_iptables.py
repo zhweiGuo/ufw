@@ -259,7 +259,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return out
 
         err_msg = _("problem running")
-        for direction in ["input", "output"]:
+        for direction in ["input", "output", "forward"]:
             # Is the firewall loaded at all?
             (rc, out) = cmd([self.iptables, '-L', \
                             'ufw-user-%s' % (direction), '-n'])
@@ -276,9 +276,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         s = ""
         str_out = ""
+        str_rte = ""
         rules = self.rules + self.rules6
         count = 1
         app_rules = {}
+        for r in rules:
+            print "%s (%s)" % (r, r.forward)
         for r in rules:
             tmp_str = ""
             location = {}
@@ -368,6 +371,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if r.logtype or r.direction.lower() == "out":
                 if r.logtype:
                     attribs.append(r.logtype.lower())
+                # why is the direction added to attribs if shown in action?
                 if show_count and r.direction == "out":
                     attribs.append(r.direction)
                 if len(attribs) > 0:
@@ -378,7 +382,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tmp_str += "[%2d] " % (count)
 
             dir_str = r.direction.upper()
-            if r.direction == "in" and not verbose and not show_count:
+            if r.forward:
+                dir_str = "FWD"
+
+            if r.direction == "in" and not r.forward and \
+               not verbose and not show_count:
                 dir_str = ""
             tmp_str += "%-26s %-12s%s%s\n" % (location['dst'], \
                                              " ".join([r.action.upper(), \
@@ -390,13 +398,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if show_count:
                 s += tmp_str
             else:
-                if r.direction == "out":
+                if r.forward:
+                    str_rte += tmp_str
+                elif r.direction == "out":
                     str_out += tmp_str
                 else:
                     s += tmp_str
             count += 1
 
-        if s != "" or str_out != "":
+        if s != "" or str_out != "" or str_rte != "":
             full_str = "\n\n"
             if show_count:
                 full_str += "     "
@@ -421,6 +431,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 full_str += _("\n")
             if str_out != "":
                 full_str += str_out
+            if s != "" and str_rte != "":
+                full_str += _("\n")
+            if str_rte != "":
+                full_str += str_rte
 
             s = full_str
 
