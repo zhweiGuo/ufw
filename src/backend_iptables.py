@@ -440,9 +440,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         if verbose:
             (level, logging_str) = self.get_loglevel()
-            policy_str = _("Default: %(in)s (incoming), %(out)s (outgoing)") \
+            policy_str = _("Default: %(in)s (incoming), " +
+                           "%(out)s (outgoing), " +
+                           "%(routed)s (routed)") \
                            % ({'in': self._get_default_policy(), \
-                               'out': self._get_default_policy("output")})
+                               'out': self._get_default_policy("output"), \
+                               'routed': self._get_default_policy("forward", \
+                                                                  True)})
             app_policy_str = self.get_default_application_policy()
             return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
                      ({'log': logging_str, 'pol': policy_str, \

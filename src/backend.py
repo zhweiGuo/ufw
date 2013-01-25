@@ -125,7 +125,7 @@ class UFWBackend:
             return True
         return False
 
-    def _get_default_policy(self, primary="input"):
+    def _get_default_policy(self, primary="input", check_forward=False):
         '''Get default policy for specified primary chain'''
         policy = "default_" + primary + "_policy"
 
@@ -136,6 +136,29 @@ class UFWBackend:
             rstr = "reject"
         else:
             rstr = "deny"
+
+        if check_forward and primary == "forward":
+            enabled = False
+            err_msg = _("problem running sysctl")
+
+            (rc, out) = ufw.util.cmd(['sysctl', 'net.ipv4.ip_forward'])
+            if rc != 0:
+                raise UFWError(err_msg)
+            if '1' in out:
+                enabled = True
+
+            # IPv6 may be disabled, so ignore sysctl output
+            if self.use_ipv6():
+                (rc, out) = ufw.util.cmd(['sysctl', 'net.ipv6.conf.default.forwarding'])
+                if rc == 0 and '1' in out:
+                    enabled = True
+
+                (rc, out) = ufw.util.cmd(['sysctl', 'net.ipv6.conf.all.forwarding'])
+                if rc == 0 and '1' in out:
+                    enabled = True
+
+                if not enabled:
+                    rstr = "disabled"
 
         return rstr
 
