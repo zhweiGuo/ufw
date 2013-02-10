@@ -27,7 +27,7 @@ $(POTFILES): $(SRCS)
 mo:
 	make -C locales all
 
-test:
+test: unittest
 	./run_tests.sh -s -i $(PYTHON)
 
 unittest:

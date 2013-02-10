@@ -128,3 +128,12 @@ def init_gettext():
 
     return _
 
+def check_for_exception(t, expectedException, func, *args):
+    try:
+        func(*args)
+    except expectedException:
+        pass
+    except Exception:
+        t.fail("Unexpected exception thrown for '%s%s:\n%s" % (str(func), str(args), sys.exc_info()[0]))
+    else:
+        t.fail('%s not thrown' % str(expectedException))
