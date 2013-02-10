@@ -5,9 +5,18 @@ ufw (0.34) UNRELEASED; urgency=low
     get_netfilter_capabilities() (LP: #1044361)
   * fix TypeError which somehow only manifested itself when using zh_CN
   * add 'reload' to help (LP: #1059060)
+  * check-requirements now gives iptables output on failure. Patch thanks to
+    S. Nizio.
+  * use conntrack instead of state module. Patch based on work by S. Nizio.
+    (LP: #1065297)
+  * don't use get_netfilter_capabilities() with ipv6 if ipv6 is disabled
+    (LP: #1039729, LP: #1062521)
+  * fix parse error when finding PPID (LP: #1101304)
+  * implement before and after hooks in /etc/ufw/(before|after).init
+    (LP: #1075975)
   * start unit test framework
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 18 Oct 2012 19:19:55 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 19 Jan 2013 16:14:40 -0600
 
 ufw (0.33) RELEASED; urgency=low
 

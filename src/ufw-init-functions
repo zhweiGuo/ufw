@@ -2,7 +2,7 @@
 #
 # ufw-init-functions: functions used by ufw-init and distribution initscripts
 #
-# Copyright 2008-2010 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -120,6 +120,13 @@ ufw_start() {
 
         if [ "$MANAGE_BUILTINS" = "yes" ]; then
             flush_builtins
+        fi
+
+        if [ -x "$RULES_PATH/before.init" ]; then
+            if ! "$RULES_PATH/before.init" start ; then
+                error="yes"
+                out="${out}\n'$RULES_PATH/before.init start' exited with error"
+            fi
         fi
 
         execs="iptables"
@@ -251,15 +258,15 @@ ufw_start() {
             # add tracking policy
             if [ "$DEFAULT_INPUT_POLICY" = "ACCEPT" ]; then
                 printf "*filter\n"\
-"-A ufw${type}-track-input -p tcp -m state --state NEW -j ACCEPT\n"\
-"-A ufw${type}-track-input -p udp -m state --state NEW -j ACCEPT\n"\
+"-A ufw${type}-track-input -p tcp -m conntrack --ctstate NEW -j ACCEPT\n"\
+"-A ufw${type}-track-input -p udp -m conntrack --ctstate NEW -j ACCEPT\n"\
 "COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
             if [ "$DEFAULT_OUTPUT_POLICY" = "ACCEPT" ]; then
                 printf "*filter\n"\
-"-A ufw${type}-track-output -p tcp -m state --state NEW -j ACCEPT\n"\
-"-A ufw${type}-track-output -p udp -m state --state NEW -j ACCEPT\n"\
+"-A ufw${type}-track-output -p tcp -m conntrack --ctstate NEW -j ACCEPT\n"\
+"-A ufw${type}-track-output -p udp -m conntrack --ctstate NEW -j ACCEPT\n"\
 "COMMIT\n" | $exe-restore -n || error="yes"
             fi
 
@@ -368,6 +375,13 @@ ufw_start() {
             sysctl -e -q -p $IPT_SYSCTL || true
         fi
 
+        if [ -x "$RULES_PATH/after.init" ]; then
+            if ! "$RULES_PATH/after.init" start ; then
+                error="yes"
+                out="${out}\n'$RULES_PATH/after.init start' exited with error"
+            fi
+        fi
+
         if [ "$error" = "yes" ]; then
             /bin/echo -e "$out"
             return 1
@@ -386,13 +400,25 @@ ufw_stop() {
         return 0
     fi
 
+    error=""
+
+    if [ -x "$RULES_PATH/before.init" ]; then
+        if ! "$RULES_PATH/before.init" stop ; then
+            error="yes"
+            out="${out}\n'$RULES_PATH/before.init stop' exited with error"
+        fi
+    fi
+
     # If we manage the builtins, just return
     if [ "$MANAGE_BUILTINS" = "yes" ]; then
-        flush_builtins || return 1
+        flush_builtins || error="yes"
+        "$RULES_PATH/after.init" stop || error="yes"
+        if [ "$error" = "yes" ]; then
+            return 1
+        fi
         return 0
     fi
 
-    error=""
     execs="iptables"
     if ip6tables -L INPUT -n >/dev/null 2>&1; then
         execs="$execs ip6tables"
@@ -410,6 +436,12 @@ ufw_stop() {
         $exe -P FORWARD ACCEPT || error="yes"
     done
 
+    if [ -x "$RULES_PATH/after.init" ]; then
+        if ! "$RULES_PATH/after.init" stop ; then
+            error="yes"
+        fi
+    fi
+
     if [ "$error" = "yes" ]; then
         return 1
     fi
@@ -418,8 +450,21 @@ ufw_stop() {
 
 ufw_reload() {
     if [ "$ENABLED" = "yes" ] || [ "$ENABLED" = "YES" ]; then
+        if [ -x "$RULES_PATH/before.init" ]; then
+            "$RULES_PATH/before.init" stop || return 1
+        fi
         ufw_stop || return "$?"
+        if [ -x "$RULES_PATH/after.init" ]; then
+            "$RULES_PATH/after.init" stop || return 1
+        fi
+
+        if [ -x "$RULES_PATH/before.init" ]; then
+            "$RULES_PATH/before.init" start || return 1
+        fi
         ufw_start || return "$?"
+        if [ -x "$RULES_PATH/after.init" ]; then
+            "$RULES_PATH/after.init" start || return 1
+        fi
     else
         echo "Skipping $1 (not enabled)"
     fi

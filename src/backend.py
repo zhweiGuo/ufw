@@ -98,15 +98,17 @@ class UFWBackend:
             else:
                 self.caps['limit']['4'] = False
 
-            # v6
-            try:
-                nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
-            except OSError as e:
-                error("initcaps\n%s" % e)
-            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
-                self.caps['limit']['6'] = True
-            else:
-                self.caps['limit']['6'] = False
+            # v6 (skip capabilities check for ipv6 if ipv6 is disabled in ufw
+            # because the system may not have ipv6 support (LP: #1039729)
+            if self.use_ipv6():
+                try:
+                    nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+                except OSError as e:
+                    error("initcaps\n%s" % e)
+                if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                    self.caps['limit']['6'] = True
+                else:
+                    self.caps['limit']['6'] = False
 
     def is_enabled(self):
         '''Is firewall configured as enabled'''
