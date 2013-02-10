@@ -408,7 +408,6 @@ class UtilTestCase(unittest.TestCase):
                  (False, '192.168.0.1/e1', socket.error),
                 ]
         for (v6, ip, expected) in data:
-            print("%s v6=%s" % (ip, v6))
             tests.unit.support.check_for_exception(self, expected, ufw.util.normalize_address, ip, v6)
 
     def test_fileio(self):
