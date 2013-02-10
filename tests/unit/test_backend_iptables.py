@@ -16,7 +16,6 @@
 
 import unittest
 import tests.unit.support
-import src as ufw
 import ufw.backend_iptables
 
 class BackendIptablesTestCase(unittest.TestCase):

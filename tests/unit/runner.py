@@ -55,6 +55,10 @@ def runtest(test):
 
 
 if __name__ == '__main__':
+    # Create the unittest symlink so imports work
+    if not os.path.islink("./ufw"):
+        os.symlink("./src", "./ufw")
+
     # Replace runner.py's directory from the search path, and add our own
     # so we can properly namespace our modules
     d = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
@@ -95,6 +99,10 @@ if __name__ == '__main__':
                     del sys.modules[m]
                 except KeyError:
                     pass
+
+    # Cleanup our symlink
+    if os.path.islink("./ufw"):
+        os.unlink("./ufw")
 
     print("")
     print("------------------")

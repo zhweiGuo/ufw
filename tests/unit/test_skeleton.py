@@ -16,8 +16,6 @@
 
 import unittest
 import tests.unit.support
-import src as ufw          # Always do this so we can do 'import ufw.foo'
-import ufw.common
 
 class SkeletonTestCase(unittest.TestCase):
     def setUp(self):
@@ -29,6 +27,7 @@ class SkeletonTestCase(unittest.TestCase):
 
     def test_example(self):
         '''Test example dummy test'''
+        import ufw.common
         try:
             raise ufw.common.UFWError("test")
         except ufw.common.UFWError:

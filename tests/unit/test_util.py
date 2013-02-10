@@ -15,8 +15,7 @@
 #
 
 import unittest
-import support
-import src as ufw
+import tests.unit.support
 import ufw.util
 
 import os
@@ -29,7 +28,7 @@ class UtilTestCase(unittest.TestCase):
 
     def tearDown(self):
         if self.tmpdir and os.path.isdir(self.tmpdir):
-            support.recursive_rm(self.tmpdir)
+            tests.unit.support.recursive_rm(self.tmpdir)
 
     def test_get_services_proto(self):
         '''Test get_services_proto()'''
@@ -59,7 +58,7 @@ class UtilTestCase(unittest.TestCase):
     def test_valid_address6(self):
         '''Test valid_address6()'''
         if not socket.has_ipv6:
-            return support.skipped(self, "ipv6 not enabled")
+            return tests.unit.support.skipped(self, "ipv6 not enabled")
 
         bad = [
                 ':::1',
@@ -335,7 +334,7 @@ class UtilTestCase(unittest.TestCase):
 
 
 def test_main(): # used by runner.py
-    support.run_unittest(
+    tests.unit.support.run_unittest(
             UtilTestCase
     )
 

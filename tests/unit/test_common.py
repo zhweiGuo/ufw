@@ -16,10 +16,7 @@
 
 import unittest
 import tests.unit.support
-import src as ufw
 import ufw.common
-
-_ = tests.unit.support.init_gettext()
 
 class CommonTestCase(unittest.TestCase):
     def setUp(self):

@@ -16,7 +16,6 @@
 
 import unittest
 import tests.unit.support
-import src as ufw
 import ufw.frontend
 
 class FrontendTestCase(unittest.TestCase):

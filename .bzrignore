@@ -7,3 +7,4 @@ locales/mo/*.mo
 debian/ufw
 build-stamp
 .coverage
+ufw/

@@ -18,7 +18,11 @@
 
 import unittest
 import os
+import subprocess
 import sys
+_ = None
+
+topdir = "./tests/unit/tmp"
 
 class Error(Exception):
     '''Error'''
@@ -45,8 +49,38 @@ def recursive_rm(dirPath, contents_only=False):
     if contents_only == False:
         os.rmdir(dirPath)
 
+def initvars(install_dir):
+    import ufw.common
+
+    global _
+    _ = init_gettext()
+
+    if ufw.common.config_dir == "#CONFIG_PREFIX#":
+        ufw.common.config_dir = os.path.join(install_dir, "etc", "ufw")
+
+def run_setup():
+    global topdir
+    install_dir = os.path.join(topdir, "ufw")
+    if os.path.exists(topdir):
+        recursive_rm(topdir)
+    os.mkdir(topdir)
+    sp = subprocess.Popen(['python',
+                           './setup.py',
+                           'install',
+                           '--home=%s' % install_dir],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT,
+                           universal_newlines=True)
+    sp.communicate()[0]
+
+    return install_dir
+
 def run_unittest(*classes):
     '''Run tests from classes'''
+    install_dir = run_setup()
+
+    initvars(install_dir) # initialize ufw for testing
+
     suite = unittest.TestSuite()
     for cls in classes:
         suite.addTest(unittest.makeSuite(cls))
@@ -61,6 +95,9 @@ def run_unittest(*classes):
         else:
             err = "multiple errors occurred"
         raise TestFailed(err)
+
+    if os.path.exists(topdir):
+        recursive_rm(topdir)
 
 def init_gettext():
     '''Convenience function to setup _'''
@@ -90,3 +127,4 @@ def init_gettext():
         _ = gettext.gettext
 
     return _
+

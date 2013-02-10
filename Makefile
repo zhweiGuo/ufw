@@ -72,6 +72,7 @@ clean:
 	rm -f ./tests/unit/*.pyc ./tests/*.pyc
 	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__
 	rm -rf ./.coverage
+	rm -f ./ufw               # unittest symlink
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
