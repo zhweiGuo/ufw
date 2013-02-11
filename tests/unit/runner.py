@@ -93,7 +93,7 @@ if __name__ == '__main__':
             raise
 
         # cleanup
-        for m in sys.modules.keys():
+        for m in list(sys.modules.keys()):
             if m.startswith("tests.unit.") and m != "tests.unit.support":
                 try:
                     del sys.modules[m]
