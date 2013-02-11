@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -17,7 +17,7 @@
 export LANG=C
 
 testdir="tests"
-tests="installation bad bugs good util"
+tests="unit installation bad bugs good util"
 
 set -e
 # Some systems may not have iptables in their PATH. Try to account for that.
@@ -125,8 +125,39 @@ trap "rm -rf $statsdir" EXIT HUP INT QUIT TERM
 export statsdir
 echo "0" > $statsdir/individual
 
+# Unit tests
 for class in $tests
 do
+    if [ "$class" != "unit" ]; then
+        # Functional tests handled separately (see below)
+        continue
+    fi
+
+    if [ ! -z "$subclass" ]; then
+        if [ ! -f "$testdir/$class/$subclass" ]; then
+            echo "Could not find '$testdir/$class/$subclass'"
+            exit 1
+        fi
+    fi
+    if ! $interpreter ./tests/unit/runner.py $subclass ; then
+        echo ""
+        echo "Found unit test failures. Aborting and skipping functional tests"
+        exit 1        
+    fi
+    # Exit early if only running unit tests
+    if [ "$tests" = "unit" ]; then
+        exit 0
+    fi
+done
+
+# Functional tests
+for class in $tests
+do
+    if [ "$class" = "unit" ]; then
+        # Unit tests handled separately (see above)
+        continue
+    fi
+
     for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
     do
         if [ ! -z "$subclass" ]; then
@@ -235,9 +266,9 @@ fi
 individual=$(cat $statsdir/individual)
 
 echo ""
-echo "-------"
-echo "Results"
-echo "-------"
+echo "------------------------"
+echo "Functional tests summary"
+echo "------------------------"
 echo "Attempted:           $numtests ($individual individual tests)"
 echo "Skipped:             $skipped"
 echo "Errors:              $errors"
