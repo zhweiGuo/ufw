@@ -139,6 +139,7 @@ do
             exit 1
         fi
     fi
+    echo "= Unit Tests ="
     if ! $interpreter ./tests/unit/runner.py $subclass ; then
         echo ""
         echo "Found unit test failures. Aborting and skipping functional tests"
@@ -148,9 +149,12 @@ do
     if [ "$tests" = "unit" ]; then
         exit 0
     fi
+    echo ""
+    echo ""
 done
 
 # Functional tests
+echo "= Functional Tests ="
 for class in $tests
 do
     if [ "$class" = "unit" ]; then
