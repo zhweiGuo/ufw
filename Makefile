@@ -27,11 +27,11 @@ $(POTFILES): $(SRCS)
 mo:
 	make -C locales all
 
-test: unittest
+test:
 	./run_tests.sh -s -i $(PYTHON)
 
 unittest:
-	$(PYTHON) ./tests/unit/runner.py
+	./run_tests.sh -s -i $(PYTHON) unit
 
 coverage:
 	# No python3 coverage yet
@@ -70,7 +70,7 @@ clean:
 	rm -rf $(TMPDIR)
 	rm -f ./locales/mo/*.mo
 	rm -f ./tests/unit/*.pyc ./tests/*.pyc
-	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__
+	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__ ./src/__pycache__
 	rm -rf ./.coverage
 	rm -f ./ufw               # unittest symlink
 
