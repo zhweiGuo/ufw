@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2013 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -19,6 +19,7 @@ import tests.unit.support
 import ufw.util
 
 import os
+import re
 import socket
 import tempfile
 
@@ -55,8 +56,17 @@ class UtilTestCase(unittest.TestCase):
         self.assertTrue(s == "7", s)
         self.assertTrue(p == "udp", p)
 
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.parse_port_proto,
+                                               '7/tcp/udp')
+
     def test_valid_address6(self):
         '''Test valid_address6()'''
+        prev = socket.has_ipv6
+        socket.has_ipv6 = False
+        self.assertFalse(ufw.util.valid_address6('::1'))
+        socket.has_ipv6 = prev
+
         if not socket.has_ipv6:
             return tests.unit.support.skipped(self, "ipv6 not enabled")
 
@@ -81,6 +91,7 @@ class UtilTestCase(unittest.TestCase):
                 '2001:0db8:0000:0000:0000:0000:0000:0000/129',
                 '2001:0db8:0000:0000:0000:0000:0000:00000/128',
                 '2001:0db8:0000:0000:0000:0000:0000:00000/12a',
+                '::1/128/128',
               ]
 
         for b in bad:
@@ -104,6 +115,7 @@ class UtilTestCase(unittest.TestCase):
         '''Test valid_address4()'''
         bad = [
                 '192.168.0.-1',
+                '192.168.0.1/32/32',
                 '192.168.256.1',
                 '192.s55.0.1',
                 '.168.0.1',
@@ -145,6 +157,8 @@ class UtilTestCase(unittest.TestCase):
                'a',
                '-1',
                '33',
+                '255.255.255.255.0',
+                '255.255.255.256',
               ]
 
         for b in bad:
@@ -206,6 +220,9 @@ class UtilTestCase(unittest.TestCase):
             self.assertFalse(ufw.util.valid_address(b, "any"), b)
             self.assertFalse(ufw.util.valid_address(b, "4"), b)
             self.assertFalse(ufw.util.valid_address(b, "6"), b)
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.valid_address,
+                                               '::1', "7")
 
         good = [
                 '192.168.0.0',
@@ -307,82 +324,120 @@ class UtilTestCase(unittest.TestCase):
         for i in range(1, 254):
             if i in cidrs:
                 continue
-            data.append((False, '192.168.0.0/255.255.255.%d' % i, '192.168.0.0/255.255.255.%d' % i))
+            data.append((False, '192.168.0.0/255.255.255.%d' % i,
+                                '192.168.0.0/255.255.255.%d' % i))
             if i < 8:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.0.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.0.0.0/255.%d.0.0' % i))
             elif i < 16:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.8.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.8.0.0/255.%d.0.0' % i))
             elif i < 24:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.0.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.0.0.0/255.%d.0.0' % i))
             elif i < 32:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.8.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.8.0.0/255.%d.0.0' % i))
             elif i < 40:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.32.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.32.0.0/255.%d.0.0' % i))
             elif i < 48:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.40.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.40.0.0/255.%d.0.0' % i))
             elif i < 56:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.32.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.32.0.0/255.%d.0.0' % i))
             elif i < 64:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.40.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.40.0.0/255.%d.0.0' % i))
             elif i < 72:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.0.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.0.0.0/255.%d.0.0' % i))
             elif i < 80:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.8.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.8.0.0/255.%d.0.0' % i))
             elif i < 88:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.0.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.0.0.0/255.%d.0.0' % i))
             elif i < 96:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.8.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.8.0.0/255.%d.0.0' % i))
             elif i < 104:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.32.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.32.0.0/255.%d.0.0' % i))
             elif i < 112:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.40.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.40.0.0/255.%d.0.0' % i))
             elif i < 120:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.32.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.32.0.0/255.%d.0.0' % i))
             elif i < 128:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.40.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.40.0.0/255.%d.0.0' % i))
             elif i < 136:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.128.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.128.0.0/255.%d.0.0' % i))
             elif i < 144:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.136.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.136.0.0/255.%d.0.0' % i))
             elif i < 152:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.128.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.128.0.0/255.%d.0.0' % i))
             elif i < 160:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.136.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.136.0.0/255.%d.0.0' % i))
             elif i < 168:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.160.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.160.0.0/255.%d.0.0' % i))
             elif i < 176:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.168.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.168.0.0/255.%d.0.0' % i))
             elif i < 184:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.160.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.160.0.0/255.%d.0.0' % i))
             elif i < 192:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.168.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.168.0.0/255.%d.0.0' % i))
             elif i < 200:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.128.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.128.0.0/255.%d.0.0' % i))
             elif i < 208:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.136.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.136.0.0/255.%d.0.0' % i))
             elif i < 216:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.128.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.128.0.0/255.%d.0.0' % i))
             elif i < 224:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.136.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.136.0.0/255.%d.0.0' % i))
             elif i < 232:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.160.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.160.0.0/255.%d.0.0' % i))
             elif i < 240:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.168.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.168.0.0/255.%d.0.0' % i))
             elif i < 248:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.160.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.160.0.0/255.%d.0.0' % i))
             elif i < 256:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.168.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.168.0.0/255.%d.0.0' % i))
             else:
-                data.append((False, '192.168.0.0/255.%d.0.0' % i, '192.168.0.0/255.%d.0.0' % i))
+                data.append((False, '192.168.0.0/255.%d.0.0' % i,
+                                    '192.168.0.0/255.%d.0.0' % i))
 
             if i < 64:
-                data.append((False, '192.168.0.0/%d.0.0.0' % i, '0.0.0.0/%d.0.0.0' % i))
+                data.append((False, '192.168.0.0/%d.0.0.0' % i,
+                                    '0.0.0.0/%d.0.0.0' % i))
             elif i < 128:
-                data.append((False, '192.168.0.0/%d.0.0.0' % i, '64.0.0.0/%d.0.0.0' % i))
+                data.append((False, '192.168.0.0/%d.0.0.0' % i,
+                                    '64.0.0.0/%d.0.0.0' % i))
             elif i < 192:
-                data.append((False, '192.168.0.0/%d.0.0.0' % i, '128.0.0.0/%d.0.0.0' % i))
+                data.append((False, '192.168.0.0/%d.0.0.0' % i,
+                                    '128.0.0.0/%d.0.0.0' % i))
             else:
-                data.append((False, '192.168.0.0/%d.0.0.0' % i, '192.0.0.0/%d.0.0.0' % i))
+                data.append((False, '192.168.0.0/%d.0.0.0' % i,
+                                    '192.0.0.0/%d.0.0.0' % i))
 
         error_str = self._run_normalize_address(data)
         self.assertEquals(error_str, "", error_str)
@@ -391,8 +446,10 @@ class UtilTestCase(unittest.TestCase):
     def test_normalize_address_ipv6_short_notation(self):
         '''Test normalize_address() with ipv6_short_notation'''
         data = [
-                 (True, 'fe80:0000:0000:0000:0211:aaaa:bbbb:d54c', 'fe80::211:aaaa:bbbb:d54c'),
-                 (True, '2001:0db8:85a3:08d3:1319:8a2e:0370:734', '2001:db8:85a3:8d3:1319:8a2e:370:734'),
+                 (True, 'fe80:0000:0000:0000:0211:aaaa:bbbb:d54c',
+                        'fe80::211:aaaa:bbbb:d54c'),
+                 (True, '2001:0db8:85a3:08d3:1319:8a2e:0370:734',
+                        '2001:db8:85a3:8d3:1319:8a2e:370:734'),
                 ]
         error_str = self._run_normalize_address(data)
         self.assertEquals(error_str, "", error_str)
@@ -408,53 +465,150 @@ class UtilTestCase(unittest.TestCase):
                  (False, '192.168.0.1/e1', socket.error),
                 ]
         for (v6, ip, expected) in data:
-            tests.unit.support.check_for_exception(self, expected, ufw.util.normalize_address, ip, v6)
+            tests.unit.support.check_for_exception(self, expected, \
+                    ufw.util.normalize_address, ip, v6)
 
-    def test_fileio(self):
-        '''TODO: Test fileio helpers()'''
+    def test_open_file_read(self):
+        '''Test open_file_read()'''
         self.tmpdir = tempfile.mkdtemp()
         tmp = os.path.join(self.tmpdir, "foo")
         f = open(tmp, 'w')
         f.close()
 
+        tests.unit.support.check_for_exception(self, IOError, \
+                    ufw.util.open_file_read, tmp + 'nonexistent')
+
         f = ufw.util.open_file_read(tmp)
         f.close()
 
     def test_open_files(self):
-        '''TODO: Test open_files()'''
+        '''Test open_files()'''
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "foo")
+        f = open(tmp, 'w')
+        f.close()
+
+        tests.unit.support.check_for_exception(self, IOError, \
+                    ufw.util.open_files, tmp + 'nonexistent')
+
+        fns = ufw.util.open_files(tmp)
+        fns['orig'].close()
+        os.close(fns['tmp'])
+        os.unlink(fns['tmpname'])
 
     def test_write_to_file(self):
-        '''TODO: Test write_to_file()'''
+        '''Test write_to_file()'''
+        tests.unit.support.check_for_exception(self, OSError, \
+                    ufw.util.write_to_file, None, 'foo')
+
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "foo")
+        f = open(tmp, 'w')
+        f.close()
+
+        fns = ufw.util.open_files(tmp)
+        ufw.util.write_to_file(fns['tmp'], "")
+        ufw.util.write_to_file(fns['tmp'], "test")
+
+        fns['orig'].close()
+        os.close(fns['tmp'])
+        os.unlink(fns['tmpname'])
 
     def test_close_files(self):
-        '''TODO: Test close_files()'''
+        '''Test close_files()'''
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "foo")
+        f = open(tmp, 'w')
+        f.close()
+
+        fns = ufw.util.open_files(tmp)
+        ufw.util.close_files(fns)
+
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "foo")
+        f = open(tmp, 'w')
+        f.close()
+
+        fns = ufw.util.open_files(tmp)
+        ufw.util.close_files(fns, update=False)
+
+
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "foo")
+        f = open(tmp, 'w')
+        f.close()
+
+        fns = ufw.util.open_files(tmp)
+        os.unlink(fns['origname'])
+        tests.unit.support.check_for_exception(self, OSError,
+                                               ufw.util.close_files,
+                                               fns, True)
+
+        self.tmpdir = tempfile.mkdtemp()
+        tmp = os.path.join(self.tmpdir, "foo")
+        f = open(tmp, 'w')
+        f.close()
+
+        fns = ufw.util.open_files(tmp)
+        os.unlink(fns['tmpname'])
+        tests.unit.support.check_for_exception(self, OSError,
+                                               ufw.util.close_files,
+                                               fns, False)
 
     def test_cmd(self):
-        '''TODO: Test cmd()'''
+        '''Test cmd()'''
+        (rc, report) = ufw.util.cmd(['ls', '/'])
+        self.assertEquals(rc, 0, "Unexpected return code: %d" % rc)
+        self.assertTrue('etc' in report, "Could not find 'etc'in:\n%s" % \
+                        report)
+        (rc, report) = ufw.util.cmd(['./nonexistent-command'])
+        self.assertEquals(rc, 127, "Unexpected return code: %d" % rc)
 
     def test_cmd_pipe(self):
-        '''TODO: Test cmd_pipe()'''
-
-    def test__print(self):
-        '''TODO: Test _print()'''
+        '''Test cmd_pipe()'''
+        (rc, report) = ufw.util.cmd_pipe(['ls', '/'], ['grep', '-q', 'etc'])
+        self.assertEquals(rc, 0, "Unexpected return code: %d" % rc)
+        (rc, report) = ufw.util.cmd_pipe(['./nonexistent-command'],
+                                         ['grep', '-q', 'etc'])
+        self.assertEquals(rc, 127, "Unexpected return code: %d" % rc)
 
     def test_error(self):
-        '''TODO: Test error()'''
+        '''Test error()'''
+        ufw.util.error("test error()", do_exit=False)
 
     def test_warn(self):
-        '''TODO: Test warn()'''
+        '''Test warn()'''
+        ufw.util.warn("test warn()")
 
     def test_msg(self):
-        '''TODO: Test msg()'''
+        '''Test msg()'''
+        ufw.util.msg("test msg()")
+        ufw.util.msg("test msg()", newline=False)
 
     def test_debug(self):
-        '''TODO: Test debug()'''
+        '''Test debug()'''
+        prev = ufw.util.DEBUGGING
+        ufw.util.DEBUGGING = True
+        ufw.util.debug("test debug()")
+        ufw.util.DEBUGGING = prev
 
     def test_word_wrap(self):
-        '''TODO: Test word_wrap()'''
+        '''Test word_wrap()'''
+        s = ufw.util.word_wrap("foo\nbar baz", 3)
+        expected = "foo\nbar\nbaz"
+        self.assertEquals(s, expected, "'%s' != '%s'" % (s, expected))
 
     def test_wrap_text(self):
-        '''TODO: Test wrap_text()'''
+        '''Test wrap_text()'''
+        t ='''
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAA
+'''
+        expected ='''
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAA
+'''
+        s = ufw.util.wrap_text(t)
+        self.assertEquals(s, expected, "'%s' != '%s'" % (s, expected))
 
     def test_human_sort(self):
         '''Test human_sort()'''
@@ -467,25 +621,86 @@ class UtilTestCase(unittest.TestCase):
         self.assertEquals(str(res), expected)
 
     def test_get_ppid(self):
-        '''TODO: Test get_ppid()'''
+        '''Test get_ppid()'''
+        ufw.util.get_ppid()
+        ppid = ufw.util.get_ppid(1)
+        self.assertEquals(ppid, 0, "%d' != '0'" % ppid)
+
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.get_ppid, 'a')
+        tests.unit.support.check_for_exception(self, IOError, \
+                                               ufw.util.get_ppid, 0)
 
     def test_under_ssh(self):
-        '''TODO: Test under_ssh()'''
+        '''Test under_ssh()'''
+        # this test could be running under ssh, so can't do anything more
+        ufw.util.under_ssh()
+
+        self.assertFalse(ufw.util.under_ssh(1))
+        self.assertFalse(ufw.util.under_ssh(0))
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.under_ssh, 'a')
 
     def test__valid_cidr_netmask(self):
-        '''TODO: Test _valid_cidr_netmask()'''
+        '''Test _valid_cidr_netmask()'''
+        self.assertFalse(ufw.util._valid_cidr_netmask('a', False))
+        self.assertFalse(ufw.util._valid_cidr_netmask('a', True))
+        self.assertFalse(ufw.util._valid_cidr_netmask('-1', False))
+        self.assertFalse(ufw.util._valid_cidr_netmask('-1', True))
+        self.assertFalse(ufw.util._valid_cidr_netmask('33', False))
+        self.assertFalse(ufw.util._valid_cidr_netmask('129', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('0', False))
+        self.assertTrue(ufw.util._valid_cidr_netmask('15', False))
+        self.assertTrue(ufw.util._valid_cidr_netmask('16', False))
+        self.assertTrue(ufw.util._valid_cidr_netmask('17', False))
+        self.assertTrue(ufw.util._valid_cidr_netmask('32', False))
+        self.assertTrue(ufw.util._valid_cidr_netmask('0', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('31', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('32', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('33', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('63', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('64', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('65', True))
+        self.assertTrue(ufw.util._valid_cidr_netmask('128', True))
 
     def test__valid_dotted_quads(self):
-        '''TODO: Test _valid_dotted_quads()'''
+        '''Test _valid_dotted_quads()'''
+        # Fill in gaps that can't be tested via other tests
+        self.assertFalse(ufw.util._valid_dotted_quads('255.255.255.255', True))
+        self.assertFalse(ufw.util._valid_dotted_quads('a.255.255.255', False))
+        self.assertFalse(ufw.util._valid_dotted_quads('255.255.255', False))
+        self.assertFalse(ufw.util._valid_dotted_quads('255.255.255', False))
+        self.assertFalse(ufw.util._valid_dotted_quads('255.255.255.256', False))
+        self.assertTrue(ufw.util._valid_dotted_quads('255.255.255.255', False))
 
     def test__dotted_netmask_to_cidr(self):
-        '''TODO: Test _dotted_netmask_to_cidr()'''
+        '''Test _dotted_netmask_to_cidr()'''
+        # Fill in gaps that can't be tested via other tests
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util._dotted_netmask_to_cidr,
+                                               '255.255.255.255', True)
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util._dotted_netmask_to_cidr,
+                                               '255.255.255.256', False)
 
     def test__cidr_to_dotted_netmask(self):
-        '''TODO: Test _cidr_to_dotted_netmask()'''
+        '''Test _cidr_to_dotted_netmask()'''
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util._cidr_to_dotted_netmask,
+                                               '32', True)
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util._cidr_to_dotted_netmask,
+                                               '33', False)
 
     def test__address4_to_network(self):
-        '''TODO: Test _address4_to_network()'''
+        '''Test _address4_to_network()'''
+        n = ufw.util._address4_to_network("192.168.1.1/16")
+        self.assertEquals(n, "192.168.0.0/16")
+        n = "192.168.1.1"
+        self.assertEquals(n, ufw.util._address4_to_network(n))
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util._address4_to_network,
+                                               '192.168.1.1/16/16')
 
     def test__address6_to_network(self):
         '''TODO: Test _address6_to_network()'''
@@ -494,7 +709,12 @@ class UtilTestCase(unittest.TestCase):
         '''TODO: Test in_network()'''
 
     def test_get_iptables_version(self):
-        '''TODO: Test get_iptables_version()'''
+        '''Test get_iptables_version()'''
+        tests.unit.support.check_for_exception(self, OSError, \
+                                               ufw.util.get_iptables_version, \
+                                               'iptables-nonexistent')
+        v = ufw.util.get_iptables_version()
+        self.assertTrue(re.match(r'^[0-9]', v))
 
     def test_get_netfilter_capabilities(self):
         '''TODO: Test get_netfilter_capabilities()'''
@@ -518,7 +738,13 @@ class UtilTestCase(unittest.TestCase):
         '''TODO: Test convert_proc_address()'''
 
     def test_get_netstat_output(self):
-        '''TODO: Test get_netstat_output()'''
+        '''Test get_netstat_output()'''
+        s = ufw.util.get_netstat_output(True)
+        self.assertTrue("tcp" in s)
+        self.assertTrue("udp" in s)
+        s = ufw.util.get_netstat_output(False)
+        self.assertTrue("tcp" in s)
+        self.assertTrue("udp" in s)
 
 
 def test_main(): # used by runner.py

@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -109,7 +109,8 @@ def valid_address4(addr):
     net = addr.split('/')
     try:
         socket.inet_pton(socket.AF_INET, net[0])
-        if not _valid_dotted_quads(net[0], False):
+        # socket.inet_pton() should raise an exception, but let's be sure
+        if not _valid_dotted_quads(net[0], False): # pragma: no cover
             return False
     except Exception:
         return False
@@ -221,7 +222,7 @@ def open_files(fn):
 
     try:
         (tmp, tmpname) = mkstemp()
-    except Exception:
+    except Exception: # pragma: no cover
         orig.close()
         raise
 
@@ -238,12 +239,13 @@ def write_to_file(fd, out):
         raise OSError(errno.ENOENT, "Not a valid file descriptor")
 
     rc = -1
-    if sys.version_info[0] >= 3:
+    # cover not in python3, so can't test for this
+    if sys.version_info[0] >= 3: # pragma: no cover
         rc = os.write(fd, bytes(out, 'ascii'))
     else:
         rc = os.write(fd, out)
 
-    if rc <= 0:
+    if rc <= 0: # pragma: no cover
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
@@ -304,7 +306,8 @@ def _print(output, s):
 
     try:
         out = s.encode('utf-8', 'ignore')
-    except:
+    # Depends on python version
+    except: # pragma: no cover
         out = s
 
     writer.write(bytes(out))
@@ -315,10 +318,10 @@ def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
         _print(sys.stderr, 'ERROR: %s\n' % out)
-    except IOError:
+    except IOError: # pragma: no cover
         pass
 
-    if do_exit:
+    if do_exit: # pragma: no cover
         sys.exit(1)
 
 
@@ -326,7 +329,7 @@ def warn(out):
     '''Print warning message'''
     try:
         _print(sys.stderr, 'WARN: %s\n' % out)
-    except IOError:
+    except IOError: # pragma: no cover
         pass
 
 
@@ -337,7 +340,7 @@ def msg(out, output=sys.stdout, newline=True):
             _print(output, '%s\n' % out)
         else:
             _print(output, '%s' % out)
-    except IOError:
+    except IOError: # pragma: no cover
         pass
 
 
@@ -346,7 +349,7 @@ def debug(out):
     if DEBUGGING:
         try:
             _print(sys.stderr, 'DEBUG: %s\n' % out)
-        except IOError:
+        except IOError: # pragma: no cover
             pass
 
 
@@ -403,7 +406,7 @@ def get_ppid(mypid=os.getpid()):
         # 9983 (cmd) S 923 ...
         # 9983 (cmd with spaces) S 923 ...
         ppid = open(name).readlines()[0].split(')')[1].split()[1]
-    except Exception:
+    except Exception: # pragma: no cover
         raise
 
     return int(ppid)
@@ -427,20 +430,21 @@ def under_ssh(pid=os.getpid()):
         return False
 
     path = os.path.join("/proc", str(ppid), "stat")
-    if not os.path.isfile(path):
+    if not os.path.isfile(path): # pragma: no cover
         err_msg = _("Couldn't find '%s'") % (path)
         raise ValueError(err_msg)
 
     try:
         exe = open(path).readlines()[0].split()[1]
-    except Exception:
+    except Exception: # pragma: no cover
         err_msg = _("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
     debug("under_ssh: exe is '%s'" % (exe))
 
-    if exe == "(sshd)":
+    # unit tests might be run remotely, so can't test for either
+    if exe == "(sshd)": # pragma: no cover
         return True
-    else:
+    else: # pragma: no cover
         return under_ssh(ppid)
 
 
@@ -498,9 +502,9 @@ def _dotted_netmask_to_cidr(nm, v6):
         # python3 doesn't have long(). We could technically use int() here
         # since python2 guarantees at least 32 bits for int(), but this helps
         # future-proof.
-        try:
+        try: # pragma: no cover
             bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
-        except NameError:
+        except NameError: # pragma: no cover
             bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
         found_one = False
@@ -542,9 +546,9 @@ def _cidr_to_dotted_netmask(cidr, v6):
         # python3 doesn't have long(). We could technically use int() here
         # since python2 guarantees at least 32 bits for int(), but this helps
         # future-proof.
-        try:
+        try: # pragma: no cover
             bits = long(0)
-        except NameError:
+        except NameError: # pragma: no cover
             bits = 0
 
         for n in range(32):
@@ -552,7 +556,8 @@ def _cidr_to_dotted_netmask(cidr, v6):
                 bits |= 1 << 31 - n
         nm = socket.inet_ntoa(struct.pack('>L', bits))
 
-    if not _valid_dotted_quads(nm, v6):
+    # The above socket.inet_ntoa() should raise an error, but let's be sure
+    if not _valid_dotted_quads(nm, v6): # pragma: no cover
         raise ValueError
 
     return nm
@@ -573,20 +578,17 @@ def _address4_to_network(addr):
 
     nm = orig_nm
     if _valid_cidr_netmask(nm, False):
-        try:
-            nm = _cidr_to_dotted_netmask(nm, False)
-        except Exception:
-            raise
+        nm = _cidr_to_dotted_netmask(nm, False)
 
     # Now have dotted quad host and nm, find the network
 
     # python3 doesn't have long(). We could technically use int() here
     # since python2 guarantees at least 32 bits for int(), but this helps
     # future-proof.
-    try:
+    try: # pragma: no cover
         host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
         nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
-    except NameError:
+    except NameError: # pragma: no cover
         host_bits = int(struct.unpack('>L', socket.inet_aton(host))[0])
         nm_bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
@@ -892,18 +894,18 @@ def _get_proc_inodes():
         exe_path = "-"
         try:
             exe_path = os.readlink(os.path.join("/proc", i, "exe"))
-        except Exception:
+        except Exception: # pragma: no cover
             pass
 
         try:
             dirs = os.listdir(fd_path)
-        except:
+        except: # pragma: no cover
             continue
 
         for j in dirs:
             try:
                 inode = os.stat(os.path.join(fd_path, j))[1]
-            except Exception:
+            except Exception: # pragma: no cover
                 continue
             inodes[inode] = "%s/%s" % (i, os.path.basename(exe_path))
 
@@ -932,7 +934,8 @@ def _read_proc_net_protocol(protocol):
                       }
 
     fn = os.path.join("/proc/net", protocol)
-    if not os.access(fn, os.F_OK | os.R_OK):
+    # can't test for this
+    if not os.access(fn, os.F_OK | os.R_OK): # pragma: no cover
         raise ValueError
 
     lst = []
@@ -984,7 +987,7 @@ def get_netstat_output(v6):
     for p in proto:
         try:
             proc_net_data[p] = _read_proc_net_protocol(p)
-        except Exception:
+        except Exception: # pragma: no cover
             warn_msg = _("Could not get statistics for '%s'" % (p))
             warn(warn_msg)
             continue
@@ -1001,7 +1004,8 @@ def get_netstat_output(v6):
 
             exe = "-"
             if int(inode) in inodes:
-                exe = inodes[int(inode)]
+                # need root for this, so turn off in unit tests
+                exe = inodes[int(inode)] # pragma: no cover
             s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p,
                                                        "%s:%s" % (addr, port),
                                                        state, uid, inode, exe)
