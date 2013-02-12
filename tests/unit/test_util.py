@@ -86,6 +86,7 @@ class UtilTestCase(unittest.TestCase):
         prev = socket.has_ipv6
         socket.has_ipv6 = False
         self.assertFalse(ufw.util.valid_address6('::1'))
+        print("(IPv6 support warning is intentional)")
         socket.has_ipv6 = prev
 
         if not socket.has_ipv6:
@@ -597,21 +598,26 @@ class UtilTestCase(unittest.TestCase):
     def test_error(self):
         '''Test error()'''
         ufw.util.error("test error()", do_exit=False)
+        print("('ERROR: test error()' output is intentional)")
 
     def test_warn(self):
         '''Test warn()'''
         ufw.util.warn("test warn()")
+        print("('WARN: test warn()' output is intentional)")
 
     def test_msg(self):
         '''Test msg()'''
         ufw.util.msg("test msg()")
+        print("('test msg()' output is intentional)")
         ufw.util.msg("test msg()", newline=False)
+        print("\n('test msg()' output is intentional)")
 
     def test_debug(self):
         '''Test debug()'''
         prev = ufw.util.DEBUGGING
         ufw.util.DEBUGGING = True
         ufw.util.debug("test debug()")
+        print("('DEBUG: test debug()' output is intentional)")
         ufw.util.DEBUGGING = prev
 
     def test_word_wrap(self):
