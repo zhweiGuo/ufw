@@ -620,7 +620,7 @@ def _address6_to_network(addr):
     # Get the host bits
     try: # python3 doesn't have long()
         host_bits = long(0)
-    except NameError:
+    except NameError: # pragma: no cover
         host_bits = 0
 
     for i in range(8):
@@ -631,7 +631,7 @@ def _address6_to_network(addr):
     # Create netmask bits
     try: # python3 doesn't have long()
         nm_bits = long(0)
-    except NameError:
+    except NameError: # pragma: no cover
         nm_bits = 0
 
     for i in range(128):
@@ -685,10 +685,7 @@ def in_network(tested_add, tested_net, v6):
             raise ValueError
 
     if _valid_cidr_netmask(netmask, v6) and not v6:
-        try:
-            netmask = _cidr_to_dotted_netmask(netmask, v6)
-        except Exception:
-            raise
+        netmask = _cidr_to_dotted_netmask(netmask, v6)
 
     # Now apply the network's netmask to the address
     if v6:
@@ -714,7 +711,8 @@ def get_iptables_version(exe="/sbin/iptables"):
     return re.sub('^v', '', tmp[1])
 
 
-def get_netfilter_capabilities(exe="/sbin/iptables"):
+# must be root, so don't report coverage in unit tests
+def get_netfilter_capabilities(exe="/sbin/iptables"): # pragma: no cover
     '''Return capabilities set for netfilter to support new features. Callers
        must be root.'''
     def test_cap(exe, chain, rule):
@@ -762,7 +760,7 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
     return caps
 
 def parse_netstat_output(v6):
-    '''Get and parse netstat the output from get_netstat_outout()'''
+    '''Get and parse netstat the output from get_netstat_output()'''
 
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
@@ -771,7 +769,7 @@ def parse_netstat_output(v6):
 
     d = dict()
     for line in netstat_output.splitlines():
-        if not line.startswith('tcp') and not line.startswith('udp'):
+        if not line.startswith('tcp') and not line.startswith('udp'): # pragma: no cover
             continue
 
         tmp = line.split()
@@ -802,7 +800,9 @@ def parse_netstat_output(v6):
 def get_ip_from_if(ifname, v6=False):
     '''Get IP address for interface'''
     addr = ""
-    if v6:
+
+    # we may not have an IPv6 address, so no coverage
+    if v6: # pragma: no cover
         proc = '/proc/net/if_inet6'
         if not os.path.exists(proc):
             raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
@@ -839,11 +839,12 @@ def get_if_from_ip(addr):
     elif not valid_address4(addr):
         raise IOError(errno.ENODEV, "No such device")
 
-    if not os.path.exists(proc):
+    if not os.path.exists(proc): # pragma: no cover
         raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
 
     matched = ""
-    if v6:
+    # we may not have an IPv6 address, so no coverage
+    if v6: # pragma: no cover
         for line in open(proc).readlines():
             tmp = line.split()
             ifname = tmp[5].strip()

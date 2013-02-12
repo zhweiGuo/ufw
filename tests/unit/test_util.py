@@ -21,6 +21,7 @@ import ufw.util
 import os
 import re
 import socket
+import sys
 import tempfile
 
 class UtilTestCase(unittest.TestCase):
@@ -229,17 +230,48 @@ class UtilTestCase(unittest.TestCase):
 
     def test_valid_address(self):
         '''Test valid_address()'''
-        # TODO: incorporate all of tests/util/addresses and get rid of it
-        bad = [
-                ':::1',
-                'fe80::-1',
-                '192.168.0.-1',
-                '192.168.256.1',
-                '192.s55.0.1',
-                '.168.0.1',
-              ]
+        # BAD ADDRESSES
+        for v in ['4', 'any']:
+            for b in ['16a', '33', '-1']:
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.1/%s" % b, v))
 
-        for b in bad:
+            for b in ['256', 's55', '-1']:
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.%s" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.%s.1" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.%s.0.1" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "%s.168.0.1" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "%s.%s.%s.%s" % (b, b, b, b), v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.1/255.255.255.%s" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.1/255.255.%s.255" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.1/255.%s.255.255" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.1/%s.255.255.255" % b, v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.1/%s.%s.%s.%s" % (b, b, b, b), v))
+                self.assertFalse(ufw.util.valid_address(
+                    "%s.168.0.1/255.255.255.%s" % (b, b), v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.%s.0.1/255.255.%s.255" % (b, b), v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.%s.1/255.%s.255.255" % (b, b), v))
+                self.assertFalse(ufw.util.valid_address(
+                    "192.168.0.%s/%s.255.255.255" % (b, b), v))
+                self.assertFalse(ufw.util.valid_address(
+                    "%s.%s.%s.%s/%s.%s.%s.%s" % (b, b, b, b, b, b, b, b), v))
+
+        for b in ['129', 's55', '-1']:
+            self.assertFalse(ufw.util.valid_address("::1/%s" % b, "6"))
+
+        for b in [ ':::1', 'fe80::-1', '.168.0.1',]:
             self.assertFalse(ufw.util.valid_address(b, "any"), b)
             self.assertFalse(ufw.util.valid_address(b, "4"), b)
             self.assertFalse(ufw.util.valid_address(b, "6"), b)
@@ -247,8 +279,37 @@ class UtilTestCase(unittest.TestCase):
                                                ufw.util.valid_address,
                                                '::1', "7")
 
+
+        # VALID ADDRESSES
+        for v in ['4', 'any']:
+            self.assertTrue(ufw.util.valid_address("0.0.0.0", v))
+            self.assertTrue(ufw.util.valid_address("0.0.0.0/0", v))
+            self.assertTrue(ufw.util.valid_address("0.0.0.0/0.0.0.0", v))
+            self.assertTrue(ufw.util.valid_address("10.0.0.1", v))
+            self.assertTrue(ufw.util.valid_address("10.0.0.1/32", v))
+            self.assertTrue(ufw.util.valid_address("10.0.0.1/255.255.255.255",
+                                                   v))
+            for i in range(0, 33):
+                self.assertTrue(ufw.util.valid_address(
+                    "192.168.0.1/%s" % i, v))
+            for i in range(0, 256):
+                self.assertTrue(ufw.util.valid_address(
+                    "192.168.0.1/255.255.255.%s" % i, v))
+                self.assertTrue(ufw.util.valid_address(
+                    "192.168.0.1/255.255.%s.255" % i, v))
+                self.assertTrue(ufw.util.valid_address(
+                    "192.168.0.1/255.%s.255.255" % i, v))
+                self.assertTrue(ufw.util.valid_address(
+                    "192.168.0.1/%s.255.255.255" % i, v))
+                self.assertTrue(ufw.util.valid_address(
+                    "192.168.0.1/%s.%s.%s.%s" % (i, i, i, i), v))
+
+        for i in range(0, 129):
+            self.assertTrue(ufw.util.valid_address("::1/%s" % i, "6"))
+
+
         good = [
-                '192.168.0.0',
+                '192.168.128.128/255.255.255.129',
                 '192.168.0.1',
                 '192.168.0.254',
                 '192.168.0.255',
@@ -742,10 +803,86 @@ AAA
                                                '192.168.1.1/16/16')
 
     def test__address6_to_network(self):
-        '''TODO: Test _address6_to_network()'''
+        '''Test _address6_to_network()'''
+        n = ufw.util._address6_to_network("ff81::1/15")
+        self.assertEquals(n, "ff80::/15")
+        n = "ff80::1"
+        self.assertEquals(n, ufw.util._address6_to_network(n))
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util._address6_to_network,
+                                               'ff80::1/16/16')
+
 
     def test_in_network(self):
-        '''TODO: Test in_network()'''
+        '''Test in_network()'''
+        for i in range(0, 33):
+            self.assertTrue(ufw.util.in_network("10.2.0.1",
+                                                "10.2.0.1/%d" % i,
+                                                False))
+        self.assertFalse(ufw.util.in_network("10.2.0.1",
+                                             "10.2.0.0/32",
+                                             False))
+        self.assertTrue(ufw.util.in_network("11.0.0.1",
+                                            "10.2.0.1/7",
+                                            False))
+        self.assertFalse(ufw.util.in_network("11.0.0.1",
+                                             "10.2.0.1/8",
+                                             False))
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.in_network,
+                                                   "10.2.0.1",
+                                                   "10.2.0.1/33",
+                                                   False)
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.in_network,
+                                                   "10.2.0.1234",
+                                                   "10.2.0.1/24",
+                                                   False)
+        self.assertTrue(ufw.util.in_network("10.2.0.1",
+                                            "0.0.0.0/0",
+                                            False))
+        self.assertTrue(ufw.util.in_network("10.2.0.1/26",
+                                            "10.2.0.1/24",
+                                            False))
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.in_network,
+                                               "10.2.0.1/16/16",
+                                               "10.2.0.1/24",
+                                               False)
+        self.assertTrue(ufw.util.in_network("0.0.0.0",
+                                            "10.2.0.1/24",
+                                            False))
+
+        for i in range(0, 129):
+            self.assertTrue(ufw.util.in_network("ff80::1",
+                                                "ff80::1/%d" % i,
+                                                True))
+        self.assertFalse(ufw.util.in_network("ff80::1",
+                                             "ff80::0/128",
+                                             True))
+        self.assertTrue(ufw.util.in_network("ff81::1",
+                                            "ff80::1/15",
+                                            True))
+        self.assertFalse(ufw.util.in_network("ff81::1",
+                                             "ff80::1/16",
+                                             True))
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.in_network,
+                                               "ff80::1",
+                                               "ff80::1/129",
+                                               True)
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                               ufw.util.in_network,
+                                               "gf80::1",
+                                               "ff80::1/64",
+                                               True)
+        self.assertTrue(ufw.util.in_network("ff80::1",
+                                            "::/0",
+                                            True))
+        self.assertTrue(ufw.util.in_network("::/0",
+                                            "ff80::1/64",
+                                            True))
+
 
     def test_get_iptables_version(self):
         '''Test get_iptables_version()'''
@@ -756,25 +893,66 @@ AAA
         self.assertTrue(re.match(r'^[0-9]', v))
 
     def test_get_netfilter_capabilities(self):
-        '''TODO: Test get_netfilter_capabilities()'''
+        '''Test get_netfilter_capabilities()'''
+        tests.unit.support.check_for_exception(self, OSError, \
+                 ufw.util.get_netfilter_capabilities)
 
     def test_parse_netstat_output(self):
-        '''TODO: Test parse_netstat_output()'''
+        '''Test parse_netstat_output()'''
+        s = ufw.util.parse_netstat_output(False)
+        self.assertTrue(len(s) > 0)
+        s = ufw.util.parse_netstat_output(True)
+        self.assertTrue(len(s) > 0)
 
     def test_get_ip_from_if(self):
-        '''TODO: Test get_ip_from_if()'''
+        '''Test get_ip_from_if()'''
+        if sys.version_info[0] >= 3:
+            return tests.unit.support.skipped(self, "TODO: python3")
+
+        ip = ufw.util.get_ip_from_if("lo", False)
+        self.assertTrue(ip.startswith("127"))
+
+        tests.unit.support.check_for_exception(self, IOError, \
+                 ufw.util.get_ip_from_if, "nonexistent", False)
+
+        # just run through the code, we may not have an IPv6 address
+        try:
+            ufw.util.get_ip_from_if("lo", True)
+        except IOError:
+            pass
 
     def test_get_if_from_ip(self):
-        '''TODO: Test get_if_from_ip()'''
+        '''Test get_if_from_ip()'''
+        if sys.version_info[0] >= 3:
+            return tests.unit.support.skipped(self, "TODO: python3")
+
+        iface = ufw.util.get_if_from_ip("127.0.0.1")
+        self.assertTrue(iface.startswith("lo"))
+        self.assertFalse(ufw.util.get_if_from_ip("127.255.255.255"))
+        tests.unit.support.check_for_exception(self, IOError, \
+                 ufw.util.get_if_from_ip, "nonexistent")
+
+        # just run through the code, we may not have an IPv6 address
+        try:
+            ufw.util.get_if_from_ip("::1")
+        except IOError:
+            pass
 
     def test__get_proc_inodes(self):
-        '''TODO: Test _get_proc_inodes()'''
+        '''Test _get_proc_inodes()'''
+        inodes = ufw.util._get_proc_inodes()
+        self.assertTrue(len(inodes) > 0)
 
     def test__read_proc_net_protocol(self):
-        '''TODO: Test _read_proc_net_protocol()'''
+        '''Test _read_proc_net_protocol()'''
+        res = ufw.util._read_proc_net_protocol("tcp")
+        self.assertTrue(len(res) > 0)
+        res = ufw.util._read_proc_net_protocol("udp")
+        self.assertTrue(len(res) > 0)
 
-    def test_convert_proc_address(self):
-        '''TODO: Test convert_proc_address()'''
+    # covered by other tests
+    #def test_convert_proc_address(self):
+    #    '''Test convert_proc_address()'''
 
     def test_get_netstat_output(self):
         '''Test get_netstat_output()'''
