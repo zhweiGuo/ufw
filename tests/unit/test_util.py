@@ -33,14 +33,35 @@ class UtilTestCase(unittest.TestCase):
 
     def test_get_services_proto(self):
         '''Test get_services_proto()'''
+        # 'any'
+        # socket.getservbyname("echo") succeeds
+        # socket.getservbyname("echo", "tcp") succeeds
+        # socket.getservbyname("echo", "udp") succeeds
         res = ufw.util.get_services_proto("echo")
         self.assertTrue(res == "any", res)
 
+        # 'tcp'
+        # socket.getservbyname("tcpmux") succeeds
+        # socket.getservbyname("tcpmux", "tcp") succeeds
+        # socket.getservbyname("tcpmux", "udp") fails
         res = ufw.util.get_services_proto("tcpmux")
         self.assertTrue(res == "tcp", res)
 
+        # 'udp'
+        # socket.getservbyname("fsp") succeeds
+        # socket.getservbyname("fsp", "tcp") fails
+        # socket.getservbyname("fsp", "udp") succeeds
         res = ufw.util.get_services_proto("fsp")
         self.assertTrue(res == "udp", res)
+
+        # not found
+        # socket.getservbyname("ufw-nonexistent") fails
+        # socket.getservbyname("ufw-nonexistent", "tcp") fails
+        # socket.getservbyname("ufw-nonexistent", "udp") fails
+        tests.unit.support.check_for_exception(self, socket.error, \
+                                               ufw.util.get_services_proto, \
+                                               "ufw-nonexistent")
+
 
     def test_parse_port_proto(self):
         '''Test parse_port_proto()'''
@@ -207,6 +228,7 @@ class UtilTestCase(unittest.TestCase):
 
     def test_valid_address(self):
         '''Test valid_address()'''
+        # TODO: incorporate all of tests/util/addresses and get rid of it
         bad = [
                 ':::1',
                 'fe80::-1',
@@ -691,6 +713,17 @@ AAA
         tests.unit.support.check_for_exception(self, ValueError, \
                                                ufw.util._cidr_to_dotted_netmask,
                                                '33', False)
+
+    def test_cidr_to_dotted_to_cidr(self):
+        '''Test _cidr_to_dotted_netmask() and _dotted_netmask_to_cidr()'''
+        for m in range(0,33):
+            cidr = str(m)
+            dotted = ufw.util._cidr_to_dotted_netmask(cidr, False)
+            reverse = ufw.util._dotted_netmask_to_cidr(dotted, False)
+            self.assertEquals(cidr, reverse,
+                            "cidr=%s, dotted=%s, reverse=%s" % (cidr,
+                                                                dotted, 
+                                                                reverse))
 
     def test__address4_to_network(self):
         '''Test _address4_to_network()'''
