@@ -58,9 +58,11 @@ class ParserTestCase(unittest.TestCase):
         pass
 
     def test_simple(self):
-        '''Test simple'''
+        '''Test simple rule syntax'''
+        count = 0
         cmds = tests.unit.support.get_sample_rule_commands_simple()
         for cmd in cmds:
+            count += 1
             #print(" ".join(cmd))
             # Note, parser.parse_command() modifies it arg, so pass a copy of
             # the cmd, not a reference
@@ -94,6 +96,26 @@ class ParserTestCase(unittest.TestCase):
             action = ins_cmd[3]
             self.assertEquals(action, pr.action, "%s != %s" % (action, \
                                                                pr.action))
+        print("%d rules checked" % count)
+
+    def test_extended(self):
+        '''Test extended rule syntax'''
+        count = 0
+        cmds = tests.unit.support.get_sample_rule_commands_extended()
+        cmds6 = tests.unit.support.get_sample_rule_commands_extended(v6=True)
+        for cmd in cmds + cmds6:
+            count += 1
+            #print(" ".join(cmd))
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            pr = self.parser.parse_command(cmd + [])
+
+            # TODO: more tests here by sending the cmd and the pr to a helper
+            action = cmd[1]
+            self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                               pr.action))
+
+        print("%d rules checked" % count)
 
     def test_simple_bad_numeric_port(self):
         '''Test simple bad numeric port'''
