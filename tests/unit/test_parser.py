@@ -59,44 +59,41 @@ class ParserTestCase(unittest.TestCase):
 
     def test_simple(self):
         '''Test simple'''
-        for action in ['allow', 'deny', 'reject', 'limit']:
-            for dir in ['', 'in', 'out']:
-                for log in ['', 'log', 'log-all']:
-                    for port in ['22', 'tcpmux', 'fsp', 'Apache', 'Samba'\
-                                 'Apache Full', 'Bind9']:
-                        for proto in ['', 'tcp', 'udp']:
-                            c = []
-                            if dir != '':
-                                c.append(dir)
-                            if log != '':
-                                c.append(log)
-                            if port == '22':
-                                if proto == '':
-                                    c.append(port)
-                                else:
-                                    c.append('%s/%s' % (port, proto))
-                            else:
-                                if proto == '':
-                                    c.append(port)
-                                else:
-                                    continue
-                            
-                            cmd = ['rule', action] + c
-                            pr = self.parser.parse_command(cmd)
-                            self.assertEquals(action, pr.action, "%s != %s" % \
-                                              (action, pr.action))
+        cmds = tests.unit.support.get_sample_rule_commands_simple()
+        for cmd in cmds:
+            #print(" ".join(cmd))
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            pr = self.parser.parse_command(cmd + [])
 
-                            cmd = ['rule', 'delete', action] + c
-                            pr = self.parser.parse_command(cmd)
-                            self.assertEquals(action, pr.action, "%s != %s" % \
-                                              (action, pr.action))
-                            self.assertTrue(pr.data['rule'].remove)
+            # TODO: more tests here by sending the cmd and the pr to a helper
+            action = cmd[1]
+            self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                               pr.action))
 
-                            cmd = ['rule', 'insert', '1', action] + c
-                            pr = self.parser.parse_command(cmd)
-                            self.assertEquals(pr.data['rule'].position, 1, \
-                                              "%s != 1" % \
-                                              pr.data['rule'].position)
+            del_cmd = cmd + []
+            del_cmd.insert(1, 'delete')
+            #print(" ".join(del_cmd))
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the del_cmd, not a reference
+            pr = self.parser.parse_command(del_cmd + [])
+
+            # TODO: more tests here by sending the cmd and the pr to a helper
+            action = del_cmd[2]
+            self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                               pr.action))
+            ins_cmd = cmd + []
+            ins_cmd.insert(1, 'insert')
+            ins_cmd.insert(2, '1')
+            #print(" ".join(ins_cmd))
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the del_cmd, not a reference
+            pr = self.parser.parse_command(ins_cmd + [])
+
+            # TODO: more tests here by sending the cmd and the pr to a helper
+            action = ins_cmd[3]
+            self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                               pr.action))
 
     def test_simple_bad_numeric_port(self):
         '''Test simple bad numeric port'''

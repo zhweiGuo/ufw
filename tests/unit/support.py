@@ -27,8 +27,10 @@ topdir = "./tests/unit/tmp"
 class Error(Exception):
     '''Error'''
 
+
 class TestFailed(Error):
     '''Test failed'''
+
 
 def skipped(cls, s):
     '''Test skipped'''
@@ -36,6 +38,7 @@ def skipped(cls, s):
     # TODO: somehow flag and count this as skipped
     print("skipped: %s" % s)
     return False
+
 
 def recursive_rm(dirPath, contents_only=False):
     '''recursively remove directory'''
@@ -49,6 +52,7 @@ def recursive_rm(dirPath, contents_only=False):
     if contents_only == False:
         os.rmdir(dirPath)
 
+
 def initvars(install_dir):
     import ufw.common
 
@@ -57,6 +61,7 @@ def initvars(install_dir):
 
     if ufw.common.config_dir == "#CONFIG_PREFIX#":
         ufw.common.config_dir = os.path.join(install_dir, "etc", "ufw")
+
 
 def run_setup():
     global topdir
@@ -74,6 +79,7 @@ def run_setup():
     sp.communicate()[0]
 
     return install_dir
+
 
 def run_unittest(*classes):
     '''Run tests from classes'''
@@ -98,6 +104,7 @@ def run_unittest(*classes):
 
     if os.path.exists(topdir):
         recursive_rm(topdir)
+
 
 def init_gettext():
     '''Convenience function to setup _'''
@@ -128,6 +135,7 @@ def init_gettext():
 
     return _
 
+
 def check_for_exception(t, expectedException, func, *args):
     try:
         func(*args)
@@ -137,3 +145,54 @@ def check_for_exception(t, expectedException, func, *args):
         t.fail("Unexpected exception thrown for '%s%s:\n%s" % (str(func), str(args), sys.exc_info()[0]))
     else:
         t.fail('%s not thrown' % str(expectedException))
+
+def get_sample_rule_commands_simple():
+    '''Return a list of sample rule commands for simple rules.
+       Format:
+       [
+        [ 'rule', <action>, args... ],
+        [ 'rule', <action>, args... ],
+       ]
+    '''
+
+    cmds = []
+    for action in ['allow', 'deny', 'reject', 'limit']:
+        for dir in ['', 'in', 'out']:
+            for log in ['', 'log', 'log-all']:
+                for port in ['', '22', 'tcpmux', 'fsp', 'Apache', 'Samba', \
+                             'Apache Full', 'Bind9']:
+                    for proto in ['', 'tcp', 'udp']:
+                        c = []
+                        if dir:
+                            c.append(dir)
+                            if not port:
+                                c.append('on')
+                                c.append('eth0')
+
+                        if log:
+                            c.append(log)
+
+                        if not port and 'on' in c:
+                            # eg, rule allow in on eth0
+                            cmds.append(['rule', action] + c)
+                            continue
+
+                        try:
+                            int(port)
+                            if proto:
+                                # eg, rule action dir log 22/tcp
+                                c.append('%s/%s' % (port, proto))
+                            else:
+                                # eg, rule action dir log 22
+                                c.append(port)
+                        except ValueError:
+                            if proto or not port:
+                                continue
+                            else:
+                                # eg, rule action dir log Bind9
+                                # eg, rule action dir log tcpmux
+                                c.append(port)
+
+                        cmds.append(['rule', action] + c)
+                        
+    return cmds
