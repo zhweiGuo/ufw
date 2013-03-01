@@ -783,7 +783,7 @@ def parse_netstat_output(v6):
         item['pid'] = tmp[5].split('/')[0]
         if item['pid'] == '-':
             item['exe'] = item['pid']
-        else:
+        else: # pragma: no cover
             item['exe'] = tmp[5].split('/')[1]
 
         if proto not in d:
@@ -866,7 +866,7 @@ def get_if_from_ip(addr):
             # this can fail for certain devices, so just skip them
             try:
                 ip = get_ip_from_if(ifname, False)
-            except IOError:
+            except IOError: # pragma: no cover
                 continue
 
             if ip == addr:
