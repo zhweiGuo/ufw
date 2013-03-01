@@ -197,9 +197,7 @@ class UFWRule:
             raise UFWError(err_msg)
         else:
             ports = port.split(',')
-            if len(ports) < 1:
-                raise UFWError(err_msg)
-            elif len(ports) > 1:
+            if len(ports) > 1:
                 self.multi = True
 
             tmp = ""
@@ -208,8 +206,6 @@ class UFWRule:
                     # Port range
                     self.multi = True
                     ran = p.split(':')
-                    if len(ran) != 2:
-                        raise UFWError(err_msg)
                     for q in ran:
                         if int(q) < 1 or int(q) > 65535:
                             raise UFWError(err_msg)
