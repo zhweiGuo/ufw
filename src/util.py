@@ -30,6 +30,7 @@ from functools import reduce
 from tempfile import mkstemp
 
 DEBUGGING = False
+msg_output = None # for redirecting stdout in msg() and write_to_file()
 
 
 def get_services_proto(port):
@@ -238,6 +239,11 @@ def write_to_file(fd, out):
     if not fd:
         raise OSError(errno.ENOENT, "Not a valid file descriptor")
 
+    # Redirect our writes to stdout to msg_output, if it is set
+    if msg_output and fd == sys.stdout.fileno():
+        msg_output.write(out)
+        return
+
     rc = -1
     # cover not in python3, so can't test for this
     if sys.version_info[0] >= 3: # pragma: no cover
@@ -335,6 +341,9 @@ def warn(out):
 
 def msg(out, output=sys.stdout, newline=True):
     '''Print message'''
+    if msg_output and output == sys.stdout:
+        output = msg_output
+
     try:
         if newline:
             _print(output, '%s\n' % out)
