@@ -15,8 +15,10 @@ ufw (0.34) UNRELEASED; urgency=low
   * implement before and after hooks in /etc/ufw/(before|after).init
     (LP: #1075975)
   * start unit test framework
+  * honor UFW_SKIP_CHECKS=1 environment variable with setup.py, which eases
+    testing
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 19 Jan 2013 16:14:40 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 03 Mar 2013 01:41:36 -0600
 
 ufw (0.33) RELEASED; urgency=low
 
