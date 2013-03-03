@@ -21,6 +21,7 @@ import ufw.util
 import os
 import re
 import socket
+from StringIO import StringIO
 import sys
 import tempfile
 
@@ -598,6 +599,13 @@ class UtilTestCase(unittest.TestCase):
         os.close(fns['tmp'])
         os.unlink(fns['tmpname'])
 
+        ufw.util.msg_output = StringIO()
+        ufw.util.write_to_file(sys.stdout.fileno(), "test string")
+        out = ufw.util.msg_output.getvalue()
+        self.assertEquals(out, "test string")
+        ufw.util.msg_output.close()
+        ufw.util.msg_output = None
+
     def test_close_files(self):
         '''Test close_files()'''
         self.tmpdir = tempfile.mkdtemp()
@@ -670,8 +678,16 @@ class UtilTestCase(unittest.TestCase):
         '''Test msg()'''
         ufw.util.msg("test msg()")
         print("('test msg()' output is intentional)")
+
         ufw.util.msg("test msg()", newline=False)
         print("\n('test msg()' output is intentional)")
+
+        ufw.util.msg_output = StringIO()
+        ufw.util.msg("test msg()", newline=False)
+        out = ufw.util.msg_output.getvalue()
+        self.assertEquals(out, "test msg()")
+        ufw.util.msg_output.close()
+        ufw.util.msg_output = None
 
     def test_debug(self):
         '''Test debug()'''
@@ -894,8 +910,16 @@ AAA
 
     def test_get_netfilter_capabilities(self):
         '''Test get_netfilter_capabilities()'''
+        # Verify we are root check
         tests.unit.support.check_for_exception(self, OSError, \
                  ufw.util.get_netfilter_capabilities)
+
+        # use fake iptables to verify other bits of the code
+        exe = os.path.join(ufw.common.iptables_dir, "iptables")
+        ufw.util.get_netfilter_capabilities(exe=exe, do_checks=False)
+
+        exe = os.path.join(ufw.common.iptables_dir, "ip6tables")
+        ufw.util.get_netfilter_capabilities(exe=exe, do_checks=False)
 
     def test_parse_netstat_output(self):
         '''Test parse_netstat_output()'''

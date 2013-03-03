@@ -62,6 +62,11 @@ def initvars(install_dir):
     if ufw.common.config_dir == "#CONFIG_PREFIX#":
         ufw.common.config_dir = os.path.join(install_dir, "etc", "ufw")
 
+    if ufw.common.iptables_dir == "#IPTABLES_DIR#":
+        global topdir
+        d = os.path.join(os.path.dirname(os.path.realpath(topdir)),
+                         "fake-iptables")
+        ufw.common.iptables_dir = d
 
 def run_setup():
     global topdir
