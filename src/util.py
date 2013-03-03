@@ -721,7 +721,7 @@ def get_iptables_version(exe="/sbin/iptables"):
 
 
 # must be root, so don't report coverage in unit tests
-def get_netfilter_capabilities(exe="/sbin/iptables"): # pragma: no cover
+def get_netfilter_capabilities(exe="/sbin/iptables", do_checks=True):
     '''Return capabilities set for netfilter to support new features. Callers
        must be root.'''
     def test_cap(exe, chain, rule):
@@ -729,9 +729,9 @@ def get_netfilter_capabilities(exe="/sbin/iptables"): # pragma: no cover
         (rc, out) = cmd(args + rule)
         if rc == 0:
             return True
-        return False
+        return False # pragma: no cover
 
-    if os.getuid() != 0:
+    if do_checks and os.getuid() != 0:
         raise OSError(errno.EPERM, "Must be root")
 
     caps = []
@@ -743,7 +743,7 @@ def get_netfilter_capabilities(exe="/sbin/iptables"): # pragma: no cover
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
     if rc != 0:
-        raise OSError(errno.ENOENT, out)
+        raise OSError(errno.ENOENT, out) # pragma: no cover
 
     # Now test for various capabilities. We won't test for everything, just
     # the stuff we know isn't supported everywhere but we want to support.
@@ -764,7 +764,7 @@ def get_netfilter_capabilities(exe="/sbin/iptables"): # pragma: no cover
     cmd([exe, '-F', chain])
     (rc, out) = cmd([exe, '-X', chain])
     if rc != 0:
-        raise OSError(errno.ENOENT, out)
+        raise OSError(errno.ENOENT, out) # pragma: no cover
 
     return caps
 
