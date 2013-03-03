@@ -16,9 +16,11 @@
 
 import unittest
 import os
+from StringIO import StringIO
 import tests.unit.support
 import ufw.common
 import ufw.frontend
+import ufw.util
 
 class FrontendTestCase(unittest.TestCase):
     def setUp(self):
@@ -46,9 +48,19 @@ class FrontendTestCase(unittest.TestCase):
         self.assertTrue(iptables_dir != "")
         ufw.common.iptables_dir = iptables_dir
 
+        # Capture stdout from msg() and write_to_file() so we can examine it
+        self.saved_msg_output = ufw.util.msg_output
+        self.msg_output = StringIO()
+        ufw.util.msg_output = self.msg_output
+
         self.ui = ufw.frontend.UFWFrontend(dryrun=True)
 
     def tearDown(self):
+        # Restore stdout
+        ufw.util.msg_output = self.saved_msg_output
+        self.msg_output.close()
+        self.msg_output = None
+
         self.ui = None
 
     def test_parse_command(self):
@@ -182,7 +194,19 @@ class FrontendTestCase(unittest.TestCase):
                 print("%s failed:" % c)
                 raise
             self.assertTrue(res != "", "Output is empty for '%s'" % c)
-        print ("TODO: verify output of do_action()")
+            cmd = c.split()[0]
+            out = self.msg_output.getvalue()
+            if cmd in ['allow', 'deny', 'limit', 'reject', 'delete', 'insert']:
+                for search in ['*filter', 'COMMIT']:
+                    self.assertTrue(search in out, \
+                                    "Could not find '%s' in:\n%s" % \
+                                     (search, out))
+            else:
+                search = "running ufw-init"
+                self.assertTrue(search in out, \
+                                "Could not find '%s' in:\n%s" % (search, out))
+
+        print ("TODO: verify output of rules in do_action()")
 
     def test_do_application_action(self):
         '''Test do_application_action()'''
@@ -205,9 +229,23 @@ class FrontendTestCase(unittest.TestCase):
                 raise
             if c.startswith("app update"):
                 self.assertTrue(res == "", "Output is not empty for '%s'" % c)
+            elif c.startswith('app list'):
+                for search in ['Available applications', 'AIM', 'WWW']:
+                    self.assertTrue(search in res, \
+                                    "Could not find '%s' in:\n%s" % \
+                                     (search, res))
+            elif c.startswith('app info'):
+                for search in ['Title: Web Server', '80/tcp']:
+                    self.assertTrue(search in res, \
+                                    "Could not find '%s' in:\n%s" % \
+                                     (search, res))
+            elif c.startswith('app default'):
+                search = "Default application policy changed to 'skip'"
+                self.assertTrue(search in res, \
+                                "Could not find '%s' in:\n%s" % (search, res))
             else:
                 self.assertTrue(res != "", "Output is empty for '%s'" % c)
-        print ("TODO: verify output of do_application_action()")
+
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
