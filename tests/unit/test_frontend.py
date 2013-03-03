@@ -16,7 +16,12 @@
 
 import unittest
 import os
-from StringIO import StringIO
+
+try: # python 2
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import tests.unit.support
 import ufw.common
 import ufw.frontend
@@ -48,12 +53,14 @@ class FrontendTestCase(unittest.TestCase):
         self.assertTrue(iptables_dir != "")
         ufw.common.iptables_dir = iptables_dir
 
+        # This needs to be before we set ufw.util.msg_output since 
+        # ufw.util.warn() is called in backend.py:init()
+        self.ui = ufw.frontend.UFWFrontend(dryrun=True)
+
         # Capture stdout from msg() and write_to_file() so we can examine it
         self.saved_msg_output = ufw.util.msg_output
         self.msg_output = StringIO()
         ufw.util.msg_output = self.msg_output
-
-        self.ui = ufw.frontend.UFWFrontend(dryrun=True)
 
     def tearDown(self):
         # Restore stdout

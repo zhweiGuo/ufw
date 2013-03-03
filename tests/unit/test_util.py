@@ -21,7 +21,12 @@ import ufw.util
 import os
 import re
 import socket
-from StringIO import StringIO
+
+try: # python 2
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import sys
 import tempfile
 
@@ -599,10 +604,14 @@ class UtilTestCase(unittest.TestCase):
         os.close(fns['tmp'])
         os.unlink(fns['tmpname'])
 
+        search = "test string"
         ufw.util.msg_output = StringIO()
-        ufw.util.write_to_file(sys.stdout.fileno(), "test string")
+        ufw.util.write_to_file(sys.stdout.fileno(), search)
         out = ufw.util.msg_output.getvalue()
-        self.assertEquals(out, "test string")
+        if sys.version_info[0] >= 3:
+            search = bytes(search, 'ascii')
+            out = bytes(out, 'ascii')
+        self.assertEquals(out, search)
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
@@ -682,10 +691,14 @@ class UtilTestCase(unittest.TestCase):
         ufw.util.msg("test msg()", newline=False)
         print("\n('test msg()' output is intentional)")
 
+        search = "test string"
         ufw.util.msg_output = StringIO()
-        ufw.util.msg("test msg()", newline=False)
+        ufw.util.msg(search, newline=False)
         out = ufw.util.msg_output.getvalue()
-        self.assertEquals(out, "test msg()")
+        if sys.version_info[0] >= 3:
+            search = bytes(search, 'ascii')
+            out = bytes(out, 'ascii')
+        self.assertEquals(out, search)
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
