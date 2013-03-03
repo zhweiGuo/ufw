@@ -27,6 +27,7 @@ trans_dir = share_dir
 config_dir = "#CONFIG_PREFIX#"
 prefix_dir = "#PREFIX#"
 iptables_dir = "#IPTABLES_DIR#"
+do_checks = True
 
 class UFWError(Exception):
     '''This class represents ufw exceptions'''

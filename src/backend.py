@@ -22,7 +22,7 @@ import stat
 import sys
 import ufw.util
 from ufw.util import error, warn, debug
-from ufw.common import UFWError, config_dir, iptables_dir, UFWRule
+from ufw.common import UFWError, UFWRule
 import ufw.applications
 
 class UFWBackend:
@@ -34,9 +34,12 @@ class UFWBackend:
         self.rules = []
         self.rules6 = []
 
-        self.files = {'defaults': os.path.join(config_dir, 'default/ufw'),
-                      'conf': os.path.join(config_dir, 'ufw/ufw.conf'),
-                      'apps': os.path.join(config_dir, 'ufw/applications.d') }
+        self.files = {'defaults': os.path.join(ufw.common.config_dir, \
+                                               'default/ufw'),
+                      'conf': os.path.join(ufw.common.config_dir, \
+                                           'ufw/ufw.conf'),
+                      'apps': os.path.join(ufw.common.config_dir, \
+                                           'ufw/applications.d') }
         if extra_files != None:
             self.files.update(extra_files)
 
@@ -46,7 +49,7 @@ class UFWBackend:
                           'high':    300,
                           'full':    400 }
 
-        self.do_checks = True
+        self.do_checks = ufw.common.do_checks
         try:
             self._do_checks()
             self._get_defaults()
@@ -56,10 +59,11 @@ class UFWBackend:
 
         self.profiles = ufw.applications.get_profiles(self.files['apps'])
 
-        self.iptables = os.path.join(iptables_dir, "iptables")
-        self.iptables_restore = os.path.join(iptables_dir, "iptables-restore")
-        self.ip6tables = os.path.join(iptables_dir, "ip6tables")
-        self.ip6tables_restore = os.path.join(iptables_dir, \
+        self.iptables = os.path.join(ufw.common.iptables_dir, "iptables")
+        self.iptables_restore = os.path.join(ufw.common.iptables_dir, \
+                                             "iptables-restore")
+        self.ip6tables = os.path.join(ufw.common.iptables_dir, "ip6tables")
+        self.ip6tables_restore = os.path.join(ufw.common.iptables_dir, \
                                               "ip6tables-restore")
 
         try:

@@ -1,7 +1,7 @@
 #
 # ufw: front-end for Linux firewalling
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -90,6 +90,14 @@ class Install(_install, object):
                              "-i",
                              "s%#SHARE_DIR#%" + real_sharedir + "%g",
                              os.path.join('staging', file)])
+
+        if 'UFW_SKIP_CHECKS' in os.environ and \
+           os.environ['UFW_SKIP_CHECKS'] != '':
+            print("Updating do_checks")
+            subprocess.call(["sed",
+                             "-i",
+                             "s%do_checks = True%do_checks = False%g",
+                             os.path.join('staging', 'common.py')])
 
         # Now byte-compile everything
         super(Install, self).run()

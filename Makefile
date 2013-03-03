@@ -69,16 +69,15 @@ clean:
 	rm -rf ./tests/testarea
 	rm -rf $(TMPDIR)
 	rm -f ./locales/mo/*.mo
-	rm -f ./tests/unit/*.pyc ./tests/*.pyc
+	rm -f ./tests/unit/*.pyc ./tests/*.pyc ./src/*.pyc
 	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__ ./src/__pycache__
 	rm -rf ./.coverage
 	rm -f ./ufw               # unittest symlink
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
-	$(PYTHON) ./setup.py install --home=$(TMPDIR)/ufw
+	UFW_SKIP_CHECKS=1 $(PYTHON) ./setup.py install --home=$(TMPDIR)/ufw
 	PYTHONPATH=$(PYTHONPATH):$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw version
-	sed -i 's/self.do_checks = True/self.do_checks = False/' $(TMPDIR)/ufw/lib/python/ufw/backend.py
 	cp ./examples/* $(TMPDIR)/ufw/etc/ufw/applications.d
 	# Test with:
 	# PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw ...

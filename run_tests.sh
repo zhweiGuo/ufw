@@ -153,6 +153,10 @@ do
     echo ""
 done
 
+# clean up before functional tests
+rm -f "$CUR/src/*.pyc"
+rm -rf "$CUR/src/__pycache__"
+
 # Functional tests
 echo "= Functional Tests ="
 for class in $tests
@@ -197,6 +201,11 @@ do
         mkdir -p "$TESTPATH/usr/sbin" "$TESTPATH/etc" "$TESTPATH/tmp" || exit 1
 
         install_dir="$TESTPATH"
+
+        # this is to allow root to run the tests without error.  I don't
+        # like building things as root, but some people do...
+        export UFW_SKIP_CHECKS="1"
+
         setup_output=`$interpreter ./setup.py install --home="$install_dir" 2>&1`
         if [ "$?" != "0" ]; then
             echo "$setup_output"
@@ -205,10 +214,6 @@ do
 
         # make the installed user rules files available to tests
         find "$TESTPATH" -name "user*.rules" -exec cp {} {}.orig \;
-
-        # this is to allow root to run the tests without error.  I don't
-        # like building things as root, but some people do...
-        sed -i 's/self.do_checks = True/self.do_checks = False/' "$TESTPATH/lib/python/ufw/backend.py"
 
         cp -rL $testdir/$class/$thistest/orig/* "$TESTPATH/etc" || exit 1
         cp -f $testdir/$class/$thistest/runtest.sh "$TESTPATH" || exit 1
