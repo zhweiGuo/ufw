@@ -18,6 +18,8 @@
 from __future__ import print_function
 import errno
 import fcntl
+import io
+import inspect
 import os
 import re
 import shutil
@@ -316,7 +318,10 @@ def _print(output, s):
     except: # pragma: no cover
         out = s
 
-    writer.write(bytes(out))
+    if msg_output and inspect.isclass(io.StringIO):
+        writer.write(s)
+    else:
+        writer.write(bytes(out))
     output.flush()
 
 
