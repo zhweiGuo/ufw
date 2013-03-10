@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2013 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -17,17 +17,22 @@
 import unittest
 import tests.unit.support
 import ufw.backend
+import ufw.backend_iptables
+import ufw.common
 
 class BackendTestCase(unittest.TestCase):
     def setUp(self):
-        pass
+        ufw.common.do_checks = False
+        # ufw.backend is an interface, so to test it we need to instantiate
+        # an object that implements this interface
+        self.backend = ufw.backend_iptables.UFWBackendIptables(dryrun=True)
 
     def tearDown(self):
         pass
 
-    def test_example(self):
-        '''Test example dummy test'''
-        pass
+    def test_find_application_name(self):
+        '''Test find_application_name()'''
+        self.backend.find_application_name("WWW")
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
