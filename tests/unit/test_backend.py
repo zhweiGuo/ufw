@@ -20,7 +20,6 @@ import ufw.backend
 
 class BackendTestCase(unittest.TestCase):
     def setUp(self):
-        print(ufw.common.state_dir)
         pass
 
     def tearDown(self):

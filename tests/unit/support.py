@@ -59,13 +59,20 @@ def initvars(install_dir):
     global _
     _ = init_gettext()
 
-    if ufw.common.config_dir == "#CONFIG_PREFIX#":
-        ufw.common.config_dir = os.path.join(install_dir, "etc", "ufw")
-
     global topdir
     d = os.path.join(os.path.dirname(os.path.realpath(topdir)),
                      "fake-iptables")
     ufw.common.iptables_dir = d
+
+    ufw.common.config_dir = os.path.join(
+                             os.path.realpath(topdir), "ufw/etc")
+    ufw.common.state_dir = os.path.join(
+                            os.path.realpath(topdir), "ufw/lib/ufw")
+    ufw.common.share_dir = os.path.join(
+                            os.path.realpath(topdir), "ufw/usr/share/ufw")
+    ufw.common.trans_dir = ufw.common.share_dir
+    ufw.common.prefix_dir = os.path.join(os.path.realpath(topdir), "ufw/usr")
+
 
 def run_setup():
     global topdir

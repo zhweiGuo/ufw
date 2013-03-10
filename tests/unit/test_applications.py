@@ -21,7 +21,7 @@ import ufw.applications
 
 class ApplicationsTestCase(unittest.TestCase):
     def setUp(self):
-        apps = os.path.join(ufw.common.config_dir, "applications.d")
+        apps = os.path.join(ufw.common.config_dir, "ufw/applications.d")
         self.profiles = ufw.applications.get_profiles(apps)
 
     def tearDown(self):
