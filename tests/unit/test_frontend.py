@@ -30,19 +30,6 @@ import ufw.util
 class FrontendTestCase(unittest.TestCase):
     def setUp(self):
         ufw.common.do_checks = False
-        ufw.common.state_dir = os.path.join(
-                                os.path.realpath(tests.unit.support.topdir),
-                                "ufw/lib/ufw")
-        ufw.common.share_dir = os.path.join(
-                                os.path.realpath(tests.unit.support.topdir),
-                                "ufw/usr/share/ufw")
-        ufw.common.trans_dir = ufw.common.share_dir
-        ufw.common.config_dir = os.path.join(
-                                 os.path.realpath(tests.unit.support.topdir),
-                                 "ufw/etc")
-        ufw.common.prefix_dir = os.path.join(
-                                os.path.realpath(tests.unit.support.topdir),
-                                "ufw/usr")
         iptables_dir = ""
         for d in ["/sbin", "/bin",
                   "/usr/sbin", "/usr/bin",
@@ -187,31 +174,38 @@ class FrontendTestCase(unittest.TestCase):
                 'deny from any port 53 proto udp',
                 'limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.0/24 port 1024:65535 proto tcp',
                ]
-        for c in cmds:
-            try:
-                pr = ufw.frontend.parse_command(['ufw'] + c.split())
-                if 'rule' in pr.data:
-                    res = self.ui.do_action(pr.action,
-                                            pr.data['rule'],
-                                            pr.data['iptype'],
-                                            force=True)
+        for dryrun in [True, False]:
+            ui = ufw.frontend.UFWFrontend(dryrun=dryrun)
+            for c in cmds:
+                if not dryrun and c not in ['allow', 'deny', 'limit',
+                                            'reject', 'delete', 'insert']:
+                    continue
+                try:
+                    pr = ufw.frontend.parse_command(['ufw'] + c.split())
+                    if 'rule' in pr.data:
+                        res = ui.do_action(pr.action,
+                                           pr.data['rule'],
+                                           pr.data['iptype'],
+                                           force=True)
+                    else:
+                        res = ui.do_action(pr.action, "", "", force=True)
+                except Exception:
+                    print("%s failed:" % c)
+                    raise
+                self.assertTrue(res != "", "Output is empty for '%s'" % c)
+                cmd = c.split()[0]
+                out = self.msg_output.getvalue()
+                if cmd in ['allow', 'deny', 'limit', 'reject', 'delete',
+                           'insert']:
+                    for search in ['*filter', 'COMMIT']:
+                        self.assertTrue(search in out, \
+                                        "Could not find '%s' in:\n%s" % \
+                                         (search, out))
                 else:
-                    res = self.ui.do_action(pr.action, "", "", force=True)
-            except Exception:
-                print("%s failed:" % c)
-                raise
-            self.assertTrue(res != "", "Output is empty for '%s'" % c)
-            cmd = c.split()[0]
-            out = self.msg_output.getvalue()
-            if cmd in ['allow', 'deny', 'limit', 'reject', 'delete', 'insert']:
-                for search in ['*filter', 'COMMIT']:
+                    search = "running ufw-init"
                     self.assertTrue(search in out, \
                                     "Could not find '%s' in:\n%s" % \
                                      (search, out))
-            else:
-                search = "running ufw-init"
-                self.assertTrue(search in out, \
-                                "Could not find '%s' in:\n%s" % (search, out))
 
         print ("TODO: verify output of rules in do_action()")
 
