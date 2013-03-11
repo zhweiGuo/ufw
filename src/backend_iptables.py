@@ -514,7 +514,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 for c in self.chains['user']:
                     self._chain_cmd(c, ['-F', c])
                     self._chain_cmd(c, ['-Z', c])
-            except Exception:
+            except Exception: # pragma: no coverage
                 raise UFWError(err_msg)
 
             # then restore the system rules
