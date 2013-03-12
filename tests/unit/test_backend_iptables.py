@@ -26,7 +26,14 @@ import time
 class BackendIptablesTestCase(unittest.TestCase):
     def setUp(self):
         ufw.common.do_checks = False
-        self.backend = ufw.backend_iptables.UFWBackendIptables(dryrun=True)
+
+        # don't duplicate all the code for set_rule() from frontend.py so
+        # the frontend's set_rule() to exercise our set_rule()
+        self.ui = ufw.frontend.UFWFrontend(dryrun=True)
+
+        # for convenience
+        self.backend = self.ui.backend
+
         self.prevpath = os.environ['PATH']
         os.environ['PATH'] = "%s:%s" % (ufw.common.iptables_dir,
                                         os.environ['PATH'])
@@ -192,13 +199,10 @@ class BackendIptablesTestCase(unittest.TestCase):
 
     def test_set_rule(self):
         '''Test set_rule()'''
-        # don't duplicate all the code for set_rule() from frontend.py
-        ui = ufw.frontend.UFWFrontend(dryrun=False)
-        self.backend.dryrun = False # keeps the verbosity down
+        self.ui.backend.dryrun = False # keeps the verbosity down
         # TODO: optimize this. We don't need to hit the disk for all of these.
         #       maybe set enabled to 'yes' once for each branch
-        self.backend.defaults['enabled'] = "yes"
-        ui.backend = self.backend
+        self.ui.backend.defaults['enabled'] = "yes"
         cmds_sim = tests.unit.support.get_sample_rule_commands_simple()
         for cmd in cmds_sim:
             pr = ufw.frontend.parse_command(cmd + [])
@@ -206,8 +210,8 @@ class BackendIptablesTestCase(unittest.TestCase):
             self.assertEquals(action, pr.action, "%s != %s" % (action, \
                                                                pr.action))
             if 'rule' in pr.data:
-                ui.do_action(pr.action, pr.data['rule'], \
-                             pr.data['iptype'], True)
+                self.ui.do_action(pr.action, pr.data['rule'], \
+                                  pr.data['iptype'], True)
             # TODO: verify output
 
     def test_get_app_rules_from_system(self):
