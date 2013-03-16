@@ -21,11 +21,21 @@ import ufw.common
 import ufw.frontend
 import os
 import re
+import shutil
 import time
+
+try: # python 2
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 class BackendIptablesTestCase(unittest.TestCase):
     def setUp(self):
         ufw.common.do_checks = False
+
+        if not os.path.isdir(ufw.common.state_dir + ".bak"):
+            shutil.copytree(ufw.common.state_dir,
+                            ufw.common.state_dir + ".bak")
 
         # don't duplicate all the code for set_rule() from frontend.py so
         # the frontend's set_rule() to exercise our set_rule()
@@ -33,6 +43,9 @@ class BackendIptablesTestCase(unittest.TestCase):
 
         # for convenience
         self.backend = self.ui.backend
+
+        self.saved_msg_output = ufw.util.msg_output                             
+        self.msg_output = None
 
         self.prevpath = os.environ['PATH']
         os.environ['PATH'] = "%s:%s" % (ufw.common.iptables_dir,
@@ -51,13 +64,232 @@ class BackendIptablesTestCase(unittest.TestCase):
         os.rename(f + '.new', f)
 
     def tearDown(self):
+        self.ui = None
         self.backend = None
         os.environ['PATH'] = self.prevpath
+
+        if os.path.isdir(ufw.common.state_dir):
+            tests.unit.support.recursive_rm(ufw.common.state_dir)
+            shutil.copytree(ufw.common.state_dir + ".bak",
+                            ufw.common.state_dir)
+
+        if self.msg_output:
+            ufw.util.msg_output = self.saved_msg_output
+
+    def test__do_checks(self):
+        '''Test _do_checks()'''
+        self.backend.do_checks = True
+        tests.unit.support.check_for_exception(self,
+                              ufw.common.UFWError,
+                              self.backend._do_checks)
+        self.backend.do_checks = False
+        self.backend._do_checks()
 
     def test_get_default_application_policy(self):
         '''Test get_default_application_policy()'''
         s = self.backend.get_default_application_policy()
         self.assertTrue(s.endswith("skip"))
+
+    def test_set_default_application_policy(self):
+        '''Test set_default_application_policy()'''
+        self.backend.dryrun = False
+        for policy in ['allow', 'deny', 'reject', 'skip']:
+            s = self.backend.set_default_application_policy(policy)
+            self.assertTrue(policy in s, "Could not find '%s' in:\n%s" % \
+                                         (policy, s))
+
+    def test_get_app_rules_from_template(self):
+        '''Test get_app_rules_from_template()'''
+        pr = ufw.frontend.parse_command(['rule', 'allow', 'CIFS'])
+        rules = self.backend.get_app_rules_from_template(pr.data['rule'])
+        self.assertEquals(len(rules), 2)
+        for r in rules:
+            self.assertEquals(r.dapp, 'CIFS')
+
+        pr = ufw.frontend.parse_command(['rule', 'deny',
+                                         'from', 'any', 'app', 'CIFS'])
+        rules = self.backend.get_app_rules_from_template(pr.data['rule'])
+        self.assertEquals(len(rules), 2)
+        for r in rules:
+            self.assertEquals(r.sapp, 'CIFS')
+
+        pr = ufw.frontend.parse_command(['rule', 'reject',
+                                         'to', 'any', 'app', 'CIFS',
+                                         'from', 'any', 'app', 'CIFS'])
+        rules = self.backend.get_app_rules_from_template(pr.data['rule'])
+        self.assertEquals(len(rules), 2)
+        for r in rules:
+            self.assertEquals(r.dapp, 'CIFS')
+            self.assertEquals(r.sapp, 'CIFS')
+
+        pr = ufw.frontend.parse_command(['rule', 'reject',
+                                         'to', 'any', 'app', 'WWW',
+                                         'from', 'any', 'app', 'WWW Secure'])
+        rules = self.backend.get_app_rules_from_template(pr.data['rule'])
+        self.assertEquals(len(rules), 1)
+        for r in rules:
+            self.assertEquals(r.dapp, 'WWW')
+            self.assertEquals(r.sapp, 'WWW Secure')
+
+    def test_update_app_rule(self):
+        '''Test upate_app_rule()'''
+        self.saved_msg_output = ufw.util.msg_output                             
+        self.msg_output = StringIO()                                            
+        ufw.util.msg_output = self.msg_output
+
+        (s, res) = self.backend.update_app_rule('WWW')
+        print(s)
+        print(res)
+        self.assertFalse(res)
+        self.assertEquals(s, "")
+
+        pr = ufw.frontend.parse_command([] + ['rule', 'allow', 'CIFS'])
+        self.backend.rules.append(pr.data['rule'])
+        (s, res) = self.backend.update_app_rule('WWW')
+        self.assertFalse(res)
+        self.assertEquals(s, "")
+        (s, res) = self.backend.update_app_rule('CIFS')
+        self.assertTrue(res)
+        self.assertTrue('CIFS' in s)
+
+        pr = ufw.frontend.parse_command([] + ['rule', 'allow',
+                                         'to', '5678:fff::/64',
+                                         'app', 'WWW Secure'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+        (s, res) = self.backend.update_app_rule('WWW')
+        self.assertFalse(res)
+        self.assertEquals(s, "")
+        (s, res) = self.backend.update_app_rule('WWW Secure')
+        self.assertTrue(res)
+        self.assertTrue('WWW Secure' in s)
+
+        pr = ufw.frontend.parse_command([] + ['rule', 'allow',
+                                         'from', '1234:fff::/64',
+                                         'app', 'WWW Secure',
+                                         'to', '2345:fff::/64',
+                                         'app', 'WWW Full'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+        (s, res) = self.backend.update_app_rule('WWW')
+        self.assertFalse(res)
+        self.assertEquals(s, "")
+        (s, res) = self.backend.update_app_rule('WWW Full')
+        self.assertTrue(res)
+        self.assertTrue('WWW Full' in s)
+
+    def test_find_application_name(self):
+        '''Test find_application_name()'''
+        res = self.backend.find_application_name('WWW')
+        self.assertEquals(res, 'WWW')
+
+        res = self.backend.find_application_name('WwW')
+        self.assertEquals(res, 'WWW')
+
+    def test_find_other_position(self):
+        '''Test find_other_position()'''
+        pr = ufw.frontend.parse_command([] + ['rule', 'allow',
+                                         'from', '1234:fff::/64',
+                                         'app', 'WWW Secure',
+                                         'to', '2345:fff::/64',
+                                         'app', 'WWW Full'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+
+        pr = ufw.frontend.parse_command(['rule', 'allow', 'WWW'])
+        self.backend.rules.append(pr.data['rule'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+
+        res = self.backend.find_other_position(2, v6=True)
+        self.assertEquals(res, 0)
+
+        res = self.backend.find_other_position(1, v6=False)
+        self.assertEquals(res, 2)
+
+    def test_get_loglevel(self):
+        '''Test get_loglevel()'''
+        for l in ['off', 'low', 'medium', 'high']:
+            self.backend.set_loglevel(l)
+            (level, s) = self.backend.get_loglevel()
+            self.assertTrue(l in s, "Could not find '%s' in:\n%s" % (l, s))
+
+    def test_get_rules_count(self):
+        '''Test get_rules_count()'''
+        res = self.backend.get_rules_count(v6=False)
+        self.assertEquals(res, 0)
+
+        pr = ufw.frontend.parse_command([] + ['rule', 'allow',
+                                         'from', '1234:fff::/64',
+                                         'app', 'WWW Secure',
+                                         'to', '2345:fff::/64',
+                                         'app', 'WWW Full'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+
+        pr = ufw.frontend.parse_command(['rule', 'allow', 'WWW'])
+        self.backend.rules.append(pr.data['rule'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+
+        res = self.backend.get_rules_count(v6=False)
+        self.assertEquals(res, 1)
+
+        res = self.backend.get_rules_count(v6=True)
+        self.assertEquals(res, 2)
+
+    def test_get_rule_by_number(self):
+        '''Test get_rule_by_number()'''
+        pr1 = ufw.frontend.parse_command(['rule', 'allow', 'WWW'])
+        self.backend.rules.append(pr1.data['rule'])
+
+        pr2 = ufw.frontend.parse_command(['rule', 'allow', 'WWW'])
+        pr2.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr2.data['rule'])
+
+        pr3 = ufw.frontend.parse_command([] + ['rule', 'allow',
+                                         'from', '1234:fff::/64',
+                                         'app', 'WWW Secure',
+                                         'to', '2345:fff::/64',
+                                         'app', 'WWW Full'])
+        pr3.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr3.data['rule'])
+
+        res = self.backend.get_rule_by_number(1)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr1.data['rule']), 0)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr2.data['rule']), 1)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr3.data['rule']), 1)
+
+        res = self.backend.get_rule_by_number(2)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr2.data['rule']), 0)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr1.data['rule']), 1)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr3.data['rule']), 1)
+
+        res = self.backend.get_rule_by_number(3)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr3.data['rule']), 0)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr1.data['rule']), 1)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr2.data['rule']), 1)
+
+    def test_get_matching(self):
+        '''Test get_matching()'''
+        pr1 = ufw.frontend.parse_command(['rule', 'allow', 'WWW'])
+        self.backend.rules.append(pr1.data['rule'])
+
+        pr2 = ufw.frontend.parse_command(['rule', 'deny', 'WWW'])
+        self.backend.rules.append(pr2.data['rule'])
+
+        test_rule = pr1.data['rule'].dup_rule()
+        res = self.backend.get_matching(test_rule)
+        self.assertEquals(len(res), 2)
+
+    def test_set_bad_default_application_policy(self):
+        '''Test set_default_application_policy()'''
+        self.backend.dryrun = False
+        for policy in ['alow', 'deny 78&']:
+            tests.unit.support.check_for_exception(self,
+                                  ufw.common.UFWError,
+                                  self.backend.set_default_application_policy,
+                                  policy)
 
     def test_set_default_policy(self):
         '''Test set_default_policy()'''
@@ -224,7 +456,6 @@ class BackendIptablesTestCase(unittest.TestCase):
 
     def test_update_logging(self):
         '''Test update_logging()'''
-        self.backend.dryrun = True
         self.backend.defaults['enabled'] = "no"
         self.backend.dryrun = False
         for level in ['off', 'low', 'medium', 'high', 'full']:
