@@ -175,7 +175,9 @@ class FrontendTestCase(unittest.TestCase):
                 'limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.0/24 port 1024:65535 proto tcp',
                ]
         for dryrun in [True, False]:
+            ufw.util.msg_output = self.saved_msg_output
             ui = ufw.frontend.UFWFrontend(dryrun=dryrun)
+            ufw.util.msg_output = self.msg_output
             for c in cmds:
                 if not dryrun and c not in ['allow', 'deny', 'limit',
                                             'reject', 'delete', 'insert']:

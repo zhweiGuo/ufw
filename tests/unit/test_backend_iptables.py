@@ -75,6 +75,8 @@ class BackendIptablesTestCase(unittest.TestCase):
 
         if self.msg_output:
             ufw.util.msg_output = self.saved_msg_output
+            self.msg_output.close()
+            self.msg_output = None
 
     def test__do_checks(self):
         '''Test _do_checks()'''
