@@ -91,7 +91,7 @@ class UFWBackend:
         self.caps['limit']['6'] = False # historical default for the testsuite
 
         # Try to get capabilities from the running system if root
-        if self.do_checks and os.getuid() == 0 and not self.dryrun:
+        if self.do_checks and os.getuid() == 0 and not self.dryrun: # pragma: no coverage
             # v4
             try:
                 nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
@@ -143,7 +143,8 @@ class UFWBackend:
 
         return rstr
 
-    def _do_checks(self):
+    # Don't do coverage on this cause we don't run the unit tests as root
+    def _do_checks(self): # pragma: no coverage
         '''Perform basic security checks:
         is setuid or setgid (for non-Linux systems)
         checks that script is owned by root
@@ -169,8 +170,8 @@ class UFWBackend:
         if os.getgid() != os.getegid():
             err_msg = _("ERROR: this script should not be SGID")
             raise UFWError(err_msg)
-        uid = os.getuid()
 
+        uid = os.getuid()
         if uid != 0:
             err_msg = _("You need to be root to run this script")
             raise UFWError(err_msg)
@@ -304,7 +305,7 @@ class UFWBackend:
 
         try:
             ufw.util.close_files(fns)
-        except Exception:
+        except Exception: # pragma: no coverage
             raise
 
         # Now that the files are written out, update value in memory
@@ -314,33 +315,21 @@ class UFWBackend:
         '''Sets default application policy of firewall'''
         if not self.dryrun:
             if policy == "allow":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"ACCEPT\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"ACCEPT\"")
             elif policy == "deny":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"DROP\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"DROP\"")
             elif policy == "reject":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"REJECT\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"REJECT\"")
             elif policy == "skip":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"SKIP\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"SKIP\"")
             else:
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
