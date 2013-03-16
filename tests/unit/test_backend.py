@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+# NOTE: most of this is tested via test_backend_iptables.py since we have to
+#       have a backend defined to test backend.py
 
 import unittest
 import tests.unit.support
@@ -30,9 +32,23 @@ class BackendTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_find_application_name(self):
-        '''Test find_application_name()'''
-        self.backend.find_application_name("WWW")
+    def test_installation_defaults(self):
+        '''Test installation defaults'''
+        self.assertEquals(self.backend.defaults['default_input_policy'],
+                          "drop")
+        self.assertEquals(self.backend.defaults['default_forward_policy'],
+                          "drop")
+        self.assertEquals(self.backend.defaults['default_output_policy'],
+                          "accept")
+        self.assertEquals(self.backend.defaults['ipt_modules'],
+                        'nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns')
+        self.assertEquals(self.backend.defaults['loglevel'], 'low')
+        self.assertEquals(self.backend.defaults['manage_builtins'], 'no')
+        self.assertEquals(self.backend.defaults['enabled'], 'no')
+        self.assertEquals(self.backend.defaults['ipv6'], 'yes')
+        self.assertEquals(self.backend.defaults['default_application_policy'],
+                          'skip')
+
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
