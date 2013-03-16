@@ -66,7 +66,7 @@ check: syntax-check man-check test unittest
 clean:
 	rm -rf ./build
 	rm -rf ./staging
-	rm -rf ./tests/testarea
+	rm -rf ./tests/testarea ./tests/unit/tmp
 	rm -rf $(TMPDIR)
 	rm -f ./locales/mo/*.mo
 	rm -f ./tests/unit/*.pyc ./tests/*.pyc ./src/*.pyc
