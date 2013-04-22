@@ -44,7 +44,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         # for convenience
         self.backend = self.ui.backend
 
-        self.saved_msg_output = ufw.util.msg_output                             
+        self.saved_msg_output = ufw.util.msg_output
         self.msg_output = None
 
         self.prevpath = os.environ['PATH']
@@ -141,7 +141,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         for r in rules:
             self.assertEquals(r.sapp, 'IPP')
 
-        
+
         pr = ufw.frontend.parse_command(['rule', 'allow', '12345'])
         tests.unit.support.check_for_exception(self,
                               ufw.common.UFWError,
@@ -150,8 +150,8 @@ class BackendIptablesTestCase(unittest.TestCase):
 
     def test_update_app_rule(self):
         '''Test upate_app_rule()'''
-        self.saved_msg_output = ufw.util.msg_output                             
-        self.msg_output = StringIO()                                            
+        self.saved_msg_output = ufw.util.msg_output
+        self.msg_output = StringIO()
         ufw.util.msg_output = self.msg_output
 
         (s, res) = self.backend.update_app_rule('WWW')
@@ -437,7 +437,7 @@ ports=80/tcp
         for t in ['raw', 'builtins', 'before', 'user', 'after', 'logging']:
             res = self.backend.get_running_raw(t)
             for s in ['iptables', 'ip6tables']:
-                self.assertTrue("Checking raw %s" % s in res, 
+                self.assertTrue("Checking raw %s" % s in res,
                                 "Could not find '%s' in:\n%s" % (s, res))
 
         # no dryrun
@@ -473,7 +473,7 @@ ports=80/tcp
                 for c in [False, True]:
                     res = self.backend.get_status(verbose=v, show_count=c)
                     for s in ['iptables', 'ip6tables']:
-                        self.assertTrue("Checking %s" % s in res, 
+                        self.assertTrue("Checking %s" % s in res,
                                         "Could not find '%s' in:\n%s" % (s, res))
 
             # no dryrun
@@ -483,12 +483,12 @@ ports=80/tcp
                     res = self.backend.get_status(verbose=v, show_count=c)
                     terms = ['Status: active', 'To']
                     if v:
-                        terms += ['Logging: on', 'Default: deny', 
+                        terms += ['Logging: on', 'Default: deny',
                                   'New profiles: skip']
                     if c:
                         terms += '[ 1] '
                     for search in terms:
-                        self.assertTrue(search in res, 
+                        self.assertTrue(search in res,
                                         "Could not find '%s' in:\n%s" % (search,
                                                                      res))
 
@@ -535,7 +535,7 @@ ports=80/tcp
     def test__get_defaults(self):
         '''Test _get_defaults()'''
         self.backend._get_defaults()
-        for k in ['ipt_modules', 
+        for k in ['ipt_modules',
                   'default_output_policy',
                   'default_input_policy',
                   'default_forward_policy',
