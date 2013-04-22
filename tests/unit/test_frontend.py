@@ -40,7 +40,7 @@ class FrontendTestCase(unittest.TestCase):
         self.assertTrue(iptables_dir != "")
         ufw.common.iptables_dir = iptables_dir
 
-        # This needs to be before we set ufw.util.msg_output since 
+        # This needs to be before we set ufw.util.msg_output since
         # ufw.util.warn() is called in backend.py:init()
         self.ui = ufw.frontend.UFWFrontend(dryrun=True)
 
@@ -51,9 +51,10 @@ class FrontendTestCase(unittest.TestCase):
 
     def tearDown(self):
         # Restore stdout
-        ufw.util.msg_output = self.saved_msg_output
-        self.msg_output.close()
-        self.msg_output = None
+        if self.msg_output:
+            ufw.util.msg_output = self.saved_msg_output
+            self.msg_output.close()
+            self.msg_output = None
 
         self.ui = None
 
@@ -107,7 +108,25 @@ class FrontendTestCase(unittest.TestCase):
         for c in cmds:
             #print(c)
             ufw.frontend.parse_command(['ufw'] + c.split())
-        
+
+    def test_parse_command_bad(self):
+        '''Test parse_command_bad'''
+        data = [
+                 ('llow 12345', ValueError),
+                 ('allo 12345', ValueError),
+                 ('allow', ValueError),
+               ]
+        # for ufw.util.error() on python3
+        ufw.util.msg_output = self.saved_msg_output
+        for (c, expected) in data:
+            tests.unit.support.check_for_exception(self, expected,
+                    ufw.frontend.parse_command, ['ufw'] + c.split())
+
+    def test___init__(self):
+        '''Test __init__()'''
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError,
+                ufw.frontend.UFWFrontend, True, 'nonexistent')
+
     def test_get_command_help(self):
         '''Test get_command_help()'''
         s = ufw.frontend.get_command_help()
@@ -136,7 +155,7 @@ class FrontendTestCase(unittest.TestCase):
         for search in terms:
             self.assertTrue(search in s, "Could not find '%s' in:\n%s" % \
                             (search, s))
-        
+
     def test_continue_under_ssh(self):
         '''Test continue_under_ssh()'''
         self.ui.continue_under_ssh()
@@ -173,6 +192,21 @@ class FrontendTestCase(unittest.TestCase):
                 'allow to fe80::/16',
                 'deny from any port 53 proto udp',
                 'limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.0/24 port 1024:65535 proto tcp',
+                'allow CIFS',
+                'delete allow CIFS',
+                'allow CIFS',
+                'delete allow CifS',
+                'allow to 192.168.0.1 app WWW',
+                'delete allow to 192.168.0.1 app WWW',
+                'allow to fe80::/16 app WWW',
+                'delete allow to fe80::/16 app WWW',
+                'allow from fe80::/16 app WWW',
+                'delete allow from fe80::/16 app WWW',
+                'allow from fe80::/16 app CIFS',
+                'delete allow from fe80::/16 app CifS',
+                'show listening',
+                'show added',
+                'show raw',
                ]
         for dryrun in [True, False]:
             ufw.util.msg_output = self.saved_msg_output
@@ -211,13 +245,24 @@ class FrontendTestCase(unittest.TestCase):
 
         print ("TODO: verify output of rules in do_action()")
 
+    def test_do_action_remove_bad_appname(self):
+        '''Test do_action() remove bad appname'''
+        c = 'delete allow to any app &^%$'
+        pr = ufw.frontend.parse_command(['ufw'] + c.split())
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError,
+                self.ui.do_action, pr.action, pr.data['rule'],
+                                   pr.data['iptype'], True)
+
     def test_do_application_action(self):
         '''Test do_application_action()'''
         cmds = [
                 'app list',
                 'app info WWW',
                 'app default skip',
+                'app default deny',
                 'app update WWW',
+                'app update all',
+                'app update --add-new CIFS',
                ]
         for c in cmds:
             try:
@@ -230,6 +275,7 @@ class FrontendTestCase(unittest.TestCase):
             except Exception:
                 print("%s failed:" % c)
                 raise
+            # print(res)
             if c.startswith("app update"):
                 self.assertTrue(res == "", "Output is not empty for '%s'" % c)
             elif c.startswith('app list'):
@@ -243,11 +289,59 @@ class FrontendTestCase(unittest.TestCase):
                                     "Could not find '%s' in:\n%s" % \
                                      (search, res))
             elif c.startswith('app default'):
-                search = "Default application policy changed to 'skip'"
+                p = c.split()[-1]
+                search = "Default application policy changed to '%s'" % p
                 self.assertTrue(search in res, \
                                 "Could not find '%s' in:\n%s" % (search, res))
             else:
                 self.assertTrue(res != "", "Output is empty for '%s'" % c)
+
+        pr = ufw.frontend.parse_command(['ufw', 'app', 'update', '--add-new', 'all'])
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError,
+                self.ui.do_application_action, pr.action, pr.data['name'])
+
+    def test_get_show_raw(self):
+        '''Test get_show_raw()'''
+        res = self.ui.get_show_raw()
+        search = "> Checking"
+        self.assertTrue(search in res, \
+                        "Could not find '%s' in:\n%s" % (search, res))
+
+    def test_get_show_listening(self):
+        '''Test get_show_listening()'''
+        res = self.ui.get_show_listening()
+        for search in ['tcp', 'udp']:
+            self.assertTrue(search in res, \
+                            "Could not find '%s' in:\n%s" % (search, res))
+
+    def test_get_show_added(self):
+        '''Test get_show_added()'''
+        res = self.ui.get_show_added()
+        search = "(None)"
+        self.assertTrue(search in res, \
+                        "Could not find '%s' in:\n%s" % (search, res))
+
+        c = 'allow 12345'
+        pr = ufw.frontend.parse_command(['ufw'] + c.split())
+        self.ui.do_action(pr.action, pr.data['rule'], pr.data['iptype'],
+                          force=True)
+        res = self.ui.get_show_added()
+        search = c
+        self.assertTrue(search in res, \
+                        "Could not find '%s' in:\n%s" % (search, res))
+
+    def test_application_add(self):
+        '''Test application_add()'''
+        for i in ['accept', 'drop', 'reject']:
+            self.ui.backend.defaults['default_application_policy'] = i
+            res = self.ui.application_add('WWW')
+            for search in ['Rules updated', 'Rules updated (v6)']:
+                self.assertTrue(search in res, \
+                                "Could not find '%s' in:\n%s" % (search, res))
+        self.ui.backend.defaults['default_application_policy'] = 'bad'
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError,
+                self.ui.application_add, 'WWW')
+        self.ui.backend.defaults['default_application_policy'] = 'skip'
 
 
 def test_main(): # used by runner.py
