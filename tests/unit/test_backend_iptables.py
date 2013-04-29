@@ -274,6 +274,20 @@ ports=80/tcp
                               0,
                               False)
 
+        pr = ufw.frontend.parse_command([] + ['rule', 'allow',
+                                         'to', '2345:fff::/64',
+                                         'app', 'CIFS'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+
+        pr = ufw.frontend.parse_command(['rule', 'allow', 'CIFS'])
+        self.backend.rules.append(pr.data['rule'])
+        pr.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr.data['rule'])
+
+        res = self.backend.find_other_position(3, v6=True)
+        self.assertEquals(res, 0)
+
     def test_get_loglevel(self):
         '''Test get_loglevel()'''
         for l in ['off', 'low', 'medium', 'high']:
@@ -357,6 +371,15 @@ ports=80/tcp
 
         res = self.backend.get_rule_by_number(4)
         self.assertEquals(res, None)
+
+        pr4 = ufw.frontend.parse_command([] + ['rule', 'allow', 'CIFS'])
+        self.backend.rules.append(pr4.data['rule'])
+        pr4.data['rule'].set_v6(True)
+        self.backend.rules6.append(pr4.data['rule'])
+        res = self.backend.get_rule_by_number(6)
+        self.assertEquals(res, None)
+        res = self.backend.get_rule_by_number(4)
+        self.assertEquals(ufw.common.UFWRule.match(res, pr4.data['rule']), 1)
 
     def test_get_matching(self):
         '''Test get_matching()'''
