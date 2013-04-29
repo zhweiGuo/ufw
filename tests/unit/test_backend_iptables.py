@@ -602,22 +602,6 @@ ports=80/tcp
                               ufw.common.UFWError,
                               self.backend._get_defaults)
 
-    def test__get_rules_from_formatted(self):
-        '''TODO: '''
-        pass
-
-    def test__get_lists_from_formatted(self):
-        '''TODO: '''
-        pass
-
-    def test__read_rules(self):
-        '''TODO: '''
-        pass
-
-    def test__write_rules(self):
-        '''TODO: '''
-        pass
-
     def test_set_rule(self):
         '''Test set_rule()'''
         self.ui.backend.dryrun = False # keeps the verbosity down
@@ -635,14 +619,6 @@ ports=80/tcp
                                   pr.data['iptype'], True)
             # TODO: verify output
 
-    def test_get_app_rules_from_system(self):
-        '''TODO: '''
-        pass
-
-    def test__chain_cmd(self):
-        '''TODO: '''
-        pass
-
     def test_update_logging(self):
         '''Test update_logging()'''
         self.backend.defaults['enabled'] = "no"
@@ -653,10 +629,6 @@ ports=80/tcp
             self.backend.defaults['enabled'] = "yes"
             self.backend.update_logging(level)
             # TODO: verify output
-
-    def test__get_logging_rules(self):
-        '''TODO: '''
-        pass
 
     def test_reset(self):
         '''Test reset()'''
