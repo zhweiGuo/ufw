@@ -412,7 +412,9 @@ ufw_stop() {
     # If we manage the builtins, just return
     if [ "$MANAGE_BUILTINS" = "yes" ]; then
         flush_builtins || error="yes"
-        "$RULES_PATH/after.init" stop || error="yes"
+        if [ -x "$RULES_PATH/after.init" ]; then
+            "$RULES_PATH/after.init" stop || error="yes"
+        fi
         if [ "$error" = "yes" ]; then
             return 1
         fi
