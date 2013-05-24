@@ -14,6 +14,10 @@ ufw (0.34) UNRELEASED; urgency=low
   * fix parse error when finding PPID (LP: #1101304)
   * implement before and after hooks in /etc/ufw/(before|after).init
     (LP: #1075975) TODO: add tests
+    (LP: #1075975)
+  * start unit test framework
+  * honor UFW_SKIP_CHECKS=1 environment variable with setup.py, which eases
+    testing
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 24 May 2013 09:30:54 -0500
 

@@ -1,6 +1,6 @@
 '''backend.py: interface for ufw backends'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -22,7 +22,7 @@ import stat
 import sys
 import ufw.util
 from ufw.util import error, warn, debug
-from ufw.common import UFWError, config_dir, iptables_dir, UFWRule
+from ufw.common import UFWError, UFWRule
 import ufw.applications
 
 class UFWBackend:
@@ -34,9 +34,12 @@ class UFWBackend:
         self.rules = []
         self.rules6 = []
 
-        self.files = {'defaults': os.path.join(config_dir, 'default/ufw'),
-                      'conf': os.path.join(config_dir, 'ufw/ufw.conf'),
-                      'apps': os.path.join(config_dir, 'ufw/applications.d') }
+        self.files = {'defaults': os.path.join(ufw.common.config_dir, \
+                                               'default/ufw'),
+                      'conf': os.path.join(ufw.common.config_dir, \
+                                           'ufw/ufw.conf'),
+                      'apps': os.path.join(ufw.common.config_dir, \
+                                           'ufw/applications.d') }
         if extra_files != None:
             self.files.update(extra_files)
 
@@ -46,25 +49,23 @@ class UFWBackend:
                           'high':    300,
                           'full':    400 }
 
-        self.do_checks = True
-        try:
-            self._do_checks()
-            self._get_defaults()
-            self._read_rules()
-        except Exception:
-            raise
+        self.do_checks = ufw.common.do_checks
+        self._do_checks()
+        self._get_defaults()
+        self._read_rules()
 
         self.profiles = ufw.applications.get_profiles(self.files['apps'])
 
-        self.iptables = os.path.join(iptables_dir, "iptables")
-        self.iptables_restore = os.path.join(iptables_dir, "iptables-restore")
-        self.ip6tables = os.path.join(iptables_dir, "ip6tables")
-        self.ip6tables_restore = os.path.join(iptables_dir, \
+        self.iptables = os.path.join(ufw.common.iptables_dir, "iptables")
+        self.iptables_restore = os.path.join(ufw.common.iptables_dir, \
+                                             "iptables-restore")
+        self.ip6tables = os.path.join(ufw.common.iptables_dir, "ip6tables")
+        self.ip6tables_restore = os.path.join(ufw.common.iptables_dir, \
                                               "ip6tables-restore")
 
         try:
             self.iptables_version = ufw.util.get_iptables_version(self.iptables)
-        except OSError:
+        except OSError: # pragma: no coverage
             err_msg = _("Couldn't determine iptables version")
             raise UFWError(err_msg)
 
@@ -87,7 +88,7 @@ class UFWBackend:
         self.caps['limit']['6'] = False # historical default for the testsuite
 
         # Try to get capabilities from the running system if root
-        if self.do_checks and os.getuid() == 0 and not self.dryrun:
+        if self.do_checks and os.getuid() == 0 and not self.dryrun: # pragma: no coverage
             # v4
             try:
                 nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
@@ -139,7 +140,8 @@ class UFWBackend:
 
         return rstr
 
-    def _do_checks(self):
+    # Don't do coverage on this cause we don't run the unit tests as root
+    def _do_checks(self): # pragma: no coverage
         '''Perform basic security checks:
         is setuid or setgid (for non-Linux systems)
         checks that script is owned by root
@@ -165,8 +167,8 @@ class UFWBackend:
         if os.getgid() != os.getegid():
             err_msg = _("ERROR: this script should not be SGID")
             raise UFWError(err_msg)
-        uid = os.getuid()
 
+        uid = os.getuid()
         if uid != 0:
             err_msg = _("You need to be root to run this script")
             raise UFWError(err_msg)
@@ -244,7 +246,7 @@ class UFWBackend:
         for f in [self.files['defaults'], self.files['conf']]:
             try:
                 orig = ufw.util.open_file_read(f)
-            except Exception:
+            except Exception: # pragma: no coverage
                 err_msg = _("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
             pat = re.compile(r'^\w+="?\w+"?')
@@ -279,10 +281,7 @@ class UFWBackend:
             err_msg = _("'%s' is not writable" % (fn))
             raise UFWError(err_msg)
 
-        try:
-            fns = ufw.util.open_files(fn)
-        except Exception:
-            raise
+        fns = ufw.util.open_files(fn)
         fd = fns['tmp']
 
         found = False
@@ -300,7 +299,7 @@ class UFWBackend:
 
         try:
             ufw.util.close_files(fns)
-        except Exception:
+        except Exception: # pragma: no coverage
             raise
 
         # Now that the files are written out, update value in memory
@@ -310,33 +309,21 @@ class UFWBackend:
         '''Sets default application policy of firewall'''
         if not self.dryrun:
             if policy == "allow":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"ACCEPT\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"ACCEPT\"")
             elif policy == "deny":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"DROP\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"DROP\"")
             elif policy == "reject":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"REJECT\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"REJECT\"")
             elif policy == "skip":
-                try:
-                    self.set_default(self.files['defaults'], \
-                                            "DEFAULT_APPLICATION_POLICY", \
-                                            "\"SKIP\"")
-                except Exception:
-                    raise
+                self.set_default(self.files['defaults'], \
+                                        "DEFAULT_APPLICATION_POLICY", \
+                                        "\"SKIP\"")
             else:
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
@@ -357,12 +344,9 @@ class UFWBackend:
                 tmp = template.dup_rule()
                 tmp.dapp = ""
                 tmp.set_port("any", "src")
-                try:
-                    (port, proto) = ufw.util.parse_port_proto(i)
-                    tmp.set_protocol(proto)
-                    tmp.set_port(port, "dst")
-                except Exception:
-                    raise
+                (port, proto) = ufw.util.parse_port_proto(i)
+                tmp.set_protocol(proto)
+                tmp.set_port(port, "dst")
 
                 tmp.dapp = template.dapp
 
@@ -370,12 +354,9 @@ class UFWBackend:
                     # Just use the same ports as dst for src when they are the
                     # same to avoid duplicate rules
                     tmp.sapp = ""
-                    try:
-                        (port, proto) = ufw.util.parse_port_proto(i)
-                        tmp.set_protocol(proto)
-                        tmp.set_port(port, "src")
-                    except Exception:
-                        raise
+                    (port, proto) = ufw.util.parse_port_proto(i)
+                    tmp.set_protocol(proto)
+                    tmp.set_port(port, "src")
 
                     tmp.sapp = template.sapp
                     rules.append(tmp)
@@ -383,12 +364,9 @@ class UFWBackend:
                     for j in sports:
                         rule = tmp.dup_rule()
                         rule.sapp = ""
-                        try:
-                            (port, proto) = ufw.util.parse_port_proto(j)
-                            rule.set_protocol(proto)
-                            rule.set_port(port, "src")
-                        except Exception:
-                            raise
+                        (port, proto) = ufw.util.parse_port_proto(j)
+                        rule.set_protocol(proto)
+                        rule.set_port(port, "src")
 
                         if rule.protocol == "any":
                             rule.set_protocol(tmp.protocol)
@@ -399,12 +377,9 @@ class UFWBackend:
             for p in ufw.applications.get_ports(self.profiles[template.sport]):
                 rule = template.dup_rule()
                 rule.sapp = ""
-                try:
-                    (port, proto) = ufw.util.parse_port_proto(p)
-                    rule.set_protocol(proto)
-                    rule.set_port(port, "src")
-                except Exception:
-                    raise
+                (port, proto) = ufw.util.parse_port_proto(p)
+                rule.set_protocol(proto)
+                rule.set_port(port, "src")
 
                 rule.sapp = template.sapp
                 rules.append(rule)
@@ -412,12 +387,9 @@ class UFWBackend:
             for p in ufw.applications.get_ports(self.profiles[template.dport]):
                 rule = template.dup_rule()
                 rule.dapp = ""
-                try:
-                    (port, proto) = ufw.util.parse_port_proto(p)
-                    rule.set_protocol(proto)
-                    rule.set_port(port, "dst")
-                except Exception:
-                    raise
+                (port, proto) = ufw.util.parse_port_proto(p)
+                rule.set_protocol(proto)
+                rule.set_port(port, "dst")
 
                 rule.dapp = template.dapp
                 rules.append(rule)
@@ -458,11 +430,8 @@ class UFWBackend:
                         template.set_port(template.dapp, "dst")
                     if template.sapp != "":
                         template.set_port(template.sapp, "src")
-                    try:
-                        new_app_rules = self.get_app_rules_from_template(\
+                    new_app_rules = self.get_app_rules_from_template(\
                                           template)
-                    except Exception:
-                        raise
 
                     for new_r in new_app_rules:
                         new_r.normalize()
@@ -487,7 +456,7 @@ class UFWBackend:
             try:
                 self._write_rules(False) # ipv4
                 self._write_rules(True) # ipv6
-            except Exception:
+            except Exception: # pragma: no coverage
                 err_msg = _("Couldn't update application rules")
                 raise UFWError(err_msg)
 
@@ -512,7 +481,9 @@ class UFWBackend:
         elif matches > 1:
             err_msg = _("Found multiple matches for '%s'. Please use exact profile name") % \
                         (profile_name)
-        err_msg = _("Could not find a profile matching '%s'") % (profile_name)
+        else:
+            err_msg = _("Could not find a profile matching '%s'") % \
+                        (profile_name)
         raise UFWError(err_msg)
 
     def find_other_position(self, position, v6):
@@ -605,11 +576,8 @@ class UFWBackend:
             else:
                 new_level = self.defaults['loglevel']
 
-        try:
-            self.set_default(self.files['conf'], "LOGLEVEL", new_level)
-            self.update_logging(new_level)
-        except Exception:
-            raise
+        self.set_default(self.files['conf'], "LOGLEVEL", new_level)
+        self.update_logging(new_level)
 
         if new_level == "off":
             return _("Logging disabled")
@@ -680,39 +648,39 @@ class UFWBackend:
         return matched
 
     # API overrides
-    def set_default_policy(self, policy, direction):
+    def set_default_policy(self, policy, direction): # pragma: no coverage
         '''Set default policy for specified direction'''
         raise UFWError("UFWBackend.set_default_policy: need to override")
 
-    def get_running_raw(self, rules_type):
+    def get_running_raw(self, rules_type): # pragma: no coverage
         '''Get status of running firewall'''
         raise UFWError("UFWBackend.get_running_raw: need to override")
 
-    def get_status(self, verbose, show_count):
+    def get_status(self, verbose, show_count): # pragma: no coverage
         '''Get managed rules'''
         raise UFWError("UFWBackend.get_status: need to override")
 
-    def set_rule(self, rule, allow_reload):
+    def set_rule(self, rule, allow_reload): # pragma: no coverage
         '''Update firewall with rule'''
         raise UFWError("UFWBackend.set_rule: need to override")
 
-    def start_firewall(self):
+    def start_firewall(self): # pragma: no coverage
         '''Start the firewall'''
         raise UFWError("UFWBackend.start_firewall: need to override")
 
-    def stop_firewall(self):
+    def stop_firewall(self): # pragma: no coverage
         '''Stop the firewall'''
         raise UFWError("UFWBackend.stop_firewall: need to override")
 
-    def get_app_rules_from_system(self, template, v6):
+    def get_app_rules_from_system(self, template, v6): # pragma: no coverage
         '''Get a list if rules based on template'''
         raise UFWError("UFWBackend.get_app_rules_from_system: need to " + \
                        "override")
 
-    def update_logging(self, level):
+    def update_logging(self, level): # pragma: no coverage
         '''Update loglevel of running firewall'''
         raise UFWError("UFWBackend.update_logging: need to override")
 
-    def reset(self):
+    def reset(self): # pragma: no coverage
         '''Reset the firewall'''
         raise UFWError("UFWBackend.reset: need to override")

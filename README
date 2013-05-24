@@ -303,17 +303,17 @@ Simple rules for rsyslog support can be found in doc/rsyslog.example.
 Testing
 -------
 $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
-$ python ./setup.py install --home=/tmp/ufw
+$ UFW_SKIP_CHECKS=1 python ./setup.py install --home=/tmp/ufw
 
-The edit /tmp/ufw/lib/python/ufw/backend.py to have (since it's installed in
-/tmp):
-        self.do_checks = False
+(ufw does a number of checks since it is normally run as root. When testing,
+this is usually not the case, so you can use UFW_SKIP_CHECKS=1 with setup.py
+to disable these checks.)
 
 Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 
 Here is a command to do it all at once:
-$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && python ./setup.py install --home=/tmp/ufw && sed -i 's/self.do_checks = True/self.do_checks = False/' /tmp/ufw/lib/python/ufw/backend.py
+$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && UFW_SKIP_CHECKS=1 python ./setup.py install --home=/tmp/ufw
 
 Then test with:
 $ PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw ...
@@ -336,4 +336,19 @@ root_kern tests assume all kernel features supported by check-requirements
 are enabled. They behave just like the root tests.
 
 
-Copyright 2008-2012 Canonical Ltd.
+Unit Tests
+----------
+ufw unit tests are in tests/unit and can be called like so:
+$ make unittest
+
+This is equivalent to something like:
+$ python ./tests/unit/runner.py
+
+Alternatively, can install python-coverage and do:
+$ make coverage         # like 'unittest', but with -m coverage
+$ make coverage-report
+
+To run an individual test, use:
+$ python ./tests/unit/runner.py test_<individual test script>.py
+
+Copyright 2008-2013 Canonical Ltd.
