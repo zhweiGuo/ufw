@@ -13,9 +13,9 @@ ufw (0.34) UNRELEASED; urgency=low
     (LP: #1039729, LP: #1062521)
   * fix parse error when finding PPID (LP: #1101304)
   * implement before and after hooks in /etc/ufw/(before|after).init
-    (LP: #1075975)
+    (LP: #1075975) TODO: add tests
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 19 Jan 2013 16:14:40 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 24 May 2013 09:30:54 -0500
 
 ufw (0.33) RELEASED; urgency=low
 
