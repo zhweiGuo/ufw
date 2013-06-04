@@ -80,10 +80,12 @@ class BackendIptablesTestCase(unittest.TestCase):
 
     def test__do_checks(self):
         '''Test _do_checks()'''
+        print ("  setting self.backend.do_checks to 'True'")
         self.backend.do_checks = True
         tests.unit.support.check_for_exception(self,
                               ufw.common.UFWError,
                               self.backend._do_checks)
+        print ("  setting self.backend.do_checks to 'False'")
         self.backend.do_checks = False
         self.backend._do_checks()
 
