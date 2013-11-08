@@ -78,7 +78,7 @@ class BackendIptablesTestCase(unittest.TestCase):
             self.msg_output.close()
             self.msg_output = None
 
-    def test__do_checks(self):
+    def _test__do_checks(self):
         '''Test _do_checks()'''
         print ("  setting self.backend.do_checks to 'True'")
         self.backend.do_checks = True
