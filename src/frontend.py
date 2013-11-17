@@ -73,12 +73,12 @@ def parse_command(argv):
             argv.insert(idx, 'rule')
 
     if len(argv) < 2 or ('--dry-run' in argv and len(argv) < 3):
-        error("not enough args")
+        error("not enough args") # pragma: no cover
 
     try:
         pr = p.parse_command(argv[1:])
     except UFWError as e:
-        error("%s" % (e.value))
+        error("%s" % (e.value)) #  pragma: no cover
     except Exception:
         error("Invalid syntax", do_exit=False)
         raise
@@ -155,7 +155,7 @@ class UFWFrontend:
         if backend_type == "iptables":
             try:
                 self.backend = UFWBackendIptables(dryrun)
-            except Exception:
+            except Exception: # pragma: no cover
                 raise
         else:
             raise UFWError("Unsupported backend type '%s'" % (backend_type))
@@ -185,18 +185,18 @@ class UFWFrontend:
             try:
                 self.backend.set_default(self.backend.files['conf'], \
                                          "ENABLED", config_str)
-            except UFWError as e:
+            except UFWError as e: # pragma: no cover
                 error(e.value)
 
         error_str = ""
         if enabled:
             try:
                 self.backend.start_firewall()
-            except UFWError as e:
+            except UFWError as e: # pragma: no cover
                 if changed:
                     error_str = e.value
 
-            if error_str != "":
+            if error_str != "": # pragma: no cover
                 # Revert config files when toggling enable/disable and
                 # firewall failed to start
                 try:
@@ -212,7 +212,7 @@ class UFWFrontend:
         else:
             try:
                 self.backend.stop_firewall()
-            except UFWError as e:
+            except UFWError as e: # pragma: no cover
                 error(e.value)
 
             res = _("Firewall stopped and disabled on system startup")
@@ -227,7 +227,7 @@ class UFWFrontend:
             if self.backend.is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return res
@@ -237,7 +237,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_loglevel(level)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return res
@@ -246,7 +246,7 @@ class UFWFrontend:
         '''Shows status of firewall'''
         try:
             out = self.backend.get_status(verbose, show_count)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return out
@@ -255,7 +255,7 @@ class UFWFrontend:
         '''Shows raw output of firewall'''
         try:
             out = self.backend.get_running_raw(rules_type)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return out
@@ -266,7 +266,7 @@ class UFWFrontend:
         res = ""
         try:
             d = ufw.util.parse_netstat_output(self.backend.use_ipv6())
-        except Exception:
+        except Exception: # pragma: no cover
             err_msg = _("Could not get listening status")
             raise UFWError(err_msg)
 
@@ -276,7 +276,7 @@ class UFWFrontend:
         protocols.sort()
         for proto in protocols:
             if not self.backend.use_ipv6() and proto in ['tcp6', 'udp6']:
-                continue
+                continue # pragma: no cover
             res += "%s:\n" % (proto)
             ports = list(d[proto].keys())
             ports.sort()
@@ -514,7 +514,7 @@ class UFWFrontend:
             res += tmp
         elif len(rules) == 1:
             # If no error, and just one rule, error out
-            error(err_msg)
+            error(err_msg) # pragma: no cover
         else:
 	    # If error and more than one rule, delete the successfully added
 	    # rules in reverse order
@@ -647,7 +647,7 @@ class UFWFrontend:
                         rule.set_port(tmp, "dst")
                 except UFWError as e:
                     # allow for the profile being deleted (LP: #407810)
-                    if not rule.remove:
+                    if not rule.remove: # pragma: no cover
                         error(e.value)
                     if not ufw.applications.valid_profile_name(rule.dapp):
                         err_msg = _("Invalid profile name")
@@ -661,7 +661,7 @@ class UFWFrontend:
                         rule.set_port(tmp, "dst")
                 except UFWError as e:
                     # allow for the profile being deleted (LP: #407810)
-                    if not rule.remove:
+                    if not rule.remove: # pragma: no cover
                         error(e.value)
                     if not ufw.applications.valid_profile_name(rule.sapp):
                         err_msg = _("Invalid profile name")
@@ -679,7 +679,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_default_application_policy(policy)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return res
@@ -745,11 +745,11 @@ class UFWFrontend:
         allow_reload = True
         trigger_reload = False
 
-        try:
+        try: # pragma: no cover
             if self.backend.do_checks and ufw.util.under_ssh():
                 # Don't reload the firewall if running under ssh
                 allow_reload = False
-        except Exception:
+        except Exception: # pragma: no cover
             # If for some reason we get an exception trying to find the parent
             # pid, err on the side of caution and don't automatically reload
             # the firewall. LP: #424528
@@ -813,7 +813,7 @@ class UFWFrontend:
         args += [ policy, profile ]
         try:
             pr = parse_command(args)
-        except Exception:
+        except Exception: # pragma: no cover
             raise
 
         if 'rule' in pr.data:
@@ -859,7 +859,7 @@ class UFWFrontend:
     def continue_under_ssh(self):
         '''If running under ssh, prompt the user for confirmation'''
         proceed = True
-        if self.backend.do_checks and ufw.util.under_ssh():
+        if self.backend.do_checks and ufw.util.under_ssh(): # pragma: no cover
             prompt = _("Command may disrupt existing ssh connections. " \
                        "Proceed with operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
@@ -882,7 +882,7 @@ class UFWFrontend:
                        "operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
 
-        if self.backend.do_checks and not force:
+        if self.backend.do_checks and not force: # pragma: no cover
             msg(ufw.util.wrap_text(prompt), output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:

@@ -22,7 +22,7 @@ import stat
 import sys
 import time
 
-from ufw.common import UFWError, UFWRule, config_dir, state_dir
+from ufw.common import UFWError, UFWRule
 from ufw.util import warn, debug, msg, cmd, cmd_pipe
 import ufw.backend
 
@@ -34,13 +34,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         self.comment_str = "# " + ufw.common.programName + "_comment #"
 
         files = {}
-        files['rules'] = os.path.join(state_dir, 'user.rules')
-        files['before_rules'] = os.path.join(config_dir, 'ufw/before.rules')
-        files['after_rules'] = os.path.join(config_dir, 'ufw/after.rules')
-        files['rules6'] = os.path.join(state_dir, 'user6.rules')
-        files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
-        files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
-        files['init'] = os.path.join(state_dir, 'ufw-init')
+        files['rules'] = os.path.join(ufw.common.state_dir, 'user.rules')
+        files['before_rules'] = os.path.join(ufw.common.config_dir,
+                                             'ufw/before.rules')
+        files['after_rules'] = os.path.join(ufw.common.config_dir,
+                                            'ufw/after.rules')
+        files['rules6'] = os.path.join(ufw.common.state_dir,
+                                       'user6.rules')
+        files['before6_rules'] = os.path.join(ufw.common.config_dir,
+                                              'ufw/before6.rules')
+        files['after6_rules'] = os.path.join(ufw.common.config_dir,
+                                             'ufw/after6.rules')
+        files['init'] = os.path.join(ufw.common.state_dir, 'ufw-init')
 
         ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files)
 
@@ -530,7 +535,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 for c in self.chains['user']:
                     self._chain_cmd(c, ['-F', c])
                     self._chain_cmd(c, ['-Z', c])
-            except Exception:
+            except Exception: # pragma: no coverage
                 raise UFWError(err_msg)
 
             # then restore the system rules

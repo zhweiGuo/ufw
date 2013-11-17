@@ -36,6 +36,7 @@
 
 import re
 import ufw.util
+import ufw.applications
 from ufw.common import UFWError
 from ufw.util import debug
 
