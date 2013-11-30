@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2013 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -57,6 +57,20 @@ class ParserTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_ufwcommand_parse_empty(self):
+        '''Test UFWCommand.parse([])'''
+        c = ufw.parser.UFWCommand('basic', 'status')
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                                   c.parse,
+                                                   [])
+
+    def test_ufwcommand_help(self):
+        '''Test UFWCommand.help()'''
+        c = ufw.parser.UFWCommand('basic', 'status')
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
+                                                   c.help,
+                                                   [])
+
     def test_simple(self):
         '''Test simple rule syntax'''
         count = 0
@@ -97,6 +111,68 @@ class ParserTestCase(unittest.TestCase):
             self.assertEquals(action, pr.action, "%s != %s" % (action, \
                                                                pr.action))
         print("%d rules checked" % count)
+
+    def test_rule_bad_syntax(self):
+        '''Test rule syntax - bad'''
+        cmds = [
+                (['rule', 'insert', '1', 'allow'], ValueError),
+                (['rule', 'insert', '0', 'allow', '22'], ufw.common.UFWError),
+                (['rule', 'allow'], ValueError),
+                (['rule', 'allow', '22', 'in', 'on', 'eth0'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'in', 'eth0', '22'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0', '22', 'log'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0', '22', 'log-all'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0', 'log', 'to', 'any', \
+                  'port', '22', 'from', 'any', 'port', '123', 'proto', 'udp', \
+                  'extra'], ValueError),
+                (['rule', 'allow', '22/udp/p'], ufw.common.UFWError),
+                (['rule', 'allow', '22:2e'], ufw.common.UFWError),
+                (['rule', 'allow', '22/ipv6'], ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', '22'], ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'to', '22'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'proto', 'nope'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', '!eth0', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'out', 'on', 'eth0:0', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', '$eth', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'eth0', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'from', 'bad_address'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'bad_address'], ufw.common.UFWError),
+                (['rule', 'allow', 'port', '22'], ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '22_23'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '22:_23'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '65536'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', '::1', 'from', '127.0.0.1'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', 'nonexistent'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'from', 'any', 'port', 'nonexistent',
+                  'proto', 'any'], ufw.common.UFWError),
+                (['rule', 'allow', 'from', 'any', 'port', 'tftp', 'to', 'any'
+                 'port', 'smtp'], ufw.common.UFWError),
+               ]
+        count = 0
+        for cmd, exception in cmds:
+            print(" ".join(cmd))
+            count += 1
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            tests.unit.support.check_for_exception(self, exception,
+                                                   self.parser.parse_command,
+                                                   cmd + [])
 
     def test_extended(self):
         '''Test extended rule syntax'''

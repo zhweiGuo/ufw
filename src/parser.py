@@ -205,7 +205,7 @@ class UFWCommandRule(UFWCommand):
             if rule.dapp == "":
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[1])
-                except UFWError:
+                except ValueError:
                     err_msg = _("Bad port")
                     raise UFWError(err_msg)
 

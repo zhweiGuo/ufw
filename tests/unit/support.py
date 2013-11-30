@@ -205,7 +205,7 @@ def get_sample_rule_commands_simple():
                                 c.append(port)
 
                         cmds.append(['rule', action] + c)
-                        
+
     return cmds
 
 def get_sample_rule_commands_extended(v6=False):
