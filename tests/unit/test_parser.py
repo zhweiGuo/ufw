@@ -71,6 +71,12 @@ class ParserTestCase(unittest.TestCase):
                                                    c.help,
                                                    [])
 
+    def test_ufwcommand_parse(self):
+        '''Test UFWCommand.parse()'''
+        c = ufw.parser.UFWCommand('basic', 'status')
+        pr = c.parse(['status'])
+        self.assertEquals('status', pr.action, "%s != 'status'" % (pr.action))
+
     def test_simple(self):
         '''Test simple rule syntax'''
         count = 0
@@ -112,10 +118,25 @@ class ParserTestCase(unittest.TestCase):
                                                                pr.action))
         print("%d rules checked" % count)
 
+    def test_misc_rules(self):
+        '''Test rule syntax - miscellaneous'''
+        cmds = [
+                ['rule', 'delete', '1'],
+                ['rule', 'delete', 'allow', '22'],
+               ]
+        count = 0
+        for cmd in cmds:
+            print(" ".join(cmd))
+            count += 1
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            self.parser.parse_command(cmd + [])
+
     def test_rule_bad_syntax(self):
         '''Test rule syntax - bad'''
         cmds = [
                 (['rule', 'insert', '1', 'allow'], ValueError),
+                (['rule', 'insert', 'a', 'allow', '22'], ufw.common.UFWError),
                 (['rule', 'insert', '0', 'allow', '22'], ufw.common.UFWError),
                 (['rule', 'allow'], ValueError),
                 (['rule'], ValueError),
@@ -149,6 +170,7 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'allow', 'from', 'bad_address'],
                  ufw.common.UFWError),
                 (['rule', 'allow', 'to', 'bad_address'], ufw.common.UFWError),
+                (['rule', 'badcmd', 'to', 'any'], ValueError),
                 (['rule', 'allow', 'port', '22'], ufw.common.UFWError),
                 (['rule', 'allow', 'to', 'any', 'port', '22_23'],
                  ufw.common.UFWError),
@@ -164,6 +186,8 @@ class ParserTestCase(unittest.TestCase):
                   'proto', 'any'], ufw.common.UFWError),
                 (['rule', 'allow', 'from', 'any', 'port', 'tftp', 'to', 'any'
                  'port', 'smtp'], ufw.common.UFWError),
+                (['rule', 'allow', 'nope', 'any', 'to', 'any'],
+                 ufw.common.UFWError),
                ]
         count = 0
         for cmd, exception in cmds:
