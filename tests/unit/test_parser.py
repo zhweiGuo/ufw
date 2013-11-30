@@ -118,6 +118,7 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'insert', '1', 'allow'], ValueError),
                 (['rule', 'insert', '0', 'allow', '22'], ufw.common.UFWError),
                 (['rule', 'allow'], ValueError),
+                (['rule'], ValueError),
                 (['rule', 'allow', '22', 'in', 'on', 'eth0'],
                  ufw.common.UFWError),
                 (['rule', 'allow', 'in', 'in', 'eth0', '22'],

@@ -115,10 +115,6 @@ class UFWCommandRule(UFWCommand):
 
             action = argv[0]
 
-        if action == "":
-            action = self.command
-            argv.insert(0, action)
-
         if action != "allow" and action != "deny" and action != "reject" and \
            action != "limit":
             raise ValueError()
