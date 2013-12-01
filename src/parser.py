@@ -417,13 +417,6 @@ class UFWCommandRule(UFWCommand):
                             (rule.protocol)
                 raise UFWError(err_msg)
 
-        # Verify protocol not specified with application rule
-        if rule and rule.protocol != "any" and \
-           (rule.sapp != "" or rule.dapp != ""):
-            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
-                        % (rule.protocol)
-            raise UFWError(err_msg)
-
         if rule.protocol == 'ipv6':
             if type == "v6":
                 # Can't use protocol ipv6 with v6 addresses
