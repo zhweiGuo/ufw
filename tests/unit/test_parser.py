@@ -123,6 +123,8 @@ class ParserTestCase(unittest.TestCase):
         cmds = [
                 ['rule', 'delete', '1'],
                 ['rule', 'delete', 'allow', '22'],
+                ['rule', 'deny', 'from', 'any', 'port', 'domain', 'to', \
+                 'any', 'port', 'tftp'],
                ]
         count = 0
         for cmd in cmds:
@@ -186,8 +188,10 @@ class ParserTestCase(unittest.TestCase):
                  ufw.common.UFWError),
                 (['rule', 'allow', 'from', 'any', 'port', 'nonexistent',
                   'proto', 'any'], ufw.common.UFWError),
-                (['rule', 'allow', 'from', 'any', 'port', 'tftp', 'to', 'any'
+                (['rule', 'allow', 'from', 'any', 'port', 'tftp', 'to', 'any',
                  'port', 'smtp'], ufw.common.UFWError),
+                (['rule', 'deny', 'from', 'any', 'port', 'smtp', 'to', 'any',
+                 'port', 'tftp', 'proto', 'any'], ufw.common.UFWError),
                 (['rule', 'allow', 'nope', 'any', 'to', 'any'],
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', 'tftp', \

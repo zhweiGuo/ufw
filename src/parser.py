@@ -376,20 +376,29 @@ class UFWCommandRule(UFWCommand):
             if to_service != "":
                 try:
                     proto = ufw.util.get_services_proto(to_service)
-                except Exception:
+                except Exception: # pragma: no cover
+                    # This can't normally be reached because of set_port()
+                    # checks above, but leave it here in case our parsing
+                    # changes
                     err_msg = _("Could not find protocol")
                     raise UFWError(err_msg)
             if from_service != "":
                 if proto == "any" or proto == "":
                     try:
                         proto = ufw.util.get_services_proto(from_service)
-                    except Exception:
+                    except Exception: # pragma: no cover
+                        # This can't normally be reached because of set_port()
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Could not find protocol")
                         raise UFWError(err_msg)
                 else:
                     try:
                         tmp = ufw.util.get_services_proto(from_service)
-                    except Exception:
+                    except Exception: # pragma: no cover
+                        # This can't normally be reached because of set_port()
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Could not find protocol")
                         raise UFWError(err_msg)
                     if proto == "any" or proto == tmp:
