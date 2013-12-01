@@ -18,6 +18,8 @@ ufw (0.34) UNRELEASED; urgency=low
   * honor UFW_SKIP_CHECKS=1 environment variable with setup.py, which eases
     testing
   * tests/check-requirements: add a check for -m rt --rt-type 0 (LP: #1191197)
+  * match simple rule syntax and don't allow ports with esp and ah protocols
+    with extended rule syntax
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 01 Dec 2013 09:11:54 -0600
 

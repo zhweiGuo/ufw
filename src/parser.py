@@ -428,8 +428,9 @@ class UFWCommandRule(UFWCommand):
                       (rule.protocol))
                 type = "v4"
 
+        # Don't specify a port with ipv6, esp, or ah protocol
+        if rule.protocol in [ 'ipv6', 'esp', 'ah' ]:
             if rule.dport != "any" or rule.sport != "any":
-                # Don't specify a port with ipv6, esp, or ah protocol
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (rule.protocol)
                 raise UFWError(err_msg)
