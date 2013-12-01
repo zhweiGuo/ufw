@@ -259,7 +259,10 @@ class UFWCommandRule(UFWCommand):
                             rule.set_protocol(argv[i+1])
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'proto' clause")
                         raise UFWError(err_msg)
                 elif arg == "in" or arg == "out":
@@ -271,7 +274,10 @@ class UFWCommandRule(UFWCommand):
                                 rule.set_interface("out", argv[i+1])
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid '%s' clause") % (arg)
                         raise UFWError(err_msg)
                 elif arg == "from":
@@ -290,7 +296,10 @@ class UFWCommandRule(UFWCommand):
                         except Exception:
                             raise
                         loc = "src"
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'from' clause")
                         raise UFWError(err_msg)
                 elif arg == "to":
@@ -309,7 +318,10 @@ class UFWCommandRule(UFWCommand):
                         except Exception:
                             raise
                         loc = "dst"
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'to' clause")
                         raise UFWError(err_msg)
                 elif arg == "port" or arg == "app":
@@ -338,7 +350,10 @@ class UFWCommandRule(UFWCommand):
                             rule.set_port(tmp, loc)
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'port' clause")
                         raise UFWError(err_msg)
                 i += 1

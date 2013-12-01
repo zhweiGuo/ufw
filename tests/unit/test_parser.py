@@ -154,6 +154,8 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'allow', '22/udp/p'], ufw.common.UFWError),
                 (['rule', 'allow', '22:2e'], ufw.common.UFWError),
                 (['rule', 'allow', '22/ipv6'], ufw.common.UFWError),
+                (['rule', 'reject', 'in', 'on', 'eth0', 'port', '22'],
+                 ufw.common.UFWError),
                 (['rule', 'allow', 'to', 'any', '22'], ufw.common.UFWError),
                 (['rule', 'allow', 'to', 'any', 'to', '22'],
                  ufw.common.UFWError),
@@ -188,6 +190,8 @@ class ParserTestCase(unittest.TestCase):
                  'port', 'smtp'], ufw.common.UFWError),
                 (['rule', 'allow', 'nope', 'any', 'to', 'any'],
                  ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', 'tftp', \
+                  'proto', 'tcp'], ufw.common.UFWError),
                ]
         count = 0
         for cmd, exception in cmds:
