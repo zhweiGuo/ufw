@@ -306,16 +306,6 @@ def get_sample_rule_commands_extended(v6=False):
                                 # nothing to do (use simple syntax)
                                 continue
 
-                            if dst:
-                                c.append('to')
-                                c.append(dst)
-                            if dport:
-                                if dport in apps:
-                                    c.append('app')
-                                else:
-                                    c.append('port')
-                                c.append(dport)
-
                             if src:
                                 c.append('from')
                                 c.append(src)
@@ -325,6 +315,16 @@ def get_sample_rule_commands_extended(v6=False):
                                 else:
                                     c.append('port')
                                 c.append(sport)
+
+                            if dst:
+                                c.append('to')
+                                c.append(dst)
+                            if dport:
+                                if dport in apps:
+                                    c.append('app')
+                                else:
+                                    c.append('port')
+                                c.append(dport)
 
                             # add 'proto' when it makes sense
                             if proto:
