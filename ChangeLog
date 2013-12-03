@@ -14,12 +14,17 @@ ufw (0.34) UNRELEASED; urgency=low
   * fix parse error when finding PPID (LP: #1101304)
   * implement before and after hooks in /etc/ufw/(before|after).init
     (LP: #1075975) TODO: add tests
-  * start unit test framework
+  * add unit test framework and remove some dead code
   * honor UFW_SKIP_CHECKS=1 environment variable with setup.py, which eases
     testing
   * tests/check-requirements: add a check for -m rt --rt-type 0 (LP: #1191197)
+  * match simple rule syntax and don't allow ports with esp and ah protocols
+    with extended rule syntax
+  * when displaying extended rules via parser.get_command(), show "out" if the
+    direction is "out" and there is no corresponding interface
+  * fix return of various invalid extended rules in parser.get_command()
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 17 Nov 2013 12:11:31 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 01 Dec 2013 09:11:54 -0600
 
 ufw (0.33) RELEASED; urgency=low
 

@@ -205,7 +205,7 @@ def get_sample_rule_commands_simple():
                                 c.append(port)
 
                         cmds.append(['rule', action] + c)
-                        
+
     return cmds
 
 def get_sample_rule_commands_extended(v6=False):
@@ -218,23 +218,23 @@ def get_sample_rule_commands_extended(v6=False):
     '''
 
     dsts = ['', '1.2.3.4', '10.0.0.0/8', 'any', '1.2.3.4!22', \
-            '10.0.0.0/8!tcpmux', 'any!fsp', '1.2.3.4!WWW', \
+            '10.0.0.0/8!tcpmux', 'any!fsp', '1.2.3.4!WWW Full', \
             '10.0.0.0/8!CIFS', 'any!DNS']
     srcs = ['', '5.6.7.8', '172.16.0.0/12', 'any', '5.6.7.8!22', \
-            '172.16.0.0/12!tcpmux', 'any!fsp', '5.6.7.8!WWW', \
+            '172.16.0.0/12!tcpmux', 'any!fsp', '5.6.7.8!WWW Full', \
             '172.16.0.0/12!CIFS', 'any!DNS']
     if v6:
         dsts = ['', '2001:db8:85a3:8d3:1319:8a2e:370:7341', \
                 '1234:db8::/32', 'any', \
                 '2001:db8:85a3:8d3:1319:8a2e:370:7341!22', \
                 '1234:db8::/32!tcpmux', 'any!fsp', \
-                '2001:db8:85a3:8d3:1319:8a2e:370:7341!WWW', \
+                '2001:db8:85a3:8d3:1319:8a2e:370:7341!WWW Full', \
                 '1234:db8::/32!CIFS', 'any!DNS']
         srcs = ['', '2001:db8:85a3:8d3:1319:8a2e:370:7342', \
                 '5678:fff::/64', 'any', \
                 '2001:db8:85a3:8d3:1319:8a2e:370:7342!22', \
                 '5678:fff::/64!tcpmux', 'any!fsp', \
-                '2001:db8:85a3:8d3:1319:8a2e:370:7342!WWW', \
+                '2001:db8:85a3:8d3:1319:8a2e:370:7342!WWW Full', \
                 '5678:fff::/64!CIFS', 'any!DNS']
 
 
@@ -266,7 +266,7 @@ def get_sample_rule_commands_extended(v6=False):
 
                             # Don't allow mixing services and application rules
                             srvs = ['tcpmux', 'fsp']
-                            apps = ['WWW', 'DNS', 'CIFS']
+                            apps = ['WWW Full', 'DNS', 'CIFS']
                             if (dport in srvs and sport in apps) or \
                                (sport in srvs and dport in apps):
                                 continue
@@ -306,16 +306,6 @@ def get_sample_rule_commands_extended(v6=False):
                                 # nothing to do (use simple syntax)
                                 continue
 
-                            if dst:
-                                c.append('to')
-                                c.append(dst)
-                            if dport:
-                                if dport in apps:
-                                    c.append('app')
-                                else:
-                                    c.append('port')
-                                c.append(dport)
-
                             if src:
                                 c.append('from')
                                 c.append(src)
@@ -325,6 +315,16 @@ def get_sample_rule_commands_extended(v6=False):
                                 else:
                                     c.append('port')
                                 c.append(sport)
+
+                            if dst:
+                                c.append('to')
+                                c.append(dst)
+                            if dport:
+                                if dport in apps:
+                                    c.append('app')
+                                else:
+                                    c.append('port')
+                                c.append(dport)
 
                             # add 'proto' when it makes sense
                             if proto:
@@ -350,5 +350,5 @@ def get_sample_rule_commands_extended(v6=False):
                                             c.append(proto)
 
                             cmds.append(['rule', action] + c)
-                    
+
     return cmds

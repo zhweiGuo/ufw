@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2013 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import re
 import unittest
 import tests.unit.support
 import ufw.parser
@@ -57,7 +58,190 @@ class ParserTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_simple(self):
+    def test_ufwcommand_parse_empty(self):
+        '''Test UFWCommand.parse([])'''
+        c = ufw.parser.UFWCommand('basic', 'status')
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                                   c.parse,
+                                                   [])
+
+    def test_ufwcommand_help(self):
+        '''Test UFWCommand.help()'''
+        c = ufw.parser.UFWCommand('basic', 'status')
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
+                                                   c.help,
+                                                   [])
+
+    def test_ufwcommand_parse(self):
+        '''Test UFWCommand.parse()'''
+        c = ufw.parser.UFWCommand('basic', 'status')
+        pr = c.parse(['status'])
+        self.assertEquals('status', pr.action, "%s != 'status'" % (pr.action))
+
+    def test_ufwcommand_rule_get_command(self):
+        '''Test UFWCommandRule.get_command()'''
+        count = 0
+        cmds = tests.unit.support.get_sample_rule_commands_simple()
+        cmds += tests.unit.support.get_sample_rule_commands_extended()
+        cmds += tests.unit.support.get_sample_rule_commands_extended(v6=True)
+        cmds += [
+                 ['rule', 'reject', 'from', 'any', 'app', 'Apache'],
+                 ['rule', 'reject', 'from', 'any', 'port', 'smtp'],
+                ]
+        errors = []
+
+        for cmd in cmds:
+            count += 1
+            #print(" ".join(cmd))
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            pr = self.parser.parse_command(cmd + [])
+            res = ufw.parser.UFWCommandRule.get_command(pr.data['rule'])
+
+            # First, feed the res rule into parse() (we need to split the
+            # string but preserve quoted substrings
+            test_cmd = ['rule'] + \
+                       [p.strip("'") for p in re.split("( |'.*?')",
+                                                       res) if p.strip()]
+            try:
+                self.parser.parse_command(test_cmd + [])
+            except Exception:
+                self.assertTrue(False,
+                                "get_comand() returned invalid rule:\n" + \
+                                " orig=%s\n pr.data['rule']=%s\n result=%s" % \
+                                (cmd, pr.data['rule'], test_cmd))
+
+            # Next, verify the output is what we expect. We need to massage the
+            # cmd_compare output a bit first since many rules can be expressed
+            # using the same syntax. Eg, these are all the same rule and
+            # get_command() typically outputs the simplest form:
+            #  ufw allow 22
+            #  ufw allow in 22
+            #  ufw allow to any port 22
+            #  ufw allow from any to any port 22
+            #  ufw rule allow 22
+            #  ufw rule allow in 22
+            #  ufw rule allow to any port 22
+            #  ufw rule allow from any to any port 22
+
+            # Note, cmd_compare contains the rules we get from
+            # tests.unit.support.get_sample_rule_commands*
+            cmd_compare = []
+            for i in cmd:
+                if ' ' in i:  # quote anything with a space for comparisons
+                    cmd_compare.append("'%s'" % i)
+                else:
+                    cmd_compare.append(i)
+
+            # remove 'in' on rules with an interface
+            if 'in' in cmd_compare and 'on' not in cmd_compare:
+                cmd_compare.remove('in')
+
+            # use '1/tcp' instead of 'tcpmux' for simple rules and
+            # 'port 1 proto tcp' for extended
+            if 'tcpmux' in cmd_compare:
+                if 'to' in cmd_compare or 'from' in cmd_compare:  # extended
+                    cmd_compare[cmd_compare.index('tcpmux')] = '1'
+                    if 'proto' not in cmd_compare:
+                        cmd_compare.append('proto')
+                        cmd_compare.append('tcp')
+                    if 'tcpmux' in cmd_compare:  # can have 2 in extended rules
+                        cmd_compare[cmd_compare.index('tcpmux')] = '1'
+                else:  # simple
+                    cmd_compare[cmd_compare.index('tcpmux')] = '1/tcp'
+
+            # use '21/udp' instead of 'fsp' for simple rules and
+            # 'port 21 proto udp' for extended
+            if 'fsp' in cmd_compare:
+                if 'to' in cmd_compare or 'from' in cmd_compare:  # extended
+                    cmd_compare[cmd_compare.index('fsp')] = '21'
+                    if 'proto' not in cmd_compare:
+                        cmd_compare.append('proto')
+                        cmd_compare.append('udp')
+                    if 'fsp' in cmd_compare:  # can have 2 in extended rules
+                        cmd_compare[cmd_compare.index('fsp')] = '21'
+                else:  # simple rule
+                    cmd_compare[cmd_compare.index('fsp')] = '21/udp'
+
+            # use 'port 25 proto tcp' in extended rules
+            if 'smtp' in cmd_compare and 'proto' not in cmd_compare:
+                cmd_compare[cmd_compare.index('smtp')] = '25'
+                cmd_compare.append('proto')
+                cmd_compare.append('tcp')
+
+            # remove 'from any' clause when used without port or app
+            if 'from' in cmd_compare and \
+               cmd_compare[cmd_compare.index('from') + 1] == 'any' and \
+               (len(cmd_compare) - 2 == cmd_compare.index('from') or \
+                (cmd_compare.index('from') + 2 < len(cmd_compare) and \
+                 cmd_compare[cmd_compare.index('from') + 2] != 'port' and \
+                 cmd_compare[cmd_compare.index('from') + 2] != 'app')):
+                del cmd_compare[cmd_compare.index('from') + 1]
+                cmd_compare.remove('from')
+
+            # remove 'to any' clause when used without port or app when 'from'
+            # 'proto' or 'on' is present ('from' will not be 'any' because of
+            # above)
+            if ('from' in cmd_compare or 'proto' in cmd_compare or \
+                'on' in cmd_compare) and 'to' in cmd_compare and \
+               cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
+               (len(cmd_compare) - 2 == cmd_compare.index('to') or \
+                (cmd_compare.index('to') + 2 < len(cmd_compare) and \
+                 cmd_compare[cmd_compare.index('to') + 2] != 'port' and \
+                 cmd_compare[cmd_compare.index('to') + 2] != 'app')):
+                del cmd_compare[cmd_compare.index('to') + 1]
+                cmd_compare.remove('to')
+
+            # remove 'to any' if no 'from' clause (ie, convert extended to
+            # simple)
+            if 'to' in cmd_compare and 'from' not in cmd_compare and \
+               cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
+               cmd_compare.index('to') + 2 < len(cmd_compare) and \
+               'on' not in cmd_compare:
+                if 'port' in cmd_compare:
+                    port = "%s" % cmd_compare[cmd_compare.index('port') + 1]
+                    if 'proto' in cmd_compare:
+                        port += "/%s" % \
+                                cmd_compare[cmd_compare.index('proto') + 1]
+                    del cmd_compare[cmd_compare.index('proto') + 1]
+                    cmd_compare.remove('proto')
+                    del cmd_compare[cmd_compare.index('port') + 1]
+                    cmd_compare.remove('port')
+                    del cmd_compare[cmd_compare.index('to') + 1]
+                    cmd_compare.remove('to')
+                    cmd_compare.append(port)
+                elif 'app' in cmd_compare:
+                    del cmd_compare[cmd_compare.index('to') + 2]
+                    del cmd_compare[cmd_compare.index('to') + 1]
+                    cmd_compare.remove('to')
+
+            # add back 'to any' if have no 'to', 'from' or 'on' and have either
+            # proto or the last entry in cmd_compare indicates generic extended
+            # rule
+            generics = ['in', 'out', 'allow', 'deny', 'reject', 'limit']
+            if 'to' not in cmd_compare and 'from' not in cmd_compare and \
+               'on' not in cmd_compare and ('proto' in cmd_compare or \
+               cmd_compare[-1].startswith('log') or \
+               cmd_compare[-1] in generics):
+                if 'proto' in cmd_compare:
+                    cmd_compare.insert(cmd_compare.index('proto'), "to")
+                    cmd_compare.insert(cmd_compare.index('proto'), "any")
+                else:
+                    cmd_compare.append("to")
+                    cmd_compare.append("any")
+
+            if "rule %s" % res != " ".join(cmd_compare):
+                errors.append(" \"rule %s\" != \"%s\" (orig=%s)" % (res,
+                    " ".join(cmd_compare), cmd))
+
+            #print("Result: rule %s" % res)
+
+        self.assertEquals(len(errors), 0,
+                          "Rules did not match:\n%s\n(%d of %d)" % \
+                          ("\n".join(errors), len(errors), count))
+        print("%d rules checked" % count)
+
+    def test_simple_parse(self):
         '''Test simple rule syntax'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_simple()
@@ -98,7 +282,107 @@ class ParserTestCase(unittest.TestCase):
                                                                pr.action))
         print("%d rules checked" % count)
 
-    def test_extended(self):
+    def test_misc_rules_parse(self):
+        '''Test rule syntax - miscellaneous'''
+        cmds = [
+                ['rule', 'delete', '1'],
+                ['rule', 'delete', 'allow', '22'],
+                ['rule', 'deny', 'from', 'any', 'port', 'domain', 'to', \
+                 'any', 'port', 'tftp'],
+                ['rule', 'deny', 'to', 'any', 'proto', 'ipv6'],
+                ['rule', 'deny', 'to', 'any', 'proto', 'esp'],
+                ['rule', 'deny', 'to', 'any', 'proto', 'ah'],
+               ]
+        count = 0
+        for cmd in cmds:
+            #print(" ".join(cmd))
+            count += 1
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            self.parser.parse_command(cmd + [])
+
+    def test_rule_bad_syntax(self):
+        '''Test rule syntax - bad'''
+        cmds = [
+                (['rule', 'insert', '1', 'allow'], ValueError),
+                (['rule', 'insert', 'a', 'allow', '22'], ufw.common.UFWError),
+                (['rule', 'insert', '0', 'allow', '22'], ufw.common.UFWError),
+                (['rule', 'allow'], ValueError),
+                (['rule'], ValueError),
+                (['rule', 'allow', '22', 'in', 'on', 'eth0'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'in', 'eth0', '22'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0', '22', 'log'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0', '22', 'log-all'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0', 'log', 'to', 'any', \
+                  'port', '22', 'from', 'any', 'port', '123', 'proto', 'udp', \
+                  'extra'], ValueError),
+                (['rule', 'allow', '22/udp/p'], ufw.common.UFWError),
+                (['rule', 'allow', '22:2e'], ufw.common.UFWError),
+                (['rule', 'allow', '22/ipv6'], ufw.common.UFWError),
+                (['rule', 'reject', 'in', 'on', 'eth0', 'port', '22'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', '22'], ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'to', '22'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'proto', 'nope'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', '!eth0', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'out', 'on', 'eth0:0', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', '$eth', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'eth0', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'from', 'bad_address'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'bad_address'], ufw.common.UFWError),
+                (['rule', 'badcmd', 'to', 'any'], ValueError),
+                (['rule', 'allow', 'port', '22'], ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '22_23'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '22:_23'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '65536'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', '::1', 'from', '127.0.0.1'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', 'nonexistent'],
+                 ufw.common.UFWError),
+                (['rule', 'allow', 'from', 'any', 'port', 'nonexistent',
+                  'proto', 'any'], ufw.common.UFWError),
+                (['rule', 'allow', 'from', 'any', 'port', 'tftp', 'to', 'any',
+                 'port', 'smtp'], ufw.common.UFWError),
+                (['rule', 'deny', 'from', 'any', 'port', 'smtp', 'to', 'any',
+                 'port', 'tftp', 'proto', 'any'], ufw.common.UFWError),
+                (['rule', 'allow', 'nope', 'any', 'to', 'any'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', 'tftp', \
+                  'proto', 'tcp'], ufw.common.UFWError),
+                (['rule', 'deny', 'to', '::1', 'proto', 'ipv6'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ipv6'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'esp'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
+                 ufw.common.UFWError),
+               ]
+        count = 0
+        for cmd, exception in cmds:
+            #print(" ".join(cmd))
+            count += 1
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            tests.unit.support.check_for_exception(self, exception,
+                                                   self.parser.parse_command,
+                                                   cmd + [])
+
+    def test_extended_parse(self):
         '''Test extended rule syntax'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_extended()

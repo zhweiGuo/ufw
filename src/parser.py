@@ -115,10 +115,6 @@ class UFWCommandRule(UFWCommand):
 
             action = argv[0]
 
-        if action == "":
-            action = self.command
-            argv.insert(0, action)
-
         if action != "allow" and action != "deny" and action != "reject" and \
            action != "limit":
             raise ValueError()
@@ -205,7 +201,7 @@ class UFWCommandRule(UFWCommand):
             if rule.dapp == "":
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[1])
-                except UFWError:
+                except ValueError:
                     err_msg = _("Bad port")
                     raise UFWError(err_msg)
 
@@ -263,7 +259,10 @@ class UFWCommandRule(UFWCommand):
                             rule.set_protocol(argv[i+1])
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'proto' clause")
                         raise UFWError(err_msg)
                 elif arg == "in" or arg == "out":
@@ -275,7 +274,10 @@ class UFWCommandRule(UFWCommand):
                                 rule.set_interface("out", argv[i+1])
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid '%s' clause") % (arg)
                         raise UFWError(err_msg)
                 elif arg == "from":
@@ -294,7 +296,10 @@ class UFWCommandRule(UFWCommand):
                         except Exception:
                             raise
                         loc = "src"
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'from' clause")
                         raise UFWError(err_msg)
                 elif arg == "to":
@@ -313,7 +318,10 @@ class UFWCommandRule(UFWCommand):
                         except Exception:
                             raise
                         loc = "dst"
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'to' clause")
                         raise UFWError(err_msg)
                 elif arg == "port" or arg == "app":
@@ -342,7 +350,10 @@ class UFWCommandRule(UFWCommand):
                             rule.set_port(tmp, loc)
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'port' clause")
                         raise UFWError(err_msg)
                 i += 1
@@ -365,20 +376,29 @@ class UFWCommandRule(UFWCommand):
             if to_service != "":
                 try:
                     proto = ufw.util.get_services_proto(to_service)
-                except Exception:
+                except Exception: # pragma: no cover
+                    # This can't normally be reached because of set_port()
+                    # checks above, but leave it here in case our parsing
+                    # changes
                     err_msg = _("Could not find protocol")
                     raise UFWError(err_msg)
             if from_service != "":
                 if proto == "any" or proto == "":
                     try:
                         proto = ufw.util.get_services_proto(from_service)
-                    except Exception:
+                    except Exception: # pragma: no cover
+                        # This can't normally be reached because of set_port()
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Could not find protocol")
                         raise UFWError(err_msg)
                 else:
                     try:
                         tmp = ufw.util.get_services_proto(from_service)
-                    except Exception:
+                    except Exception: # pragma: no cover
+                        # This can't normally be reached because of set_port()
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Could not find protocol")
                         raise UFWError(err_msg)
                     if proto == "any" or proto == tmp:
@@ -397,13 +417,6 @@ class UFWCommandRule(UFWCommand):
                             (rule.protocol)
                 raise UFWError(err_msg)
 
-        # Verify protocol not specified with application rule
-        if rule and rule.protocol != "any" and \
-           (rule.sapp != "" or rule.dapp != ""):
-            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
-                        % (rule.protocol)
-            raise UFWError(err_msg)
-
         if rule.protocol == 'ipv6':
             if type == "v6":
                 # Can't use protocol ipv6 with v6 addresses
@@ -415,8 +428,9 @@ class UFWCommandRule(UFWCommand):
                       (rule.protocol))
                 type = "v4"
 
+        # Don't specify a port with ipv6, esp, or ah protocol
+        if rule.protocol in [ 'ipv6', 'esp', 'ah' ]:
             if rule.dport != "any" or rule.sport != "any":
-                # Don't specify a port with ipv6, esp, or ah protocol
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (rule.protocol)
                 raise UFWError(err_msg)
@@ -445,7 +459,10 @@ class UFWCommandRule(UFWCommand):
             if r.logtype != "":
                 res += " %s" % r.logtype
             if r.dapp != "":
-                res += " %s" % r.dapp
+                if " " in r.dapp:
+                    res += " '%s'" % r.dapp
+                else:
+                    res += " %s" % r.dapp
             else:
                 res += " %s" % r.dport
                 if r.protocol != "any":
@@ -456,6 +473,8 @@ class UFWCommandRule(UFWCommand):
                 res += " in on %s" % r.interface_in
             if r.interface_out != "":
                 res += " out on %s" % r.interface_out
+            elif r.direction == "out":
+                res += " %s" % r.direction
             if r.logtype != "":
                 res += " %s" % r.logtype
 
@@ -473,18 +492,22 @@ class UFWCommandRule(UFWCommand):
 
                 if loc == "0.0.0.0/0" or loc == "::/0":
                     loc = "any"
-                if loc == "any" and port == "any" and app == "":
-                    pass
-                else:
+
+                if loc != "any" or port != "any" or app != "":
                     res += " %s %s" % (dir, loc)
                     if app != "":
-                        res += " app %s" % app
+                        if " " in app:
+                            res += " app '%s'" % app
+                        else:
+                            res += " app %s" % app
                     elif port != "any":
                         res += " port %s" % port
 
-	    # If still haven't added more than action, then we have a very
-            # generic rule, so mark it as such.
-            if res == r.action:
+            # If still haven't added more than action, direction and/or
+            # logtype, then we have a very generic rule, so add 'to any' to
+            # mark it as extended form.
+            if ' to ' not in res and ' from ' not in res and \
+                    r.interface_in == "" and r.interface_out == "":
                 res += " to any"
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
