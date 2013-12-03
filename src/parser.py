@@ -470,6 +470,8 @@ class UFWCommandRule(UFWCommand):
                 res += " in on %s" % r.interface_in
             if r.interface_out != "":
                 res += " out on %s" % r.interface_out
+            elif r.direction == "out":
+                res += " %s" % r.direction
             if r.logtype != "":
                 res += " %s" % r.logtype
 

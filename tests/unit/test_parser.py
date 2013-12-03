@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import re
 import unittest
 import tests.unit.support
 import ufw.parser
@@ -77,7 +78,104 @@ class ParserTestCase(unittest.TestCase):
         pr = c.parse(['status'])
         self.assertEquals('status', pr.action, "%s != 'status'" % (pr.action))
 
-    def test_simple(self):
+    def test_ufwcommand_rule_get_command(self):
+        '''Test UFWCommandRule.get_command()'''
+        count = 0
+        cmds = tests.unit.support.get_sample_rule_commands_simple()
+        cmds += tests.unit.support.get_sample_rule_commands_extended()
+        cmds += tests.unit.support.get_sample_rule_commands_extended(v6=True)
+        cmds += [
+                 ['rule', 'reject', 'from', 'any', 'app', 'Apache'],
+                 ['rule', 'reject', 'from', 'any', 'port', 'smtp'],
+#                  ['rule', 'deny'],
+                ]
+        errors = []
+        pat_in = re.compile(r' in ')
+        for cmd in cmds:
+            count += 1
+            #print(" ".join(cmd))
+            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # the cmd, not a reference
+            pr = self.parser.parse_command(cmd + [])
+            res = ufw.parser.UFWCommandRule.get_command(pr.data['rule'])
+            cmd_compare = cmd + []
+
+            # Massage the cmd_compare output to what we expect
+
+            # remove 'in' on rules with an interface
+            if 'in' in cmd_compare and 'on' not in cmd_compare:
+                cmd_compare.remove('in')
+
+            # use '1/tcp' instead of 'tcpmux' for simple rules and
+            # 'port 1 proto tcp' for extended
+            if 'tcpmux' in cmd_compare:
+                if 'to' in cmd_compare or 'from' in cmd_compare:  # extended
+                    cmd_compare[cmd_compare.index('tcpmux')] = '1'
+                    if 'proto' not in cmd_compare:
+                        cmd_compare.append('proto')
+                        cmd_compare.append('tcp')
+                    if 'tcpmux' in cmd_compare:  # can have 2 in extended rules
+                        cmd_compare[cmd_compare.index('tcpmux')] = '1'
+                else:  # simple
+                    cmd_compare[cmd_compare.index('tcpmux')] = '1/tcp'
+
+            # use '21/udp' instead of 'fsp' for simple rules and
+            # 'port 21 proto udp' for extended
+            if 'fsp' in cmd_compare:
+                if 'to' in cmd_compare or 'from' in cmd_compare:  # extended
+                    cmd_compare[cmd_compare.index('fsp')] = '21'
+                    if 'proto' not in cmd_compare:
+                        cmd_compare.append('proto')
+                        cmd_compare.append('udp')
+                    if 'fsp' in cmd_compare:  # can have 2 in extended rules
+                        cmd_compare[cmd_compare.index('fsp')] = '21'
+                else:  # simple rule
+                    cmd_compare[cmd_compare.index('fsp')] = '21/udp'
+
+            # use 'port 25 proto tcp' in extended rules
+            if 'smtp' in cmd_compare and 'proto' not in cmd_compare:
+                cmd_compare[cmd_compare.index('smtp')] = '25'
+                cmd_compare.append('proto')
+                cmd_compare.append('tcp')
+
+            # remove 'from any' clause when used without port or app
+            if 'from' in cmd_compare and \
+               cmd_compare[cmd_compare.index('from') + 1] == 'any' and \
+               (len(cmd_compare) - 2 == cmd_compare.index('from') or \
+                (cmd_compare.index('from') + 2 < len(cmd_compare) and \
+                 cmd_compare[cmd_compare.index('from') + 2] != 'port' and \
+                 cmd_compare[cmd_compare.index('from') + 2] != 'app')):
+                del cmd_compare[cmd_compare.index('from') + 1]
+                cmd_compare.remove('from')
+
+            # remove 'to any' clause when used without port or app
+            if 'to' in cmd_compare and \
+               cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
+               (len(cmd_compare) - 2 == cmd_compare.index('to') or \
+                (cmd_compare.index('to') + 2 < len(cmd_compare) and \
+                cmd_compare[cmd_compare.index('to') + 2] == 'proto')):
+                del cmd_compare[cmd_compare.index('to') + 1]
+                cmd_compare.remove('to')
+
+            # remove 'to any' and 'from any' clauses when no 'port' or 'app'
+            # for either
+            if 'to' in cmd_compare and 'from' in cmd_compare and \
+               'port' not in cmd_compare and 'app' not in cmd_compare and \
+               cmd_compare[cmd_compare.index('from') + 1] == 'any' and \
+               cmd_compare[cmd_compare.index('to') + 1] == 'any':
+                del cmd_compare[cmd_compare.index('to') + 1]
+                cmd_compare.remove('to')
+                del cmd_compare[cmd_compare.index('from') + 1]
+                cmd_compare.remove('from')
+
+            if "rule %s" % res != " ".join(cmd_compare):
+                errors.append(" 'rule %s' != '%s'" % (res,
+                                                      " ".join(cmd_compare)))
+        self.assertEquals(len(errors), 0,
+                          "Rules did not match:\n%s\n(%d of %d)" % \
+                          ("\n".join(errors), len(errors), count))
+
+    def test_simple_parse(self):
         '''Test simple rule syntax'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_simple()
@@ -118,7 +216,7 @@ class ParserTestCase(unittest.TestCase):
                                                                pr.action))
         print("%d rules checked" % count)
 
-    def test_misc_rules(self):
+    def test_misc_rules_parse(self):
         '''Test rule syntax - miscellaneous'''
         cmds = [
                 ['rule', 'delete', '1'],
@@ -131,7 +229,7 @@ class ParserTestCase(unittest.TestCase):
                ]
         count = 0
         for cmd in cmds:
-            print(" ".join(cmd))
+            #print(" ".join(cmd))
             count += 1
             # Note, parser.parse_command() modifies it arg, so pass a copy of
             # the cmd, not a reference
@@ -210,7 +308,7 @@ class ParserTestCase(unittest.TestCase):
                ]
         count = 0
         for cmd, exception in cmds:
-            print(" ".join(cmd))
+            #print(" ".join(cmd))
             count += 1
             # Note, parser.parse_command() modifies it arg, so pass a copy of
             # the cmd, not a reference
@@ -218,7 +316,7 @@ class ParserTestCase(unittest.TestCase):
                                                    self.parser.parse_command,
                                                    cmd + [])
 
-    def test_extended(self):
+    def test_extended_parse(self):
         '''Test extended rule syntax'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_extended()
