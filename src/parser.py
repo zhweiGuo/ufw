@@ -493,7 +493,7 @@ class UFWCommandRule(UFWCommand):
                 if loc == "0.0.0.0/0" or loc == "::/0":
                     loc = "any"
 
-                if not (loc == "any" and port == "any" and app == ""):
+                if loc != "any" or port != "any" or app != "":
                     res += " %s %s" % (dir, loc)
                     if app != "":
                         if " " in app:
