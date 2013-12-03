@@ -87,7 +87,6 @@ class ParserTestCase(unittest.TestCase):
         cmds += [
                  ['rule', 'reject', 'from', 'any', 'app', 'Apache'],
                  ['rule', 'reject', 'from', 'any', 'port', 'smtp'],
-#                  ['rule', 'deny'],
                 ]
         errors = []
         pat_in = re.compile(r' in ')
@@ -148,29 +147,45 @@ class ParserTestCase(unittest.TestCase):
                 del cmd_compare[cmd_compare.index('from') + 1]
                 cmd_compare.remove('from')
 
-            # remove 'to any' clause when used without port or app
-            if 'to' in cmd_compare and \
+            # remove 'to any' clause when used without port or app when 'from'
+            # or 'proto' is present ('from' will not be 'any' because of above)
+            if ('from' in cmd_compare or 'proto' in cmd_compare or \
+                'on' in cmd_compare) and 'to' in cmd_compare and \
                cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
                (len(cmd_compare) - 2 == cmd_compare.index('to') or \
                 (cmd_compare.index('to') + 2 < len(cmd_compare) and \
-                cmd_compare[cmd_compare.index('to') + 2] == 'proto')):
+                 cmd_compare[cmd_compare.index('to') + 2] != 'port' and \
+                 cmd_compare[cmd_compare.index('to') + 2] != 'app')):
                 del cmd_compare[cmd_compare.index('to') + 1]
                 cmd_compare.remove('to')
 
-            # remove 'to any' and 'from any' clauses when no 'port' or 'app'
-            # for either
-            if 'to' in cmd_compare and 'from' in cmd_compare and \
-               'port' not in cmd_compare and 'app' not in cmd_compare and \
-               cmd_compare[cmd_compare.index('from') + 1] == 'any' and \
-               cmd_compare[cmd_compare.index('to') + 1] == 'any':
-                del cmd_compare[cmd_compare.index('to') + 1]
-                cmd_compare.remove('to')
-                del cmd_compare[cmd_compare.index('from') + 1]
-                cmd_compare.remove('from')
+            # remove 'to any' if no 'from' clause (ie, convert extended to
+            # simple)
+            if 'to' in cmd_compare and 'from' not in cmd_compare and \
+               cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
+               cmd_compare.index('to') + 2 < len(cmd_compare) and \
+               'on' not in cmd_compare:
+                if 'port' in cmd_compare:
+                    port = "%s" % cmd_compare[cmd_compare.index('port') + 1]
+                    if 'proto' in cmd_compare:
+                        port += "/%s" % \
+                                cmd_compare[cmd_compare.index('proto') + 1]
+                    del cmd_compare[cmd_compare.index('proto') + 1]
+                    cmd_compare.remove('proto')
+                    del cmd_compare[cmd_compare.index('port') + 1]
+                    cmd_compare.remove('port')
+                    del cmd_compare[cmd_compare.index('to') + 1]
+                    cmd_compare.remove('to')
+                    cmd_compare.append(port)
+                elif 'app' in cmd_compare:
+                    del cmd_compare[cmd_compare.index('to') + 2]
+                    del cmd_compare[cmd_compare.index('to') + 1]
+                    cmd_compare.remove('to')
 
             if "rule %s" % res != " ".join(cmd_compare):
-                errors.append(" 'rule %s' != '%s'" % (res,
-                                                      " ".join(cmd_compare)))
+                errors.append(" 'rule %s' != '%s' (orig=%s)" % (res,
+                                                      " ".join(cmd_compare),
+                                                      cmd))
         self.assertEquals(len(errors), 0,
                           "Rules did not match:\n%s\n(%d of %d)" % \
                           ("\n".join(errors), len(errors), count))

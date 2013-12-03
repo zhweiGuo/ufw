@@ -489,18 +489,20 @@ class UFWCommandRule(UFWCommand):
 
                 if loc == "0.0.0.0/0" or loc == "::/0":
                     loc = "any"
-                if loc == "any" and port == "any" and app == "":
-                    pass
-                else:
+
+                if not (loc == "any" and port == "any" and app == ""):
                     res += " %s %s" % (dir, loc)
                     if app != "":
                         res += " app %s" % app
                     elif port != "any":
                         res += " port %s" % port
 
-	    # If still haven't added more than action, then we have a very
-            # generic rule, so mark it as such.
-            if res == r.action:
+            # If still haven't added more than action, direction and/or
+            # logtype, then we have a very generic rule, so add 'to any' to
+            # mark it as extended form.
+            if ' to ' not in res and ' from ' not in res and \
+               r.interface_in == "" and r.interface_out == "" and \
+               r.protocol == "any":
                 res += " to any"
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
