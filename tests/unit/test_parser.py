@@ -371,6 +371,9 @@ class ParserTestCase(unittest.TestCase):
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
+                  'from', '192.168.0.0/16', 'port', 'tcpmux'],
+                  ufw.common.UFWError),
                ]
         count = 0
         for cmd, exception in cmds:
