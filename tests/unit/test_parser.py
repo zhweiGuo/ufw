@@ -239,6 +239,7 @@ class ParserTestCase(unittest.TestCase):
         self.assertEquals(len(errors), 0,
                           "Rules did not match:\n%s\n(%d of %d)" % \
                           ("\n".join(errors), len(errors), count))
+        print("%d rules checked" % count)
 
     def test_simple_parse(self):
         '''Test simple rule syntax'''
