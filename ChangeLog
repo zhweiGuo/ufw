@@ -22,6 +22,7 @@ ufw (0.34) UNRELEASED; urgency=low
     with extended rule syntax
   * when displaying extended rules via parser.get_command(), show "out" if the
     direction is "out" and there is no corresponding interface
+  * fix some invalid extended rule output in parser.get_command()
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 01 Dec 2013 09:11:54 -0600
 
