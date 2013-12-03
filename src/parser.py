@@ -459,7 +459,10 @@ class UFWCommandRule(UFWCommand):
             if r.logtype != "":
                 res += " %s" % r.logtype
             if r.dapp != "":
-                res += " %s" % r.dapp
+                if " " in r.dapp:
+                    res += " '%s'" % r.dapp
+                else:
+                    res += " %s" % r.dapp
             else:
                 res += " %s" % r.dport
                 if r.protocol != "any":
@@ -493,7 +496,10 @@ class UFWCommandRule(UFWCommand):
                 if not (loc == "any" and port == "any" and app == ""):
                     res += " %s %s" % (dir, loc)
                     if app != "":
-                        res += " app %s" % app
+                        if " " in app:
+                            res += " app '%s'" % app
+                        else:
+                            res += " app %s" % app
                     elif port != "any":
                         res += " port %s" % port
 
@@ -501,8 +507,7 @@ class UFWCommandRule(UFWCommand):
             # logtype, then we have a very generic rule, so add 'to any' to
             # mark it as extended form.
             if ' to ' not in res and ' from ' not in res and \
-               r.interface_in == "" and r.interface_out == "" and \
-               r.protocol == "any":
+                    r.interface_in == "" and r.interface_out == "":
                 res += " to any"
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":

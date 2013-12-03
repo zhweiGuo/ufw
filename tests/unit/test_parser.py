@@ -89,7 +89,7 @@ class ParserTestCase(unittest.TestCase):
                  ['rule', 'reject', 'from', 'any', 'port', 'smtp'],
                 ]
         errors = []
-        pat_in = re.compile(r' in ')
+
         for cmd in cmds:
             count += 1
             #print(" ".join(cmd))
@@ -97,9 +97,41 @@ class ParserTestCase(unittest.TestCase):
             # the cmd, not a reference
             pr = self.parser.parse_command(cmd + [])
             res = ufw.parser.UFWCommandRule.get_command(pr.data['rule'])
-            cmd_compare = cmd + []
 
-            # Massage the cmd_compare output to what we expect
+            # First, feed the res rule into parse() (we need to split the
+            # string but preserve quoted substrings
+            test_cmd = ['rule'] + \
+                       [p.strip("'") for p in re.split("( |'.*?')",
+                                                       res) if p.strip()]
+            try:
+                self.parser.parse_command(test_cmd + [])
+            except Exception:
+                self.assertTrue(False,
+                                "get_comand() returned invalid rule:\n" + \
+                                " orig=%s\n pr.data['rule']=%s\n result=%s" % \
+                                (cmd, pr.data['rule'], test_cmd))
+
+            # Next, verify the output is what we expect. We need to massage the
+            # cmd_compare output a bit first since many rules can be expressed
+            # using the same syntax. Eg, these are all the same rule and
+            # get_command() typically outputs the simplest form:
+            #  ufw allow 22
+            #  ufw allow in 22
+            #  ufw allow to any port 22
+            #  ufw allow from any to any port 22
+            #  ufw rule allow 22
+            #  ufw rule allow in 22
+            #  ufw rule allow to any port 22
+            #  ufw rule allow from any to any port 22
+
+            # Note, cmd_compare contains the rules we get from
+            # tests.unit.support.get_sample_rule_commands*
+            cmd_compare = []
+            for i in cmd:
+                if ' ' in i:  # quote anything with a space for comparisons
+                    cmd_compare.append("'%s'" % i)
+                else:
+                    cmd_compare.append(i)
 
             # remove 'in' on rules with an interface
             if 'in' in cmd_compare and 'on' not in cmd_compare:
@@ -148,7 +180,8 @@ class ParserTestCase(unittest.TestCase):
                 cmd_compare.remove('from')
 
             # remove 'to any' clause when used without port or app when 'from'
-            # or 'proto' is present ('from' will not be 'any' because of above)
+            # 'proto' or 'on' is present ('from' will not be 'any' because of
+            # above)
             if ('from' in cmd_compare or 'proto' in cmd_compare or \
                 'on' in cmd_compare) and 'to' in cmd_compare and \
                cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
@@ -182,10 +215,27 @@ class ParserTestCase(unittest.TestCase):
                     del cmd_compare[cmd_compare.index('to') + 1]
                     cmd_compare.remove('to')
 
+            # add back 'to any' if have no 'to', 'from' or 'on' and have either
+            # proto or the last entry in cmd_compare indicates generic extended
+            # rule
+            generics = ['in', 'out', 'allow', 'deny', 'reject', 'limit']
+            if 'to' not in cmd_compare and 'from' not in cmd_compare and \
+               'on' not in cmd_compare and ('proto' in cmd_compare or \
+               cmd_compare[-1].startswith('log') or \
+               cmd_compare[-1] in generics):
+                if 'proto' in cmd_compare:
+                    cmd_compare.insert(cmd_compare.index('proto'), "to")
+                    cmd_compare.insert(cmd_compare.index('proto'), "any")
+                else:
+                    cmd_compare.append("to")
+                    cmd_compare.append("any")
+
             if "rule %s" % res != " ".join(cmd_compare):
-                errors.append(" 'rule %s' != '%s' (orig=%s)" % (res,
-                                                      " ".join(cmd_compare),
-                                                      cmd))
+                errors.append(" \"rule %s\" != \"%s\" (orig=%s)" % (res,
+                    " ".join(cmd_compare), cmd))
+
+            #print("Result: rule %s" % res)
+
         self.assertEquals(len(errors), 0,
                           "Rules did not match:\n%s\n(%d of %d)" % \
                           ("\n".join(errors), len(errors), count))
