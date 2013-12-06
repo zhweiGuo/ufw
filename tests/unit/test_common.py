@@ -24,7 +24,9 @@ class CommonTestCase(unittest.TestCase):
                 "any":  ufw.common.UFWRule("allow", "any"),
                 "ipv6": ufw.common.UFWRule("deny", "ipv6"),
                 "tcp":  ufw.common.UFWRule("limit", "tcp"),
-                "udp":  ufw.common.UFWRule("reject", "udp"),
+                "udp":  ufw.common.UFWRule("allow", "udp"),
+                "reject-tcp":  ufw.common.UFWRule("reject", "tcp"),
+                "reject-udp":  ufw.common.UFWRule("reject", "udp"),
                 "full-any":  ufw.common.UFWRule("allow", "any",
                     dport="123", dst="10.0.0.1", sport="124",
                     src="10.0.0.2", direction="in"),
@@ -39,6 +41,13 @@ class CommonTestCase(unittest.TestCase):
                     src="10.0.0.2", direction="out"),
                 "dapp":  ufw.common.UFWRule("allow", "any"),
                 "sapp":  ufw.common.UFWRule("deny", "any"),
+                "app-both":  ufw.common.UFWRule("deny", "any"),
+                "multi-dport": ufw.common.UFWRule("allow", "tcp",
+                    dport="80,443,8080:8090"),
+                "multi-sport": ufw.common.UFWRule("allow", "tcp",
+                    sport="80,443,8080:8090"),
+                "multi-both": ufw.common.UFWRule("allow", "tcp",
+                    dport="80,443,8080:8090", sport="23"),
                 }
         self.rules['dapp'].dapp = "Apache"
         self.rules['dapp'].dport = "80"
@@ -46,6 +55,12 @@ class CommonTestCase(unittest.TestCase):
         self.rules['sapp'].sapp = "Apache"
         self.rules['sapp'].sport = "80"
         self.rules['sapp'].proto = "tcp"
+        self.rules['app-both'].dapp = "Apache"
+        self.rules['app-both'].dport = "80"
+        self.rules['app-both'].proto = "tcp"
+        self.rules['app-both'].sapp = "Apache"
+        self.rules['app-both'].sport = "80"
+        self.rules['app-both'].proto = "tcp"
 
     def tearDown(self):
         self.rules = None
@@ -58,6 +73,25 @@ class CommonTestCase(unittest.TestCase):
             self.assertEquals(e.value, "test", "'%s' != 'test'" % e.value)
             return
         self.assertTrue(False, "Did not raise an error")
+
+    def test_ufwerror_str(self):
+        '''Test UFWError.str()'''
+        e = ufw.common.UFWError("test")
+        search = repr("test")
+        self.assertEquals(str(e), search, "'%s' != 'test'" % search)
+
+    def test__init_(self):
+        '''Test UFWRule.__init__()'''
+        r = ufw.common.UFWRule("allow", "tcp", "22")
+        self.assertEquals(r.action, "allow")
+        self.assertEquals(r.protocol, "tcp")
+        self.assertEquals(r.dport, "22")
+
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError,
+                                               ufw.common.UFWRule,
+                                               "allow",
+                                               "nonexistent",
+                                               "22")
 
     def test__get_attrib(self):
         '''Test _get_attrib()'''
@@ -72,6 +106,62 @@ class CommonTestCase(unittest.TestCase):
         '''Test format_rule()'''
         s = str(self.rules["any"])
         self.assertEquals(s, "-p all -j ACCEPT")
+
+        s = str(self.rules["app-both"])
+        self.assertEquals(s, "-p all --dport 80 --sport 80 -j DROP " + \
+                             "-m comment --comment 'dapp_Apache,sapp_Apache'")
+
+        s = str(self.rules["dapp"])
+        self.assertEquals(s, "-p all --dport 80 -j ACCEPT " + \
+                             "-m comment --comment 'dapp_Apache'")
+
+        s = str(self.rules["full-any"])
+        self.assertEquals(s, "-p all -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j ACCEPT")
+
+        s = str(self.rules["full-ipv6"])
+        self.assertEquals(s, "-p ipv6 -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j DROP")
+
+        s = str(self.rules["full-tcp"])
+        self.assertEquals(s, "-p tcp -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j LIMIT")
+
+        s = str(self.rules["full-udp"])
+        self.assertEquals(s, "-p udp -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j REJECT")
+
+        s = str(self.rules["ipv6"])
+        self.assertEquals(s, "-p ipv6 -j DROP")
+
+        s = str(self.rules["multi-both"])
+        self.assertEquals(s, "-p tcp -m multiport " + \
+                             "--dports 80,443,8080:8090 " + \
+                             "-m multiport --sports 23 -j ACCEPT")
+
+        s = str(self.rules["multi-dport"])
+        self.assertEquals(s, "-p tcp -m multiport " + \
+                             "--dports 80,443,8080:8090 -j ACCEPT")
+
+        s = str(self.rules["multi-sport"])
+        self.assertEquals(s, "-p tcp -m multiport " + \
+                             "--sports 80,443,8080:8090 -j ACCEPT")
+
+        s = str(self.rules["reject-tcp"])
+        self.assertEquals(s, "-p tcp -j REJECT --reject-with tcp-reset")
+
+        s = str(self.rules["reject-udp"])
+        self.assertEquals(s, "-p udp -j REJECT")
+
+        s = str(self.rules["sapp"])
+        self.assertEquals(s, "-p all --sport 80 -j DROP " + \
+                             "-m comment --comment 'sapp_Apache'")
+
+        s = str(self.rules["tcp"])
+        self.assertEquals(s, "-p tcp -j LIMIT")
+
+        s = str(self.rules["udp"])
+        self.assertEquals(s, "-p udp -j ACCEPT")
 
     def test_set_action(self):
         '''Test set_action()'''
@@ -108,7 +198,7 @@ class CommonTestCase(unittest.TestCase):
         r.dapp = "Apache"
         r.set_port("Apache", "dst")
         self.assertEquals(r.dapp, r.dport, "%s != %s" % (r.dapp, r.dport))
-            
+
         r = self.rules["sapp"].dup_rule()
         r.sapp = "Apache"
         r.set_port("Apache", "src")
