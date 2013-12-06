@@ -613,7 +613,7 @@ class UFWCommandDefault(UFWCommand):
                 direction = "incoming"
             elif argv[2].lower().startswith("out"):
                 direction = "outgoing"
-            else:
+            else:  # pragma: no cover
                 direction = argv[2].lower()
 
         # Set the policy
