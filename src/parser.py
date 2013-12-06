@@ -770,7 +770,6 @@ class UFWParser:
         except Exception:
             err_msg = _("Invalid command '%s'") % (cmd)
             raise
-            raise UFWError(err_msg)
 
         cmd = self.commands[type][action]
         response = cmd.parse(args)
