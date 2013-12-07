@@ -274,8 +274,19 @@ class CommonTestCase(unittest.TestCase):
                                                    r.set_protocol,
                                                    proto)
 
-    def _test__fix_anywhere(self):
-        '''TODO: Test _fix_anywhere()'''
+    def test__fix_anywhere(self):
+        '''Test _fix_anywhere()'''
+        x = self.rules["any"].dup_rule()
+        x.set_v6(False)
+        x._fix_anywhere()
+        search = "0.0.0.0/0"
+        self.assertEquals(x.dst, search, "'%s' != '%s'" % (x.dst, search))
+
+        y = x.dup_rule()
+        y.set_v6(True)
+        y._fix_anywhere()
+        search = "::/0"
+        self.assertEquals(y.dst, search, "'%s' != '%s'" % (y.dst, search))
 
     def test_set_v6(self):
         '''Test set_v6()'''
@@ -534,6 +545,101 @@ class CommonTestCase(unittest.TestCase):
         self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
         self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
 
+        x = self.rules["multi-dport"].dup_rule()
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        y.set_protocol("any")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["multi-dport"].dup_rule()
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        y.set_protocol("any")
+        y.set_port("%s,8181" % y.dport, "dst")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        x.set_port("80")
+        x.set_protocol("tcp")
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        x.set_port("8081")
+        x.set_protocol("tcp")
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        x.set_port("8079")
+        x.set_protocol("tcp")
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        y.set_direction("out")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.set_dst("10.0.0.3")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.set_dst("11.0.0.0/8")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.set_interface("in", "eth0")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), -1)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "eth0")
+        y = x.dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 0)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "eth0")
+        y = x.dup_rule()
+        y.set_interface("in", "eth1")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "lo")
+        y = x.dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 0)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "lo")
+        y = x.dup_rule()
+        y.set_dst("11.0.0.0/8")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        y = x.dup_rule()
+        y.set_v6(True)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        tests.unit.support.check_for_exception(self, ValueError,
+                                               x.fuzzy_dst_match,
+                                               None)
     def test__is_anywhere(self):
         '''Test _is_anywhere()'''
         r = self.rules['any']

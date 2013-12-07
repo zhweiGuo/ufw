@@ -436,6 +436,11 @@ class UFWRule:
         '''
         def _match_ports(test_p, to_match):
             '''Returns True if p is an exact match or within a multi rule'''
+            if ',' in test_p or ':' in test_p:
+                if test_p == to_match:
+                    return True
+                return False
+
             for port in to_match.split(','):
                 if test_p == port:
                     return True
@@ -503,8 +508,7 @@ class UFWRule:
                 debug("(interface) " + dbg_msg + " %s does not exist" % \
                       (y.interface_in))
                 return 1
-            except Exception:
-                raise
+
             if y.dst != if_ip and '/' not in y.dst:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % \
                       (y.dst, if_ip))
