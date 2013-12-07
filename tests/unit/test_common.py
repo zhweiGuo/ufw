@@ -48,19 +48,26 @@ class CommonTestCase(unittest.TestCase):
                     sport="80,443,8080:8090"),
                 "multi-both": ufw.common.UFWRule("allow", "tcp",
                     dport="80,443,8080:8090", sport="23"),
+                "log":  ufw.common.UFWRule("allow", "tcp", dport="22"),
+                "log-all":  ufw.common.UFWRule("allow", "tcp", dport="22"),
                 }
         self.rules['dapp'].dapp = "Apache"
         self.rules['dapp'].dport = "80"
         self.rules['dapp'].proto = "tcp"
+
         self.rules['sapp'].sapp = "Apache"
         self.rules['sapp'].sport = "80"
         self.rules['sapp'].proto = "tcp"
+
         self.rules['app-both'].dapp = "Apache"
         self.rules['app-both'].dport = "80"
         self.rules['app-both'].proto = "tcp"
         self.rules['app-both'].sapp = "Apache"
         self.rules['app-both'].sport = "80"
         self.rules['app-both'].proto = "tcp"
+
+        self.rules['log'].set_logtype("log")
+        self.rules['log-all'].set_logtype("log-all")
 
     def tearDown(self):
         self.rules = None
@@ -133,6 +140,16 @@ class CommonTestCase(unittest.TestCase):
 
         s = str(self.rules["ipv6"])
         self.assertEquals(s, "-p ipv6 -j DROP")
+
+        s = str(self.rules["log"])
+        self.assertEquals(s, "-p tcp --dport 22 -j ACCEPT_log")
+
+        s = str(self.rules["log-all"])
+        self.assertEquals(s, "-p tcp --dport 22 -j ACCEPT_log-all")
+        r = self.rules["log-all"].dup_rule()
+        r.set_action("deny_log-all")
+        s = str(r)
+        self.assertEquals(s, "-p tcp --dport 22 -j DROP_log-all")
 
         s = str(self.rules["multi-both"])
         self.assertEquals(s, "-p tcp -m multiport " + \
@@ -228,7 +245,7 @@ class CommonTestCase(unittest.TestCase):
                 e = ufw.common.UFWError
                 if port == 22:
                     e = TypeError
-                tests.unit.support.check_for_exception(self, 
+                tests.unit.support.check_for_exception(self,
                                                        e,
                                                        r.set_port,
                                                        port,
@@ -246,7 +263,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_protocol() - bad'''
         r = self.rules["any"]
         for proto in ['an', 'cp', 'up', 'nonexistent']:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_protocol,
                                                    proto)
@@ -322,7 +339,7 @@ class CommonTestCase(unittest.TestCase):
 
         for if_type in ["in", "out"]:
             for interface in ["\tfoo", "<$%", "0eth", "eth0:0"]:
-                tests.unit.support.check_for_exception(self, 
+                tests.unit.support.check_for_exception(self,
                                                        ufw.common.UFWError,
                                                        r.set_interface,
                                                        if_type,
@@ -337,7 +354,7 @@ class CommonTestCase(unittest.TestCase):
     def test_set_position_bad(self):
         '''Test set_position() - bad'''
         r = self.rules["any"]
-        tests.unit.support.check_for_exception(self, 
+        tests.unit.support.check_for_exception(self,
                                                ufw.common.UFWError,
                                                r.set_position,
                                                'a')
@@ -354,7 +371,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_logtype() - bad'''
         r = self.rules["any"]
         for logtype in ["a", "loga", "d"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_logtype,
                                                    logtype)
@@ -442,11 +459,20 @@ class CommonTestCase(unittest.TestCase):
         y.set_interface("out", "eth0")
         self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
 
+        x = self.rules["any"].dup_rule()
+        y = self.rules["any"].dup_rule()
+        y.v6 = True
+        self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
         x = ufw.common.UFWRule("allow", "tcp", direction="out")
         x.set_interface("out", "eth0")
         y = x.dup_rule()
-        y.set_interface("in", "eth0")
+        y.direction = "in"
         self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
+        tests.unit.support.check_for_exception(self, ValueError,
+                                               x.match,
+                                               None)
 
     def test_fuzzy_dst_match(self):
         '''Test fuzzy_dst_match()'''
