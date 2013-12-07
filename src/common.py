@@ -339,7 +339,8 @@ class UFWRule:
                 (self.src, changed) = ufw.util.normalize_address(self.src, \
                                                                  self.v6)
             except Exception:
-                raise
+                err_msg = _("Could not normalize source address")
+                raise UFWError(err_msg)
 
         if changed:
             self.updated = changed

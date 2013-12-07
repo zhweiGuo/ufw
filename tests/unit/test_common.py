@@ -102,7 +102,13 @@ class CommonTestCase(unittest.TestCase):
 
     def test__get_attrib(self):
         '''Test _get_attrib()'''
-        self.rules["any"]._get_attrib()
+        res = self.rules["any"]._get_attrib()
+        search = "'-p all -j ACCEPT', src=0.0.0.0/0, updated=False, " + \
+                 "protocol=any, interface_in=, logtype=, dst=0.0.0.0/0, " + \
+                 "direction=in, multi=False, remove=False, dapp=, " + \
+                 "v6=False, dport=any, position=0, sport=any, sapp=, " + \
+                 "action=allow, interface_out="
+        self.assertEquals(res, search, "'%s' != '%s'" % (res, search))
 
     def test_dup_rule(self):
         '''Test dup_rule()'''
@@ -291,7 +297,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_src() - bad'''
         r = self.rules["any"]
         for src in ["10.0.0.", "10..0.0.3"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_src,
                                                    src)
@@ -308,7 +314,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_dst() - bad'''
         r = self.rules["any"]
         for dst in ["10.0.0.", "10..0.0.3"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_dst,
                                                    dst)
@@ -331,7 +337,7 @@ class CommonTestCase(unittest.TestCase):
         r = self.rules["any"]
         interface = "eth0"
         for if_type in ["ina", "ot"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_interface,
                                                    if_type,
@@ -388,16 +394,37 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_direction() - bad'''
         r = self.rules["any"]
         for direction in ["", "ina", "outta"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_direction,
                                                    direction)
 
     def test_normalize(self):
         '''Test normalize()'''
-        for rule in self.rules.keys():
+        # Test the pre-canned rules above-- none of them are normalized, so
+        # UFWRule.match() should always be 0
+        keys = list(self.rules.keys())
+        keys.sort()
+        for rule in keys:
             r = self.rules[rule].dup_rule()
             r.normalize()
+            self.assertEquals(ufw.common.UFWRule.match(self.rules[rule], r), 0,
+                            "'%s' != '%s'" % (self.rules[rule], r))
+
+        # Bad rule
+        bad = ufw.common.UFWRule("allow", "any")
+        bad.src = "1000.0.0.1"
+        tests.unit.support.check_for_exception(self,
+                                               ufw.common.UFWError,
+                                               bad.normalize)
+        bad = None
+        bad = ufw.common.UFWRule("allow", "any")
+        bad.dst = "1000.0.0.1"
+        tests.unit.support.check_for_exception(self,
+                                               ufw.common.UFWError,
+                                               bad.normalize)
+
+
 
     def test_match(self):
         '''Test match()'''
