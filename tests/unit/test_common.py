@@ -411,7 +411,7 @@ class CommonTestCase(unittest.TestCase):
             self.assertEquals(ufw.common.UFWRule.match(self.rules[rule], r), 0,
                             "'%s' != '%s'" % (self.rules[rule], r))
 
-        # Bad rule
+        # Bad rules
         bad = ufw.common.UFWRule("allow", "any")
         bad.src = "1000.0.0.1"
         tests.unit.support.check_for_exception(self,
@@ -424,7 +424,31 @@ class CommonTestCase(unittest.TestCase):
                                                ufw.common.UFWError,
                                                bad.normalize)
 
+        # Normalized rules
+        data = [
+                 (False, '192.168.0.1', '192.168.0.1'),
+                 (False, '192.168.0.1/31', '192.168.0.0/31'),
+                 (False, '192.168.0.1/255.255.255.0', '192.168.0.0/24'),
+                 (True, '::1', '::1'),
+                 (True, 'ff80:123:4567:89ab:cdef:123:4567:89ab/112',
+                        'ff80:123:4567:89ab:cdef:123:4567:89ab/112')
+                ]
+        for (v6, addr, expected) in data:
+            rule = ufw.common.UFWRule("allow", "any", dst=addr)
+            rule.set_v6(v6)
+            rule.normalize()
+            self.assertEquals(expected, rule.dst,
+                              "'%s' != '%s'" % (expected, rule.dst))
+            self.assertEquals(addr != expected, rule.updated,
+                              "'%s' not updated" % addr)
 
+            rule = ufw.common.UFWRule("allow", "any", src=addr)
+            rule.set_v6(v6)
+            rule.normalize()
+            self.assertEquals(expected, rule.src,
+                              "'%s' != '%s'" % (expected, rule.src))
+            self.assertEquals(addr != expected, rule.updated,
+                              "'%s' not updated" % addr)
 
     def test_match(self):
         '''Test match()'''

@@ -342,8 +342,8 @@ class UFWRule:
                 err_msg = _("Could not normalize source address")
                 raise UFWError(err_msg)
 
-        if changed:
-            self.updated = changed
+            if changed:
+                self.updated = changed
 
         if self.dst:
             try:
@@ -352,6 +352,9 @@ class UFWRule:
             except Exception:
                 err_msg = _("Could not normalize destination address")
                 raise UFWError(err_msg)
+
+            if changed:
+                self.updated = changed
 
         if self.dport:
             ports = self.dport.split(',')
@@ -362,9 +365,6 @@ class UFWRule:
             ports = self.sport.split(',')
             ufw.util.human_sort(ports)
             self.sport = ','.join(ports)
-
-        if changed:
-            self.updated = changed
 
     def match(x, y):
         '''Check if rules match
