@@ -77,7 +77,9 @@ class UFWRule:
     def _get_attrib(self):
         '''Print rule to stdout'''
         res = "'%s'" % (self)
-        for k in self.__dict__:
+        keys = list(self.__dict__)
+        keys.sort()
+        for k in keys:
             res += ", %s=%s" % (k, self.__dict__[k])
         return res
 
