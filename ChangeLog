@@ -24,6 +24,7 @@ ufw (0.34) UNRELEASED; urgency=low
   * when displaying extended rules via parser.get_command(), show "out" if the
     direction is "out" and there is no corresponding interface
   * fix return of various invalid extended rules in parser.get_command()
+  * clarify 'limit' command in man page (LP: #1089262)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 01 Dec 2013 09:11:54 -0600
 
