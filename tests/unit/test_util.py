@@ -336,7 +336,7 @@ class UtilTestCase(unittest.TestCase):
     def _run_normalize_address(self, data):
         '''Run ufw.util.normalize_address() on data. Data should be in form
            of:
-           data = [(v6, ip, expected_ip), (v6, ip2, expected_ip2)]   
+           data = [(v6, ip, expected_ip), (v6, ip2, expected_ip2)]
         '''
         error_str = ""
         for (v6, ip, expected) in data:
@@ -397,7 +397,7 @@ class UtilTestCase(unittest.TestCase):
 
         error_str = self._run_normalize_address(data)
         self.assertEquals(error_str, "", error_str)
-            
+
     def test_normalize_address_ipv6_cidr(self):
         '''Test normalize_address() with ipv6_cidr'''
         data = []

@@ -178,10 +178,11 @@ for details.
 
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting
-against brute\-force login attacks. \fBufw\fR will deny connections if an IP
-address has attempted to initiate 6 or more connections in the last 30 seconds.
-See http://www.debian\-administration.org/articles/187 for details.  Typical
-usage is:
+against brute\-force login attacks. When a limit rule is used, \fBufw\fR will
+normally allow the connection but will deny connections if an IP address
+attempts to initiate 6 or more connections within 30 seconds. See
+http://www.debian\-administration.org/articles/187 for details. Typical usage
+is:
 
   ufw limit ssh/tcp
 

@@ -83,8 +83,8 @@ class ParserTestCase(unittest.TestCase):
         cmd = 'rule allow 22'
         pr = self.parser.parse_command(cmd.split())
         s = str(pr)
-        search = repr("action='allow',type='rule',iptype='both'," + \
-                      "rule='-p all --dport 22 -j ACCEPT'\n")
+        search = repr("action='allow',iptype='both'," + \
+                      "rule='-p all --dport 22 -j ACCEPT',type='rule'\n")
         self.assertTrue(s == search, "'%s' != '%s'" % (s, search))
         self.assertFalse(pr.dryrun)
         self.assertFalse(pr.force)
@@ -92,8 +92,8 @@ class ParserTestCase(unittest.TestCase):
         cmd = '--dry-run rule allow 22'
         pr = self.parser.parse_command(cmd.split())
         s = str(pr)
-        search = repr("action='allow',type='rule',iptype='both'," + \
-                      "rule='-p all --dport 22 -j ACCEPT'\n")
+        search = repr("action='allow',iptype='both'," + \
+                      "rule='-p all --dport 22 -j ACCEPT',type='rule'\n")
         self.assertTrue(s == search, "'%s' != '%s'" % (s, search))
         self.assertTrue(pr.dryrun)
         self.assertFalse(pr.force)
@@ -101,8 +101,8 @@ class ParserTestCase(unittest.TestCase):
         cmd = '--force rule allow 22'
         pr = self.parser.parse_command(cmd.split())
         s = str(pr)
-        search = repr("action='allow',type='rule',iptype='both'," + \
-                      "rule='-p all --dport 22 -j ACCEPT'\n")
+        search = repr("action='allow',iptype='both'," + \
+                      "rule='-p all --dport 22 -j ACCEPT',type='rule'\n")
         self.assertTrue(s == search, "'%s' != '%s'" % (s, search))
         self.assertTrue(pr.force)
 

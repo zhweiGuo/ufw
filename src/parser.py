@@ -766,7 +766,9 @@ class UFWParserResponse:
 
     def __str__(self):
         s = "action='%s'" % (self.action)
-        for i in list(self.data.keys()):
+        keys = list(self.data.keys())
+        keys.sort()
+        for i in keys:
             s += ",%s='%s'" % (i,self.data[i])
         s += "\n"
 
