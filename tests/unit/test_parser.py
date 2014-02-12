@@ -78,6 +78,78 @@ class ParserTestCase(unittest.TestCase):
         pr = c.parse(['status'])
         self.assertEquals('status', pr.action, "%s != 'status'" % (pr.action))
 
+    def test_ufwparser_response(self):
+        '''Test UFWParserResponse.str()'''
+        cmd = 'rule allow 22'
+        pr = self.parser.parse_command(cmd.split())
+        s = str(pr)
+        search = repr("action='allow',type='rule',iptype='both'," + \
+                      "rule='-p all --dport 22 -j ACCEPT'\n")
+        self.assertTrue(s == search, "'%s' != '%s'" % (s, search))
+        self.assertFalse(pr.dryrun)
+        self.assertFalse(pr.force)
+
+        cmd = '--dry-run rule allow 22'
+        pr = self.parser.parse_command(cmd.split())
+        s = str(pr)
+        search = repr("action='allow',type='rule',iptype='both'," + \
+                      "rule='-p all --dport 22 -j ACCEPT'\n")
+        self.assertTrue(s == search, "'%s' != '%s'" % (s, search))
+        self.assertTrue(pr.dryrun)
+        self.assertFalse(pr.force)
+
+        cmd = '--force rule allow 22'
+        pr = self.parser.parse_command(cmd.split())
+        s = str(pr)
+        search = repr("action='allow',type='rule',iptype='both'," + \
+                      "rule='-p all --dport 22 -j ACCEPT'\n")
+        self.assertTrue(s == search, "'%s' != '%s'" % (s, search))
+        self.assertTrue(pr.force)
+
+    def test_ufwparser_register_command(self):
+        '''Test UFWParser.register_command()'''
+        parser = ufw.parser.UFWParser()
+        c = ufw.parser.UFWCommandBasic('enable')
+        parser.register_command(c)
+        self.assertTrue('basic' in parser.commands)
+        self.assertTrue('enable' in parser.commands['basic'])
+
+        # Register an already existing command
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
+                                                   parser.register_command,
+                                                   c)
+
+    def test_ufwparser_register_command_none(self):
+        '''Test UFWParser.register_command()'''
+        parser = ufw.parser.UFWParser()
+        c = ufw.parser.UFWCommandBasic('enable')
+        c.command = None
+        parser.register_command(c)
+        self.assertTrue('basic' in parser.commands)
+        self.assertTrue('basic' in parser.commands['basic'])
+
+    def test_ufwparser_allowed_command(self):
+        '''Test UFWParser.allowed_command()'''
+        # Valid commands
+        cmd = 'enable'
+        res = self.parser.allowed_command('basic', cmd)
+        search = cmd.lower()
+        self.assertTrue(res == search, "'%s' != '%s'" % (res, search))
+
+        cmd = 'enable'
+        res = self.parser.allowed_command('basic', cmd.upper())
+        search = cmd.lower()
+        self.assertTrue(res == search, "'%s' != '%s'" % (res, search))
+
+        # Invalid commands
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                                   self.parser.allowed_command,
+                                                   'basic', 'nonexistent')
+
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                                   self.parser.allowed_command,
+                                                   'nonexistent', 'allow')
+
     def test_ufwcommand_rule_get_command(self):
         '''Test UFWCommandRule.get_command()'''
         count = 0
@@ -93,7 +165,7 @@ class ParserTestCase(unittest.TestCase):
         for cmd in cmds:
             count += 1
             #print(" ".join(cmd))
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the cmd, not a reference
             pr = self.parser.parse_command(cmd + [])
             res = ufw.parser.UFWCommandRule.get_command(pr.data['rule'])
@@ -248,7 +320,7 @@ class ParserTestCase(unittest.TestCase):
         for cmd in cmds:
             count += 1
             #print(" ".join(cmd))
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the cmd, not a reference
             pr = self.parser.parse_command(cmd + [])
 
@@ -260,7 +332,7 @@ class ParserTestCase(unittest.TestCase):
             del_cmd = cmd + []
             del_cmd.insert(1, 'delete')
             #print(" ".join(del_cmd))
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the del_cmd, not a reference
             pr = self.parser.parse_command(del_cmd + [])
 
@@ -272,7 +344,7 @@ class ParserTestCase(unittest.TestCase):
             ins_cmd.insert(1, 'insert')
             ins_cmd.insert(2, '1')
             #print(" ".join(ins_cmd))
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the del_cmd, not a reference
             pr = self.parser.parse_command(ins_cmd + [])
 
@@ -297,7 +369,7 @@ class ParserTestCase(unittest.TestCase):
         for cmd in cmds:
             #print(" ".join(cmd))
             count += 1
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the cmd, not a reference
             self.parser.parse_command(cmd + [])
 
@@ -371,12 +443,13 @@ class ParserTestCase(unittest.TestCase):
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
+                  'from', '192.168.0.0/16', 'port', 'tcpmux'],
+                  ufw.common.UFWError),
                ]
-        count = 0
         for cmd, exception in cmds:
             #print(" ".join(cmd))
-            count += 1
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the cmd, not a reference
             tests.unit.support.check_for_exception(self, exception,
                                                    self.parser.parse_command,
@@ -390,7 +463,7 @@ class ParserTestCase(unittest.TestCase):
         for cmd in cmds + cmds6:
             count += 1
             #print(" ".join(cmd))
-            # Note, parser.parse_command() modifies it arg, so pass a copy of
+            # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the cmd, not a reference
             pr = self.parser.parse_command(cmd + [])
 
@@ -439,7 +512,177 @@ class ParserTestCase(unittest.TestCase):
                                                self.parser.parse_command,
                                                c)
 
+    def test_app_parse(self):
+        '''Test UFWCommandApp.parse()'''
+        cmds = [
+                (['app', 'list'], None),
+                (['app', 'info', 'WWW'], None),
+                (['app', 'info', 'WWW Full'], None),
+                (['app', 'info', 'Samba'], None),
+                (['app', 'info', 'DNS'], None),
+                (['app', 'update', 'WWW'], None),
+                (['app', 'update', '--add-new', 'WWW'], None),
+                (['app', 'default', 'allow'], None),
+                (['app', 'default', 'deny'], None),
+                (['app', 'default', 'reject'], None),
+                (['app', 'default', 'skip'], None),
+                (['notapp'], ValueError),
+                (['app', 'default'], ValueError),
+                (['app', 'list', 'extra args'], ValueError),
+                (['app', 'info'], ValueError),
+                (['app', 'default'], ValueError),
+                (['app', 'default', 'nonexistent'], ValueError),
+               ]
+        for cmd, exception in cmds:
+            #print(" ".join(cmd))
 
+            if exception is not None:
+                c = ufw.parser.UFWCommandApp(" ".join(cmd))
+                tests.unit.support.check_for_exception(self, exception,
+                                                       c.parse,
+                                                       cmd + [])
+            else:
+                # Note, parser.parse_command() modifies its arg, so pass a copy
+                # of the cmd, not a reference
+                pr = self.parser.parse_command(cmd + [])
+
+                # TODO: more tests here by sending the cmd and the pr to a
+                # helper
+                action = cmd[1]
+                if action == 'update' and cmd[2] == '--add-new':
+                    action = 'update-with-new'
+                elif action == 'default':
+                    action = "default-%s" % cmd[2]
+                self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                                   pr.action))
+
+    def test_default_parse(self):
+        '''Test UFWCommandDefault.parse()'''
+        cmds = [
+                (['default', 'reject'], None),
+                (['default', 'deny', 'incoming'], None),
+                (['default', 'allow', 'outgoing'], None),
+                (['default'], ValueError),
+                (['default', 'nonexistent'], ValueError),
+                (['default', 'nonexistent', 'allow'], ValueError),
+                (['default', 'incoming', 'allow'], ValueError),
+               ]
+        for cmd, exception in cmds:
+            #print(" ".join(cmd))
+
+            if exception is not None:
+                c = ufw.parser.UFWCommandDefault(" ".join(cmd))
+                tests.unit.support.check_for_exception(self, exception,
+                                                       c.parse,
+                                                       cmd + [])
+            else:
+                # Note, parser.parse_command() modifies its arg, so pass a copy
+                # of the cmd, not a reference
+                pr = self.parser.parse_command(cmd + [])
+
+                # TODO: more tests here by sending the cmd and the pr to a
+                # helper
+                action = cmd[1]
+                pol = "incoming"
+                if len(cmd) >= 3:
+                    pol = cmd[2]
+                action = "default-%s-%s" % (cmd[1], pol)
+                self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                                   pr.action))
+
+    def test_logging_parse(self):
+        '''Test UFWCommandLogging.parse()'''
+        cmds = [
+                (['logging', 'on'], None),
+                (['logging', 'off'], None),
+                (['logging', 'low'], None),
+                (['logging', 'medium'], None),
+                (['logging', 'high'], None),
+                (['logging', 'full'], None),
+                (['logging'], ValueError),
+                (['logging', 'nonexistent'], ValueError),
+               ]
+        for cmd, exception in cmds:
+            #print(" ".join(cmd))
+
+            if exception is not None:
+                c = ufw.parser.UFWCommandLogging(" ".join(cmd))
+                tests.unit.support.check_for_exception(self, exception,
+                                                       c.parse,
+                                                       cmd + [])
+            else:
+                # Note, parser.parse_command() modifies its arg, so pass a copy
+                # of the cmd, not a reference
+                pr = self.parser.parse_command(cmd + [])
+
+                # TODO: more tests here by sending the cmd and the pr to a
+                # helper
+                action = "logging-%s" % (cmd[1])
+                if cmd[1] != "on" and cmd[1] != "off":
+                    action = "logging-on_%s" % (cmd[1])
+                self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                                   pr.action))
+
+    def test_status_parse(self):
+        '''Test UFWCommandStatus.parse()'''
+        cmds = [
+                (['status'], None),
+                (['status', 'verbose'], None),
+                (['status', 'numbered'], None),
+                (['status', 'bad'], ValueError),
+               ]
+        for cmd, exception in cmds:
+            #print(" ".join(cmd))
+
+            if exception is not None:
+                c = ufw.parser.UFWCommandStatus(" ".join(cmd))
+                tests.unit.support.check_for_exception(self, exception,
+                                                       c.parse,
+                                                       cmd + [])
+            else:
+                # Note, parser.parse_command() modifies its arg, so pass a copy
+                # of the cmd, not a reference
+                pr = self.parser.parse_command(cmd + [])
+
+                # TODO: more tests here by sending the cmd and the pr to a
+                # helper
+                action = cmd[0]
+                if len(cmd) > 1:
+                    action = "%s-%s" % (cmd[0], cmd[1])
+                self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                                   pr.action))
+
+    def test_show_parse(self):
+        '''Test UFWCommandShow.parse()'''
+        cmds = [
+                (['show', 'raw'], None, "show-raw"),
+                (['show', 'before-rules'], None, "show-before"),
+                (['show', 'after-rules'], None, "show-after"),
+                (['show', 'user-rules'], None, "show-user"),
+                (['show', 'logging-rules'], None, "show-logging"),
+                (['show', 'builtins'], None, "show-builtins"),
+                (['show', 'listening'], None, "show-listening"),
+                (['show', 'added'], None, "show-added"),
+                (['show'], ValueError, None),
+                (['show', 'bad'], ValueError, None),
+               ]
+        for cmd, exception, action in cmds:
+            #print(" ".join(cmd))
+
+            if exception is not None:
+                c = ufw.parser.UFWCommandShow(" ".join(cmd))
+                tests.unit.support.check_for_exception(self, exception,
+                                                       c.parse,
+                                                       cmd + [])
+            else:
+                # Note, parser.parse_command() modifies its arg, so pass a copy
+                # of the cmd, not a reference
+                pr = self.parser.parse_command(cmd + [])
+
+                # TODO: more tests here by sending the cmd and the pr to a
+                # helper
+                self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                                   pr.action))
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(

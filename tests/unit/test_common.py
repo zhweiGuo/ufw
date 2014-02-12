@@ -24,7 +24,9 @@ class CommonTestCase(unittest.TestCase):
                 "any":  ufw.common.UFWRule("allow", "any"),
                 "ipv6": ufw.common.UFWRule("deny", "ipv6"),
                 "tcp":  ufw.common.UFWRule("limit", "tcp"),
-                "udp":  ufw.common.UFWRule("reject", "udp"),
+                "udp":  ufw.common.UFWRule("allow", "udp"),
+                "reject-tcp":  ufw.common.UFWRule("reject", "tcp"),
+                "reject-udp":  ufw.common.UFWRule("reject", "udp"),
                 "full-any":  ufw.common.UFWRule("allow", "any",
                     dport="123", dst="10.0.0.1", sport="124",
                     src="10.0.0.2", direction="in"),
@@ -39,13 +41,33 @@ class CommonTestCase(unittest.TestCase):
                     src="10.0.0.2", direction="out"),
                 "dapp":  ufw.common.UFWRule("allow", "any"),
                 "sapp":  ufw.common.UFWRule("deny", "any"),
+                "app-both":  ufw.common.UFWRule("deny", "any"),
+                "multi-dport": ufw.common.UFWRule("allow", "tcp",
+                    dport="80,443,8080:8090"),
+                "multi-sport": ufw.common.UFWRule("allow", "tcp",
+                    sport="80,443,8080:8090"),
+                "multi-both": ufw.common.UFWRule("allow", "tcp",
+                    dport="80,443,8080:8090", sport="23"),
+                "log":  ufw.common.UFWRule("allow", "tcp", dport="22"),
+                "log-all":  ufw.common.UFWRule("allow", "tcp", dport="22"),
                 }
         self.rules['dapp'].dapp = "Apache"
         self.rules['dapp'].dport = "80"
         self.rules['dapp'].proto = "tcp"
+
         self.rules['sapp'].sapp = "Apache"
         self.rules['sapp'].sport = "80"
         self.rules['sapp'].proto = "tcp"
+
+        self.rules['app-both'].dapp = "Apache"
+        self.rules['app-both'].dport = "80"
+        self.rules['app-both'].proto = "tcp"
+        self.rules['app-both'].sapp = "Apache"
+        self.rules['app-both'].sport = "80"
+        self.rules['app-both'].proto = "tcp"
+
+        self.rules['log'].set_logtype("log")
+        self.rules['log-all'].set_logtype("log-all")
 
     def tearDown(self):
         self.rules = None
@@ -59,9 +81,34 @@ class CommonTestCase(unittest.TestCase):
             return
         self.assertTrue(False, "Did not raise an error")
 
+    def test_ufwerror_str(self):
+        '''Test UFWError.str()'''
+        e = ufw.common.UFWError("test")
+        search = repr("test")
+        self.assertEquals(str(e), search, "'%s' != 'test'" % search)
+
+    def test__init_(self):
+        '''Test UFWRule.__init__()'''
+        r = ufw.common.UFWRule("allow", "tcp", "22")
+        self.assertEquals(r.action, "allow")
+        self.assertEquals(r.protocol, "tcp")
+        self.assertEquals(r.dport, "22")
+
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError,
+                                               ufw.common.UFWRule,
+                                               "allow",
+                                               "nonexistent",
+                                               "22")
+
     def test__get_attrib(self):
         '''Test _get_attrib()'''
-        self.rules["any"]._get_attrib()
+        res = self.rules["any"]._get_attrib()
+        search = "'-p all -j ACCEPT', src=0.0.0.0/0, updated=False, " + \
+                 "protocol=any, interface_in=, logtype=, dst=0.0.0.0/0, " + \
+                 "direction=in, multi=False, remove=False, forward=False, " + \
+                 "dapp=, v6=False, dport=any, position=0, sport=any, " + \
+                 "sapp=, action=allow, interface_out="
+        self.assertEquals(res, search, "'%s' != '%s'" % (res, search))
 
     def test_dup_rule(self):
         '''Test dup_rule()'''
@@ -72,6 +119,72 @@ class CommonTestCase(unittest.TestCase):
         '''Test format_rule()'''
         s = str(self.rules["any"])
         self.assertEquals(s, "-p all -j ACCEPT")
+
+        s = str(self.rules["app-both"])
+        self.assertEquals(s, "-p all --dport 80 --sport 80 -j DROP " + \
+                             "-m comment --comment 'dapp_Apache,sapp_Apache'")
+
+        s = str(self.rules["dapp"])
+        self.assertEquals(s, "-p all --dport 80 -j ACCEPT " + \
+                             "-m comment --comment 'dapp_Apache'")
+
+        s = str(self.rules["full-any"])
+        self.assertEquals(s, "-p all -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j ACCEPT")
+
+        s = str(self.rules["full-ipv6"])
+        self.assertEquals(s, "-p ipv6 -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j DROP")
+
+        s = str(self.rules["full-tcp"])
+        self.assertEquals(s, "-p tcp -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j LIMIT")
+
+        s = str(self.rules["full-udp"])
+        self.assertEquals(s, "-p udp -d 10.0.0.1 --dport 123 " + \
+                             "-s 10.0.0.2 --sport 124 -j REJECT")
+
+        s = str(self.rules["ipv6"])
+        self.assertEquals(s, "-p ipv6 -j DROP")
+
+        s = str(self.rules["log"])
+        self.assertEquals(s, "-p tcp --dport 22 -j ACCEPT_log")
+
+        s = str(self.rules["log-all"])
+        self.assertEquals(s, "-p tcp --dport 22 -j ACCEPT_log-all")
+        r = self.rules["log-all"].dup_rule()
+        r.set_action("deny_log-all")
+        s = str(r)
+        self.assertEquals(s, "-p tcp --dport 22 -j DROP_log-all")
+
+        s = str(self.rules["multi-both"])
+        self.assertEquals(s, "-p tcp -m multiport " + \
+                             "--dports 80,443,8080:8090 " + \
+                             "-m multiport --sports 23 -j ACCEPT")
+
+        s = str(self.rules["multi-dport"])
+        self.assertEquals(s, "-p tcp -m multiport " + \
+                             "--dports 80,443,8080:8090 -j ACCEPT")
+
+        s = str(self.rules["multi-sport"])
+        self.assertEquals(s, "-p tcp -m multiport " + \
+                             "--sports 80,443,8080:8090 -j ACCEPT")
+
+        s = str(self.rules["reject-tcp"])
+        self.assertEquals(s, "-p tcp -j REJECT --reject-with tcp-reset")
+
+        s = str(self.rules["reject-udp"])
+        self.assertEquals(s, "-p udp -j REJECT")
+
+        s = str(self.rules["sapp"])
+        self.assertEquals(s, "-p all --sport 80 -j DROP " + \
+                             "-m comment --comment 'sapp_Apache'")
+
+        s = str(self.rules["tcp"])
+        self.assertEquals(s, "-p tcp -j LIMIT")
+
+        s = str(self.rules["udp"])
+        self.assertEquals(s, "-p udp -j ACCEPT")
 
     def test_set_action(self):
         '''Test set_action()'''
@@ -108,7 +221,7 @@ class CommonTestCase(unittest.TestCase):
         r.dapp = "Apache"
         r.set_port("Apache", "dst")
         self.assertEquals(r.dapp, r.dport, "%s != %s" % (r.dapp, r.dport))
-            
+
         r = self.rules["sapp"].dup_rule()
         r.sapp = "Apache"
         r.set_port("Apache", "src")
@@ -138,7 +251,7 @@ class CommonTestCase(unittest.TestCase):
                 e = ufw.common.UFWError
                 if port == 22:
                     e = TypeError
-                tests.unit.support.check_for_exception(self, 
+                tests.unit.support.check_for_exception(self,
                                                        e,
                                                        r.set_port,
                                                        port,
@@ -156,13 +269,24 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_protocol() - bad'''
         r = self.rules["any"]
         for proto in ['an', 'cp', 'up', 'nonexistent']:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_protocol,
                                                    proto)
 
-    def _test__fix_anywhere(self):
-        '''TODO: Test _fix_anywhere()'''
+    def test__fix_anywhere(self):
+        '''Test _fix_anywhere()'''
+        x = self.rules["any"].dup_rule()
+        x.set_v6(False)
+        x._fix_anywhere()
+        search = "0.0.0.0/0"
+        self.assertEquals(x.dst, search, "'%s' != '%s'" % (x.dst, search))
+
+        y = x.dup_rule()
+        y.set_v6(True)
+        y._fix_anywhere()
+        search = "::/0"
+        self.assertEquals(y.dst, search, "'%s' != '%s'" % (y.dst, search))
 
     def test_set_v6(self):
         '''Test set_v6()'''
@@ -184,7 +308,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_src() - bad'''
         r = self.rules["any"]
         for src in ["10.0.0.", "10..0.0.3"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_src,
                                                    src)
@@ -201,7 +325,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_dst() - bad'''
         r = self.rules["any"]
         for dst in ["10.0.0.", "10..0.0.3"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_dst,
                                                    dst)
@@ -224,7 +348,7 @@ class CommonTestCase(unittest.TestCase):
         r = self.rules["any"]
         interface = "eth0"
         for if_type in ["ina", "ot"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_interface,
                                                    if_type,
@@ -232,7 +356,7 @@ class CommonTestCase(unittest.TestCase):
 
         for if_type in ["in", "out"]:
             for interface in ["\tfoo", "<$%", "0eth", "eth0:0"]:
-                tests.unit.support.check_for_exception(self, 
+                tests.unit.support.check_for_exception(self,
                                                        ufw.common.UFWError,
                                                        r.set_interface,
                                                        if_type,
@@ -247,7 +371,7 @@ class CommonTestCase(unittest.TestCase):
     def test_set_position_bad(self):
         '''Test set_position() - bad'''
         r = self.rules["any"]
-        tests.unit.support.check_for_exception(self, 
+        tests.unit.support.check_for_exception(self,
                                                ufw.common.UFWError,
                                                r.set_position,
                                                'a')
@@ -264,7 +388,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_logtype() - bad'''
         r = self.rules["any"]
         for logtype in ["a", "loga", "d"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_logtype,
                                                    logtype)
@@ -281,16 +405,61 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_direction() - bad'''
         r = self.rules["any"]
         for direction in ["", "ina", "outta"]:
-            tests.unit.support.check_for_exception(self, 
+            tests.unit.support.check_for_exception(self,
                                                    ufw.common.UFWError,
                                                    r.set_direction,
                                                    direction)
 
     def test_normalize(self):
         '''Test normalize()'''
-        for rule in self.rules.keys():
+        # Test the pre-canned rules above-- none of them are normalized, so
+        # UFWRule.match() should always be 0
+        keys = list(self.rules.keys())
+        keys.sort()
+        for rule in keys:
             r = self.rules[rule].dup_rule()
             r.normalize()
+            self.assertEquals(ufw.common.UFWRule.match(self.rules[rule], r), 0,
+                            "'%s' != '%s'" % (self.rules[rule], r))
+
+        # Bad rules
+        bad = ufw.common.UFWRule("allow", "any")
+        bad.src = "1000.0.0.1"
+        tests.unit.support.check_for_exception(self,
+                                               ufw.common.UFWError,
+                                               bad.normalize)
+        bad = None
+        bad = ufw.common.UFWRule("allow", "any")
+        bad.dst = "1000.0.0.1"
+        tests.unit.support.check_for_exception(self,
+                                               ufw.common.UFWError,
+                                               bad.normalize)
+
+        # Normalized rules
+        data = [
+                 (False, '192.168.0.1', '192.168.0.1'),
+                 (False, '192.168.0.1/31', '192.168.0.0/31'),
+                 (False, '192.168.0.1/255.255.255.0', '192.168.0.0/24'),
+                 (True, '::1', '::1'),
+                 (True, 'ff80:123:4567:89ab:cdef:123:4567:89ab/112',
+                        'ff80:123:4567:89ab:cdef:123:4567:89ab/112')
+                ]
+        for (v6, addr, expected) in data:
+            rule = ufw.common.UFWRule("allow", "any", dst=addr)
+            rule.set_v6(v6)
+            rule.normalize()
+            self.assertEquals(expected, rule.dst,
+                              "'%s' != '%s'" % (expected, rule.dst))
+            self.assertEquals(addr != expected, rule.updated,
+                              "'%s' not updated" % addr)
+
+            rule = ufw.common.UFWRule("allow", "any", src=addr)
+            rule.set_v6(v6)
+            rule.normalize()
+            self.assertEquals(expected, rule.src,
+                              "'%s' != '%s'" % (expected, rule.src))
+            self.assertEquals(addr != expected, rule.updated,
+                              "'%s' not updated" % addr)
 
     def test_match(self):
         '''Test match()'''
@@ -352,11 +521,20 @@ class CommonTestCase(unittest.TestCase):
         y.set_interface("out", "eth0")
         self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
 
+        x = self.rules["any"].dup_rule()
+        y = self.rules["any"].dup_rule()
+        y.v6 = True
+        self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
         x = ufw.common.UFWRule("allow", "tcp", direction="out")
         x.set_interface("out", "eth0")
         y = x.dup_rule()
-        y.set_interface("in", "eth0")
+        y.direction = "in"
         self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
+        tests.unit.support.check_for_exception(self, ValueError,
+                                               x.match,
+                                               None)
 
     def test_fuzzy_dst_match(self):
         '''Test fuzzy_dst_match()'''
@@ -367,6 +545,101 @@ class CommonTestCase(unittest.TestCase):
         self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
         self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
 
+        x = self.rules["multi-dport"].dup_rule()
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        y.set_protocol("any")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["multi-dport"].dup_rule()
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        y.set_protocol("any")
+        y.set_port("%s,8181" % y.dport, "dst")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        x.set_port("80")
+        x.set_protocol("tcp")
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        x.set_port("8081")
+        x.set_protocol("tcp")
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), -1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        x.set_port("8079")
+        x.set_protocol("tcp")
+        y = self.rules["multi-dport"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        y.set_direction("out")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.set_dst("10.0.0.3")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.set_dst("11.0.0.0/8")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.set_interface("in", "eth0")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), -1)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "eth0")
+        y = x.dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 0)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "eth0")
+        y = x.dup_rule()
+        y.set_interface("in", "eth1")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "lo")
+        y = x.dup_rule()
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 0)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 0)
+
+        x = self.rules["full-any"].dup_rule()
+        x.set_interface("in", "lo")
+        y = x.dup_rule()
+        y.set_dst("11.0.0.0/8")
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        y = x.dup_rule()
+        y.set_v6(True)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        tests.unit.support.check_for_exception(self, ValueError,
+                                               x.fuzzy_dst_match,
+                                               None)
     def test__is_anywhere(self):
         '''Test _is_anywhere()'''
         r = self.rules['any']

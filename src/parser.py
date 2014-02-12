@@ -417,6 +417,13 @@ class UFWCommandRule(UFWCommand):
                             (rule.protocol)
                 raise UFWError(err_msg)
 
+        # Verify protocol not specified with application rule
+        if rule and rule.protocol != "any" and \
+           (rule.sapp != "" or rule.dapp != ""):
+            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
+                        % (rule.protocol)
+            raise UFWError(err_msg)
+
         if rule.protocol == 'ipv6':
             if type == "v6":
                 # Can't use protocol ipv6 with v6 addresses
@@ -659,7 +666,7 @@ class UFWCommandDefault(UFWCommand):
                 direction = "outgoing"
             elif argv[2].lower() == "routed" or argv[2].lower() == "forward":
                 direction = "routed"
-            else:
+            else:  # pragma: no cover
                 direction = argv[2].lower()
 
         # Set the policy
@@ -816,7 +823,6 @@ class UFWParser:
         except Exception:
             err_msg = _("Invalid command '%s'") % (cmd)
             raise
-            raise UFWError(err_msg)
 
         cmd = self.commands[type][action]
         response = cmd.parse(args)

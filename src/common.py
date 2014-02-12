@@ -345,10 +345,11 @@ class UFWRule:
                 (self.src, changed) = ufw.util.normalize_address(self.src, \
                                                                  self.v6)
             except Exception:
-                raise
+                err_msg = _("Could not normalize source address")
+                raise UFWError(err_msg)
 
-        if changed:
-            self.updated = changed
+            if changed:
+                self.updated = changed
 
         if self.dst:
             try:
@@ -357,6 +358,9 @@ class UFWRule:
             except Exception:
                 err_msg = _("Could not normalize destination address")
                 raise UFWError(err_msg)
+
+            if changed:
+                self.updated = changed
 
         if self.dport:
             ports = self.dport.split(',')
@@ -367,9 +371,6 @@ class UFWRule:
             ports = self.sport.split(',')
             ufw.util.human_sort(ports)
             self.sport = ','.join(ports)
-
-        if changed:
-            self.updated = changed
 
     def match(x, y):
         '''Check if rules match
@@ -444,6 +445,11 @@ class UFWRule:
         '''
         def _match_ports(test_p, to_match):
             '''Returns True if p is an exact match or within a multi rule'''
+            if ',' in test_p or ':' in test_p:
+                if test_p == to_match:
+                    return True
+                return False
+
             for port in to_match.split(','):
                 if test_p == port:
                     return True
@@ -516,8 +522,7 @@ class UFWRule:
                 debug("(interface) " + dbg_msg + " %s does not exist" % \
                       (y.interface_in))
                 return 1
-            except Exception:
-                raise
+
             if y.dst != if_ip and '/' not in y.dst:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % \
                       (y.dst, if_ip))
