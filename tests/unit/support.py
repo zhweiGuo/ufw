@@ -61,7 +61,7 @@ def initvars(install_dir):
 
     global topdir
     d = os.path.join(os.path.dirname(os.path.realpath(topdir)),
-                     "fake-iptables")
+                     "fake-binaries")
     ufw.common.iptables_dir = d
 
     ufw.common.config_dir = os.path.join(

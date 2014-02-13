@@ -78,6 +78,21 @@ class BackendIptablesTestCase(unittest.TestCase):
             self.msg_output.close()
             self.msg_output = None
 
+        sysctl = os.path.join(ufw.common.iptables_dir, "sysctl")
+        if os.path.exists(sysctl):
+            os.unlink(sysctl)
+
+    def _update_sysctl(self, forward=False):
+        sysctl = os.path.join(ufw.common.iptables_dir, "sysctl")
+        if forward:
+            shutil.copy(os.path.join(ufw.common.iptables_dir,
+                                     "sysctl-forward-yes"),
+                        sysctl)
+        else:
+            shutil.copy(os.path.join(ufw.common.iptables_dir,
+                                     "sysctl-forward-no"),
+                        sysctl)
+
     def _test__do_checks(self):
         '''Test _do_checks()'''
         print ("  setting self.backend.do_checks to 'True'")
@@ -407,7 +422,7 @@ ports=80/tcp
     def test_set_default_policy(self):
         '''Test set_default_policy()'''
         # dryrun
-        for direction in ['incoming', 'outgoing']:
+        for direction in ['incoming', 'outgoing', 'routed']:
             for policy in ['allow', 'deny', 'reject']:
                 res = self.backend.set_default_policy(policy, direction)
                 self.assertTrue(policy in res,
@@ -430,6 +445,24 @@ ports=80/tcp
                     res = self.backend._get_default_policy("input")
                 else:
                     res = self.backend._get_default_policy("output")
+                self.assertEquals(res, policy)
+
+        #  no dryrun for routed
+        self.backend.dryrun = False
+        for forward_enabled in [ False, True ]:
+            self._update_sysctl(forward_enabled)
+            direction = "routed"
+            for policy in ['allow', 'deny', 'reject']:
+                res = self.backend.set_default_policy(policy, direction)
+                self.assertTrue(policy in res,
+                                "Could not find '%s' in:\n%s" % (policy, res))
+                self.assertTrue(direction in res,
+                                "Could not find '%s' in:\n%s" % (direction,
+                                                                 res))
+                res = self.backend._get_default_policy("forward",
+                                                       check_forward=True)
+                if not forward_enabled:
+                    policy = "disabled"
                 self.assertEquals(res, policy)
 
     def test_set_default(self):

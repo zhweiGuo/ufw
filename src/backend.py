@@ -143,7 +143,7 @@ class UFWBackend:
             err_msg = _("problem running sysctl")
 
             (rc, out) = ufw.util.cmd(['sysctl', 'net.ipv4.ip_forward'])
-            if rc != 0:
+            if rc != 0: # pragma: no cover
                 raise UFWError(err_msg)
             if '1' in out:
                 enabled = True
