@@ -286,8 +286,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         count = 1
         app_rules = {}
         for r in rules:
-            print "%s (%s)" % (r, r.forward)
-        for r in rules:
             tmp_str = ""
             location = {}
             tupl = ""
