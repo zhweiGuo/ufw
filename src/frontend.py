@@ -320,6 +320,7 @@ class UFWFrontend:
                             for i in matching:
                                 if i > 0 and i - 1 < len(rules):
                                     res += "   [%2d] %s\n" % (i, \
+                                        # Don't need UFWCommandRule here either
                                         ufw.parser.UFWCommandRule.get_command(\
                                           rules[i-1])
                                     )
@@ -574,7 +575,11 @@ class UFWFrontend:
 
         proceed = True
         if not force:
-            rstr = ufw.parser.UFWCommandRule.get_command(rule)
+            if rule.forward:
+                rstr = "route %s" % \
+                        ufw.parser.UFWCommandRouteRule.get_command(rule)
+            else:
+                rstr = ufw.parser.UFWCommandRule.get_command(rule)
             prompt = _("Deleting:\n %(rule)s\nProceed with operation " \
                        "(%(yes)s|%(no)s)? ") % ({'rule': rstr, \
                                                  'yes': self.yes, \
