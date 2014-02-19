@@ -163,9 +163,9 @@ echo "= Functional Tests ="
 # Explicitly disable IP forwarding here, since some tests assume it is
 # disabled. IP forwarding will be re-enabled in the individual tests
 # that require it.
-orig_ip_forward=`sysctl net.ipv4.ip_forward 2>/dev/null | cut -d ' ' -f 2`
-orig_ipv6_forwarding_default=`sysctl net.ipv6.conf.default.forwarding 2>/dev/null | cut -d ' ' -f 2`
-orig_ipv6_forwarding_all=`sysctl net.ipv6.conf.all.forwarding 2>/dev/null | cut -d ' ' -f 2`
+orig_ip_forward=`sysctl net.ipv4.ip_forward 2>/dev/null | cut -d ' ' -f 3`
+orig_ipv6_forwarding_default=`sysctl net.ipv6.conf.default.forwarding 2>/dev/null | cut -d ' ' -f 3`
+orig_ipv6_forwarding_all=`sysctl net.ipv6.conf.all.forwarding 2>/dev/null | cut -d ' ' -f 3`
 sysctl -w net.ipv4.ip_forward=0 2>/dev/null || true
 sysctl -w net.ipv6.conf.default.forwarding=0 2>/dev/null || true
 sysctl -w net.ipv6.conf.all.forwarding=0 2>/dev/null || true
