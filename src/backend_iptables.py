@@ -364,10 +364,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if show_proto and r.protocol != "any" and \
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
-                if loc == 'dst' and r.interface_in != "":
-                    location[loc] += " on %s" % (r.interface_in)
-                if loc == 'src' and r.interface_out != "":
-                    location[loc] += " on %s" % (r.interface_out)
+
+                # Reporting the interfaces is different in route rules and
+                # non-route rules. With route rules, the reporting should be
+                # relative to how packets flow through the firewall, with
+                # other rules the reporting should be relative to the firewall
+                # system as endpoint. As such, for route rules, report the
+                # incoming interface under 'From' and the outgoing interface
+                # under 'To', and for non-route rules, report the incoming
+                # interface under 'To', and the outgoing interface under
+                # 'From'.
+                if r.forward:
+                    if loc == 'src' and r.interface_in != "":
+                        location[loc] += " on %s" % (r.interface_in)
+                    if loc == 'dst' and r.interface_out != "":
+                        location[loc] += " on %s" % (r.interface_out)
+                else:
+                    if loc == 'dst' and r.interface_in != "":
+                        location[loc] += " on %s" % (r.interface_in)
+                    if loc == 'src' and r.interface_out != "":
+                        location[loc] += " on %s" % (r.interface_out)
 
             attribs = []
             attrib_str = ""

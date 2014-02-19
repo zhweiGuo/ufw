@@ -70,7 +70,26 @@ Disables and resets firewall to installation defaults. Can also give the
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
 extra information. In the status output, 'Anywhere' is synonymous with 'any'
-and '0.0.0.0/0'.
+and '0.0.0.0/0'. Note that when using \fBstatus\fR, there is a subtle
+difference when reporting interfaces. For example, if the following rules are
+added:
+
+  ufw allow in on eth0 from 192.168.0.0/16
+  ufw allow out on eth1 to 10.0.0.0/8
+  ufw route allow in on eth0 out on eth1 to 10.0.0.0/8 from 192.168.0.0/16
+
+\fBufw status\fR will output:
+
+  To                         Action      From
+  --                         ------      ----
+  Anywhere on eth0           ALLOW       192.168.0.0/16
+  10.0.0.0/8                 ALLOW OUT   Anywhere on eth1
+  10.0.0.0/8 on eth1         ALLOW FWD   192.168.0.0/16 on eth0
+
+For the input and output rules, the interface is reported relative to the
+firewall system as an endpoint, whereas with route rules, the interface is
+reported relative to the direction packets flow through the firewall.
+
 .TP
 \fBshow\fR REPORT
 display information about the running firewall. See \fBREPORTS\fR
