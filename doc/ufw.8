@@ -165,9 +165,9 @@ on eth1 to tcp port 80 on 12.34.45.67.
 In addition to routing rules and policy, you must also setup IP forwarding.
 This may be done by setting the following in #CONFIG_PREFIX#/ufw/sysctl.conf:
 
-  net/ipv4/ip_forward=1                                                          
-  net/ipv6/conf/default/forwarding=1                                             
-  net/ipv6/conf/all/forwarding=1 
+  net/ipv4/ip_forward=1
+  net/ipv6/conf/default/forwarding=1
+  net/ipv6/conf/all/forwarding=1
 
 then restarting the firewall:
 
@@ -410,9 +410,9 @@ IPv6\-only rules after other rules.
 
 .SH NOTES
 .PP
-On installation, \fBufw\fR is disabled with a default incoming policy of deny
-and a default outgoing policy of allow, with stateful tracking for NEW
-connections.
+On installation, \fBufw\fR is disabled with a default incoming policy of deny,
+a default forward policy of deny, and a default outgoing policy of allow, with
+stateful tracking for NEW connections.
 
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
@@ -470,7 +470,7 @@ See the \fBufw\-framework\fR manual page for more information.
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2013, Canonical Ltd.
+ufw is Copyright 2008-2014, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>
