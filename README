@@ -158,6 +158,17 @@ Alternately, ufw may also take full control of the firewall by setting
 MANAGE_BUILTINS=yes in /etc/defaults/ufw. This will flush all the built-in
 rules and delete the non-built-in rules on start, stop and reload.
 
+In addition to the above, the following tracking chains are setup last to
+support stateful tracking of NEW connections when the default policy is set to
+ACCEPT:
+  ufw-track-input
+  ufw-track-output
+  ufw-track-forward
+
+When default policy is set to ACCEPT, an '-m conntrack --ctstate NEW -j ACCEPT'
+rule is added to the appropriate chain for tcp and udp connections, otherwise
+the chain is empty and the default policy for the builtin chain.
+
 
 Advanced Configuration
 ----------------------
@@ -225,6 +236,8 @@ terminology):
 - ACCEPT all on lo
 - DROP packets with RH0 headers
 - ACCEPT all RELATED and ESTABLISHED on INPUT and OUTPUT
+- ACCEPT all RELATED and ESTABLISHED on FORWARD (ip forwarding must be enabled
+  via sysctl for this to be in effect)
 - DROP INVALID packets (packets not associated with a known connection)
 - ACCEPT certain icmp packets:
   - destination-unreachable, source-quench, time-exceeded, parameter-problem,
@@ -352,4 +365,4 @@ $ make coverage-report
 To run an individual test, use:
 $ python ./tests/unit/runner.py test_<individual test script>.py
 
-Copyright 2008-2013 Canonical Ltd.
+Copyright 2008-2014 Canonical Ltd.
