@@ -158,8 +158,8 @@ class UFWBackend:
                 if rc == 0 and '1' in out:
                     enabled = True
 
-                if not enabled:
-                    rstr = "disabled"
+            if not enabled:
+                rstr = "disabled"
 
         return rstr
 
