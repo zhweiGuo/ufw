@@ -816,7 +816,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Write rules
         for r in rules:
             action = r.action
-            # route rules use 'route:<action> ...' 
+            # route rules use 'route:<action> ...'
             if r.forward:
                 action = "route:" + r.action
             if r.logtype != "":
@@ -1090,7 +1090,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     chain_prefix = "ufw6"
                     rstr += " (v6)"
                 chain_suffix = "input"
-                if rule.direction == "out":
+                if rule.forward:
+                    chain_suffix = "forward"
+                elif rule.direction == "out":
                     chain_suffix = "output"
                 chain = "%s-user-%s" % (chain_prefix, chain_suffix)
 
