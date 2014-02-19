@@ -342,7 +342,11 @@ class UFWFrontend:
 
         added = []
         for r in self.backend.get_rules():
-            rstr = ufw.parser.UFWCommandRule.get_command(r)
+            if r.forward:
+                rstr = "route %s" % \
+                        ufw.parser.UFWCommandRouteRule.get_command(r)
+            else:
+                rstr = ufw.parser.UFWCommandRule.get_command(r)
 
             # Approximate the order the rules were added. Since rules is
             # internally rules4 + rules6, IPv6 only rules will show up after
