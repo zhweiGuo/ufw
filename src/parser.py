@@ -820,11 +820,7 @@ class UFWParser:
             if type == "":
                 type = 'rule'
 
-        try:
-            action = self.allowed_command(type, cmd)
-        except Exception:
-            err_msg = _("Invalid command '%s'") % (cmd)
-            raise
+        action = self.allowed_command(type, cmd)
 
         cmd = self.commands[type][action]
         response = cmd.parse(args)
