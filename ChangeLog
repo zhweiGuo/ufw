@@ -24,8 +24,13 @@ ufw (0.34) UNRELEASED; urgency=low
     direction is "out" and there is no corresponding interface
   * fix return of various invalid extended rules in parser.get_command()
   * clarify 'limit' command in man page (LP: #1089262)
+  * implement route rules (ie, manage FORWARD, LP: #262421). See man page for
+    details.
+  * add state RELATED,ESTABLISHED rule to ufw-before-forward in before*.rules
+    like we do with ufw-before-input and ufw-before-forward. This will only
+    affect systems with ip forwarding enabled via sysctl
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 01 Dec 2013 09:11:54 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 19 Feb 2014 07:03:06 -0600
 
 ufw (0.33) RELEASED; urgency=low
 
