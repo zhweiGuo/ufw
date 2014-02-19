@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#    Copyright 2008-2013 Canonical Ltd.
+#    Copyright 2008-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -143,7 +143,7 @@ do
     if ! $interpreter ./tests/unit/runner.py $subclass ; then
         echo ""
         echo "Found unit test failures. Aborting and skipping functional tests"
-        exit 1        
+        exit 1
     fi
     # Exit early if only running unit tests
     if [ "$tests" = "unit" ]; then
