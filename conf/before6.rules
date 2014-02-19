@@ -36,6 +36,7 @@
 # quickly process packets for which we already have a connection
 -A ufw6-before-input -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A ufw6-before-output -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A ufw6-before-forward -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
 # for multicast ping replies from link-local addresses (these don't have an
 # associated connection and would otherwise be marked INVALID)
