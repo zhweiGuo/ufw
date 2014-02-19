@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#    Copyright 2008-2013 Canonical Ltd.
+#    Copyright 2008-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -143,7 +143,7 @@ do
     if ! $interpreter ./tests/unit/runner.py $subclass ; then
         echo ""
         echo "Found unit test failures. Aborting and skipping functional tests"
-        exit 1        
+        exit 1
     fi
     # Exit early if only running unit tests
     if [ "$tests" = "unit" ]; then
@@ -159,6 +159,17 @@ rm -rf "$CUR/src/__pycache__"
 
 # Functional tests
 echo "= Functional Tests ="
+
+# Explicitly disable IP forwarding here, since some tests assume it is
+# disabled. IP forwarding will be re-enabled in the individual tests
+# that require it.
+orig_ip_forward=`sysctl net.ipv4.ip_forward 2>/dev/null | cut -d ' ' -f 3`
+orig_ipv6_forwarding_default=`sysctl net.ipv6.conf.default.forwarding 2>/dev/null | cut -d ' ' -f 3`
+orig_ipv6_forwarding_all=`sysctl net.ipv6.conf.all.forwarding 2>/dev/null | cut -d ' ' -f 3`
+sysctl -w net.ipv4.ip_forward=0 2>/dev/null || true
+sysctl -w net.ipv6.conf.default.forwarding=0 2>/dev/null || true
+sysctl -w net.ipv6.conf.all.forwarding=0 2>/dev/null || true
+
 for class in $tests
 do
     if [ "$class" = "unit" ]; then
@@ -267,6 +278,14 @@ do
         fi
     done
 done
+
+# Restore IP forwarding
+test -n "$orig_ip_forward" && \
+    sysctl -w net.ipv4.ip_forward="$orig_ip_forward" 2>/dev/null || true
+test -n "$orig_ipv6_forwarding_default" && \
+    sysctl -w net.ipv6.conf.default.forwarding="$orig_ipv6_forwarding_default" 2>/dev/null || true
+test -n "$orig_ipv6_forwarding_all" && \
+    sysctl -w net.ipv6.conf.all.forwarding="$orig_ipv6_forwarding_all" 2>/dev/null || true
 
 if [ -d "$TESTPATH" ]; then
     rm -rf "$TESTPATH"

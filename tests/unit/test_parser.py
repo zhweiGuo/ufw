@@ -54,6 +54,7 @@ class ParserTestCase(unittest.TestCase):
                          'delete']
         for i in rule_commands:
             self.parser.register_command(ufw.parser.UFWCommandRule(i))
+            self.parser.register_command(ufw.parser.UFWCommandRouteRule(i))
 
     def tearDown(self):
         pass
@@ -151,7 +152,7 @@ class ParserTestCase(unittest.TestCase):
                                                    'nonexistent', 'allow')
 
     def test_ufwcommand_rule_get_command(self):
-        '''Test UFWCommandRule.get_command()'''
+        '''Test UFWCommand(Route)Rule.get_command()'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_simple()
         cmds += tests.unit.support.get_sample_rule_commands_extended()
@@ -159,6 +160,9 @@ class ParserTestCase(unittest.TestCase):
         cmds += [
                  ['rule', 'reject', 'from', 'any', 'app', 'Apache'],
                  ['rule', 'reject', 'from', 'any', 'port', 'smtp'],
+                 ['route', 'reject', 'from', 'any', 'app', 'Apache'],
+                 ['route', 'reject', 'from', 'any', 'port', 'smtp'],
+                 ['route', 'allow', 'out', 'on', 'eth1', 'in', 'on', 'eth0'],
                 ]
         errors = []
 
@@ -168,11 +172,15 @@ class ParserTestCase(unittest.TestCase):
             # Note, parser.parse_command() modifies its arg, so pass a copy of
             # the cmd, not a reference
             pr = self.parser.parse_command(cmd + [])
-            res = ufw.parser.UFWCommandRule.get_command(pr.data['rule'])
+            if cmd[0] == 'rule':
+                res = ufw.parser.UFWCommandRule.get_command(pr.data['rule'])
+            else:
+                res = ufw.parser.UFWCommandRouteRule.get_command(
+                        pr.data['rule'])
 
             # First, feed the res rule into parse() (we need to split the
             # string but preserve quoted substrings
-            test_cmd = ['rule'] + \
+            test_cmd = [cmd[0]] + \
                        [p.strip("'") for p in re.split("( |'.*?')",
                                                        res) if p.strip()]
             try:
@@ -205,7 +213,7 @@ class ParserTestCase(unittest.TestCase):
                 else:
                     cmd_compare.append(i)
 
-            # remove 'in' on rules with an interface
+            # remove 'in' on rules without an interface
             if 'in' in cmd_compare and 'on' not in cmd_compare:
                 cmd_compare.remove('in')
 
@@ -302,8 +310,22 @@ class ParserTestCase(unittest.TestCase):
                     cmd_compare.append("to")
                     cmd_compare.append("any")
 
-            if "rule %s" % res != " ".join(cmd_compare):
-                errors.append(" \"rule %s\" != \"%s\" (orig=%s)" % (res,
+            # flip 'in on' and 'out on' for route rules ('in on' is always
+            # listed first
+            if cmd_compare[0] == 'route' and \
+               'out' in cmd_compare and 'in' in cmd_compare and \
+               cmd_compare.index('out') < cmd_compare.index('in'):
+                   tmp_out_idx = cmd_compare.index('out')
+                   tmp_outif = cmd_compare[tmp_out_idx + 2]
+                   tmp_in_idx = cmd_compare.index('in')
+                   tmp_inif = cmd_compare[tmp_in_idx + 2]
+                   cmd_compare[tmp_out_idx] = 'in'
+                   cmd_compare[tmp_out_idx + 2] = tmp_inif
+                   cmd_compare[tmp_in_idx] = 'out'
+                   cmd_compare[tmp_in_idx + 2] = tmp_outif
+
+            if "%s %s" % (cmd[0], res) != " ".join(cmd_compare):
+                errors.append(" \"%s %s\" != \"%s\" (orig=%s)" % (cmd[0], res,
                     " ".join(cmd_compare), cmd))
 
             #print("Result: rule %s" % res)
@@ -433,7 +455,7 @@ class ParserTestCase(unittest.TestCase):
                  'port', 'tftp', 'proto', 'any'], ufw.common.UFWError),
                 (['rule', 'allow', 'nope', 'any', 'to', 'any'],
                  ufw.common.UFWError),
-                (['rule', 'deny', 'to', 'any', 'port', 'tftp', \
+                (['rule', 'deny', 'to', 'any', 'port', 'tftp',
                   'proto', 'tcp'], ufw.common.UFWError),
                 (['rule', 'deny', 'to', '::1', 'proto', 'ipv6'],
                  ufw.common.UFWError),
@@ -444,6 +466,12 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
                  ufw.common.UFWError),
                 (['rule', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
+                  'from', '192.168.0.0/16', 'port', 'tcpmux'],
+                  ufw.common.UFWError),
+                (['route', 'badcmd', 'to', 'any'], ValueError),
+                (['route', 'allow', 'in', '22'], ufw.common.UFWError),
+                (['route', 'deny', 'out', '22'], ufw.common.UFWError),
+                (['route', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],
                   ufw.common.UFWError),
                ]
@@ -562,10 +590,12 @@ class ParserTestCase(unittest.TestCase):
                 (['default', 'reject'], None),
                 (['default', 'deny', 'incoming'], None),
                 (['default', 'allow', 'outgoing'], None),
+                (['default', 'deny', 'routed'], None),
                 (['default'], ValueError),
                 (['default', 'nonexistent'], ValueError),
                 (['default', 'nonexistent', 'allow'], ValueError),
                 (['default', 'incoming', 'allow'], ValueError),
+                (['default', 'routed', 'deny'], ValueError),
                ]
         for cmd, exception in cmds:
             #print(" ".join(cmd))

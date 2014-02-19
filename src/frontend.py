@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -59,6 +59,7 @@ def parse_command(argv):
     rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
     for i in rule_commands:
         p.register_command(ufw.parser.UFWCommandRule(i))
+        p.register_command(ufw.parser.UFWCommandRouteRule(i))
 
     # Don't require the user to have to specify 'rule' as the command. Instead
     # insert 'rule' into the arguments if this is a rule command.
@@ -67,6 +68,7 @@ def parse_command(argv):
         if argv[idx].lower() == "--dry-run":
             idx = 2
         if argv[idx].lower() != "default" and \
+           argv[idx].lower() != "route" and \
            argv[idx].lower() in rule_commands:
             argv.insert(idx, 'rule')
 
@@ -259,7 +261,8 @@ class UFWFrontend:
         return out
 
     def get_show_listening(self):
-        '''Shows listening services'''
+        '''Shows listening services and incoming rules that might affect
+           them'''
         res = ""
         try:
             d = ufw.util.parse_netstat_output(self.backend.use_ipv6())
@@ -293,8 +296,15 @@ class UFWFrontend:
                             ifname = ufw.util.get_if_from_ip(addr)
                         res += "(%s)" % os.path.basename(item['exe'])
 
-                        rule = ufw.common.UFWRule("allow", proto[:3], port, \
-                                                  addr)
+                        # Create an incoming rule since matching outgoing and
+                        # forward rules doesn't make sense for this report.
+                        rule = ufw.common.UFWRule(action="allow", \
+                                                  protocol=proto[:3], \
+                                                  dport=port, \
+                                                  dst=addr,
+                                                  direction="in", \
+                                                  forward=False
+                                                 )
                         rule.set_v6(proto.endswith("6"))
 
                         if ifname != "":
@@ -310,6 +320,7 @@ class UFWFrontend:
                             for i in matching:
                                 if i > 0 and i - 1 < len(rules):
                                     res += "   [%2d] %s\n" % (i, \
+                                        # Don't need UFWCommandRule here either
                                         ufw.parser.UFWCommandRule.get_command(\
                                           rules[i-1])
                                     )
@@ -332,7 +343,11 @@ class UFWFrontend:
 
         added = []
         for r in self.backend.get_rules():
-            rstr = ufw.parser.UFWCommandRule.get_command(r)
+            if r.forward:
+                rstr = "route %s" % \
+                        ufw.parser.UFWCommandRouteRule.get_command(r)
+            else:
+                rstr = ufw.parser.UFWCommandRule.get_command(r)
 
             # Approximate the order the rules were added. Since rules is
             # internally rules4 + rules6, IPv6 only rules will show up after
@@ -560,7 +575,11 @@ class UFWFrontend:
 
         proceed = True
         if not force:
-            rstr = ufw.parser.UFWCommandRule.get_command(rule)
+            if rule.forward:
+                rstr = "route %s" % \
+                        ufw.parser.UFWCommandRouteRule.get_command(rule)
+            else:
+                rstr = ufw.parser.UFWCommandRule.get_command(rule)
             prompt = _("Deleting:\n %(rule)s\nProceed with operation " \
                        "(%(yes)s|%(no)s)? ") % ({'rule': rstr, \
                                                  'yes': self.yes, \

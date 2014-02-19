@@ -93,7 +93,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 err_msg = _("Unsupported policy '%s'") % (policy)
                 raise UFWError(err_msg)
 
-            if direction != "incoming" and direction != "outgoing":
+            if direction != "incoming" and direction != "outgoing" and \
+               direction != "routed":
                 err_msg = _("Unsupported policy for direction '%s'") % \
                             (direction)
                 raise UFWError(err_msg)
@@ -101,6 +102,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             chain = "INPUT"
             if direction == "outgoing":
                 chain = "OUTPUT"
+            elif direction == "routed":
+                chain = "FORWARD"
 
             old_log_str = ''
             new_log_str = ''
@@ -261,7 +264,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             return out
 
         err_msg = _("problem running")
-        for direction in ["input", "output"]:
+        for direction in ["input", "output", "forward"]:
             # Is the firewall loaded at all?
             (rc, out) = cmd([self.iptables, '-L', \
                             'ufw-user-%s' % (direction), '-n'])
@@ -278,6 +281,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         s = ""
         str_out = ""
+        str_rte = ""
         rules = self.rules + self.rules6
         count = 1
         app_rules = {}
@@ -360,16 +364,33 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if show_proto and r.protocol != "any" and \
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
-                if loc == 'dst' and r.interface_in != "":
-                    location[loc] += " on %s" % (r.interface_in)
-                if loc == 'src' and r.interface_out != "":
-                    location[loc] += " on %s" % (r.interface_out)
+
+                # Reporting the interfaces is different in route rules and
+                # non-route rules. With route rules, the reporting should be
+                # relative to how packets flow through the firewall, with
+                # other rules the reporting should be relative to the firewall
+                # system as endpoint. As such, for route rules, report the
+                # incoming interface under 'From' and the outgoing interface
+                # under 'To', and for non-route rules, report the incoming
+                # interface under 'To', and the outgoing interface under
+                # 'From'.
+                if r.forward:
+                    if loc == 'src' and r.interface_in != "":
+                        location[loc] += " on %s" % (r.interface_in)
+                    if loc == 'dst' and r.interface_out != "":
+                        location[loc] += " on %s" % (r.interface_out)
+                else:
+                    if loc == 'dst' and r.interface_in != "":
+                        location[loc] += " on %s" % (r.interface_in)
+                    if loc == 'src' and r.interface_out != "":
+                        location[loc] += " on %s" % (r.interface_out)
 
             attribs = []
             attrib_str = ""
             if r.logtype or r.direction.lower() == "out":
                 if r.logtype:
                     attribs.append(r.logtype.lower())
+                # why is the direction added to attribs if shown in action?
                 if show_count and r.direction == "out":
                     attribs.append(r.direction)
                 if len(attribs) > 0:
@@ -380,7 +401,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tmp_str += "[%2d] " % (count)
 
             dir_str = r.direction.upper()
-            if r.direction == "in" and not verbose and not show_count:
+            if r.forward:
+                dir_str = "FWD"
+
+            if r.direction == "in" and not r.forward and \
+               not verbose and not show_count:
                 dir_str = ""
             tmp_str += "%-26s %-12s%s%s\n" % (location['dst'], \
                                              " ".join([r.action.upper(), \
@@ -392,13 +417,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if show_count:
                 s += tmp_str
             else:
-                if r.direction == "out":
+                if r.forward:
+                    str_rte += tmp_str
+                elif r.direction == "out":
                     str_out += tmp_str
                 else:
                     s += tmp_str
             count += 1
 
-        if s != "" or str_out != "":
+        if s != "" or str_out != "" or str_rte != "":
             full_str = "\n\n"
             if show_count:
                 full_str += "     "
@@ -423,14 +450,22 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 full_str += _("\n")
             if str_out != "":
                 full_str += str_out
+            if s != "" and str_rte != "":
+                full_str += _("\n")
+            if str_rte != "":
+                full_str += str_rte
 
             s = full_str
 
         if verbose:
             (level, logging_str) = self.get_loglevel()
-            policy_str = _("Default: %(in)s (incoming), %(out)s (outgoing)") \
+            policy_str = _("Default: %(in)s (incoming), " +
+                           "%(out)s (outgoing), " +
+                           "%(routed)s (routed)") \
                            % ({'in': self._get_default_policy(), \
-                               'out': self._get_default_policy("output")})
+                               'out': self._get_default_policy("output"), \
+                               'routed': self._get_default_policy("forward", \
+                                                                  True)})
             app_policy_str = self.get_default_application_policy()
             return _("Status: active\n%(log)s\n%(pol)s\n%(app)s%(status)s") % \
                      ({'log': logging_str, 'pol': policy_str, \
@@ -629,6 +664,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 raise UFWError(err_msg)
 
             pat_tuple = re.compile(r'^### tuple ###\s*')
+            pat_iface_in = re.compile(r'in_\w+')
+            pat_iface_out = re.compile(r'out_\w+')
             for line in orig:
                 if pat_tuple.match(line):
                     tupl = pat_tuple.sub('', line)
@@ -640,29 +677,55 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         continue
                     else:
                         # set direction to "in" to support upgrades
-                        # from old format, which only had 6 or 8 fields
+                        # from old format, which only had 6 or 8 fields.
                         dtype = "in"
-                        interface = ""
+                        interface_in = ""
+                        interface_out = ""
                         if len(tmp) == 7 or len(tmp) == 9:
+                            wmsg = _("Skipping malformed tuple (iface): %s") \
+                                     % (tupl)
+                            dtype = tmp[-1].split('_')[0]
                             if '_' in tmp[-1]:
-                                (dtype, interface) = tmp[-1].split('_')
-                            else:
-                                dtype = tmp[-1]
+                                if '!' in tmp[-1] and \
+                                   pat_iface_in.search(tmp[-1]) and \
+                                   pat_iface_out.search(tmp[-1]):
+                                    # in_eth0!out_eth1
+                                    interface_in = \
+                                        tmp[-1].split('!')[0].partition('_')[2]
+                                    interface_out = \
+                                        tmp[-1].split('!')[1].partition('_')[2]
+                                elif tmp[-1].startswith("in_"):
+                                    # in_eth0
+                                    interface_in = tmp[-1].partition('_')[2]
+                                elif tmp[-1].startswith("out_"):
+                                    # out_eth0
+                                    interface_out = tmp[-1].partition('_')[2]
+                                else:
+                                    warn(wmsg)
+                                    continue
                         try:
+                            action = tmp[0]
+                            forward = False
+                            # route rules use 'route:<action> ...' 
+                            if ':' in action:
+                                forward = True
+                                action = action.split(':')[1]
                             if len(tmp) < 8:
-                                rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype)
+                                rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
+                                               tmp[4], tmp[5], dtype, forward)
                             else:
-                                rule = UFWRule(tmp[0], tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype)
+                                rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
+                                               tmp[4], tmp[5], dtype, forward)
                                 # Removed leading [sd]app_ and unescape spaces
                                 pat_space = re.compile('%20')
                                 if tmp[6] != "-":
                                     rule.dapp = pat_space.sub(' ', tmp[6])
                                 if tmp[7] != "-":
                                     rule.sapp = pat_space.sub(' ', tmp[7])
-                            if interface != "":
-                                rule.set_interface(dtype, interface)
+                            if interface_in != "":
+                                rule.set_interface("in", interface_in)
+                            if interface_out != "":
+                                rule.set_interface("out", interface_out)
 
                         except UFWError:
                             warn_msg = _("Skipping malformed tuple: %s") % \
@@ -753,17 +816,27 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Write rules
         for r in rules:
             action = r.action
+            # route rules use 'route:<action> ...'
+            if r.forward:
+                action = "route:" + r.action
             if r.logtype != "":
                 action += "_" + r.logtype
 
+            ifaces = ""
+            if r.interface_in == "" and r.interface_out == "":
+                ifaces = r.direction
+            elif r.interface_in != "" and r.interface_out != "":
+                ifaces = "in_%s!out_%s" % (r.interface_in, r.interface_out)
+            else:
+                if r.interface_in != "":
+                    ifaces += "%s_%s" % (r.direction, r.interface_in)
+                else:
+                    ifaces += "%s_%s" % (r.direction, r.interface_out)
+
             if r.dapp == "" and r.sapp == "":
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s" % \
-                     (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                      r.direction)
-                if r.interface_in != "":
-                    tstr += "_%s" % (r.interface_in)
-                if r.interface_out != "":
-                    tstr += "_%s" % (r.interface_out)
+                     (action, r.protocol, r.dport, r.dst, r.sport, r.src,
+                      ifaces)
                 ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -775,16 +848,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     sapp = pat_space.sub('%20', r.sapp)
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % \
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
-                        dapp, sapp, r.direction)
-
-                if r.interface_in != "":
-                    tstr += "_%s" % (r.interface_in)
-                if r.interface_out != "":
-                    tstr += "_%s" % (r.interface_out)
+                        dapp, sapp, ifaces)
                 ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"
-            if r.direction == "out":
+            if r.forward:
+                chain_suffix = "forward"
+            elif r.direction == "out":
                 chain_suffix = "output"
             chain = "%s-user-%s" % (chain_prefix, chain_suffix)
             rule_str = "-A %s %s\n" % (chain, r.format_rule())
@@ -1020,7 +1090,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     chain_prefix = "ufw6"
                     rstr += " (v6)"
                 chain_suffix = "input"
-                if rule.direction == "out":
+                if rule.forward:
+                    chain_suffix = "forward"
+                elif rule.direction == "out":
                     chain_suffix = "output"
                 chain = "%s-user-%s" % (chain_prefix, chain_suffix)
 
