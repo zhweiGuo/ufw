@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -60,6 +60,7 @@ for i in $cmds; do
     do_cmd "0" null --dry-run default $i
     do_cmd "0" null --dry-run default $i incoming
     do_cmd "0" null --dry-run default $i outgoing
+    do_cmd "0" null --dry-run default $i routed
 done
 
 echo "Status" >> $TESTTMP/result || exit 1

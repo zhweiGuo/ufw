@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2012 Canonical Ltd.
+#    Copyright 2008-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -262,10 +262,6 @@ for l in off on low medium high full; do
     do_cmd "0" nostats enable
     for b in INPUT OUTPUT FORWARD; do
         for c in before-logging before after after-logging reject track ; do
-            if [ "$b" = "FORWARD" ] && [ "$c" = "track" ]; then
-                # FORWARD doesn't have the ufw-track-forward chain
-                continue
-            fi
             suffix=`echo $b | tr [A-Z] [a-z]`
             echo "$count: iptables -L $b -n | egrep -q 'ufw-$c-$suffix'" >> $TESTTMP/result
             iptables -L $b -n | egrep -q "ufw-$c-$suffix" || {

@@ -524,6 +524,55 @@ class UFWCommandRule(UFWCommand):
     get_command = staticmethod(get_command)
 
 
+class UFWCommandRouteRule(UFWCommandRule):
+    '''Class for parsing ufw route rule commands'''
+    def __init__(self, command):
+        UFWCommandRule.__init__(self, command)
+        self.type = 'route'
+
+    def parse(self, argv):
+        assert(argv[0] == "route")
+
+        # Let's use as much as UFWCommandRule.parse() as possible. The only
+        # difference with our rules is that argv[0] is 'route' and we support
+        # both 'in on <interface>' and 'out on <interface>' in our rules.
+        # Because UFWCommandRule.parse() expects that the interface clause is
+        # specified first, strip out the second clause and add it later
+        rule_argv = None
+        interface = None
+        strip = None
+
+        # eg: ['route', 'allow', 'in', 'on', 'eth0', 'out', 'on', 'eth1']
+        s = " ".join(argv)
+        if " in on " in s and " out on " in s:
+            strip = "out"
+            if argv.index("in") > argv.index("out"):
+                strip = "in"
+            # Remove 2nd interface clause from argv and add it to the rule
+            # later. Because we searched for " <strip> on " in our joined
+            # string we are guaranteed to have argv[argv.index(<strip>) + 2]
+            # exist.
+            interface = argv[argv.index(strip) + 2]
+            rule_argv = argv[0:argv.index(strip)] + argv[argv.index(strip)+3:]
+        elif not re.search(r' (in|out) on ', s) and \
+             not re.search(r' app (in|out) ', s) and \
+             (" in " in s or " out " in s):
+            # Specifying a direction without an interface doesn't make any
+            # sense with route rules. application names could be 'in' or 'out'
+            # so don't artificially limit those names.
+            err_msg = _("Invalid interface clause for route rule")
+            raise UFWError(err_msg)
+        else:
+            rule_argv = argv
+
+        rule_argv[0] = "rule"
+        r = UFWCommandRule.parse(self, rule_argv)
+        r.data['rule'].forward = True
+        if strip and interface:
+            r.data['rule'].set_interface(strip, interface)
+
+        return r
+
 class UFWCommandApp(UFWCommand):
     '''Class for parsing ufw application commands'''
     def __init__(self, command):
@@ -606,6 +655,8 @@ class UFWCommandDefault(UFWCommand):
         if len(argv) > 2:
             if argv[2].lower() != "incoming" and \
                argv[2].lower() != "input" and \
+               argv[2].lower() != "routed" and \
+               argv[2].lower() != "forward" and \
                argv[2].lower() != "output" and \
                argv[2].lower() != "outgoing":
                 raise ValueError()
@@ -613,6 +664,8 @@ class UFWCommandDefault(UFWCommand):
                 direction = "incoming"
             elif argv[2].lower().startswith("out"):
                 direction = "outgoing"
+            elif argv[2].lower() == "routed" or argv[2].lower() == "forward":
+                direction = "routed"
             else:  # pragma: no cover
                 direction = argv[2].lower()
 
@@ -762,16 +815,18 @@ class UFWParser:
             cmd = tmp
             for i in list(self.commands.keys()):
                 if cmd in self.commands[i]:
+                    # Skip any inherited commands that inherit from
+                    # UFWCommandRule since they must have more than one
+                    # argument to be valid and used
+                    if isinstance(self.commands[i][cmd], UFWCommandRule) and \
+                       getattr(self.commands[i][cmd], 'type') != 'rule':
+                        continue
                     type = i
                     break
             if type == "":
                 type = 'rule'
 
-        try:
-            action = self.allowed_command(type, cmd)
-        except Exception:
-            err_msg = _("Invalid command '%s'") % (cmd)
-            raise
+        action = self.allowed_command(type, cmd)
 
         cmd = self.commands[type][action]
         response = cmd.parse(args)

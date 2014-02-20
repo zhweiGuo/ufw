@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -22,7 +22,7 @@ do_cmd "1" null --dry-run logging foo
 do_cmd "1" null --dry-run loggin on
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
-for i in "" "input" "incoming" "output" "outgoing"; do
+for i in "" "input" "incoming" "output" "outgoing" "routed"; do
     do_cmd "1" null --dry-run default $i
     do_cmd "1" null --dry-run default foo $i
     do_cmd "1" null --dry-run default accept $i

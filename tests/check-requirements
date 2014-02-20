@@ -178,17 +178,17 @@ for i in "" 6; do
     runcmd $exe -A $c -m limit --limit 3/min --limit-burst 10 -j ACCEPT
 
     for j in NEW RELATED ESTABLISHED INVALID; do
-        echo -n "state ($j): "
+        echo -n "ctstate ($j): "
         runcmd $exe -A $c -m conntrack --ctstate $j
     done
 
-    echo -n "state (new, recent set): "
+    echo -n "ctstate (new, recent set): "
     runcmd runtime $exe -A $c -m conntrack --ctstate NEW -m recent --set
 
-    echo -n "state (new, recent update): "
+    echo -n "ctstate (new, recent update): "
     runcmd runtime $exe -A $c -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
 
-    echo -n "state (new, limit): "
+    echo -n "ctstate (new, limit): "
     runcmd $exe -A $c -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j ACCEPT
 
     echo -n "interface (input): "

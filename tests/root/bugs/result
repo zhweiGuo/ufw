@@ -209,7 +209,7 @@ Setting IPV6 to yes
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 
@@ -223,7 +223,7 @@ Default incoming policy changed to 'allow'
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: allow (incoming), allow (outgoing)
+Default: allow (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 
@@ -237,7 +237,7 @@ Default incoming policy changed to 'deny'
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 

@@ -1,4 +1,4 @@
-.TH UFW: "8" "" "August 2009" "August 2009"
+.TH UFW: "8" "" "January 2013" "January 2013"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -11,7 +11,7 @@ use interface for the user.
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBenable|disable|reload\fR
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject [incoming|outgoing]
+ufw [\fB\-\-dry\-run\fR] \fBdefault\fR allow|deny|reject [incoming|outgoing|routed]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBlogging\fR on|off|LEVEL
 .TP
@@ -23,7 +23,9 @@ ufw [\fB\-\-dry\-run\fR] \fBshow\fR REPORT
 .TP
 ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] PORT[/PROTOCOL]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR [\fBon\fR INTERFACE]] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBrule\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR [\fBon\fR INTERFACE]] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+.TP
+ufw [\fB\-\-dry\-run\fR] \fBroute\fR [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR \fBon\fR INTERFACE] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdelete\fR NUM
 .TP
@@ -51,9 +53,9 @@ reloads firewall
 .TP
 \fBdefault\fR allow|deny|reject DIRECTION
 change the default policy for traffic going DIRECTION, where DIRECTION is one
-of \fBincoming\fR or \fBoutgoing\fR. Note that existing rules will have to be
-migrated manually when changing the default policy. See \fBRULE SYNTAX\fR for
-more on \fBdeny\fR and \fBreject\fR.
+of \fBincoming\fR, \fBoutgoing\fR or \fBrouted\fR. Note that existing rules
+will have to be migrated manually when changing the default policy. See \fBRULE
+SYNTAX\fR for more on \fBdeny\fR and \fBreject\fR.
 .TP
 \fBlogging\fR on|off|LEVEL
 toggle logging. Logged packets use the LOG_KERN syslog facility. Systems
@@ -68,7 +70,26 @@ Disables and resets firewall to installation defaults. Can also give the
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
 extra information. In the status output, 'Anywhere' is synonymous with 'any'
-and '0.0.0.0/0'.
+and '0.0.0.0/0'. Note that when using \fBstatus\fR, there is a subtle
+difference when reporting interfaces. For example, if the following rules are
+added:
+
+  ufw allow in on eth0 from 192.168.0.0/16
+  ufw allow out on eth1 to 10.0.0.0/8
+  ufw route allow in on eth0 out on eth1 to 10.0.0.0/8 from 192.168.0.0/16
+
+\fBufw status\fR will output:
+
+  To                         Action      From
+  --                         ------      ----
+  Anywhere on eth0           ALLOW       192.168.0.0/16
+  10.0.0.0/8                 ALLOW OUT   Anywhere on eth1
+  10.0.0.0/8 on eth1         ALLOW FWD   192.168.0.0/16 on eth0
+
+For the input and output rules, the interface is reported relative to the
+firewall system as an endpoint, whereas with route rules, the interface is
+reported relative to the direction packets flow through the firewall.
+
 .TP
 \fBshow\fR REPORT
 display information about the running firewall. See \fBREPORTS\fR
@@ -119,7 +140,8 @@ traffic. Eg:
   ufw reject out smtp
 .PP
 Users can also use a fuller syntax, specifying the source and destination
-addresses and ports. This syntax is based on OpenBSD's PF syntax. For example:
+addresses and ports. This syntax is loosely based on OpenBSD's PF syntax. For
+example:
 
   ufw deny proto tcp to any port 80
 
@@ -133,17 +155,48 @@ with the address 192.168.0.1.
   ufw deny proto tcp from 2001:db8::/32 to any port 25
 
 This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 25 on this
-host. Note that IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6
-firewalling to work.
+host. IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6 firewalling
+to work.
 
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
 The above will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive.
-Note that when specifying multiple ports, the ports list must be numeric,
-cannot contain spaces and must be modified as a whole. Eg, in the above example
-you cannot later try to delete just the '443' port. You cannot specify more
-than 15 ports (ranges count as 2 ports, so the port count in the above example
-is 4).
+When specifying multiple ports, the ports list must be numeric, cannot contain
+spaces and must be modified as a whole. Eg, in the above example you cannot
+later try to delete just the '443' port. You cannot specify more than 15 ports
+(ranges count as 2 ports, so the port count in the above example is 4).
+
+Rules for traffic not destined for the host itself but instead for traffic that
+should be routed/forwarded through the firewall should specify the \fBroute\fR
+keyword before the rule (routing rules differ significantly from PF syntax and
+instead take into account netfilter FORWARD chain conventions). For example:
+
+  ufw route allow in on eth1 out on eth2
+
+This will allow all traffic routed to eth2 and coming in on eth1 to traverse
+the firewall.
+
+  ufw route allow in on eth0 out on eth1 to 12.34.45.67 port 80 proto tcp
+
+This rule allows any packets coming in on eth0 to traverse the firewall out
+on eth1 to tcp port 80 on 12.34.45.67.
+
+In addition to routing rules and policy, you must also setup IP forwarding.
+This may be done by setting the following in #CONFIG_PREFIX#/ufw/sysctl.conf:
+
+  net/ipv4/ip_forward=1
+  net/ipv6/conf/default/forwarding=1
+  net/ipv6/conf/all/forwarding=1
+
+then restarting the firewall:
+
+  ufw disable
+  ufw enable
+
+Be aware that setting kernel tunables is operating system specific and
+\fBufw\fR sysctl settings may be overridden. See the \fBsysctl\fR manual page
+for details.
+
 .PP
 \fBufw\fR supports connection rate limiting, which is useful for protecting
 against brute\-force login attacks. When a limit rule is used, \fBufw\fR will
@@ -376,9 +429,9 @@ IPv6\-only rules after other rules.
 
 .SH NOTES
 .PP
-On installation, \fBufw\fR is disabled with a default incoming policy of deny
-and a default outgoing policy of allow, with stateful tracking for NEW
-connections.
+On installation, \fBufw\fR is disabled with a default incoming policy of deny,
+a default forward policy of deny, and a default outgoing policy of allow, with
+stateful tracking for NEW connections.
 
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
@@ -436,7 +489,7 @@ See the \fBufw\-framework\fR manual page for more information.
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2009, Canonical Ltd.
+ufw is Copyright 2008-2014, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>

@@ -154,7 +154,7 @@ set to DROP.
 .SS
 IP Masquerading
 .PP
-To allow IP masquerading for computers from the 10.0.0.0/8 network to
+To allow IP masquerading for computers from the 10.0.0.0/8 network on eth1 to
 share the single IP address on eth0:
 .TP
 Edit #CONFIG_PREFIX#/ufw/sysctl.conf to have:
@@ -171,6 +171,9 @@ If your firewall is using IPv6 tunnels or 6to4 and is also doing NAT, then you s
  :POSTROUTING ACCEPT [0:0]
  \-A POSTROUTING \-s 10.0.0.0/8 \-\-protocol ! 41 \-o eth0 \-j MASQUERADE
  COMMIT
+.TP
+Add the \fBufw route\fR to allow the traffic:
+ ufw route allow in on eth1 out on eth0 from 10.0.0.0/8
 .SS
 Port Redirections
 .PP
@@ -179,28 +182,25 @@ To forward tcp port 80 on eth0 to go to the webserver at 10.0.0.2:
 Edit #CONFIG_PREFIX#/ufw/sysctl.conf to have:
  net.ipv4.ip_forward=1
 .TP
-Add to the *filter section of #CONFIG_PREFIX#/ufw/before.rules:
- \-A ufw\-before\-forward \-m conntrack \\
-   \-\-ctstate RELATED,ESTABLISHED \-j ACCEPT
- \-A ufw\-before\-forward \-m conntrack \-\-ctstate NEW \-i eth0 \\
-   \-d 10.0.0.2 \-p tcp \-\-dport 80 \-j ACCEPT
-.TP
 Add to the end of #CONFIG_PREFIX#/ufw/before.rules, after the *filter section:
  *nat
  :PREROUTING ACCEPT [0:0]
  \-A PREROUTING \-p tcp \-i eth0 \-\-dport 80 \-j DNAT \\
    \-\-to\-destination 10.0.0.2:80
  COMMIT
+.TP
+Add the \fBufw route\fR rule to allow the traffic:
+ ufw route allow in on eth0 to 10.0.0.2 port 80 proto tcp
 
 .SS
 Egress filtering
 .PP
 To block RFC1918 addresses going out of eth0:
 .TP
-Add in the *filter section of #CONFIG_PREFIX#/ufw/before.rules:
- \-A ufw\-before\-forward \-o eth0 \-d 10.0.0.0/8 \-j REJECT
- \-A ufw\-before\-forward \-o eth0 \-d 172.16.0.0/12 \-j REJECT
- \-A ufw\-before\-forward \-o eth0 \-d 192.168.0.0/16 \-j REJECT
+Add the \fBufw route\fR rules to reject the traffic:
+ ufw route reject out on eth0 to 10.0.0.0/8
+ ufw route reject out on eth0 to 172.16.0.0/12
+ ufw route reject out on eth0 to 192.168.0.0/16
 
 .SS
 Full example
@@ -221,20 +221,6 @@ should be allowed. Also make sure no internal traffic goes to the Internet.
 Edit #CONFIG_PREFIX#/ufw/sysctl.conf to have:
   net.ipv4.ip_forward=1
 .TP
-Add to the *filter section of #CONFIG_PREFIX#/ufw/before.rules:
- \-A ufw\-before\-forward \-m conntrack \\
-   \-\-ctstate RELATED,ESTABLISHED \-j ACCEPT
-
- \-A ufw\-before\-forward \-i eth1 \-s 10.0.0.0/8 \-o eth0 \\
-   \-m conntrack \-\-ctstate NEW \-j ACCEPT
-
- \-A ufw\-before\-forward \-m conntrack \-\-ctstate NEW \-i eth0 \\
-   \-d 10.0.0.2 \-p tcp \-\-dport 80 \-j ACCEPT
-
- \-A ufw\-before\-forward \-o eth0 \-d 10.0.0.0/8 \-j REJECT
- \-A ufw\-before\-forward \-o eth0 \-d 172.16.0.0/12 \-j REJECT
- \-A ufw\-before\-forward \-o eth0 \-d 192.168.0.0/16 \-j REJECT
-.TP
 Add to the end of #CONFIG_PREFIX#/ufw/before.rules, after the *filter section:
  *nat
  :PREROUTING ACCEPT [0:0]
@@ -244,8 +230,13 @@ Add to the end of #CONFIG_PREFIX#/ufw/before.rules, after the *filter section:
  \-A POSTROUTING \-s 10.0.0.0/8 \-o eth0 \-j MASQUERADE
  COMMIT
 .TP
-For allowing ssh on eth1 from 10.0.0.100, use the \fBufw\fR command:
- # ufw allow in on eth1 from 10.0.0.100 to any port 22 proto tcp
+Add the necessary \fBufw\fR rules:
+ ufw route reject out on eth0 to 10.0.0.0/8
+ ufw route reject out on eth0 to 172.16.0.0/12
+ ufw route reject out on eth0 to 192.168.0.0/16
+ ufw route allow in on eth1 out on eth0 from 10.0.0.0/8
+ ufw route allow in on eth0 to 10.0.0.2 port 80 proto tcp
+ ufw allow in on eth1 from 10.0.0.100 to any port 22 proto tcp
 
 .SH SEE ALSO
 .PP
@@ -253,7 +244,7 @@ For allowing ssh on eth1 from 10.0.0.100, use the \fBufw\fR command:
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2013, Canonical Ltd.
+ufw is Copyright 2008-2014, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>

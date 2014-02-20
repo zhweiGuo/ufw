@@ -104,7 +104,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test _get_attrib()'''
         res = self.rules["any"]._get_attrib()
         search = "'-p all -j ACCEPT', action=allow, dapp=, direction=in, " + \
-                 "dport=any, dst=0.0.0.0/0, interface_in=, " + \
+                 "dport=any, dst=0.0.0.0/0, forward=False, interface_in=, " + \
                  "interface_out=, logtype=, multi=False, position=0, " + \
                  "protocol=any, remove=False, sapp=, sport=any, " + \
                  "src=0.0.0.0/0, updated=False, v6=False"
@@ -355,7 +355,7 @@ class CommonTestCase(unittest.TestCase):
                                                    interface)
 
         for if_type in ["in", "out"]:
-            for interface in ["\tfoo", "<$%", "0eth", "eth0:0"]:
+            for interface in ["\tfoo", "<$%", "0eth", "eth0:0", "!eth0"]:
                 tests.unit.support.check_for_exception(self,
                                                        ufw.common.UFWError,
                                                        r.set_interface,
@@ -526,6 +526,21 @@ class CommonTestCase(unittest.TestCase):
         y.v6 = True
         self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
 
+        x = self.rules["any"].dup_rule()
+        y = self.rules["any"].dup_rule()
+        y.forward = True
+        self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
+        x = self.rules["full-any"].dup_rule()
+        y = self.rules["full-any"].dup_rule()
+        y.forward = True
+        self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
+        x = self.rules["multi-both"].dup_rule()
+        y = self.rules["multi-both"].dup_rule()
+        y.forward = True
+        self.assertEquals(ufw.common.UFWRule.match(x, y), 1)
+
         x = ufw.common.UFWRule("allow", "tcp", direction="out")
         x.set_interface("out", "eth0")
         y = x.dup_rule()
@@ -634,6 +649,12 @@ class CommonTestCase(unittest.TestCase):
         x = self.rules["any"].dup_rule()
         y = x.dup_rule()
         y.set_v6(True)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
+        self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
+
+        x = self.rules["any"].dup_rule()
+        y = x.dup_rule()
+        y.forward = True
         self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(x, y), 1)
         self.assertEquals(ufw.common.UFWRule.fuzzy_dst_match(y, x), 1)
 
