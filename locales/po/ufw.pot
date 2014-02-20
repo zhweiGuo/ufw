@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-19 14:33-0600\n"
+"POT-Creation-Date: 2014-02-20 14:16-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -843,7 +843,7 @@ msgstr ""
 msgid "Invalid interface clause for route rule"
 msgstr ""
 
-#: src/parser.py:843
+#: src/parser.py:849
 #, python-format
 msgid "Command '%s' already exists"
 msgstr ""
