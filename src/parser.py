@@ -815,6 +815,12 @@ class UFWParser:
             cmd = tmp
             for i in list(self.commands.keys()):
                 if cmd in self.commands[i]:
+                    # Skip any inherited commands that inherit from
+                    # UFWCommandRule since they must have more than one
+                    # argument to be valid and used
+                    if isinstance(self.commands[i][cmd], UFWCommandRule) and \
+                       getattr(self.commands[i][cmd], 'type') != 'rule':
+                        continue
                     type = i
                     break
             if type == "":
