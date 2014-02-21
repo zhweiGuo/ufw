@@ -32,8 +32,10 @@ ufw (0.34) UNRELEASED; urgency=low
   * add ufw[6]-track-forward chain and handle it the same as for
     ufw[6]track-input and ufw[6]-track-output
   * document ufw[6]-track-* in README (dropped in previous commit)
+  * fix for 'status' not distingushing between some v4/v6 targets
+    (LP: #1078665)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 19 Feb 2014 07:03:06 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Feb 2014 18:07:46 -0600
 
 ufw (0.33) RELEASED; urgency=low
 
