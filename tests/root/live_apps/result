@@ -84,8 +84,8 @@ Apache (v6)                ALLOW       Anywhere (v6)
 Samba (v6)                 ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       Samba (v6)
 Samba (v6)                 ALLOW       Bind9 (v6)
-Samba (v6)                 ALLOW       22
-Apache (v6)                ALLOW       88
+Samba (v6)                 ALLOW       22 (v6)
+Apache (v6)                ALLOW       88 (v6)
 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
@@ -120,9 +120,9 @@ Anywhere (v6)              ALLOW IN    137,138/udp (Samba (v6))
 Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
 137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
-137,138/udp (Samba (v6))   ALLOW IN    22/udp
-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
-80/tcp (Apache (v6))       ALLOW IN    88/tcp
+137,138/udp (Samba (v6))   ALLOW IN    22/udp (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
+80/tcp (Apache (v6))       ALLOW IN    88/tcp (v6)
 2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
 Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
@@ -459,8 +459,8 @@ Apache (v6)                ALLOW       Anywhere (v6)
 Samba (v6)                 ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       Samba (v6)
 Samba (v6)                 ALLOW       Bind9 (v6)
-Samba (v6)                 ALLOW       22
-Apache (v6)                ALLOW       88
+Samba (v6)                 ALLOW       22 (v6)
+Apache (v6)                ALLOW       88 (v6)
 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
@@ -495,9 +495,9 @@ Anywhere (v6)              ALLOW IN    137,138/udp (Samba (v6))
 Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
 137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
-137,138/udp (Samba (v6))   ALLOW IN    22/udp
-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
-80/tcp (Apache (v6))       ALLOW IN    88/tcp
+137,138/udp (Samba (v6))   ALLOW IN    22/udp (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
+80/tcp (Apache (v6))       ALLOW IN    88/tcp (v6)
 2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
 Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
@@ -538,8 +538,8 @@ Apache (v6)                ALLOW       Anywhere (v6)
 Samba (v6)                 ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       Samba (v6)
 Samba (v6)                 ALLOW       Bind9 (v6)
-Samba (v6)                 ALLOW       22
-Apache (v6)                ALLOW       88
+Samba (v6)                 ALLOW       22 (v6)
+Apache (v6)                ALLOW       88 (v6)
 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
@@ -574,9 +574,9 @@ Anywhere (v6)              ALLOW IN    138,9999/udp (Samba (v6))
 Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
 138,9999/udp (Samba (v6))  ALLOW IN    53/udp (Bind9 (v6))
 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
-138,9999/udp (Samba (v6))  ALLOW IN    22/udp
-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
-8888/tcp (Apache (v6))     ALLOW IN    88/tcp
+138,9999/udp (Samba (v6))  ALLOW IN    22/udp (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
+8888/tcp (Apache (v6))     ALLOW IN    88/tcp (v6)
 2001:db8::/32 138,9999/udp (Samba) ALLOW IN    Anywhere (v6)
 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
 Anywhere (v6)              ALLOW IN    2001:db8::/32 138,9999/udp (Samba)

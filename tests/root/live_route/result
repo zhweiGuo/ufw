@@ -93,10 +93,10 @@ Anywhere                   ALLOW FWD   192.168.0.0/16
 514/udp                    DENY FWD    1.2.3.4
 1.2.3.4 5469/udp           ALLOW FWD   1.2.3.5 5469/udp
 22/tcp                     LIMIT FWD   Anywhere
-53                         ALLOW FWD   Anywhere (v6)
-23/tcp                     ALLOW FWD   Anywhere (v6)
-25/tcp                     ALLOW FWD   Anywhere (v6)
-80/tcp                     DENY FWD    Anywhere (v6)
+53 (v6)                    ALLOW FWD   Anywhere (v6)
+23/tcp (v6)                ALLOW FWD   Anywhere (v6)
+25/tcp (v6)                ALLOW FWD   Anywhere (v6)
+80/tcp (v6)                DENY FWD    Anywhere (v6)
 25/tcp                     DENY FWD    2001:db8::/32
 2001:db8:3:4:5:6:7:8       DENY FWD    2001:db8::/32 26
 
@@ -444,9 +444,9 @@ To                         Action      From
 113                        REJECT FWD  Anywhere
 114/tcp                    REJECT FWD  Anywhere
 115/udp                    REJECT FWD  Anywhere
-113                        REJECT FWD  Anywhere (v6)
-114/tcp                    REJECT FWD  Anywhere (v6)
-115/udp                    REJECT FWD  Anywhere (v6)
+113 (v6)                   REJECT FWD  Anywhere (v6)
+114/tcp (v6)               REJECT FWD  Anywhere (v6)
+115/udp (v6)               REJECT FWD  Anywhere (v6)
 
 
 
@@ -668,10 +668,10 @@ Status: active
 [ 9] 514/udp                    DENY FWD    1.2.3.4
 [10] 1.2.3.4 5469/udp           ALLOW FWD   1.2.3.5 5469/udp
 [11] 22/tcp                     LIMIT FWD   Anywhere
-[12] 53                         ALLOW FWD   Anywhere (v6)
-[13] 23/tcp                     ALLOW FWD   Anywhere (v6)
-[14] 25/tcp                     ALLOW FWD   Anywhere (v6)
-[15] 80/tcp                     DENY FWD    Anywhere (v6)
+[12] 53 (v6)                    ALLOW FWD   Anywhere (v6)
+[13] 23/tcp (v6)                ALLOW FWD   Anywhere (v6)
+[14] 25/tcp (v6)                ALLOW FWD   Anywhere (v6)
+[15] 80/tcp (v6)                DENY FWD    Anywhere (v6)
 [16] 25/tcp                     DENY FWD    2001:db8::/32
 [17] 2001:db8:3:4:5:6:7:8       DENY FWD    2001:db8::/32 26
 

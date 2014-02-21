@@ -333,10 +333,10 @@ Status: active
 [ 2] 2                          ALLOW IN    Anywhere
 [ 3] 3                          ALLOW IN    Anywhere
 [ 4] 4                          ALLOW IN    Anywhere
-[ 5] 1                          ALLOW IN    Anywhere (v6)
-[ 6] 2                          ALLOW IN    Anywhere (v6)
-[ 7] 3                          ALLOW IN    Anywhere (v6)
-[ 8] 4                          ALLOW IN    Anywhere (v6)
+[ 5] 1 (v6)                     ALLOW IN    Anywhere (v6)
+[ 6] 2 (v6)                     ALLOW IN    Anywhere (v6)
+[ 7] 3 (v6)                     ALLOW IN    Anywhere (v6)
+[ 8] 4 (v6)                     ALLOW IN    Anywhere (v6)
 
 
 
