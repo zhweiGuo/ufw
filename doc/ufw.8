@@ -431,7 +431,27 @@ IPv6\-only rules after other rules.
 .PP
 On installation, \fBufw\fR is disabled with a default incoming policy of deny,
 a default forward policy of deny, and a default outgoing policy of allow, with
-stateful tracking for NEW connections.
+stateful tracking for NEW connections for incoming and forwarded connections.
+In addition to the above, a default ruleset is put in place that does the
+following:
+.TP
+- DROP packets with RH0 headers
+.TP
+- DROP INVALID packets
+.TP
+- ACCEPT certain icmp packets (INPUT and FORWARD): destination-unreachable, source-quench, time-exceeded, parameter-problem, and echo-request for IPv4. destination-unreachable, packet-too-big, time-exceeded, parameter-problem, and echo-request for IPv6.
+.TP
+- ACCEPT icmpv6 packets for stateless autoconfiguration (INPUT)
+.TP
+- ACCEPT ping replies from IPv6 link-local (ffe8::/10) addresses (INPUT)
+.TP
+- ACCEPT DHCP client traffic (INPUT)
+.TP
+- DROP non-local traffic (INPUT)
+.TP
+- ACCEPT mDNS (zeroconf/bonjour/avahi 224.0.0.251 for IPv4 and ff02::fb for IPv6) for service discovery (INPUT)
+.TP
+- ACCEPT UPnP (239.255.255.250 for IPv4 and ff02::f for IPv6) for service discovery (INPUT)
 
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
@@ -439,7 +459,7 @@ rules, add the more specific rules first with more general rules later.
 .PP
 \fBufw\fR is not intended to provide complete firewall functionality via
 its command interface, but instead provides an easy way to add or remove
-simple rules. It is currently mainly used for host\-based firewalls.
+simple rules.
 .PP
 The status command shows basic information about the state of the firewall, as
 well as rules managed via the \fBufw\fR command. It does not show rules from the
@@ -480,8 +500,9 @@ protocols can only be used with the full syntax. For example:
   ufw allow to 10.0.0.1 from 10.4.0.0/16 proto ah
 .PP
 In addition to the command\-line interface, \fBufw\fR also provides a
-framework which allows administrators to take full advantage of netfilter.
-See the \fBufw\-framework\fR manual page for more information.
+framework which allows administrators to modify default behavior as well as
+take full advantage of netfilter. See the \fBufw\-framework\fR manual page for
+more information.
 
 .SH SEE ALSO
 .PP
