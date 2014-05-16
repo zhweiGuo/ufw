@@ -37,8 +37,9 @@ ufw (0.34) UNRELEASED; urgency=low
   * add safe icmp packets packets fo ufw-before-forward in before*.rules like
     we do for ufw-before-input. This will only affect systems with ip
     forwarding enabled via sysctl
+  * update check-requirements for python 3.3 and 3.4
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 28 Feb 2014 08:51:02 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 May 2014 14:56:32 -0500
 
 ufw (0.33) RELEASED; urgency=low
 
