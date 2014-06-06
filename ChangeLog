@@ -38,8 +38,9 @@ ufw (0.34) UNRELEASED; urgency=low
     we do for ufw-before-input. This will only affect systems with ip
     forwarding enabled via sysctl
   * update check-requirements for python 3.3 and 3.4
+  * add 5269/tcp to XMPP (LP: #1327162)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 May 2014 14:56:32 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 Jun 2014 08:48:18 -0500
 
 ufw (0.33) RELEASED; urgency=low
 

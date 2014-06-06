@@ -636,8 +636,9 @@ Profile: XMPP
 Title: XMPP Chat
 Description: XMPP protocol (Jabber and Google Talk)
 
-Port:
+Ports:
   5222/tcp
+  5269/tcp
 
 --
 
