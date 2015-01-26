@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2013 Canonical Ltd.
+# Copyright 2009-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -567,9 +567,10 @@ class UFWCommandRouteRule(UFWCommandRule):
 
         rule_argv[0] = "rule"
         r = UFWCommandRule.parse(self, rule_argv)
-        r.data['rule'].forward = True
-        if strip and interface:
-            r.data['rule'].set_interface(strip, interface)
+        if 'rule' in r.data:
+            r.data['rule'].forward = True
+            if strip and interface:
+                r.data['rule'].set_interface(strip, interface)
 
         return r
 
