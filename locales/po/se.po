@@ -1,16 +1,16 @@
-# Tagalog translation for ufw
-# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# Northern Sami translation for ufw
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the ufw package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-02-20 14:16-0600\n"
-"PO-Revision-Date: 2009-08-26 19:31+0000\n"
-"Last-Translator: Jamie Strandboge <jamie@ubuntu.com>\n"
-"Language-Team: Tagalog <tl@li.org>\n"
+"PO-Revision-Date: 2012-08-15 22:05+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Northern Sami <se@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -160,7 +160,7 @@ msgstr ""
 
 #: src/backend_iptables.py:450 src/backend_iptables.py:454
 msgid "\n"
-msgstr "\n"
+msgstr ""
 
 #: src/backend_iptables.py:462
 #, python-format

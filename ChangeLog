@@ -34,13 +34,22 @@ ufw (0.34) UNRELEASED; urgency=low
   * document ufw[6]-track-* in README (dropped in previous commit)
   * fix for 'status' not distingushing between some v4/v6 targets
     (LP: #1078665)
-  * add safe icmp packets packets fo ufw-before-forward in before*.rules like
+  * add safe icmp packets packets to ufw-before-forward in before*.rules like
     we do for ufw-before-input. This will only affect systems with ip
     forwarding enabled via sysctl
   * update check-requirements for python 3.3 and 3.4
   * add 5269/tcp to XMPP (LP: #1327162)
+  * fix traceback with forward rule
+  * import new and updated Launchpad translations:
+    - po/ar.po, po/ast.po, po/bg.po, po/bs.po, po/ca.po, po/ce.po, po/cs.po,
+      po/da.po, po/de.po, po/el.po, po/en_AU.po, po/en_GB.po, po/es.po,
+      po/et.po, po/fi.po, po/fr.po, po/he.po, po/hu.po, po/id.po, po/it.po,
+      po/ja.po, po/ko.po, po/lv.po, po/nb.po, po/nl.po, po/pl.po, po/pt_BR.po,
+      po/pt.po, po/ru.po, po/se.po, po/sk.po, po/sl.po, po/sr.po, po/sv.po,
+      po/tl.po, po/tr.po, po/uk.po, po/ur.po, po/zh_CN.po, po/zh_TW.po
+    - thanks to all contributors: https://translations.launchpad.net/ufw
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 Jun 2014 08:48:18 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 26 Jan 2015 14:23:42 -0600
 
 ufw (0.33) RELEASED; urgency=low
 

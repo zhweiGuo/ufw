@@ -1,16 +1,16 @@
-# Tagalog translation for ufw
-# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# Estonian translation for ufw
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the ufw package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ufw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-02-20 14:16-0600\n"
-"PO-Revision-Date: 2009-08-26 19:31+0000\n"
-"Last-Translator: Jamie Strandboge <jamie@ubuntu.com>\n"
-"Language-Team: Tagalog <tl@li.org>\n"
+"PO-Revision-Date: 2014-11-09 04:28+0000\n"
+"Last-Translator: Marko Silluste <Unknown>\n"
+"Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,15 +19,15 @@ msgstr ""
 
 #: src/ufw:56
 msgid ": Need at least python 2.6)\n"
-msgstr ""
+msgstr ": Vajab vähemalt python 2.6)\n"
 
 #: src/ufw:109 src/frontend.py:596 src/frontend.py:898
 msgid "Aborted"
-msgstr ""
+msgstr "Tühistatud"
 
 #: src/applications.py:36
 msgid "Profiles directory does not exist"
-msgstr ""
+msgstr "Profiili asukohta ei eksisteeri"
 
 #: src/applications.py:68
 #, python-format
@@ -37,7 +37,7 @@ msgstr ""
 #: src/applications.py:73
 #, python-format
 msgid "Skipping '%s': too big"
-msgstr ""
+msgstr "Jäetud vahele '%s': liiga suur"
 
 #: src/applications.py:78
 #, python-format
@@ -82,31 +82,31 @@ msgstr ""
 #: src/applications.py:171
 #, python-format
 msgid "Profile '%(fn)s' missing required field '%(f)s'"
-msgstr ""
+msgstr "Profiilil '%(fn)s' puuduvad vajalikud väljad '%(f)s'"
 
 #: src/applications.py:176
 #, python-format
 msgid "Profile '%(fn)s' has empty required field '%(f)s'"
-msgstr ""
+msgstr "Profiilil '%(fn)s' on tühjad vajalikud väljad '%(f)s'"
 
 #: src/applications.py:182
 #, python-format
 msgid "No ports found in profile '%s'"
-msgstr ""
+msgstr "Profiilis  '%s' porte ei leitud"
 
 #: src/applications.py:195
 #, python-format
 msgid "Invalid ports in profile '%s'"
-msgstr ""
+msgstr "Vigased pordid profiilil '%s'"
 
 #: src/backend_iptables.py:77
 msgid "New profiles:"
-msgstr ""
+msgstr "Uued profiilid:"
 
 #: src/backend_iptables.py:93 src/backend.py:351
 #, python-format
 msgid "Unsupported policy '%s'"
-msgstr ""
+msgstr "Toetamata poliis '%s'"
 
 #: src/backend_iptables.py:98
 #, python-format
@@ -132,7 +132,7 @@ msgstr ""
 
 #: src/backend_iptables.py:261
 msgid "Checking iptables\n"
-msgstr ""
+msgstr "iptables'i kontrollimine\n"
 
 #: src/backend_iptables.py:263
 msgid "Checking ip6tables\n"
@@ -140,11 +140,11 @@ msgstr ""
 
 #: src/backend_iptables.py:266 src/backend_iptables.py:541
 msgid "problem running"
-msgstr ""
+msgstr "probleem töötamisel"
 
 #: src/backend_iptables.py:272
 msgid "Status: inactive"
-msgstr ""
+msgstr "Staatus: väljas"
 
 #: src/backend_iptables.py:432
 msgid "To"
@@ -156,7 +156,7 @@ msgstr ""
 
 #: src/backend_iptables.py:434
 msgid "Action"
-msgstr ""
+msgstr "Tegevus"
 
 #: src/backend_iptables.py:450 src/backend_iptables.py:454
 msgid "\n"
@@ -175,11 +175,15 @@ msgid ""
 "%(pol)s\n"
 "%(app)s%(status)s"
 msgstr ""
+"Staatus: aktiivne\n"
+"%(log)s\n"
+"%(pol)s\n"
+"%(app)s%(status)s"
 
 #: src/backend_iptables.py:474
 #, python-format
 msgid "Status: active%s"
-msgstr ""
+msgstr "Staatus: aktiivne%s"
 
 #: src/backend_iptables.py:479 src/backend_iptables.py:489
 msgid "running ufw-init"
@@ -191,6 +195,8 @@ msgid ""
 "problem running ufw-init\n"
 "%s"
 msgstr ""
+"probleem  ufw-init\n"
+"%s"
 
 #: src/backend_iptables.py:502
 msgid "Could not set LOGLEVEL"
@@ -198,12 +204,12 @@ msgstr ""
 
 #: src/backend_iptables.py:508
 msgid "Could not load logging rules"
-msgstr ""
+msgstr "Ei suuda laadida logi reegleid"
 
 #: src/backend_iptables.py:663 src/backend.py:273
 #, python-format
 msgid "Couldn't open '%s' for reading"
-msgstr ""
+msgstr "Ei saa avada '%s' lugemiseks"
 
 #: src/backend_iptables.py:674
 #, python-format
@@ -223,7 +229,7 @@ msgstr ""
 #: src/backend_iptables.py:753 src/backend.py:304
 #, python-format
 msgid "'%s' is not writable"
-msgstr ""
+msgstr "'%s' ei ole kirjutatav"
 
 #: src/backend_iptables.py:925
 msgid "Adding IPv6 rule failed: IPv6 not enabled"
@@ -250,7 +256,7 @@ msgstr ""
 #: src/backend_iptables.py:953
 #, python-format
 msgid "Invalid position '%d'"
-msgstr ""
+msgstr "Vigane positsioon '%d'"
 
 #: src/backend_iptables.py:957
 msgid "Cannot specify insert and delete"
@@ -259,7 +265,7 @@ msgstr ""
 #: src/backend_iptables.py:960
 #, python-format
 msgid "Cannot insert rule at position '%d'"
-msgstr ""
+msgstr "Ei saa sisestada reegleid positsioonile '%d'"
 
 #: src/backend_iptables.py:1018
 msgid "Skipping inserting existing rule"
@@ -275,23 +281,23 @@ msgstr ""
 
 #: src/backend_iptables.py:1050
 msgid "Couldn't update rules file"
-msgstr ""
+msgstr "Ei saa uuendada reeglite faili"
 
 #: src/backend_iptables.py:1055
 msgid "Rules updated"
-msgstr ""
+msgstr "Reeglid on uuendatud"
 
 #: src/backend_iptables.py:1057
 msgid "Rules updated (v6)"
-msgstr ""
+msgstr "Reeglid on uuendatud (v6)"
 
 #: src/backend_iptables.py:1065
 msgid "Rule inserted"
-msgstr ""
+msgstr "Reegel on lisatud"
 
 #: src/backend_iptables.py:1067
 msgid "Rule updated"
-msgstr ""
+msgstr "Reegel uuendatud"
 
 #: src/backend_iptables.py:1077
 msgid " (skipped reloading firewall)"
@@ -299,15 +305,15 @@ msgstr ""
 
 #: src/backend_iptables.py:1080
 msgid "Rule deleted"
-msgstr ""
+msgstr "Reegel on kustutatud"
 
 #: src/backend_iptables.py:1083
 msgid "Rule added"
-msgstr ""
+msgstr "Reegel lisatud"
 
 #: src/backend_iptables.py:1100 src/backend_iptables.py:1191
 msgid "Could not update running firewall"
-msgstr ""
+msgstr "Ei saa uuendada töös olevat tulemüüri"
 
 #: src/backend_iptables.py:1155
 #, python-format
@@ -326,12 +332,12 @@ msgstr ""
 #: src/backend_iptables.py:1337
 #, python-format
 msgid "Could not find '%s'. Aborting"
-msgstr ""
+msgstr "Ei suuda leida '%s'. Tühistamine"
 
 #: src/backend_iptables.py:1349
 #, python-format
 msgid "'%s' already exists. Aborting"
-msgstr ""
+msgstr "'%s' on juba olemas. Tühistamine"
 
 #: src/backend_iptables.py:1355
 #, python-format
@@ -363,7 +369,7 @@ msgstr ""
 
 #: src/backend.py:182
 msgid "Checks disabled"
-msgstr ""
+msgstr "Kontroll väljas"
 
 #: src/backend.py:188
 msgid "ERROR: this script should not be SUID"
@@ -375,12 +381,12 @@ msgstr ""
 
 #: src/backend.py:196
 msgid "You need to be root to run this script"
-msgstr ""
+msgstr "Sa pead olema juure õigustes, et jooksutada seda skripti"
 
 #: src/backend.py:206
 #, python-format
 msgid "'%s' does not exist"
-msgstr ""
+msgstr "'%s' ei eksisteeri"
 
 #: src/backend.py:235
 #, python-format
@@ -390,7 +396,7 @@ msgstr ""
 #: src/backend.py:242
 #, python-format
 msgid "%s is world writable!"
-msgstr ""
+msgstr "%s ei ole kirjutatav!"
 
 #: src/backend.py:246
 #, python-format
@@ -414,7 +420,7 @@ msgstr ""
 
 #: src/backend.py:298
 msgid "Invalid option"
-msgstr ""
+msgstr "Vigane valik"
 
 #: src/backend.py:354
 #, python-format
@@ -428,11 +434,11 @@ msgstr ""
 #: src/backend.py:477
 #, python-format
 msgid "Rules updated for profile '%s'"
-msgstr ""
+msgstr "Reeglid on uuendatud proffili '%s' jaoks"
 
 #: src/backend.py:483
 msgid "Couldn't update application rules"
-msgstr ""
+msgstr "Ei saa uuendada reeglite faili"
 
 #: src/backend.py:505
 #, python-format
@@ -446,37 +452,37 @@ msgstr ""
 
 #: src/backend.py:575
 msgid "Logging: "
-msgstr ""
+msgstr "Logid: "
 
 #: src/backend.py:579
 msgid "unknown"
-msgstr ""
+msgstr "tundmatu"
 
 #: src/backend.py:606
 msgid "Logging disabled"
-msgstr ""
+msgstr "Logimine väljas"
 
 #: src/backend.py:608
 msgid "Logging enabled"
-msgstr ""
+msgstr "Logimine sees"
 
 #: src/common.py:191
 #, python-format
 msgid "Bad port '%s'"
-msgstr ""
+msgstr "Halb port '%s'"
 
 #: src/common.py:252
 #, python-format
 msgid "Unsupported protocol '%s'"
-msgstr ""
+msgstr "Toetamata protokoll '%s'"
 
 #: src/common.py:280
 msgid "Bad source address"
-msgstr ""
+msgstr "Halb lähteaadress"
 
 #: src/common.py:290
 msgid "Bad destination address"
-msgstr ""
+msgstr "Halb sihtkoha aadress"
 
 #: src/common.py:298
 msgid "Bad interface type"
@@ -519,7 +525,7 @@ msgstr ""
 
 #: src/common.py:425
 msgid "Found exact match"
-msgstr ""
+msgstr "Leiti täpne sobivus"
 
 #: src/common.py:429
 #, python-format
@@ -568,15 +574,15 @@ msgstr ""
 
 #: src/frontend.py:166
 msgid "yes"
-msgstr ""
+msgstr "jah"
 
 #: src/frontend.py:211
 msgid "Firewall is active and enabled on system startup"
-msgstr ""
+msgstr "Tulemüür on aktiivne ja sisselülitatud süsteemis käivitamiseks"
 
 #: src/frontend.py:218
 msgid "Firewall stopped and disabled on system startup"
-msgstr ""
+msgstr "Tulemüür on peatatud ja välja lülitatud süsteemis käivitamiseks"
 
 #: src/frontend.py:270
 msgid "Could not get listening status"
@@ -584,13 +590,15 @@ msgstr ""
 
 #: src/frontend.py:339
 msgid "Added user rules (see 'ufw status' for running firewall):"
-msgstr ""
+msgstr "Lisatud kasutaja reegeid (vaata 'ufw status' tulemüüril):"
 
 #: src/frontend.py:342
 msgid ""
 "\n"
 "(None)"
 msgstr ""
+"\n"
+"(Mitte)"
 
 #: src/frontend.py:398 src/frontend.py:496 src/frontend.py:506
 #, python-format
@@ -599,7 +607,7 @@ msgstr ""
 
 #: src/frontend.py:429
 msgid "Invalid position '"
-msgstr ""
+msgstr "Vigane positsioon '"
 
 #: src/frontend.py:503
 msgid "IPv6 support not enabled"
@@ -652,7 +660,7 @@ msgstr ""
 
 #: src/frontend.py:643 src/frontend.py:788
 msgid "Firewall reloaded"
-msgstr ""
+msgstr "Tulemüür on uuendatud"
 
 #: src/frontend.py:645
 msgid "Firewall not enabled (skipping reload)"
@@ -669,26 +677,26 @@ msgstr ""
 
 #: src/frontend.py:700
 msgid "Available applications:"
-msgstr ""
+msgstr "Saadaval olevad rakendused:"
 
 #: src/frontend.py:721
 #, python-format
 msgid "Could not find profile '%s'"
-msgstr ""
+msgstr "Ei suuda leida '%s'"
 
 #: src/frontend.py:726
 msgid "Invalid profile"
-msgstr ""
+msgstr "Vigane profiil"
 
 #: src/frontend.py:729
 #, python-format
 msgid "Profile: %s\n"
-msgstr ""
+msgstr "Profiil: %s\n"
 
 #: src/frontend.py:730
 #, python-format
 msgid "Title: %s\n"
-msgstr ""
+msgstr "Tiitel: %s\n"
 
 #: src/frontend.py:733
 #, python-format
@@ -696,14 +704,16 @@ msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
+"Kirjeldus: %s\n"
+"\n"
 
 #: src/frontend.py:739
 msgid "Ports:"
-msgstr ""
+msgstr "Pordid:"
 
 #: src/frontend.py:741
 msgid "Port:"
-msgstr ""
+msgstr "Port:"
 
 #: src/frontend.py:790
 msgid "Skipped reloading firewall"
@@ -716,7 +726,7 @@ msgstr ""
 #: src/frontend.py:815
 #, python-format
 msgid "Unknown policy '%s'"
-msgstr ""
+msgstr "Tundmatu poliis '%s'"
 
 #: src/frontend.py:872
 #, python-format
@@ -742,7 +752,7 @@ msgstr ""
 #: src/parser.py:108
 #, python-format
 msgid "Cannot insert rule at position '%s'"
-msgstr ""
+msgstr "Ei saa sisestada reegleid positsioonile '%s'"
 
 #: src/parser.py:142
 msgid "Invalid interface clause"
@@ -758,7 +768,7 @@ msgstr ""
 
 #: src/parser.py:205 src/parser.py:219
 msgid "Bad port"
-msgstr ""
+msgstr "Halb port"
 
 #: src/parser.py:210 src/parser.py:342
 msgid "Port ranges must be numeric"
@@ -771,7 +781,7 @@ msgstr ""
 
 #: src/parser.py:228
 msgid "Wrong number of arguments"
-msgstr ""
+msgstr "Vigane argumentide arv"
 
 #: src/parser.py:232
 msgid "Need 'to' or 'from' clause"
@@ -818,7 +828,7 @@ msgstr ""
 
 #: src/parser.py:383 src/parser.py:393 src/parser.py:402
 msgid "Could not find protocol"
-msgstr ""
+msgstr "Ei suuda leida protokolli"
 
 #: src/parser.py:409
 msgid "Protocol mismatch (from/to)"
@@ -860,7 +870,7 @@ msgstr ""
 #: src/util.py:448
 #, python-format
 msgid "Couldn't find '%s'"
-msgstr ""
+msgstr "Ei leia '%s'"
 
 #: src/util.py:454
 #, python-format
