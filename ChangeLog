@@ -49,8 +49,8 @@ ufw (0.34) UNRELEASED; urgency=low
       po/tl.po, po/tr.po, po/uk.po, po/ur.po, po/zh_CN.po, po/zh_TW.po
     - thanks to all contributors: https://translations.launchpad.net/ufw
   * also use .lower() on translations for 'yes' (LP: #1438647)
-  * allow router-solicatation and router-advertisement in before6-output.
-    Thanks to alci@mecadu.org (LP: #1434525)
+  * adjust/rearrange before6.rules for rfc4890 'must not be blocked' and
+    'should not be blocked' (LP: #1434525, LP: #1030214)
   * doc/systemd.example: add service file from Ubuntu (LP: #1341083)
   * correctly spell qBittorrent (LP: #1273965)
   * update man page for app rules (LP: #1155292)
