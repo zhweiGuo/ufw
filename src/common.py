@@ -246,6 +246,7 @@ class UFWRule:
            protocol == "ipv6" or \
            protocol == "esp" or \
            protocol == "ah" or \
+           protocol == "igmp" or \
            protocol == "any":
             self.protocol = protocol
         else:

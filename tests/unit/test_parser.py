@@ -384,7 +384,11 @@ class ParserTestCase(unittest.TestCase):
                 ['rule', 'deny', 'from', 'any', 'port', 'domain', 'to', \
                  'any', 'port', 'tftp'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ipv6'],
-                ['rule', 'deny', 'to', 'any', 'proto', 'esp'],
+                ['rule', 'allow', 'to', 'any', 'proto', 'igmp'],
+                ['rule', 'reject', 'to', 'any', 'proto', 'esp'],
+                ['rule', 'deny', 'to', '224.0.0.1', 'proto', 'igmp'],
+                ['rule', 'deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', \
+                 'proto', 'igmp'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ah'],
                ]
         count = 0
@@ -459,7 +463,11 @@ class ParserTestCase(unittest.TestCase):
                   'proto', 'tcp'], ufw.common.UFWError),
                 (['rule', 'deny', 'to', '::1', 'proto', 'ipv6'],
                  ufw.common.UFWError),
+                (['rule', 'deny', 'to', '::1', 'proto', 'igmp'],
+                 ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ipv6'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'igmp'],
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'esp'],
                  ufw.common.UFWError),
