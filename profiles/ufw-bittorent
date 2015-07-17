@@ -15,5 +15,5 @@ ports=6881/tcp|4444/udp
 
 [qBittorrent]
 title=qBittorrent
-description=qBittorent BitTorrent client
+description=qBittorrent BitTorrent client
 ports=6881/tcp
