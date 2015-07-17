@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-26 14:42-0600\n"
+"POT-Creation-Date: 2015-07-17 09:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid ": Need at least python 2.6)\n"
 msgstr ""
 
-#: src/ufw:109 src/frontend.py:596 src/frontend.py:898
+#: src/ufw:109 src/frontend.py:597 src/frontend.py:899
 msgid "Aborted"
 msgstr ""
 
@@ -705,93 +705,93 @@ msgid ""
 "Proceed with operation (%(yes)s|%(no)s)? "
 msgstr ""
 
-#: src/frontend.py:614
+#: src/frontend.py:615
 msgid "Unsupported default policy"
 msgstr ""
 
-#: src/frontend.py:643 src/frontend.py:788
+#: src/frontend.py:644 src/frontend.py:789
 msgid "Firewall reloaded"
 msgstr ""
 
-#: src/frontend.py:645
+#: src/frontend.py:646
 msgid "Firewall not enabled (skipping reload)"
 msgstr ""
 
-#: src/frontend.py:662 src/frontend.py:676 src/frontend.py:713
+#: src/frontend.py:663 src/frontend.py:677 src/frontend.py:714
 msgid "Invalid profile name"
 msgstr ""
 
-#: src/frontend.py:681 src/frontend.py:863
+#: src/frontend.py:682 src/frontend.py:864
 #, python-format
 msgid "Unsupported action '%s'"
 msgstr ""
 
-#: src/frontend.py:700
+#: src/frontend.py:701
 msgid "Available applications:"
 msgstr ""
 
-#: src/frontend.py:721
+#: src/frontend.py:722
 #, python-format
 msgid "Could not find profile '%s'"
 msgstr ""
 
-#: src/frontend.py:726
+#: src/frontend.py:727
 msgid "Invalid profile"
-msgstr ""
-
-#: src/frontend.py:729
-#, python-format
-msgid "Profile: %s\n"
 msgstr ""
 
 #: src/frontend.py:730
 #, python-format
+msgid "Profile: %s\n"
+msgstr ""
+
+#: src/frontend.py:731
+#, python-format
 msgid "Title: %s\n"
 msgstr ""
 
-#: src/frontend.py:733
+#: src/frontend.py:734
 #, python-format
 msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
 
-#: src/frontend.py:739
+#: src/frontend.py:740
 msgid "Ports:"
 msgstr ""
 
-#: src/frontend.py:741
+#: src/frontend.py:742
 msgid "Port:"
 msgstr ""
 
-#: src/frontend.py:790
+#: src/frontend.py:791
 msgid "Skipped reloading firewall"
 msgstr ""
 
-#: src/frontend.py:800
+#: src/frontend.py:801
 msgid "Cannot specify 'all' with '--add-new'"
 msgstr ""
 
-#: src/frontend.py:815
+#: src/frontend.py:816
 #, python-format
 msgid "Unknown policy '%s'"
 msgstr ""
 
-#: src/frontend.py:872
+#: src/frontend.py:873
 #, python-format
 msgid ""
 "Command may disrupt existing ssh connections. Proceed with operation "
 "(%(yes)s|%(no)s)? "
 msgstr ""
 
-#: src/frontend.py:885
+#: src/frontend.py:886
 #, python-format
 msgid ""
 "Resetting all rules to installed defaults. Proceed with operation (%(yes)s|"
 "%(no)s)? "
 msgstr ""
 
-#: src/frontend.py:889
+#: src/frontend.py:890
 #, python-format
 msgid ""
 "Resetting all rules to installed defaults. This may disrupt existing ssh "
