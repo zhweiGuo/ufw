@@ -49,6 +49,8 @@ ufw (0.34) UNRELEASED; urgency=low
       po/tl.po, po/tr.po, po/uk.po, po/ur.po, po/zh_CN.po, po/zh_TW.po
     - thanks to all contributors: https://translations.launchpad.net/ufw
   * also use .lower() on translations for 'yes' (LP: #1438647)
+  * allow router-solicatation and router-advertisement in before6-output.
+    Thanks to alci@mecadu.org (LP: #1434525)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 09:28:51 -0500
 
