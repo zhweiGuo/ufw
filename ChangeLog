@@ -51,6 +51,7 @@ ufw (0.34) UNRELEASED; urgency=low
   * also use .lower() on translations for 'yes' (LP: #1438647)
   * allow router-solicatation and router-advertisement in before6-output.
     Thanks to alci@mecadu.org (LP: #1434525)
+  * doc/systemd.example: add service file from Ubuntu (LP: #1341083)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 09:28:51 -0500
 

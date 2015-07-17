@@ -63,9 +63,9 @@ script (eg rc.local for systems that use it):
 # /lib/ufw/ufw-init start
 
 For systems that use SysV initscripts, an example script is provided in
-doc/initscript.example. See doc/upstart.example for an Upstart example. Consult
-your distribution's documentation for the proper way to modify your boot
-process.
+doc/initscript.example. See doc/upstart.example for an Upstart example and
+doc/systemd.example as a systemd example. Consult your distribution's
+documentation for the proper way to modify your boot process.
 
 
 Basic Layout
