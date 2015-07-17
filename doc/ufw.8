@@ -1,4 +1,4 @@
-.TH UFW: "8" "" "February 2014" "February 2014"
+.TH UFW: "8" "" "July 2015" "July 2015"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -21,11 +21,11 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBshow\fR REPORT
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] PORT[/PROTOCOL]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] [ PORT[/PROTOCOL] | APPNAME ]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBrule\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR [\fBon\fR INTERFACE]] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBrule\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR [\fBon\fR INTERFACE]] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME ]] [\fBto\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME ]]
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBroute\fR [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR \fBon\fR INTERFACE] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] \fBroute\fR [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR \fBon\fR INTERFACE] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME]] [\fBto\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdelete\fR NUM
 .TP
