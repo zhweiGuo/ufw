@@ -586,7 +586,8 @@ class UFWFrontend:
                                                  'no': self.no})
             msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
-            if ans != "y" and ans != self.yes and ans != self.yes_full:
+            if ans != "y" and ans != self.yes.lower() and \
+               ans != self.yes_full.lower():
                 proceed = False
 
         res = ""
