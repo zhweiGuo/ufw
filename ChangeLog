@@ -1,4 +1,4 @@
-ufw (0.34) UNRELEASED; urgency=low
+ufw (0.34) RELEASED; urgency=low
 
   * refactor capabilities checks and only call when needed
   * error out early instead of tracing back with iptables errors in
@@ -52,6 +52,7 @@ ufw (0.34) UNRELEASED; urgency=low
   * allow router-solicatation and router-advertisement in before6-output.
     Thanks to alci@mecadu.org (LP: #1434525)
   * doc/systemd.example: add service file from Ubuntu (LP: #1341083)
+  * correctly spell qBittorrent (LP: #1273965)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 09:28:51 -0500
 
