@@ -34,6 +34,8 @@ echo "TESTING ARGS (enable/disable)" >> $TESTTMP/result
 # bad
 do_cmd "1" null --dry-run enabled
 do_cmd "1" null --dry-run disabled
+do_cmd "1" null --dry-run enable OpenSSH
+do_cmd "1" null --dry-run disable OpenSSH
 
 echo "TESTING ARGS (allow/deny/limit)" >> $TESTTMP/result
 do_cmd "1" null --dry-run allow

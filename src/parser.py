@@ -639,6 +639,11 @@ class UFWCommandBasic(UFWCommand):
         type = 'basic'
         UFWCommand.__init__(self, type, command)
 
+    def parse(self, argv):
+        if len(argv) != 1:
+            raise ValueError()
+        return UFWCommand.parse(self, argv)
+
 class UFWCommandDefault(UFWCommand):
     '''Class for parsing ufw default commands'''
     def __init__(self, command):
