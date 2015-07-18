@@ -58,6 +58,8 @@ ufw (0.34) UNRELEASED; urgency=low
   * support igmp protocol (LP: #946322)
   * adjust testsuite for systems supporting smtp/udp (LP: #815982)
   * enforce that basic commands don't have arguments (LP: #1155250)
+  * update command completion for --dry-run, --force, --help and route
+    (LP: #1225666)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 17:12:43 -0500
 
