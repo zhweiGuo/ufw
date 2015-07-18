@@ -56,6 +56,7 @@ ufw (0.34) UNRELEASED; urgency=low
   * correctly spell qBittorrent (LP: #1273965)
   * update man page for app rules (LP: #1155292)
   * support igmp protocol (LP: #946322)
+  * adjust testsuite for systems supporting smtp/udp (LP: #815982)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 17:12:43 -0500
 

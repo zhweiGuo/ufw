@@ -513,7 +513,7 @@ TESTING ARGS (allow/deny/limit ipv6 when not enabled)
 
 
 TESTING BAD SERVICES
-168: --dry-run allow smtp/udp
+168: --dry-run allow smtp/esp
 
 
 169: --dry-run allow tftp/tcp
@@ -525,10 +525,10 @@ TESTING BAD SERVICES
 171: --dry-run allow to any port tftp from any port smtp
 
 
-172: --dry-run allow to any port smtp from any port 23 proto udp
+172: --dry-run allow to any port smtp from any port 23 proto esp
 
 
-173: --dry-run allow to any port 23 from any port smtp proto udp
+173: --dry-run allow to any port 23 from any port smtp proto esp
 
 
 174: --dry-run allow to any port tftp from any port 23 proto tcp
@@ -537,7 +537,7 @@ TESTING BAD SERVICES
 175: --dry-run allow to any port 23 from any port tftp proto tcp
 
 
-176: --dry-run allow to any port smtp from any port ssh proto udp
+176: --dry-run allow to any port smtp from any port ssh proto esp
 
 
 177: --dry-run allow to any port tftp from any port ssh proto tcp

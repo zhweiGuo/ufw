@@ -130,15 +130,17 @@ do_cmd "1" null --dry-run deny to 2001:db8::/32 from 10.0.0.1
 do_cmd "1" null --dry-run limit to 2001:db8::/32 from 10.0.0.1
 
 echo "TESTING BAD SERVICES" >> $TESTTMP/result
-do_cmd "1" null --dry-run allow smtp/udp
+# use 'esp' as the protocol for smtp since it shouldn't ever match since some
+# systems list 'udp' as valid with smtp (LP: #815982)
+do_cmd "1" null --dry-run allow smtp/esp
 do_cmd "1" null --dry-run allow tftp/tcp
 do_cmd "1" null --dry-run allow to any port smtp from any port tftp
 do_cmd "1" null --dry-run allow to any port tftp from any port smtp
-do_cmd "1" null --dry-run allow to any port smtp from any port 23 proto udp
-do_cmd "1" null --dry-run allow to any port 23 from any port smtp proto udp
+do_cmd "1" null --dry-run allow to any port smtp from any port 23 proto esp
+do_cmd "1" null --dry-run allow to any port 23 from any port smtp proto esp
 do_cmd "1" null --dry-run allow to any port tftp from any port 23 proto tcp
 do_cmd "1" null --dry-run allow to any port 23 from any port tftp proto tcp
-do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto udp
+do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto esp
 do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
 
 echo "TESTING BAD MULTIPORTS" >> $TESTTMP/result

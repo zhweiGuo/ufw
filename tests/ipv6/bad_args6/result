@@ -431,7 +431,7 @@ TESTING ARGS (allow/deny/limit mixed ipv4/ipv6)
 
 
 TESTING BAD SERVICES
-141: --dry-run allow smtp/udp
+141: --dry-run allow smtp/esp
 
 
 142: --dry-run allow tftp/tcp
@@ -443,10 +443,10 @@ TESTING BAD SERVICES
 144: --dry-run allow to any port tftp from any port smtp
 
 
-145: --dry-run allow to any port smtp from any port 23 proto udp
+145: --dry-run allow to any port smtp from any port 23 proto esp
 
 
-146: --dry-run allow to any port 23 from any port smtp proto udp
+146: --dry-run allow to any port 23 from any port smtp proto esp
 
 
 147: --dry-run allow to any port tftp from any port 23 proto tcp
@@ -455,7 +455,7 @@ TESTING BAD SERVICES
 148: --dry-run allow to any port 23 from any port tftp proto tcp
 
 
-149: --dry-run allow to any port smtp from any port ssh proto udp
+149: --dry-run allow to any port smtp from any port ssh proto esp
 
 
 150: --dry-run allow to any port tftp from any port ssh proto tcp
