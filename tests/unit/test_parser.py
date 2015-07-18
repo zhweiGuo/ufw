@@ -390,6 +390,7 @@ class ParserTestCase(unittest.TestCase):
                 ['rule', 'deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', \
                  'proto', 'igmp'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ah'],
+                ['rule', 'allow', 'out', 'on', 'br_lan'],
                ]
         count = 0
         for cmd in cmds:
