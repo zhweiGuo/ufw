@@ -158,6 +158,10 @@ This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 25 on this
 host. IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6 firewalling
 to work.
 
+  ufw deny in on eth0 to 224.0.0.1 proto igmp
+
+This will deny all igmp traffic to 224.0.0.1 on the eth0 interface.
+
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
 The above will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive.
