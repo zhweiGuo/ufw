@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-17 09:55-0500\n"
+"POT-Creation-Date: 2015-07-20 08:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid ": Need at least python 2.6)\n"
 msgstr ""
 
-#: src/ufw:109 src/frontend.py:597 src/frontend.py:899
+#: src/ufw:109 src/frontend.py:603 src/frontend.py:905
 msgid "Aborted"
 msgstr ""
 
@@ -162,63 +162,63 @@ msgstr ""
 msgid "Bad port '%s'"
 msgstr ""
 
-#: src/common.py:252
+#: src/common.py:253
 #, python-format
 msgid "Unsupported protocol '%s'"
 msgstr ""
 
-#: src/common.py:280
+#: src/common.py:281
 msgid "Bad source address"
 msgstr ""
 
-#: src/common.py:290
+#: src/common.py:291
 msgid "Bad destination address"
 msgstr ""
 
-#: src/common.py:298
+#: src/common.py:299
 msgid "Bad interface type"
 msgstr ""
 
-#: src/common.py:302
+#: src/common.py:303
 msgid "Bad interface name: reserved character: '!'"
 msgstr ""
 
-#: src/common.py:306
+#: src/common.py:307
 msgid "Bad interface name"
 msgstr ""
 
-#: src/common.py:310
+#: src/common.py:311
 msgid "Bad interface name: can't use interface aliases"
 msgstr ""
 
-#: src/common.py:321
+#: src/common.py:322
 #, python-format
 msgid "Insert position '%s' is not a valid position"
 msgstr ""
 
-#: src/common.py:331
+#: src/common.py:332
 #, python-format
 msgid "Invalid log type '%s'"
 msgstr ""
 
-#: src/common.py:339
+#: src/common.py:340
 #, python-format
 msgid "Unsupported direction '%s'"
 msgstr ""
 
-#: src/common.py:350
+#: src/common.py:351
 msgid "Could not normalize source address"
 msgstr ""
 
-#: src/common.py:361
+#: src/common.py:362
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:425
+#: src/common.py:426
 msgid "Found exact match"
 msgstr ""
 
-#: src/common.py:429
+#: src/common.py:430
 #, python-format
 msgid "Found non-action/non-logtype match (%(xa)s/%(ya)s %(xl)s/%(yl)s)"
 msgstr ""
@@ -327,7 +327,7 @@ msgstr ""
 msgid "Invalid interface clause for route rule"
 msgstr ""
 
-#: src/parser.py:850
+#: src/parser.py:855
 #, python-format
 msgid "Command '%s' already exists"
 msgstr ""
@@ -507,7 +507,7 @@ msgstr ""
 msgid "Skipping inserting existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:1034 src/frontend.py:403
+#: src/backend_iptables.py:1034 src/frontend.py:409
 msgid "Could not delete non-existent rule"
 msgstr ""
 
@@ -602,6 +602,9 @@ msgid ""
 " %(limit)-31s add limit %(rule)s\n"
 " %(delete)-31s delete %(urule)s\n"
 " %(insert)-31s insert %(urule)s at %(number)s\n"
+" %(route)-31s add route %(urule)s\n"
+" %(route-delete)-31s delete route %(urule)s\n"
+" %(route-insert)-31s insert route %(urule)s at %(number)s\n"
 " %(reload)-31s reload firewall\n"
 " %(reset)-31s reset firewall\n"
 " %(status)-31s show firewall status\n"
@@ -617,87 +620,87 @@ msgid ""
 " %(appdefault)-31s set default application policy\n"
 msgstr ""
 
-#: src/frontend.py:164
+#: src/frontend.py:170
 msgid "n"
 msgstr ""
 
-#: src/frontend.py:165
+#: src/frontend.py:171
 msgid "y"
 msgstr ""
 
-#: src/frontend.py:166
+#: src/frontend.py:172
 msgid "yes"
 msgstr ""
 
-#: src/frontend.py:211
+#: src/frontend.py:217
 msgid "Firewall is active and enabled on system startup"
 msgstr ""
 
-#: src/frontend.py:218
+#: src/frontend.py:224
 msgid "Firewall stopped and disabled on system startup"
 msgstr ""
 
-#: src/frontend.py:270
+#: src/frontend.py:276
 msgid "Could not get listening status"
 msgstr ""
 
-#: src/frontend.py:339
+#: src/frontend.py:345
 msgid "Added user rules (see 'ufw status' for running firewall):"
 msgstr ""
 
-#: src/frontend.py:342
+#: src/frontend.py:348
 msgid ""
 "\n"
 "(None)"
 msgstr ""
 
-#: src/frontend.py:398 src/frontend.py:496 src/frontend.py:506
+#: src/frontend.py:404 src/frontend.py:502 src/frontend.py:512
 #, python-format
 msgid "Invalid IP version '%s'"
 msgstr ""
 
-#: src/frontend.py:429
+#: src/frontend.py:435
 msgid "Invalid position '"
 msgstr ""
 
-#: src/frontend.py:503
+#: src/frontend.py:509
 msgid "IPv6 support not enabled"
 msgstr ""
 
-#: src/frontend.py:514
+#: src/frontend.py:520
 msgid "Rule changed after normalization"
 msgstr ""
 
-#: src/frontend.py:538
+#: src/frontend.py:544
 #, python-format
 msgid "Could not back out rule '%s'"
 msgstr ""
 
-#: src/frontend.py:542
+#: src/frontend.py:548
 msgid ""
 "\n"
 "Error applying application rules."
 msgstr ""
 
-#: src/frontend.py:544
+#: src/frontend.py:550
 msgid " Some rules could not be unapplied."
 msgstr ""
 
-#: src/frontend.py:546
+#: src/frontend.py:552
 msgid " Attempted rules successfully unapplied."
 msgstr ""
 
-#: src/frontend.py:557
+#: src/frontend.py:563
 #, python-format
 msgid "Could not find rule '%s'"
 msgstr ""
 
-#: src/frontend.py:562 src/frontend.py:567
+#: src/frontend.py:568 src/frontend.py:573
 #, python-format
 msgid "Could not find rule '%d'"
 msgstr ""
 
-#: src/frontend.py:583
+#: src/frontend.py:589
 #, python-format
 msgid ""
 "Deleting:\n"
@@ -705,93 +708,93 @@ msgid ""
 "Proceed with operation (%(yes)s|%(no)s)? "
 msgstr ""
 
-#: src/frontend.py:615
+#: src/frontend.py:621
 msgid "Unsupported default policy"
 msgstr ""
 
-#: src/frontend.py:644 src/frontend.py:789
+#: src/frontend.py:650 src/frontend.py:795
 msgid "Firewall reloaded"
 msgstr ""
 
-#: src/frontend.py:646
+#: src/frontend.py:652
 msgid "Firewall not enabled (skipping reload)"
 msgstr ""
 
-#: src/frontend.py:663 src/frontend.py:677 src/frontend.py:714
+#: src/frontend.py:669 src/frontend.py:683 src/frontend.py:720
 msgid "Invalid profile name"
 msgstr ""
 
-#: src/frontend.py:682 src/frontend.py:864
+#: src/frontend.py:688 src/frontend.py:870
 #, python-format
 msgid "Unsupported action '%s'"
 msgstr ""
 
-#: src/frontend.py:701
+#: src/frontend.py:707
 msgid "Available applications:"
 msgstr ""
 
-#: src/frontend.py:722
+#: src/frontend.py:728
 #, python-format
 msgid "Could not find profile '%s'"
 msgstr ""
 
-#: src/frontend.py:727
+#: src/frontend.py:733
 msgid "Invalid profile"
 msgstr ""
 
-#: src/frontend.py:730
+#: src/frontend.py:736
 #, python-format
 msgid "Profile: %s\n"
 msgstr ""
 
-#: src/frontend.py:731
+#: src/frontend.py:737
 #, python-format
 msgid "Title: %s\n"
 msgstr ""
 
-#: src/frontend.py:734
+#: src/frontend.py:740
 #, python-format
 msgid ""
 "Description: %s\n"
 "\n"
 msgstr ""
 
-#: src/frontend.py:740
+#: src/frontend.py:746
 msgid "Ports:"
 msgstr ""
 
-#: src/frontend.py:742
+#: src/frontend.py:748
 msgid "Port:"
 msgstr ""
 
-#: src/frontend.py:791
+#: src/frontend.py:797
 msgid "Skipped reloading firewall"
 msgstr ""
 
-#: src/frontend.py:801
+#: src/frontend.py:807
 msgid "Cannot specify 'all' with '--add-new'"
 msgstr ""
 
-#: src/frontend.py:816
+#: src/frontend.py:822
 #, python-format
 msgid "Unknown policy '%s'"
 msgstr ""
 
-#: src/frontend.py:873
+#: src/frontend.py:879
 #, python-format
 msgid ""
 "Command may disrupt existing ssh connections. Proceed with operation "
 "(%(yes)s|%(no)s)? "
 msgstr ""
 
-#: src/frontend.py:886
+#: src/frontend.py:892
 #, python-format
 msgid ""
 "Resetting all rules to installed defaults. Proceed with operation (%(yes)s|"
 "%(no)s)? "
 msgstr ""
 
-#: src/frontend.py:890
+#: src/frontend.py:896
 #, python-format
 msgid ""
 "Resetting all rules to installed defaults. This may disrupt existing ssh "
