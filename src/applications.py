@@ -139,7 +139,11 @@ def get_profiles(profiles_dir):
                 #debug("add '%s' = '%s' to '%s'" % (key, value, p))
                 pdict[key] = value
 
-            profiles[p] = pdict
+            try:
+                verify_profile(p, pdict)
+                profiles[p] = pdict
+            except UFWError as e:
+                warn(e)
 
     return profiles
 
@@ -185,9 +189,9 @@ def verify_profile(name, profile):
     try:
         for p in ports:
             (port, proto) = ufw.util.parse_port_proto(p)
-            # quick check if error in profile
-            #if not proto:
-            #    proto = "any"
+            # quick checks if error in profile
+            if proto == "any" and (':' in port or ',' in port):
+                raise UFWError(err_msg)
             rule = ufw.common.UFWRule("ACCEPT", proto, port)
             debug(rule)
     except Exception as e:
