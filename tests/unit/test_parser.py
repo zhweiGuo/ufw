@@ -383,12 +383,15 @@ class ParserTestCase(unittest.TestCase):
                 ['rule', 'delete', 'allow', '22'],
                 ['rule', 'deny', 'from', 'any', 'port', 'domain', 'to', \
                  'any', 'port', 'tftp'],
+                ['rule', 'allow', 'to', 'any', 'proto', 'gre'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ipv6'],
                 ['rule', 'allow', 'to', 'any', 'proto', 'igmp'],
                 ['rule', 'reject', 'to', 'any', 'proto', 'esp'],
                 ['rule', 'deny', 'to', '224.0.0.1', 'proto', 'igmp'],
                 ['rule', 'deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', \
                  'proto', 'igmp'],
+                ['rule', 'allow', 'in', 'on', 'eth0', 'to', '192.168.0.1', \
+                 'proto', 'gre'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ah'],
                 ['rule', 'allow', 'out', 'on', 'br_lan'],
                ]
@@ -473,6 +476,8 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'esp'],
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'gre'],
                  ufw.common.UFWError),
                 (['rule', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],

@@ -78,6 +78,12 @@ class UFWCommandRule(UFWCommand):
         logtype = ""
         remove = False
 
+        # Cannot specify port with these protocols
+        portless_protocols = [ 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
+
+        # Cannot specify ipv6 with these protocols
+        ipv4_only_protocols = ['ipv6', 'igmp']
+
         if len(argv) > 0 and argv[0].lower() == "rule":
             argv.remove(argv[0])
 
@@ -219,8 +225,7 @@ class UFWCommandRule(UFWCommand):
                     err_msg = _("Bad port")
                     raise UFWError(err_msg)
 
-            # Don't specify a port with ipv6, esp, ah or igmp protocols
-            if rule.protocol in [ 'ipv6', 'esp', 'ah', 'igmp' ]:
+            if rule.protocol in portless_protocols:
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (rule.protocol)
                 raise UFWError(err_msg)
@@ -424,7 +429,7 @@ class UFWCommandRule(UFWCommand):
                         % (rule.protocol)
             raise UFWError(err_msg)
 
-        if rule.protocol in ['ipv6', 'igmp']:
+        if rule.protocol in ipv4_only_protocols:
             if type == "v6":
                 # Can't use protocol these protocols with v6 addresses
                 err_msg = _("Invalid IPv6 address with protocol '%s'") % \
@@ -435,8 +440,7 @@ class UFWCommandRule(UFWCommand):
                       (rule.protocol))
                 type = "v4"
 
-        # Don't specify a port with ipv6, esp, ah or igmp protocols
-        if rule.protocol in [ 'ipv6', 'esp', 'ah', 'igmp' ]:
+        if rule.protocol in portless_protocols:
             if rule.dport != "any" or rule.sport != "any":
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (rule.protocol)

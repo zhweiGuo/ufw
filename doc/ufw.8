@@ -162,6 +162,10 @@ to work.
 
 This will deny all igmp traffic to 224.0.0.1 on the eth0 interface.
 
+  ufw allow in on eth0 to 192.168.0.1 proto gre
+
+This will allow all gre traffic to 192.168.0.1 on the eth0 interface.
+
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
 The above will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive.
