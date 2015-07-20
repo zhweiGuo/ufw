@@ -61,6 +61,7 @@ ufw (0.34) UNRELEASED; urgency=low
   * update command completion for --dry-run, --force, --help and route
     (LP: #1225666)
   * support gre protocol (LP: #1418879)
+  * support ./setup.py build (LP: #819600)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 17:12:43 -0500
 

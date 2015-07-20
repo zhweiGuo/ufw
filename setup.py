@@ -64,32 +64,39 @@ class Install(_install, object):
         real_sharedir = os.path.join(real_prefix, 'share', 'ufw')
 
         # Update the modules' paths
-        for f in [ 'common.py' ]:
-            print("Updating " + f)
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
-                             os.path.join('staging', f)])
+        for fn in [ 'common.py' ]:
+            # 'staging' is used with just 'install' but build_lib is used when
+            # using 'build'. We could probably override 'def build()' but this
+            # at least works
+            for d in [os.path.join(self.build_lib, "ufw"), 'staging']:
+                f = os.path.join(d, fn)
+                if not os.path.exists(f):
+                    continue
+                print("Updating " + f)
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#STATE_PREFIX#%" + real_statedir + "%g",
-                             os.path.join('staging', f)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#STATE_PREFIX#%" + real_statedir + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#PREFIX#%" + real_prefix + "%g",
-                             os.path.join('staging', f)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#PREFIX#%" + real_prefix + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
-                             os.path.join('staging', f)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#SHARE_DIR#%" + real_sharedir + "%g",
-                             os.path.join('staging', f)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#SHARE_DIR#%" + real_sharedir + "%g",
+                                 f])
 
         if 'UFW_SKIP_CHECKS' in os.environ and \
            os.environ['UFW_SKIP_CHECKS'] != '':
