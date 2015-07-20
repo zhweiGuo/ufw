@@ -64,32 +64,32 @@ class Install(_install, object):
         real_sharedir = os.path.join(real_prefix, 'share', 'ufw')
 
         # Update the modules' paths
-        for file in [ 'common.py' ]:
-            print("Updating " + file)
+        for f in [ 'common.py' ]:
+            print("Updating " + f)
             subprocess.call(["sed",
                              "-i",
                              "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
-                             os.path.join('staging', file)])
+                             os.path.join('staging', f)])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#STATE_PREFIX#%" + real_statedir + "%g",
-                             os.path.join('staging', file)])
+                             os.path.join('staging', f)])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#PREFIX#%" + real_prefix + "%g",
-                             os.path.join('staging', file)])
+                             os.path.join('staging', f)])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
-                             os.path.join('staging', file)])
+                             os.path.join('staging', f)])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#SHARE_DIR#%" + real_sharedir + "%g",
-                             os.path.join('staging', file)])
+                             os.path.join('staging', f)])
 
         if 'UFW_SKIP_CHECKS' in os.environ and \
            os.environ['UFW_SKIP_CHECKS'] != '':
@@ -185,37 +185,37 @@ class Install(_install, object):
         self.copy_file('src/after.init', init_after_hook)
 
         # Update the installed rules files' permissions
-        for file in [ before_rules, after_rules, before6_rules, after6_rules, \
+        for f in [ before_rules, after_rules, before6_rules, after6_rules, \
                       user_rules, user6_rules, init_before_hook, \
                       init_after_hook ]:
-            os.chmod(file, 0o640)
+            os.chmod(f, 0o640)
 
         # Update the installed files' paths
-        for file in [ defaults, ufwconf, before_rules, after_rules, \
+        for f in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, script, \
                       manpage, manpage_f, sysctl, init_helper, \
                       init_helper_functions, init_before_hook, \
                       init_after_hook ]:
-            print("Updating " + file)
+            print("Updating " + f)
             subprocess.call(["sed",
                              "-i",
                              "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
-                             file])
+                             f])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#PREFIX#%" + real_prefix + "%g",
-                             file])
+                             f])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#STATE_PREFIX#%" + real_statedir + "%g",
-                             file])
+                             f])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#VERSION#%" + ufw_version + "%g",
-                             file])
+                             f])
 
         # Install pristine copies of rules files
         sharedir = real_sharedir
@@ -223,10 +223,10 @@ class Install(_install, object):
             sharedir = self.root + real_sharedir
         rulesdir = os.path.join(sharedir, 'iptables')
         self.mkpath(rulesdir)
-        for file in [ before_rules, after_rules, \
+        for f in [ before_rules, after_rules, \
                       before6_rules, after6_rules, \
                       user_rules, user6_rules ]:
-            self.copy_file(file, rulesdir)
+            self.copy_file(f, rulesdir)
 
 if sys.version_info[0] < 2 or \
    (sys.version_info[0] == 2 and sys.version_info[1] < 6):
