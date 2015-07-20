@@ -63,6 +63,7 @@ ufw (0.34) UNRELEASED; urgency=low
   * support gre protocol (LP: #1418879)
   * support ./setup.py build (LP: #819600)
   * clarify log level behavior in ufw.8 (LP: #1461701)
+  * support concurrent updates (LP: #1204579)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Jul 2015 17:12:43 -0500
 
