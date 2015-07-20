@@ -98,13 +98,13 @@ class Install(_install, object):
                                  "s%#SHARE_DIR#%" + real_sharedir + "%g",
                                  f])
 
-        if 'UFW_SKIP_CHECKS' in os.environ and \
-           os.environ['UFW_SKIP_CHECKS'] != '':
-            print("Updating do_checks")
-            subprocess.call(["sed",
-                             "-i",
-                             "s%do_checks = True%do_checks = False%g",
-                             os.path.join('staging', 'common.py')])
+                if fn == 'common.py' and 'UFW_SKIP_CHECKS' in os.environ and \
+                   os.environ['UFW_SKIP_CHECKS'] != '':
+                    print("Updating do_checks")
+                    subprocess.call(["sed",
+                                     "-i",
+                                     "s%do_checks = True%do_checks = False%g",
+                                     f])
 
         # Now byte-compile everything
         super(Install, self).run()
