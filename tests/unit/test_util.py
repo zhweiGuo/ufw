@@ -1014,6 +1014,18 @@ AAA
         if "udp" not in s:
             print("(TODO: fake-netstat) could not find udp in:\n%s" % s)
 
+    def test_create_lock(self):
+        '''Test create_lock()'''
+        lock = ufw.util.create_lock(dryrun=True)
+        self.assertTrue(lock is None)
+        ufw.util.release_lock(lock)
+
+        self.tmpdir = tempfile.mkdtemp()
+        fn = os.path.join(self.tmpdir, "lock")
+        lock = ufw.util.create_lock(lockfile=fn, dryrun=False)
+        self.assertTrue(lock is not None)
+        ufw.util.release_lock(lock)
+
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(

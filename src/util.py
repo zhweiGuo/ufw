@@ -1031,7 +1031,7 @@ def get_netstat_output(v6):
 def create_lock(lockfile='/run/ufw.lock', dryrun=False):
     '''Create a blocking lockfile'''
     lock = None
-    if not dryrun:  # pragma: nocover
+    if not dryrun:
         lock = open(lockfile, 'w')
         fcntl.lockf(lock, fcntl.LOCK_EX)
     return lock
@@ -1044,7 +1044,7 @@ def release_lock(lock):
     try:  # pragma: no cover
         fcntl.lockf(lock, fcntl.LOCK_UN)
         lock.close()
-    except ValueError:
+    except ValueError:  # pragma: nocover
         # If the lock is already closed, ignore the exception. This should
         # never happen but let's guard against it in case something changes
         pass
