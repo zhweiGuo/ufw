@@ -79,6 +79,14 @@ class ParserTestCase(unittest.TestCase):
         pr = c.parse(['status'])
         self.assertEquals('status', pr.action, "%s != 'status'" % (pr.action))
 
+    def test_ufwcommandbasic_parse_with_arg(self):
+        '''Test UFWCommand.parse() - basic with arg'''
+        parser = ufw.parser.UFWParser()
+        c = ufw.parser.UFWCommandBasic('enable')
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                                   c.parse,
+                                                   ['enable', 'OpenSSH'])
+
     def test_ufwparser_response(self):
         '''Test UFWParserResponse.str()'''
         cmd = 'rule allow 22'
