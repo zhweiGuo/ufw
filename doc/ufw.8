@@ -116,7 +116,10 @@ insert the corresponding RULE as rule number NUM
 .PP
 Users can specify rules using either a simple syntax or a full syntax. The
 simple syntax only specifies the port and optionally the protocol to be
-allowed or denied on the host. For example:
+allowed or denied on the host.
+
+
+For example:
 
   ufw allow 53
 
@@ -173,6 +176,21 @@ When specifying multiple ports, the ports list must be numeric, cannot contain
 spaces and must be modified as a whole. Eg, in the above example you cannot
 later try to delete just the '443' port. You cannot specify more than 15 ports
 (ranges count as 2 ports, so the port count in the above example is 4).
+
+\fBufw\fR supports several different protocols. The following are valid in any
+rule and enabled when the protocol is not specified:
+
+  tcp
+  udp
+
+The following have certain restrictions and are not enabled when the protocol
+is not specified:
+
+  ah      valid without port number
+  esp     valid without port number
+  gre     valid without port number
+  ipv6    valid for IPv4 addresses and without port number
+  igmp    valid for IPv4 addresses and without port number
 
 Rules for traffic not destined for the host itself but instead for traffic that
 should be routed/forwarded through the firewall should specify the \fBroute\fR
