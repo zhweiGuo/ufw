@@ -573,3 +573,24 @@ class UFWRule:
 
         return tupl
 
+    def verify(self, rule_iptype):
+        '''Verify rule'''
+        # Verify protocol not specified with application rule
+        if self.protocol != "any" and \
+           (self.sapp != "" or self.dapp != ""):
+            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
+                        % (self.protocol)
+            raise UFWError(err_msg)
+
+        if self.protocol in ufw.util.ipv4_only_protocols and \
+           rule_iptype == "v6":
+            # Can't use protocol these protocols with v6 addresses
+            err_msg = _("Invalid IPv6 address with protocol '%s'") % \
+                        (self.protocol)
+            raise UFWError(err_msg)
+
+        if self.protocol in ufw.util.portless_protocols:
+            if self.dport != "any" or self.sport != "any":
+                err_msg = _("Invalid port with protocol '%s'") % \
+                            (self.protocol)
+                raise UFWError(err_msg)

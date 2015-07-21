@@ -77,8 +77,12 @@ def parse_port_proto(p_str):
     elif len(tmp) == 2:
         port = tmp[0]
         proto = tmp[1]
+        if proto in portless_protocols:
+            err_msg = _("Invalid port with protocol '%s'" % proto)
+            raise ValueError(err_msg)
     else:
-        raise ValueError
+        err_msg = _("Bad port")
+        raise ValueError(err_msg)
     return (port, proto)
 
 

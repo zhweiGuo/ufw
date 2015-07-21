@@ -201,9 +201,8 @@ class UFWCommandRule(UFWCommand):
             if rule.dapp == "":
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[1])
-                except ValueError:
-                    err_msg = _("Bad port")
-                    raise UFWError(err_msg)
+                except ValueError as e:
+                    raise UFWError(e)
 
                 if not re.match('^\d([0-9,:]*\d+)*$', port):
                     if ',' in port or ':' in port:
@@ -218,11 +217,6 @@ class UFWCommandRule(UFWCommand):
                 except UFWError:
                     err_msg = _("Bad port")
                     raise UFWError(err_msg)
-
-            if rule.protocol in ufw.util.portless_protocols:
-                err_msg = _("Invalid port with protocol '%s'") % \
-                            (rule.protocol)
-                raise UFWError(err_msg)
         elif (nargs + 1) % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
@@ -416,29 +410,16 @@ class UFWCommandRule(UFWCommand):
                             (rule.protocol)
                 raise UFWError(err_msg)
 
-        # Verify protocol not specified with application rule
-        if rule and rule.protocol != "any" and \
-           (rule.sapp != "" or rule.dapp != ""):
-            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
-                        % (rule.protocol)
-            raise UFWError(err_msg)
-
-        if rule.protocol in ufw.util.ipv4_only_protocols:
-            if type == "v6":
-                # Can't use protocol these protocols with v6 addresses
-                err_msg = _("Invalid IPv6 address with protocol '%s'") % \
-                            (rule.protocol)
-                raise UFWError(err_msg)
-            elif type == "both":
+        # adjust type as needed
+        if rule:
+            if rule.protocol in ufw.util.ipv4_only_protocols and \
+               type == "both":
                 debug("Adjusting iptype to 'v4' for protocol '%s'" % \
                       (rule.protocol))
                 type = "v4"
 
-        if rule.protocol in ufw.util.portless_protocols:
-            if rule.dport != "any" or rule.sport != "any":
-                err_msg = _("Invalid port with protocol '%s'") % \
-                            (rule.protocol)
-                raise UFWError(err_msg)
+            # Now verify the rule
+            rule.verify(type)
 
         r = UFWParserResponse(action)
         r.data['type'] = self.type
