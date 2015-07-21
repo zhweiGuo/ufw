@@ -23,9 +23,9 @@ from ufw.util import debug, warn
 from ufw.common import UFWError
 
 import sys
-if sys.version_info[0] < 3:
+if sys.version_info[0] < 3:  # pragma: no cover
     import ConfigParser
-else:
+else:  # pragma: no cover
     import configparser
 
 def get_profiles(profiles_dir):
@@ -81,9 +81,9 @@ def get_profiles(profiles_dir):
 
         total_size += size
 
-        if sys.version_info[0] < 3:
+        if sys.version_info[0] < 3:  # pragma: no cover
             cdict = ConfigParser.RawConfigParser()
-        else:
+        else:  # pragma: no cover
             cdict = configparser.RawConfigParser()
 
         try:
@@ -182,10 +182,6 @@ def verify_profile(name, profile):
             raise UFWError(err_msg)
 
     ports = profile['ports'].split('|')
-    if len(ports) < 1:
-        err_msg = _("No ports found in profile '%s'") % (name)
-        return False
-
     try:
         for p in ports:
             (port, proto) = ufw.util.parse_port_proto(p)
