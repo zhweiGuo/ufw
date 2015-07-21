@@ -350,17 +350,18 @@ Syntax for the application profiles is a simple .INI format:
   description=<description>
   ports=<ports>
 
-The 'ports' field may specify a comma-separated list of ports/protocols where
-the protocol is optional. A range may be specified with 'start:end' and when
-a range is specified the protocol is required. For example:
+The 'ports' field may specify a '|'-separated list of ports/protocols where
+the protocol is optional. A comma-separated list or a range (specified
+with 'start:end') may also be used to specify multiple ports, in which case the
+protocol is required. For example:
 
   [SomeService]
   title=Some title
   desctiption=Some description
-  ports=123/udp,45,67:89/tcp
+  ports=12/udp|34|56,78:90/tcp
 
 In the above example, 'SomeService' may be used in app rules and it specifies
-UDP port 123, TCP and UDP on port 45 and TCP ports 67-89 inclusive.
+UDP port 12, TCP and UDP on port 34 and TCP ports 56 and 78-90 inclusive.
 
 After creating or editing an application profile, user's can run:
 
