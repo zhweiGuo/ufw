@@ -107,16 +107,16 @@ class ApplicationsTestCase(unittest.TestCase):
                     {'title': 'bad protocol - esp',
                      'description': 'desc',
                      'ports': '80/esp'},
-                     {'title': 'bad protocol - gre',
-                      'description': 'desc',
-                      'ports': '80/gre'},
-                     {'title': 'bad protocol - igmp',
-                      'description': 'desc',
-                      'ports': '80/igmp'},
-                     {'title': 'bad protocol - ipv6',
-                      'description': 'desc',
-                      'ports': '80/ipv6'},
-                     ]
+                    {'title': 'bad protocol - gre',
+                     'description': 'desc',
+                     'ports': '80/gre'},
+                    {'title': 'bad protocol - igmp',
+                     'description': 'desc',
+                     'ports': '80/igmp'},
+                    {'title': 'bad protocol - ipv6',
+                     'description': 'desc',
+                     'ports': '80/ipv6'},
+                    ]
         for p in profiles:
             print(" %s" % p)
             tests.unit.support.check_for_exception(self,
