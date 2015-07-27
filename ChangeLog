@@ -62,7 +62,6 @@ ufw (0.34) UNRELEASED; urgency=low
     (LP: #1225666)
   * support gre protocol (LP: #1418879)
   * support ./setup.py build (LP: #819600)
-  * support concurrent updates (LP: #1204579)
   * doc/ufw.8:
     - clarify log level behavior (LP: #1461701)
     - add app profile syntax
