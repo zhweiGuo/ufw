@@ -8,6 +8,7 @@ would not replace gufw, which aims to expose the full functionality of ufw.
 
 MAC address filtering (ie ebtables)
 
-nftables backend (long term)
+nftables backend (first create compatibility backend and transition upgrades
+to that. When nftables backend is complete, new installs can use it)
 
-Copyright 2008-2010 Canonical Ltd.
+Copyright 2008-2015 Canonical Ltd.
