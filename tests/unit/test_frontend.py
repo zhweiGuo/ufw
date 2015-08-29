@@ -228,6 +228,13 @@ class FrontendTestCase(unittest.TestCase):
                 except Exception:
                     print("%s failed:" % c)
                     raise
+
+                if c == 'show listening':
+                    if res == "" and tests.unit.support.has_proc_net_output():
+                        print("Output is empty for '%s'" % c)
+                        raise
+                    continue  # nothing more to test with 'show listening'
+
                 self.assertTrue(res != "", "Output is empty for '%s'" % c)
                 cmd = c.split()[0]
                 out = self.msg_output.getvalue()

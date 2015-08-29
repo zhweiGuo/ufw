@@ -936,10 +936,13 @@ AAA
 
     def test_parse_netstat_output(self):
         '''Test parse_netstat_output()'''
+        min_out = 1
+        if not tests.unit.support.has_proc_net_output():
+            min_out = 0
         s = ufw.util.parse_netstat_output(False)
-        self.assertTrue(len(s) > 0)
+        self.assertTrue(len(s) >= min_out)
         s = ufw.util.parse_netstat_output(True)
-        self.assertTrue(len(s) > 0)
+        self.assertTrue(len(s) >= min_out)
 
     def test_get_ip_from_if(self):
         '''Test get_ip_from_if()'''

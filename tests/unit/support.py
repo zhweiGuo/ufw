@@ -364,3 +364,16 @@ def get_sample_rule_commands_extended(v6=False):
                                 cmds.append([rule_type, action] + c)
 
     return cmds
+
+def has_proc_net_output():
+    '''Determine if /proc/net/tcp|udp[6] have useful information'''
+    found = False
+    for p in ['tcp', 'udp', 'tcp', 'tcp6']:
+        path = os.path.join("/proc/net", p)
+        if not os.path.exists(p):
+            continue
+        with open(p) as f:
+            if len(f.readlines()) > 1:  # account for header
+                found = True
+                break
+    return found
