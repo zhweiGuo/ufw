@@ -3,6 +3,8 @@ ufw (0.35) UNRELEASED; urgency=medium
   * update check-requirements and README for python 3.5
   * update unit tests to not fail when /proc/net/* has no useful information
     (Closes: 797020)
+  * update rsyslog example to use 'stop' instead of the deprecated '~'
+    (Closes: 798100)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2015 14:17:11 -0500
 
