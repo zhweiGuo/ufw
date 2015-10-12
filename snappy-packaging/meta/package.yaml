@@ -1,0 +1,17 @@
+name: ufw
+version: 0.35
+architectures: [all]
+vendor: Jamie Strandboge <jamie@strandboge.com>
+icon: icon.png
+services:
+  - name: srv
+    start: bin/srv
+    description: "ufw service"
+    caps:
+      - network-firewall
+binaries:
+  - name: cli
+    exec: bin/cli
+    description: "ufw command line interface"
+    caps:
+      - network-firewall
