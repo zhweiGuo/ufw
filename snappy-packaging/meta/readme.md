@@ -10,14 +10,14 @@ First make sure that the iptable_filter and ip6table_filter modules are loaded:
        modules-load: iptable_filter ip6table_filter
 3. $ sudo snappy config ubuntu-core ./config
 
-Now you can use the 'ufw.cli' tool to manipulate the firewall. Eg:
-$ sudo ufw.cli allow 22/tcp
-$ sudo ufw.cli enable
+Now you can use the 'ufw.cmd' tool to manipulate the firewall. Eg:
+$ sudo ufw.cmd allow 22/tcp
+$ sudo ufw.cmd enable
 
 At this point, the firewall is enabled, allows TCP port 22 (ssh) and will start
 on boot. To disable:
 
-$ sudo ufw.cli disable
+$ sudo ufw.cmd disable
 
 The 'ufw.init' tool is also available for troubleshooting (it is used to start
 the firewall on boot).

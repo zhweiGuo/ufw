@@ -10,7 +10,7 @@ services:
     caps:
       - network-firewall
 binaries:
-  - name: cli
+  - name: cmd
     exec: bin/cli
     description: "ufw command line interface"
     caps:
