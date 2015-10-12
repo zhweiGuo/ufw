@@ -488,8 +488,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             args = []
             args.append(self.files['init'])
             if self.rootdir is not None and self.datadir is not None:
-                args.append('--rootdir=%s' % self.rootdir)
-                args.append('--datadir=%s' % self.datadir)
+                args.append('--rootdir')
+                args.append(self.rootdir)
+                args.append('--datadir')
+                args.append(self.datadir)
             args.append('force-stop')
             (rc, out) = cmd(args)
             if rc != 0:
@@ -504,8 +506,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             args = []
             args.append(self.files['init'])
             if self.rootdir is not None and self.datadir is not None:
-                args.append('--rootdir=%s' % self.rootdir)
-                args.append('--datadir=%s' % self.datadir)
+                args.append('--rootdir')
+                args.append(self.rootdir)
+                args.append('--datadir')
+                args.append(self.datadir)
             args.append('start')
             (rc, out) = cmd(args)
             if rc != 0:
