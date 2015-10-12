@@ -15,3 +15,8 @@ binaries:
     description: "ufw command line interface"
     caps:
       - network-firewall
+  - name: init
+    exec: bin/init
+    description: "ufw backend"
+    caps:
+      - network-firewall

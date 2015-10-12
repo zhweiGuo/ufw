@@ -20,4 +20,4 @@ if [ ! -e "$upgrade_path" ]; then
     touch "$upgrade_path"
 fi
 
-echo TODO
+./lib/ufw/ufw-init --rootdir "$SNAP_APP_PATH" --datadir "$SNAP_APP_DATA_PATH" start
