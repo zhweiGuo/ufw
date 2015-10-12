@@ -11,3 +11,5 @@ ufw/
 src/__pycache__
 tests/__pycache__
 tests/unit/__pycache__
+snap
+*.snap
