@@ -23,31 +23,33 @@ import sys
 import time
 
 from ufw.common import UFWError, UFWRule
-from ufw.util import warn, debug, msg, cmd, cmd_pipe
+from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
 import ufw.backend
 
 
 class UFWBackendIptables(ufw.backend.UFWBackend):
     '''Instance class for UFWBackend'''
-    def __init__(self, dryrun):
+    def __init__(self, dryrun, rootdir=None, datadir=None):
         '''UFWBackendIptables initialization'''
         self.comment_str = "# " + ufw.common.programName + "_comment #"
+        self.rootdir = rootdir
+        self.datadir = datadir
 
         files = {}
-        files['rules'] = os.path.join(ufw.common.state_dir, 'user.rules')
-        files['before_rules'] = os.path.join(ufw.common.config_dir,
-                                             'ufw/before.rules')
-        files['after_rules'] = os.path.join(ufw.common.config_dir,
-                                            'ufw/after.rules')
-        files['rules6'] = os.path.join(ufw.common.state_dir,
-                                       'user6.rules')
-        files['before6_rules'] = os.path.join(ufw.common.config_dir,
-                                              'ufw/before6.rules')
-        files['after6_rules'] = os.path.join(ufw.common.config_dir,
-                                             'ufw/after6.rules')
-        files['init'] = os.path.join(ufw.common.state_dir, 'ufw-init')
+        config_dir = _findpath(ufw.common.config_dir, datadir)
+        state_dir = _findpath(ufw.common.state_dir, datadir)
 
-        ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files)
+        files['rules'] = os.path.join(state_dir, 'user.rules')
+        files['before_rules'] = os.path.join(config_dir, 'ufw/before.rules')
+        files['after_rules'] = os.path.join(config_dir, 'ufw/after.rules')
+        files['rules6'] = os.path.join(state_dir, 'user6.rules')
+        files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
+        files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
+        files['init'] = os.path.join(_findpath(ufw.common.state_dir, rootdir),
+                                     'ufw-init')
+
+        ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files,
+                                        rootdir=rootdir, datadir=datadir)
 
         self.chains = {'before': [], 'user': [], 'after': [], 'misc': []}
         for ver in ['4', '6']:
@@ -1330,13 +1332,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
     def reset(self):
         '''Reset the firewall'''
         res = ""
+        share_dir = _findpath(ufw.common.share_dir, self.rootdir)
         # First make sure we have all the original files
         allfiles = []
         for i in self.files:
             if not self.files[i].endswith('.rules'):
                 continue
             allfiles.append(self.files[i])
-            fn = os.path.join(ufw.common.share_dir, "iptables", \
+            fn = os.path.join(share_dir, "iptables", \
                               os.path.basename(self.files[i]))
             if not os.path.isfile(fn):
                 err_msg = _("Could not find '%s'. Aborting") % (fn)
@@ -1364,7 +1367,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Copy files into place
         for i in allfiles:
             old = "%s.%s" % (i, ext)
-            shutil.copy(os.path.join(ufw.common.share_dir, "iptables", \
+            shutil.copy(os.path.join(share_dir, "iptables", \
                                      os.path.basename(i)), \
                         os.path.dirname(i))
             shutil.copymode(old, i)
