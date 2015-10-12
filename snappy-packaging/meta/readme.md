@@ -24,6 +24,8 @@ the firewall on boot).
 
 For more information, see https://wiki.ubuntu.com/UncomplicatedFirewall
 
+Please file bugs at: https://bugs.launchpad.net/ufw/+filebug
+
 TODO:
 - add check-requirements as a binary
 - adjust ufw-init to take '--rootdir=foo' instead of '--rootdir foo'
