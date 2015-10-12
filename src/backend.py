@@ -17,6 +17,7 @@
 
 import errno
 import os
+import pwd
 import re
 import stat
 import sys
@@ -230,7 +231,17 @@ class UFWBackend:
                 except Exception:
                     raise
 
-                if statinfo.st_uid != 0 and path not in warned_owner:
+                # snaps and clicks unpack to this, so handle it
+                unpack_user = 'clickpkg'
+                is_unpack_user = False
+                try:
+                    if pwd.getpwuid(statinfo.st_uid)[0] == 'clickpkg':
+                        is_unpack_user = True
+                except KeyError:
+                    pass
+
+                if statinfo.st_uid != 0 and not is_unpack_user and \
+                        path not in warned_owner:
                     warn_msg = _("uid is %(uid)s but '%(path)s' is owned by " \
                                  "%(st_uid)s") % ({'uid': str(uid), \
                                                'path': path, \
