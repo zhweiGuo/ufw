@@ -485,7 +485,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
-            (rc, out) = cmd([self.files['init'], 'force-stop'])
+            args = []
+            args.append(self.files['init'])
+            if self.rootdir is not None and self.datadir is not None:
+                args.append('--rootdir=%s' % self.rootdir)
+                args.append('--datadir=%s' % self.datadir)
+            args.append('force-stop')
+            (rc, out) = cmd(args)
             if rc != 0:
                 err_msg = _("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
@@ -495,7 +501,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
-            (rc, out) = cmd([self.files['init'], 'start'])
+            args = []
+            args.append(self.files['init'])
+            if self.rootdir is not None and self.datadir is not None:
+                args.append('--rootdir=%s' % self.rootdir)
+                args.append('--datadir=%s' % self.datadir)
+            args.append('start')
+            (rc, out) = cmd(args)
             if rc != 0:
                 err_msg = _("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
