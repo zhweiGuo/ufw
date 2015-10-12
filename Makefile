@@ -103,3 +103,4 @@ snap: clean
 	python3 ./setup.py install --root=$(SNAPDIR) --install-layout=deb
 	sed -i 's/IPT_MODULES=.*/IPT_MODULES=""/g' $(SNAPDIR)/etc/default/ufw
 	cp -a ./snappy-packaging/* $(SNAPDIR)
+	snappy build $(SNAPDIR)
