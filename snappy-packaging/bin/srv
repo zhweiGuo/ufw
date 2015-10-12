@@ -1,0 +1,23 @@
+#!/bin/sh
+
+upgrade_path="$SNAP_APP_DATA_PATH/.upgraded"
+
+# FIXME: really implement this
+if [ ! -e "$upgrade_path" ]; then
+    # TODO: handle upgrades
+    # Copy config files over
+    if [ ! -e "$SNAP_APP_DATA_PATH/lib" ]; then
+        cp -fr --preserve=mode "$SNAP_APP_PATH/lib" "$SNAP_APP_DATA_PATH"
+        chmod 640 "$SNAP_APP_DATA_PATH"/lib/ufw/*.rules
+    fi
+
+    if [ ! -e "$SNAP_APP_DATA_PATH/etc" ]; then
+        cp -fr --preserve=mode "$SNAP_APP_PATH/etc" "$SNAP_APP_DATA_PATH"
+        chmod 640 "$SNAP_APP_DATA_PATH"/etc/ufw/*.rules
+        chmod 640 "$SNAP_APP_DATA_PATH"/etc/ufw/*.init
+    fi
+
+    touch "$upgrade_path"
+fi
+
+echo TODO
