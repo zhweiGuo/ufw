@@ -101,7 +101,7 @@ tarball: syntax-check clean translations
 snap: clean
 	mkdir $(SNAPDIR)
 	python3 ./setup.py install --root=$(SNAPDIR) --install-layout=deb
-	chmod 644 $(SNAPDIR)/lib/ufw/*.rules $(SNAPDIR)/etc/ufw/*.rules $(SNAPDIR)/etc/ufw/*.init
+	chmod 644 $(SNAPDIR)/lib/ufw/*.rules $(SNAPDIR)/etc/ufw/*.rules $(SNAPDIR)/etc/ufw/*.init $(SNAPDIR)/usr/share/ufw/iptables/*.rules
 	sed -i 's/IPT_MODULES=.*/IPT_MODULES=""/g' $(SNAPDIR)/etc/default/ufw
 	cp -a ./snappy-packaging/* $(SNAPDIR)
 	chmod -R g-w $(SNAPDIR)
