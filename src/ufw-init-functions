@@ -20,7 +20,7 @@ set -e
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
-for s in "$DATA_DIR/#CONFIG_PREFIX#/default/ufw" "$DATA_DIR/#CONFIG_PREFIX#/ufw/ufw.conf" ; do
+for s in "${DATA_DIR}#CONFIG_PREFIX#/default/ufw" "${DATA_DIR}#CONFIG_PREFIX#/ufw/ufw.conf" ; do
     if [ -s "$s" ]; then
         . "$s"
     else
@@ -29,8 +29,8 @@ for s in "$DATA_DIR/#CONFIG_PREFIX#/default/ufw" "$DATA_DIR/#CONFIG_PREFIX#/ufw/
     fi
 done
 
-RULES_PATH="$DATA_DIR/#CONFIG_PREFIX#/ufw"
-USER_PATH="$DATA_DIR/#STATE_PREFIX#"
+RULES_PATH="${DATA_DIR}#CONFIG_PREFIX#/ufw"
+USER_PATH="${DATA_DIR}#STATE_PREFIX#"
 
 flush_builtins() {
     error=""
