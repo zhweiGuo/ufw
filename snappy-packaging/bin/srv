@@ -1,0 +1,61 @@
+#!/bin/sh
+set -e
+
+upgrade_path="$SNAP_APP_DATA_PATH/.upgraded_${SNAP_VERSION}"
+prev_rules="$SNAP_APP_DATA_PATH/.rules.orig"
+
+copy_if_same() {
+    bn="$1"
+    prev_shipped="$prev_rules/$bn"
+    inuse="$SNAP_APP_DATA_PATH/etc/ufw/$bn"
+    new_shipped="$SNAP_APP_PATH/usr/share/ufw/iptables/$bn"
+
+    # if the old shipped rules are the same as the rules in use, but the new
+    # shipped rules are different, then copy the new rules to the rules in use
+    if diff "$prev_shipped" "$inuse" >/dev/null ; then
+        if ! diff "$new_shipped" "$prev_shipped" > /dev/null ; then
+            echo "Updating '$bn'"
+            cp -f --preserve=mode "$new_shipped" "$inuse"
+        else
+            echo "'$bn' has changes that cannot be merged. For details, see:"
+            echo "$ diff -Nau $new_shipped $inuse"
+        fi
+    fi
+}
+
+# First run, none of this exists, so just copy over wholesale
+if [ ! -e "$SNAP_APP_DATA_PATH/lib" ]; then
+    cp -fr --preserve=mode "$SNAP_APP_PATH/lib" "$SNAP_APP_DATA_PATH"
+    chmod 640 "$SNAP_APP_DATA_PATH"/lib/ufw/*.rules
+fi
+if [ ! -e "$SNAP_APP_DATA_PATH/etc" ]; then
+    cp -fr --preserve=mode "$SNAP_APP_PATH/etc" "$SNAP_APP_DATA_PATH"
+    chmod 640 "$SNAP_APP_DATA_PATH"/etc/ufw/*.rules
+    chmod 640 "$SNAP_APP_DATA_PATH"/etc/ufw/*.init
+fi
+
+# Next, make sure these files are available for upgrade comparisons
+if [ ! -e "$prev_rules" ]; then
+    mkdir "$prev_rules"
+fi
+
+# On upgrades, detect if the rules file matches the shipped file, and if
+# so, apply any changes to the rules file (ie, emulate ucf)
+if [ ! -e "$upgrade_path" ]; then
+    for fn in before.rules before6.rules after.rules after6.rules ; do
+        if [ -e "$prev_rules/$fn" ]; then
+            copy_if_same "$fn"
+        fi
+        # create/overwrite the new, upgraded rules for comparison on next
+        # upgrade
+        cp -f --preserve=mode "$SNAP_APP_PATH/usr/share/ufw/iptables/$fn" "$prev_rules"
+    done
+
+    # remove old for housekeeping
+    rm -f "$SNAP_APP_DATA_PATH/.upgraded*"
+
+    # add new
+    touch "$upgrade_path"
+fi
+
+./lib/ufw/ufw-init --rootdir "$SNAP_APP_PATH" --datadir "$SNAP_APP_DATA_PATH" start

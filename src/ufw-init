@@ -2,7 +2,7 @@
 #
 # ufw-init: helper script to be used by ufw itself
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2015 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -18,10 +18,23 @@
 #
 set -e
 
-if [ -s "#STATE_PREFIX#/ufw-init-functions" ]; then
-    . "#STATE_PREFIX#/ufw-init-functions"
+# FIXME: this shouldn't be ordered
+rootdir=
+if [ "$1" = "--rootdir" ] && [ -s "$2" ]; then
+    rootdir="$2/" # ensure trailing slash
+    shift 2
+fi
+datadir=
+if [ "$1" = "--datadir" ] && [ -s "$2" ]; then
+    datadir="$2/" # ensure trailing slash
+    shift 2
+fi
+export DATA_DIR="$datadir"
+
+if [ -s "${rootdir}#STATE_PREFIX#/ufw-init-functions" ]; then
+    . "${rootdir}#STATE_PREFIX#/ufw-init-functions"
 else
-    echo "Could not find $s (aborting)"
+    echo "Could not find ${rootdir}#STATE_PREFIX#/ufw-init-functions (aborting)"
     exit 1
 fi
 

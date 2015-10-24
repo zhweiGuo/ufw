@@ -1,0 +1,11 @@
+#!/bin/sh
+
+upgrade_path="$SNAP_APP_DATA_PATH/.upgraded_${SNAP_VERSION}"
+
+# FIXME: really implement this
+if [ ! -e "$upgrade_path" ]; then
+    echo "Rules not found in '$SNAP_APP_DATA_PATH'. Aborting"
+    exit 1
+fi
+
+./lib/ufw/ufw-init --rootdir "$SNAP_APP_PATH" --datadir "$SNAP_APP_DATA_PATH" "$@"

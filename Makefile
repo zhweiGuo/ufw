@@ -1,6 +1,7 @@
 SRCS     = src/ufw $(wildcard src/*.py)
 POTFILES = locales/po/ufw.pot
 TMPDIR   = ./tmp
+SNAPDIR   = ./snap
 EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
 SRCVER   = ufw-$(VERSION)
@@ -68,6 +69,7 @@ clean:
 	rm -rf ./staging
 	rm -rf ./tests/testarea ./tests/unit/tmp
 	rm -rf $(TMPDIR)
+	rm -rf $(SNAPDIR)
 	rm -f ./locales/mo/*.mo
 	rm -f ./tests/unit/*.pyc ./tests/*.pyc ./src/*.pyc
 	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__ ./src/__pycache__
@@ -95,3 +97,12 @@ tarball: syntax-check clean translations
 	tar -zcv -C $(TARBALLS) $(EXCLUDES) -f $(TARDST) $(SRCVER)
 	rm -rf $(TARSRC)
 
+
+snap: clean
+	mkdir $(SNAPDIR)
+	python3 ./setup.py install --root=$(SNAPDIR) --install-layout=deb
+	chmod 644 $(SNAPDIR)/lib/ufw/*.rules $(SNAPDIR)/etc/ufw/*.rules $(SNAPDIR)/etc/ufw/*.init $(SNAPDIR)/usr/share/ufw/iptables/*.rules
+	sed -i 's/IPT_MODULES=.*/IPT_MODULES=""/g' $(SNAPDIR)/etc/default/ufw
+	cp -a ./snappy-packaging/* $(SNAPDIR)
+	chmod -R g-w $(SNAPDIR)
+	snappy build $(SNAPDIR)

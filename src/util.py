@@ -1035,3 +1035,16 @@ def get_netstat_output(v6):
                                                        state, uid, inode, exe)
 
     return s
+
+def _findpath(dir, prefix):
+    '''Add prefix to dir'''
+    if prefix is None:
+        return dir
+    if dir.startswith('/'):
+        if len(dir) < 2:  # /
+            newdir = prefix
+        else:
+            newdir = os.path.join(prefix, dir[1:])
+    else:
+        newdir = os.path.join(prefix, dir)
+    return newdir

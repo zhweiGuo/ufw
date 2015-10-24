@@ -2,7 +2,7 @@
 #
 # ufw-init-functions: functions used by ufw-init and distribution initscripts
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2015 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -20,7 +20,7 @@ set -e
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
-for s in "#CONFIG_PREFIX#/default/ufw" "#CONFIG_PREFIX#/ufw/ufw.conf" ; do
+for s in "${DATA_DIR}#CONFIG_PREFIX#/default/ufw" "${DATA_DIR}#CONFIG_PREFIX#/ufw/ufw.conf" ; do
     if [ -s "$s" ]; then
         . "$s"
     else
@@ -29,8 +29,8 @@ for s in "#CONFIG_PREFIX#/default/ufw" "#CONFIG_PREFIX#/ufw/ufw.conf" ; do
     fi
 done
 
-RULES_PATH="#CONFIG_PREFIX#/ufw"
-USER_PATH="#STATE_PREFIX#"
+RULES_PATH="${DATA_DIR}#CONFIG_PREFIX#/ufw"
+USER_PATH="${DATA_DIR}#STATE_PREFIX#"
 
 flush_builtins() {
     error=""

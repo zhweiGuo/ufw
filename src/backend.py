@@ -17,29 +17,29 @@
 
 import errno
 import os
+import pwd
 import re
 import stat
 import sys
 import ufw.util
-from ufw.util import error, warn, debug
+from ufw.util import error, warn, debug, _findpath
 from ufw.common import UFWError, UFWRule
 import ufw.applications
 
 class UFWBackend:
     '''Interface for backends'''
-    def __init__(self, name, dryrun, extra_files=None):
+    def __init__(self, name, dryrun, extra_files=None,
+                 rootdir=None, datadir=None):
         self.defaults = None
         self.name = name
         self.dryrun = dryrun
         self.rules = []
         self.rules6 = []
 
-        self.files = {'defaults': os.path.join(ufw.common.config_dir, \
-                                               'default/ufw'),
-                      'conf': os.path.join(ufw.common.config_dir, \
-                                           'ufw/ufw.conf'),
-                      'apps': os.path.join(ufw.common.config_dir, \
-                                           'ufw/applications.d') }
+        p = _findpath(ufw.common.config_dir, datadir)
+        self.files = {'defaults': os.path.join(p, 'default/ufw'),
+                      'conf': os.path.join(p, 'ufw/ufw.conf'),
+                      'apps': os.path.join(p, 'ufw/applications.d') }
         if extra_files != None:
             self.files.update(extra_files)
 
@@ -231,7 +231,17 @@ class UFWBackend:
                 except Exception:
                     raise
 
-                if statinfo.st_uid != 0 and path not in warned_owner:
+                # snaps and clicks unpack to this, so handle it
+                unpack_user = 'clickpkg'
+                is_unpack_user = False
+                try:
+                    if pwd.getpwuid(statinfo.st_uid)[0] == unpack_user:
+                        is_unpack_user = True
+                except KeyError:
+                    pass
+
+                if statinfo.st_uid != 0 and not is_unpack_user and \
+                        path not in warned_owner:
                     warn_msg = _("uid is %(uid)s but '%(path)s' is owned by " \
                                  "%(st_uid)s") % ({'uid': str(uid), \
                                                'path': path, \
