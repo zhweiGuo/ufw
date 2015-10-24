@@ -48,7 +48,7 @@ if [ ! -e "$upgrade_path" ]; then
         fi
         # create/overwrite the new, upgraded rules for comparison on next
         # upgrade
-        cp -f --preserve=mode "$SNAP_APP_DATA_PATH/usr/share/ufw/iptables/$fn" "$prev_rules"
+        cp -f --preserve=mode "$SNAP_APP_PATH/usr/share/ufw/iptables/$fn" "$prev_rules"
     done
 
     # remove old for housekeeping
