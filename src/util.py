@@ -1041,7 +1041,7 @@ def _findpath(dir, prefix):
     if prefix is None:
         return dir
     if dir.startswith('/'):
-        if len(dir) < 2:
+        if len(dir) < 2:  # /
             newdir = prefix
         else:
             newdir = os.path.join(prefix, dir[1:])
