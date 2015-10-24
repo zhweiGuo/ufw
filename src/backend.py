@@ -235,7 +235,7 @@ class UFWBackend:
                 unpack_user = 'clickpkg'
                 is_unpack_user = False
                 try:
-                    if pwd.getpwuid(statinfo.st_uid)[0] == 'clickpkg':
+                    if pwd.getpwuid(statinfo.st_uid)[0] == unpack_user:
                         is_unpack_user = True
                 except KeyError:
                     pass
