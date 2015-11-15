@@ -29,3 +29,7 @@ binaries:
 #    caps:
 #      - network-firewall
 #      - network-admin
+  - name: doc
+    exec: bin/doc
+    description: "doc viewer"
+    caps: []

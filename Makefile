@@ -106,4 +106,16 @@ snap: clean
 	sed -i 's/IPT_SYSCTL=\(.*\)/IPT_SYSCTL="$$SNAP_APP_DATA_PATH\1"/g' $(SNAPDIR)/etc/default/ufw
 	cp -a ./snappy-packaging/* $(SNAPDIR)
 	chmod -R g-w $(SNAPDIR)
+	mkdir $(SNAPDIR)/docs
+	for manfile in `ls doc/*.8` ; do \
+		page=$$(basename $$manfile); \
+		manout=$(SNAPDIR)/docs/$$(basename -s .8 $$page); \
+		echo "Creating $$page ... "; \
+		LANG='C' MANWIDTH=80 man --warnings -E ascii doc/$$page | col -b > "$$manout"; \
+	done; \
+	for manfile in iptables ip6tables iptables-restore ip6tables-restore ; do \
+		manout=$(SNAPDIR)/docs/$$(basename -s .8 $$manfile); \
+		echo "Creating $$manfile ... "; \
+		LANG='C' MANWIDTH=80 man --warnings -E ascii $$manfile | col -b > "$$manout"; \
+	done; \
 	snappy build $(SNAPDIR)
