@@ -232,10 +232,12 @@ class UFWBackend:
                     raise
 
                 # snaps and clicks unpack to this, so handle it
-                unpack_user = 'clickpkg'
+                click_user = 'clickpkg'
+                snap_user = 'snappypkg'
                 is_unpack_user = False
                 try:
-                    if pwd.getpwuid(statinfo.st_uid)[0] == unpack_user:
+                    if pwd.getpwuid(statinfo.st_uid)[0] == click_user or \
+                            pwd.getpwuid(statinfo.st_uid)[0] == snap_user:
                         is_unpack_user = True
                 except KeyError:
                     pass
