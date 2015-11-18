@@ -24,16 +24,16 @@ def get_config():
                     key, value = line.split('=', 1)
                     config["config"][PKGNAME][key.lower()] = value.strip().strip('"')
 
-    if not os.path.exists(_CONFIG_UFW):
-        return config
-
-    settable = ["ENABLED", "LOGLEVEL"]
-    with open(_CONFIG_UFW) as fp:
-        for line in fp.readlines():
-            for s in settable:
-                if line.startswith('%s=' % s):
-                    key, value = line.split('=', 1)
-                    config["config"][PKGNAME][key.lower()] = value.strip().strip('"')
+#     if not os.path.exists(_CONFIG_UFW):
+#         return config
+# 
+#     settable = ["ENABLED", "LOGLEVEL"]
+#     with open(_CONFIG_UFW) as fp:
+#         for line in fp.readlines():
+#             for s in settable:
+#                 if line.startswith('%s=' % s):
+#                     key, value = line.split('=', 1)
+#                     config["config"][PKGNAME][key.lower()] = value.strip().strip('"')
 
     # print(config)
     return config
@@ -66,33 +66,33 @@ def set_config(config=None):
             if not found:
                 fp.write(line)
 
-    with open(_CONFIG_UFW) as fp:
-        lines = fp.readlines()
-    fp.close()
-
-    valid_loglevels = ['off', 'on', 'low', 'medium', 'high']
-
-    settable = []
-    for k in config["config"][PKGNAME].keys():
-        settable.append(k.upper())
-
-    with open(_CONFIG_UFW, "w") as fp:
-        for line in lines:
-            key = None
-            found = False
-            for key in settable:
-                if line.startswith('%s=' % key):
-                    value = config["config"][PKGNAME][key.lower()]
-                    if key != "LOGLEVEL" and value != "yes" and value != "no":
-                        print("ERROR: '%s' should be 'yes' or 'no'. Skipping." % key.lower())
-                        continue
-                    if key == "LOGLEVEL" and value not in valid_loglevels:
-                        print("ERROR: '%s' should be one of: %s. Skipping." % (key.lower(), ", ".join(valid_loglevels)))
-                        continue
-                    found = True
-                    fp.write("%s=\"%s\"\n" % (key, value))
-            if not found:
-                fp.write(line)
+#     with open(_CONFIG_UFW) as fp:
+#         lines = fp.readlines()
+#     fp.close()
+# 
+#     valid_loglevels = ['off', 'on', 'low', 'medium', 'high']
+# 
+#     settable = []
+#     for k in config["config"][PKGNAME].keys():
+#         settable.append(k.upper())
+# 
+#     with open(_CONFIG_UFW, "w") as fp:
+#         for line in lines:
+#             key = None
+#             found = False
+#             for key in settable:
+#                 if line.startswith('%s=' % key):
+#                     value = config["config"][PKGNAME][key.lower()]
+#                     if key != "LOGLEVEL" and value != "yes" and value != "no":
+#                         print("ERROR: '%s' should be 'yes' or 'no'. Skipping." % key.lower())
+#                         continue
+#                     if key == "LOGLEVEL" and value not in valid_loglevels:
+#                         print("ERROR: '%s' should be one of: %s. Skipping." % (key.lower(), ", ".join(valid_loglevels)))
+#                         continue
+#                     found = True
+#                     fp.write("%s=\"%s\"\n" % (key, value))
+#             if not found:
+#                 fp.write(line)
 
 if __name__ == "__main__":
     config_yaml = yaml.load(sys.stdin)
