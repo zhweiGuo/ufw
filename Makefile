@@ -104,6 +104,7 @@ snap: clean
 	chmod 644 $(SNAPDIR)/lib/ufw/*.rules $(SNAPDIR)/etc/ufw/*.rules $(SNAPDIR)/etc/ufw/*.init $(SNAPDIR)/usr/share/ufw/iptables/*.rules
 	sed -i 's/IPT_MODULES=.*/IPT_MODULES=""/g' $(SNAPDIR)/etc/default/ufw
 	sed -i 's/IPT_SYSCTL=\(.*\)/IPT_SYSCTL="$$SNAP_APP_DATA_PATH\1"/g' $(SNAPDIR)/etc/default/ufw
+	sed -i 's,net/ipv4/tcp_sack=,#net/ipv4/tcp_sack=,g'  $(SNAPDIR)/etc/ufw/sysctl.conf
 	cp -a ./snappy-packaging/* $(SNAPDIR)
 	chmod -R g-w $(SNAPDIR)
 	mkdir $(SNAPDIR)/docs
