@@ -7,6 +7,7 @@ usage() {
 Usage: ufw.doc <doc>
 
 Available docs are:
+ufw-on-snappy
 ufw
 ufw-framework
 iptables
@@ -15,7 +16,7 @@ iptables-restore
 ip6tables-restore
 
 Eg:
-$ ufw.doc ufw | less
+$ ufw.doc ufw-on-snappy | less
 EOM
 }
 
