@@ -2,7 +2,7 @@
 
 upgrade_path="$SNAP_APP_DATA_PATH/.upgraded_${SNAP_VERSION}"
 
-# FIXME: really implement this
+# ufw.srv will have already done this on install.
 if [ ! -e "$upgrade_path" ]; then
     echo "Rules not found in '$SNAP_APP_DATA_PATH'. Aborting"
     exit 1
