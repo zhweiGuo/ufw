@@ -90,7 +90,11 @@ area. After initial install on service start, \fBufw\fR will copy the default
 configuration from the read\-only area in $SNAP_APP_PATH to the writable area
 in $SNAP_APP_DATA_PATH. If you need or want to modify the configuration files
 as described in the \fBufw\-framework\fB documentation, look for these files
-in $SNAP_APP_DATA_PATH.
+in $SNAP_APP_DATA_PATH. Upgrades are handled similarly to an traditional
+Ubuntu system, if the configuration files in $SNAP_APP_DATA_PATH match the
+previously shipped version, the files will be updated to the new version,
+otherwise the files that are different are logged to the service log (see
+above) so that the files may be merged manually.
 
 .SH AUTHOR
 .PP

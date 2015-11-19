@@ -1,5 +1,5 @@
 name: ufw
-version: 0.35
+version: 0.35-0snappy1
 architectures: [all]
 vendor: Jamie Strandboge <jamie@strandboge.com>
 icon: icon.png
@@ -9,20 +9,17 @@ services:
     description: "ufw service"
     caps:
       - network-firewall
-      - network-admin
 binaries:
   - name: cmd
     exec: bin/cli
     description: "ufw command line interface"
     caps:
       - network-firewall
-      - network-admin
   - name: init
     exec: bin/init
     description: "ufw backend"
     caps:
       - network-firewall
-      - network-admin
 #  - name: shell
 #    exec: bin/shell
 #    description: "ufw shell"
