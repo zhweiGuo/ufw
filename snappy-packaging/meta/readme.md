@@ -7,7 +7,9 @@ First make sure that the iptable_filter and ip6table_filter modules are loaded:
 2. adjust ./config to have this:
    config:
      ubuntu-core:
-       modules-load: iptable_filter ip6table_filter
+       load-kernel-modules:
+         - iptable_filter
+         - ip6table_filter
 3. $ sudo snappy config ubuntu-core ./config
 
 Now you can use the 'ufw.cmd' tool to manipulate the firewall. Eg:
