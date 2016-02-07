@@ -103,11 +103,11 @@ class CommonTestCase(unittest.TestCase):
     def test__get_attrib(self):
         '''Test _get_attrib()'''
         res = self.rules["any"]._get_attrib()
-        search = "'-p all -j ACCEPT', action=allow, dapp=, direction=in, " + \
-                 "dport=any, dst=0.0.0.0/0, forward=False, interface_in=, " + \
-                 "interface_out=, logtype=, multi=False, position=0, " + \
-                 "protocol=any, remove=False, sapp=, sport=any, " + \
-                 "src=0.0.0.0/0, updated=False, v6=False"
+        search = "'-p all -j ACCEPT', action=allow, comment=, dapp=, " + \
+                 "direction=in, dport=any, dst=0.0.0.0/0, forward=False, " + \
+                 "interface_in=, interface_out=, logtype=, multi=False, " + \
+                 "position=0, protocol=any, remove=False, sapp=, " + \
+                 "sport=any, src=0.0.0.0/0, updated=False, v6=False"
         self.assertEquals(res, search, "'%s' != '%s'" % (res, search))
 
     def test_dup_rule(self):

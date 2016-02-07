@@ -689,7 +689,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             pat_tuple = re.compile(r'^### tuple ###\s*')
             pat_iface_in = re.compile(r'in_\w+')
             pat_iface_out = re.compile(r'out_\w+')
-            for line in orig:
+            for orig_line in orig:
+                line = orig_line
+
+                comment = ""
+                # comment= should always be last, so just strip it out
+                if ' comment=' in orig_line:
+                    line, hex = orig_line.split(r' comment=')
+                    comment = ufw.util.hex_decode(hex)
+
                 if pat_tuple.match(line):
                     tupl = pat_tuple.sub('', line)
                     tmp = re.split(r'\s+', tupl.strip())
@@ -729,16 +737,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         try:
                             action = tmp[0]
                             forward = False
-                            # route rules use 'route:<action> ...' 
+                            # route rules use 'route:<action> ...'
                             if ':' in action:
                                 forward = True
                                 action = action.split(':')[1]
                             if len(tmp) < 8:
                                 rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype, forward)
+                                               tmp[4], tmp[5], dtype, forward,
+                                               comment)
                             else:
                                 rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype, forward)
+                                               tmp[4], tmp[5], dtype, forward,
+                                               comment)
                                 # Removed leading [sd]app_ and unescape spaces
                                 pat_space = re.compile('%20')
                                 if tmp[6] != "-":
@@ -860,6 +870,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s" % \
                      (action, r.protocol, r.dport, r.dst, r.sport, r.src,
                       ifaces)
+                if r.comment != '':
+                    tstr += " comment=%s" % ufw.util.hex_encode(r.comment)
                 ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -872,6 +884,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % \
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
                         dapp, sapp, ifaces)
+                if r.comment != '':
+                    tstr += " comment=%s" % ufw.util.hex_encode(r.comment)
                 ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"
