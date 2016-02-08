@@ -1062,5 +1062,5 @@ def hex_encode(s):
 def hex_decode(h):
     '''Take a hex string and convert it to a string'''
     if sys.version_info[0] < 3:
-        return h.decode(encoding='hex')
+        return h.decode(encoding='hex').decode('utf-8')
     return binascii.unhexlify(h).decode('utf-8')

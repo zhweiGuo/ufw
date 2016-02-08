@@ -414,10 +414,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if r.direction == "in" and not r.forward and \
                not verbose and not show_count:
                 dir_str = ""
-            tmp_str += "%-26s %-12s%s%s\n" % (location['dst'], \
-                                             " ".join([r.action.upper(), \
-                                                       dir_str]), \
-                                             location['src'], attrib_str)
+
+            comment_str = ""
+            if r.comment != "":
+                comment_str = " # %s" % r.comment
+            tmp_str += "%-26s %-12s%s%s%s\n" % (location['dst'], \
+                                                " ".join([r.action.upper(), \
+                                                          dir_str]), \
+                                                location['src'], attrib_str,
+                                                comment_str)
 
             # Show the list in the order given if a numbered list, otherwise
             # split incoming and outgoing rules
@@ -696,7 +701,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 # comment= should always be last, so just strip it out
                 if ' comment=' in orig_line:
                     line, hex = orig_line.split(r' comment=')
-                    comment = ufw.util.hex_decode(hex)
+                    comment = ufw.util.hex_decode(hex.strip())
 
                 if pat_tuple.match(line):
                     tupl = pat_tuple.sub('', line)
