@@ -418,7 +418,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             comment_str = ""
             if r.comment != "":
                 comment_str = " # %s" % r.comment
-            tmp_str += "%-26s %-12s%s%s%s\n" % (location['dst'], \
+            tmp_str += "%-26s %-12s%-26s%s%s\n" % (location['dst'], \
                                                 " ".join([r.action.upper(), \
                                                           dir_str]), \
                                                 location['src'], attrib_str,
