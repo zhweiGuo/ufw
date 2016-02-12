@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2016 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -173,38 +174,42 @@ def get_sample_rule_commands_simple():
                 for port in ['', '22', 'tcpmux', 'fsp', 'WWW', 'CIFS', \
                              'WWW Full', 'DNS']:
                     for proto in ['', 'tcp', 'udp']:
-                        c = []
-                        if dir:
-                            c.append(dir)
-                            if not port:
-                                c.append('on')
-                                c.append('eth0')
+                        for comment in ['', 'my comment', 'thumbs 👍']:
+                            c = []
+                            if dir:
+                                c.append(dir)
+                                if not port:
+                                    c.append('on')
+                                    c.append('eth0')
 
-                        if log:
-                            c.append(log)
+                            if log:
+                                c.append(log)
 
-                        if not port and 'on' in c:
-                            # eg, rule allow in on eth0
-                            cmds.append(['rule', action] + c)
-                            continue
-
-                        try:
-                            int(port)
-                            if proto:
-                                # eg, rule action dir log 22/tcp
-                                c.append('%s/%s' % (port, proto))
-                            else:
-                                # eg, rule action dir log 22
-                                c.append(port)
-                        except ValueError:
-                            if proto or not port:
+                            if not port and 'on' in c:
+                                # eg, rule allow in on eth0
+                                cmds.append(['rule', action] + c)
                                 continue
-                            else:
-                                # eg, rule action dir log DNS
-                                # eg, rule action dir log tcpmux
-                                c.append(port)
 
-                        cmds.append(['rule', action] + c)
+                            try:
+                                int(port)
+                                if proto:
+                                    # eg, rule action dir log 22/tcp
+                                    c.append('%s/%s' % (port, proto))
+                                else:
+                                    # eg, rule action dir log 22
+                                    c.append(port)
+                            except ValueError:
+                                if proto or not port:
+                                    continue
+                                else:
+                                    # eg, rule action dir log DNS
+                                    # eg, rule action dir log tcpmux
+                                    c.append(port)
+
+                            if comment:
+                                c += ['comment', comment]
+
+                            cmds.append(['rule', action] + c)
 
     return cmds
 
@@ -247,121 +252,126 @@ def get_sample_rule_commands_extended(v6=False):
                     for to in dsts:
                         for frm in srcs:
                             for proto in ['', 'tcp', 'udp']:
-                                dst = ''
-                                dport = ''
-                                if to:
-                                    if '!' in to:
-                                        (dst, dport) = to.split('!')
-                                    else:
-                                        dst = to
+                                for comment in ['', 'my comment', 'thumbs 👍']:
+                                    dst = ''
+                                    dport = ''
+                                    if to:
+                                        if '!' in to:
+                                            (dst, dport) = to.split('!')
+                                        else:
+                                            dst = to
 
-                                src = ''
-                                sport = ''
-                                if frm:
-                                    if '!' in frm:
-                                        (src, sport) = frm.split('!')
-                                    else:
-                                        src = frm
+                                    src = ''
+                                    sport = ''
+                                    if frm:
+                                        if '!' in frm:
+                                            (src, sport) = frm.split('!')
+                                        else:
+                                            src = frm
 
-                                # We should only output valid rules, so
-                                # short-circuit some invalid ones
+                                    # We should only output valid rules, so
+                                    # short-circuit some invalid ones
 
-                                # Don't allow mixing services and application
-                                # rules
-                                srvs = ['tcpmux', 'fsp']
-                                apps = ['WWW Full', 'DNS', 'CIFS']
-                                if (dport in srvs and sport in apps) or \
-                                   (sport in srvs and dport in apps):
-                                    continue
-
-                                # Don't allow mixing tcp and udp services
-                                if dport != sport and \
-                                   dport in srvs and \
-                                   sport in srvs:
-                                    continue
-
-                                # Don't allow mixing apps since they all have
-                                # different protocols
-                                if dport != sport and \
-                                   dport in apps and \
-                                   sport in apps:
-                                    continue
-
-                                # don't mix services and protocols
-                                if ((dport == 'fsp' or sport == 'fsp') and \
-                                    proto == 'tcp') or \
-                                   ((dport == 'tcpmux' or sport == 'tcpmux') \
-                                    and proto == 'udp'):
-                                    continue
-
-                                # Now start building up the command
-                                c = []
-                                if dir:
-                                    if rule_type == 'rule' and \
-                                       'in on' in dir and 'out on' in dir:
-                                        # non-route rules don't support
-                                        # specifying two interfaces
+                                    # Don't allow mixing services and
+                                    # application rules
+                                    srvs = ['tcpmux', 'fsp']
+                                    apps = ['WWW Full', 'DNS', 'CIFS']
+                                    if (dport in srvs and sport in apps) or \
+                                       (sport in srvs and dport in apps):
                                         continue
-                                    elif rule_type == 'route':
-                                        # route rules don't support bare 'in'
-                                        # and 'out'
+
+                                    # Don't allow mixing tcp and udp services
+                                    if dport != sport and \
+                                       dport in srvs and \
+                                       sport in srvs:
                                         continue
-                                    elif 'on' in dir:
-                                        c += dir.split()
-                                    else:
-                                        c.append(dir)
 
-                                if log:
-                                    c.append(log)
+                                    # Don't allow mixing apps since they all
+                                    # have different protocols
+                                    if dport != sport and \
+                                       dport in apps and \
+                                       sport in apps:
+                                        continue
 
-                                if not to and not frm:
-                                    # nothing to do (use simple syntax)
-                                    continue
+                                    # don't mix services and protocols
+                                    if ((dport == 'fsp' or sport == 'fsp') \
+                                        and proto == 'tcp') or \
+                                       ((dport == 'tcpmux' or
+                                         sport == 'tcpmux') \
+                                        and proto == 'udp'):
+                                        continue
 
-                                if src:
-                                    c.append('from')
-                                    c.append(src)
-                                if sport:
-                                    if sport in apps:
-                                        c.append('app')
-                                    else:
-                                        c.append('port')
-                                    c.append(sport)
+                                    # Now start building up the command
+                                    c = []
+                                    if dir:
+                                        if rule_type == 'rule' and \
+                                           'in on' in dir and 'out on' in dir:
+                                            # non-route rules don't support
+                                            # specifying two interfaces
+                                            continue
+                                        elif rule_type == 'route':
+                                            # route rules don't support bare
+                                            # 'in' and 'out'
+                                            continue
+                                        elif 'on' in dir:
+                                            c += dir.split()
+                                        else:
+                                            c.append(dir)
 
-                                if dst:
-                                    c.append('to')
-                                    c.append(dst)
-                                if dport:
-                                    if dport in apps:
-                                        c.append('app')
-                                    else:
-                                        c.append('port')
-                                    c.append(dport)
+                                    if log:
+                                        c.append(log)
 
-                                # add 'proto' when it makes sense
-                                if proto:
-                                    try:
-                                        if dport:
-                                            int(dport)
-                                        if sport:
-                                            int(sport)
-                                        c.append('proto')
-                                        c.append(proto)
-                                    except ValueError:
-                                        if dport not in apps and \
-                                           sport not in apps and \
-                                           ((dport == 'fsp' and \
-                                             proto == 'udp') or \
-                                            (sport == 'fsp' and \
-                                             proto == 'udp') or \
-                                            (dport == 'tcpmux' and \
-                                             proto == 'tcp') or \
-                                            (sport == 'tcpmux' and \
-                                             proto == 'tcp')):
-                                                c.append('proto')
-                                                c.append(proto)
+                                    if not to and not frm:
+                                        # nothing to do (use simple syntax)
+                                        continue
 
-                                cmds.append([rule_type, action] + c)
+                                    if src:
+                                        c.append('from')
+                                        c.append(src)
+                                    if sport:
+                                        if sport in apps:
+                                            c.append('app')
+                                        else:
+                                            c.append('port')
+                                        c.append(sport)
+
+                                    if dst:
+                                        c.append('to')
+                                        c.append(dst)
+                                    if dport:
+                                        if dport in apps:
+                                            c.append('app')
+                                        else:
+                                            c.append('port')
+                                        c.append(dport)
+
+                                    # add 'proto' when it makes sense
+                                    if proto:
+                                        try:
+                                            if dport:
+                                                int(dport)
+                                            if sport:
+                                                int(sport)
+                                            c.append('proto')
+                                            c.append(proto)
+                                        except ValueError:
+                                            if dport not in apps and \
+                                               sport not in apps and \
+                                               ((dport == 'fsp' and \
+                                                 proto == 'udp') or \
+                                                (sport == 'fsp' and \
+                                                 proto == 'udp') or \
+                                                (dport == 'tcpmux' and \
+                                                 proto == 'tcp') or \
+                                                (sport == 'tcpmux' and \
+                                                 proto == 'tcp')):
+                                                    c.append('proto')
+                                                    c.append(proto)
+
+                                    if comment:
+                                        c += ['comment', comment]
+
+                                    cmds.append([rule_type, action] + c)
 
     return cmds
 
