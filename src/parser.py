@@ -464,6 +464,8 @@ class UFWCommandRule(UFWCommand):
                 res += " %s" % r.dport
                 if r.protocol != "any":
                     res += "/%s" % r.protocol
+            if r.comment != "":
+                res += " comment '%s'" % r.comment
         else:
             # Full syntax
             if r.interface_in != "":
@@ -509,6 +511,9 @@ class UFWCommandRule(UFWCommand):
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
                 res += " proto %s" % r.protocol
+
+            if r.comment != "":
+                res += " comment '%s'" % r.comment
 
         return res
     get_command = staticmethod(get_command)
