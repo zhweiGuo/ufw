@@ -215,6 +215,14 @@ class ParserTestCase(unittest.TestCase):
             # Note, cmd_compare contains the rules we get from
             # tests.unit.support.get_sample_rule_commands*
             cmd_compare = []
+            comment = ""  # store off command so we can add it at the end after
+                          # the massaging
+            if 'comment' in cmd:
+                comment_idx = cmd.index('comment')
+                comment = cmd[comment_idx + 1]
+                del cmd[comment_idx + 1]
+                del cmd[comment_idx]
+
             for i in cmd:
                 if ' ' in i:  # quote anything with a space for comparisons
                     cmd_compare.append("'%s'" % i)
@@ -332,9 +340,20 @@ class ParserTestCase(unittest.TestCase):
                    cmd_compare[tmp_in_idx] = 'out'
                    cmd_compare[tmp_in_idx + 2] = tmp_outif
 
-            if "%s %s" % (cmd[0], res) != " ".join(cmd_compare):
+            # add comment back
+            if comment != "":
+                cmd_compare.append('comment')
+                cmd_compare.append(comment)
+
+            if 'comment' in cmd_compare:
+                cmp_comment_idx = cmd_compare.index('comment')
+                compare_str = " ".join(cmd_compare[:cmp_comment_idx + 1])
+                compare_str += " '%s'" % cmd_compare[cmp_comment_idx + 1]
+            else:
+                compare_str = " ".join(cmd_compare)
+            if "%s %s" % (cmd[0], res) != compare_str:
                 errors.append(" \"%s %s\" != \"%s\" (orig=%s)" % (cmd[0], res,
-                    " ".join(cmd_compare), cmd))
+                    compare_str, cmd))
 
             #print("Result: rule %s" % res)
 

@@ -299,4 +299,11 @@ do_cmd "0" --dry-run allow to 10.0.0.1 from 10.4.0.0/16 proto ah
 echo "Interface with '+'" >> $TESTTMP/result
 do_cmd "0" null --dry-run allow in on eth+ to any port 80 proto tcp
 
+echo "Comments" >> $TESTTMP/result || exit 1
+do_cmd "0" allow 2222/tcp comment \'SSH\ port\'
+do_cmd "0" deny out log-all to any port 53 from any proto udp comment \'dns\ port\'
+do_cmd "0" delete deny out log-all to any port 53 from any proto udp comment \'dns\ port\'
+do_cmd "0" delete allow 2222/tcp comment \'SSH\ port\'
+cat $TESTSTATE/user.rules >> $TESTTMP/result
+
 exit 0

@@ -9,8 +9,9 @@ ufw (0.35) UNRELEASED; urgency=medium
     relocatable
   * files owned by 'clickpkg' are ok too
   * add preliminary snappy packaging
+  * add support for comments (LP: #448503)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2015 14:17:11 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 07 Feb 2016 16:55:26 -0600
 
 ufw (0.34) RELEASED; urgency=low
 

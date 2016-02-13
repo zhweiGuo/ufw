@@ -41,7 +41,8 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0", direction="in", forward=False):
+                 sport="any", src="0.0.0.0/0", direction="in", forward=False,
+                 comment=""):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -61,6 +62,7 @@ class UFWRule:
         self.interface_out = ""
         self.direction = ""
         self.forward = forward
+        self.comment = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -69,6 +71,7 @@ class UFWRule:
             self.set_src(src)
             self.set_dst(dst)
             self.set_direction(direction)
+            self.set_comment(comment)
         except UFWError:
             raise
 
@@ -102,7 +105,8 @@ class UFWRule:
         rule.interface_in = self.interface_in
         rule.interface_out = self.interface_out
         rule.direction = self.direction
-        rule.forward = self.forward 
+        rule.forward = self.forward
+        rule.comment = self.comment
 
         return rule
 
@@ -333,6 +337,10 @@ class UFWRule:
         else:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
+
+    def set_comment(self, comment):
+        '''Sets comment of the rule'''
+        self.comment = comment
 
     def normalize(self):
         '''Normalize src and dst to standard form'''

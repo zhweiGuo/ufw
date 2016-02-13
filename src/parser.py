@@ -172,6 +172,17 @@ class UFWCommandRule(UFWCommand):
             err_msg = _("Option 'log-all' not allowed here")
             raise UFWError(err_msg)
 
+        comment = ""
+        if 'comment' in argv:
+            comment_idx = argv.index("comment")
+            if comment_idx == len(argv) - 1:
+                err_msg = _("Option 'comment' missing required argument")
+                raise UFWError(err_msg)
+            comment = argv[comment_idx+1]
+            del argv[comment_idx+1]
+            del argv[comment_idx]
+            nargs = len(argv)
+
         if nargs < 2 or nargs > 13:
             raise ValueError()
 
@@ -179,7 +190,7 @@ class UFWCommandRule(UFWCommand):
         if logtype != "":
             rule_action += "_" + logtype
         rule = ufw.common.UFWRule(rule_action, "any", "any", \
-                                  direction=rule_direction)
+                                  direction=rule_direction, comment=comment)
         if remove:
             rule.remove = remove
         elif insert_pos != "":
@@ -453,6 +464,8 @@ class UFWCommandRule(UFWCommand):
                 res += " %s" % r.dport
                 if r.protocol != "any":
                     res += "/%s" % r.protocol
+            if r.comment != "":
+                res += " comment '%s'" % r.comment
         else:
             # Full syntax
             if r.interface_in != "":
@@ -498,6 +511,9 @@ class UFWCommandRule(UFWCommand):
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
                 res += " proto %s" % r.protocol
+
+            if r.comment != "":
+                res += " comment '%s'" % r.comment
 
         return res
     get_command = staticmethod(get_command)
