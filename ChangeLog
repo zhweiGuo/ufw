@@ -10,6 +10,7 @@ ufw (0.35) UNRELEASED; urgency=medium
   * files owned by 'clickpkg' are ok too
   * add preliminary snappy packaging
   * add support for comments (LP: #448503)
+  * don't allow 'route delete NUM' and suggest 'delete NUM' instead
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 07 Feb 2016 16:55:26 -0600
 

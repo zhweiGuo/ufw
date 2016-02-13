@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2014 Canonical Ltd.
+# Copyright 2009-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -527,6 +527,12 @@ class UFWCommandRouteRule(UFWCommandRule):
 
     def parse(self, argv):
         assert(argv[0] == "route")
+
+        # 'ufw delete NUM' is the correct usage, not 'ufw route delete NUM'
+        if 'delete' in argv:
+            err_msg = _("'route delete NUM' unsupported. Use 'delete NUM' instead.")
+            raise UFWError(err_msg)
+
 
         # Let's use as much as UFWCommandRule.parse() as possible. The only
         # difference with our rules is that argv[0] is 'route' and we support

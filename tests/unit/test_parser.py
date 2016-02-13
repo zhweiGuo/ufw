@@ -1,5 +1,5 @@
 #
-# Copyright 2013 Canonical Ltd.
+# Copyright 2013-2016 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -578,6 +578,13 @@ class ParserTestCase(unittest.TestCase):
 
         c = ['rule', 'allow', 5, '22']
         tests.unit.support.check_for_exception(self, AttributeError, \
+                                               self.parser.parse_command,
+                                               c)
+
+    def test_route_delete_num(self):
+        '''Test route delete NUM'''
+        c = ['route', 'delete', '1']
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
                                                self.parser.parse_command,
                                                c)
 
