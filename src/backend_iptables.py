@@ -1052,6 +1052,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 found = True
                 modified = True
                 newrules.append(rule.dup_rule())
+            elif ret < 0 and rule.remove and rule.comment == '':
+                # Don't require comment to remove the rule
+                found = True
             else:
                 newrules.append(r)
 

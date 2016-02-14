@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2013 Canonical Ltd.
+# Copyright 2012-2016 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -97,6 +97,7 @@ class FrontendTestCase(unittest.TestCase):
                 'allow to fe80::/16',
                 'deny from any port 53 proto udp',
                 'limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.0/24 port 1024:65535 proto tcp',
+                'reject telnet comment unsafe',
                 '--version',
                 '--dry-run allow 22/tcp',
                 '--dry-run app list',

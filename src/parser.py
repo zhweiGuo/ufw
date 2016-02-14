@@ -530,9 +530,15 @@ class UFWCommandRouteRule(UFWCommandRule):
 
         # 'ufw delete NUM' is the correct usage, not 'ufw route delete NUM'
         if 'delete' in argv:
-            err_msg = _("'route delete NUM' unsupported. Use 'delete NUM' instead.")
-            raise UFWError(err_msg)
-
+            idx = argv.index('delete')
+            err_msg = ""
+            if len(argv) > idx:
+                try:
+                    int(argv[idx + 1])
+                    err_msg = _("'route delete NUM' unsupported. Use 'delete NUM' instead.")
+                    raise UFWError(err_msg)
+                except ValueError:
+                    pass
 
         # Let's use as much as UFWCommandRule.parse() as possible. The only
         # difference with our rules is that argv[0] is 'route' and we support

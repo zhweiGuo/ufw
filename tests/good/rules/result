@@ -14853,7 +14853,7 @@ WARN: Checks disabled
 Rules updated
 
 
-534: delete allow 2222/tcp comment 'SSH port'
+534: delete allow 2222/tcp
 WARN: Checks disabled
 Rules updated
 

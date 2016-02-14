@@ -302,8 +302,10 @@ do_cmd "0" null --dry-run allow in on eth+ to any port 80 proto tcp
 echo "Comments" >> $TESTTMP/result || exit 1
 do_cmd "0" allow 2222/tcp comment \'SSH\ port\'
 do_cmd "0" deny out log-all to any port 53 from any proto udp comment \'dns\ port\'
+# delete exact
 do_cmd "0" delete deny out log-all to any port 53 from any proto udp comment \'dns\ port\'
-do_cmd "0" delete allow 2222/tcp comment \'SSH\ port\'
+# delete without comment
+do_cmd "0" delete allow 2222/tcp
 cat $TESTSTATE/user.rules >> $TESTTMP/result
 
 exit 0

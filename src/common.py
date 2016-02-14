@@ -1,6 +1,6 @@
 '''common.py: common classes for ufw'''
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -382,7 +382,7 @@ class UFWRule:
         Return codes:
           0  match
           1  no match
-         -1  match all but action
+         -1  match all but action, log-type and/or comment
         '''
         if not x or not y:
             raise ValueError()
@@ -424,15 +424,17 @@ class UFWRule:
         if x.forward != y.forward:
             debug(dbg_msg)
             return 1
-        if x.action == y.action and x.logtype == y.logtype:
+        if x.action == y.action and x.logtype == y.logtype and \
+                x.comment == y.comment:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
 
-        dbg_msg = _("Found non-action/non-logtype match " \
-                    "(%(xa)s/%(ya)s %(xl)s/%(yl)s)") % \
-                    ({'xa': x.action, 'ya': y.action, \
-                      'xl': x.logtype, 'yl': y.logtype})
+        dbg_msg = _("Found non-action/non-logtype/comment match " \
+                    "(%(xa)s/%(ya)s/'%(xc)s' %(xl)s/%(yl)s/'%(yc)s')") % \
+                    ({'xa': x.action, 'ya': y.action,
+                      'xl': x.logtype, 'yl': y.logtype,
+                      'xc': x.comment, 'yc': y.comment})
         debug(dbg_msg)
         return -1
 
