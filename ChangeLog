@@ -11,6 +11,7 @@ ufw (0.35) UNRELEASED; urgency=medium
   * add preliminary snappy packaging
   * add support for comments (LP: #448503)
   * don't allow 'route delete NUM' and suggest 'delete NUM' instead
+  * move user[6].rules to /etc/ufw (LP: #728128)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 07 Feb 2016 16:55:26 -0600
 

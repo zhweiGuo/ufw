@@ -22,11 +22,11 @@ do_cmd "0" nostats enable
 
 echo "Bug #247352" >> $TESTTMP/result
 do_cmd "0" --dry-run allow http/tcp
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 echo "iptables -L -n:" >> $TESTTMP/result
 iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
 do_cmd "0" delete allow http/tcp
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 echo "Bug #251355" >> $TESTTMP/result
 echo "Setting IPV6 to no" >> $TESTTMP/result
@@ -123,10 +123,10 @@ cp "$TESTPATH/etc/ufw/applications.d/samba" "$TESTPATH/etc/ufw/applications.d/bu
 sed -i 's/Samba/bug407810/' "$TESTPATH/etc/ufw/applications.d/bug407810"
 do_cmd "0" app info bug407810
 do_cmd "0" null allow bug407810
-grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTCONFIG/user.rules >> $TESTTMP/result
 rm -f "$TESTPATH/etc/ufw/applications.d/bug407810"
 do_cmd "0" null delete allow bug407810
-grep "^-A .*user-input" $TESTSTATE/user.rules >> $TESTTMP/result
+grep "^-A .*user-input" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 echo "Bug #459925" >> $TESTTMP/result
 for ipv6 in yes no ; do
@@ -166,7 +166,7 @@ for i in low on medium high full off off ; do
     if [ "$i" = "off" ]; then
         e="1"
     fi
-    iptables-save | grep -q 'UFW LIMIT BLOCK' $TESTPATH/lib/ufw/user.rules
+    iptables-save | grep -q 'UFW LIMIT BLOCK' $TESTCONFIG/user.rules
     rc="$?"
     if [ "$rc" != "$e" ]; then
         echo "$i: got '$rc', expected '$e'"

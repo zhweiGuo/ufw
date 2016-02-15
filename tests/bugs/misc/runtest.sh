@@ -39,14 +39,14 @@ if [ "$UID" = "0" ]; then
     expected="0"
 fi
 sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
-chmod 444 $TESTSTATE/user.rules
+chmod 444 $TESTCONFIG/user.rules
 do_cmd "$expected" null allow 12345
-chmod 644 $TESTSTATE/user.rules
+chmod 644 $TESTCONFIG/user.rules
 
 sed -i 's/IPV6=.*/IPV6=yes/' $TESTPATH/etc/default/ufw
-chmod 444 $TESTSTATE/user6.rules
+chmod 444 $TESTCONFIG/user6.rules
 do_cmd "$expected" null allow 12345
-chmod 644 $TESTSTATE/user6.rules
+chmod 644 $TESTCONFIG/user6.rules
 sed -i 's/IPV6=.*/IPV6=no/' $TESTPATH/etc/default/ufw
 
 chmod 444 $TESTPATH/etc/default/ufw
@@ -68,7 +68,7 @@ for i in low on medium high full ; do
     do_cmd "0" nostats allow 22
     for j in user.rules user6.rules ; do
         echo "checking for 'INVALID -j RETURN' in $j" >> $TESTTMP/result
-        grep -q 'logging-deny .* INVALID -j RETURN' $TESTPATH/lib/ufw/$j
+        grep -q 'logging-deny .* INVALID -j RETURN' $TESTCONFIG/$j
         rc="$?"
         if [ "$rc" != "$e" ]; then
             echo "$i: got '$rc', expected '$e'"
@@ -86,7 +86,7 @@ for i in off low on medium high full off ; do
     if [ "$i" = "off" ]; then
         e="1"
     fi
-    grep -q 'UFW LIMIT BLOCK' $TESTPATH/lib/ufw/user.rules
+    grep -q 'UFW LIMIT BLOCK' $TESTCONFIG/user.rules
     rc="$?"
     if [ "$rc" != "$e" ]; then
         echo "$i: got '$rc', expected '$e'"

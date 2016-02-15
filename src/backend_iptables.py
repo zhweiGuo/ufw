@@ -1,6 +1,6 @@
 '''backend_iptables.py: iptables backend for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -39,10 +39,10 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         config_dir = _findpath(ufw.common.config_dir, datadir)
         state_dir = _findpath(ufw.common.state_dir, datadir)
 
-        files['rules'] = os.path.join(state_dir, 'user.rules')
+        files['rules'] = os.path.join(config_dir, 'ufw/user.rules')
         files['before_rules'] = os.path.join(config_dir, 'ufw/before.rules')
         files['after_rules'] = os.path.join(config_dir, 'ufw/after.rules')
-        files['rules6'] = os.path.join(state_dir, 'user6.rules')
+        files['rules6'] = os.path.join(config_dir, 'ufw/user6.rules')
         files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
         files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
         files['init'] = os.path.join(_findpath(ufw.common.state_dir, rootdir),

@@ -28,16 +28,16 @@ do
 	do_cmd "0" limit from any port 24 proto udp
 	do_cmd "0" limit in on eth1 to any port 23
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 	echo "TESTING ARGS (delete allow/deny to/from)" >> $TESTTMP/result
 	do_cmd "0" delete limit 22/tcp
 	do_cmd "0" delete limit from any port 24 proto udp
 	do_cmd "0" delete limit in on eth1 to any port 23
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 done
 
 

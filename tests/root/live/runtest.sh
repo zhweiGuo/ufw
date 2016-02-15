@@ -49,8 +49,8 @@ do
 		do_cmd "0" deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
 	fi
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 	echo "TESTING ARGS (delete allow/deny to/from)" >> $TESTTMP/result
 	do_cmd "0" delete allow 53
@@ -69,8 +69,8 @@ do
 		do_cmd "0" delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
 	fi
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 done
 
 
@@ -90,14 +90,14 @@ do
 	do_cmd "0" reject 114/tcp
 	do_cmd "0" reject 115/udp
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 	do_cmd "0" delete reject 113
 	do_cmd "0" delete reject 114/tcp
 	do_cmd "0" delete reject 115/udp
 	do_cmd "0" status
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 done
 
 echo "Checking flush builtins" >> $TESTTMP/result
@@ -184,8 +184,8 @@ do
 	do_cmd "0" insert 8 allow $i on eth2 to any app Samba
 
 	do_cmd "0" status numbered
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 	# delete what we added
         do_cmd "0" delete allow $i on eth1
@@ -202,8 +202,8 @@ do
 	do_cmd "0" delete allow $i on eth0 to any app Samba
 	do_cmd "0" delete allow $i on eth2 to any app Samba
 
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     done
 done
 
@@ -346,7 +346,7 @@ iptables -L ufw-user-input -n >/dev/null 2>&1 && {
     echo "Failed: found 'ufw-user-input', still running." >> $TESTTMP/result
     exit 1
 }
-grep -v -q 12345 $TESTSTATE/user.rules || {
+grep -v -q 12345 $TESTCONFIG/user.rules || {
     echo "Failed: found '12345' in user.rules" >> $TESTTMP/result
     exit 1
 }
@@ -377,18 +377,18 @@ do
         do_cmd "0" nostats allow $i
     done
 
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
     if [ "$ipv6" = "yes" ]; then
-        grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     fi
 
     for i in 4 3 2 1; do
-        grep -q "^### tuple ### allow any $i " $TESTSTATE/user.rules || {
+        grep -q "^### tuple ### allow any $i " $TESTCONFIG/user.rules || {
             echo "Failed: Could not find port '$i' user.rules" >> $TESTTMP/result
             exit 1
         }
         if [ "$ipv6" = "yes" ]; then
-            grep -q "^### tuple ### allow any $i " $TESTSTATE/user6.rules || {
+            grep -q "^### tuple ### allow any $i " $TESTCONFIG/user6.rules || {
                 echo "Failed: Could not find port '$i' user6.rules" >> $TESTTMP/result
                 exit 1
             }
@@ -396,22 +396,22 @@ do
 
         if [ "$ipv6" = "yes" ]; then
             do_cmd "0" null --force delete $((i+i))
-            grep -v -q "^### tuple ### allow any $i " $TESTSTATE/user6.rules || {
+            grep -v -q "^### tuple ### allow any $i " $TESTCONFIG/user6.rules || {
                 echo "Failed: Found port '$i' user6.rules" >> $TESTTMP/result
                 exit 1
             }
-            grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+            grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
         fi
         do_cmd "0" null --force delete $i
-        grep -v -q "^### tuple ### allow any $i " $TESTSTATE/user.rules || {
+        grep -v -q "^### tuple ### allow any $i " $TESTCONFIG/user.rules || {
             echo "Failed: Found port '$i' user.rules" >> $TESTTMP/result
             exit 1
         }
-        grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+        grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
     done
 done
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 echo "Testing interface with '+'" >> $TESTTMP/result
 for ipv6 in yes no
@@ -423,13 +423,13 @@ do
 	do_cmd "0" nostats enable
 
         do_cmd "0" allow $i on lo+
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 	# delete what we added
         do_cmd "0" delete allow $i on lo+
-	grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+	grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     done
 done
 do_cmd "0" nostats disable
