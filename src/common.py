@@ -387,6 +387,7 @@ class UFWRule:
           0  match
           1  no match
          -1  match all but action, log-type and/or comment
+         -2  match all but comment
         '''
         if not x or not y:
             raise ValueError()
@@ -433,6 +434,11 @@ class UFWRule:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
+        if x.action == y.action and x.logtype == y.logtype and \
+                x.comment != y.comment:
+            dbg_msg = _("Found exact match, excepting comment")
+            debug(dbg_msg)
+            return -2
 
         dbg_msg = _("Found non-action/non-logtype/comment match " \
                     "(%(xa)s/%(ya)s/'%(xc)s' %(xl)s/%(yl)s/'%(yc)s')") % \
