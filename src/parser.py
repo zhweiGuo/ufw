@@ -466,7 +466,7 @@ class UFWCommandRule(UFWCommand):
                 if r.protocol != "any":
                     res += "/%s" % r.protocol
             if r.comment != "":
-                res += " comment '%s'" % ufw.util.hex_decode(r.comment)
+                res += " comment '%s'" % r.get_comment()
         else:
             # Full syntax
             if r.interface_in != "":
@@ -514,7 +514,7 @@ class UFWCommandRule(UFWCommand):
                 res += " proto %s" % r.protocol
 
             if r.comment != "":
-                res += " comment '%s'" % ufw.util.hex_decode(r.comment)
+                res += " comment '%s'" % r.get_comment()
 
         return res
     get_command = staticmethod(get_command)

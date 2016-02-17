@@ -417,7 +417,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
             comment_str = ""
             if r.comment != "":
-                comment_str = " # %s" % r.comment
+                comment_str = " # %s" % r.get_comment()
             tmp_str += "%-26s %-12s%-26s%s%s\n" % (location['dst'], \
                                                 " ".join([r.action.upper(), \
                                                           dir_str]), \
@@ -701,7 +701,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 # comment= should always be last, so just strip it out
                 if ' comment=' in orig_line:
                     line, hex = orig_line.split(r' comment=')
-                    comment = ufw.util.hex_decode(hex.strip())
+                    comment = hex.strip()
 
                 if pat_tuple.match(line):
                     tupl = pat_tuple.sub('', line)
@@ -876,7 +876,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                      (action, r.protocol, r.dport, r.dst, r.sport, r.src,
                       ifaces)
                 if r.comment != '':
-                    tstr += " comment=%s" % ufw.util.hex_encode(r.comment)
+                    tstr += " comment=%s" % r.comment
                 ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -890,7 +890,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
                         dapp, sapp, ifaces)
                 if r.comment != '':
-                    tstr += " comment=%s" % ufw.util.hex_encode(r.comment)
+                    tstr += " comment=%s" % r.comment
                 ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"

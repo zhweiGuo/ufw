@@ -338,6 +338,10 @@ class UFWRule:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
 
+    def get_comment(self):
+        '''Get decoded comment of the rule'''
+        return ufw.util.hex_decode(self.comment)
+
     def set_comment(self, comment):
         '''Sets comment of the rule'''
         self.comment = comment
