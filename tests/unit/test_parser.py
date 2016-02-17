@@ -15,6 +15,7 @@
 #
 
 import re
+import sys
 import unittest
 import tests.unit.support
 import ufw.parser
@@ -188,14 +189,19 @@ class ParserTestCase(unittest.TestCase):
 
             # First, feed the res rule into parse() (we need to split the
             # string but preserve quoted substrings
-            test_cmd = [cmd[0]] + \
-                       [p.strip("'") for p in re.split("( |'.*?')",
-                                                       res) if p.strip()]
+            if sys.version_info[0] < 3:
+                test_cmd = [cmd[0]] + \
+                           [p.strip("'").encode('utf-8') for p in re.split("( |'.*?')",
+                                                           res) if p.strip()]
+            else:
+                test_cmd = [cmd[0]] + \
+                           [p.strip("'") for p in re.split("( |'.*?')",
+                                                           res) if p.strip()]
             try:
                 self.parser.parse_command(test_cmd + [])
             except ufw.common.UFWError:
                 self.assertTrue(False,
-                                "get_comand() returned invalid rule:\n" + \
+                                "get_command() returned invalid rule:\n" + \
                                 " orig=%s\n pr.data['rule']=%s\n result=%s" % \
                                 (cmd, pr.data['rule'], test_cmd))
 
@@ -344,7 +350,10 @@ class ParserTestCase(unittest.TestCase):
             if comment != "":
                 cmd_compare.append('comment')
                 compare_str = " ".join(cmd_compare)
-                compare_str += " '%s'" % comment
+                if sys.version_info[0] < 3:
+                    compare_str += " '%s'" % comment.decode('utf-8')
+                else:
+                    compare_str += " '%s'" % comment
                 cmd_compare.append(comment)
             else:
                 compare_str = " ".join(cmd_compare)
