@@ -174,7 +174,7 @@ def get_sample_rule_commands_simple():
                 for port in ['', '22', 'tcpmux', 'fsp', 'WWW', 'CIFS', \
                              'WWW Full', 'DNS']:
                     for proto in ['', 'tcp', 'udp']:
-                        for comment in ['', 'my comment', 'thumbs 👍']:
+                        for comment in ['', 'thumbs 👍']:
                             c = []
                             if dir:
                                 c.append(dir)
@@ -252,7 +252,7 @@ def get_sample_rule_commands_extended(v6=False):
                     for to in dsts:
                         for frm in srcs:
                             for proto in ['', 'tcp', 'udp']:
-                                for comment in ['', 'my comment', 'thumbs 👍']:
+                                for comment in ['', 'thumbs 👍']:
                                     dst = ''
                                     dport = ''
                                     if to:

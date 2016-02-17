@@ -193,7 +193,7 @@ class ParserTestCase(unittest.TestCase):
                                                        res) if p.strip()]
             try:
                 self.parser.parse_command(test_cmd + [])
-            except Exception:
+            except ufw.common.UFWError:
                 self.assertTrue(False,
                                 "get_comand() returned invalid rule:\n" + \
                                 " orig=%s\n pr.data['rule']=%s\n result=%s" % \
@@ -343,12 +343,9 @@ class ParserTestCase(unittest.TestCase):
             # add comment back
             if comment != "":
                 cmd_compare.append('comment')
+                compare_str = " ".join(cmd_compare)
+                compare_str += " '%s'" % comment
                 cmd_compare.append(comment)
-
-            if 'comment' in cmd_compare:
-                cmp_comment_idx = cmd_compare.index('comment')
-                compare_str = " ".join(cmd_compare[:cmp_comment_idx + 1])
-                compare_str += " '%s'" % cmd_compare[cmp_comment_idx + 1]
             else:
                 compare_str = " ".join(cmd_compare)
             if "%s %s" % (cmd[0], res) != compare_str:
