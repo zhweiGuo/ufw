@@ -1030,6 +1030,8 @@ AAA
         '''Test hex_decode() output'''
         s = '666f6ff09f918d626172e5ad9762617a'
         expected = 'foo👍bar字baz'
+        if sys.version_info[0] < 3:
+            expected = u'foo👍bar字baz'
 
         result = ufw.util.hex_decode(s)
         self.assertEquals(expected, result)

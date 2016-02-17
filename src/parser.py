@@ -190,7 +190,8 @@ class UFWCommandRule(UFWCommand):
         if logtype != "":
             rule_action += "_" + logtype
         rule = ufw.common.UFWRule(rule_action, "any", "any", \
-                                  direction=rule_direction, comment=comment)
+                                  direction=rule_direction,
+                                  comment=ufw.util.hex_encode(comment))
         if remove:
             rule.remove = remove
         elif insert_pos != "":
@@ -465,7 +466,7 @@ class UFWCommandRule(UFWCommand):
                 if r.protocol != "any":
                     res += "/%s" % r.protocol
             if r.comment != "":
-                res += " comment '%s'" % r.comment
+                res += " comment '%s'" % ufw.util.hex_decode(r.comment)
         else:
             # Full syntax
             if r.interface_in != "":
@@ -513,7 +514,7 @@ class UFWCommandRule(UFWCommand):
                 res += " proto %s" % r.protocol
 
             if r.comment != "":
-                res += " comment '%s'" % r.comment
+                res += " comment '%s'" % ufw.util.hex_decode(r.comment)
 
         return res
     get_command = staticmethod(get_command)
