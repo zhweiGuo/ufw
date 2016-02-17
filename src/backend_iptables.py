@@ -45,8 +45,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         files['rules6'] = os.path.join(config_dir, 'ufw/user6.rules')
         files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
         files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
-        files['init'] = os.path.join(_findpath(ufw.common.state_dir, rootdir),
-                                     'ufw-init')
+        files['init'] = os.path.join(_findpath(state_dir, rootdir), 'ufw-init')
 
         ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files,
                                         rootdir=rootdir, datadir=datadir)
