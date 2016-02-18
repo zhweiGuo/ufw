@@ -1,4 +1,4 @@
-ufw (0.35) UNRELEASED; urgency=medium
+ufw (0.35) RELEASED; urgency=medium
 
   * update check-requirements and README for python 3.5
   * update unit tests to not fail when /proc/net/* has no useful information
