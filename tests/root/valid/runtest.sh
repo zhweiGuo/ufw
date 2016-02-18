@@ -18,13 +18,13 @@ source "$TESTPATH/../testlib.sh"
 
 echo "TESTING ARGS (logging)" >> $TESTTMP/result
 do_cmd "0"  logging on
-grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
+grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 do_cmd "0"  logging off
-grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
+grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 do_cmd "0"  LOGGING ON
-grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
+grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 do_cmd "0"  LOGGING OFF
-grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
+grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 
 echo "TESTING ARGS (default)" >> $TESTTMP/result
 do_cmd "0"  enable
