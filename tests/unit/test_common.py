@@ -480,7 +480,7 @@ class CommonTestCase(unittest.TestCase):
         for comment in ['comment1', 'comment2']:
             y = self.rules["full-any"].dup_rule()
             y.set_comment(comment)
-            self.assertEquals(ufw.common.UFWRule.match(x, y), -1)
+            self.assertEquals(ufw.common.UFWRule.match(x, y), -2)
 
         y = self.rules["full-any"].dup_rule()
         y.set_port("456", loc="dst")
