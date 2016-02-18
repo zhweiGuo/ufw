@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2014 Canonical Ltd.
+#    Copyright 2008-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -28,9 +28,9 @@ do
 
 	echo "TESTING ARGS (logging)" >> $TESTTMP/result
 	do_cmd "0"  logging on
-	grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
+	grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 	do_cmd "0"  logging off
-	grep -h "LOG" $TESTPATH/etc/ufw/*.rules >> $TESTTMP/result
+	grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 
 	echo "TESTING ARGS (allow/deny to/from)" >> $TESTTMP/result
 	do_cmd "0" allow 53
