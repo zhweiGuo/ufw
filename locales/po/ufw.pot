@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 15:02-0600\n"
+"POT-Creation-Date: 2016-02-17 18:00-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgstr ""
 msgid "'%s' does not exist"
 msgstr ""
 
-#: src/backend.py:229 src/backend_iptables.py:1416
+#: src/backend.py:229 src/backend_iptables.py:1417
 #, python-format
 msgid "Couldn't stat '%s'"
 msgstr ""
@@ -144,7 +144,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: src/backend.py:603 src/backend_iptables.py:1284
+#: src/backend.py:603 src/backend_iptables.py:1285
 #, python-format
 msgid "Invalid log level '%s'"
 msgstr ""
@@ -214,28 +214,32 @@ msgstr ""
 msgid "Could not normalize destination address"
 msgstr ""
 
-#: src/common.py:433
+#: src/common.py:434
 msgid "Found exact match"
 msgstr ""
 
-#: src/common.py:437
+#: src/common.py:439
+msgid "Found exact match, excepting comment"
+msgstr ""
+
+#: src/common.py:443
 #, python-format
 msgid ""
 "Found non-action/non-logtype/comment match (%(xa)s/%(ya)s/'%(xc)s' %(xl)s/"
 "%(yl)s/'%(yc)s')"
 msgstr ""
 
-#: src/common.py:595
+#: src/common.py:601
 #, python-format
 msgid "Improper rule syntax ('%s' specified with app rule)"
 msgstr ""
 
-#: src/common.py:602
+#: src/common.py:608
 #, python-format
 msgid "Invalid IPv6 address with protocol '%s'"
 msgstr ""
 
-#: src/common.py:608 src/util.py:83
+#: src/common.py:614 src/util.py:83
 #, python-format
 msgid "Invalid port with protocol '%s'"
 msgstr ""
@@ -513,84 +517,84 @@ msgstr ""
 msgid "Cannot insert rule at position '%d'"
 msgstr ""
 
-#: src/backend_iptables.py:1062
+#: src/backend_iptables.py:1063
 msgid "Skipping inserting existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:1073 src/frontend.py:411
+#: src/backend_iptables.py:1074 src/frontend.py:411
 msgid "Could not delete non-existent rule"
 msgstr ""
 
-#: src/backend_iptables.py:1078
+#: src/backend_iptables.py:1079
 msgid "Skipping adding existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:1094
+#: src/backend_iptables.py:1095
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:1099
+#: src/backend_iptables.py:1100
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:1101
+#: src/backend_iptables.py:1102
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:1109
+#: src/backend_iptables.py:1110
 msgid "Rule inserted"
 msgstr ""
 
-#: src/backend_iptables.py:1111
+#: src/backend_iptables.py:1112
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:1121
+#: src/backend_iptables.py:1122
 msgid " (skipped reloading firewall)"
 msgstr ""
 
-#: src/backend_iptables.py:1124
+#: src/backend_iptables.py:1125
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:1127
+#: src/backend_iptables.py:1128
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:1144 src/backend_iptables.py:1235
+#: src/backend_iptables.py:1145 src/backend_iptables.py:1236
 msgid "Could not update running firewall"
 msgstr ""
 
-#: src/backend_iptables.py:1199
+#: src/backend_iptables.py:1200
 #, python-format
 msgid "Could not perform '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:1226
+#: src/backend_iptables.py:1227
 msgid "Couldn't update rules file for logging"
 msgstr ""
 
-#: src/backend_iptables.py:1382
+#: src/backend_iptables.py:1383
 #, python-format
 msgid "Could not find '%s'. Aborting"
 msgstr ""
 
-#: src/backend_iptables.py:1394
+#: src/backend_iptables.py:1395
 #, python-format
 msgid "'%s' already exists. Aborting"
 msgstr ""
 
-#: src/backend_iptables.py:1400
+#: src/backend_iptables.py:1401
 #, python-format
 msgid "Backing up '%(old)s' to '%(new)s'\n"
 msgstr ""
 
-#: src/backend_iptables.py:1421
+#: src/backend_iptables.py:1422
 #, python-format
 msgid "WARN: '%s' is world writable"
 msgstr ""
 
-#: src/backend_iptables.py:1423
+#: src/backend_iptables.py:1424
 #, python-format
 msgid "WARN: '%s' is world readable"
 msgstr ""
