@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 18:00-0600\n"
+"POT-Creation-Date: 2016-02-17 18:51-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgstr ""
 msgid "'%s' does not exist"
 msgstr ""
 
-#: src/backend.py:229 src/backend_iptables.py:1417
+#: src/backend.py:229 src/backend_iptables.py:1416
 #, python-format
 msgid "Couldn't stat '%s'"
 msgstr ""
@@ -144,7 +144,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: src/backend.py:603 src/backend_iptables.py:1285
+#: src/backend.py:603 src/backend_iptables.py:1284
 #, python-format
 msgid "Invalid log level '%s'"
 msgstr ""
@@ -517,84 +517,84 @@ msgstr ""
 msgid "Cannot insert rule at position '%d'"
 msgstr ""
 
-#: src/backend_iptables.py:1063
+#: src/backend_iptables.py:1062
 msgid "Skipping inserting existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:1074 src/frontend.py:411
+#: src/backend_iptables.py:1073 src/frontend.py:411
 msgid "Could not delete non-existent rule"
 msgstr ""
 
-#: src/backend_iptables.py:1079
+#: src/backend_iptables.py:1078
 msgid "Skipping adding existing rule"
 msgstr ""
 
-#: src/backend_iptables.py:1095
+#: src/backend_iptables.py:1094
 msgid "Couldn't update rules file"
 msgstr ""
 
-#: src/backend_iptables.py:1100
+#: src/backend_iptables.py:1099
 msgid "Rules updated"
 msgstr ""
 
-#: src/backend_iptables.py:1102
+#: src/backend_iptables.py:1101
 msgid "Rules updated (v6)"
 msgstr ""
 
-#: src/backend_iptables.py:1110
+#: src/backend_iptables.py:1109
 msgid "Rule inserted"
 msgstr ""
 
-#: src/backend_iptables.py:1112
+#: src/backend_iptables.py:1111
 msgid "Rule updated"
 msgstr ""
 
-#: src/backend_iptables.py:1122
+#: src/backend_iptables.py:1121
 msgid " (skipped reloading firewall)"
 msgstr ""
 
-#: src/backend_iptables.py:1125
+#: src/backend_iptables.py:1124
 msgid "Rule deleted"
 msgstr ""
 
-#: src/backend_iptables.py:1128
+#: src/backend_iptables.py:1127
 msgid "Rule added"
 msgstr ""
 
-#: src/backend_iptables.py:1145 src/backend_iptables.py:1236
+#: src/backend_iptables.py:1144 src/backend_iptables.py:1235
 msgid "Could not update running firewall"
 msgstr ""
 
-#: src/backend_iptables.py:1200
+#: src/backend_iptables.py:1199
 #, python-format
 msgid "Could not perform '%s'"
 msgstr ""
 
-#: src/backend_iptables.py:1227
+#: src/backend_iptables.py:1226
 msgid "Couldn't update rules file for logging"
 msgstr ""
 
-#: src/backend_iptables.py:1383
+#: src/backend_iptables.py:1382
 #, python-format
 msgid "Could not find '%s'. Aborting"
 msgstr ""
 
-#: src/backend_iptables.py:1395
+#: src/backend_iptables.py:1394
 #, python-format
 msgid "'%s' already exists. Aborting"
 msgstr ""
 
-#: src/backend_iptables.py:1401
+#: src/backend_iptables.py:1400
 #, python-format
 msgid "Backing up '%(old)s' to '%(new)s'\n"
 msgstr ""
 
-#: src/backend_iptables.py:1422
+#: src/backend_iptables.py:1421
 #, python-format
 msgid "WARN: '%s' is world writable"
 msgstr ""
 
-#: src/backend_iptables.py:1424
+#: src/backend_iptables.py:1423
 #, python-format
 msgid "WARN: '%s' is world readable"
 msgstr ""

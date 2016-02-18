@@ -329,13 +329,13 @@ echo "Reset test" >> $TESTTMP/result
 do_cmd "0" nostats enable
 do_cmd "0" nostats allow 12345
 let rules_num="0"
-for i in `ls $TESTPATH/etc/ufw/*.rules && ls $TESTSTATE/*.rules` ; do
+for i in `ls $TESTPATH/etc/ufw/*.rules` ; do
     let rules_num=rules_num+1
 done
 do_cmd "0" null reset
 
 let rules_bak_num="0"
-for i in `ls $TESTPATH/etc/ufw/*.rules.2* && ls $TESTSTATE/*.rules.2*` ; do
+for i in `ls $TESTPATH/etc/ufw/*.rules.2*` ; do
     let rules_bak_num=rules_bak_num+1
 done
 if [ "$rules_num" != "$rules_bak_num" ]; then
