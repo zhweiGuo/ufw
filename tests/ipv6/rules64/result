@@ -7526,22 +7526,22 @@ Rules updated (v6)
 
 
 Comments
-328: allow to 10.0.0.1 from 10.4.0.0/16 comment 'SSH port'
+328: allow to 10.0.0.1 from 10.4.0.0/16 comment "SSH port"
 WARN: Checks disabled
 Rules updated
 
 
-329: allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment 'SSH port'
+329: allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment "SSH port"
 WARN: Checks disabled
 Rules updated (v6)
 
 
-330: delete allow to 10.0.0.1 from 10.4.0.0/16 comment 'SSH port'
+330: delete allow to 10.0.0.1 from 10.4.0.0/16 comment "SSH port"
 WARN: Checks disabled
 Rules updated
 
 
-331: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment 'SSH port'
+331: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment "SSH port"
 WARN: Checks disabled
 Rules updated (v6)
 
