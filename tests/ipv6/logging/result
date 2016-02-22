@@ -39,13 +39,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### allow_log tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -94,13 +94,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### allow_log tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -359,13 +359,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### allow_log-all tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -414,13 +414,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### allow_log-all tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -679,13 +679,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -734,13 +734,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -999,13 +999,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log-all tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -1054,13 +1054,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log-all tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -1323,17 +1323,17 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment "dapp_Samba"
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment "dapp_Samba"
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment "dapp_Samba"
 
 ### tuple ### limit_log tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment "dapp_Samba"
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment "dapp_Samba"
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -1623,17 +1623,17 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment "dapp_Samba"
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment "dapp_Samba"
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-limit-accept -m comment --comment "dapp_Samba"
 
 ### tuple ### limit_log-all tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment "dapp_Samba"
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment "dapp_Samba"
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-limit-accept -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -1919,13 +1919,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment "dapp_Samba"
 
 ### tuple ### reject_log tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -1974,13 +1974,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment "dapp_Samba"
 
 ### tuple ### reject_log tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -2239,13 +2239,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment "dapp_Samba"
 
 ### tuple ### reject_log-all tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -2294,13 +2294,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j REJECT -m comment --comment "dapp_Samba"
 
 ### tuple ### reject_log-all tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j REJECT --reject-with tcp-reset -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -2550,13 +2550,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### allow_log tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -2595,13 +2595,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### allow_log tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log-all tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32 in
 -A ufw6-user-logging-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
@@ -2649,13 +2649,13 @@ contents of user*.rules:
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw-user-input -p udp -m multiport --dports 137,138 -j ufw-user-logging-input
--A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -j ufw-user-logging-input
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment "dapp_Samba"
 
 ### END RULES ###
 
@@ -2694,13 +2694,13 @@ COMMIT
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p udp -m multiport --dports 137,138 -j RETURN
 -A ufw6-user-input -p udp -m multiport --dports 137,138 -j ufw6-user-logging-input
--A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### deny_log tcp 139,445 ::/0 any ::/0 Samba - in
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
 -A ufw6-user-logging-input -p tcp -m multiport --dports 139,445 -j RETURN
 -A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ufw6-user-logging-input
--A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment "dapp_Samba"
 
 ### tuple ### reject_log-all tcp 25 2001:db8:3:4:5:6:7:8 any 2001:db8::/32 in
 -A ufw6-user-logging-input -p tcp -d 2001:db8:3:4:5:6:7:8 --dport 25 -s 2001:db8::/32 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
