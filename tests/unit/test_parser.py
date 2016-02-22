@@ -191,11 +191,11 @@ class ParserTestCase(unittest.TestCase):
             # string but preserve quoted substrings
             if sys.version_info[0] < 3:
                 test_cmd = [cmd[0]] + \
-                           [p.strip("'").encode('utf-8') for p in re.split("( |'.*?')",
+                           [p.strip('"').encode('utf-8') for p in re.split('( |".*?")',
                                                            res) if p.strip()]
             else:
                 test_cmd = [cmd[0]] + \
-                           [p.strip("'") for p in re.split("( |'.*?')",
+                           [p.strip('"') for p in re.split('( |".*?")',
                                                            res) if p.strip()]
             try:
                 self.parser.parse_command(test_cmd + [])
@@ -231,7 +231,7 @@ class ParserTestCase(unittest.TestCase):
 
             for i in cmd:
                 if ' ' in i:  # quote anything with a space for comparisons
-                    cmd_compare.append("'%s'" % i)
+                    cmd_compare.append('"%s"' % i)
                 else:
                     cmd_compare.append(i)
 
@@ -351,9 +351,9 @@ class ParserTestCase(unittest.TestCase):
                 cmd_compare.append('comment')
                 compare_str = " ".join(cmd_compare)
                 if sys.version_info[0] < 3:
-                    compare_str += " '%s'" % comment.decode('utf-8')
+                    compare_str += ' "%s"' % comment.decode('utf-8')
                 else:
-                    compare_str += " '%s'" % comment
+                    compare_str += ' "%s"' % comment
                 cmd_compare.append(comment)
             else:
                 compare_str = " ".join(cmd_compare)

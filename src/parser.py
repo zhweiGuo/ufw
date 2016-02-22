@@ -458,7 +458,7 @@ class UFWCommandRule(UFWCommand):
                 res += " %s" % r.logtype
             if r.dapp != "":
                 if " " in r.dapp:
-                    res += " '%s'" % r.dapp
+                    res += ' "%s"' % r.dapp
                 else:
                     res += " %s" % r.dapp
             else:
@@ -466,7 +466,7 @@ class UFWCommandRule(UFWCommand):
                 if r.protocol != "any":
                     res += "/%s" % r.protocol
             if r.comment != "":
-                res += " comment '%s'" % r.get_comment()
+                res += ' comment "%s"' % r.get_comment()
         else:
             # Full syntax
             if r.interface_in != "":
@@ -497,7 +497,7 @@ class UFWCommandRule(UFWCommand):
                     res += " %s %s" % (dir, loc)
                     if app != "":
                         if " " in app:
-                            res += " app '%s'" % app
+                            res += ' app "%s"' % app
                         else:
                             res += " app %s" % app
                     elif port != "any":
@@ -514,7 +514,7 @@ class UFWCommandRule(UFWCommand):
                 res += " proto %s" % r.protocol
 
             if r.comment != "":
-                res += " comment '%s'" % r.get_comment()
+                res += ' comment "%s"' % r.get_comment()
 
         return res
     get_command = staticmethod(get_command)

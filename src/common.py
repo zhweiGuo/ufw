@@ -163,7 +163,7 @@ class UFWRule:
 
         if self.dapp != "" or self.sapp != "":
             # Format the comment string, and quote it just in case
-            ipt_comment = "-m comment --comment '"
+            ipt_comment = '-m comment --comment "'
             pat_space = re.compile(' ')
             if self.dapp != "":
                 ipt_comment += "dapp_" + pat_space.sub('%20', self.dapp)
@@ -171,7 +171,7 @@ class UFWRule:
                 ipt_comment += ","
             if self.sapp != "":
                 ipt_comment += "sapp_" + pat_space.sub('%20', self.sapp)
-            ipt_comment += "'"
+            ipt_comment += '"'
 
             rule_str += " " + ipt_comment
 
