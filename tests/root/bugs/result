@@ -94,7 +94,7 @@ Could not delete non-existent rule
 
 
 iptables -L -n:
-ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 /* 'dapp_Apache' */ 
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80 /* "dapp_Apache" */
 
 Chain ufw-user-limit (0 references)
 10: delete allow Apache
@@ -149,14 +149,14 @@ Status: active
 
 To                         Action      From
 --                         ------      ----
-Anywhere                   ALLOW       Anywhere
-Anywhere/tcp               ALLOW       Anywhere/tcp
-192.168.1.1                ALLOW       Anywhere
-Anywhere                   ALLOW       192.168.1.1/udp
-192.168.1.2                ALLOW       192.168.1.1
-192.168.1.2/udp            ALLOW       192.168.1.1/udp
-Anywhere (v6)              ALLOW       Anywhere (v6)
-Anywhere/tcp (v6)          ALLOW       Anywhere/tcp (v6)
+Anywhere                   ALLOW       Anywhere                  
+Anywhere/tcp               ALLOW       Anywhere/tcp              
+192.168.1.1                ALLOW       Anywhere                  
+Anywhere                   ALLOW       192.168.1.1/udp           
+192.168.1.2                ALLOW       192.168.1.1               
+192.168.1.2/udp            ALLOW       192.168.1.1/udp           
+Anywhere (v6)              ALLOW       Anywhere (v6)             
+Anywhere/tcp (v6)          ALLOW       Anywhere/tcp (v6)         
 
 
 
@@ -329,14 +329,14 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] 1                          ALLOW IN    Anywhere
-[ 2] 2                          ALLOW IN    Anywhere
-[ 3] 3                          ALLOW IN    Anywhere
-[ 4] 4                          ALLOW IN    Anywhere
-[ 5] 1 (v6)                     ALLOW IN    Anywhere (v6)
-[ 6] 2 (v6)                     ALLOW IN    Anywhere (v6)
-[ 7] 3 (v6)                     ALLOW IN    Anywhere (v6)
-[ 8] 4 (v6)                     ALLOW IN    Anywhere (v6)
+[ 1] 1                          ALLOW IN    Anywhere                  
+[ 2] 2                          ALLOW IN    Anywhere                  
+[ 3] 3                          ALLOW IN    Anywhere                  
+[ 4] 4                          ALLOW IN    Anywhere                  
+[ 5] 1 (v6)                     ALLOW IN    Anywhere (v6)             
+[ 6] 2 (v6)                     ALLOW IN    Anywhere (v6)             
+[ 7] 3 (v6)                     ALLOW IN    Anywhere (v6)             
+[ 8] 4 (v6)                     ALLOW IN    Anywhere (v6)             
 
 
 
@@ -387,8 +387,8 @@ Ports:
 57: allow bug407810
 
 
--A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_bug407810'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_bug407810'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment "dapp_bug407810"
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment "dapp_bug407810"
 58: delete allow bug407810
 
 
