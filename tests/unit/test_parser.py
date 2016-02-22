@@ -521,6 +521,7 @@ class ParserTestCase(unittest.TestCase):
                 (['route', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],
                   ufw.common.UFWError),
+                (['rule', 'allow', '22', 'comment', "foo'bar"], ValueError),
                ]
         for cmd, exception in cmds:
             #print(" ".join(cmd))

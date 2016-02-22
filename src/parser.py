@@ -179,6 +179,12 @@ class UFWCommandRule(UFWCommand):
                 err_msg = _("Option 'comment' missing required argument")
                 raise UFWError(err_msg)
             comment = argv[comment_idx+1]
+            # TODO: properly support "'" in the comment string. See r949 for
+            # details
+            if "'" in comment:
+                err_msg = _("Comment may not contain \"'\"")
+                raise ValueError(err_msg)
+
             del argv[comment_idx+1]
             del argv[comment_idx]
             nargs = len(argv)

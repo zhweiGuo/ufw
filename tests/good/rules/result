@@ -14838,17 +14838,17 @@ Interface with '+'
 
 
 Comments
-531: allow 2222/tcp comment 'SSH port'
+531: allow 2222/tcp comment "SSH port"
 WARN: Checks disabled
 Rules updated
 
 
-532: deny out log-all to any port 53 from any proto udp comment 'dns port'
+532: deny out log-all to any port 53 from any proto udp comment "dns port"
 WARN: Checks disabled
 Rules updated
 
 
-533: delete deny out log-all to any port 53 from any proto udp comment 'dns port'
+533: delete deny out log-all to any port 53 from any proto udp comment "dns port"
 WARN: Checks disabled
 Rules updated
 

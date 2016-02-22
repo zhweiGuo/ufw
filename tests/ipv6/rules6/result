@@ -6113,12 +6113,12 @@ Rules updated (v6)
 
 
 Comments
-198: allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment 'SSH port'
+198: allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment "SSH port"
 WARN: Checks disabled
 Rules updated (v6)
 
 
-199: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment 'SSH port'
+199: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment "SSH port"
 WARN: Checks disabled
 Rules updated (v6)
 

@@ -117,8 +117,8 @@ do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 proto ah
 do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah
 
 echo "Comments" >> $TESTTMP/result || exit 1
-do_cmd "0" allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment \'SSH\ port\'
-do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment \'SSH\ port\'
+do_cmd "0" allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment \"SSH\ port\"
+do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment \"SSH\ port\"
 cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 
