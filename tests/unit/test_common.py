@@ -121,12 +121,12 @@ class CommonTestCase(unittest.TestCase):
         self.assertEquals(s, "-p all -j ACCEPT")
 
         s = str(self.rules["app-both"])
-        self.assertEquals(s, '-p all --dport 80 --sport 80 -j DROP ' + \
-                             '-m comment --comment "dapp_Apache,sapp_Apache"')
+        self.assertEquals(s, "-p all --dport 80 --sport 80 -j DROP " + \
+                             "-m comment --comment 'dapp_Apache,sapp_Apache'")
 
         s = str(self.rules["dapp"])
-        self.assertEquals(s, '-p all --dport 80 -j ACCEPT ' + \
-                             '-m comment --comment "dapp_Apache"')
+        self.assertEquals(s, "-p all --dport 80 -j ACCEPT " + \
+                             "-m comment --comment 'dapp_Apache'")
 
         s = str(self.rules["full-any"])
         self.assertEquals(s, "-p all -d 10.0.0.1 --dport 123 " + \
@@ -177,8 +177,8 @@ class CommonTestCase(unittest.TestCase):
         self.assertEquals(s, "-p udp -j REJECT")
 
         s = str(self.rules["sapp"])
-        self.assertEquals(s, '-p all --sport 80 -j DROP ' + \
-                             '-m comment --comment "sapp_Apache"')
+        self.assertEquals(s, "-p all --sport 80 -j DROP " + \
+                             "-m comment --comment 'sapp_Apache'")
 
         s = str(self.rules["tcp"])
         self.assertEquals(s, "-p tcp -j LIMIT")
