@@ -1,6 +1,11 @@
 #!/bin/sh
 
-docdir="$SNAP_APP_PATH/docs"
+if [ -z "$SNAP" ]; then
+    echo "SNAP not set"
+    exit 1
+fi
+
+docdir="$SNAP/docs"
 
 usage() {
     cat <<EOM

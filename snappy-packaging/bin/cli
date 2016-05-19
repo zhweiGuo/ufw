@@ -1,10 +1,15 @@
 #!/bin/sh
 
+if [ -z "$SNAP" ]; then
+    echo "SNAP not set"
+    exit 1
+fi
+
 PPATH=
 if [ -z "$PYTHONPATH" ]; then
-    PPATH=$SNAP_APP_PATH/usr/lib/python3/dist-packages
+    PPATH=$SNAP/usr/lib/python3/dist-packages
 else
-    PPATH=$SNAP_APP_PATH/usr/lib/python3/dist-packages:$PYTHONPATH
+    PPATH=$SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
 fi
 #echo $PPATH
-PYTHONPATH="$PPATH" ./usr/sbin/ufw --rootdir="$SNAP_APP_PATH" --datadir="$SNAP_APP_DATA_PATH" "$@"
+PYTHONPATH="$PPATH" "$SNAP"/usr/sbin/ufw --rootdir="$SNAP" --datadir="$SNAP_DATA" "$@"
