@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36pre-16.1
+version: 0.36pre-16.2
 architectures: [all]
 description: ufw for Ubuntu Core
 

@@ -1,7 +1,14 @@
 #!/bin/sh
+set -e
 
 if [ -z "$SNAP" ]; then
     echo "SNAP not set"
+    exit 1
+fi
+
+if ! iptables --version >/dev/null 2>&1 ; then
+    echo "Could not use iptables. Please run:"
+    echo "'sudo snap connect ufw:firewall-control ubuntu-core:firewall-control'"
     exit 1
 fi
 
