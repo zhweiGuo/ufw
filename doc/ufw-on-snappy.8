@@ -1,7 +1,7 @@
 .TH "UFW ON SNAPPY" "8" "" "November 2015" "November 2015"
 
 .SH NAME
-ufw on snappy \- using ufw on snappy
+ufw on snappy \- using ufw on Ubuntu Core
 .PP
 .SH DESCRIPTION
 This program is for managing a Linux firewall and aims to provide an easy to
@@ -22,13 +22,19 @@ command line interface to \fBufw\fR
 ufw.init
 lowlevel inititialization script
 .TP
-snappy config ufw
-configuration directives exposed via \fBsnappy config\fB
+snap config ufw
+configuration directives exposed via \fBsnap config\fB
 
 .SH "GETTING STARTED"
 .PP
-When \fBufw\fR is installed it is disabled by default. Before it can be
-enabled, the system must have the following kernel modules loaded:
+When \fBufw\fR is installed it is disabled by default and not allowed to use
+the firewall-control interface. Before it can be enabled, you must first
+connect the firewall-control interface with:
+
+  $ sudo snap connect ufw:firewall-control ubuntu-core:firewall-control
+
+
+then the system must have the following kernel modules loaded:
 
   - iptable_filter
   - ip6table_filter
@@ -36,7 +42,7 @@ enabled, the system must have the following kernel modules loaded:
 On Ubuntu Core these are loaded using the \fBload\-kernel\-modules\fR
 declaration in the config for ubuntu\-core. Eg:
 
-  $ snappy config ubuntu\-core > ./config
+  $ snap config ubuntu\-core > ./config
 
 Modify ./config to have:
 
@@ -50,7 +56,7 @@ Modify ./config to have:
 
 Then run:
 
-  $ sudo snappy config ubuntu\-core ./config
+  $ sudo snap config ubuntu\-core ./config
 
 Then reboot and ip6table_filter and iptable_filter should be loaded into the
 kernel.
