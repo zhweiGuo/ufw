@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 18:51-0600\n"
+"POT-Creation-Date: 2016-05-19 10:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -244,106 +244,8 @@ msgstr ""
 msgid "Invalid port with protocol '%s'"
 msgstr ""
 
-#: src/parser.py:108
-#, python-format
-msgid "Cannot insert rule at position '%s'"
-msgstr ""
-
-#: src/parser.py:142
-msgid "Invalid interface clause"
-msgstr ""
-
-#: src/parser.py:168
-msgid "Option 'log' not allowed here"
-msgstr ""
-
-#: src/parser.py:172
-msgid "Option 'log-all' not allowed here"
-msgstr ""
-
-#: src/parser.py:179
-msgid "Option 'comment' missing required argument"
-msgstr ""
-
-#: src/parser.py:221 src/parser.py:347
-msgid "Port ranges must be numeric"
-msgstr ""
-
-#: src/parser.py:230 src/util.py:86
+#: src/util.py:86 src/parser.py:236
 msgid "Bad port"
-msgstr ""
-
-#: src/parser.py:233
-msgid "Wrong number of arguments"
-msgstr ""
-
-#: src/parser.py:237
-msgid "Need 'to' or 'from' clause"
-msgstr ""
-
-#: src/parser.py:252
-msgid "Improper rule syntax"
-msgstr ""
-
-#: src/parser.py:259
-#, python-format
-msgid "Invalid token '%s'"
-msgstr ""
-
-#: src/parser.py:271
-msgid "Invalid 'proto' clause"
-msgstr ""
-
-#: src/parser.py:286
-#, python-format
-msgid "Invalid '%s' clause"
-msgstr ""
-
-#: src/parser.py:308
-msgid "Invalid 'from' clause"
-msgstr ""
-
-#: src/parser.py:330
-msgid "Invalid 'to' clause"
-msgstr ""
-
-#: src/parser.py:335
-#, python-format
-msgid "Need 'from' or 'to' with '%s'"
-msgstr ""
-
-#: src/parser.py:362
-msgid "Invalid 'port' clause"
-msgstr ""
-
-#: src/parser.py:371
-msgid "Mixed IP versions for 'from' and 'to'"
-msgstr ""
-
-#: src/parser.py:388 src/parser.py:398 src/parser.py:407
-msgid "Could not find protocol"
-msgstr ""
-
-#: src/parser.py:414
-msgid "Protocol mismatch (from/to)"
-msgstr ""
-
-#: src/parser.py:421
-#, python-format
-msgid "Protocol mismatch with specified protocol %s"
-msgstr ""
-
-#: src/parser.py:539
-msgid "'route delete NUM' unsupported. Use 'delete NUM' instead."
-msgstr ""
-
-#: src/parser.py:571
-msgid "Invalid interface clause for route rule"
-msgstr ""
-
-#: src/parser.py:863
-#, python-format
-msgid "Command '%s' already exists"
 msgstr ""
 
 #: src/util.py:445
@@ -368,6 +270,108 @@ msgstr ""
 #: src/util.py:1017
 #, python-format
 msgid "Could not get statistics for '%s'"
+msgstr ""
+
+#: src/parser.py:108
+#, python-format
+msgid "Cannot insert rule at position '%s'"
+msgstr ""
+
+#: src/parser.py:142
+msgid "Invalid interface clause"
+msgstr ""
+
+#: src/parser.py:168
+msgid "Option 'log' not allowed here"
+msgstr ""
+
+#: src/parser.py:172
+msgid "Option 'log-all' not allowed here"
+msgstr ""
+
+#: src/parser.py:179
+msgid "Option 'comment' missing required argument"
+msgstr ""
+
+#: src/parser.py:185
+msgid "Comment may not contain \"'\""
+msgstr ""
+
+#: src/parser.py:227 src/parser.py:353
+msgid "Port ranges must be numeric"
+msgstr ""
+
+#: src/parser.py:239
+msgid "Wrong number of arguments"
+msgstr ""
+
+#: src/parser.py:243
+msgid "Need 'to' or 'from' clause"
+msgstr ""
+
+#: src/parser.py:258
+msgid "Improper rule syntax"
+msgstr ""
+
+#: src/parser.py:265
+#, python-format
+msgid "Invalid token '%s'"
+msgstr ""
+
+#: src/parser.py:277
+msgid "Invalid 'proto' clause"
+msgstr ""
+
+#: src/parser.py:292
+#, python-format
+msgid "Invalid '%s' clause"
+msgstr ""
+
+#: src/parser.py:314
+msgid "Invalid 'from' clause"
+msgstr ""
+
+#: src/parser.py:336
+msgid "Invalid 'to' clause"
+msgstr ""
+
+#: src/parser.py:341
+#, python-format
+msgid "Need 'from' or 'to' with '%s'"
+msgstr ""
+
+#: src/parser.py:368
+msgid "Invalid 'port' clause"
+msgstr ""
+
+#: src/parser.py:377
+msgid "Mixed IP versions for 'from' and 'to'"
+msgstr ""
+
+#: src/parser.py:394 src/parser.py:404 src/parser.py:413
+msgid "Could not find protocol"
+msgstr ""
+
+#: src/parser.py:420
+msgid "Protocol mismatch (from/to)"
+msgstr ""
+
+#: src/parser.py:427
+#, python-format
+msgid "Protocol mismatch with specified protocol %s"
+msgstr ""
+
+#: src/parser.py:545
+msgid "'route delete NUM' unsupported. Use 'delete NUM' instead."
+msgstr ""
+
+#: src/parser.py:577
+msgid "Invalid interface clause for route rule"
+msgstr ""
+
+#: src/parser.py:869
+#, python-format
+msgid "Command '%s' already exists"
 msgstr ""
 
 #: src/backend_iptables.py:78
