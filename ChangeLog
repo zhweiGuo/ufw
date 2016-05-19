@@ -1,8 +1,10 @@
 ufw (0.36) UNRELEASED; urgency=medium
 
-  * 
+  * doc/ufw-framework.8: fix path for user[6].rules
+  * adjust snappy packaging for series 16
+  * doc/ufw-on-snappy.8: update for series 16
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 18 Feb 2016 07:39:23 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 19 May 2016 10:17:52 -0500
 
 ufw (0.35) RELEASED; urgency=medium
 
