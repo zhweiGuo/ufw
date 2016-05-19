@@ -3,6 +3,8 @@ ufw (0.36) UNRELEASED; urgency=medium
   * doc/ufw-framework.8: fix path for user[6].rules
   * adjust snappy packaging for series 16
   * doc/ufw-on-snappy.8: update for series 16
+  * src/backend_iptables.py: properly calculate the path to state_dir when
+    specifying --rootdir and --datadir (ie, fix regression in 0.35 final)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 19 May 2016 10:17:52 -0500
 
