@@ -1,4 +1,4 @@
-.TH "UFW ON SNAPPY" "8" "" "November 2015" "November 2015"
+.TH "UFW ON SNAPPY" "8" "" "September 2015" "September 2015"
 
 .SH NAME
 ufw on snappy \- using ufw on Ubuntu Core
@@ -33,33 +33,8 @@ connect the firewall-control interface with:
 
   $ sudo snap connect ufw:firewall-control ubuntu-core:firewall-control
 
-
-then the system must have the following kernel modules loaded:
-
-  - iptable_filter
-  - ip6table_filter
-
-On Ubuntu Core these are loaded using the \fBload\-kernel\-modules\fR
-declaration in the config for ubuntu\-core. Eg:
-
-  $ snap config ubuntu\-core > ./config
-
-Modify ./config to have:
-
-  config:
-    ubuntu\-core:
-      ...
-      load\-kernel\-modules:
-      - ip6table_filter
-      - iptable_filter
-      ...
-
-Then run:
-
-  $ sudo snap config ubuntu\-core ./config
-
-Then reboot and ip6table_filter and iptable_filter should be loaded into the
-kernel.
+This will give ufw the necessary permissions to manipulate the firewall and
+ensure the proper modules are loaded into the kernel.
 
 Now you can use \fBufw\fR like normal. For example, to enable the firewall,
 allow ssh access, enable logging, and check the status of the firewall,
