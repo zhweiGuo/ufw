@@ -10,6 +10,8 @@ ufw (0.35.1) UNRELEASED; urgency=medium
     - don't allow interfaces longer than 15 characters
   * Bittorrent can also use UDP (LP: #1695718)
   * support concurrent updates (LP: #1204579, Closes: 686248)
+  * conf/before6.rules: adjust ufw6-before-output rules for echo-reply and
+    echo-request (LP: #1633698)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Apr 2018 16:41:35 -0500
 
