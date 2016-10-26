@@ -119,4 +119,7 @@ snap: clean
 		echo "Creating $$manfile ... "; \
 		LANG='C' MANWIDTH=80 man --warnings -E ascii $$manfile | col -b > "$$manout"; \
 	done; \
+	rm -f $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/*
+	rmdir $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/
+	ln -sf /var/snap/ufw/current/usr/lib/python3/dist-packages/ufw/__pycache__ $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__
 	snapcraft snap $(SNAPDIR)

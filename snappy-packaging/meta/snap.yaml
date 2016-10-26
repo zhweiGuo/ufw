@@ -1,7 +1,8 @@
 name: ufw
-version: 0.36pre-16.2
+version: 0.36pre-16.3
 architectures: [all]
 description: ufw for Ubuntu Core
+confinement: strict
 
 apps:
   srv:
