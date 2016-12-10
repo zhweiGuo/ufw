@@ -27,13 +27,13 @@ initialization customization script run before ufw is initialized
 #CONFIG_PREFIX#/ufw/after.init
 initialization customization script run after ufw is initialized
 .TP
-#CONFIG_PREFIX#/ufw/before[6].rules
+#CONFIG_PREFIX#/ufw/before[6][-mangle|-nat].rules
 rules file containing rules evaluated before UI added rules
 .TP
 #CONFIG_PREFIX#/ufw/user[6].rules
 rules file containing UI added rules (managed with the \fBufw\fR command)
 .TP
-#CONFIG_PREFIX#/ufw/after[6].rules
+#CONFIG_PREFIX#/ufw/after[6][-mangle|-nat|-raw].rules
 rules file containing rules evaluated after UI added rules
 .TP
 #CONFIG_PREFIX#/default/ufw
@@ -96,20 +96,19 @@ way to modify your boot process if \fBufw\fR is not already integrated.
 
 .SH "RULES FILES"
 .PP
-\fBufw\fR is in part a front\-end for \fBiptables\-restore\fR, with its rules
-saved in #CONFIG_PREFIX#/ufw/before.rules, #CONFIG_PREFIX#/ufw/after.rules and
-#CONFIG_PREFIX#/ufw/user.rules. Administrators can customize \fBbefore.rules\fR
-and \fBafter.rules\fR as desired using the standard \fBiptables\-restore\fR
-syntax. Rules are evaluated as follows: \fBbefore.rules\fR first,
-\fBuser.rules\fR next, and \fBafter.rules\fR last. IPv6 rules are evaluated in
-the same way, with the rules files named \fBbefore6.rules\fR, \fBuser6.rules\fR
-and \fBafter6.rules\fR. Please note that \fBufw status\fR only shows rules
-added with \fBufw\fR and not the rules found in the #CONFIG_PREFIX#/ufw rules
-files.
+\fBufw\fR is in part a front\-end for \fBiptables\-restore\fR, with its filter
+table rules saved in #CONFIG_PREFIX#/ufw/before.rules,
+#CONFIG_PREFIX#/ufw/after.rules and #CONFIG_PREFIX#/ufw/user.rules.
+Administrators can customize \fBbefore.rules\fR and \fBafter.rules\fR as
+desired using the standard \fBiptables\-restore\fR syntax. Rules are evaluated
+as follows: \fBbefore.rules\fR first, \fBuser.rules\fR next, and
+\fBafter.rules\fR last. IPv6 rules are evaluated in the same way, with the
+rules files named \fBbefore6.rules\fR, \fBuser6.rules\fR and
+\fBafter6.rules\fR. Please note that \fBufw status\fR only shows rules added
+with \fBufw\fR and not the rules found in the #CONFIG_PREFIX#/ufw rules files.
 .PP
-\fBImportant\fR: \fBufw\fR only uses the *filter table by default. You
-may add any other tables such as *nat, *raw and *mangle as desired. For each
-table a corresponding COMMIT statement is required.
+nat, mangle and raw table rules follow the same pattern as before and after
+filter rules.
 .PP
 After modifying any of these files, you must reload \fBufw\fR for the rules to
 take effect.  See the EXAMPLES section for common uses of these rules files.
