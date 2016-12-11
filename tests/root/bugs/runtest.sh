@@ -79,13 +79,13 @@ sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 do_cmd "0" nostats disable
 do_cmd "0" nostats enable
 do_cmd "0"  status verbose
-cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/after{,6}.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
 do_cmd "0"  default allow
 do_cmd "0"  status verbose
-cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/after{,6}.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
 do_cmd "0"  default deny
 do_cmd "0"  status verbose
-cat $TESTPATH/etc/ufw/after*.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
+cat $TESTPATH/etc/ufw/after{,6}.rules | egrep 'LOG .*UFW ' >> $TESTTMP/result
 
 echo "Bug #251136" >> $TESTTMP/result
 echo "Setting IPV6 to yes" >> $TESTTMP/result
@@ -138,13 +138,13 @@ for ipv6 in yes no ; do
             do_cmd "0" null logging $i
         fi
         do_cmd "0" null enable
-        iptables-save | grep '^-' > $TESTTMP/ipt.enable
-        ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
+        iptables-save -t filter | grep '^-' > $TESTTMP/ipt.enable
+        ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.enable
 
         do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
         do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-        iptables-save | grep '^-' > $TESTTMP/ipt.start
-        ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
+        iptables-save -t filter | grep '^-' > $TESTTMP/ipt.start
+        ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.start
 
         diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
             echo "'ufw enable' and 'ufw-init start' are different for loglevel '$i'"
@@ -166,7 +166,7 @@ for i in low on medium high full off off ; do
     if [ "$i" = "off" ]; then
         e="1"
     fi
-    iptables-save | grep -q 'UFW LIMIT BLOCK' $TESTCONFIG/user.rules
+    iptables-save -t filter | grep -q 'UFW LIMIT BLOCK' $TESTCONFIG/user.rules
     rc="$?"
     if [ "$rc" != "$e" ]; then
         echo "$i: got '$rc', expected '$e'"
