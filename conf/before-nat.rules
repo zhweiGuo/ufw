@@ -1,0 +1,19 @@
+#
+# Rules that should be run before the ufw command line added rules. Custom
+# rules should be added to one of these chains:
+#   ufw-before-input
+#   ufw-before-output
+#   ufw-before-prerouting
+#   ufw-before-postrouting
+#
+
+# Don't delete these required lines, otherwise there will be errors
+*nat
+:ufw-before-input - [0:0]
+:ufw-before-output - [0:0]
+:ufw-before-prerouting - [0:0]
+:ufw-before-postrouting - [0:0]
+# End required lines
+
+# don't delete the 'COMMIT' line or these rules won't be processed
+COMMIT

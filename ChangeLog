@@ -10,8 +10,9 @@ ufw (0.36) UNRELEASED; urgency=medium
   * conf/before6.rules: adjust ufw6-before-output rules for echo-reply and
     echo-request (LP: #1633698)
   * conf/ufw.defaults: mention nf_conntrack_sane
+  * support mangle, nat and raw tables with before/after mechanism
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 26 Oct 2016 08:43:36 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 10 Dec 2016 19:18:10 -0600
 
 ufw (0.35) RELEASED; urgency=medium
 

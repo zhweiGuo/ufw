@@ -25,13 +25,15 @@ Linux kernel configured with the following modules (not exhaustive):
   multiport
   recent
   conntrack***
+  iptable_nat,ip6table_nat****
 
-*   python2.5 and python3 < 3.4 are no longer supported
-**  Systems with iptables below 1.4 will not have IPv6 application rule
-    support. ufw will give a warning when users try to use this functionality,
-    but ufw will otherwise work fine. ufw is known to work with iptables 1.3.8
-    in this degraded mode.
-*** As of 0.34, the 'conntrack' modules is used instead of 'state'
+*    python2.5 and python3 < 3.4 are no longer supported
+**   Systems with iptables below 1.4 will not have IPv6 application rule
+     support. ufw will give a warning when users try to use this functionality,
+     but ufw will otherwise work fine. ufw is known to work with iptables 1.3.8
+     in this degraded mode.
+***  As of 0.34, the 'conntrack' modules are used instead of 'state'
+**** As of 0.36, ufw supports 'nat' for both IPv4 and IPv6
 
 ufw has been widely tested on Linux 2.6.24 and higher kernels. You may also
 use the check-requirements script in the tests/ directory to see if your

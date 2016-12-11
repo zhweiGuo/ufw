@@ -49,20 +49,33 @@ flush_builtins() {
 
         # now handle the mangle table
         if $exe -t mangle -L -n >/dev/null 2>&1; then
-            for i in INPUT OUTPUT FORWARD PREROUTING POSTROUTING ; do
-                $exe -t mangle -F $i || error="yes"
-                $exe -t mangle -P $i ACCEPT || error="yes"
-            done
+            $exe -t mangle -F || error="yes"
+            $exe -t mangle -X || error="yes"
+            $exe -t mangle -P INPUT ACCEPT || error="yes"
+            $exe -t mangle -P OUTPUT ACCEPT || error="yes"
+            $exe -t mangle -P FORWARD ACCEPT || error="yes"
+            $exe -t mangle -P PREROUTING ACCEPT || error="yes"
+            $exe -t mangle -P POSTROUTING ACCEPT || error="yes"
+        fi
+
+        # now handle the nat table
+        if $exe -t nat -L -n >/dev/null 2>&1; then
+            $exe -t nat -F || error="yes"
+            $exe -t nat -X || error="yes"
+            $exe -t nat -P INPUT ACCEPT || error="yes"
+            $exe -t nat -P OUTPUT ACCEPT || error="yes"
+            $exe -t nat -P PREROUTING ACCEPT || error="yes"
+            $exe -t nat -P POSTROUTING ACCEPT || error="yes"
+        fi
+
+        # now handle the raw table
+        if $exe -t raw -L -n >/dev/null 2>&1; then
+            $exe -t raw -F || error="yes"
+            $exe -t raw -X || error="yes"
+            $exe -t raw -P OUTPUT ACCEPT || error="yes"
+            $exe -t raw -P PREROUTING ACCEPT || error="yes"
         fi
     done
-
-    # now handle the nat table
-    if iptables -t nat -L -n >/dev/null 2>&1; then
-        for i in OUTPUT PREROUTING POSTROUTING ; do
-            iptables -t nat -F $i || error="yes"
-            iptables -t nat -P $i ACCEPT || error="yes"
-        done
-    fi
 
     if [ "$error" = "yes" ]; then
         return 1
@@ -71,37 +84,98 @@ flush_builtins() {
 
 chains_command() {
     flag="$1"
+    table="$2"
     type=""
     exe="iptables"
-    if [ "$2" = "6" ]; then
-        type="$2"
+    if [ "$3" = "6" ]; then
+        type="$3"
         exe="ip6tables"
     fi
 
-    for c in ufw$type-logging-deny ufw$type-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-limit-accept ufw$type-user-limit ufw$type-skip-to-policy-input ufw$type-reject-input ufw$type-after-logging-input ufw$type-after-input ufw$type-user-input ufw$type-before-input ufw$type-before-logging-input ufw$type-skip-to-policy-forward ufw$type-reject-forward ufw$type-after-logging-forward ufw$type-after-forward ufw$type-user-logging-forward ufw$type-user-forward ufw$type-before-forward ufw$type-before-logging-forward ufw$type-track-forward ufw$type-track-output ufw$type-track-input ufw$type-skip-to-policy-output ufw$type-reject-output ufw$type-after-logging-output ufw$type-after-output ufw$type-user-logging-output ufw$type-user-output ufw$type-before-output ufw$type-before-logging-output; do
+    for c in \
+        ufw$type-logging-deny \
+        ufw$type-logging-allow \
+        ufw$type-not-local \
+        ufw$type-user-logging-input \
+        ufw$type-user-limit-accept \
+        ufw$type-user-limit \
+        ufw$type-skip-to-policy-input \
+        ufw$type-reject-input \
+        ufw$type-after-logging-input \
+        ufw$type-after-input \
+        ufw$type-user-input \
+        ufw$type-before-input \
+        ufw$type-before-logging-input \
+        ufw$type-skip-to-policy-forward \
+        ufw$type-reject-forward \
+        ufw$type-after-logging-forward \
+        ufw$type-after-forward \
+        ufw$type-user-logging-forward \
+        ufw$type-user-forward \
+        ufw$type-before-forward \
+        ufw$type-before-logging-forward \
+        ufw$type-track-forward \
+        ufw$type-track-output \
+        ufw$type-track-input \
+        ufw$type-skip-to-policy-output \
+        ufw$type-reject-output \
+        ufw$type-after-logging-output \
+        ufw$type-after-output \
+        ufw$type-user-logging-output \
+        ufw$type-user-output \
+        ufw$type-before-output \
+        ufw$type-before-logging-output \
+        ufw$type-reject-pre \
+        ufw$type-after-logging-pre \
+        ufw$type-after-pre \
+        ufw$type-before-pre \
+        ufw$type-before-logging-pre \
+        ufw$type-reject-post \
+        ufw$type-after-logging-post \
+        ufw$type-after-post \
+        ufw$type-before-post \
+        ufw$type-before-logging-post ; do
+
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
-            echo "$exe $flag $c" >&2
-            $exe $flag $c || true
+            echo "$exe -t $table $flag $c" >&2
+            $exe -t "$table" $flag $c || true
         else
-            $exe $flag $c 2>/dev/null || true
+            $exe -t "$table" $flag $c 2>/dev/null || true
         fi
     done
 }
 
 delete_chains() {
-    chains_command -F $1
-    chains_command -Z $1
+    table="$1"
+    type="$2"
+    chains_command -F "$table" $type
+    chains_command -Z "$table" $type
 
     # Delete the secondary chains to reduce clutter, but keep the primary ones
     # so that the primary chains don't leave the built-in chains just to come
     # back later in a different place. This means that some (empty) chains will
     # linger until the next boot after disabling ufw.
-    for c in ufw$type-logging-deny ufw$type-logging-allow ufw$type-not-local ufw$type-user-logging-input ufw$type-user-logging-output ufw$type-user-logging-forward ufw$type-user-limit-accept ufw$type-user-limit ufw$type-user-input ufw$type-user-forward ufw$type-user-output ufw$type-skip-to-policy-input ufw$type-skip-to-policy-output ufw$type-skip-to-policy-forward ; do
+    for c in \
+        ufw$type-logging-deny \
+        ufw$type-logging-allow \
+        ufw$type-not-local \
+        ufw$type-user-logging-input \
+        ufw$type-user-logging-output \
+        ufw$type-user-logging-forward \
+        ufw$type-user-limit-accept \
+        ufw$type-user-limit \
+        ufw$type-user-input \
+        ufw$type-user-forward \
+        ufw$type-user-output \
+        ufw$type-skip-to-policy-input \
+        ufw$type-skip-to-policy-output \
+        ufw$type-skip-to-policy-forward ; do
+
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
-            echo "$exe $flag $c" >&2
-            $exe -X $c || true
+            echo "$exe -t $table -X $c" >&2
+            $exe -t "$table" -X $c || true
         else
-            $exe -X $c 2>/dev/null || true
+            $exe -t "$table" -X $c 2>/dev/null || true
         fi
     done
 }
@@ -142,7 +216,10 @@ ufw_start() {
             if ip6tables -L INPUT -n >/dev/null 2>&1; then
                 # IPv6 support disabled but available in the kernel, so
                 # default DROP and accept all on loopback
-                delete_chains 6 || error="yes"
+                delete_chains filter 6 || error="yes"
+                delete_chains mangle 6 || error="yes"
+                delete_chains nat 6 || error="yes"
+                delete_chains raw 6 || error="yes"
 
                 printf "*filter\n"\
 ":INPUT DROP [0:0]\n"\
@@ -193,7 +270,7 @@ ufw_start() {
 
             # flush the chains (if they exist)
             if $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
-                delete_chains $type || error="yes"
+                delete_chains filter $type || error="yes"
             else
                 # setup all the primary chains
                 printf "*filter\n"\
@@ -368,7 +445,7 @@ ufw_start() {
                     error="yes"
                 fi
 
-                # now hooks these into the primary chains
+                # now hook these into the primary chains
                 printf "*filter\n"\
 "-A ufw${type}-before-input -j ufw${type}-user-input\n"\
 "-A ufw${type}-before-output -j ufw${type}-user-output\n"\
@@ -378,7 +455,315 @@ ufw_start() {
                 out="${out}\nCouldn't find '$USER_RULES'"
                 error="yes"
             fi
-        done
+
+            #
+            # mangle rules
+            #
+            BEFORE_MANGLE_RULES="$RULES_PATH/before${type}-mangle.rules"
+            AFTER_MANGLE_RULES="$RULES_PATH/after${type}-mangle.rules"
+            printf "*mangle\n"\
+"# builtin chains\n"\
+":INPUT ACCEPT [0:0]\n"\
+":FORWARD ACCEPT [0:0]\n"\
+":OUTPUT ACCEPT [0:0]\n"\
+":PREROUTING ACCEPT [0:0]\n"\
+":POSTROUTING ACCEPT [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+
+            # flush the chains (if they exist)
+            if $exe -t mangle -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                delete_chains mangle $type || error="yes"
+            else
+                # setup all the primary chains
+                printf "*mangle\n"\
+"# primary chains\n"\
+":ufw${type}-before-logging-input - [0:0]\n"\
+":ufw${type}-before-logging-output - [0:0]\n"\
+":ufw${type}-before-logging-forward - [0:0]\n"\
+":ufw${type}-before-logging-pre - [0:0]\n"\
+":ufw${type}-before-logging-post - [0:0]\n"\
+":ufw${type}-before-input - [0:0]\n"\
+":ufw${type}-before-output - [0:0]\n"\
+":ufw${type}-before-forward - [0:0]\n"\
+":ufw${type}-before-pre - [0:0]\n"\
+":ufw${type}-before-post - [0:0]\n"\
+":ufw${type}-after-input - [0:0]\n"\
+":ufw${type}-after-output - [0:0]\n"\
+":ufw${type}-after-forward - [0:0]\n"\
+":ufw${type}-after-pre - [0:0]\n"\
+":ufw${type}-after-post - [0:0]\n"\
+":ufw${type}-after-logging-input - [0:0]\n"\
+":ufw${type}-after-logging-output - [0:0]\n"\
+":ufw${type}-after-logging-forward - [0:0]\n"\
+":ufw${type}-after-logging-pre - [0:0]\n"\
+":ufw${type}-after-logging-post - [0:0]\n"\
+":ufw${type}-reject-input - [0:0]\n"\
+":ufw${type}-reject-output - [0:0]\n"\
+":ufw${type}-reject-forward - [0:0]\n"\
+":ufw${type}-reject-pre - [0:0]\n"\
+":ufw${type}-reject-post - [0:0]\n"\
+"\n"\
+"-A INPUT -j ufw${type}-before-logging-input\n"\
+"-A INPUT -j ufw${type}-before-input\n"\
+"-A INPUT -j ufw${type}-after-input\n"\
+"-A INPUT -j ufw${type}-after-logging-input\n"\
+"-A INPUT -j ufw${type}-reject-input\n"\
+"\n"\
+"-A OUTPUT -j ufw${type}-before-logging-output\n"\
+"-A OUTPUT -j ufw${type}-before-output\n"\
+"-A OUTPUT -j ufw${type}-after-output\n"\
+"-A OUTPUT -j ufw${type}-after-logging-output\n"\
+"-A OUTPUT -j ufw${type}-reject-output\n"\
+"\n"\
+"-A FORWARD -j ufw${type}-before-logging-forward\n"\
+"-A FORWARD -j ufw${type}-before-forward\n"\
+"-A FORWARD -j ufw${type}-after-forward\n"\
+"-A FORWARD -j ufw${type}-after-logging-forward\n"\
+"-A FORWARD -j ufw${type}-reject-forward\n"\
+"\n"\
+"-A PREROUTING -j ufw${type}-before-logging-pre\n"\
+"-A PREROUTING -j ufw${type}-before-pre\n"\
+"-A PREROUTING -j ufw${type}-after-pre\n"\
+"-A PREROUTING -j ufw${type}-after-logging-pre\n"\
+"-A PREROUTING -j ufw${type}-reject-pre\n"\
+"\n"\
+"-A POSTROUTING -j ufw${type}-before-logging-post\n"\
+"-A POSTROUTING -j ufw${type}-before-post\n"\
+"-A POSTROUTING -j ufw${type}-after-post\n"\
+"-A POSTROUTING -j ufw${type}-after-logging-post\n"\
+"-A POSTROUTING -j ufw${type}-reject-post\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+            fi
+
+            # now setup the secondary 'logging-deny' chains
+            if ! $exe -t mangle -L ufw${type}-logging-deny -n >/dev/null 2>&1 ; then
+                 printf "*mangle\n"\
+":ufw${type}-logging-deny - [0:0]\n"\
+":ufw${type}-logging-allow - [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+            fi
+
+            # now ip[6]tables-restore before*-mangle.rules. This resets the
+            # following chains:
+            #   ufw-before-input
+            #   ufw-before-output
+            #   ufw-before-forward
+            #   ufw-before-pre
+            #   ufw-before-post
+            if [ -s "$BEFORE_MANGLE_RULES" ]; then
+                if ! $exe-restore -n < "$BEFORE_MANGLE_RULES" ; then
+                    out="${out}\nProblem running '$BEFORE_MANGLE_RULES'"
+                    error="yes"
+                fi
+            else
+                out="${out}\nCouldn't find '$BEFORE_MANGLE_RULES'"
+                error="yes"
+            fi
+
+            # now ip[6]tables-restore after*-mangle.rules. This resets the
+            # following chains:
+            #   ufw-after-input
+            #   ufw-after-output
+            #   ufw-after-forward
+            #   ufw-after-pre
+            #   ufw-after-post
+            if [ -s "$AFTER_MANGLE_RULES" ]; then
+                if ! $exe-restore -n < "$AFTER_MANGLE_RULES" ; then
+                    out="${out}\nProblem running '$AFTER_MANGLE_RULES'"
+                    error="yes"
+                fi
+            else
+                out="${out}\nCouldn't find '$AFTER_MANGLE_RULES'"
+                error="yes"
+            fi
+
+            #
+            # nat rules
+            #
+            BEFORE_NAT_RULES="$RULES_PATH/before${type}-nat.rules"
+            AFTER_NAT_RULES="$RULES_PATH/after${type}-nat.rules"
+            printf "*nat\n"\
+"# builtin chains\n"\
+":INPUT ACCEPT [0:0]\n"\
+":OUTPUT ACCEPT [0:0]\n"\
+":PREROUTING ACCEPT [0:0]\n"\
+":POSTROUTING ACCEPT [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+
+            # flush the chains (if they exist)
+            if $exe -t nat -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                delete_chains nat $type || error="yes"
+            else
+                # setup all the primary chains
+                printf "*nat\n"\
+"# primary chains\n"\
+":ufw${type}-before-logging-input - [0:0]\n"\
+":ufw${type}-before-logging-output - [0:0]\n"\
+":ufw${type}-before-logging-pre - [0:0]\n"\
+":ufw${type}-before-logging-post - [0:0]\n"\
+":ufw${type}-before-input - [0:0]\n"\
+":ufw${type}-before-output - [0:0]\n"\
+":ufw${type}-before-pre - [0:0]\n"\
+":ufw${type}-before-post - [0:0]\n"\
+":ufw${type}-after-input - [0:0]\n"\
+":ufw${type}-after-output - [0:0]\n"\
+":ufw${type}-after-pre - [0:0]\n"\
+":ufw${type}-after-post - [0:0]\n"\
+":ufw${type}-after-logging-input - [0:0]\n"\
+":ufw${type}-after-logging-output - [0:0]\n"\
+":ufw${type}-after-logging-pre - [0:0]\n"\
+":ufw${type}-after-logging-post - [0:0]\n"\
+":ufw${type}-reject-input - [0:0]\n"\
+":ufw${type}-reject-output - [0:0]\n"\
+":ufw${type}-reject-pre - [0:0]\n"\
+":ufw${type}-reject-post - [0:0]\n"\
+"\n"\
+"-A INPUT -j ufw${type}-before-logging-input\n"\
+"-A INPUT -j ufw${type}-before-input\n"\
+"-A INPUT -j ufw${type}-after-input\n"\
+"-A INPUT -j ufw${type}-after-logging-input\n"\
+"-A INPUT -j ufw${type}-reject-input\n"\
+"\n"\
+"-A OUTPUT -j ufw${type}-before-logging-output\n"\
+"-A OUTPUT -j ufw${type}-before-output\n"\
+"-A OUTPUT -j ufw${type}-after-output\n"\
+"-A OUTPUT -j ufw${type}-after-logging-output\n"\
+"-A OUTPUT -j ufw${type}-reject-output\n"\
+"\n"\
+"-A PREROUTING -j ufw${type}-before-logging-pre\n"\
+"-A PREROUTING -j ufw${type}-before-pre\n"\
+"-A PREROUTING -j ufw${type}-after-pre\n"\
+"-A PREROUTING -j ufw${type}-after-logging-pre\n"\
+"-A PREROUTING -j ufw${type}-reject-pre\n"\
+"\n"\
+"-A POSTROUTING -j ufw${type}-before-logging-post\n"\
+"-A POSTROUTING -j ufw${type}-before-post\n"\
+"-A POSTROUTING -j ufw${type}-after-post\n"\
+"-A POSTROUTING -j ufw${type}-after-logging-post\n"\
+"-A POSTROUTING -j ufw${type}-reject-post\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+            fi
+
+            # now setup the secondary 'logging-deny' chains
+            if ! $exe -t nat -L ufw${type}-logging-deny -n >/dev/null 2>&1 ; then
+                 printf "*nat\n"\
+":ufw${type}-logging-deny - [0:0]\n"\
+":ufw${type}-logging-allow - [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+            fi
+
+            # now ip[6]tables-restore before*-nat.rules. This resets the
+            # following chains:
+            #   ufw-before-input
+            #   ufw-before-output
+            #   ufw-before-pre
+            #   ufw-before-post
+            if [ -s "$BEFORE_NAT_RULES" ]; then
+                if ! $exe-restore -n < "$BEFORE_NAT_RULES" ; then
+                    out="${out}\nProblem running '$BEFORE_NAT_RULES'"
+                    error="yes"
+                fi
+            else
+                out="${out}\nCouldn't find '$BEFORE_NAT_RULES'"
+                error="yes"
+            fi
+
+            # now ip[6]tables-restore after*-nat.rules. This resets the
+            # following chains:
+            #   ufw-after-input
+            #   ufw-after-output
+            #   ufw-after-pre
+            #   ufw-after-post
+            if [ -s "$AFTER_NAT_RULES" ]; then
+                if ! $exe-restore -n < "$AFTER_NAT_RULES" ; then
+                    out="${out}\nProblem running '$AFTER_NAT_RULES'"
+                    error="yes"
+                fi
+            else
+                out="${out}\nCouldn't find '$AFTER_NAT_RULES'"
+                error="yes"
+            fi
+
+
+            #
+            # raw rules
+            #
+            BEFORE_RAW_RULES="$RULES_PATH/before${type}-raw.rules"
+            AFTER_RAW_RULES="$RULES_PATH/after${type}-raw.rules"
+            printf "*raw\n"\
+"# builtin chains\n"\
+":OUTPUT ACCEPT [0:0]\n"\
+":PREROUTING ACCEPT [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+
+            # flush the chains (if they exist)
+            if $exe -t raw -L ufw${type}-before-logging-output -n >/dev/null 2>&1 ; then
+                delete_chains raw "$type" || error="yes"
+            else
+                # setup all the primary chains
+                printf "*raw\n"\
+"# primary chains\n"\
+":ufw${type}-before-logging-output - [0:0]\n"\
+":ufw${type}-before-logging-pre - [0:0]\n"\
+":ufw${type}-before-output - [0:0]\n"\
+":ufw${type}-before-pre - [0:0]\n"\
+":ufw${type}-after-output - [0:0]\n"\
+":ufw${type}-after-pre - [0:0]\n"\
+":ufw${type}-after-logging-output - [0:0]\n"\
+":ufw${type}-after-logging-pre - [0:0]\n"\
+":ufw${type}-reject-output - [0:0]\n"\
+":ufw${type}-reject-pre - [0:0]\n"\
+"\n"\
+"-A OUTPUT -j ufw${type}-before-logging-output\n"\
+"-A OUTPUT -j ufw${type}-before-output\n"\
+"-A OUTPUT -j ufw${type}-after-output\n"\
+"-A OUTPUT -j ufw${type}-after-logging-output\n"\
+"-A OUTPUT -j ufw${type}-reject-output\n"\
+"\n"\
+"-A PREROUTING -j ufw${type}-before-logging-pre\n"\
+"-A PREROUTING -j ufw${type}-before-pre\n"\
+"-A PREROUTING -j ufw${type}-after-pre\n"\
+"-A PREROUTING -j ufw${type}-after-logging-pre\n"\
+"-A PREROUTING -j ufw${type}-reject-pre\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+            fi
+
+            # now setup the secondary 'logging-deny' chains
+            if ! $exe -t raw -L ufw${type}-logging-deny -n >/dev/null 2>&1 ; then
+                 printf "*raw\n"\
+":ufw${type}-logging-deny - [0:0]\n"\
+":ufw${type}-logging-allow - [0:0]\n"\
+"COMMIT\n" | $exe-restore -n || error="yes"
+            fi
+
+            # now ip[6]tables-restore before*-raw.rules. This resets the
+            # following chains:
+            #   ufw-before-output
+            #   ufw-before-pre
+            if [ -s "$BEFORE_RAW_RULES" ]; then
+                if ! $exe-restore -n < "$BEFORE_RAW_RULES" ; then
+                    out="${out}\nProblem running '$BEFORE_RAW_RULES'"
+                    error="yes"
+                fi
+            else
+                out="${out}\nCouldn't find '$BEFORE_RAW_RULES'"
+                error="yes"
+            fi
+
+            # now ip[6]tables-restore after*-raw.rules. This resets the
+            # following chains:
+            #   ufw-after-output
+            #   ufw-after-pre
+            if [ -s "$AFTER_RAW_RULES" ]; then
+                if ! $exe-restore -n < "$AFTER_RAW_RULES" ; then
+                    out="${out}\nProblem running '$AFTER_RAW_RULES'"
+                    error="yes"
+                fi
+            else
+                out="${out}\nCouldn't find '$AFTER_RAW_RULES'"
+                error="yes"
+            fi
+        done  # iptables ip6tables
 
         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
             sysctl -e -q -p $IPT_SYSCTL || true
@@ -441,7 +826,10 @@ ufw_stop() {
         if [ "$exe" = "ip6tables" ]; then
             type="6"
         fi
-        delete_chains $type || error="yes"
+        delete_chains filter $type || error="yes"
+        delete_chains mangle $type || error="yes"
+        delete_chains nat $type || error="yes"
+        delete_chains raw $type || error="yes"
         $exe -P INPUT ACCEPT || error="yes"
         $exe -P OUTPUT ACCEPT || error="yes"
         $exe -P FORWARD ACCEPT || error="yes"
