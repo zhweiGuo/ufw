@@ -553,9 +553,7 @@ class ParserTestCase(unittest.TestCase):
     def test_nat_parse(self):
         '''Test nat rule syntax'''
         count = 0
-        print(tests.unit.support.get_sample_rule_commands_extended())
         cmds = tests.unit.support.get_sample_rule_commands_nat()
-        print(cmds)
         for cmd in cmds:
             count += 1
             #print(" ".join(cmd))

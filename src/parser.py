@@ -66,6 +66,25 @@ class UFWCommandRule(UFWCommand):
         type = 'rule'
         UFWCommand.__init__(self, type, command)
 
+    def _parse_nat(self, clause, rule):
+        if len(clause) != 2 and len(clause) != 4:
+            err_msg = _("Wrong number of arguments for nat clause")
+            raise UFWError(err_msg)
+        elif len(clause) >= 4 and clause[2] != 'port':
+            err_msg = _("Improper rule syntax for nat clause")
+            raise UFWError(err_msg)
+
+        if clause[0] == 'nat-dst':
+            rule.set_dnat(clause[1])
+        else:
+            rule.set_snat(clause[1])
+
+        if len(clause) >= 4 and clause[2] == 'port':
+            if clause[0] == 'nat-dst':
+                rule.set_dnat_port(clause[3])
+            else:
+                rule.set_snat_port(clause[3])
+
     def parse(self, argv):
         action = ""
         rule = ""
@@ -187,6 +206,26 @@ class UFWCommandRule(UFWCommand):
 
             del argv[comment_idx+1]
             del argv[comment_idx]
+            nargs = len(argv)
+
+        # comment is stripped out so if have nat clause, it must be last
+        nat = []
+        if 'nat-src' in argv or 'nat-dst' in argv:
+            if 'nat-src' in argv and 'nat-dst' in argv:
+                err_msg = _("Cannot use 'nat-src' with 'nat-dst'")
+                raise UFWError(err_msg)
+
+            nat_cmd = 'nat-dst'
+            if 'nat-src' in argv:
+                nat_cmd = 'nat-src'
+
+            nat_idx = argv.index(nat_cmd)
+            nat = [nat_cmd] + argv[nat_idx+1:]
+
+            i = len(argv) - 1
+            while (i >= nat_idx):
+                del argv[i]
+                i -= 1
             nargs = len(argv)
 
         if nargs < 2 or nargs > 13:
@@ -380,6 +419,9 @@ class UFWCommandRule(UFWCommand):
                 type = from_type
             elif to_type != "any":
                 type = to_type
+
+            if len(nat) > 0:
+                self._parse_nat(nat, rule)
 
         # Adjust protocol
         if to_service != "" or from_service != "":
