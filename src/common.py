@@ -346,25 +346,31 @@ class UFWRule:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
 
-    def set_dnat(self, dnat):
+    def set_dnat(self, addr):
         '''Sets dnat of the rule'''
-        # TODO: verify
-        self.dnat = dnat
+        tmp = addr.lower()
+        if tmp != "rdr" and ('/' in tmp or \
+                not ufw.util.valid_address(tmp, "any")):
+            err_msg = _("Bad nat-dst address %s" % addr)
+            raise UFWError(err_msg)
+        self.dnat = tmp
 
-    def set_dnat_port(self, dnat_port):
+    def set_dnat_port(self, port):
         '''Sets dnat_port of the rule'''
-        # TODO: verify
-        self.dnat_port = dnat_port
+        self.dnat_port = self._verify_nat_port(port)
 
-    def set_snat(self, snat):
+    def set_snat(self, addr):
         '''Sets snat of the rule'''
-        # TODO: verify
-        self.snat = snat
+        tmp = addr.lower()
+        if tmp != "masq" and ('/' in tmp or \
+                not ufw.util.valid_address(tmp, "any")):
+            err_msg = _("Bad nat-src address '%s'" % addr)
+            raise UFWError(err_msg)
+        self.snat = tmp
 
-    def set_snat_port(self, snat_port):
+    def set_snat_port(self, port):
         '''Sets snat_port of the rule'''
-        # TODO: verify
-        self.snat_port = snat_port
+        self.snat_port = self._verify_nat_port(port)
 
     def get_comment(self):
         '''Get decoded comment of the rule'''
@@ -591,6 +597,24 @@ class UFWRule:
         if addr == "::/0" or addr == "0.0.0.0/0":
             return True
         return False
+
+    def _verify_nat_port(self, port):
+        err_msg = _("Bad port '%s' for nat") % (port)
+        if re.match(r'^\d+-\d+$', port):
+            # port range
+            ran = port.split('-')
+            for i in ran:
+                if int(i) < 1 or int(i) > 65535:
+                    raise UFWError(err_msg)
+            if int(ran[0]) >= int(ran[1]):
+                raise UFWError(err_msg)
+        elif re.match('^\d+$', port):
+            if int(port) < 1 or int(port) > 65535:
+                raise UFWError(err_msg)
+        else:
+            raise UFWError(err_msg)
+
+        return port
 
     def get_app_tuple(self):
         '''Returns a tuple to identify an app rule. Tuple is:

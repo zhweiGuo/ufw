@@ -522,6 +522,33 @@ class ParserTestCase(unittest.TestCase):
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],
                   ufw.common.UFWError),
                 (['rule', 'allow', '22', 'comment', "foo'bar"], ValueError),
+                (['rule', 'allow', 'out', 'on', 'eth0',
+                  'nat-src', 'bad_address'], ufw.common.UFWError),
+                (['rule', 'allow', 'out', 'on', 'eth0',
+                  'nat-src', 'masquerade'], ufw.common.UFWError),
+                (['rule', 'allow', 'out', 'on', 'eth0',
+                  'nat-src', '192.168.0.1', 'port', '23-19'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', 'redir'], ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', '192.168.0.0/24'], ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', '192.168.0.1', 'port', '23-19'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', '192.168.0.1', 'port', '1024-65536'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', '192.168.0.1', 'port'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', '192.168.0.1', 'prt', '80'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'in', 'on', 'eth0',
+                  'nat-dst', '192.168.0.1', 'port', '80',
+                  'nat-src', '192.168.0.2', 'port', '8080'],
+                  ufw.common.UFWError),
                ]
         for cmd, exception in cmds:
             #print(" ".join(cmd))
@@ -576,10 +603,27 @@ class ParserTestCase(unittest.TestCase):
                                                    self.parser.parse_command,
                                                    c)
 
+    def test_simple_bad_numeric_port_nat(self):
+        '''Test simple bad numeric port (nat)'''
+        for port in ['-1', '1000000']:
+            c = ['rule', 'allow', 'to', 'any', 'port', '80',
+                 'nat-dst', 'rdr', 'port', port]
+            tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
+                                                   self.parser.parse_command,
+                                                   c)
+
     def test_bad_simple_action(self):
         '''Test bad simple action'''
         for action in ['allw', 'eny', 'nonexistent']:
             c = ['rule', action, '22']
+            tests.unit.support.check_for_exception(self, ValueError, \
+                                                   self.parser.parse_command,
+                                                   c)
+
+    def test_bad_simple_action_nat(self):
+        '''Test bad simple action'''
+        for action in ['allw', 'deny', 'reject']:
+            c = ['rule', action, 'nat-src', 'masq']
             tests.unit.support.check_for_exception(self, ValueError, \
                                                    self.parser.parse_command,
                                                    c)
