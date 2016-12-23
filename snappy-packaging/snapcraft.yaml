@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36pre-16.5
+version: 0.36pre-16.7
 architectures: [amd64]
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap

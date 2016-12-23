@@ -6,8 +6,9 @@ fi
 
 args="--norc"
 if [ -z "$1" ]; then
+    echo "Temporary shell for ufw"
     args="$args -i"
 fi
 
-echo "Temporary shell for ufw"
+cd "$SNAP_DATA"
 /bin/bash $args "$@"
