@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36pre-16.4
+version: 0.36pre-16.7
 architectures: [amd64]
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
@@ -17,10 +17,14 @@ apps:
   init:
     command: bin/init
     plugs: [ firewall-control ]
+  shell:
+    command: bin/shell
+    plugs: [ firewall-control ]
+  ipset:
+    command: sbin/ipset
+    plugs: [ firewall-control ]
   doc:
     command: bin/doc
-#  shell
-#    command: bin/shell
 
 parts:
   wrapper:
