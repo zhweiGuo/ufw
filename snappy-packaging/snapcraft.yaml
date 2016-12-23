@@ -1,8 +1,10 @@
 name: ufw
-version: 0.36pre-16.3
-architectures: [all]
-description: ufw for Ubuntu Core
+version: 0.36pre-16.4
+architectures: [amd64]
+summary: ufw (Uncomplicated Firewall)
+description: ufw as a snap
 confinement: strict
+grade: stable
 
 apps:
   srv:
@@ -19,3 +21,10 @@ apps:
     command: bin/doc
 #  shell
 #    command: bin/shell
+
+parts:
+  wrapper:
+    plugin: dump
+    source: files/
+    stage-packages:
+    - ipset

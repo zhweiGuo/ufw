@@ -1,7 +1,7 @@
 SRCS     = src/ufw $(wildcard src/*.py)
 POTFILES = locales/po/ufw.pot
 TMPDIR   = ./tmp
-SNAPDIR   = ./snap
+SNAPDIR  = ./snap
 EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
 SRCVER   = ufw-$(VERSION)
@@ -70,6 +70,8 @@ clean:
 	rm -rf ./tests/testarea ./tests/unit/tmp
 	rm -rf $(TMPDIR)
 	rm -rf $(SNAPDIR)
+	rm -rf ./snappy-packaging/files/* ./snappy-packaging/parts ./snappy-packaging/prime ./snappy-packaging/stage
+	rm -f ./snappy-packaging/*.snap
 	rm -f ./locales/mo/*.mo
 	rm -f ./tests/unit/*.pyc ./tests/*.pyc ./src/*.pyc
 	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__ ./src/__pycache__
@@ -105,7 +107,6 @@ snap: clean
 	sed -i 's/IPT_MODULES=.*/IPT_MODULES=""/g' $(SNAPDIR)/etc/default/ufw
 	sed -i 's/IPT_SYSCTL=\(.*\)/IPT_SYSCTL="$$SNAP_DATA\1"/g' $(SNAPDIR)/etc/default/ufw
 	sed -i 's,net/ipv4/tcp_sack=,#net/ipv4/tcp_sack=,g'  $(SNAPDIR)/etc/ufw/sysctl.conf
-	cp -a ./snappy-packaging/* $(SNAPDIR)
 	chmod -R g-w $(SNAPDIR)
 	mkdir $(SNAPDIR)/docs
 	for manfile in `ls doc/*.8` ; do \
@@ -121,5 +122,9 @@ snap: clean
 	done; \
 	rm -f $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/*
 	rmdir $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/
-	ln -sf /var/snap/ufw/current/usr/lib/python3/dist-packages/ufw/__pycache__ $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__
-	snapcraft snap $(SNAPDIR)
+	cp -a $(SNAPDIR)/* ./snappy-packaging/files
+	cp -a ./snappy-packaging/bin ./snappy-packaging/files
+	cd ./snappy-packaging && snapcraft
+	ln -sf /var/snap/ufw/current/usr/lib/python3/dist-packages/ufw/__pycache__ ./snappy-packaging/prime/usr/lib/python3/dist-packages/ufw/__pycache__
+	rm -f ./snappy-packaging/*.snap
+	snapcraft snap ././snappy-packaging/prime
