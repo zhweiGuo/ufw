@@ -4,5 +4,10 @@ if [ -n "$SNAP" ]; then
     export PATH="$SNAP/bin:$SNAP/sbin:$SNAP/usr/bin:$SNAP/usr/sbin:/bin:/sbin:/usr/bin:/usr/sbin"
 fi
 
+args="--norc"
+if [ -z "$1" ]; then
+    args="$args -i"
+fi
+
 echo "Temporary shell for ufw"
-exec /bin/bash -i
+/bin/bash $args "$@"

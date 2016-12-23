@@ -1,0 +1,35 @@
+name: ufw
+version: 0.36pre-16.5
+architectures: [amd64]
+summary: ufw (Uncomplicated Firewall)
+description: ufw as a snap
+confinement: strict
+grade: stable
+
+apps:
+  srv:
+    command: bin/srv
+    daemon: simple
+    plugs: [ firewall-control ]
+  ufw:
+    command: bin/cli
+    plugs: [ firewall-control ]
+  init:
+    command: bin/init
+    plugs: [ firewall-control ]
+  shell:
+    command: bin/shell
+    plugs: [ firewall-control ]
+  ipset:
+    command: sbin/ipset
+    plugs: [ firewall-control ]
+  doc:
+  doc:
+    command: bin/doc
+
+parts:
+  wrapper:
+    plugin: dump
+    source: files/
+    stage-packages:
+    - ipset
