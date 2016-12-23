@@ -254,7 +254,8 @@ class UFWBackend:
                     warn_msg = _("%s is world writable!") % (path)
                     warn(warn_msg)
                     warned_world_write[path] = True
-                if mode & stat.S_IWGRP and path not in warned_group_write:
+                if mode & stat.S_IWGRP and path not in warned_group_write and \
+                        statinfo.st_gid != 0:
                     warn_msg = _("%s is group writable!") % (path)
                     warn(warn_msg)
                     warned_group_write[path] = True
