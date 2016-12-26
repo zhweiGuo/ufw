@@ -15,9 +15,15 @@ ifndef $(PYTHON)
 export PYTHON=python
 endif
 
-all:
-	# Use setup.py to install. See README for details
+all: snap-build
 ifneq ($(SNAP),yes)
+	# Use setup.py to install. See README for details
+	exit 1
+endif
+
+snap-build: clean
+ifneq ($(SNAP),yes)
+	# Use setup.py to install. See README for details
 	exit 1
 endif
 	mkdir $(SNAPDIR)
@@ -42,9 +48,13 @@ endif
 	rm -f $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/*
 	rmdir $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/
 
-install:
-	# Use setup.py to install. See README for details
+install: snap-build
 ifneq ($(SNAP),yes)
+	# Use setup.py to install. See README for details
+	exit 1
+endif
+ifndef DESTDIR
+	# When SNAP=yes, DESTDIR must be set
 	exit 1
 endif
 	cp -a $(SNAPDIR)/* $(DESTDIR)
