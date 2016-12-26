@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36pre-16.7
+version: 0.36pre-16.8
 architectures: [amd64]
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
@@ -30,6 +30,11 @@ apps:
 parts:
   wrapper:
     plugin: dump
-    source: files/
+    source: snap-files/
     stage-packages:
     - ipset
+  make-project:
+    plugin: make
+    source: .
+    make-parameters:
+    - SNAP=yes

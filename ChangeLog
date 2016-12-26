@@ -3,7 +3,7 @@ ufw (0.36) UNRELEASED; urgency=medium
   * doc/ufw-framework.8:
     - fix path for user[6].rules
     - reference nf_conntrack_sane
-  * adjust snappy packaging for series 16
+  * adjust snappy packaging for series 16 and to use snapcraft
   * doc/ufw-on-snappy.8: update for series 16
   * src/backend_iptables.py: properly calculate the path to state_dir when
     specifying --rootdir and --datadir (ie, fix regression in 0.35 final)
@@ -11,7 +11,7 @@ ufw (0.36) UNRELEASED; urgency=medium
     echo-request (LP: #1633698)
   * conf/ufw.defaults: mention nf_conntrack_sane
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 26 Oct 2016 08:43:36 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 26 Dec 2016 13:43:42 -0600
 
 ufw (0.35) RELEASED; urgency=medium
 
