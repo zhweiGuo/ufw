@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36pre-16.8
+version: 0.36pre-16.9
 architectures: [amd64]
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
@@ -38,3 +38,8 @@ parts:
     source: .
     make-parameters:
     - SNAP=yes
+    build-packages:
+    - iptables
+    - netbase
+    - procps
+    - sed
