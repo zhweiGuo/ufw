@@ -1,6 +1,5 @@
 name: ufw
-version: 0.36pre-16.8
-architectures: [amd64]
+version: 0.36pre-16.10
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
 confinement: strict
@@ -38,3 +37,10 @@ parts:
     source: .
     make-parameters:
     - SNAP=yes
+    build-packages:
+    - iptables
+    - netbase
+    - procps
+    - sed
+    - bsdmainutils
+    - man-db
