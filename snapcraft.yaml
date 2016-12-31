@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36pre-16.9
+version: 0.36pre-16.10
 architectures: [amd64]
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
@@ -43,3 +43,5 @@ parts:
     - netbase
     - procps
     - sed
+    - bsdmainutils
+    - man
