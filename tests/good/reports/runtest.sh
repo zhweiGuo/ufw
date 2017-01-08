@@ -29,9 +29,9 @@ fi
 # eth1 = 10.0.2.101 2001::0212:cccc:dddd:e243/112
 #
 # With the following open ports (port 68 is listed twice due to eth0 and eth1):
-#tcp        0      0 0.0.0.0:22
+#tcp        0      0 0.0.0.0:13
 #tcp        0      0 127.0.0.1:631
-#tcp6       0      0 :::22
+#tcp6       0      0 :::13
 #tcp6       0      0 ::1:631
 #udp        0      0 0.0.0.0:68
 #udp        0      0 0.0.0.0:68
@@ -240,18 +240,18 @@ done
 
 echo "show listening (live) with rules" >> $TESTTMP/result
 cp -f $TESTPATH/lib/python/ufw/util.py.bak $TESTPATH/lib/python/ufw/util.py
-do_cmd "0" null allow 22/tcp
+do_cmd "0" null allow 13/tcp
 do_cmd "0" null allow 123/udp
 do_cmd "0" null show listening
-do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete allow 13/tcp
 do_cmd "0" null delete allow 123/udp
 
 echo "show added" >> $TESTTMP/result
-do_cmd "0" null limit 22/tcp
+do_cmd "0" null limit 13/tcp
 do_cmd "0" null allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 do_cmd "0" null deny Samba
 do_cmd "0" show added
-do_cmd "0" null delete limit 22/tcp
+do_cmd "0" null delete limit 13/tcp
 do_cmd "0" show added
 do_cmd "0" null delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 do_cmd "0" show added

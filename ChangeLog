@@ -1,6 +1,9 @@
 ufw (0.35.1) UNRELEASED; urgency=medium
 
   * don't disable syncookies and instead use the system's value by default
+  * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
+    everywhere and adjust to use daytime/port 13 instead of http/port 80 and
+    https/port 443 in good/logging and ipv6/bad_args6 (Closes: 849628)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Apr 2018 16:41:35 -0500
 

@@ -1083,31 +1083,31 @@ Rules updated
 Rules updated (v6)
 
 
-164: allow to any port smtp from any port ssh
+164: allow to any port smtp from any port daytime
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 25 ::/0 22 ::/0 in
--A ufw6-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
+### tuple ### allow tcp 25 ::/0 13 ::/0 in
+-A ufw6-user-input -p tcp --dport 25 --sport 13 -j ACCEPT
 
-165: delete allow to any port smtp from any port ssh
+165: delete allow to any port smtp from any port daytime
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-166: allow to any port ssh from any port smtp
+166: allow to any port daytime from any port smtp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22 ::/0 25 ::/0 in
--A ufw6-user-input -p tcp --dport 22 --sport 25 -j ACCEPT
+### tuple ### allow tcp 13 ::/0 25 ::/0 in
+-A ufw6-user-input -p tcp --dport 13 --sport 25 -j ACCEPT
 
-167: delete allow to any port ssh from any port smtp
+167: delete allow to any port daytime from any port smtp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
@@ -1158,31 +1158,31 @@ Rules updated
 Rules updated (v6)
 
 
-174: allow to any port tftp from any port ssh
+174: allow to any port tftp from any port daytime
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 69 ::/0 22 ::/0 in
--A ufw6-user-input -p udp --dport 69 --sport 22 -j ACCEPT
+### tuple ### allow udp 69 ::/0 13 ::/0 in
+-A ufw6-user-input -p udp --dport 69 --sport 13 -j ACCEPT
 
-175: delete allow to any port tftp from any port ssh
+175: delete allow to any port tftp from any port daytime
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-176: allow to any port ssh from any port tftp
+176: allow to any port daytime from any port tftp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 22 ::/0 69 ::/0 in
--A ufw6-user-input -p udp --dport 22 --sport 69 -j ACCEPT
+### tuple ### allow udp 13 ::/0 69 ::/0 in
+-A ufw6-user-input -p udp --dport 13 --sport 69 -j ACCEPT
 
-177: delete allow to any port ssh from any port tftp
+177: delete allow to any port daytime from any port tftp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
@@ -1218,46 +1218,46 @@ Rules updated
 Rules updated (v6)
 
 
-182: allow to any port ssh from any port 23
+182: allow to any port daytime from any port 23
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow any 22 ::/0 23 ::/0 in
--A ufw6-user-input -p tcp --dport 22 --sport 23 -j ACCEPT
--A ufw6-user-input -p udp --dport 22 --sport 23 -j ACCEPT
-183: delete allow to any port ssh from any port 23
+### tuple ### allow any 13 ::/0 23 ::/0 in
+-A ufw6-user-input -p tcp --dport 13 --sport 23 -j ACCEPT
+-A ufw6-user-input -p udp --dport 13 --sport 23 -j ACCEPT
+183: delete allow to any port daytime from any port 23
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-184: allow to any port 23 from any port ssh
+184: allow to any port 23 from any port daytime
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow any 23 ::/0 22 ::/0 in
--A ufw6-user-input -p tcp --dport 23 --sport 22 -j ACCEPT
--A ufw6-user-input -p udp --dport 23 --sport 22 -j ACCEPT
-185: delete allow to any port 23 from any port ssh
+### tuple ### allow any 23 ::/0 13 ::/0 in
+-A ufw6-user-input -p tcp --dport 23 --sport 13 -j ACCEPT
+-A ufw6-user-input -p udp --dport 23 --sport 13 -j ACCEPT
+185: delete allow to any port 23 from any port daytime
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-186: allow to any port ssh from any port domain
+186: allow to any port daytime from any port domain
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow any 22 ::/0 53 ::/0 in
--A ufw6-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
--A ufw6-user-input -p udp --dport 22 --sport 53 -j ACCEPT
-187: delete allow to any port ssh from any port domain
+### tuple ### allow any 13 ::/0 53 ::/0 in
+-A ufw6-user-input -p tcp --dport 13 --sport 53 -j ACCEPT
+-A ufw6-user-input -p udp --dport 13 --sport 53 -j ACCEPT
+187: delete allow to any port daytime from any port domain
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
@@ -1278,31 +1278,31 @@ Rules updated
 Rules updated (v6)
 
 
-190: allow to any port smtp from any port ssh proto tcp
+190: allow to any port smtp from any port daytime proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 25 ::/0 22 ::/0 in
--A ufw6-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
+### tuple ### allow tcp 25 ::/0 13 ::/0 in
+-A ufw6-user-input -p tcp --dport 25 --sport 13 -j ACCEPT
 
-191: delete allow to any port smtp from any port ssh proto tcp
+191: delete allow to any port smtp from any port daytime proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-192: allow to any port ssh from any port smtp proto tcp
+192: allow to any port daytime from any port smtp proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22 ::/0 25 ::/0 in
--A ufw6-user-input -p tcp --dport 22 --sport 25 -j ACCEPT
+### tuple ### allow tcp 13 ::/0 25 ::/0 in
+-A ufw6-user-input -p tcp --dport 13 --sport 25 -j ACCEPT
 
-193: delete allow to any port ssh from any port smtp proto tcp
+193: delete allow to any port daytime from any port smtp proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
@@ -1353,31 +1353,31 @@ Rules updated
 Rules updated (v6)
 
 
-200: allow to any port tftp from any port ssh proto udp
+200: allow to any port tftp from any port daytime proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 69 ::/0 22 ::/0 in
--A ufw6-user-input -p udp --dport 69 --sport 22 -j ACCEPT
+### tuple ### allow udp 69 ::/0 13 ::/0 in
+-A ufw6-user-input -p udp --dport 69 --sport 13 -j ACCEPT
 
-201: delete allow to any port tftp from any port ssh proto udp
+201: delete allow to any port tftp from any port daytime proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-202: allow to any port ssh from any port tftp proto udp
+202: allow to any port daytime from any port tftp proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 22 ::/0 69 ::/0 in
--A ufw6-user-input -p udp --dport 22 --sport 69 -j ACCEPT
+### tuple ### allow udp 13 ::/0 69 ::/0 in
+-A ufw6-user-input -p udp --dport 13 --sport 69 -j ACCEPT
 
-203: delete allow to any port ssh from any port tftp proto udp
+203: delete allow to any port daytime from any port tftp proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
@@ -1413,91 +1413,91 @@ Rules updated
 Rules updated (v6)
 
 
-208: allow to any port ssh from any port 23 proto tcp
+208: allow to any port daytime from any port 23 proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22 ::/0 23 ::/0 in
--A ufw6-user-input -p tcp --dport 22 --sport 23 -j ACCEPT
+### tuple ### allow tcp 13 ::/0 23 ::/0 in
+-A ufw6-user-input -p tcp --dport 13 --sport 23 -j ACCEPT
 
-209: delete allow to any port ssh from any port 23 proto tcp
+209: delete allow to any port daytime from any port 23 proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-210: allow to any port 23 from any port ssh proto tcp
+210: allow to any port 23 from any port daytime proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 23 ::/0 22 ::/0 in
--A ufw6-user-input -p tcp --dport 23 --sport 22 -j ACCEPT
+### tuple ### allow tcp 23 ::/0 13 ::/0 in
+-A ufw6-user-input -p tcp --dport 23 --sport 13 -j ACCEPT
 
-211: delete allow to any port 23 from any port ssh proto tcp
+211: delete allow to any port 23 from any port daytime proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-212: allow to any port ssh from any port domain proto tcp
+212: allow to any port daytime from any port domain proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22 ::/0 53 ::/0 in
--A ufw6-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
+### tuple ### allow tcp 13 ::/0 53 ::/0 in
+-A ufw6-user-input -p tcp --dport 13 --sport 53 -j ACCEPT
 
-213: delete allow to any port ssh from any port domain proto tcp
+213: delete allow to any port daytime from any port domain proto tcp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-214: allow to any port ssh from any port 23 proto udp
+214: allow to any port daytime from any port 23 proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 22 ::/0 23 ::/0 in
--A ufw6-user-input -p udp --dport 22 --sport 23 -j ACCEPT
+### tuple ### allow udp 13 ::/0 23 ::/0 in
+-A ufw6-user-input -p udp --dport 13 --sport 23 -j ACCEPT
 
-215: delete allow to any port ssh from any port 23 proto udp
+215: delete allow to any port daytime from any port 23 proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-216: allow to any port 23 from any port ssh proto udp
+216: allow to any port 23 from any port daytime proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 23 ::/0 22 ::/0 in
--A ufw6-user-input -p udp --dport 23 --sport 22 -j ACCEPT
+### tuple ### allow udp 23 ::/0 13 ::/0 in
+-A ufw6-user-input -p udp --dport 23 --sport 13 -j ACCEPT
 
-217: delete allow to any port 23 from any port ssh proto udp
+217: delete allow to any port 23 from any port daytime proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-218: allow to any port ssh from any port domain proto udp
+218: allow to any port daytime from any port domain proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 22 ::/0 53 ::/0 in
--A ufw6-user-input -p udp --dport 22 --sport 53 -j ACCEPT
+### tuple ### allow udp 13 ::/0 53 ::/0 in
+-A ufw6-user-input -p udp --dport 13 --sport 53 -j ACCEPT
 
-219: delete allow to any port ssh from any port domain proto udp
+219: delete allow to any port daytime from any port domain proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
@@ -1609,63 +1609,63 @@ WARN: Checks disabled
 Rules updated (v6)
 
 
-236: allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,22 proto tcp
+236: allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,13 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22,80:83 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
--A ufw6-user-input -p tcp -m multiport --dports 22,80:83 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
+### tuple ### allow tcp 13,80:83 2001:db8:85a3:8d3:1319:8a2e:370:7341 any ::/0 in
+-A ufw6-user-input -p tcp -m multiport --dports 13,80:83 -d 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
-237: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,22 proto tcp
+237: delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 80:83,13 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-238: allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 22 proto tcp
+238: allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 13 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-### tuple ### allow tcp 22 2001:db8:85a3:8d3:1319:8a2e:370:7342 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
--A ufw6-user-input -p tcp -m multiport --dports 22 -m multiport --sports 35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
+### tuple ### allow tcp 13 2001:db8:85a3:8d3:1319:8a2e:370:7342 35:39 2001:db8:85a3:8d3:1319:8a2e:370:7341 in
+-A ufw6-user-input -p tcp -m multiport --dports 13 -m multiport --sports 35:39 -d 2001:db8:85a3:8d3:1319:8a2e:370:7342 -s 2001:db8:85a3:8d3:1319:8a2e:370:7341 -j ACCEPT
 
-239: delete allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 22 proto tcp
+239: delete allow from 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 to 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 13 proto tcp
 WARN: Checks disabled
 Rules updated (v6)
 
 
-240: allow to any port 23,21,15:19,22 from any port 24:26 proto udp
-WARN: Checks disabled
-Rules updated
-Rules updated (v6)
-
-
-### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24:26 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -j ACCEPT
-
-### tuple ### allow udp 15:19,21,22,23 ::/0 24:26 ::/0 in
--A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -j ACCEPT
-
-241: delete allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+240: allow to any port 23,21,15:19,13 from any port 24:26 proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-242: allow 23,21,15:19,22/udp
+### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 24:26 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24:26 -j ACCEPT
+
+### tuple ### allow udp 13,15:19,21,23 ::/0 24:26 ::/0 in
+-A ufw6-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24:26 -j ACCEPT
+
+241: delete allow to any port 23,21,15:19,13 from any port 24:26 proto udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
 
 
-### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
+242: allow 23,21,15:19,13/udp
+WARN: Checks disabled
+Rules updated
+Rules updated (v6)
 
-### tuple ### allow udp 15:19,21,22,23 ::/0 any ::/0 in
--A ufw6-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
 
-243: delete allow 23,21,15:19,22/udp
+### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j ACCEPT
+
+### tuple ### allow udp 13,15:19,21,23 ::/0 any ::/0 in
+-A ufw6-user-input -p udp -m multiport --dports 13,15:19,21,23 -j ACCEPT
+
+243: delete allow 23,21,15:19,13/udp
 WARN: Checks disabled
 Rules updated
 Rules updated (v6)
