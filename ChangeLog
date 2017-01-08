@@ -1,4 +1,4 @@
-ufw (0.36) UNRELEASED; urgency=medium
+ufw (0.36) xenial; urgency=medium
 
   * doc/ufw-framework.8:
     - fix path for user[6].rules
@@ -11,8 +11,11 @@ ufw (0.36) UNRELEASED; urgency=medium
     echo-request (LP: #1633698)
   * conf/ufw.defaults: mention nf_conntrack_sane
   * support mangle, nat and raw tables with before/after mechanism
+  * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
+    everywhere and adjust to use daytime/port 13 instead of http/port 80 and
+    https/port 443 in good/logging and ipv6/bad_args6 (Closes: 849628)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 26 Dec 2016 13:43:42 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 08 Jan 2017 09:31:13 -0600
 
 ufw (0.35) RELEASED; urgency=medium
 

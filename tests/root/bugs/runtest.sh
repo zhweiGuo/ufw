@@ -93,11 +93,11 @@ sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 do_cmd "0" nostats disable
 do_cmd "0" nostats enable
 do_cmd "0"  status
-do_cmd "0"  delete allow 22
+do_cmd "0"  delete allow 13
 do_cmd "0"  delete allow Apache
-do_cmd "0"  delete allow to 127.0.0.1 port 22
+do_cmd "0"  delete allow to 127.0.0.1 port 13
 do_cmd "0"  delete allow to 127.0.0.1 app Apache
-do_cmd "0"  delete allow to ::1 port 22
+do_cmd "0"  delete allow to ::1 port 13
 do_cmd "0"  delete allow to ::1 app Apache
 do_cmd "0"  status
 

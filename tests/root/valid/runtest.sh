@@ -76,7 +76,7 @@ do_cmd "0"  deny to any port 80 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  deny from 10.0.0.0/8 to 192.168.0.1 port 25 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  limit 22/tcp
+do_cmd "0"  limit 13/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  deny 53
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
@@ -97,7 +97,7 @@ grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0"  delete allow 25/tcp
 do_cmd "0"  delete deny from 10.0.0.0/8 to 192.168.0.1 port 25 proto tcp
-do_cmd "0"  delete limit 22/tcp
+do_cmd "0"  delete limit 13/tcp
 do_cmd "0"  delete deny 53
 do_cmd "0"  delete allow 80/tcp
 do_cmd "0"  delete allow from 10.0.0.0/8
@@ -160,19 +160,19 @@ grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow tftp/udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
-do_cmd "0"  allow ssh
+do_cmd "0"  allow daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow ssh
-grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-
-do_cmd "0"  allow ssh/tcp
-grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow ssh/tcp
+do_cmd "0"  delete allow daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
-do_cmd "0"  allow ssh/udp
+do_cmd "0"  allow daytime/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow ssh/udp
+do_cmd "0"  delete allow daytime/tcp
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+
+do_cmd "0"  allow daytime/udp
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0"  delete allow daytime/udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 
@@ -250,13 +250,13 @@ do_cmd "0"  allow to any port smtp from any port smtp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port smtp from any port smtp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port smtp from any port ssh
+do_cmd "0"  allow to any port smtp from any port daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port smtp from any port ssh
+do_cmd "0"  delete allow to any port smtp from any port daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port smtp
+do_cmd "0"  allow to any port daytime from any port smtp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port smtp
+do_cmd "0"  delete allow to any port daytime from any port smtp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  allow to any port smtp from any port 23
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
@@ -270,13 +270,13 @@ do_cmd "0"  allow to any port tftp from any port tftp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port tftp from any port tftp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port tftp from any port ssh
+do_cmd "0"  allow to any port tftp from any port daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port tftp from any port ssh
+do_cmd "0"  delete allow to any port tftp from any port daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port tftp
+do_cmd "0"  allow to any port daytime from any port tftp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port tftp
+do_cmd "0"  delete allow to any port daytime from any port tftp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  allow to any port tftp from any port 23
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
@@ -286,30 +286,30 @@ do_cmd "0"  allow to any port 23 from any port tftp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port 23 from any port tftp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port 23
+do_cmd "0"  allow to any port daytime from any port 23
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port 23
+do_cmd "0"  delete allow to any port daytime from any port 23
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port 23 from any port ssh
+do_cmd "0"  allow to any port 23 from any port daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port 23 from any port ssh
+do_cmd "0"  delete allow to any port 23 from any port daytime
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port domain
+do_cmd "0"  allow to any port daytime from any port domain
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port domain
+do_cmd "0"  delete allow to any port daytime from any port domain
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0"  allow to any port smtp from any port smtp proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port smtp from any port smtp proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port smtp from any port ssh proto tcp
+do_cmd "0"  allow to any port smtp from any port daytime proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port smtp from any port ssh proto tcp
+do_cmd "0"  delete allow to any port smtp from any port daytime proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port smtp proto tcp
+do_cmd "0"  allow to any port daytime from any port smtp proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port smtp proto tcp
+do_cmd "0"  delete allow to any port daytime from any port smtp proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  allow to any port smtp from any port 23 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
@@ -323,13 +323,13 @@ do_cmd "0"  allow to any port tftp from any port tftp proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port tftp from any port tftp proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port tftp from any port ssh proto udp
+do_cmd "0"  allow to any port tftp from any port daytime proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port tftp from any port ssh proto udp
+do_cmd "0"  delete allow to any port tftp from any port daytime proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port tftp proto udp
+do_cmd "0"  allow to any port daytime from any port tftp proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port tftp proto udp
+do_cmd "0"  delete allow to any port daytime from any port tftp proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  allow to any port tftp from any port 23 proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
@@ -339,29 +339,29 @@ do_cmd "0"  allow to any port 23 from any port tftp proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0"  delete allow to any port 23 from any port tftp proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port 23 proto tcp
+do_cmd "0"  allow to any port daytime from any port 23 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port 23 proto tcp
+do_cmd "0"  delete allow to any port daytime from any port 23 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port 23 from any port ssh proto tcp
+do_cmd "0"  allow to any port 23 from any port daytime proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port 23 from any port ssh proto tcp
+do_cmd "0"  delete allow to any port 23 from any port daytime proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port domain proto tcp
+do_cmd "0"  allow to any port daytime from any port domain proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port domain proto tcp
+do_cmd "0"  delete allow to any port daytime from any port domain proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port 23 proto udp
+do_cmd "0"  allow to any port daytime from any port 23 proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port 23 proto udp
+do_cmd "0"  delete allow to any port daytime from any port 23 proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port 23 from any port ssh proto udp
+do_cmd "0"  allow to any port 23 from any port daytime proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port 23 from any port ssh proto udp
+do_cmd "0"  delete allow to any port 23 from any port daytime proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  allow to any port ssh from any port domain proto udp
+do_cmd "0"  allow to any port daytime from any port domain proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0"  delete allow to any port ssh from any port domain proto udp
+do_cmd "0"  delete allow to any port daytime from any port domain proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 echo "TESTING NETMASK" >> $TESTTMP/result
@@ -413,17 +413,17 @@ do_cmd "0" allow to 192.168.0.1 port 80:83 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0" delete allow to 192.168.0.1 port 80:83 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" allow to 192.168.0.1 port 80:83,22 proto tcp
+do_cmd "0" allow to 192.168.0.1 port 80:83,13 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" delete allow to 192.168.0.1 port 80:83,22 proto tcp
+do_cmd "0" delete allow to 192.168.0.1 port 80:83,13 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 22 proto tcp
+do_cmd "0" allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 13 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" delete allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 22 proto tcp
+do_cmd "0" delete allow from 192.168.0.1 port 35:39 to 192.168.0.2 port 13 proto tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+do_cmd "0" allow to any port 23,21,15:19,13 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" delete allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+do_cmd "0" delete allow to any port 23,21,15:19,13 from any port 24:26 proto udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0" allow 34,35/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
@@ -437,9 +437,9 @@ do_cmd "0" deny 35:39/udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 do_cmd "0" delete deny 35:39/udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" deny 23,21,15:19,22/udp
+do_cmd "0" deny 23,21,15:19,13/udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
-do_cmd "0" delete deny 23,21,15:19,22/udp
+do_cmd "0" delete deny 23,21,15:19,13/udp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 cleanup

@@ -147,8 +147,8 @@ do_cmd "1" null --dry-run allow to any port smtp from any port 23 proto esp
 do_cmd "1" null --dry-run allow to any port 23 from any port smtp proto esp
 do_cmd "1" null --dry-run allow to any port tftp from any port 23 proto tcp
 do_cmd "1" null --dry-run allow to any port 23 from any port tftp proto tcp
-do_cmd "1" null --dry-run allow to any port smtp from any port ssh proto esp
-do_cmd "1" null --dry-run allow to any port tftp from any port ssh proto tcp
+do_cmd "1" null --dry-run allow to any port smtp from any port daytime proto esp
+do_cmd "1" null --dry-run allow to any port tftp from any port daytime proto tcp
 
 echo "TESTING BAD MULTIPORTS" >> $TESTTMP/result
 # extended syntax
@@ -175,9 +175,9 @@ for i in allow deny limit; do
         do_cmd "1" null --dry-run $i $j any port 24:20 proto tcp
         do_cmd "1" null --dry-run $i $j any port 2A:20 proto tcp
         do_cmd "1" null --dry-run $i $j any port 24:2o proto tcp
-        do_cmd "1" null --dry-run $i $j any port http,smtp proto tcp
-        do_cmd "1" null --dry-run $i $j any port 80,smtp proto tcp
-        do_cmd "1" null --dry-run $i $j any port http,25 proto tcp
+        do_cmd "1" null --dry-run $i $j any port daytime,smtp proto tcp
+        do_cmd "1" null --dry-run $i $j any port 13,smtp proto tcp
+        do_cmd "1" null --dry-run $i $j any port daytime,25 proto tcp
     done
 
     do_cmd "1" null --dry-run $i to any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 from any port 20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 proto tcp
@@ -211,9 +211,9 @@ for i in allow deny limit; do
         do_cmd "1" null --dry-run $i 24:20/$j
         do_cmd "1" null --dry-run $i 2A:20/$j
         do_cmd "1" null --dry-run $i 24:2o/$j
-        do_cmd "1" null --dry-run $i http,smtp/tcp
-        do_cmd "1" null --dry-run $i 80,smtp/tcp
-        do_cmd "1" null --dry-run $i http,25/tcp
+        do_cmd "1" null --dry-run $i daytime,smtp/tcp
+        do_cmd "1" null --dry-run $i 13,smtp/tcp
+        do_cmd "1" null --dry-run $i daytime,25/tcp
     done
 done
 
@@ -240,22 +240,22 @@ grep -q "^LOGLEVEL=low" $TESTPATH/etc/ufw/ufw.conf || echo "ERROR: loglevel chan
 do_cmd "1" null --dry-run logging ful1
 grep -q "^LOGLEVEL=low" $TESTPATH/etc/ufw/ufw.conf || echo "ERROR: loglevel changed"
 
-do_cmd "1" null --dry-run allow logg 22
-do_cmd "1" null --dry-run allow logall 22
-do_cmd "1" null --dry-run allow log-al1 22
+do_cmd "1" null --dry-run allow logg 13
+do_cmd "1" null --dry-run allow logall 13
+do_cmd "1" null --dry-run allow log-al1 13
 
 echo "TESTING ARGS (insert)" >> $TESTTMP/result
-do_cmd "0" null allow 22
+do_cmd "0" null allow 13
 do_cmd "0" null allow 23
 
 do_cmd "1" null insert 0 allow 24
 do_cmd "1" null insert 3 allow 24
 do_cmd "1" null insert allow 24
 do_cmd "1" null allow insert 2 24
-do_cmd "0" null insert 1 allow 22
-do_cmd "0" null insert 1 allow log 22
+do_cmd "0" null insert 1 allow 13
+do_cmd "0" null insert 1 allow log 13
 
-do_cmd "0" null delete allow 22
+do_cmd "0" null delete allow 13
 do_cmd "0" null delete allow 23
 
 echo "TESTING ARGS (interfaces)" >> $TESTTMP/result

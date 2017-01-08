@@ -36,7 +36,7 @@ for i in allow deny limit reject ; do
         do_cmd "0" null $i $j 23
         do_cmd "0" null $i $j smtp
         do_cmd "0" null $i $j tftp
-        do_cmd "0" null $i $j https
+        do_cmd "0" null $i $j daytime
         do_cmd "0" null $i $j Samba
         do_cmd "0" null $i $j Apache
         do_cmd "0" null $i $j from 192.168.0.1 port smtp to 10.0.0.1 port smtp
@@ -50,7 +50,7 @@ for i in allow deny limit reject ; do
         do_cmd "0" null delete $i $j 23
         do_cmd "0" null delete $i $j smtp
         do_cmd "0" null delete $i $j tftp
-        do_cmd "0" null delete $i $j https
+        do_cmd "0" null delete $i $j daytime
         do_cmd "0" null delete $i $j Samba
         do_cmd "0" null delete $i $j Apache
         do_cmd "0" null delete $i $j from 192.168.0.1 port smtp to 10.0.0.1 port smtp
@@ -101,7 +101,7 @@ do_cmd "0" null delete deny out on eth0 log-all from 192.168.0.1 to 10.0.0.1 por
 echo "TESTING WRITING LOGLEVELS" >> $TESTTMP/result
 for i in off low medium high full on; do
     do_cmd "0" null logging $i
-    do_cmd "0" --dry-run allow 22
+    do_cmd "0" --dry-run allow 13
 done
 
 exit 0

@@ -71,7 +71,7 @@ for target in allow deny limit ; do
             do_cmd "0" --dry-run $target $j $m app Apache $k $n port 8080
             do_cmd "0" --dry-run $target $j $m app OpenNTPD $k $n port 10123
             do_cmd "0" --dry-run $target $j $m app Samba $k $n app Bind9
-            do_cmd "0" --dry-run $target $j $m app Samba $k $n port 22
+            do_cmd "0" --dry-run $target $j $m app Samba $k $n port 13
             do_cmd "0" --dry-run $target $j $m app Apache $k $n app 'Apache Full'
         done
         if [ "$i" != "any" ]; then
@@ -132,7 +132,7 @@ do_cmd "0" null delete reject 'Dovecot POP3'
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" null allow Samba
-do_cmd "0" null allow 22
+do_cmd "0" null allow 13
 do_cmd "0" null insert 2 allow log-all from any to any app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 to any app Samba
@@ -141,7 +141,7 @@ do_cmd "0" null insert 2 allow from any app Samba to 10.0.0.1
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" null delete allow Samba
-do_cmd "0" null delete allow 22
+do_cmd "0" null delete allow 13
 do_cmd "0" null delete allow log-all from any to any app Samba
 do_cmd "0" null delete allow from 192.168.0.1 to 10.0.0.1 app Samba
 do_cmd "0" null delete allow from 192.168.0.1 to any app Samba
@@ -163,12 +163,12 @@ for i in "in" "out" ; do
         cat $TESTCONFIG/user.rules >> $TESTTMP/result
     done
     do_cmd "0" null allow $i on eth0 to any app Samba
-    do_cmd "0" null allow $i on eth1 to any port 22
+    do_cmd "0" null allow $i on eth1 to any port 13
     do_cmd "0" null insert 2 allow $i on eth2 to any app Samba
     cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
     do_cmd "0" null delete allow $i on eth0 to any app Samba
-    do_cmd "0" null delete allow $i on eth1 to any port 22
+    do_cmd "0" null delete allow $i on eth1 to any port 13
     do_cmd "0" null delete allow $i on eth2 to any app Samba
     cat $TESTCONFIG/user.rules >> $TESTTMP/result
 done
