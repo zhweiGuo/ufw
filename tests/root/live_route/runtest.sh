@@ -37,7 +37,7 @@ do
 	do_cmd "0" route allow from 192.168.0.0/16
 	do_cmd "0" route deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" route allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" route limit 22/tcp
+	do_cmd "0" route limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" route deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" route deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -57,7 +57,7 @@ do
 	do_cmd "0" route delete allow from 192.168.0.0/16
 	do_cmd "0" route delete deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" route delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" route delete limit 22/tcp
+	do_cmd "0" route delete limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" route delete deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" route delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -121,7 +121,7 @@ do
 	do_cmd "0" route allow from 192.168.0.0/16
 	do_cmd "0" route deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" route allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" route limit 22/tcp
+	do_cmd "0" route limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" route deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" route deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -138,7 +138,7 @@ do
 	do_cmd "0" route delete allow from 192.168.0.0/16
 	do_cmd "0" route delete deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" route delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" route delete limit 22/tcp
+	do_cmd "0" route delete limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" route delete deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" route delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -161,12 +161,12 @@ do
 
         do_cmd "0" route allow $i on $fake_if
         do_cmd "1" null route deny $i on $fake_if:1
-        do_cmd "0" route reject $i on $fake_if to 192.168.0.1 port 22
+        do_cmd "0" route reject $i on $fake_if to 192.168.0.1 port 13
         do_cmd "0" route limit $i on $fake_if from 10.0.0.1 port 80
         do_cmd "0" route allow $i on $fake_if to 192.168.0.1 from 10.0.0.1
-        do_cmd "0" route deny $i on $fake_if to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" route deny $i on $fake_if to 192.168.0.1 port 13 from 10.0.0.1
         do_cmd "0" route reject $i on $fake_if to 192.168.0.1 from 10.0.0.1 port 80
-        do_cmd "0" route limit $i on $fake_if to 192.168.0.1 port 22 from 10.0.0.1 port 80
+        do_cmd "0" route limit $i on $fake_if to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 	do_cmd "0" route allow $i on $dmz_if log
 	do_cmd "0" route allow $i on $fake_if log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
@@ -186,12 +186,12 @@ do
 
 	# delete what we added
         do_cmd "0" route delete allow $i on $fake_if
-        do_cmd "0" route delete reject $i on $fake_if to 192.168.0.1 port 22
+        do_cmd "0" route delete reject $i on $fake_if to 192.168.0.1 port 13
         do_cmd "0" route delete limit $i on $fake_if from 10.0.0.1 port 80
         do_cmd "0" route delete allow $i on $fake_if to 192.168.0.1 from 10.0.0.1
-        do_cmd "0" route delete deny $i on $fake_if to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" route delete deny $i on $fake_if to 192.168.0.1 port 13 from 10.0.0.1
         do_cmd "0" route delete reject $i on $fake_if to 192.168.0.1 from 10.0.0.1 port 80
-        do_cmd "0" route delete limit $i on $fake_if to 192.168.0.1 port 22 from 10.0.0.1 port 80
+        do_cmd "0" route delete limit $i on $fake_if to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 	do_cmd "0" route delete allow $i on $dmz_if log
 	do_cmd "0" route delete allow $i on $fake_if log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
@@ -308,13 +308,13 @@ do
     sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
     do_cmd "0" nostats disable
     do_cmd "0" nostats enable
-    do_cmd "0" nostats route limit 22/tcp
+    do_cmd "0" nostats route limit 13/tcp
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" nostats route allow in on $in_if to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
     fi
     do_cmd "0" nostats route deny Samba
     do_cmd "0" show added
-    do_cmd "0" nostats route delete limit 22/tcp
+    do_cmd "0" nostats route delete limit 13/tcp
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" nostats route delete allow in on $in_if to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
     fi

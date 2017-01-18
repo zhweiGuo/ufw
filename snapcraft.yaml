@@ -1,0 +1,46 @@
+name: ufw
+version: 0.36pre-trunk
+summary: ufw (Uncomplicated Firewall)
+description: ufw as a snap
+confinement: strict
+grade: stable
+
+apps:
+  srv:
+    command: bin/srv
+    daemon: simple
+    plugs: [ firewall-control ]
+  ufw:
+    command: bin/cli
+    plugs: [ firewall-control ]
+  init:
+    command: bin/init
+    plugs: [ firewall-control ]
+  shell:
+    command: bin/shell
+    plugs: [ firewall-control ]
+  ipset:
+    command: sbin/ipset
+    plugs: [ firewall-control ]
+  doc:
+  doc:
+    command: bin/doc
+
+parts:
+  wrapper:
+    plugin: dump
+    source: snap-files/
+    stage-packages:
+    - ipset
+  make-project:
+    plugin: make
+    source: .
+    make-parameters:
+    - SNAP=yes
+    build-packages:
+    - iptables
+    - netbase
+    - procps
+    - sed
+    - bsdmainutils
+    - man-db

@@ -26,7 +26,7 @@ do_cmd "0" --dry-run deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
 do_cmd "0" --dry-run deny proto tcp from 2001:db8::/32 to any port 25
 do_cmd "0" --dry-run deny 80/tcp
 do_cmd "0" --dry-run delete deny 80/tcp
-do_cmd "0" --dry-run limit ssh/tcp
+do_cmd "0" --dry-run limit daytime/tcp
 do_cmd "0" --dry-run deny 53
 do_cmd "0" --dry-run allow 80/tcp
 do_cmd "0" --dry-run allow from 10.0.0.0/8
@@ -44,20 +44,20 @@ do_cmd "0" --dry-run allow tftp
 do_cmd "0" --dry-run delete allow tftp
 do_cmd "0" --dry-run allow tftp/udp
 do_cmd "0" --dry-run delete allow tftp/udp
-do_cmd "0" --dry-run allow ssh
-do_cmd "0" --dry-run delete allow ssh
-do_cmd "0" --dry-run allow ssh/tcp
-do_cmd "0" --dry-run delete allow ssh/tcp
-do_cmd "0" --dry-run allow ssh/udp
-do_cmd "0" --dry-run delete allow ssh/udp
+do_cmd "0" --dry-run allow daytime
+do_cmd "0" --dry-run delete allow daytime
+do_cmd "0" --dry-run allow daytime/tcp
+do_cmd "0" --dry-run delete allow daytime/tcp
+do_cmd "0" --dry-run allow daytime/udp
+do_cmd "0" --dry-run delete allow daytime/udp
 
 echo "Services EXTENDED" >> $TESTTMP/result
-do_cmd "0" --dry-run allow to any port smtp from any port ssh
-do_cmd "0" --dry-run delete allow to any port smtp from any port ssh
-do_cmd "0" --dry-run allow to any port tftp from any port ssh
-do_cmd "0" --dry-run delete allow to any port tftp from any port ssh
-do_cmd "0" --dry-run allow to any port ssh from any port domain
-do_cmd "0" --dry-run delete allow to any port ssh from any port domain
+do_cmd "0" --dry-run allow to any port smtp from any port daytime
+do_cmd "0" --dry-run delete allow to any port smtp from any port daytime
+do_cmd "0" --dry-run allow to any port tftp from any port daytime
+do_cmd "0" --dry-run delete allow to any port tftp from any port daytime
+do_cmd "0" --dry-run allow to any port daytime from any port domain
+do_cmd "0" --dry-run delete allow to any port daytime from any port domain
 
 echo "Netmasks" >> $TESTTMP/result
 do_cmd "0" --dry-run allow to 192.168.0.0/0
@@ -96,15 +96,15 @@ echo "Multiports:" >> $TESTTMP/result
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35 proto tcp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35:39 proto udp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 35:39 proto tcp
-do_cmd "0" --dry-run allow from 192.168.0.1 port 210,23,21,15:19,22 proto udp
+do_cmd "0" --dry-run allow from 192.168.0.1 port 210,23,21,15:19,13 proto udp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35 to 192.168.0.2 port 24 proto tcp
 do_cmd "0" --dry-run allow from 192.168.0.1 port 34,35:39 to 192.168.0.2 port 24 proto udp
 do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto tcp
-do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,13 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
 do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 34,35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto tcp
-do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,22 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
+do_cmd "0" --dry-run allow to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 23,21,15:19,13 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24:26 proto udp
 
 # simple syntax
 for i in allow deny limit; do
@@ -112,7 +112,7 @@ for i in allow deny limit; do
         do_cmd "0" --dry-run $i 34,35/$j
         do_cmd "0" --dry-run $i 34,35:39/$j
         do_cmd "0" --dry-run $i 35:39/$j
-        do_cmd "0" --dry-run $i 23,21,15:19,22/$j
+        do_cmd "0" --dry-run $i 23,21,15:19,13/$j
     done
 done
 
@@ -129,7 +129,7 @@ for i in any tcp udp ; do
     if [ "$i" = "any" ]; then
         p=""
     else
-        do_cmd "0" --dry-run reject 23,21,15:19,22$p
+        do_cmd "0" --dry-run reject 23,21,15:19,13$p
     fi
     do_cmd "0" --dry-run reject 116$p
 done
@@ -138,7 +138,7 @@ do_cmd "0" --dry-run reject to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 f
 do_cmd "0" --dry-run reject to 2001:db8:85a3:8d3:1319:8a2e:370:7341 port 35:39 from 2001:db8:85a3:8d3:1319:8a2e:370:7342 port 24 proto udp
 
 echo "Insert" >> $TESTTMP/result
-do_cmd "0" null allow to 127.0.0.1 port 22
+do_cmd "0" null allow to 127.0.0.1 port 13
 do_cmd "0" null allow to 127.0.0.1 port 23
 do_cmd "0" null allow to ::1 port 24
 do_cmd "0" null allow to ::1 port 25
@@ -174,7 +174,7 @@ do_cmd "0" null insert 4 allow log 8888
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
-do_cmd "0" null delete allow to 127.0.0.1 port 22
+do_cmd "0" null delete allow to 127.0.0.1 port 13
 do_cmd "0" null delete allow to 127.0.0.1 port 23
 do_cmd "0" null delete allow to ::1 port 24
 do_cmd "0" null delete allow to ::1 port 25
@@ -186,16 +186,16 @@ echo "Interfaces" >> $TESTTMP/result
 for i in "in" "out" ; do
     do_cmd "0" null allow $i on eth0
     do_cmd "0" null allow $i on eth0 to 192.168.0.1
-    do_cmd "0" null deny $i on eth0 from 192.168.0.1 port 22 proto tcp
+    do_cmd "0" null deny $i on eth0 from 192.168.0.1 port 13 proto tcp
     do_cmd "0" null reject $i on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
-    do_cmd "0" null allow $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
+    do_cmd "0" null allow $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 13 proto tcp
     cat $TESTCONFIG/user.rules >> $TESTTMP/result
     cat $TESTCONFIG/user6.rules >> $TESTTMP/result
     do_cmd "0" null delete allow $i on eth0
     do_cmd "0" null delete allow $i on eth0 to 192.168.0.1
-    do_cmd "0" null delete deny $i on eth0 from 192.168.0.1 port 22 proto tcp
+    do_cmd "0" null delete deny $i on eth0 from 192.168.0.1 port 13 proto tcp
     do_cmd "0" null delete reject $i on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
-    do_cmd "0" null delete allow $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
+    do_cmd "0" null delete allow $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 13 proto tcp
     cat $TESTCONFIG/user.rules >> $TESTTMP/result
     cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 done

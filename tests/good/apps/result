@@ -3715,7 +3715,7 @@ COMMIT
 Rules updated
 
 
-72: --dry-run allow from 192.168.0.1 app Samba to 192.168.0.2 port 22
+72: --dry-run allow from 192.168.0.1 app Samba to 192.168.0.2 port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -3736,8 +3736,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -3774,11 +3774,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba in
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow tcp 13 192.168.0.2 139,445 192.168.0.1 - Samba in
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -4012,7 +4012,7 @@ COMMIT
 Rules updated
 
 
-77: --dry-run allow to 192.168.0.1 app Samba from 192.168.0.2 port 22
+77: --dry-run allow to 192.168.0.1 app Samba from 192.168.0.2 port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4033,8 +4033,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
+### tuple ### allow udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -4071,11 +4071,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
+### tuple ### allow udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
+### tuple ### allow tcp 139,445 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -4393,7 +4393,7 @@ COMMIT
 Rules updated
 
 
-83: --dry-run allow from any app Samba to any port 22
+83: --dry-run allow from any app Samba to any port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4414,8 +4414,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -4452,11 +4452,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ACCEPT -m comment --comment 'sapp_Samba'
 
-### tuple ### allow tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
+### tuple ### allow tcp 13 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -j ACCEPT -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -4690,7 +4690,7 @@ COMMIT
 Rules updated
 
 
-88: --dry-run allow to any app Samba from any port 22
+88: --dry-run allow to any app Samba from any port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -4711,8 +4711,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
+### tuple ### allow udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -4749,11 +4749,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
+### tuple ### allow udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j ACCEPT -m comment --comment 'dapp_Samba'
+### tuple ### allow tcp 139,445 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -6615,7 +6615,7 @@ COMMIT
 Rules updated
 
 
-126: --dry-run deny from 192.168.0.1 app Samba to 192.168.0.2 port 22
+126: --dry-run deny from 192.168.0.1 app Samba to 192.168.0.2 port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6636,8 +6636,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -6674,11 +6674,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba in
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny tcp 13 192.168.0.2 139,445 192.168.0.1 - Samba in
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -6912,7 +6912,7 @@ COMMIT
 Rules updated
 
 
-131: --dry-run deny to 192.168.0.1 app Samba from 192.168.0.2 port 22
+131: --dry-run deny to 192.168.0.1 app Samba from 192.168.0.2 port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6933,8 +6933,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
+### tuple ### deny udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -6971,11 +6971,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
+### tuple ### deny udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
+### tuple ### deny tcp 139,445 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -7293,7 +7293,7 @@ COMMIT
 Rules updated
 
 
-137: --dry-run deny from any app Samba to any port 22
+137: --dry-run deny from any app Samba to any port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7314,8 +7314,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -7352,11 +7352,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j DROP -m comment --comment 'sapp_Samba'
 
-### tuple ### deny tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
+### tuple ### deny tcp 13 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -j DROP -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -7590,7 +7590,7 @@ COMMIT
 Rules updated
 
 
-142: --dry-run deny to any app Samba from any port 22
+142: --dry-run deny to any app Samba from any port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7611,8 +7611,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
+### tuple ### deny udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -7649,11 +7649,11 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
+### tuple ### deny udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j DROP -m comment --comment 'dapp_Samba'
 
-### tuple ### deny tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j DROP -m comment --comment 'dapp_Samba'
+### tuple ### deny tcp 139,445 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -j DROP -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -9613,7 +9613,7 @@ COMMIT
 Rules updated
 
 
-180: --dry-run limit from 192.168.0.1 app Samba to 192.168.0.2 port 22
+180: --dry-run limit from 192.168.0.1 app Samba to 192.168.0.2 port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9634,10 +9634,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -9674,15 +9674,15 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 192.168.0.2 137,138 192.168.0.1 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit udp 13 192.168.0.2 137,138 192.168.0.1 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp 22 192.168.0.2 139,445 192.168.0.1 - Samba in
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit tcp 13 192.168.0.2 139,445 192.168.0.1 - Samba in
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -d 192.168.0.2 -s 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -9928,7 +9928,7 @@ COMMIT
 Rules updated
 
 
-185: --dry-run limit to 192.168.0.1 app Samba from 192.168.0.2 port 22
+185: --dry-run limit to 192.168.0.1 app Samba from 192.168.0.2 port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9949,10 +9949,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+### tuple ### limit udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -9989,15 +9989,15 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+### tuple ### limit udp 137,138 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 192.168.0.1 22 192.168.0.2 Samba - in
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+### tuple ### limit tcp 139,445 192.168.0.1 13 192.168.0.2 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -d 192.168.0.1 -s 192.168.0.2 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -10333,7 +10333,7 @@ COMMIT
 Rules updated
 
 
-191: --dry-run limit from any app Samba to any port 22
+191: --dry-run limit from any app Samba to any port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10354,10 +10354,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -10394,15 +10394,15 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 22 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 22 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit udp 13 0.0.0.0/0 137,138 0.0.0.0/0 - Samba in
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 13 -m multiport --sports 137,138 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
-### tuple ### limit tcp 22 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 22 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
+### tuple ### limit tcp 13 0.0.0.0/0 139,445 0.0.0.0/0 - Samba in
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'sapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 13 -m multiport --sports 139,445 -j ufw-user-limit-accept -m comment --comment 'sapp_Samba'
 
 ### END RULES ###
 
@@ -10648,7 +10648,7 @@ COMMIT
 Rules updated
 
 
-196: --dry-run limit to any app Samba from any port 22
+196: --dry-run limit to any app Samba from any port 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10669,10 +10669,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+### tuple ### limit udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -10709,15 +10709,15 @@ COMMIT
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 137,138 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+### tuple ### limit udp 137,138 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p udp -m multiport --dports 137,138 -m multiport --sports 13 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
-### tuple ### limit tcp 139,445 0.0.0.0/0 22 0.0.0.0/0 Samba - in
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
--A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 22 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
+### tuple ### limit tcp 139,445 0.0.0.0/0 13 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -m multiport --sports 13 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 
 ### END RULES ###
 
@@ -11314,7 +11314,7 @@ COMMIT
 218: allow Samba
 
 
-219: allow 22
+219: allow 13
 
 
 220: insert 2 allow log-all from any to any app Samba
@@ -11381,9 +11381,9 @@ COMMIT
 ### tuple ### allow tcp 139,445 10.0.0.1 any 192.168.0.1 Samba - in
 -A ufw-user-input -p tcp -m multiport --dports 139,445 -d 10.0.0.1 -s 192.168.0.1 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -11404,7 +11404,7 @@ COMMIT
 225: delete allow Samba
 
 
-226: delete allow 22
+226: delete allow 13
 
 
 227: delete allow log-all from any to any app Samba
@@ -11897,7 +11897,7 @@ COMMIT
 256: allow in on eth0 to any app Samba
 
 
-257: allow in on eth1 to any port 22
+257: allow in on eth1 to any port 13
 
 
 258: insert 2 allow in on eth2 to any app Samba
@@ -11934,9 +11934,9 @@ COMMIT
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
 -A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in_eth1
--A ufw-user-input -i eth1 -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -i eth1 -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in_eth1
+-A ufw-user-input -i eth1 -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -i eth1 -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -11957,7 +11957,7 @@ COMMIT
 259: delete allow in on eth0 to any app Samba
 
 
-260: delete allow in on eth1 to any port 22
+260: delete allow in on eth1 to any port 13
 
 
 261: delete allow in on eth2 to any app Samba
@@ -12437,7 +12437,7 @@ COMMIT
 286: allow out on eth0 to any app Samba
 
 
-287: allow out on eth1 to any port 22
+287: allow out on eth1 to any port 13
 
 
 288: insert 2 allow out on eth2 to any app Samba
@@ -12474,9 +12474,9 @@ COMMIT
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
 -A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 out_eth1
--A ufw-user-output -o eth1 -p tcp --dport 22 -j ACCEPT
--A ufw-user-output -o eth1 -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 out_eth1
+-A ufw-user-output -o eth1 -p tcp --dport 13 -j ACCEPT
+-A ufw-user-output -o eth1 -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -12497,7 +12497,7 @@ COMMIT
 289: delete allow out on eth0 to any app Samba
 
 
-290: delete allow out on eth1 to any port 22
+290: delete allow out on eth1 to any port 13
 
 
 291: delete allow out on eth2 to any app Samba
