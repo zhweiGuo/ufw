@@ -1,3 +1,9 @@
+ufw (0.37) UNRELEASED; urgency=medium
+
+  * Bittorrent can also use UDP (LP: #1695718)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 06 Jun 2017 08:40:28 -0500
+
 ufw (0.36) xenial; urgency=medium
 
   * doc/ufw-framework.8:
