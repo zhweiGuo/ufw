@@ -1,4 +1,4 @@
-ufw (0.36) xenial; urgency=medium
+ufw (0.36) UNRELEASED; urgency=medium
 
   * doc/ufw-framework.8:
     - fix path for user[6].rules
@@ -16,8 +16,10 @@ ufw (0.36) xenial; urgency=medium
     https/port 443 in good/logging and ipv6/bad_args6 (Closes: 849628)
   * don't disable syncookies and instead use the system's value by default
   * Bittorrent can also use UDP (LP: #1695718)
+  * doc/ufw.8: remove spurious apostrophes from man page. Thanks to Tom
+    Spurling
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 06 Jun 2017 08:40:28 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 07 Jul 2017 14:09:36 -0500
 
 ufw (0.35) RELEASED; urgency=medium
 
