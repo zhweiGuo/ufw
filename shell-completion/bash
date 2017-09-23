@@ -57,7 +57,7 @@ _ufw_status_commands()
     echo "numbered verbose"
 }
 
-have ufw &&
+_have ufw &&
 _ufw()
 {
     cur=${COMP_WORDS[COMP_CWORD]}
