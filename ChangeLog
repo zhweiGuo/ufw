@@ -18,8 +18,12 @@ ufw (0.36) UNRELEASED; urgency=medium
   * Bittorrent can also use UDP (LP: #1695718)
   * doc/ufw.8: remove spurious apostrophes from man page. Thanks to Tom
     Spurling
+  * common.py:
+    - adjust regex to be more liberal with non-meta characters in interface
+      names (LP: #1719211)
+    - don't allow interfaces longer than 15 characters
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 07 Jul 2017 14:09:36 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 28 Sep 2017 08:03:02 -0400
 
 ufw (0.35) RELEASED; urgency=medium
 

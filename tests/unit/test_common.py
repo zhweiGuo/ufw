@@ -334,7 +334,9 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_interface()'''
         r = self.rules["any"]
         for if_type in ["in", "out"]:
-            for interface in ["eth0", "wlan1", "br_lan"]:
+            for interface in ["eth0", "wlan1", "br_lan", "virbr0-nic", "0eth",
+                              "eth0_1", "eth0.1", "foo%bar", "foo@Bar",
+                              "=foo", "vethQNIAKF@if18", "lo"]:
                 r.set_interface(if_type, interface)
                 if if_type == "in":
                     self.assertEquals(interface, r.interface_in, "%s != %s" %
@@ -355,7 +357,8 @@ class CommonTestCase(unittest.TestCase):
                                                    interface)
 
         for if_type in ["in", "out"]:
-            for interface in ["\tfoo", "<$%", "0eth", "eth0:0", "!eth0"]:
+            for interface in ["\tfoo", "<bad", "also/bad", "eth0:0", "!eth0",
+                              "", ".", "..", "$foo", "`uname`", "a" * 16]:
                 tests.unit.support.check_for_exception(self,
                                                        ufw.common.UFWError,
                                                        r.set_interface,
