@@ -22,8 +22,10 @@ ufw (0.36) UNRELEASED; urgency=medium
     - adjust regex to be more liberal with non-meta characters in interface
       names (LP: #1719211)
     - don't allow interfaces longer than 15 characters
+  * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
+    Nowak
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 28 Sep 2017 08:03:02 -0400
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 08 Oct 2017 21:03:42 -0400
 
 ufw (0.35) RELEASED; urgency=medium
 
