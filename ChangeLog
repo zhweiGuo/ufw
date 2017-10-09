@@ -1,4 +1,4 @@
-ufw (0.36) xenial; urgency=medium
+ufw (0.36) UNRELEASED; urgency=medium
 
   * doc/ufw-framework.8:
     - fix path for user[6].rules
@@ -15,8 +15,15 @@ ufw (0.36) xenial; urgency=medium
     everywhere and adjust to use daytime/port 13 instead of http/port 80 and
     https/port 443 in good/logging and ipv6/bad_args6 (Closes: 849628)
   * don't disable syncookies and instead use the system's value by default
+  * Bittorrent can also use UDP (LP: #1695718)
+  * doc/ufw.8: remove spurious apostrophes from man page. Thanks to Tom
+    Spurling
+  * common.py:
+    - adjust regex to be more liberal with non-meta characters in interface
+      names (LP: #1719211)
+    - don't allow interfaces longer than 15 characters
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 08 Jan 2017 09:31:13 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 28 Sep 2017 08:03:02 -0400
 
 ufw (0.35) RELEASED; urgency=medium
 

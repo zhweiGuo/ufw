@@ -104,10 +104,12 @@ class CommonTestCase(unittest.TestCase):
         '''Test _get_attrib()'''
         res = self.rules["any"]._get_attrib()
         search = "'-p all -j ACCEPT', action=allow, comment=, dapp=, " + \
-                 "direction=in, dport=any, dst=0.0.0.0/0, forward=False, " + \
-                 "interface_in=, interface_out=, logtype=, multi=False, " + \
-                 "position=0, protocol=any, remove=False, sapp=, " + \
-                 "sport=any, src=0.0.0.0/0, updated=False, v6=False"
+                 "direction=in, dnat=, dnat_port=, dport=any, " + \
+                 "dst=0.0.0.0/0, forward=False, interface_in=, " + \
+                 "interface_out=, logtype=, multi=False, position=0, " + \
+                 "protocol=any, remove=False, sapp=, snat=, " + \
+                 "snat_port=, sport=any, src=0.0.0.0/0, " + \
+                 "updated=False, v6=False"
         self.assertEquals(res, search, "'%s' != '%s'" % (res, search))
 
     def test_dup_rule(self):
@@ -334,7 +336,9 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_interface()'''
         r = self.rules["any"]
         for if_type in ["in", "out"]:
-            for interface in ["eth0", "wlan1", "br_lan"]:
+            for interface in ["eth0", "wlan1", "br_lan", "virbr0-nic", "0eth",
+                              "eth0_1", "eth0.1", "foo%bar", "foo@Bar",
+                              "=foo", "vethQNIAKF@if18", "lo"]:
                 r.set_interface(if_type, interface)
                 if if_type == "in":
                     self.assertEquals(interface, r.interface_in, "%s != %s" %
@@ -355,7 +359,8 @@ class CommonTestCase(unittest.TestCase):
                                                    interface)
 
         for if_type in ["in", "out"]:
-            for interface in ["\tfoo", "<$%", "0eth", "eth0:0", "!eth0"]:
+            for interface in ["\tfoo", "<bad", "also/bad", "eth0:0", "!eth0",
+                              "", ".", "..", "$foo", "`uname`", "a" * 16]:
                 tests.unit.support.check_for_exception(self,
                                                        ufw.common.UFWError,
                                                        r.set_interface,

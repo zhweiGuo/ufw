@@ -301,20 +301,45 @@ class UFWRule:
 
     def set_interface(self, if_type, name):
         '''Sets an interface for rule'''
+        # libxtables/xtables.c xtables_parse_interface() specifies
+        # - < 16
+        # - not empty
+        # - doesn't contain ' '
+        # - doesn't contain '/'
+        #
+        # net/core/dev.c from the kernel specifies:
+        # - < 16
+        # - not empty
+        # - != '.' or '..'
+        # - doesn't contain '/', ':' or whitespace
         if if_type != "in" and if_type != "out":
             err_msg = _("Bad interface type")
             raise UFWError(err_msg)
 
+        # Separate a few of the invalid checks out so we can give a nice error
         if '!' in str(name):
             err_msg = _("Bad interface name: reserved character: '!'")
             raise UFWError(err_msg)
 
-        if not re.match(r'^[a-zA-Z][a-zA-Z0-9:]*[a-zA-Z0-9]', str(name)):
-            err_msg = _("Bad interface name")
-            raise UFWError(err_msg)
-
         if ':' in str(name):
             err_msg = _("Bad interface name: can't use interface aliases")
+            raise UFWError(err_msg)
+
+        if str(name) == "." or str(name) == "..":
+            err_msg = _("Bad interface name: can't use '.' or '..'")
+            raise UFWError(err_msg)
+
+        if (len(str(name)) == 0):
+            err_msg = _("Bad interface name: interface name is empty")
+            raise UFWError(err_msg)
+
+        if (len(str(name)) > 15):
+            err_msg = _("Bad interface name: interface name too long")
+            raise UFWError(err_msg)
+
+        # We are going to limit this even further to avoid shell meta
+        if not re.match(r'^[a-zA-Z0-9_\-\.\+,=%@]+$', str(name)):
+            err_msg = _("Bad interface name")
             raise UFWError(err_msg)
 
         if if_type == "in":

@@ -574,7 +574,7 @@ Title: Transmission
 Description: Transmission BitTorrent client
 
 Port:
-  51413/tcp
+  51413
 
 --
 

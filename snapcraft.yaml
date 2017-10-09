@@ -23,7 +23,6 @@ apps:
     command: sbin/ipset
     plugs: [ firewall-control ]
   doc:
-  doc:
     command: bin/doc
 
 parts:
