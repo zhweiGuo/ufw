@@ -177,7 +177,7 @@ done
 echo "TESTING BAD INTERFACES" >> $TESTTMP/result
 for i in "in" "out"; do
     for j in allow deny limit reject; do
-        do_cmd "1" null --dry-run $j $i on e%th0 to 2001:db8:3:4:5:6:7:8
+        do_cmd "1" null --dry-run $j $i on e?th0 to 2001:db8:3:4:5:6:7:8
         do_cmd "1" null --dry-run $j $i eth0 to 2001:db8:3:4:5:6:7:8
         do_cmd "1" null --dry-run $j ina eth0 to 2001:db8:3:4:5:6:7:8
         do_cmd "1" null --dry-run $j on eth0 to 2001:db8:3:4:5:6:7:8
