@@ -63,6 +63,10 @@ class UFWRule:
         self.direction = ""
         self.forward = forward
         self.comment = ""
+        self.dnat = ""
+        self.dnat_port = ""
+        self.snat = ""
+        self.snat_port = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -106,6 +110,10 @@ class UFWRule:
         rule.interface_out = self.interface_out
         rule.direction = self.direction
         rule.forward = self.forward
+        rule.dnat = self.dnat
+        rule.dnat_port = self.dnat_port
+        rule.snat = self.snat
+        rule.snat_port = self.snat_port
         rule.comment = self.comment
 
         return rule
@@ -363,6 +371,32 @@ class UFWRule:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
 
+    def set_dnat(self, addr):
+        '''Sets dnat of the rule'''
+        tmp = addr.lower()
+        if tmp != "rdr" and ('/' in tmp or \
+                not ufw.util.valid_address(tmp, "any")):
+            err_msg = _("Bad nat-dst address %s" % addr)
+            raise UFWError(err_msg)
+        self.dnat = tmp
+
+    def set_dnat_port(self, port):
+        '''Sets dnat_port of the rule'''
+        self.dnat_port = self._verify_nat_port(port)
+
+    def set_snat(self, addr):
+        '''Sets snat of the rule'''
+        tmp = addr.lower()
+        if tmp != "masq" and ('/' in tmp or \
+                not ufw.util.valid_address(tmp, "any")):
+            err_msg = _("Bad nat-src address '%s'" % addr)
+            raise UFWError(err_msg)
+        self.snat = tmp
+
+    def set_snat_port(self, port):
+        '''Sets snat_port of the rule'''
+        self.snat_port = self._verify_nat_port(port)
+
     def get_comment(self):
         '''Get decoded comment of the rule'''
         return ufw.util.hex_decode(self.comment)
@@ -589,6 +623,24 @@ class UFWRule:
             return True
         return False
 
+    def _verify_nat_port(self, port):
+        err_msg = _("Bad port '%s' for nat") % (port)
+        if re.match(r'^\d+-\d+$', port):
+            # port range
+            ran = port.split('-')
+            for i in ran:
+                if int(i) < 1 or int(i) > 65535:
+                    raise UFWError(err_msg)
+            if int(ran[0]) >= int(ran[1]):
+                raise UFWError(err_msg)
+        elif re.match('^\d+$', port):
+            if int(port) < 1 or int(port) > 65535:
+                raise UFWError(err_msg)
+        else:
+            raise UFWError(err_msg)
+
+        return port
+
     def get_app_tuple(self):
         '''Returns a tuple to identify an app rule. Tuple is:
              dapp dst sapp src
@@ -639,3 +691,19 @@ class UFWRule:
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (self.protocol)
                 raise UFWError(err_msg)
+
+        # verify dnat/snat with matching rule
+        if self.dnat != "" or self.snat != "":
+            if self.action != "allow":
+                err_msg = _("Invalid action '%s' with nat clause" % \
+                            self.action)
+                raise UFWError(err_msg)
+
+            if self.dnat_port != "" or self.snat_port != "":
+                if self.protocol not in ['tcp', 'udp']:
+                    err_msg = _("Invalid protocol '%s' with nat clause" % \
+                                self.protocol)
+                    raise UFWError(err_msg)
+
+            # TODO:
+            # if self.interface_in != "" and self
