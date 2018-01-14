@@ -16,3 +16,4 @@ snap
 parts/
 stage/
 prime/
+*.pyc
