@@ -1,4 +1,4 @@
-ufw (0.34~20150724) UNRELEASED; urgency=medium
+ufw (0.36pre-0) UNRELEASED; urgency=medium
 
   * Sync with current packaging where we can:
     - debian/control:
@@ -11,8 +11,9 @@ ufw (0.34~20150724) UNRELEASED; urgency=medium
     - add debian/ufw.links
     - update debian/rules to use dh_link
   * run tests with -s
+  * remove debian/patches/0001-optimize-boot.patch
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 24 Jul 2015 14:22:53 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 14 Jan 2018 21:36:50 +0200
 
 ufw (0.33~20131117) UNRELEASED; urgency=low
 
