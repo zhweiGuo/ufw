@@ -35,7 +35,7 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.36pre1'
+ufw_version = '0.36rc'
 
 def cmd(command):
     '''Try to execute the given command.'''
