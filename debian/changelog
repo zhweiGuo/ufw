@@ -1,4 +1,4 @@
-ufw (0.36pre-0) UNRELEASED; urgency=medium
+ufw (0.36pre1-0) UNRELEASED; urgency=medium
 
   * Sync with current packaging where we can:
     - debian/control:
