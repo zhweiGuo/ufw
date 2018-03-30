@@ -2,4 +2,9 @@ debian/changelog.Debian.pre-0.27.1 usr/share/doc/ufw/
 debian/*md5sum usr/share/ufw/
 debian/20-ufw.conf etc/rsyslog.d/
 debian/sysctl.conf etc/ufw/
+debian/tmp/usr/sbin/ufw
+debian/tmp/etc
+debian/tmp/lib
+debian/tmp/usr/lib/python3*/dist-packages/ufw*
+debian/tmp/usr/share
 tests/check-requirements usr/share/ufw/
