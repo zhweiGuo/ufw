@@ -1,5 +1,6 @@
 [Unit]
 Description=Uncomplicated firewall
+Documentation=man:ufw(8)
 DefaultDependencies=no
 Before=network.target
 

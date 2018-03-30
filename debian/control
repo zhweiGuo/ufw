@@ -25,6 +25,7 @@ Architecture: all
 Suggests: rsyslog
 Depends:
  iptables,
+ lsb-base (>= 3.0-6),
  ucf,
  ${python3:Depends},
  ${misc:Depends}
