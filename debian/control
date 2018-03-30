@@ -23,7 +23,6 @@ Package: ufw
 Architecture: all
 Suggests: rsyslog
 Depends:
- debconf,
  iptables,
  ucf,
  ${python3:Depends},
