@@ -166,8 +166,8 @@ for ipv6 in no yes ; do
     do_cmd "0" allow Bind9
     do_cmd "0" insert 1 allow Samba
     do_cmd "0" insert 2 reject 'Dovecot POP3'
-    cat $TESTSTATE/user.rules >> $TESTTMP/result
-    cat $TESTSTATE/user6.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
@@ -184,8 +184,8 @@ for ipv6 in no yes ; do
     do_cmd "0" delete allow Bind9
     do_cmd "0" delete allow Samba
     do_cmd "0" delete reject 'Dovecot POP3'
-    cat $TESTSTATE/user.rules >> $TESTTMP/result
-    cat $TESTSTATE/user6.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
     do_cmd "0" allow Samba
     do_cmd "0" allow 22
@@ -194,8 +194,8 @@ for ipv6 in no yes ; do
     do_cmd "0" insert 2 allow from 192.168.0.1 to any app Samba
     do_cmd "0" insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
     do_cmd "0" insert 2 allow from any app Samba to 10.0.0.1
-    cat $TESTSTATE/user.rules >> $TESTTMP/result
-    cat $TESTSTATE/user6.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
     iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
     ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
@@ -215,8 +215,8 @@ for ipv6 in no yes ; do
     do_cmd "0" delete allow from 192.168.0.1 to any app Samba
     do_cmd "0" delete allow from 192.168.0.1 app Samba to 10.0.0.1
     do_cmd "0" delete allow from any app Samba to 10.0.0.1
-    cat $TESTSTATE/user.rules >> $TESTTMP/result
-    cat $TESTSTATE/user6.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 done
 
 echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
@@ -226,26 +226,26 @@ for i in "in" "out" ; do
         do_cmd "1" null $j $i on eth0:1 from 10.0.0.1 app Samba
         do_cmd "0" $j $i on eth0 from 10.0.0.1 to any app Samba
         do_cmd "0" status
-        grep -A3 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-        grep -A3 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
         do_cmd "0" delete $j $i on eth0 to 192.168.0.1 app Samba
         do_cmd "0" delete $j $i on eth0 from 10.0.0.1 to any app Samba
         do_cmd "0" status
-        grep -A3 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-        grep -A3 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+        grep -A3 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     done
     do_cmd "0" allow $i on eth0 to any app Bind9
     do_cmd "0" insert 1 allow $i on eth2 to any app Samba
     do_cmd "0" status
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-    grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 
     do_cmd "0" delete allow $i on eth0 to any app Bind9
     do_cmd "0" delete allow $i on eth2 to any app Samba
     do_cmd "0" status
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
-    grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
 done
 
 echo "Delete by number" >> $TESTTMP/result
@@ -260,58 +260,58 @@ do
     do_cmd "0" nostats allow Samba
     do_cmd "0" nostats allow 22/tcp
 
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
     if [ "$ipv6" = "yes" ]; then
-        grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     fi
 
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" null --force delete 6
-        grep -v -q "^### tuple ### allow any 22 " $TESTSTATE/user6.rules || {
+        grep -v -q "^### tuple ### allow any 22 " $TESTCONFIG/user6.rules || {
             echo "Failed: Found port '22' in user6.rules" >> $TESTTMP/result
             exit 1
         }
-        grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     fi
 
     do_cmd "0" null --force delete 3
-    grep -v -q "^### tuple ### allow any 22 " $TESTSTATE/user.rules || {
+    grep -v -q "^### tuple ### allow any 22 " $TESTCONFIG/user.rules || {
         echo "Failed: Found port '22' in user.rules" >> $TESTTMP/result
         exit 1
     }
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" null --force delete 4
-        grep -v -q "dapp_Samba" $TESTSTATE/user6.rules || {
+        grep -v -q "dapp_Samba" $TESTCONFIG/user6.rules || {
             echo "Failed: Found dapp_Samba in user6.rules" >> $TESTTMP/result
             exit 1
         }
-        grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     fi
 
     do_cmd "0" null --force delete 2
-    grep -v -q "dapp_Samba" $TESTSTATE/user.rules || {
+    grep -v -q "dapp_Samba" $TESTCONFIG/user.rules || {
         echo "Failed: Found dapp_Samba in user.rules" >> $TESTTMP/result
         exit 1
     }
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" null --force delete 2
-        grep -v -q "sapp_Samba" $TESTSTATE/user6.rules || {
+        grep -v -q "sapp_Samba" $TESTCONFIG/user6.rules || {
             echo "Failed: Found sapp_Samba in user6.rules" >> $TESTTMP/result
             exit 1
         }
-        grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
+        grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     fi
 
     do_cmd "0" null --force delete 1
-    grep -v -q "sapp_Samba" $TESTSTATE/user.rules || {
+    grep -v -q "sapp_Samba" $TESTCONFIG/user.rules || {
         echo "Failed: Found sapp_Samba in user.rules" >> $TESTTMP/result
         exit 1
     }
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 
 done

@@ -4,21 +4,47 @@ WARN: Checks disabled
 Logging enabled
 
 
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+### LOGGING ###
+### END LOGGING ###
 1: logging off
 WARN: Checks disabled
 Logging disabled
 
 
+### LOGGING ###
+### END LOGGING ###
+### LOGGING ###
+### END LOGGING ###
 2: LOGGING ON
 WARN: Checks disabled
 Logging enabled
 
 
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+### LOGGING ###
+### END LOGGING ###
 3: LOGGING OFF
 WARN: Checks disabled
 Logging disabled
 
 
+### LOGGING ###
+### END LOGGING ###
+### LOGGING ###
+### END LOGGING ###
 TESTING ARGS (default)
 4: enable
 WARN: Checks disabled

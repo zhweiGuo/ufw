@@ -27,24 +27,24 @@ for i in allow deny limit reject ; do
         do_cmd "0" null $i $j 23
         do_cmd "0" null $i $j Samba
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
-        cat $TESTSTATE/user6.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
         do_cmd "0" null delete $i $j 23
         do_cmd "0" null delete $i $j Samba
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
-        cat $TESTSTATE/user6.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
         do_cmd "0" null $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
-        cat $TESTSTATE/user6.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
         do_cmd "0" null delete $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
-        cat $TESTSTATE/user6.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user6.rules >> $TESTTMP/result
     done
 done
 
@@ -52,20 +52,20 @@ echo "TESTING LOG RULES (updating)" >> $TESTTMP/result
 do_cmd "0" null allow log Samba
 do_cmd "0" null deny log-all from $from to $to port smtp
 echo "contents of user*.rules:" >> $TESTTMP/result
-cat $TESTSTATE/user.rules >> $TESTTMP/result
-cat $TESTSTATE/user6.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 do_cmd "0" null deny log Samba
 do_cmd "0" null reject log-all from $from to $to port smtp
 echo "contents of user*.rules:" >> $TESTTMP/result
-cat $TESTSTATE/user.rules >> $TESTTMP/result
-cat $TESTSTATE/user6.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 do_cmd "0" null delete deny log Samba
 do_cmd "0" null delete reject log-all from $from to $to port smtp
 echo "contents of user*.rules:" >> $TESTTMP/result
-cat $TESTSTATE/user.rules >> $TESTTMP/result
-cat $TESTSTATE/user6.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 echo "TESTING LOG RULES (interfaces)" >> $TESTTMP/result
 do_cmd "0" null allow in on eth0 log
@@ -75,8 +75,8 @@ do_cmd "0" null allow out on eth0 log
 do_cmd "0" null allow out on eth0 log from $from to $to port 24 proto tcp
 do_cmd "0" null deny  out on eth0 log-all from $from to $to port 25 proto tcp
 echo "contents of user*.rules:" >> $TESTTMP/result
-cat $TESTSTATE/user.rules >> $TESTTMP/result
-cat $TESTSTATE/user6.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 
 exit 0

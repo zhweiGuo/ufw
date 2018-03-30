@@ -157,10 +157,12 @@ Usage: %(progname)s %(command)s
 
 class UFWFrontend:
     '''UI'''
-    def __init__(self, dryrun, backend_type="iptables"):
+    def __init__(self, dryrun, backend_type="iptables",
+                 rootdir=None, datadir=None):
         if backend_type == "iptables":
             try:
-                self.backend = UFWBackendIptables(dryrun)
+                self.backend = UFWBackendIptables(dryrun, rootdir=rootdir,
+                                                  datadir=datadir)
             except Exception: # pragma: no cover
                 raise
         else:

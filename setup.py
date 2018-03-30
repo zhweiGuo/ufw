@@ -1,7 +1,7 @@
 #
 # ufw: front-end for Linux firewalling
 #
-# Copyright 2008-2015 Canonical Ltd.
+# Copyright 2008-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -35,7 +35,7 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.34'
+ufw_version = '0.35'
 
 def cmd(command):
     '''Try to execute the given command.'''
@@ -138,11 +138,6 @@ class Install(_install, object):
             statedir = self.root + real_statedir
         self.mkpath(statedir)
 
-        user_rules = os.path.join(statedir, 'user.rules')
-        user6_rules = os.path.join(statedir, 'user6.rules')
-        self.copy_file('conf/user.rules', user_rules)
-        self.copy_file('conf/user6.rules', user6_rules)
-
         init_helper = os.path.join(statedir, 'ufw-init')
         init_helper_functions = os.path.join(statedir, 'ufw-init-functions')
         self.copy_file('src/ufw-init', init_helper)
@@ -170,6 +165,9 @@ class Install(_install, object):
         after_rules = os.path.join(confdir, 'ufw', 'after.rules')
         before6_rules = os.path.join(confdir, 'ufw', 'before6.rules')
         after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
+        user_rules = os.path.join(confdir, 'ufw', 'user.rules')
+        user6_rules = os.path.join(confdir, 'ufw', 'user6.rules')
+
         apps_dir = os.path.join(confdir, 'ufw', 'applications.d')
         init_before_hook = os.path.join(confdir, 'ufw', 'before.init')
         init_after_hook = os.path.join(confdir, 'ufw', 'after.init')
@@ -188,6 +186,8 @@ class Install(_install, object):
         self.copy_file('conf/after.rules', after_rules)
         self.copy_file('conf/before6.rules', before6_rules)
         self.copy_file('conf/after6.rules', after6_rules)
+        self.copy_file('conf/user.rules', user_rules)
+        self.copy_file('conf/user6.rules', user6_rules)
         self.copy_file('src/before.init', init_before_hook)
         self.copy_file('src/after.init', init_after_hook)
 

@@ -87,14 +87,14 @@ do_cmd "0" null route allow 23
 do_cmd "0" null route insert 1 allow 9999
 do_cmd "0" null route insert 1 allow log 9998
 do_cmd "0" null route insert 2 reject to 192.168.0.1 from 10.0.0.1
-cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" null route delete allow 22
 do_cmd "0" null route delete allow 23
 do_cmd "0" null route delete allow 9999
 do_cmd "0" null route delete allow log 9998
 do_cmd "0" null route delete reject to 192.168.0.1 from 10.0.0.1
-cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 echo "ipv6 protocols" >> $TESTTMP/result
 do_cmd "0" --dry-run route allow in on $in_if to 10.0.0.1 proto ipv6

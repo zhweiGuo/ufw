@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2016 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -103,11 +103,11 @@ class CommonTestCase(unittest.TestCase):
     def test__get_attrib(self):
         '''Test _get_attrib()'''
         res = self.rules["any"]._get_attrib()
-        search = "'-p all -j ACCEPT', action=allow, dapp=, direction=in, " + \
-                 "dport=any, dst=0.0.0.0/0, forward=False, interface_in=, " + \
-                 "interface_out=, logtype=, multi=False, position=0, " + \
-                 "protocol=any, remove=False, sapp=, sport=any, " + \
-                 "src=0.0.0.0/0, updated=False, v6=False"
+        search = "'-p all -j ACCEPT', action=allow, comment=, dapp=, " + \
+                 "direction=in, dport=any, dst=0.0.0.0/0, forward=False, " + \
+                 "interface_in=, interface_out=, logtype=, multi=False, " + \
+                 "position=0, protocol=any, remove=False, sapp=, " + \
+                 "sport=any, src=0.0.0.0/0, updated=False, v6=False"
         self.assertEquals(res, search, "'%s' != '%s'" % (res, search))
 
     def test_dup_rule(self):
@@ -476,6 +476,11 @@ class CommonTestCase(unittest.TestCase):
             y = self.rules["full-any"].dup_rule()
             y.set_logtype(logtype)
             self.assertEquals(ufw.common.UFWRule.match(x, y), -1)
+
+        for comment in ['comment1', 'comment2']:
+            y = self.rules["full-any"].dup_rule()
+            y.set_comment(comment)
+            self.assertEquals(ufw.common.UFWRule.match(x, y), -2)
 
         y = self.rules["full-any"].dup_rule()
         y.set_port("456", loc="dst")

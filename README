@@ -13,7 +13,7 @@ perhaps 'Unbearable Firewall'. Have fun!
 
 Requirements
 ------------
-python 2.6-2.7, 3.1-3.2 (known to work with 2.6.2+, 2.7.0+, 3.1.2, 3.2+)*
+python 2.6-2.7, 3.4-3.5 (known to work with 2.6.2+, 2.7.0+, 3.4+, 3.5*)*
 iptables 1.4**
 gettext
 /proc filesystem support
@@ -26,7 +26,7 @@ Linux kernel configured with the following modules (not exhaustive):
   recent
   conntrack***
 
-*   python2.5 is no longer supported
+*   python2.5 and python3 < 3.4 are no longer supported
 **  Systems with iptables below 1.4 will not have IPv6 application rule
     support. ufw will give a warning when users try to use this functionality,
     but ufw will otherwise work fine. ufw is known to work with iptables 1.3.8

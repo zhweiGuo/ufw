@@ -1,3 +1,21 @@
+ufw (0.35) UNRELEASED; urgency=medium
+
+  * update check-requirements and README for python 3.5
+  * update unit tests to not fail when /proc/net/* has no useful information
+    (Closes: 797020)
+  * update rsyslog example to use 'stop' instead of the deprecated '~'
+    (Closes: 798100)
+  * add --rootdir and --datadir options to ufw and ufw-init to make
+    relocatable
+  * files owned by 'clickpkg' are ok too
+  * add preliminary snappy packaging
+  * add support for comments (LP: #448503)
+  * don't allow 'route delete NUM' and suggest 'delete NUM' instead
+  * move user[6].rules to /etc/ufw (LP: #728128)
+  * update README: python3 < 3.4 is no longer supported
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 07 Feb 2016 16:55:26 -0600
+
 ufw (0.34) RELEASED; urgency=low
 
   * refactor capabilities checks and only call when needed

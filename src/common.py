@@ -1,6 +1,6 @@
 '''common.py: common classes for ufw'''
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -41,7 +41,8 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0", direction="in", forward=False):
+                 sport="any", src="0.0.0.0/0", direction="in", forward=False,
+                 comment=""):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -61,6 +62,7 @@ class UFWRule:
         self.interface_out = ""
         self.direction = ""
         self.forward = forward
+        self.comment = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -69,6 +71,7 @@ class UFWRule:
             self.set_src(src)
             self.set_dst(dst)
             self.set_direction(direction)
+            self.set_comment(comment)
         except UFWError:
             raise
 
@@ -102,7 +105,8 @@ class UFWRule:
         rule.interface_in = self.interface_in
         rule.interface_out = self.interface_out
         rule.direction = self.direction
-        rule.forward = self.forward 
+        rule.forward = self.forward
+        rule.comment = self.comment
 
         return rule
 
@@ -334,6 +338,14 @@ class UFWRule:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
 
+    def get_comment(self):
+        '''Get decoded comment of the rule'''
+        return ufw.util.hex_decode(self.comment)
+
+    def set_comment(self, comment):
+        '''Sets comment of the rule'''
+        self.comment = comment
+
     def normalize(self):
         '''Normalize src and dst to standard form'''
         changed = False
@@ -374,7 +386,8 @@ class UFWRule:
         Return codes:
           0  match
           1  no match
-         -1  match all but action
+         -1  match all but action, log-type and/or comment
+         -2  match all but comment
         '''
         if not x or not y:
             raise ValueError()
@@ -416,15 +429,22 @@ class UFWRule:
         if x.forward != y.forward:
             debug(dbg_msg)
             return 1
-        if x.action == y.action and x.logtype == y.logtype:
+        if x.action == y.action and x.logtype == y.logtype and \
+                x.comment == y.comment:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
             return 0
+        if x.action == y.action and x.logtype == y.logtype and \
+                x.comment != y.comment:
+            dbg_msg = _("Found exact match, excepting comment")
+            debug(dbg_msg)
+            return -2
 
-        dbg_msg = _("Found non-action/non-logtype match " \
-                    "(%(xa)s/%(ya)s %(xl)s/%(yl)s)") % \
-                    ({'xa': x.action, 'ya': y.action, \
-                      'xl': x.logtype, 'yl': y.logtype})
+        dbg_msg = _("Found non-action/non-logtype/comment match " \
+                    "(%(xa)s/%(ya)s/'%(xc)s' %(xl)s/%(yl)s/'%(yc)s')") % \
+                    ({'xa': x.action, 'ya': y.action,
+                      'xl': x.logtype, 'yl': y.logtype,
+                      'xc': x.comment, 'yc': y.comment})
         debug(dbg_msg)
         return -1
 

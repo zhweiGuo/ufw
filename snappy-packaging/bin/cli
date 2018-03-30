@@ -1,0 +1,10 @@
+#!/bin/sh
+
+PPATH=
+if [ -z "$PYTHONPATH" ]; then
+    PPATH=$SNAP_APP_PATH/usr/lib/python3/dist-packages
+else
+    PPATH=$SNAP_APP_PATH/usr/lib/python3/dist-packages:$PYTHONPATH
+fi
+#echo $PPATH
+PYTHONPATH="$PPATH" ./usr/sbin/ufw --rootdir="$SNAP_APP_PATH" --datadir="$SNAP_APP_DATA_PATH" "$@"

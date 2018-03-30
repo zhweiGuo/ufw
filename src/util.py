@@ -16,6 +16,8 @@
 #
 
 from __future__ import print_function
+import binascii
+import codecs
 import errno
 import fcntl
 import io
@@ -1035,3 +1037,30 @@ def get_netstat_output(v6):
                                                        state, uid, inode, exe)
 
     return s
+
+def _findpath(dir, prefix):
+    '''Add prefix to dir'''
+    if prefix is None:
+        return dir
+    if dir.startswith('/'):
+        if len(dir) < 2:  # /
+            newdir = prefix
+        else:
+            newdir = os.path.join(prefix, dir[1:])
+    else:
+        newdir = os.path.join(prefix, dir)
+    return newdir
+
+def hex_encode(s):
+    '''Take a string and convert it to a hex string'''
+    if sys.version_info[0] < 3:
+        return codecs.encode(s, 'hex')
+    # hexlify returns a bytes string (eg, b'ab12cd') so decode that to ascii
+    # to have identical output as python2
+    return binascii.hexlify(s.encode('utf-8', errors='ignore')).decode('ascii')
+
+def hex_decode(h):
+    '''Take a hex string and convert it to a string'''
+    if sys.version_info[0] < 3:
+        return h.decode(encoding='hex').decode('utf-8')
+    return binascii.unhexlify(h).decode('utf-8')
