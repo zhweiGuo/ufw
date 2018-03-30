@@ -1,3 +1,14 @@
+ufw (0.35-4) unstable; urgency=medium
+
+  * debian/ufw.lintian-overrides:
+    - remove no longer needed lintian override for postinst init script
+    - don't complain about 'ufw allow' rules with spellcheck
+  * debian/ufw.init: add Description to INIT INFO
+  * debian/control: Depends on lsb-base (>= 3.0-6)
+  * debian/ufw.service: add Documentation key
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 10 Jan 2017 21:16:05 +0000
+
 ufw (0.35-3) unstable; urgency=medium
 
   * 0002-bug849628.patch: adjust testsuite for recent changes to netbase
