@@ -1,3 +1,16 @@
+ufw (0.33-0ubuntu1) quantal; urgency=low
+
+  * New upstream release. Fixes the following bugs:
+    - also use correct ports for DHCPv6. Thanks to Marco Davids (LP: #1007326)
+    - add IPv6 limit support (LP: #951462)
+    - add zh_TW translation (LP: #868195)
+    - add 'show added' report (LP: #987784)
+    - remove ACCEPT_NO_TRACK option since it never worked (LP: #787955)
+  * debian/(after|before)6.rules.md5sum: adjust for recently missed shipped
+    configurations
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Aug 2012 14:32:01 -0500
+
 ufw (0.32-0ubuntu2) quantal; urgency=low
 
   * Simplify unload of firewall and play nicely with other firewall tools by
