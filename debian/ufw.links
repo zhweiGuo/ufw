@@ -1,0 +1,6 @@
+/usr/share/ufw/iptables/after.rules /usr/share/ufw/after.rules
+/usr/share/ufw/iptables/after6.rules /usr/share/ufw/after6.rules
+/usr/share/ufw/iptables/before.rules /usr/share/ufw/before.rules
+/usr/share/ufw/iptables/before6.rules /usr/share/ufw/before6.rules
+/usr/share/ufw/iptables/user.rules /usr/share/ufw/user.rules
+/usr/share/ufw/iptables/user6.rules /usr/share/ufw/user6.rules

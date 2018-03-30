@@ -53,9 +53,14 @@ endif
 	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 
 	# these shouldn't be conffiles
-	mv $(CURDIR)/debian/tmp/etc/ufw/*.rules $(CURDIR)/debian/tmp/usr/share/ufw
 	mv $(CURDIR)/debian/tmp/etc/ufw/ufw.conf $(CURDIR)/debian/tmp/usr/share/ufw
-	mv $(CURDIR)/debian/tmp/lib/ufw/*.rules $(CURDIR)/debian/tmp/usr/share/ufw
+	mv $(CURDIR)/debian/tmp/etc/ufw/*.init $(CURDIR)/debian/tmp/usr/share/ufw
+	# these shouldn't be conffiles either, but we'll use the rules from
+	# /usr/share/ufw/iptables so just delete these and we'll use dh_link
+	# later
+	rm -f $(CURDIR)/debian/tmp/etc/ufw/*.rules
+	rm -f $(CURDIR)/debian/tmp/lib/ufw/*.rules
+	dh_link
 
 	# Rename and install the shell-completion file
 	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw

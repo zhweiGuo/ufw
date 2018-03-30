@@ -1,3 +1,29 @@
+ufw (0.34~rc-0ubuntu1) trusty; urgency=medium
+
+  * New upstream pre-release (LP: #1059060, #1065297, #1062521, #1101304,
+    LP: #1075975, #1089262, #262421)
+  * Dropped the following patches now included upstream:
+    - 0002-lp1044361.patch
+    - 0003-fix-typeerror-on-error.patch
+    - 0004-lp1039729.patch
+    - 0005-lp1191197.patch
+  * Remaining changes:
+    - 0001-optimize-boot.patch: only read in /etc/ufw/ufw.conf when disabled
+  * debian/before[6].rules.md5sum: adjusted for new release
+  * debian/control: update Standards-Version to 3.9.5
+  * debian/rules:
+    - only ship /usr/share/ufw/iptables/*rules and not /usr/share/ufw/
+    - *.init files should also be config files
+  * debian/ufw.links: added to makes symlinks from /usr/share/ufw/iptables/*
+    to /usr/share/ufw/ (so ucf is happy on upgrades)
+  * debian/ufw.postinst:
+    - use TEMPLATE_PATH/iptables/*rules instead of TEMPLATE_PATH/*rules (not
+      strictly required since we are using dh_link, but makes the intent
+      clearer)
+    - copy /usr/share/ufw/*.init in to /etc/ufw
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Feb 2014 09:23:54 -0600
+
 ufw (0.33-2) unstable; urgency=low
 
   * debian/control: python-ufw should Breaks/Replaces on ufw << 0.32-0ubuntu1

@@ -59,7 +59,7 @@ case "$1" in
         # the user modified them
         for f in before.rules before6.rules after.rules after6.rules
         do
-            ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+            ucf --debconf-ok $TEMPLATE_PATH/iptables/$f $RULES_PATH/$f
             test -f $RULES_PATH/$f && chmod 640 $RULES_PATH/$f
         done
 
@@ -67,8 +67,16 @@ case "$1" in
         do
             if [ ! -e "$USER_PATH/$f" ]; then
                 # if no config, copy the template
-                cp $TEMPLATE_PATH/$f $USER_PATH/$f
+                cp $TEMPLATE_PATH/iptables/$f $USER_PATH/$f
                 chmod 640 $USER_PATH/$f
+            fi
+        done
+
+        for f in before.init after.init
+        do
+            if [ ! -e "/etc/ufw/$f" ]; then
+                cp $TEMPLATE_PATH/$f /etc/ufw
+                chmod 640 /etc/ufw/$f
             fi
         done
 
