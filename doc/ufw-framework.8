@@ -1,4 +1,4 @@
-.TH "UFW FRAMEWORK" "8" "" "April 2014" "April 2014"
+.TH "UFW FRAMEWORK" "8" "" "April 2018" "April 2018"
 
 .SH NAME
 ufw\-framework \- using the ufw framework
@@ -119,7 +119,7 @@ Netfilter has many different connection tracking modules. These modules are
 aware of the underlying protocol and allow the administrator to simplify his or
 her rule sets. You can adjust which netfilter modules to load by adjusting
 IPT_MODULES in #CONFIG_PREFIX#/default/ufw. Some popular modules to load are:
-
+.PP
   nf_conntrack_ftp
   nf_nat_ftp
   nf_conntrack_irc
@@ -128,6 +128,15 @@ IPT_MODULES in #CONFIG_PREFIX#/default/ufw. Some popular modules to load are:
   nf_conntrack_pptp
   nf_conntrack_tftp
   nf_nat_tftp
+.PP
+Unconditional loading of connection tracking modules (nf_conntrack_*) in this
+manner is deprecated. \fBufw\fR continues to support the functionality but new
+configuration should only contain the specific modules required for the site.
+For more information, see CONNECTION HELPERS.
+
+.SH "ANTI-SPOOFING"
+.PP
+TODO
 
 .SH "KERNEL PARAMETERS"
 .PP
@@ -239,6 +248,178 @@ Add the necessary \fBufw\fR rules:
  ufw route allow in on eth0 to 10.0.0.2 port 80 proto tcp
  ufw allow in on eth1 from 10.0.0.100 to any port 22 proto tcp
 
+.SH "CONNECTION HELPERS"
+.PP
+Various protocols require the use of netfilter connection tracking helpers to
+group related packets into RELATED flows to make rulesets clearer and more
+precise. For example, with a couple of kernel modules and a couple of rules, a
+ruleset could simply allow a connection to FTP port 21, then the kernel would
+examine the traffic and mark the other FTP data packets as RELATED to the
+initial connection.
+.PP
+When the helpers were first introduced, one could only configure the modules as
+part of module load (eg, if your FTP server listened on a different port than
+21, you'd have to load the nf_conntrack_ftp module specifying the correct
+port). Over time it was understood that unconditionally using connection
+helpers could lead to abuse, in part because some protocols allow user
+specified data that would allow traversing the firewall in undesired ways. As
+of kernel 4.7, automatic conntrack helper assignment (ie, handling packets for
+a given port and all IP addresses) is disabled (the old behavior can be
+restored by setting net/netfilter/nf_conntrack_helper=1 in
+#CONFIG_PREFIX#/ufw/sysctl.conf). Firewalls should now instead use the CT
+target to associate traffic with a particular helper and then set RELATED rules
+to use the helper. This allows sites to tailor the use of helpers and help
+avoid abuse.
+.PP
+In general, to use helpers securely, the following needs to happen:
+.IP 1.
+net/netfilter/nf_conntrack_helper should be set to 0 (default)
+.IP 2.
+create a rule for the start of a connection (eg for FTP, port 21)
+.IP 3.
+create a helper rule to associate the helper with this connection
+.IP 4.
+create a helper rule to associate a RELATED flow with this connection
+.IP 5.
+if needed, add the corresponding nf_conntrack_* module to IPT_MODULES
+.IP 6.
+optionally add the corresponding nf_nat_* module to IPT_MODULES
+.PP
+In general it is desirable to make connection helper rules as specific as
+possible and ensure ANTI\-SPOOFING is correctly setup for your site to avoid
+security issues in your ruleset. For more information, see
+<https://home.regit.org/netfilter-en/secure-use-of-helpers/>.
+
+.SH "CONNECTION HELPER EXAMPLES"
+.PP
+To help make the above easier, \fBufw\fR uses the helper clause and the below
+examples demonstrate how to make FTP (active and passive) work in various
+situations (though depending on your network, they may need to be adjusted).
+These examples can typically be adapted to other connection helpers by
+referencing the below table and adjusting accordingly. Note that due to the FTP
+protocol we can set 'port 1024:65535' in the related FTP traffic flow rule;
+with other protocols this port range can typically be omitted.
+
+.TS
+tab(@) allbox;
+l l l l .
+\fBProtocol\fR@\fBDefault port\fR@\fBHelper module\fR@\fBNAT module\fR
+amanda@10080/udp@nf_conntrack_amanda@nf_nat_amanda
+ftp@21/tcp@nf_conntrack_ftp@nf_nat_ftp
+h323@T{
+1719/udp
+.br
+1720/tcp
+T}@nf_conntrack_h323@
+irc@6667/tcp@nf_conntrack_irc@nf_nat_irc
+netbios-ns@137/udp@nf_conntrack_netbios_ns@
+pptp@1729/tcp@nf_conntrack_pptp@
+sane@6566/tcp@nf_conntrack_sane@
+sip@5060/udp@nf_conntrack_sip@nf_nat_sip
+snmp@161/udp@nf_conntrack_snmp@
+tftp@69/udp@nf_conntrack_tftp@nf_nat_tftp
+.TE
+
+.PP
+Note that when working with connection tracking helpers, connection tracking
+state will remain in the kernel until a reboot or unload of the module. While
+developing your connection helper ruleset it may be helpful to undo your added
+rules in reverse order, then unload the nf_nat_* module, then the
+nf_conntrack_* module and then run 'conntrack -F' to flush all connection
+tracking information (see the \fBconntrack\fR man page for details). Once you
+are happy with the added rules, reboot to make sure everything works as
+expected.
+
+.SS
+Bastion (leaf) client
+.PP
+To configure a client to talk to the FTP server at 10.0.0.2:
+.IP 1.
+Allow traffic out to 10.0.0.2 on tcp port 21:
+  ufw allow out to 10.0.0.2 port 21 proto tcp
+.IP 2.
+Associate that traffic with the ftp connection helper:
+  ufw allow out to 10.0.0.2 port 21 proto tcp helper ct:ftp
+.PP
+To configure a client to talk to any FTP server:
+.IP 1.
+Allow all traffic out on tcp port 21:
+  ufw allow out 21/tcp
+.IP 2.
+Associate that traffic with the ftp connection helper:
+  ufw allow out to any port 21 proto tcp helper ct:ftp
+
+.SS
+Bastion (leaf) server
+.PP
+To configure access to the FTP server:
+.IP 1.
+Allow traffic in on tcp port 21:
+  ufw allow 21/tcp
+.IP 2.
+Associate that traffic with the ftp connection helper:
+  ufw allow in to any port 21 proto tcp helper ct:ftp
+
+.SS
+Non-masquerading router access to internal FTP server
+.PP
+To configure a non-masquerading router to allow access from external clients on
+external interface eth0 to an internal server at 10.0.0.2:
+.IP 1.
+Allow traffic in on eth0 to 10.0.0.2 tcp port 21:
+  ufw route allow in on eth0 to 10.0.0.2 port 21 proto tcp
+.IP 2.
+Associate that traffic with the ftp connection helper:
+  ufw route allow in on eth0 to 10.0.0.2 port 21 proto tcp \\
+    helper ct:ftp
+.IP 3.
+Associate the related traffic flow to the helper:
+  ufw route allow to 10.0.0.2 port 1024:65535 proto tcp \\
+    helper flow:ftp
+
+.SS
+Masquerading router with redirection access to internal FTP server
+.PP
+To configure a masquerading router with external IP address of 1.2.3.4 on eth0
+that redirects tcp port 2121 to allow access to tcp port 21 of the internal
+server at 10.0.0.2:
+.IP 1.
+Allow traffic in on eth0 to the internal address/port:
+  ufw route allow in on eth0 to 10.0.0.2 port 21 proto tcp
+.IP 2.
+Associate traffic to the external address/port with the ftp helper:
+  ufw route allow in on eth0 to 1.2.3.4 port 2121 proto tcp \\
+    helper ct:ftp
+.IP 3.
+Associate related traffic flow to the internal address/port to the helper:
+  ufw route allow to 10.0.0.2 port 1024:65535 proto tcp \\
+    helper flow:ftp
+.IP 4.
+Load the NAT module for this helper and add it to IPT_MODULES:
+  modprobe nf_nat_ftp
+
+.SS
+Router allows internal clients to use specific external FTP server
+.PP
+To configure a router with external interface eth0 and internal interface eth1
+to allow internal clients to access external FTP server at 6.7.8.9 tcp port 21:
+.IP 1.
+Allow traffic out on eth0 to the external server:
+  ufw route allow out on eth0 to 6.7.8.9 port 21 proto tcp
+.IP 2.
+Associate traffic to the external address/port from clients on eth1 with
+the ftp helper:
+  ufw route allow in on eth1 to 6.7.8.9 port 21 proto tcp \\
+    helper ct:ftp
+.IP 3.
+Associate related traffic flow from the external server to the helper:
+  ufw route allow from 6.7.8.9 port 1024:65535 proto tcp \\
+    helper flow:ftp
+.IP 4.
+If the router masquerades client traffic out on eth0, then load the NAT module
+for this helper and add it to IPT_MODULES:
+  modprobe nf_nat_ftp
+
 .SH NOTES
 .PP
 When using ufw with libvirt and bridging, packets may be blocked. The
@@ -262,11 +443,11 @@ to allow all traffic to be forwarded across the bridge. Eg, add to
 
 .SH SEE ALSO
 .PP
-\fBufw\fR(8), \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables\-restore\fR(8), \fBip6tables\-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5)
+\fBufw\fR(8), \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables\-restore\fR(8), \fBip6tables\-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5), \fBconntrack\fR(8), <https://home.regit.org/netfilter-en/secure-use-of-helpers/>
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2014, Canonical Ltd.
+ufw is Copyright 2008-2018, Canonical Ltd.
 
 .PP
 ufw and this manual page was originally written by Jamie Strandboge <jamie@canonical\&.com>
