@@ -1,3 +1,11 @@
+ufw (0.34-2) unstable; urgency=medium
+
+  * 0002-update-testsuite-for-empty-proc-net.patch: update unit tests to not
+    fail when /proc/net/* has no useful information (Closes: 797020)
+  * debian/control: no longer explicitly Depends on debconf (Closes: 797278)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 29 Aug 2015 18:10:20 -0500
+
 ufw (0.34-1) unstable; urgency=low
 
   * New upstream release (LP: #1434525, LP: #1438647, LP: #1155292,

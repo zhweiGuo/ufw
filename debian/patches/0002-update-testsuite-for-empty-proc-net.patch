@@ -1,0 +1,64 @@
+Origin: r907
+Description: update unit tests to not fail when /proc/net/* has only its
+ headers
+Bug-Debian: 797020
+
+Index: ufw-0.34/tests/unit/support.py
+===================================================================
+--- ufw-0.34.orig/tests/unit/support.py
++++ ufw-0.34/tests/unit/support.py
+@@ -364,3 +364,16 @@ def get_sample_rule_commands_extended(v6
+                                 cmds.append([rule_type, action] + c)
+ 
+     return cmds
++
++def has_proc_net_output():
++    '''Determine if /proc/net/tcp|udp[6] have useful information'''
++    found = False
++    for p in ['tcp', 'udp', 'tcp', 'tcp6']:
++        path = os.path.join("/proc/net", p)
++        if not os.path.exists(p):
++            continue
++        with open(p) as f:
++            if len(f.readlines()) > 1:  # account for header
++                found = True
++                break
++    return found
+Index: ufw-0.34/tests/unit/test_frontend.py
+===================================================================
+--- ufw-0.34.orig/tests/unit/test_frontend.py
++++ ufw-0.34/tests/unit/test_frontend.py
+@@ -228,6 +228,13 @@ class FrontendTestCase(unittest.TestCase
+                 except Exception:
+                     print("%s failed:" % c)
+                     raise
++
++                if c == 'show listening':
++                    if res == "" and tests.unit.support.has_proc_net_output():
++                        print("Output is empty for '%s'" % c)
++                        raise
++                    continue  # nothing more to test with 'show listening'
++
+                 self.assertTrue(res != "", "Output is empty for '%s'" % c)
+                 cmd = c.split()[0]
+                 out = self.msg_output.getvalue()
+Index: ufw-0.34/tests/unit/test_util.py
+===================================================================
+--- ufw-0.34.orig/tests/unit/test_util.py
++++ ufw-0.34/tests/unit/test_util.py
+@@ -936,10 +936,13 @@ AAA
+ 
+     def test_parse_netstat_output(self):
+         '''Test parse_netstat_output()'''
++        min_out = 1
++        if not tests.unit.support.has_proc_net_output():
++            min_out = 0
+         s = ufw.util.parse_netstat_output(False)
+-        self.assertTrue(len(s) > 0)
++        self.assertTrue(len(s) >= min_out)
+         s = ufw.util.parse_netstat_output(True)
+-        self.assertTrue(len(s) > 0)
++        self.assertTrue(len(s) >= min_out)
+ 
+     def test_get_ip_from_if(self):
+         '''Test get_ip_from_if()'''
