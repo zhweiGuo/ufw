@@ -1,3 +1,9 @@
+ufw (0.35-0ubuntu2) xenial; urgency=medium
+
+  * Switch the ufw trigger to interest-noawait to avoid trigger loops.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Thu, 14 Apr 2016 16:15:00 -0600
+
 ufw (0.35-0ubuntu1) xenial; urgency=medium
 
   * New upstream release (LP: #448503, LP: #728128)
