@@ -1,3 +1,10 @@
+ufw (0.34~rc-0ubuntu5) vivid; urgency=medium
+
+  * debian/ufw.service: Add missing DefaultDependencies=no to fix ordering
+    cycles.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 03 Mar 2015 08:05:29 +0100
+
 ufw (0.34~rc-0ubuntu4) utopic; urgency=medium
 
   * Install the SysV init and upstart script for both Debian and Ubuntu.

@@ -1,5 +1,6 @@
 [Unit]
 Description=Uncomplicated firewall
+DefaultDependencies=no
 Before=network.target
 
 [Service]
