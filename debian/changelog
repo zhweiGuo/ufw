@@ -1,3 +1,11 @@
+ufw (0.33-0ubuntu3) raring-proposed; urgency=low
+
+  * debian/patches/0004-lp1039729.patch: Skip get_netfilter_capabilities()
+    with ipv6 if ipv6 is disabled (LP: #1039729)
+  * debian/watch: use https instead of http
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 04 Dec 2012 07:56:34 -0600
+
 ufw (0.33-0ubuntu2) quantal; urgency=low
 
   * debian/patches/0002-lp1044361.patch: move netfilter capabilities checking
