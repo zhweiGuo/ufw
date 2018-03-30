@@ -53,6 +53,24 @@ allow_service() {
     fi
 }
 
+# If a primary chain is added to upstream, we should add it on upgrade so
+# reload works correctly
+add_primary_chain() {
+    chain="$1"
+    builtin="$2"
+    ver="$3"
+
+    exe="iptables"
+    if [ "$ver" = "6" ]; then
+        exe="ip6tables"
+    fi
+    if $exe -L "$chain" -n >/dev/null 2>&1 ; then
+        return
+    fi
+    $exe -N "$chain" || true
+    $exe -A "$builtin" -j "$chain" || true
+}
+
 case "$1" in
     configure)
         # these files are required, but don't want to change them if
@@ -110,10 +128,10 @@ case "$1" in
         # try to use iptables, which breaks the installer
         enable_ufw "$enabled"
 
-        # reload the firewall for IPv6 enabled by default
-        if [ "$enabled" = "true" ] && [ ! -z "$2" ] && dpkg --compare-versions "$2" lt "0.30.1-2" ; then
-            /lib/ufw/ufw-init stop || true
-            /lib/ufw/ufw-init start || true
+        # add new primary chains on upgrade
+        if [ "$enabled" = "true" ] && [ ! -z "$2" ] && dpkg --compare-versions "$2" lt "0.34~rc-0ubuntu2" ; then
+            add_primary_chain ufw-track-forward FORWARD
+            add_primary_chain ufw6-track-forward FORWARD 6
         fi
         ;;
     triggered)

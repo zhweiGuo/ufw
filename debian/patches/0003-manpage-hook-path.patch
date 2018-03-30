@@ -1,0 +1,20 @@
+Origin: r855
+Description: doc/ufw-framework.8: update locations of hook scripts
+
+Index: ufw-0.34~rc/doc/ufw-framework.8
+===================================================================
+--- ufw-0.34~rc.orig/doc/ufw-framework.8	2014-02-20 14:17:17.000000000 -0600
++++ ufw-0.34~rc/doc/ufw-framework.8	2014-02-24 09:22:13.410706850 -0600
+@@ -21,10 +21,10 @@
+ #STATE_PREFIX#/ufw\-init
+ initialization script
+ .TP
+-#CONFIG_PREFIX#/before.init
++#CONFIG_PREFIX#/ufw/before.init
+ initialization customization script run before ufw is initialized
+ .TP
+-#CONFIG_PREFIX#/after.init
++#CONFIG_PREFIX#/ufw/after.init
+ initialization customization script run after ufw is initialized
+ .TP
+ #CONFIG_PREFIX#/ufw/before[6].rules

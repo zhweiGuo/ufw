@@ -1,0 +1,209 @@
+Origin: r853
+Description: distinguish between v4 and v6 rules when both addresses are 'any'
+Bug: https://launchpad.net/bugs/1078665
+
+Index: ufw-0.34~rc/src/backend_iptables.py
+===================================================================
+--- ufw-0.34~rc.orig/src/backend_iptables.py	2014-02-20 14:17:17.000000000 -0600
++++ ufw-0.34~rc/src/backend_iptables.py	2014-02-20 18:18:06.685653427 -0600
+@@ -364,6 +364,11 @@
+                         if show_proto and r.protocol != "any" and \
+                            r.dport == r.sport:
+                             location[loc] += "/" + r.protocol
++                elif r.v6 and r.src == "::/0" and r.dst == "::/0" \
++                   and ' (v6)' not in location[loc]:
++                    # Add v6 if have port but no addresses so it doesn't look
++                    # a duplicate of the v4 rule
++                    location[loc] += " (v6)"
+ 
+                 # Reporting the interfaces is different in route rules and
+                 # non-route rules. With route rules, the reporting should be
+Index: ufw-0.34~rc/tests/root/bugs/result
+===================================================================
+--- ufw-0.34~rc.orig/tests/root/bugs/result	2014-02-20 14:17:17.000000000 -0600
++++ ufw-0.34~rc/tests/root/bugs/result	2014-02-20 18:18:06.685653427 -0600
+@@ -333,10 +333,10 @@
+ [ 2] 2                          ALLOW IN    Anywhere
+ [ 3] 3                          ALLOW IN    Anywhere
+ [ 4] 4                          ALLOW IN    Anywhere
+-[ 5] 1                          ALLOW IN    Anywhere (v6)
+-[ 6] 2                          ALLOW IN    Anywhere (v6)
+-[ 7] 3                          ALLOW IN    Anywhere (v6)
+-[ 8] 4                          ALLOW IN    Anywhere (v6)
++[ 5] 1 (v6)                     ALLOW IN    Anywhere (v6)
++[ 6] 2 (v6)                     ALLOW IN    Anywhere (v6)
++[ 7] 3 (v6)                     ALLOW IN    Anywhere (v6)
++[ 8] 4 (v6)                     ALLOW IN    Anywhere (v6)
+ 
+ 
+ 
+Index: ufw-0.34~rc/tests/root/live_apps/result
+===================================================================
+--- ufw-0.34~rc.orig/tests/root/live_apps/result	2014-02-20 14:17:17.000000000 -0600
++++ ufw-0.34~rc/tests/root/live_apps/result	2014-02-20 18:18:06.685653427 -0600
+@@ -84,8 +84,8 @@
+ Samba (v6)                 ALLOW       Anywhere (v6)
+ Anywhere (v6)              ALLOW       Samba (v6)
+ Samba (v6)                 ALLOW       Bind9 (v6)
+-Samba (v6)                 ALLOW       22
+-Apache (v6)                ALLOW       88
++Samba (v6)                 ALLOW       22 (v6)
++Apache (v6)                ALLOW       88 (v6)
+ 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
+ Anywhere (v6)              ALLOW       2001:db8::/32 Samba
+ 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
+@@ -120,9 +120,9 @@
+ Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
+ 137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
+ 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
+-137,138/udp (Samba (v6))   ALLOW IN    22/udp
+-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
+-80/tcp (Apache (v6))       ALLOW IN    88/tcp
++137,138/udp (Samba (v6))   ALLOW IN    22/udp (v6)
++139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
++80/tcp (Apache (v6))       ALLOW IN    88/tcp (v6)
+ 2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
+ 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
+ Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
+@@ -459,8 +459,8 @@
+ Samba (v6)                 ALLOW       Anywhere (v6)
+ Anywhere (v6)              ALLOW       Samba (v6)
+ Samba (v6)                 ALLOW       Bind9 (v6)
+-Samba (v6)                 ALLOW       22
+-Apache (v6)                ALLOW       88
++Samba (v6)                 ALLOW       22 (v6)
++Apache (v6)                ALLOW       88 (v6)
+ 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
+ Anywhere (v6)              ALLOW       2001:db8::/32 Samba
+ 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
+@@ -495,9 +495,9 @@
+ Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
+ 137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
+ 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
+-137,138/udp (Samba (v6))   ALLOW IN    22/udp
+-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
+-80/tcp (Apache (v6))       ALLOW IN    88/tcp
++137,138/udp (Samba (v6))   ALLOW IN    22/udp (v6)
++139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
++80/tcp (Apache (v6))       ALLOW IN    88/tcp (v6)
+ 2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
+ 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
+ Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
+@@ -538,8 +538,8 @@
+ Samba (v6)                 ALLOW       Anywhere (v6)
+ Anywhere (v6)              ALLOW       Samba (v6)
+ Samba (v6)                 ALLOW       Bind9 (v6)
+-Samba (v6)                 ALLOW       22
+-Apache (v6)                ALLOW       88
++Samba (v6)                 ALLOW       22 (v6)
++Apache (v6)                ALLOW       88 (v6)
+ 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
+ Anywhere (v6)              ALLOW       2001:db8::/32 Samba
+ 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
+@@ -574,9 +574,9 @@
+ Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
+ 138,9999/udp (Samba (v6))  ALLOW IN    53/udp (Bind9 (v6))
+ 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
+-138,9999/udp (Samba (v6))  ALLOW IN    22/udp
+-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
+-8888/tcp (Apache (v6))     ALLOW IN    88/tcp
++138,9999/udp (Samba (v6))  ALLOW IN    22/udp (v6)
++139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
++8888/tcp (Apache (v6))     ALLOW IN    88/tcp (v6)
+ 2001:db8::/32 138,9999/udp (Samba) ALLOW IN    Anywhere (v6)
+ 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
+ Anywhere (v6)              ALLOW IN    2001:db8::/32 138,9999/udp (Samba)
+Index: ufw-0.34~rc/tests/root/live/result
+===================================================================
+--- ufw-0.34~rc.orig/tests/root/live/result	2014-02-20 14:17:17.000000000 -0600
++++ ufw-0.34~rc/tests/root/live/result	2014-02-20 18:18:06.685653427 -0600
+@@ -104,10 +104,10 @@
+ 514/udp                    DENY        1.2.3.4
+ 1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp
+ 22/tcp                     LIMIT       Anywhere
+-53                         ALLOW       Anywhere (v6)
+-23/tcp                     ALLOW       Anywhere (v6)
+-25/tcp                     ALLOW       Anywhere (v6)
+-80/tcp                     DENY        Anywhere (v6)
++53 (v6)                    ALLOW       Anywhere (v6)
++23/tcp (v6)                ALLOW       Anywhere (v6)
++25/tcp (v6)                ALLOW       Anywhere (v6)
++80/tcp (v6)                DENY        Anywhere (v6)
+ 25/tcp                     DENY        2001:db8::/32
+ 2001:db8:3:4:5:6:7:8       DENY        2001:db8::/32 26
+ 
+@@ -476,9 +476,9 @@
+ 113                        REJECT      Anywhere
+ 114/tcp                    REJECT      Anywhere
+ 115/udp                    REJECT      Anywhere
+-113                        REJECT      Anywhere (v6)
+-114/tcp                    REJECT      Anywhere (v6)
+-115/udp                    REJECT      Anywhere (v6)
++113 (v6)                   REJECT      Anywhere (v6)
++114/tcp (v6)               REJECT      Anywhere (v6)
++115/udp (v6)               REJECT      Anywhere (v6)
+ 
+ 
+ 
+@@ -700,10 +700,10 @@
+ [ 9] 514/udp                    DENY IN     1.2.3.4
+ [10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp
+ [11] 22/tcp                     LIMIT IN    Anywhere
+-[12] 53                         ALLOW IN    Anywhere (v6)
+-[13] 23/tcp                     ALLOW IN    Anywhere (v6)
+-[14] 25/tcp                     ALLOW IN    Anywhere (v6)
+-[15] 80/tcp                     DENY IN     Anywhere (v6)
++[12] 53 (v6)                    ALLOW IN    Anywhere (v6)
++[13] 23/tcp (v6)                ALLOW IN    Anywhere (v6)
++[14] 25/tcp (v6)                ALLOW IN    Anywhere (v6)
++[15] 80/tcp (v6)                DENY IN     Anywhere (v6)
+ [16] 25/tcp                     DENY IN     2001:db8::/32
+ [17] 2001:db8:3:4:5:6:7:8       DENY IN     2001:db8::/32 26
+ 
+Index: ufw-0.34~rc/tests/root/live_route/result
+===================================================================
+--- ufw-0.34~rc.orig/tests/root/live_route/result	2014-02-20 14:17:17.000000000 -0600
++++ ufw-0.34~rc/tests/root/live_route/result	2014-02-20 18:18:06.685653427 -0600
+@@ -93,10 +93,10 @@
+ 514/udp                    DENY FWD    1.2.3.4
+ 1.2.3.4 5469/udp           ALLOW FWD   1.2.3.5 5469/udp
+ 22/tcp                     LIMIT FWD   Anywhere
+-53                         ALLOW FWD   Anywhere (v6)
+-23/tcp                     ALLOW FWD   Anywhere (v6)
+-25/tcp                     ALLOW FWD   Anywhere (v6)
+-80/tcp                     DENY FWD    Anywhere (v6)
++53 (v6)                    ALLOW FWD   Anywhere (v6)
++23/tcp (v6)                ALLOW FWD   Anywhere (v6)
++25/tcp (v6)                ALLOW FWD   Anywhere (v6)
++80/tcp (v6)                DENY FWD    Anywhere (v6)
+ 25/tcp                     DENY FWD    2001:db8::/32
+ 2001:db8:3:4:5:6:7:8       DENY FWD    2001:db8::/32 26
+ 
+@@ -444,9 +444,9 @@
+ 113                        REJECT FWD  Anywhere
+ 114/tcp                    REJECT FWD  Anywhere
+ 115/udp                    REJECT FWD  Anywhere
+-113                        REJECT FWD  Anywhere (v6)
+-114/tcp                    REJECT FWD  Anywhere (v6)
+-115/udp                    REJECT FWD  Anywhere (v6)
++113 (v6)                   REJECT FWD  Anywhere (v6)
++114/tcp (v6)               REJECT FWD  Anywhere (v6)
++115/udp (v6)               REJECT FWD  Anywhere (v6)
+ 
+ 
+ 
+@@ -668,10 +668,10 @@
+ [ 9] 514/udp                    DENY FWD    1.2.3.4
+ [10] 1.2.3.4 5469/udp           ALLOW FWD   1.2.3.5 5469/udp
+ [11] 22/tcp                     LIMIT FWD   Anywhere
+-[12] 53                         ALLOW FWD   Anywhere (v6)
+-[13] 23/tcp                     ALLOW FWD   Anywhere (v6)
+-[14] 25/tcp                     ALLOW FWD   Anywhere (v6)
+-[15] 80/tcp                     DENY FWD    Anywhere (v6)
++[12] 53 (v6)                    ALLOW FWD   Anywhere (v6)
++[13] 23/tcp (v6)                ALLOW FWD   Anywhere (v6)
++[14] 25/tcp (v6)                ALLOW FWD   Anywhere (v6)
++[15] 80/tcp (v6)                DENY FWD    Anywhere (v6)
+ [16] 25/tcp                     DENY FWD    2001:db8::/32
+ [17] 2001:db8:3:4:5:6:7:8       DENY FWD    2001:db8::/32 26
+ 
