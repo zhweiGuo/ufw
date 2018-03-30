@@ -1,3 +1,45 @@
+ufw (0.33-1) unstable; urgency=low
+
+  * New upstream release (Closes: 711711, Closes: 691135, Closes: 704728).
+    Sync back up with Ubuntu (all changes here except for Polish debconf
+    translation and Standards-Version already in Ubuntu). Add the following
+    patches from Ubuntu which can be dropped in 0.34:
+    - debian/patches/0002-lp1044361.patch: move netfilter capabilities
+      checking into initcaps(), and call initcaps() only when we need it
+    - 0003-fix-typeerror-on-error.patch: fix TypeError on error when using
+      zh_CN
+    - debian/patches/0004-lp1039729.patch: Skip get_netfilter_capabilities()
+      with ipv6 if ipv6 is disabled
+    - debian/patches/0005-lp1191197.patch: add check for -m rt --rt-type 0
+  * debian/po/pl.po: add Polish translation of debconf templates. Thanks to
+    Michal Kulach (Closes: 667942)
+  * debian/watch: use https instead of http
+  * debian/(after|before)6.rules.md5sum: adjust for recently missed shipped
+    configurations
+  * debian/control:
+    - clean up Depends and Build-Depends
+    - Build-Depends on python3
+    - add python-ufw for installing python2 modules
+    - add X-Python3-Version: >= 3.2
+    - update Standards-Version to 3.9.4
+  * add debian/python-ufw.install
+  * debian/rules:
+    - use --install-layout=deb
+    - adjust PYTHON to use python3
+    - adjust PYVERS to use py3versions
+    - add PYTHON2
+    - run tests for both PYTHON and PYTHON2
+    - run setup.py with both PYTHON and PYTHON2
+    - use dh_python3 for ufw
+    - use dh_python2 for python-ufw
+  * debian/ufw.lintian-overrides
+    - remove old unneeded override
+    - add postrm-does-not-call-updaterc.d-for-init.d-script since Ubuntu's
+      debhelper adds code to postinst that does nothing on Ubuntu, but doesn't
+      add the corresponding code to postrm
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 26 Nov 2013 12:51:51 -0600
+
 ufw (0.31.1-2) unstable; urgency=low
 
   * Simplify unload of firewall and play nicely with other firewall tools by

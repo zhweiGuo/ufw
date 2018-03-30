@@ -1,1 +1,5 @@
 0001-optimize-boot.patch
+0002-lp1044361.patch
+0003-fix-typeerror-on-error.patch
+0004-lp1039729.patch
+0005-lp1191197.patch

@@ -4,8 +4,9 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-PYTHON  := /usr/bin/python
-PYVERS  := $(shell pyversions -vr)
+PYTHON  := /usr/bin/python3
+PYVERS  := $(shell py3versions -vr)
+PYTHON2 := /usr/bin/python2
 PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
 DISTRIB := $(shell lsb_release -i -s)
 
@@ -44,15 +45,17 @@ install: build
 	sed -i "s/^ufw_version = .*/ufw_version = '$(PKGVERS)'/" ./setup.py
 
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+	./run_tests.sh -i $(PYTHON2)
 	./run_tests.sh -i $(PYTHON)
 endif
 
-	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/ufw
+	$(PYTHON2) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
+	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 
 	# these shouldn't be conffiles
-	mv $(CURDIR)/debian/ufw/etc/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
-	mv $(CURDIR)/debian/ufw/etc/ufw/ufw.conf $(CURDIR)/debian/ufw/usr/share/ufw
-	mv $(CURDIR)/debian/ufw/lib/ufw/*.rules $(CURDIR)/debian/ufw/usr/share/ufw
+	mv $(CURDIR)/debian/tmp/etc/ufw/*.rules $(CURDIR)/debian/tmp/usr/share/ufw
+	mv $(CURDIR)/debian/tmp/etc/ufw/ufw.conf $(CURDIR)/debian/tmp/usr/share/ufw
+	mv $(CURDIR)/debian/tmp/lib/ufw/*.rules $(CURDIR)/debian/tmp/usr/share/ufw
 
 	# Rename and install the shell-completion file
 	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw
@@ -106,12 +109,10 @@ binary-indep: build install
 	done
 	# Don't install profiles on Ubuntu
 	if [ "$(DISTRIB)" = "Ubuntu" ]; then \
-		profiles="$(wildcard ./debian/ufw/etc/ufw/applications.d/ufw-*)";\
-		for p in $$profiles; do \
-	    	rm -f $$p; \
-		done \
+		rm -f $(CURDIR)/debian/ufw/etc/ufw/applications.d/ufw-* ; \
 	fi
-	dh_python2
+	dh_python2 -p python-ufw
+	dh_python3 -p ufw
 	dh_compress
 	dh_fixperms
 	dh_installdeb
