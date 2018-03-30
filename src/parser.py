@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2012 Canonical Ltd.
+# Copyright 2009-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -36,6 +36,7 @@
 
 import re
 import ufw.util
+import ufw.applications
 from ufw.common import UFWError
 from ufw.util import debug
 
@@ -113,10 +114,6 @@ class UFWCommandRule(UFWCommand):
                 del argv[0]
 
             action = argv[0]
-
-        if action == "":
-            action = self.command
-            argv.insert(0, action)
 
         if action != "allow" and action != "deny" and action != "reject" and \
            action != "limit":
@@ -204,9 +201,8 @@ class UFWCommandRule(UFWCommand):
             if rule.dapp == "":
                 try:
                     (port, proto) = ufw.util.parse_port_proto(argv[1])
-                except UFWError:
-                    err_msg = _("Bad port")
-                    raise UFWError(err_msg)
+                except ValueError as e:
+                    raise UFWError(e)
 
                 if not re.match('^\d([0-9,:]*\d+)*$', port):
                     if ',' in port or ':' in port:
@@ -221,12 +217,6 @@ class UFWCommandRule(UFWCommand):
                 except UFWError:
                     err_msg = _("Bad port")
                     raise UFWError(err_msg)
-
-            # Don't specify a port with ipv6, esp or ah protocols
-            if rule.protocol in [ 'ipv6', 'esp', 'ah' ]:
-                err_msg = _("Invalid port with protocol '%s'") % \
-                            (rule.protocol)
-                raise UFWError(err_msg)
         elif (nargs + 1) % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
@@ -262,7 +252,10 @@ class UFWCommandRule(UFWCommand):
                             rule.set_protocol(argv[i+1])
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'proto' clause")
                         raise UFWError(err_msg)
                 elif arg == "in" or arg == "out":
@@ -274,7 +267,10 @@ class UFWCommandRule(UFWCommand):
                                 rule.set_interface("out", argv[i+1])
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid '%s' clause") % (arg)
                         raise UFWError(err_msg)
                 elif arg == "from":
@@ -293,7 +289,10 @@ class UFWCommandRule(UFWCommand):
                         except Exception:
                             raise
                         loc = "src"
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'from' clause")
                         raise UFWError(err_msg)
                 elif arg == "to":
@@ -312,7 +311,10 @@ class UFWCommandRule(UFWCommand):
                         except Exception:
                             raise
                         loc = "dst"
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'to' clause")
                         raise UFWError(err_msg)
                 elif arg == "port" or arg == "app":
@@ -341,7 +343,10 @@ class UFWCommandRule(UFWCommand):
                             rule.set_port(tmp, loc)
                         except Exception:
                             raise
-                    else:
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Invalid 'port' clause")
                         raise UFWError(err_msg)
                 i += 1
@@ -364,20 +369,29 @@ class UFWCommandRule(UFWCommand):
             if to_service != "":
                 try:
                     proto = ufw.util.get_services_proto(to_service)
-                except Exception:
+                except Exception: # pragma: no cover
+                    # This can't normally be reached because of set_port()
+                    # checks above, but leave it here in case our parsing
+                    # changes
                     err_msg = _("Could not find protocol")
                     raise UFWError(err_msg)
             if from_service != "":
                 if proto == "any" or proto == "":
                     try:
                         proto = ufw.util.get_services_proto(from_service)
-                    except Exception:
+                    except Exception: # pragma: no cover
+                        # This can't normally be reached because of set_port()
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Could not find protocol")
                         raise UFWError(err_msg)
                 else:
                     try:
                         tmp = ufw.util.get_services_proto(from_service)
-                    except Exception:
+                    except Exception: # pragma: no cover
+                        # This can't normally be reached because of set_port()
+                        # checks above, but leave it here in case our parsing
+                        # changes
                         err_msg = _("Could not find protocol")
                         raise UFWError(err_msg)
                     if proto == "any" or proto == tmp:
@@ -396,29 +410,16 @@ class UFWCommandRule(UFWCommand):
                             (rule.protocol)
                 raise UFWError(err_msg)
 
-        # Verify protocol not specified with application rule
-        if rule and rule.protocol != "any" and \
-           (rule.sapp != "" or rule.dapp != ""):
-            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
-                        % (rule.protocol)
-            raise UFWError(err_msg)
-
-        if rule.protocol == 'ipv6':
-            if type == "v6":
-                # Can't use protocol ipv6 with v6 addresses
-                err_msg = _("Invalid IPv6 address with protocol '%s'") % \
-                            (rule.protocol)
-                raise UFWError(err_msg)
-            elif type == "both":
+        # adjust type as needed
+        if rule:
+            if rule.protocol in ufw.util.ipv4_only_protocols and \
+               type == "both":
                 debug("Adjusting iptype to 'v4' for protocol '%s'" % \
                       (rule.protocol))
                 type = "v4"
 
-            if rule.dport != "any" or rule.sport != "any":
-                # Don't specify a port with ipv6, esp, or ah protocol
-                err_msg = _("Invalid port with protocol '%s'") % \
-                            (rule.protocol)
-                raise UFWError(err_msg)
+            # Now verify the rule
+            rule.verify(type)
 
         r = UFWParserResponse(action)
         r.data['type'] = self.type
@@ -444,7 +445,10 @@ class UFWCommandRule(UFWCommand):
             if r.logtype != "":
                 res += " %s" % r.logtype
             if r.dapp != "":
-                res += " %s" % r.dapp
+                if " " in r.dapp:
+                    res += " '%s'" % r.dapp
+                else:
+                    res += " %s" % r.dapp
             else:
                 res += " %s" % r.dport
                 if r.protocol != "any":
@@ -455,6 +459,8 @@ class UFWCommandRule(UFWCommand):
                 res += " in on %s" % r.interface_in
             if r.interface_out != "":
                 res += " out on %s" % r.interface_out
+            elif r.direction == "out":
+                res += " %s" % r.direction
             if r.logtype != "":
                 res += " %s" % r.logtype
 
@@ -472,18 +478,22 @@ class UFWCommandRule(UFWCommand):
 
                 if loc == "0.0.0.0/0" or loc == "::/0":
                     loc = "any"
-                if loc == "any" and port == "any" and app == "":
-                    pass
-                else:
+
+                if loc != "any" or port != "any" or app != "":
                     res += " %s %s" % (dir, loc)
                     if app != "":
-                        res += " app %s" % app
+                        if " " in app:
+                            res += " app '%s'" % app
+                        else:
+                            res += " app %s" % app
                     elif port != "any":
                         res += " port %s" % port
 
-	    # If still haven't added more than action, then we have a very
-            # generic rule, so mark it as such.
-            if res == r.action:
+            # If still haven't added more than action, direction and/or
+            # logtype, then we have a very generic rule, so add 'to any' to
+            # mark it as extended form.
+            if ' to ' not in res and ' from ' not in res and \
+                    r.interface_in == "" and r.interface_out == "":
                 res += " to any"
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
@@ -492,6 +502,56 @@ class UFWCommandRule(UFWCommand):
         return res
     get_command = staticmethod(get_command)
 
+
+class UFWCommandRouteRule(UFWCommandRule):
+    '''Class for parsing ufw route rule commands'''
+    def __init__(self, command):
+        UFWCommandRule.__init__(self, command)
+        self.type = 'route'
+
+    def parse(self, argv):
+        assert(argv[0] == "route")
+
+        # Let's use as much as UFWCommandRule.parse() as possible. The only
+        # difference with our rules is that argv[0] is 'route' and we support
+        # both 'in on <interface>' and 'out on <interface>' in our rules.
+        # Because UFWCommandRule.parse() expects that the interface clause is
+        # specified first, strip out the second clause and add it later
+        rule_argv = None
+        interface = None
+        strip = None
+
+        # eg: ['route', 'allow', 'in', 'on', 'eth0', 'out', 'on', 'eth1']
+        s = " ".join(argv)
+        if " in on " in s and " out on " in s:
+            strip = "out"
+            if argv.index("in") > argv.index("out"):
+                strip = "in"
+            # Remove 2nd interface clause from argv and add it to the rule
+            # later. Because we searched for " <strip> on " in our joined
+            # string we are guaranteed to have argv[argv.index(<strip>) + 2]
+            # exist.
+            interface = argv[argv.index(strip) + 2]
+            rule_argv = argv[0:argv.index(strip)] + argv[argv.index(strip)+3:]
+        elif not re.search(r' (in|out) on ', s) and \
+             not re.search(r' app (in|out) ', s) and \
+             (" in " in s or " out " in s):
+            # Specifying a direction without an interface doesn't make any
+            # sense with route rules. application names could be 'in' or 'out'
+            # so don't artificially limit those names.
+            err_msg = _("Invalid interface clause for route rule")
+            raise UFWError(err_msg)
+        else:
+            rule_argv = argv
+
+        rule_argv[0] = "rule"
+        r = UFWCommandRule.parse(self, rule_argv)
+        if 'rule' in r.data:
+            r.data['rule'].forward = True
+            if strip and interface:
+                r.data['rule'].set_interface(strip, interface)
+
+        return r
 
 class UFWCommandApp(UFWCommand):
     '''Class for parsing ufw application commands'''
@@ -558,6 +618,11 @@ class UFWCommandBasic(UFWCommand):
         type = 'basic'
         UFWCommand.__init__(self, type, command)
 
+    def parse(self, argv):
+        if len(argv) != 1:
+            raise ValueError()
+        return UFWCommand.parse(self, argv)
+
 class UFWCommandDefault(UFWCommand):
     '''Class for parsing ufw default commands'''
     def __init__(self, command):
@@ -575,6 +640,8 @@ class UFWCommandDefault(UFWCommand):
         if len(argv) > 2:
             if argv[2].lower() != "incoming" and \
                argv[2].lower() != "input" and \
+               argv[2].lower() != "routed" and \
+               argv[2].lower() != "forward" and \
                argv[2].lower() != "output" and \
                argv[2].lower() != "outgoing":
                 raise ValueError()
@@ -582,7 +649,9 @@ class UFWCommandDefault(UFWCommand):
                 direction = "incoming"
             elif argv[2].lower().startswith("out"):
                 direction = "outgoing"
-            else:
+            elif argv[2].lower() == "routed" or argv[2].lower() == "forward":
+                direction = "routed"
+            else:  # pragma: no cover
                 direction = argv[2].lower()
 
         # Set the policy
@@ -682,7 +751,9 @@ class UFWParserResponse:
 
     def __str__(self):
         s = "action='%s'" % (self.action)
-        for i in list(self.data.keys()):
+        keys = list(self.data.keys())
+        keys.sort()
+        for i in keys:
             s += ",%s='%s'" % (i,self.data[i])
         s += "\n"
 
@@ -729,17 +800,18 @@ class UFWParser:
             cmd = tmp
             for i in list(self.commands.keys()):
                 if cmd in self.commands[i]:
+                    # Skip any inherited commands that inherit from
+                    # UFWCommandRule since they must have more than one
+                    # argument to be valid and used
+                    if isinstance(self.commands[i][cmd], UFWCommandRule) and \
+                       getattr(self.commands[i][cmd], 'type') != 'rule':
+                        continue
                     type = i
                     break
             if type == "":
                 type = 'rule'
 
-        try:
-            action = self.allowed_command(type, cmd)
-        except Exception:
-            err_msg = _("Invalid command '%s'") % (cmd)
-            raise
-            raise UFWError(err_msg)
+        action = self.allowed_command(type, cmd)
 
         cmd = self.commands[type][action]
         response = cmd.parse(args)

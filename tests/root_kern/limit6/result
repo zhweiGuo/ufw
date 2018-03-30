@@ -40,27 +40,27 @@ Anywhere (v6)              LIMIT       24/udp
 
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### limit udp any 0.0.0.0/0 24 0.0.0.0/0 in
--A ufw-user-input -p udp --sport 24 -m state --state NEW -m recent --set
--A ufw-user-input -p udp --sport 24 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp --sport 24 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --sport 24 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### limit any 23 0.0.0.0/0 any 0.0.0.0/0 in_eth1
--A ufw-user-input -i eth1 -p tcp --dport 23 -m state --state NEW -m recent --set
--A ufw-user-input -i eth1 -p tcp --dport 23 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth1 -p tcp --dport 23 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth1 -p tcp --dport 23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 ### tuple ### limit tcp 22 ::/0 any ::/0 in
--A ufw6-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw6-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
+-A ufw6-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw6-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
 --
 ### tuple ### limit udp any ::/0 24 ::/0 in
--A ufw6-user-input -p udp --sport 24 -m state --state NEW -m recent --set
--A ufw6-user-input -p udp --sport 24 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
+-A ufw6-user-input -p udp --sport 24 -m conntrack --ctstate NEW -m recent --set
+-A ufw6-user-input -p udp --sport 24 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
 --
 ### tuple ### limit any 23 ::/0 any ::/0 in_eth1
--A ufw6-user-input -i eth1 -p tcp --dport 23 -m state --state NEW -m recent --set
--A ufw6-user-input -i eth1 -p tcp --dport 23 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
+-A ufw6-user-input -i eth1 -p tcp --dport 23 -m conntrack --ctstate NEW -m recent --set
+-A ufw6-user-input -i eth1 -p tcp --dport 23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw6-user-limit
 TESTING ARGS (delete allow/deny to/from)
 6: delete limit 22/tcp
 WARN: Checks disabled

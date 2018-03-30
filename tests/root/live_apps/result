@@ -84,8 +84,8 @@ Apache (v6)                ALLOW       Anywhere (v6)
 Samba (v6)                 ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       Samba (v6)
 Samba (v6)                 ALLOW       Bind9 (v6)
-Samba (v6)                 ALLOW       22
-Apache (v6)                ALLOW       88
+Samba (v6)                 ALLOW       22 (v6)
+Apache (v6)                ALLOW       88 (v6)
 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
@@ -98,7 +98,7 @@ Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -120,9 +120,9 @@ Anywhere (v6)              ALLOW IN    137,138/udp (Samba (v6))
 Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
 137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
-137,138/udp (Samba (v6))   ALLOW IN    22/udp
-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
-80/tcp (Apache (v6))       ALLOW IN    88/tcp
+137,138/udp (Samba (v6))   ALLOW IN    22/udp (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
+80/tcp (Apache (v6))       ALLOW IN    88/tcp (v6)
 2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
 Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
@@ -287,7 +287,7 @@ Anywhere                   ALLOW       192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -459,8 +459,8 @@ Apache (v6)                ALLOW       Anywhere (v6)
 Samba (v6)                 ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       Samba (v6)
 Samba (v6)                 ALLOW       Bind9 (v6)
-Samba (v6)                 ALLOW       22
-Apache (v6)                ALLOW       88
+Samba (v6)                 ALLOW       22 (v6)
+Apache (v6)                ALLOW       88 (v6)
 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
@@ -473,7 +473,7 @@ Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -495,9 +495,9 @@ Anywhere (v6)              ALLOW IN    137,138/udp (Samba (v6))
 Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
 137,138/udp (Samba (v6))   ALLOW IN    53/udp (Bind9 (v6))
 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
-137,138/udp (Samba (v6))   ALLOW IN    22/udp
-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
-80/tcp (Apache (v6))       ALLOW IN    88/tcp
+137,138/udp (Samba (v6))   ALLOW IN    22/udp (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
+80/tcp (Apache (v6))       ALLOW IN    88/tcp (v6)
 2001:db8::/32 137,138/udp (Samba) ALLOW IN    Anywhere (v6)
 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
 Anywhere (v6)              ALLOW IN    2001:db8::/32 137,138/udp (Samba)
@@ -538,8 +538,8 @@ Apache (v6)                ALLOW       Anywhere (v6)
 Samba (v6)                 ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       Samba (v6)
 Samba (v6)                 ALLOW       Bind9 (v6)
-Samba (v6)                 ALLOW       22
-Apache (v6)                ALLOW       88
+Samba (v6)                 ALLOW       22 (v6)
+Apache (v6)                ALLOW       88 (v6)
 2001:db8::/32 Samba        ALLOW       Anywhere (v6)
 Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 2001:db8::/32 Samba        ALLOW       2001:db8::/32 Bind9
@@ -552,7 +552,7 @@ Anywhere (v6)              ALLOW       2001:db8::/32 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -574,9 +574,9 @@ Anywhere (v6)              ALLOW IN    138,9999/udp (Samba (v6))
 Anywhere (v6)              ALLOW IN    139,445/tcp (Samba (v6))
 138,9999/udp (Samba (v6))  ALLOW IN    53/udp (Bind9 (v6))
 139,445/tcp (Samba (v6))   ALLOW IN    53/tcp (Bind9 (v6))
-138,9999/udp (Samba (v6))  ALLOW IN    22/udp
-139,445/tcp (Samba (v6))   ALLOW IN    22/tcp
-8888/tcp (Apache (v6))     ALLOW IN    88/tcp
+138,9999/udp (Samba (v6))  ALLOW IN    22/udp (v6)
+139,445/tcp (Samba (v6))   ALLOW IN    22/tcp (v6)
+8888/tcp (Apache (v6))     ALLOW IN    88/tcp (v6)
 2001:db8::/32 138,9999/udp (Samba) ALLOW IN    Anywhere (v6)
 2001:db8::/32 139,445/tcp (Samba) ALLOW IN    Anywhere (v6)
 Anywhere (v6)              ALLOW IN    2001:db8::/32 138,9999/udp (Samba)
@@ -741,7 +741,7 @@ Anywhere                   ALLOW       192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -804,7 +804,7 @@ Anywhere                   ALLOW       192.168.2.0/24 Samba
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -914,7 +914,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -934,7 +934,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -954,7 +954,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 
@@ -998,7 +998,7 @@ WARN: Checks disabled
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -1028,7 +1028,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 
@@ -1043,7 +1043,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -1063,7 +1063,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 
@@ -1078,7 +1078,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -1098,7 +1098,7 @@ Rule updated (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -1131,7 +1131,7 @@ Rule added (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 To                         Action      From
@@ -1163,7 +1163,7 @@ Rule deleted (v6)
 WARN: Checks disabled
 Status: active
 Logging: on (low)
-Default: deny (incoming), allow (outgoing)
+Default: deny (incoming), allow (outgoing), disabled (routed)
 New profiles: skip
 
 
@@ -1235,7 +1235,7 @@ Rule inserted
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1318,7 +1318,7 @@ Rule deleted
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1444,7 +1444,7 @@ Rule inserted
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1543,7 +1543,7 @@ Rule deleted
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1647,7 +1647,7 @@ Rule inserted (v6)
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1696,7 +1696,7 @@ COMMIT
 ### LOGGING ###
 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1755,7 +1755,7 @@ Rule deleted (v6)
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1788,7 +1788,7 @@ COMMIT
 ### LOGGING ###
 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1889,7 +1889,7 @@ Rule inserted
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -1932,7 +1932,7 @@ COMMIT
 ### LOGGING ###
 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -2005,7 +2005,7 @@ Rule deleted
 ### LOGGING ###
 -A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -2038,7 +2038,7 @@ COMMIT
 ### LOGGING ###
 -A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw6-logging-deny -m state --state INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
@@ -2173,23 +2173,23 @@ Samba on eth0              LIMIT       10.0.0.1
 
 
 ### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
--A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 --
 ### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - in_eth0
--A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 --
 ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
--A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -i eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 --
 ### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - in_eth0
--A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-input -i eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 225: delete limit in on eth0 to 192.168.0.1 app Samba
 WARN: Checks disabled
@@ -2447,23 +2447,23 @@ Samba                      LIMIT OUT   10.0.0.1 on eth0
 
 
 ### tuple ### limit udp 137,138 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
--A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 --
 ### tuple ### limit tcp 139,445 192.168.0.1 any 0.0.0.0/0 Samba - out_eth0
--A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -d 192.168.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 --
 ### tuple ### limit udp 137,138 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
--A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-output -o eth0 -p udp -m multiport --dports 137,138 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 --
 ### tuple ### limit tcp 139,445 0.0.0.0/0 any 10.0.0.1 Samba - out_eth0
--A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --set -m comment --comment 'dapp_Samba'
--A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set -m comment --comment 'dapp_Samba'
+-A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit -m comment --comment 'dapp_Samba'
 -A ufw-user-output -o eth0 -p tcp -m multiport --dports 139,445 -s 10.0.0.1 -j ufw-user-limit-accept -m comment --comment 'dapp_Samba'
 259: delete limit out on eth0 to 192.168.0.1 app Samba
 WARN: Checks disabled

@@ -13,8 +13,7 @@ title=KTorrent
 description=KTorrent BitTorrent client
 ports=6881/tcp|4444/udp
 
-[qBittorent]
-title=qBittorent
-description=qBittorent BitTorrent client
+[qBittorrent]
+title=qBittorrent
+description=qBittorrent BitTorrent client
 ports=6881/tcp
-

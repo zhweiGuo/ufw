@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -18,6 +18,8 @@
 from __future__ import print_function
 import errno
 import fcntl
+import io
+import inspect
 import os
 import re
 import shutil
@@ -30,7 +32,13 @@ from functools import reduce
 from tempfile import mkstemp
 
 DEBUGGING = False
+msg_output = None # for redirecting stdout in msg() and write_to_file()
 
+# We support different protocols these days and only come combinations are
+# valid
+supported_protocols = [ 'tcp', 'udp', 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
+portless_protocols = [ 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
+ipv4_only_protocols = [ 'ipv6', 'igmp' ]
 
 def get_services_proto(port):
     '''Get the protocol for a specified port from /etc/services'''
@@ -69,8 +77,12 @@ def parse_port_proto(p_str):
     elif len(tmp) == 2:
         port = tmp[0]
         proto = tmp[1]
+        if proto in portless_protocols:
+            err_msg = _("Invalid port with protocol '%s'" % proto)
+            raise ValueError(err_msg)
     else:
-        raise ValueError
+        err_msg = _("Bad port")
+        raise ValueError(err_msg)
     return (port, proto)
 
 
@@ -109,7 +121,8 @@ def valid_address4(addr):
     net = addr.split('/')
     try:
         socket.inet_pton(socket.AF_INET, net[0])
-        if not _valid_dotted_quads(net[0], False):
+        # socket.inet_pton() should raise an exception, but let's be sure
+        if not _valid_dotted_quads(net[0], False): # pragma: no cover
             return False
     except Exception:
         return False
@@ -221,7 +234,7 @@ def open_files(fn):
 
     try:
         (tmp, tmpname) = mkstemp()
-    except Exception:
+    except Exception: # pragma: no cover
         orig.close()
         raise
 
@@ -237,13 +250,19 @@ def write_to_file(fd, out):
     if not fd:
         raise OSError(errno.ENOENT, "Not a valid file descriptor")
 
+    # Redirect our writes to stdout to msg_output, if it is set
+    if msg_output and fd == sys.stdout.fileno():
+        msg_output.write(out)
+        return
+
     rc = -1
-    if sys.version_info[0] >= 3:
+    # cover not in python3, so can't test for this
+    if sys.version_info[0] >= 3: # pragma: no cover
         rc = os.write(fd, bytes(out, 'ascii'))
     else:
         rc = os.write(fd, out)
 
-    if rc <= 0:
+    if rc <= 0: # pragma: no cover
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
@@ -304,10 +323,14 @@ def _print(output, s):
 
     try:
         out = s.encode('utf-8', 'ignore')
-    except:
+    # Depends on python version
+    except: # pragma: no cover
         out = s
 
-    writer.write(bytes(out))
+    if msg_output and inspect.isclass(io.StringIO):
+        writer.write(s)
+    else:
+        writer.write(bytes(out))
     output.flush()
 
 
@@ -315,10 +338,10 @@ def error(out, do_exit=True):
     '''Print error message and exit'''
     try:
         _print(sys.stderr, 'ERROR: %s\n' % out)
-    except IOError:
+    except IOError: # pragma: no cover
         pass
 
-    if do_exit:
+    if do_exit: # pragma: no cover
         sys.exit(1)
 
 
@@ -326,18 +349,21 @@ def warn(out):
     '''Print warning message'''
     try:
         _print(sys.stderr, 'WARN: %s\n' % out)
-    except IOError:
+    except IOError: # pragma: no cover
         pass
 
 
 def msg(out, output=sys.stdout, newline=True):
     '''Print message'''
+    if msg_output and output == sys.stdout:
+        output = msg_output
+
     try:
         if newline:
             _print(output, '%s\n' % out)
         else:
             _print(output, '%s' % out)
-    except IOError:
+    except IOError: # pragma: no cover
         pass
 
 
@@ -346,7 +372,7 @@ def debug(out):
     if DEBUGGING:
         try:
             _print(sys.stderr, 'DEBUG: %s\n' % out)
-        except IOError:
+        except IOError: # pragma: no cover
             pass
 
 
@@ -399,8 +425,11 @@ def get_ppid(mypid=os.getpid()):
         raise IOError("Couldn't find '%s'" % (name))
 
     try:
-        ppid = open(name).readlines()[0].split()[3]
-    except Exception:
+        # LP: #1101304
+        # 9983 (cmd) S 923 ...
+        # 9983 (cmd with spaces) S 923 ...
+        ppid = open(name).readlines()[0].split(')')[1].split()[1]
+    except Exception: # pragma: no cover
         raise
 
     return int(ppid)
@@ -424,20 +453,21 @@ def under_ssh(pid=os.getpid()):
         return False
 
     path = os.path.join("/proc", str(ppid), "stat")
-    if not os.path.isfile(path):
+    if not os.path.isfile(path): # pragma: no cover
         err_msg = _("Couldn't find '%s'") % (path)
         raise ValueError(err_msg)
 
     try:
         exe = open(path).readlines()[0].split()[1]
-    except Exception:
+    except Exception: # pragma: no cover
         err_msg = _("Could not find executable for '%s'") % (path)
         raise ValueError(err_msg)
     debug("under_ssh: exe is '%s'" % (exe))
 
-    if exe == "(sshd)":
+    # unit tests might be run remotely, so can't test for either
+    if exe == "(sshd)": # pragma: no cover
         return True
-    else:
+    else: # pragma: no cover
         return under_ssh(ppid)
 
 
@@ -495,9 +525,9 @@ def _dotted_netmask_to_cidr(nm, v6):
         # python3 doesn't have long(). We could technically use int() here
         # since python2 guarantees at least 32 bits for int(), but this helps
         # future-proof.
-        try:
+        try: # pragma: no cover
             bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
-        except NameError:
+        except NameError: # pragma: no cover
             bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
         found_one = False
@@ -539,9 +569,9 @@ def _cidr_to_dotted_netmask(cidr, v6):
         # python3 doesn't have long(). We could technically use int() here
         # since python2 guarantees at least 32 bits for int(), but this helps
         # future-proof.
-        try:
+        try: # pragma: no cover
             bits = long(0)
-        except NameError:
+        except NameError: # pragma: no cover
             bits = 0
 
         for n in range(32):
@@ -549,7 +579,8 @@ def _cidr_to_dotted_netmask(cidr, v6):
                 bits |= 1 << 31 - n
         nm = socket.inet_ntoa(struct.pack('>L', bits))
 
-    if not _valid_dotted_quads(nm, v6):
+    # The above socket.inet_ntoa() should raise an error, but let's be sure
+    if not _valid_dotted_quads(nm, v6): # pragma: no cover
         raise ValueError
 
     return nm
@@ -570,20 +601,17 @@ def _address4_to_network(addr):
 
     nm = orig_nm
     if _valid_cidr_netmask(nm, False):
-        try:
-            nm = _cidr_to_dotted_netmask(nm, False)
-        except Exception:
-            raise
+        nm = _cidr_to_dotted_netmask(nm, False)
 
     # Now have dotted quad host and nm, find the network
 
     # python3 doesn't have long(). We could technically use int() here
     # since python2 guarantees at least 32 bits for int(), but this helps
     # future-proof.
-    try:
+    try: # pragma: no cover
         host_bits = long(struct.unpack('>L', socket.inet_aton(host))[0])
         nm_bits = long(struct.unpack('>L', socket.inet_aton(nm))[0])
-    except NameError:
+    except NameError: # pragma: no cover
         host_bits = int(struct.unpack('>L', socket.inet_aton(host))[0])
         nm_bits = int(struct.unpack('>L', socket.inet_aton(nm))[0])
 
@@ -615,7 +643,7 @@ def _address6_to_network(addr):
     # Get the host bits
     try: # python3 doesn't have long()
         host_bits = long(0)
-    except NameError:
+    except NameError: # pragma: no cover
         host_bits = 0
 
     for i in range(8):
@@ -626,7 +654,7 @@ def _address6_to_network(addr):
     # Create netmask bits
     try: # python3 doesn't have long()
         nm_bits = long(0)
-    except NameError:
+    except NameError: # pragma: no cover
         nm_bits = 0
 
     for i in range(128):
@@ -680,10 +708,7 @@ def in_network(tested_add, tested_net, v6):
             raise ValueError
 
     if _valid_cidr_netmask(netmask, v6) and not v6:
-        try:
-            netmask = _cidr_to_dotted_netmask(netmask, v6)
-        except Exception:
-            raise
+        netmask = _cidr_to_dotted_netmask(netmask, v6)
 
     # Now apply the network's netmask to the address
     if v6:
@@ -709,7 +734,8 @@ def get_iptables_version(exe="/sbin/iptables"):
     return re.sub('^v', '', tmp[1])
 
 
-def get_netfilter_capabilities(exe="/sbin/iptables"):
+# must be root, so don't report coverage in unit tests
+def get_netfilter_capabilities(exe="/sbin/iptables", do_checks=True):
     '''Return capabilities set for netfilter to support new features. Callers
        must be root.'''
     def test_cap(exe, chain, rule):
@@ -717,9 +743,9 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
         (rc, out) = cmd(args + rule)
         if rc == 0:
             return True
-        return False
+        return False # pragma: no cover
 
-    if os.getuid() != 0:
+    if do_checks and os.getuid() != 0:
         raise OSError(errno.EPERM, "Must be root")
 
     caps = []
@@ -731,18 +757,18 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
     if rc != 0:
-        raise OSError(errno.ENOENT, out)
+        raise OSError(errno.ENOENT, out) # pragma: no cover
 
     # Now test for various capabilities. We won't test for everything, just
     # the stuff we know isn't supported everywhere but we want to support.
 
     # recent-set
-    if test_cap(exe, chain, ['-m', 'state', '--state', 'NEW', \
+    if test_cap(exe, chain, ['-m', 'conntrack', '--ctstate', 'NEW', \
                              '-m', 'recent', '--set']):
         caps.append('recent-set')
 
     # recent-update
-    if test_cap(exe, chain, ['-m', 'state', '--state', 'NEW', \
+    if test_cap(exe, chain, ['-m', 'conntrack', '--ctstate', 'NEW', \
                              '-m', 'recent', '--update', \
                              '--seconds', '30', \
                              '--hitcount', '6']):
@@ -752,12 +778,12 @@ def get_netfilter_capabilities(exe="/sbin/iptables"):
     cmd([exe, '-F', chain])
     (rc, out) = cmd([exe, '-X', chain])
     if rc != 0:
-        raise OSError(errno.ENOENT, out)
+        raise OSError(errno.ENOENT, out) # pragma: no cover
 
     return caps
 
 def parse_netstat_output(v6):
-    '''Get and parse netstat the output from get_netstat_outout()'''
+    '''Get and parse netstat the output from get_netstat_output()'''
 
     # d[proto][port] -> list of dicts:
     #   d[proto][port][0][laddr|raddr|uid|pid|exe]
@@ -766,7 +792,7 @@ def parse_netstat_output(v6):
 
     d = dict()
     for line in netstat_output.splitlines():
-        if not line.startswith('tcp') and not line.startswith('udp'):
+        if not line.startswith('tcp') and not line.startswith('udp'): # pragma: no cover
             continue
 
         tmp = line.split()
@@ -780,7 +806,7 @@ def parse_netstat_output(v6):
         item['pid'] = tmp[5].split('/')[0]
         if item['pid'] == '-':
             item['exe'] = item['pid']
-        else:
+        else: # pragma: no cover
             item['exe'] = tmp[5].split('/')[1]
 
         if proto not in d:
@@ -797,7 +823,9 @@ def parse_netstat_output(v6):
 def get_ip_from_if(ifname, v6=False):
     '''Get IP address for interface'''
     addr = ""
-    if v6:
+
+    # we may not have an IPv6 address, so no coverage
+    if v6: # pragma: no cover
         proc = '/proc/net/if_inet6'
         if not os.path.exists(proc):
             raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
@@ -834,11 +862,12 @@ def get_if_from_ip(addr):
     elif not valid_address4(addr):
         raise IOError(errno.ENODEV, "No such device")
 
-    if not os.path.exists(proc):
+    if not os.path.exists(proc): # pragma: no cover
         raise OSError(errno.ENOENT, "'%s' does not exist" % proc)
 
     matched = ""
-    if v6:
+    # we may not have an IPv6 address, so no coverage
+    if v6: # pragma: no cover
         for line in open(proc).readlines():
             tmp = line.split()
             ifname = tmp[5].strip()
@@ -860,7 +889,7 @@ def get_if_from_ip(addr):
             # this can fail for certain devices, so just skip them
             try:
                 ip = get_ip_from_if(ifname, False)
-            except IOError:
+            except IOError: # pragma: no cover
                 continue
 
             if ip == addr:
@@ -889,18 +918,18 @@ def _get_proc_inodes():
         exe_path = "-"
         try:
             exe_path = os.readlink(os.path.join("/proc", i, "exe"))
-        except Exception:
+        except Exception: # pragma: no cover
             pass
 
         try:
             dirs = os.listdir(fd_path)
-        except:
+        except: # pragma: no cover
             continue
 
         for j in dirs:
             try:
                 inode = os.stat(os.path.join(fd_path, j))[1]
-            except Exception:
+            except Exception: # pragma: no cover
                 continue
             inodes[inode] = "%s/%s" % (i, os.path.basename(exe_path))
 
@@ -929,7 +958,8 @@ def _read_proc_net_protocol(protocol):
                       }
 
     fn = os.path.join("/proc/net", protocol)
-    if not os.access(fn, os.F_OK | os.R_OK):
+    # can't test for this
+    if not os.access(fn, os.F_OK | os.R_OK): # pragma: no cover
         raise ValueError
 
     lst = []
@@ -981,7 +1011,7 @@ def get_netstat_output(v6):
     for p in proto:
         try:
             proc_net_data[p] = _read_proc_net_protocol(p)
-        except Exception:
+        except Exception: # pragma: no cover
             warn_msg = _("Could not get statistics for '%s'" % (p))
             warn(warn_msg)
             continue
@@ -998,7 +1028,8 @@ def get_netstat_output(v6):
 
             exe = "-"
             if int(inode) in inodes:
-                exe = inodes[int(inode)]
+                # need root for this, so turn off in unit tests
+                exe = inodes[int(inode)] # pragma: no cover
             s += "%-5s %-46s %-11s %-5s %-11s %s\n" % (p,
                                                        "%s:%s" % (addr, port),
                                                        state, uid, inode, exe)

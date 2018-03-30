@@ -6,3 +6,8 @@ tests/testarea
 locales/mo/*.mo
 debian/ufw
 build-stamp
+.coverage
+ufw/
+src/__pycache__
+tests/__pycache__
+tests/unit/__pycache__

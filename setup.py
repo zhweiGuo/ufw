@@ -1,7 +1,7 @@
 #
 # ufw: front-end for Linux firewalling
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2015 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -35,7 +35,7 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.33'
+ufw_version = '0.34'
 
 def cmd(command):
     '''Try to execute the given command.'''
@@ -64,32 +64,47 @@ class Install(_install, object):
         real_sharedir = os.path.join(real_prefix, 'share', 'ufw')
 
         # Update the modules' paths
-        for file in [ 'common.py' ]:
-            print("Updating " + file)
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
-                             os.path.join('staging', file)])
+        for fn in [ 'common.py' ]:
+            # 'staging' is used with just 'install' but build_lib is used when
+            # using 'build'. We could probably override 'def build()' but this
+            # at least works
+            for d in [os.path.join(self.build_lib, "ufw"), 'staging']:
+                f = os.path.join(d, fn)
+                if not os.path.exists(f):
+                    continue
+                print("Updating " + f)
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#STATE_PREFIX#%" + real_statedir + "%g",
-                             os.path.join('staging', file)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#STATE_PREFIX#%" + real_statedir + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#PREFIX#%" + real_prefix + "%g",
-                             os.path.join('staging', file)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#PREFIX#%" + real_prefix + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
-                             os.path.join('staging', file)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#IPTABLES_DIR#%" + iptables_dir + "%g",
+                                 f])
 
-            subprocess.call(["sed",
-                             "-i",
-                             "s%#SHARE_DIR#%" + real_sharedir + "%g",
-                             os.path.join('staging', file)])
+                subprocess.call(["sed",
+                                 "-i",
+                                 "s%#SHARE_DIR#%" + real_sharedir + "%g",
+                                 f])
+
+                if fn == 'common.py' and 'UFW_SKIP_CHECKS' in os.environ and \
+                   os.environ['UFW_SKIP_CHECKS'] != '':
+                    print("Updating do_checks")
+                    subprocess.call(["sed",
+                                     "-i",
+                                     "s%do_checks = True%do_checks = False%g",
+                                     f])
 
         # Now byte-compile everything
         super(Install, self).run()
@@ -156,6 +171,8 @@ class Install(_install, object):
         before6_rules = os.path.join(confdir, 'ufw', 'before6.rules')
         after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
         apps_dir = os.path.join(confdir, 'ufw', 'applications.d')
+        init_before_hook = os.path.join(confdir, 'ufw', 'before.init')
+        init_after_hook = os.path.join(confdir, 'ufw', 'after.init')
 
         for f in [ defaults, ufwconf ]:
             self.mkpath(os.path.dirname(f))
@@ -171,37 +188,41 @@ class Install(_install, object):
         self.copy_file('conf/after.rules', after_rules)
         self.copy_file('conf/before6.rules', before6_rules)
         self.copy_file('conf/after6.rules', after6_rules)
+        self.copy_file('src/before.init', init_before_hook)
+        self.copy_file('src/after.init', init_after_hook)
 
         # Update the installed rules files' permissions
-        for file in [ before_rules, after_rules, before6_rules, after6_rules, \
-                      user_rules, user6_rules ]:
-            os.chmod(file, 0o640)
+        for f in [ before_rules, after_rules, before6_rules, after6_rules, \
+                      user_rules, user6_rules, init_before_hook, \
+                      init_after_hook ]:
+            os.chmod(f, 0o640)
 
         # Update the installed files' paths
-        for file in [ defaults, ufwconf, before_rules, after_rules, \
+        for f in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, script, \
                       manpage, manpage_f, sysctl, init_helper, \
-                      init_helper_functions ]:
-            print("Updating " + file)
+                      init_helper_functions, init_before_hook, \
+                      init_after_hook ]:
+            print("Updating " + f)
             subprocess.call(["sed",
                              "-i",
                              "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
-                             file])
+                             f])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#PREFIX#%" + real_prefix + "%g",
-                             file])
+                             f])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#STATE_PREFIX#%" + real_statedir + "%g",
-                             file])
+                             f])
 
             subprocess.call(["sed",
                              "-i",
                              "s%#VERSION#%" + ufw_version + "%g",
-                             file])
+                             f])
 
         # Install pristine copies of rules files
         sharedir = real_sharedir
@@ -209,10 +230,10 @@ class Install(_install, object):
             sharedir = self.root + real_sharedir
         rulesdir = os.path.join(sharedir, 'iptables')
         self.mkpath(rulesdir)
-        for file in [ before_rules, after_rules, \
+        for f in [ before_rules, after_rules, \
                       before6_rules, after6_rules, \
                       user_rules, user6_rules ]:
-            self.copy_file(file, rulesdir)
+            self.copy_file(f, rulesdir)
 
 if sys.version_info[0] < 2 or \
    (sys.version_info[0] == 2 and sys.version_info[1] < 6):

@@ -1,3 +1,76 @@
+ufw (0.34) RELEASED; urgency=low
+
+  * refactor capabilities checks and only call when needed
+  * error out early instead of tracing back with iptables errors in
+    get_netfilter_capabilities() (LP: #1044361)
+  * fix TypeError which somehow only manifested itself when using zh_CN
+  * add 'reload' to help (LP: #1059060)
+  * check-requirements now gives iptables output on failure. Patch thanks to
+    S. Nizio.
+  * use conntrack instead of state module. Patch based on work by S. Nizio.
+    (LP: #1065297)
+  * don't use get_netfilter_capabilities() with ipv6 if ipv6 is disabled
+    (LP: #1039729, LP: #1062521)
+  * fix parse error when finding PPID (LP: #1101304)
+  * implement before and after hooks in /etc/ufw/(before|after).init
+    (LP: #1075975) TODO: add tests
+  * add unit test framework and cleanup, remove dead and refactor some code
+  * honor UFW_SKIP_CHECKS=1 environment variable with setup.py, which eases
+    testing
+  * tests/check-requirements: add a check for -m rt --rt-type 0 (LP: #1191197)
+  * match simple rule syntax and don't allow ports with esp and ah protocols
+    with extended rule syntax
+  * when displaying extended rules via parser.get_command(), show "out" if the
+    direction is "out" and there is no corresponding interface
+  * fix return of various invalid extended rules in parser.get_command()
+  * clarify 'limit' command in man page (LP: #1089262)
+  * implement route rules (ie, manage FORWARD, LP: #262421). See man page for
+    details. This change reworked interface parsing and we now allow
+    interfaces with '_' in the name (LP: #1098472)
+  * add state RELATED,ESTABLISHED rule to ufw-before-forward in before*.rules
+    like we do with ufw-before-input. This will only affect systems with ip
+    forwarding enabled via sysctl
+  * add ufw[6]-track-forward chain and handle it the same as for
+    ufw[6]track-input and ufw[6]-track-output
+  * document ufw[6]-track-* in README (dropped in previous commit)
+  * fix for 'status' not distingushing between some v4/v6 targets
+    (LP: #1078665)
+  * add safe icmp packets packets to ufw-before-forward in before*.rules like
+    we do for ufw-before-input. This will only affect systems with ip
+    forwarding enabled via sysctl
+  * update check-requirements for python 3.3 and 3.4
+  * add 5269/tcp to XMPP (LP: #1327162)
+  * fix traceback with forward rule
+  * import new and updated Launchpad translations:
+    - po/ar.po, po/ast.po, po/bg.po, po/bs.po, po/ca.po, po/ce.po, po/cs.po,
+      po/da.po, po/de.po, po/el.po, po/en_AU.po, po/en_GB.po, po/es.po,
+      po/et.po, po/fi.po, po/fr.po, po/he.po, po/hu.po, po/id.po, po/it.po,
+      po/ja.po, po/ko.po, po/lv.po, po/nb.po, po/nl.po, po/pl.po, po/pt_BR.po,
+      po/pt.po, po/ru.po, po/se.po, po/sk.po, po/sl.po, po/sr.po, po/sv.po,
+      po/tl.po, po/tr.po, po/uk.po, po/ur.po, po/zh_CN.po, po/zh_TW.po
+    - thanks to all contributors: https://translations.launchpad.net/ufw
+  * also use .lower() on translations for 'yes' (LP: #1438647)
+  * adjust/rearrange before6.rules for rfc4890 'must not be blocked' and
+    'should not be blocked' (LP: #1434525, LP: #1030214)
+  * doc/systemd.example: add service file from Ubuntu (LP: #1341083)
+  * correctly spell qBittorrent (LP: #1273965)
+  * update man page for app rules (LP: #1155292)
+  * support igmp protocol (LP: #946322)
+  * adjust testsuite for systems supporting smtp/udp (LP: #815982)
+  * enforce that basic commands don't have arguments (LP: #1155250)
+  * update command completion for --dry-run, --force, --help and route
+    (LP: #1225666)
+  * support gre protocol (LP: #1418879)
+  * support ./setup.py build (LP: #819600)
+  * doc/ufw.8:
+    - clarify log level behavior (LP: #1461701)
+    - add app profile syntax
+    - add protocol support
+  * skip profiles with invalid port declarations (LP: #1201934)
+  * tests/check-locales: skip locales that fail to install or generate
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2015 11:48:13 -0500
+
 ufw (0.33) RELEASED; urgency=low
 
   * conf/after6.rules: also use correct ports for DHCPv6. Thanks to Marco

@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -59,6 +59,7 @@ def parse_command(argv):
     rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
     for i in rule_commands:
         p.register_command(ufw.parser.UFWCommandRule(i))
+        p.register_command(ufw.parser.UFWCommandRouteRule(i))
 
     # Don't require the user to have to specify 'rule' as the command. Instead
     # insert 'rule' into the arguments if this is a rule command.
@@ -67,16 +68,17 @@ def parse_command(argv):
         if argv[idx].lower() == "--dry-run":
             idx = 2
         if argv[idx].lower() != "default" and \
+           argv[idx].lower() != "route" and \
            argv[idx].lower() in rule_commands:
             argv.insert(idx, 'rule')
 
     if len(argv) < 2 or ('--dry-run' in argv and len(argv) < 3):
-        error("not enough args")
+        error("not enough args") # pragma: no cover
 
     try:
         pr = p.parse_command(argv[1:])
     except UFWError as e:
-        error("%s" % (e.value))
+        error("%s" % (e.value)) #  pragma: no cover
     except Exception:
         error("Invalid syntax", do_exit=False)
         raise
@@ -99,6 +101,10 @@ Usage: %(progname)s %(command)s
  %(limit)-31s add limit %(rule)s
  %(delete)-31s delete %(urule)s
  %(insert)-31s insert %(urule)s at %(number)s
+ %(route)-31s add route %(urule)s
+ %(route-delete)-31s delete route %(urule)s
+ %(route-insert)-31s insert route %(urule)s at %(number)s
+ %(reload)-31s reload firewall
  %(reset)-31s reset firewall
  %(status)-31s show firewall status
  %(statusnum)-31s show firewall status as numbered list of %(rules)s
@@ -127,7 +133,11 @@ Usage: %(progname)s %(command)s
          'delete': "delete RULE|NUM", \
          'urule': "RULE", \
          'insert': "insert NUM RULE", \
+         'route': "route RULE", \
+         'route-delete': "route delete RULE|NUM", \
+         'route-insert': "route insert NUM RULE", \
          'number': "NUM", \
+         'reload': "reload", \
          'reset': "reset", \
          'status': "status", \
          'statusnum': "status numbered", \
@@ -151,7 +161,7 @@ class UFWFrontend:
         if backend_type == "iptables":
             try:
                 self.backend = UFWBackendIptables(dryrun)
-            except Exception:
+            except Exception: # pragma: no cover
                 raise
         else:
             raise UFWError("Unsupported backend type '%s'" % (backend_type))
@@ -181,18 +191,18 @@ class UFWFrontend:
             try:
                 self.backend.set_default(self.backend.files['conf'], \
                                          "ENABLED", config_str)
-            except UFWError as e:
+            except UFWError as e: # pragma: no cover
                 error(e.value)
 
         error_str = ""
         if enabled:
             try:
                 self.backend.start_firewall()
-            except UFWError as e:
+            except UFWError as e: # pragma: no cover
                 if changed:
                     error_str = e.value
 
-            if error_str != "":
+            if error_str != "": # pragma: no cover
                 # Revert config files when toggling enable/disable and
                 # firewall failed to start
                 try:
@@ -208,7 +218,7 @@ class UFWFrontend:
         else:
             try:
                 self.backend.stop_firewall()
-            except UFWError as e:
+            except UFWError as e: # pragma: no cover
                 error(e.value)
 
             res = _("Firewall stopped and disabled on system startup")
@@ -223,7 +233,7 @@ class UFWFrontend:
             if self.backend.is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return res
@@ -233,7 +243,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_loglevel(level)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return res
@@ -242,7 +252,7 @@ class UFWFrontend:
         '''Shows status of firewall'''
         try:
             out = self.backend.get_status(verbose, show_count)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return out
@@ -251,17 +261,18 @@ class UFWFrontend:
         '''Shows raw output of firewall'''
         try:
             out = self.backend.get_running_raw(rules_type)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return out
 
     def get_show_listening(self):
-        '''Shows listening services'''
+        '''Shows listening services and incoming rules that might affect
+           them'''
         res = ""
         try:
             d = ufw.util.parse_netstat_output(self.backend.use_ipv6())
-        except Exception:
+        except Exception: # pragma: no cover
             err_msg = _("Could not get listening status")
             raise UFWError(err_msg)
 
@@ -271,7 +282,7 @@ class UFWFrontend:
         protocols.sort()
         for proto in protocols:
             if not self.backend.use_ipv6() and proto in ['tcp6', 'udp6']:
-                continue
+                continue # pragma: no cover
             res += "%s:\n" % (proto)
             ports = list(d[proto].keys())
             ports.sort()
@@ -291,8 +302,15 @@ class UFWFrontend:
                             ifname = ufw.util.get_if_from_ip(addr)
                         res += "(%s)" % os.path.basename(item['exe'])
 
-                        rule = ufw.common.UFWRule("allow", proto[:3], port, \
-                                                  addr)
+                        # Create an incoming rule since matching outgoing and
+                        # forward rules doesn't make sense for this report.
+                        rule = ufw.common.UFWRule(action="allow", \
+                                                  protocol=proto[:3], \
+                                                  dport=port, \
+                                                  dst=addr,
+                                                  direction="in", \
+                                                  forward=False
+                                                 )
                         rule.set_v6(proto.endswith("6"))
 
                         if ifname != "":
@@ -308,6 +326,7 @@ class UFWFrontend:
                             for i in matching:
                                 if i > 0 and i - 1 < len(rules):
                                     res += "   [%2d] %s\n" % (i, \
+                                        # Don't need UFWCommandRule here either
                                         ufw.parser.UFWCommandRule.get_command(\
                                           rules[i-1])
                                     )
@@ -330,7 +349,11 @@ class UFWFrontend:
 
         added = []
         for r in self.backend.get_rules():
-            rstr = ufw.parser.UFWCommandRule.get_command(r)
+            if r.forward:
+                rstr = "route %s" % \
+                        ufw.parser.UFWCommandRouteRule.get_command(r)
+            else:
+                rstr = ufw.parser.UFWCommandRule.get_command(r)
 
             # Approximate the order the rules were added. Since rules is
             # internally rules4 + rules6, IPv6 only rules will show up after
@@ -502,7 +525,7 @@ class UFWFrontend:
             res += tmp
         elif len(rules) == 1:
             # If no error, and just one rule, error out
-            error(err_msg)
+            error(err_msg) # pragma: no cover
         else:
 	    # If error and more than one rule, delete the successfully added
 	    # rules in reverse order
@@ -558,14 +581,19 @@ class UFWFrontend:
 
         proceed = True
         if not force:
-            rstr = ufw.parser.UFWCommandRule.get_command(rule)
+            if rule.forward:
+                rstr = "route %s" % \
+                        ufw.parser.UFWCommandRouteRule.get_command(rule)
+            else:
+                rstr = ufw.parser.UFWCommandRule.get_command(rule)
             prompt = _("Deleting:\n %(rule)s\nProceed with operation " \
                        "(%(yes)s|%(no)s)? ") % ({'rule': rstr, \
                                                  'yes': self.yes, \
                                                  'no': self.no})
             msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
-            if ans != "y" and ans != self.yes and ans != self.yes_full:
+            if ans != "y" and ans != self.yes.lower() and \
+               ans != self.yes_full.lower():
                 proceed = False
 
         res = ""
@@ -635,7 +663,7 @@ class UFWFrontend:
                         rule.set_port(tmp, "dst")
                 except UFWError as e:
                     # allow for the profile being deleted (LP: #407810)
-                    if not rule.remove:
+                    if not rule.remove: # pragma: no cover
                         error(e.value)
                     if not ufw.applications.valid_profile_name(rule.dapp):
                         err_msg = _("Invalid profile name")
@@ -649,7 +677,7 @@ class UFWFrontend:
                         rule.set_port(tmp, "dst")
                 except UFWError as e:
                     # allow for the profile being deleted (LP: #407810)
-                    if not rule.remove:
+                    if not rule.remove: # pragma: no cover
                         error(e.value)
                     if not ufw.applications.valid_profile_name(rule.sapp):
                         err_msg = _("Invalid profile name")
@@ -667,7 +695,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_default_application_policy(policy)
-        except UFWError as e:
+        except UFWError as e: # pragma: no cover
             error(e.value)
 
         return res
@@ -733,11 +761,11 @@ class UFWFrontend:
         allow_reload = True
         trigger_reload = False
 
-        try:
+        try: # pragma: no cover
             if self.backend.do_checks and ufw.util.under_ssh():
                 # Don't reload the firewall if running under ssh
                 allow_reload = False
-        except Exception:
+        except Exception: # pragma: no cover
             # If for some reason we get an exception trying to find the parent
             # pid, err on the side of caution and don't automatically reload
             # the firewall. LP: #424528
@@ -801,7 +829,7 @@ class UFWFrontend:
         args += [ policy, profile ]
         try:
             pr = parse_command(args)
-        except Exception:
+        except Exception: # pragma: no cover
             raise
 
         if 'rule' in pr.data:
@@ -847,7 +875,7 @@ class UFWFrontend:
     def continue_under_ssh(self):
         '''If running under ssh, prompt the user for confirmation'''
         proceed = True
-        if self.backend.do_checks and ufw.util.under_ssh():
+        if self.backend.do_checks and ufw.util.under_ssh(): # pragma: no cover
             prompt = _("Command may disrupt existing ssh connections. " \
                        "Proceed with operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
@@ -870,7 +898,7 @@ class UFWFrontend:
                        "operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
 
-        if self.backend.do_checks and not force:
+        if self.backend.do_checks and not force: # pragma: no cover
             msg(ufw.util.wrap_text(prompt), output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:

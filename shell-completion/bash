@@ -42,6 +42,11 @@ _ufw_rule_commands()
     echo "`_ufw_default_commands` limit"
 }
 
+_ufw_route_commands()
+{
+    echo "`_ufw_default_commands` limit delete insert"
+}
+
 _ufw_show_commands()
 {
     echo "raw"
@@ -58,26 +63,29 @@ _ufw()
     cur=${COMP_WORDS[COMP_CWORD]}
     prev=${COMP_WORDS[COMP_CWORD-1]}
     if [ $COMP_CWORD -eq 1 ]; then
-        COMPREPLY=( $( compgen -W "$(_ufw_commands)" $cur ) )
+        COMPREPLY=( $( compgen -W "--dry-run --force --help $(_ufw_commands)" -- $cur ) )
     elif [ $COMP_CWORD -eq 2 ]; then
         case "$prev" in
         app)
-            COMPREPLY=( $( compgen -W "$(_ufw_app_commands)" $cur ) )
+            COMPREPLY=( $( compgen -W "$(_ufw_app_commands)" -- $cur ) )
             ;;
         status)
-            COMPREPLY=( $( compgen -W "$(_ufw_status_commands)" $cur ) )
+            COMPREPLY=( $( compgen -W "$(_ufw_status_commands)" -- $cur ) )
             ;;
         delete)
-            COMPREPLY=( $( compgen -W "$(_ufw_rule_commands)" $cur ) )
+            COMPREPLY=( $( compgen -W "$(_ufw_rule_commands)" -- $cur ) )
+            ;;
+        route)
+            COMPREPLY=( $( compgen -W "$(_ufw_route_commands)" -- $cur ) )
             ;;
         logging)
-            COMPREPLY=( $( compgen -W "$(_ufw_logging_commands)" $cur ) )
+            COMPREPLY=( $( compgen -W "$(_ufw_logging_commands)" -- $cur ) )
             ;;
         show)
-            COMPREPLY=( $( compgen -W "$(_ufw_show_commands)" $cur ) )
+            COMPREPLY=( $( compgen -W "$(_ufw_show_commands)" -- $cur ) )
             ;;
         default)
-            COMPREPLY=( $( compgen -W "$(_ufw_default_commands)" $cur ) )
+            COMPREPLY=( $( compgen -W "$(_ufw_default_commands)" -- $cur ) )
             ;;
         esac
     fi

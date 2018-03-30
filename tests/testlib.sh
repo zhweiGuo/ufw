@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -14,7 +14,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.py
 cp tests/defaults/profiles/* $TESTPATH/etc/ufw/applications.d
 
 let count=0
