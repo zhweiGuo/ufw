@@ -1,86 +1,47 @@
-ufw (0.34~rc-0ubuntu6) wily; urgency=medium
+ufw (0.34-0ubuntu1) wily; urgency=medium
 
-  * Don't include Debian version in the python module version (LP: #1465549)
-
- -- Zygmunt Krynicki <zygmunt.krynicki@canonical.com>  Fri, 26 Jun 2015 11:03:39 +0200
-
-ufw (0.34~rc-0ubuntu5) vivid; urgency=medium
-
-  * debian/ufw.service: Add missing DefaultDependencies=no to fix ordering
-    cycles.
-
- -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 03 Mar 2015 08:05:29 +0100
-
-ufw (0.34~rc-0ubuntu4) utopic; urgency=medium
-
-  * Install the SysV init and upstart script for both Debian and Ubuntu.
-    Debian has upstart too, and in Ubuntu we need the init script for LSB
-    dependencies and for systemd. (LP: #1341083)
-    - Rename debian/ufw.init.debian to debian/ufw.init
-    - Rename debian/ufw.upstart.ubuntu to debian/ufw.upstart
-    - Remove all the distro specific code from debian/rules and just call
-      dh_installinit.
-  * Drop the distro specific logrotate configs, and use the ubuntu one with
-    "rotate" instead of "reload" everywhere, as Debian's rsyslog init also
-    supports "rotate".
-  * Add a systemd unit:
-    - Add debian/ufw.service
-    - Add dh-systemd build dep.
-    - debian/rulles: Call dh_systemd_{enable,start}.
-
- -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 30 Jul 2014 15:06:25 +0200
-
-ufw (0.34~rc-0ubuntu3) utopic; urgency=medium
-
-  * debian/patches/0005-lp573461.patch: adjust man page for libvirt
-    (LP: #573461)
-  * debian/patches/0006-check-for-newer-py3.patch: tests/check-requirements
-    updated for newer python3
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 May 2014 15:08:08 -0500
-
-ufw (0.34~rc-0ubuntu2) trusty; urgency=medium
-
-  * debian/patches/0002-lp1078665.patch: distinguish between v4 and v6 rules
-    when both addresses are 'any' (LP: #1078665). This can be dropped with
-    0.34 release.
-  * debian/ufw.postinst:
-    - drop old reload of policy for upgrades to 0.30.1-2
-    - add new ufw[6]-track-forward primary chains on upgrade
-  * debian/patches/0003-manpage-hook-path.patch: update locations of hook
-    scripts. This can be dropped with 0.34 release.
-  * debian/patches/0004-add-safe-icmp-to-forward.patch: update before*.rules
-    to add safe icmp to ufw-before-forward. This can be dropped with 0.34
-    release.
-  * debian/before[6].rules.md5sum: adjusted for new release
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 28 Feb 2014 08:59:13 -0600
-
-ufw (0.34~rc-0ubuntu1) trusty; urgency=medium
-
-  * New upstream pre-release (LP: #1059060, #1065297, #1062521, #1101304,
-    LP: #1075975, #1089262, #262421)
-  * Dropped the following patches now included upstream:
+  * New upstream release (LP: #1434525, LP: #1438647, LP: #1155292,
+    Closes: 792753). Drop following patches included upstream:
     - 0002-lp1044361.patch
     - 0003-fix-typeerror-on-error.patch
     - 0004-lp1039729.patch
     - 0005-lp1191197.patch
-  * Remaining changes:
-    - 0001-optimize-boot.patch: only read in /etc/ufw/ufw.conf when disabled
-  * debian/before[6].rules.md5sum: adjusted for new release
-  * debian/control: update Standards-Version to 3.9.5
-  * debian/rules:
-    - only ship /usr/share/ufw/iptables/*rules and not /usr/share/ufw/
-    - *.init files should also be config files
-  * debian/ufw.links: added to makes symlinks from /usr/share/ufw/iptables/*
-    to /usr/share/ufw/ (so ucf is happy on upgrades)
-  * debian/ufw.postinst:
-    - use TEMPLATE_PATH/iptables/*rules instead of TEMPLATE_PATH/*rules (not
-      strictly required since we are using dh_link, but makes the intent
-      clearer)
-    - copy /usr/share/ufw/*.init in to /etc/ufw
+  * Merge in Ubuntu packaging:
+    - debian/ufw.postinst:
+      + drop old reload of policy for upgrades to 0.30.1-2
+      + add new ufw[6]-track-forward primary chains on upgrade
+    - Install the SysV init and upstart script for both Debian and Ubuntu.
+      Debian has upstart too, and in Ubuntu we need the init script for LSB
+      dependencies and for systemd. (LP: #1341083)
+      + Rename debian/ufw.init.debian to debian/ufw.init
+      + Rename debian/ufw.upstart.ubuntu to debian/ufw.upstart
+      + Remove all the distro specific code from debian/rules and just call
+        dh_installinit (thus removing lsb-release from Build-Depends-Indep).
+    - Drop the distro specific logrotate configs, and use the ubuntu one with
+      "rotate" instead of "reload" everywhere, as Debian's rsyslog init also
+      supports "rotate".
+    - Add a systemd unit:
+      + Add debian/ufw.service
+      + Add dh-systemd build dep.
+      + debian/rulles: Call dh_systemd_{enable,start}.
+    - Don't include Debian version in the python module version (LP: #1465549)
+  * debian/copyright: follow copyright-format/1.0
+  * debian/po/pt_BR.po: add Brazilian Portuguese of debconf templates. Thanks
+    to Adriano Rafael Gomes (Closes: 770453)
+  * update debian/before[6].rules.md5sum
+  * debian/ufw.lintian-overrides:
+    - usr/share/ufw/after.init and before.init are intentionally not
+      executable
+    - we intentionally do not stop the firewall with init.d script
+  * debian/control: Build-Depends-Indep on procps (needed by testsuite for
+    sysctl)
+  * debian/ufw.dirs, debian/rules: copy bash completions to
+    /usr/share/bash-completion/completions
+  * debian/rules: run 'make clean' after running the testsuite since the
+    testsuite creates a build/ directory not that would be reused
+  * debian/ufw.postrm: remove after.init and before.init on purge
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Feb 2014 09:23:54 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2015 08:34:19 -0500
 
 ufw (0.33-2) unstable; urgency=low
 

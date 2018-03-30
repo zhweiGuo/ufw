@@ -40,6 +40,9 @@ install: build
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	./run_tests.sh -i $(PYTHON2)
 	./run_tests.sh -i $(PYTHON)
+	# the testsuite creates the build/ directory with test values that we
+	# don't want to use
+	make clean
 endif
 
 	$(PYTHON2) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
@@ -56,7 +59,7 @@ endif
 	dh_link
 
 	# Rename and install the shell-completion file
-	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/etc/bash_completion.d/ufw
+	cp $(CURDIR)/shell-completion/bash $(CURDIR)/debian/ufw/usr/share/bash-completion/completions/ufw
 
 binary-arch: build
 

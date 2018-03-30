@@ -1,4 +1,3 @@
-etc/bash_completion.d
 etc/default
 etc/init.d
 etc/logrotate.d
@@ -6,6 +5,7 @@ etc/rsyslog.d
 etc/ufw/applications.d/
 lib/ufw
 usr/sbin
+usr/share/bash-completion/completions
 usr/share/doc/ufw
 usr/share/man/man8
 usr/share/lintian/overrides
