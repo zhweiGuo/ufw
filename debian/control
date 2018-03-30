@@ -41,6 +41,8 @@ Depends:
  ${python:Depends},
  ${misc:Depends}
 XB-Python-Version: ${python:Versions}
+Breaks: ufw (<< 0.32-0ubuntu1)
+Replaces: ufw (<< 0.32-0ubuntu1)
 Description: Uncomplicated FireWall Python modules
  The Uncomplicated FireWall is a front-end for iptables, to make managing a
  Netfilter firewall easier. This package includes the Python modules for the

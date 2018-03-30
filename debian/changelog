@@ -1,3 +1,10 @@
+ufw (0.33-2) unstable; urgency=low
+
+  * debian/control: python-ufw should Breaks/Replaces on ufw << 0.32-0ubuntu1
+    (Closes: 731863)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 10 Dec 2013 10:44:48 -0600
+
 ufw (0.33-1) unstable; urgency=low
 
   * New upstream release (Closes: 711711, Closes: 691135, Closes: 704728).
