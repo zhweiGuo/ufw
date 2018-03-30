@@ -1,6 +1,6 @@
 '''backend_iptables.py: iptables backend for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2016 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -23,31 +23,32 @@ import sys
 import time
 
 from ufw.common import UFWError, UFWRule
-from ufw.util import warn, debug, msg, cmd, cmd_pipe
+from ufw.util import warn, debug, msg, cmd, cmd_pipe, _findpath
 import ufw.backend
 
 
 class UFWBackendIptables(ufw.backend.UFWBackend):
     '''Instance class for UFWBackend'''
-    def __init__(self, dryrun):
+    def __init__(self, dryrun, rootdir=None, datadir=None):
         '''UFWBackendIptables initialization'''
         self.comment_str = "# " + ufw.common.programName + "_comment #"
+        self.rootdir = rootdir
+        self.datadir = datadir
 
         files = {}
-        files['rules'] = os.path.join(ufw.common.state_dir, 'user.rules')
-        files['before_rules'] = os.path.join(ufw.common.config_dir,
-                                             'ufw/before.rules')
-        files['after_rules'] = os.path.join(ufw.common.config_dir,
-                                            'ufw/after.rules')
-        files['rules6'] = os.path.join(ufw.common.state_dir,
-                                       'user6.rules')
-        files['before6_rules'] = os.path.join(ufw.common.config_dir,
-                                              'ufw/before6.rules')
-        files['after6_rules'] = os.path.join(ufw.common.config_dir,
-                                             'ufw/after6.rules')
-        files['init'] = os.path.join(ufw.common.state_dir, 'ufw-init')
+        config_dir = _findpath(ufw.common.config_dir, datadir)
+        state_dir = _findpath(ufw.common.state_dir, datadir)
 
-        ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files)
+        files['rules'] = os.path.join(config_dir, 'ufw/user.rules')
+        files['before_rules'] = os.path.join(config_dir, 'ufw/before.rules')
+        files['after_rules'] = os.path.join(config_dir, 'ufw/after.rules')
+        files['rules6'] = os.path.join(config_dir, 'ufw/user6.rules')
+        files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
+        files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
+        files['init'] = os.path.join(_findpath(state_dir, rootdir), 'ufw-init')
+
+        ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files,
+                                        rootdir=rootdir, datadir=datadir)
 
         self.chains = {'before': [], 'user': [], 'after': [], 'misc': []}
         for ver in ['4', '6']:
@@ -412,10 +413,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if r.direction == "in" and not r.forward and \
                not verbose and not show_count:
                 dir_str = ""
-            tmp_str += "%-26s %-12s%s%s\n" % (location['dst'], \
-                                             " ".join([r.action.upper(), \
-                                                       dir_str]), \
-                                             location['src'], attrib_str)
+
+            comment_str = ""
+            if r.comment != "":
+                comment_str = " # %s" % r.get_comment()
+            tmp_str += "%-26s %-12s%-26s%s%s\n" % (location['dst'], \
+                                                " ".join([r.action.upper(), \
+                                                          dir_str]), \
+                                                location['src'], attrib_str,
+                                                comment_str)
 
             # Show the list in the order given if a numbered list, otherwise
             # split incoming and outgoing rules
@@ -483,7 +489,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
-            (rc, out) = cmd([self.files['init'], 'force-stop'])
+            args = []
+            args.append(self.files['init'])
+            if self.rootdir is not None and self.datadir is not None:
+                args.append('--rootdir')
+                args.append(self.rootdir)
+                args.append('--datadir')
+                args.append(self.datadir)
+            args.append('force-stop')
+            (rc, out) = cmd(args)
             if rc != 0:
                 err_msg = _("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
@@ -493,7 +507,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
-            (rc, out) = cmd([self.files['init'], 'start'])
+            args = []
+            args.append(self.files['init'])
+            if self.rootdir is not None and self.datadir is not None:
+                args.append('--rootdir')
+                args.append(self.rootdir)
+                args.append('--datadir')
+                args.append(self.datadir)
+            args.append('start')
+            (rc, out) = cmd(args)
             if rc != 0:
                 err_msg = _("problem running ufw-init\n%s" % out)
                 raise UFWError(err_msg)
@@ -671,7 +693,15 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             pat_tuple = re.compile(r'^### tuple ###\s*')
             pat_iface_in = re.compile(r'in_\w+')
             pat_iface_out = re.compile(r'out_\w+')
-            for line in orig:
+            for orig_line in orig:
+                line = orig_line
+
+                comment = ""
+                # comment= should always be last, so just strip it out
+                if ' comment=' in orig_line:
+                    line, hex = orig_line.split(r' comment=')
+                    comment = hex.strip()
+
                 if pat_tuple.match(line):
                     tupl = pat_tuple.sub('', line)
                     tmp = re.split(r'\s+', tupl.strip())
@@ -711,16 +741,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         try:
                             action = tmp[0]
                             forward = False
-                            # route rules use 'route:<action> ...' 
+                            # route rules use 'route:<action> ...'
                             if ':' in action:
                                 forward = True
                                 action = action.split(':')[1]
                             if len(tmp) < 8:
                                 rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype, forward)
+                                               tmp[4], tmp[5], dtype, forward,
+                                               comment)
                             else:
                                 rule = UFWRule(action, tmp[1], tmp[2], tmp[3],
-                                               tmp[4], tmp[5], dtype, forward)
+                                               tmp[4], tmp[5], dtype, forward,
+                                               comment)
                                 # Removed leading [sd]app_ and unescape spaces
                                 pat_space = re.compile('%20')
                                 if tmp[6] != "-":
@@ -842,6 +874,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s" % \
                      (action, r.protocol, r.dport, r.dst, r.sport, r.src,
                       ifaces)
+                if r.comment != '':
+                    tstr += " comment=%s" % r.comment
                 ufw.util.write_to_file(fd, tstr + "\n")
             else:
                 pat_space = re.compile(' ')
@@ -854,6 +888,8 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 tstr = "\n### tuple ### %s %s %s %s %s %s %s %s %s" % \
                        (action, r.protocol, r.dport, r.dst, r.sport, r.src, \
                         dapp, sapp, ifaces)
+                if r.comment != '':
+                    tstr += " comment=%s" % r.comment
                 ufw.util.write_to_file(fd, tstr + "\n")
 
             chain_suffix = "input"
@@ -1009,6 +1045,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 found = True
                 if not rule.remove:
                     newrules.append(rule.dup_rule())
+            elif ret == -2 and rule.remove and rule.comment == '':
+                # Allow removing a rule if the comment is empty
+                found = True
             elif ret < 0 and not rule.remove and not inserted:
                 # If only the action is different, replace the rule if it's not
                 # to be removed.
@@ -1330,13 +1369,14 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
     def reset(self):
         '''Reset the firewall'''
         res = ""
+        share_dir = _findpath(ufw.common.share_dir, self.rootdir)
         # First make sure we have all the original files
         allfiles = []
         for i in self.files:
             if not self.files[i].endswith('.rules'):
                 continue
             allfiles.append(self.files[i])
-            fn = os.path.join(ufw.common.share_dir, "iptables", \
+            fn = os.path.join(share_dir, "iptables", \
                               os.path.basename(self.files[i]))
             if not os.path.isfile(fn):
                 err_msg = _("Could not find '%s'. Aborting") % (fn)
@@ -1364,7 +1404,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         # Copy files into place
         for i in allfiles:
             old = "%s.%s" % (i, ext)
-            shutil.copy(os.path.join(ufw.common.share_dir, "iptables", \
+            shutil.copy(os.path.join(share_dir, "iptables", \
                                      os.path.basename(i)), \
                         os.path.dirname(i))
             shutil.copymode(old, i)

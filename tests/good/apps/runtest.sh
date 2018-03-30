@@ -123,13 +123,13 @@ do_cmd "0" null allow Apache
 do_cmd "0" null allow Bind9
 do_cmd "0" null insert 1 allow Samba
 do_cmd "0" null insert 2 reject 'Dovecot POP3'
-cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" null delete allow Apache
 do_cmd "0" null delete allow Bind9
 do_cmd "0" null delete allow Samba
 do_cmd "0" null delete reject 'Dovecot POP3'
-cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" null allow Samba
 do_cmd "0" null allow 22
@@ -138,7 +138,7 @@ do_cmd "0" null insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 to any app Samba
 do_cmd "0" null insert 2 allow from 192.168.0.1 app Samba to 10.0.0.1
 do_cmd "0" null insert 2 allow from any app Samba to 10.0.0.1
-cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" null delete allow Samba
 do_cmd "0" null delete allow 22
@@ -147,7 +147,7 @@ do_cmd "0" null delete allow from 192.168.0.1 to 10.0.0.1 app Samba
 do_cmd "0" null delete allow from 192.168.0.1 to any app Samba
 do_cmd "0" null delete allow from 192.168.0.1 app Samba to 10.0.0.1
 do_cmd "0" null delete allow from any app Samba to 10.0.0.1
-cat $TESTSTATE/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 echo "TESTING APPLICATION INTEGRATION (interfaces)" >> $TESTTMP/result
 for i in "in" "out" ; do
@@ -155,22 +155,22 @@ for i in "in" "out" ; do
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 app Samba
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 app Samba
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 to any app Samba
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 app Samba
         do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 app Samba
         do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 to any app Samba
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
     done
     do_cmd "0" null allow $i on eth0 to any app Samba
     do_cmd "0" null allow $i on eth1 to any port 22
     do_cmd "0" null insert 2 allow $i on eth2 to any app Samba
-    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
     do_cmd "0" null delete allow $i on eth0 to any app Samba
     do_cmd "0" null delete allow $i on eth1 to any port 22
     do_cmd "0" null delete allow $i on eth2 to any app Samba
-    cat $TESTSTATE/user.rules >> $TESTTMP/result
+    cat $TESTCONFIG/user.rules >> $TESTTMP/result
 done
 
 echo "TESTING SHIPPED APPLICATION PROFILES" >> $TESTTMP/result

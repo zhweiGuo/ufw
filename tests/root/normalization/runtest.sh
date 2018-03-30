@@ -20,53 +20,53 @@ do_cmd "0" nostats enable
 echo "TESTING EQUIVALENT PORTS" >> $TESTTMP/result
 do_cmd "0" http-or-www allow http
 do_cmd "0" delete allow 80/tcp
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow 80/tcp
 do_cmd "0" http-or-www delete allow http
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" http-or-www allow http
 do_cmd "0" delete allow to any port 80 proto tcp
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow to any port 80 proto tcp
 do_cmd "0" http-or-www delete allow http
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow 80/tcp
 do_cmd "0" delete allow to any port 80 proto tcp
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow to any port 80 proto tcp
 do_cmd "0" delete allow 80/tcp
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 
 echo "TESTING EQUIVALENT NETMASKS (HOST)" >> $TESTTMP/result
 do_cmd "0" allow from 192.168.0.1/255.255.255.255
 do_cmd "0" delete allow from 192.168.0.1
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow from 192.168.0.1/255.255.255.255
 do_cmd "0" delete allow from 192.168.0.1/32
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow from 192.168.0.1
 do_cmd "0" delete allow from 192.168.0.1/32
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow from 192.168.0.1
 do_cmd "0" delete allow from 192.168.0.1/255.255.255.255
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow from 192.168.0.1/32
 do_cmd "0" delete allow from 192.168.0.1
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 do_cmd "0" allow from 192.168.0.1/32
 do_cmd "0" delete allow from 192.168.0.1/255.255.255.255
-grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
 
 echo "TESTING EQUIVALENT NETMASKS (NETWORK)" >> $TESTTMP/result
@@ -85,11 +85,11 @@ for i in 255 254 252 248 240 224 192 128 255 254 252 248 240 224 192 128 255 254
 
     do_cmd "0" allow from 192.168.0.0/$mask
     do_cmd "0" delete allow from 192.168.0.0/$cidr
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
     do_cmd "0" allow from 192.168.0.0/$cidr
     do_cmd "0" delete allow from 192.168.0.0/$mask
-    grep -A2 "tuple" $TESTSTATE/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
     cidr=$((cidr-1))
 done

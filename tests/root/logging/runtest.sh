@@ -32,8 +32,8 @@ for i in allow deny limit reject ; do
         do_cmd "0" nostats $i $j Samba
         do_cmd "0" nostats $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
-        cat $TESTSTATE/user6.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
         iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
         ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
@@ -50,14 +50,14 @@ for i in allow deny limit reject ; do
         do_cmd "0" nostats delete $i $j Samba
         do_cmd "0" nostats delete $i $j from $from to $to port smtp
         echo "contents of user*.rules:" >> $TESTTMP/result
-        cat $TESTSTATE/user.rules >> $TESTTMP/result
-        cat $TESTSTATE/user6.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user.rules >> $TESTTMP/result
+        cat $TESTCONFIG/user6.rules >> $TESTTMP/result
     done
 done
 
 echo "contents of user*.rules:" >> $TESTTMP/result
-cat $TESTSTATE/user.rules >> $TESTTMP/result
-cat $TESTSTATE/user6.rules >> $TESTTMP/result
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 echo "Verify iptables-restore headers" >> $TESTTMP/result
 for ipv6 in yes no ; do

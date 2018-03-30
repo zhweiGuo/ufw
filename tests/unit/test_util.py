@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 #
-# Copyright 2012-2013 Canonical Ltd.
+# Copyright 2012-2016 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -936,10 +937,13 @@ AAA
 
     def test_parse_netstat_output(self):
         '''Test parse_netstat_output()'''
+        min_out = 1
+        if not tests.unit.support.has_proc_net_output():
+            min_out = 0
         s = ufw.util.parse_netstat_output(False)
-        self.assertTrue(len(s) > 0)
+        self.assertTrue(len(s) >= min_out)
         s = ufw.util.parse_netstat_output(True)
-        self.assertTrue(len(s) > 0)
+        self.assertTrue(len(s) >= min_out)
 
     def test_get_ip_from_if(self):
         '''Test get_ip_from_if()'''
@@ -1014,6 +1018,23 @@ AAA
         if "udp" not in s:
             print("(TODO: fake-netstat) could not find udp in:\n%s" % s)
 
+    def test_hex_encode(self):
+        '''Test hex_encode() output'''
+        s = 'foo👍bar字baz'
+        expected = '666f6ff09f918d626172e5ad9762617a'
+
+        result = ufw.util.hex_encode(s)
+        self.assertEquals(expected, result)
+
+    def test_hex_decode(self):
+        '''Test hex_decode() output'''
+        s = '666f6ff09f918d626172e5ad9762617a'
+        expected = 'foo👍bar字baz'
+        if sys.version_info[0] < 3:
+            expected = u'foo👍bar字baz'
+
+        result = ufw.util.hex_decode(s)
+        self.assertEquals(expected, result)
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(

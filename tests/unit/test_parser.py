@@ -1,5 +1,5 @@
 #
-# Copyright 2013 Canonical Ltd.
+# Copyright 2013-2016 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -15,6 +15,7 @@
 #
 
 import re
+import sys
 import unittest
 import tests.unit.support
 import ufw.parser
@@ -188,14 +189,19 @@ class ParserTestCase(unittest.TestCase):
 
             # First, feed the res rule into parse() (we need to split the
             # string but preserve quoted substrings
-            test_cmd = [cmd[0]] + \
-                       [p.strip("'") for p in re.split("( |'.*?')",
-                                                       res) if p.strip()]
+            if sys.version_info[0] < 3:
+                test_cmd = [cmd[0]] + \
+                           [p.strip("'").encode('utf-8') for p in re.split("( |'.*?')",
+                                                           res) if p.strip()]
+            else:
+                test_cmd = [cmd[0]] + \
+                           [p.strip("'") for p in re.split("( |'.*?')",
+                                                           res) if p.strip()]
             try:
                 self.parser.parse_command(test_cmd + [])
-            except Exception:
+            except ufw.common.UFWError:
                 self.assertTrue(False,
-                                "get_comand() returned invalid rule:\n" + \
+                                "get_command() returned invalid rule:\n" + \
                                 " orig=%s\n pr.data['rule']=%s\n result=%s" % \
                                 (cmd, pr.data['rule'], test_cmd))
 
@@ -215,6 +221,14 @@ class ParserTestCase(unittest.TestCase):
             # Note, cmd_compare contains the rules we get from
             # tests.unit.support.get_sample_rule_commands*
             cmd_compare = []
+            comment = ""  # store off command so we can add it at the end after
+                          # the massaging
+            if 'comment' in cmd:
+                comment_idx = cmd.index('comment')
+                comment = cmd[comment_idx + 1]
+                del cmd[comment_idx + 1]
+                del cmd[comment_idx]
+
             for i in cmd:
                 if ' ' in i:  # quote anything with a space for comparisons
                     cmd_compare.append("'%s'" % i)
@@ -332,9 +346,20 @@ class ParserTestCase(unittest.TestCase):
                    cmd_compare[tmp_in_idx] = 'out'
                    cmd_compare[tmp_in_idx + 2] = tmp_outif
 
-            if "%s %s" % (cmd[0], res) != " ".join(cmd_compare):
+            # add comment back
+            if comment != "":
+                cmd_compare.append('comment')
+                compare_str = " ".join(cmd_compare)
+                if sys.version_info[0] < 3:
+                    compare_str += " '%s'" % comment.decode('utf-8')
+                else:
+                    compare_str += " '%s'" % comment
+                cmd_compare.append(comment)
+            else:
+                compare_str = " ".join(cmd_compare)
+            if "%s %s" % (cmd[0], res) != compare_str:
                 errors.append(" \"%s %s\" != \"%s\" (orig=%s)" % (cmd[0], res,
-                    " ".join(cmd_compare), cmd))
+                    compare_str, cmd))
 
             #print("Result: rule %s" % res)
 
@@ -559,6 +584,13 @@ class ParserTestCase(unittest.TestCase):
 
         c = ['rule', 'allow', 5, '22']
         tests.unit.support.check_for_exception(self, AttributeError, \
+                                               self.parser.parse_command,
+                                               c)
+
+    def test_route_delete_num(self):
+        '''Test route delete NUM'''
+        c = ['route', 'delete', '1']
+        tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
                                                self.parser.parse_command,
                                                c)
 

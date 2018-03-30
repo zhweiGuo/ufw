@@ -11,11 +11,28 @@ WARN: Checks disabled
 Logging enabled
 
 
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
 3: logging off
 WARN: Checks disabled
 Logging disabled
 
 
+### LOGGING ###
+### END LOGGING ###
+### LOGGING ###
+### END LOGGING ###
 TESTING ARGS (allow/deny to/from)
 4: allow 53
 WARN: Checks disabled
@@ -93,23 +110,23 @@ Status: active
 
 To                         Action      From
 --                         ------      ----
-53                         ALLOW       Anywhere
-23/tcp                     ALLOW       Anywhere
-25/tcp                     ALLOW       Anywhere
-80/tcp                     DENY        Anywhere
-192.168.0.1 25/tcp         DENY        10.0.0.0/8
-Anywhere                   ALLOW       10.0.0.0/8
-Anywhere                   ALLOW       172.16.0.0/12
-Anywhere                   ALLOW       192.168.0.0/16
-514/udp                    DENY        1.2.3.4
-1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp
-22/tcp                     LIMIT       Anywhere
-53 (v6)                    ALLOW       Anywhere (v6)
-23/tcp (v6)                ALLOW       Anywhere (v6)
-25/tcp (v6)                ALLOW       Anywhere (v6)
-80/tcp (v6)                DENY        Anywhere (v6)
-25/tcp                     DENY        2001:db8::/32
-2001:db8:3:4:5:6:7:8       DENY        2001:db8::/32 26
+53                         ALLOW       Anywhere                  
+23/tcp                     ALLOW       Anywhere                  
+25/tcp                     ALLOW       Anywhere                  
+80/tcp                     DENY        Anywhere                  
+192.168.0.1 25/tcp         DENY        10.0.0.0/8                
+Anywhere                   ALLOW       10.0.0.0/8                
+Anywhere                   ALLOW       172.16.0.0/12             
+Anywhere                   ALLOW       192.168.0.0/16            
+514/udp                    DENY        1.2.3.4                   
+1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp          
+22/tcp                     LIMIT       Anywhere                  
+53 (v6)                    ALLOW       Anywhere (v6)             
+23/tcp (v6)                ALLOW       Anywhere (v6)             
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+80/tcp (v6)                DENY        Anywhere (v6)             
+25/tcp                     DENY        2001:db8::/32             
+2001:db8:3:4:5:6:7:8       DENY        2001:db8::/32 26          
 
 
 
@@ -255,11 +272,24 @@ WARN: Checks disabled
 Logging enabled
 
 
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+### LOGGING ###
+### END LOGGING ###
 35: logging off
 WARN: Checks disabled
 Logging disabled
 
 
+### LOGGING ###
+### END LOGGING ###
+### LOGGING ###
+### END LOGGING ###
 TESTING ARGS (allow/deny to/from)
 36: allow 53
 WARN: Checks disabled
@@ -322,17 +352,17 @@ Status: active
 
 To                         Action      From
 --                         ------      ----
-53                         ALLOW       Anywhere
-23/tcp                     ALLOW       Anywhere
-25/tcp                     ALLOW       Anywhere
-80/tcp                     DENY        Anywhere
-192.168.0.1 25/tcp         DENY        10.0.0.0/8
-Anywhere                   ALLOW       10.0.0.0/8
-Anywhere                   ALLOW       172.16.0.0/12
-Anywhere                   ALLOW       192.168.0.0/16
-514/udp                    DENY        1.2.3.4
-1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp
-22/tcp                     LIMIT       Anywhere
+53                         ALLOW       Anywhere                  
+23/tcp                     ALLOW       Anywhere                  
+25/tcp                     ALLOW       Anywhere                  
+80/tcp                     DENY        Anywhere                  
+192.168.0.1 25/tcp         DENY        10.0.0.0/8                
+Anywhere                   ALLOW       10.0.0.0/8                
+Anywhere                   ALLOW       172.16.0.0/12             
+Anywhere                   ALLOW       192.168.0.0/16            
+514/udp                    DENY        1.2.3.4                   
+1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp          
+22/tcp                     LIMIT       Anywhere                  
 
 
 
@@ -473,12 +503,12 @@ Status: active
 
 To                         Action      From
 --                         ------      ----
-113                        REJECT      Anywhere
-114/tcp                    REJECT      Anywhere
-115/udp                    REJECT      Anywhere
-113 (v6)                   REJECT      Anywhere (v6)
-114/tcp (v6)               REJECT      Anywhere (v6)
-115/udp (v6)               REJECT      Anywhere (v6)
+113                        REJECT      Anywhere                  
+114/tcp                    REJECT      Anywhere                  
+115/udp                    REJECT      Anywhere                  
+113 (v6)                   REJECT      Anywhere (v6)             
+114/tcp (v6)               REJECT      Anywhere (v6)             
+115/udp (v6)               REJECT      Anywhere (v6)             
 
 
 
@@ -553,9 +583,9 @@ Status: active
 
 To                         Action      From
 --                         ------      ----
-113                        REJECT      Anywhere
-114/tcp                    REJECT      Anywhere
-115/udp                    REJECT      Anywhere
+113                        REJECT      Anywhere                  
+114/tcp                    REJECT      Anywhere                  
+115/udp                    REJECT      Anywhere                  
 
 
 
@@ -689,23 +719,23 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] 53                         ALLOW IN    Anywhere
-[ 2] 23/tcp                     ALLOW IN    Anywhere
-[ 3] 25/tcp                     ALLOW IN    Anywhere
-[ 4] 80/tcp                     DENY IN     Anywhere
-[ 5] 192.168.0.1 25/tcp         DENY IN     10.0.0.0/8
-[ 6] Anywhere                   ALLOW IN    10.0.0.0/8
-[ 7] Anywhere                   ALLOW IN    172.16.0.0/12
-[ 8] Anywhere                   ALLOW IN    192.168.0.0/16
-[ 9] 514/udp                    DENY IN     1.2.3.4
-[10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp
-[11] 22/tcp                     LIMIT IN    Anywhere
-[12] 53 (v6)                    ALLOW IN    Anywhere (v6)
-[13] 23/tcp (v6)                ALLOW IN    Anywhere (v6)
-[14] 25/tcp (v6)                ALLOW IN    Anywhere (v6)
-[15] 80/tcp (v6)                DENY IN     Anywhere (v6)
-[16] 25/tcp                     DENY IN     2001:db8::/32
-[17] 2001:db8:3:4:5:6:7:8       DENY IN     2001:db8::/32 26
+[ 1] 53                         ALLOW IN    Anywhere                  
+[ 2] 23/tcp                     ALLOW IN    Anywhere                  
+[ 3] 25/tcp                     ALLOW IN    Anywhere                  
+[ 4] 80/tcp                     DENY IN     Anywhere                  
+[ 5] 192.168.0.1 25/tcp         DENY IN     10.0.0.0/8                
+[ 6] Anywhere                   ALLOW IN    10.0.0.0/8                
+[ 7] Anywhere                   ALLOW IN    172.16.0.0/12             
+[ 8] Anywhere                   ALLOW IN    192.168.0.0/16            
+[ 9] 514/udp                    DENY IN     1.2.3.4                   
+[10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp          
+[11] 22/tcp                     LIMIT IN    Anywhere                  
+[12] 53 (v6)                    ALLOW IN    Anywhere (v6)             
+[13] 23/tcp (v6)                ALLOW IN    Anywhere (v6)             
+[14] 25/tcp (v6)                ALLOW IN    Anywhere (v6)             
+[15] 80/tcp (v6)                DENY IN     Anywhere (v6)             
+[16] 25/tcp                     DENY IN     2001:db8::/32             
+[17] 2001:db8:3:4:5:6:7:8       DENY IN     2001:db8::/32 26          
 
 
 
@@ -852,17 +882,17 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] 53                         ALLOW IN    Anywhere
-[ 2] 23/tcp                     ALLOW IN    Anywhere
-[ 3] 25/tcp                     ALLOW IN    Anywhere
-[ 4] 80/tcp                     DENY IN     Anywhere
-[ 5] 192.168.0.1 25/tcp         DENY IN     10.0.0.0/8
-[ 6] Anywhere                   ALLOW IN    10.0.0.0/8
-[ 7] Anywhere                   ALLOW IN    172.16.0.0/12
-[ 8] Anywhere                   ALLOW IN    192.168.0.0/16
-[ 9] 514/udp                    DENY IN     1.2.3.4
-[10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp
-[11] 22/tcp                     LIMIT IN    Anywhere
+[ 1] 53                         ALLOW IN    Anywhere                  
+[ 2] 23/tcp                     ALLOW IN    Anywhere                  
+[ 3] 25/tcp                     ALLOW IN    Anywhere                  
+[ 4] 80/tcp                     DENY IN     Anywhere                  
+[ 5] 192.168.0.1 25/tcp         DENY IN     10.0.0.0/8                
+[ 6] Anywhere                   ALLOW IN    10.0.0.0/8                
+[ 7] Anywhere                   ALLOW IN    172.16.0.0/12             
+[ 8] Anywhere                   ALLOW IN    192.168.0.0/16            
+[ 9] 514/udp                    DENY IN     1.2.3.4                   
+[10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp          
+[11] 22/tcp                     LIMIT IN    Anywhere                  
 
 
 
@@ -1001,20 +1031,20 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere on eth1           ALLOW IN    Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
-[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
-[ 8] Anywhere on eth0           ALLOW IN    Anywhere (log)
-[ 9] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
-[10] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
-[11] Samba on eth0              ALLOW IN    Anywhere
-[12] Anywhere (v6) on eth1      ALLOW IN    Anywhere (v6)
-[13] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6) (log)
-[14] Samba (v6) on eth0         ALLOW IN    Anywhere (v6)
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere                  
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere                  
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80               
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1                  
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1                  
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80               
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80               
+[ 8] Anywhere on eth0           ALLOW IN    Anywhere                   (log)
+[ 9] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1                (log)
+[10] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1                (log-all)
+[11] Samba on eth0              ALLOW IN    Anywhere                  
+[12] Anywhere (v6) on eth1      ALLOW IN    Anywhere (v6)             
+[13] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6)              (log)
+[14] Samba (v6) on eth0         ALLOW IN    Anywhere (v6)             
 
 
 
@@ -1030,22 +1060,22 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere on eth1           ALLOW IN    Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
-[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
-[ 8] Samba on eth2              ALLOW IN    Anywhere
-[ 9] Anywhere on eth0           ALLOW IN    Anywhere (log)
-[10] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
-[11] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
-[12] Samba on eth0              ALLOW IN    Anywhere
-[13] Anywhere (v6) on eth1      ALLOW IN    Anywhere (v6)
-[14] Samba (v6) on eth2         ALLOW IN    Anywhere (v6)
-[15] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6) (log)
-[16] Samba (v6) on eth0         ALLOW IN    Anywhere (v6)
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere                  
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere                  
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80               
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1                  
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1                  
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80               
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80               
+[ 8] Samba on eth2              ALLOW IN    Anywhere                  
+[ 9] Anywhere on eth0           ALLOW IN    Anywhere                   (log)
+[10] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1                (log)
+[11] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1                (log-all)
+[12] Samba on eth0              ALLOW IN    Anywhere                  
+[13] Anywhere (v6) on eth1      ALLOW IN    Anywhere (v6)             
+[14] Samba (v6) on eth2         ALLOW IN    Anywhere (v6)             
+[15] Anywhere (v6) on eth0      ALLOW IN    Anywhere (v6)              (log)
+[16] Samba (v6) on eth0         ALLOW IN    Anywhere (v6)             
 
 
 
@@ -1256,20 +1286,20 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
-[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
-[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
-[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
-[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
-[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 8] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
-[ 9] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
-[10] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
-[11] Samba                      ALLOW OUT   Anywhere on eth0 (out)
-[12] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth1 (out)
-[13] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth0 (log, out)
-[14] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth0 (out)
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1           (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1           (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1           (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1           (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1        (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 8] Anywhere                   ALLOW OUT   Anywhere on eth0           (log, out)
+[ 9] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0        (log, out)
+[10] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0        (log-all, out)
+[11] Samba                      ALLOW OUT   Anywhere on eth0           (out)
+[12] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth1      (out)
+[13] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth0      (log, out)
+[14] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth0      (out)
 
 
 
@@ -1285,22 +1315,22 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
-[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
-[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
-[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
-[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
-[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 8] Samba                      ALLOW OUT   Anywhere on eth2 (out)
-[ 9] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
-[10] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
-[11] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
-[12] Samba                      ALLOW OUT   Anywhere on eth0 (out)
-[13] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth1 (out)
-[14] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth2 (out)
-[15] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth0 (log, out)
-[16] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth0 (out)
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1           (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1           (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1           (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1           (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1        (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 8] Samba                      ALLOW OUT   Anywhere on eth2           (out)
+[ 9] Anywhere                   ALLOW OUT   Anywhere on eth0           (log, out)
+[10] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0        (log, out)
+[11] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0        (log-all, out)
+[12] Samba                      ALLOW OUT   Anywhere on eth0           (out)
+[13] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth1      (out)
+[14] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth2      (out)
+[15] Anywhere (v6)              ALLOW OUT   Anywhere (v6) on eth0      (log, out)
+[16] Samba (v6)                 ALLOW OUT   Anywhere (v6) on eth0      (out)
 
 
 
@@ -1508,17 +1538,17 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere on eth1           ALLOW IN    Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
-[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
-[ 8] Anywhere on eth0           ALLOW IN    Anywhere (log)
-[ 9] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
-[10] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
-[11] Samba on eth0              ALLOW IN    Anywhere
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere                  
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere                  
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80               
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1                  
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1                  
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80               
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80               
+[ 8] Anywhere on eth0           ALLOW IN    Anywhere                   (log)
+[ 9] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1                (log)
+[10] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1                (log-all)
+[11] Samba on eth0              ALLOW IN    Anywhere                  
 
 
 
@@ -1533,18 +1563,18 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere on eth1           ALLOW IN    Anywhere
-[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere
-[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80
-[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1
-[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1
-[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80
-[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80
-[ 8] Samba on eth2              ALLOW IN    Anywhere
-[ 9] Anywhere on eth0           ALLOW IN    Anywhere (log)
-[10] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1 (log)
-[11] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1 (log-all)
-[12] Samba on eth0              ALLOW IN    Anywhere
+[ 1] Anywhere on eth1           ALLOW IN    Anywhere                  
+[ 2] 192.168.0.1 22 on eth1     REJECT IN   Anywhere                  
+[ 3] Anywhere on eth1           LIMIT IN    10.0.0.1 80               
+[ 4] 192.168.0.1 on eth1        ALLOW IN    10.0.0.1                  
+[ 5] 192.168.0.1 22 on eth1     DENY IN     10.0.0.1                  
+[ 6] 192.168.0.1 on eth1        REJECT IN   10.0.0.1 80               
+[ 7] 192.168.0.1 22 on eth1     LIMIT IN    10.0.0.1 80               
+[ 8] Samba on eth2              ALLOW IN    Anywhere                  
+[ 9] Anywhere on eth0           ALLOW IN    Anywhere                   (log)
+[10] 10.0.0.1 24/tcp on eth0    ALLOW IN    192.168.0.1                (log)
+[11] 10.0.0.1 25/tcp on eth0    DENY IN     192.168.0.1                (log-all)
+[12] Samba on eth0              ALLOW IN    Anywhere                  
 
 
 
@@ -1729,17 +1759,17 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
-[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
-[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
-[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
-[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
-[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 8] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
-[ 9] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
-[10] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
-[11] Samba                      ALLOW OUT   Anywhere on eth0 (out)
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1           (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1           (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1           (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1           (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1        (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 8] Anywhere                   ALLOW OUT   Anywhere on eth0           (log, out)
+[ 9] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0        (log, out)
+[10] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0        (log-all, out)
+[11] Samba                      ALLOW OUT   Anywhere on eth0           (out)
 
 
 
@@ -1754,18 +1784,18 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1 (out)
-[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1 (out)
-[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1 (out)
-[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1 (out)
-[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1 (out)
-[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1 (out)
-[ 8] Samba                      ALLOW OUT   Anywhere on eth2 (out)
-[ 9] Anywhere                   ALLOW OUT   Anywhere on eth0 (log, out)
-[10] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0 (log, out)
-[11] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0 (log-all, out)
-[12] Samba                      ALLOW OUT   Anywhere on eth0 (out)
+[ 1] Anywhere                   ALLOW OUT   Anywhere on eth1           (out)
+[ 2] 192.168.0.1 22             REJECT OUT  Anywhere on eth1           (out)
+[ 3] Anywhere                   LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 4] 192.168.0.1                ALLOW OUT   10.0.0.1 on eth1           (out)
+[ 5] 192.168.0.1 22             DENY OUT    10.0.0.1 on eth1           (out)
+[ 6] 192.168.0.1                REJECT OUT  10.0.0.1 80 on eth1        (out)
+[ 7] 192.168.0.1 22             LIMIT OUT   10.0.0.1 80 on eth1        (out)
+[ 8] Samba                      ALLOW OUT   Anywhere on eth2           (out)
+[ 9] Anywhere                   ALLOW OUT   Anywhere on eth0           (log, out)
+[10] 10.0.0.1 24/tcp            ALLOW OUT   192.168.0.1 on eth0        (log, out)
+[11] 10.0.0.1 25/tcp            DENY OUT    192.168.0.1 on eth0        (log-all, out)
+[12] Samba                      ALLOW OUT   Anywhere on eth0           (out)
 
 
 

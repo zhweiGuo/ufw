@@ -94,5 +94,6 @@ do_cmd "0" --dry-run --force enable
 do_cmd "0" --dry-run -f enable
 do_cmd "0" --dry-run --force ENABLE
 do_cmd "0" --dry-run -f ENABLE
+do_cmd "0" null --dry-run disable
 
 exit 0

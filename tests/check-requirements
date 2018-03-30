@@ -50,7 +50,7 @@ runcmd() {
 # check python
 found_python="no"
 echo -n "Has python: "
-for exe in python2.7 python2.6 python2.5 python3.2 python3.3 python3.4 python python3 ; do
+for exe in python2.7 python2.6 python2.5 python3.2 python3.3 python3.4 python3.5 python python3 ; do
     if ! which $exe >/dev/null 2>&1; then
         continue
     fi
