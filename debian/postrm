@@ -23,21 +23,6 @@ case "$1" in
         done
         rm -f $RULES_PATH/ufw.rules $RULES_PATH/ufw.rules.dpkg-old
         rm -f $USER_PATH/user.rules $USER_PATH/user6.rules
-
-        # go back to default accept, if ufw was enabled
-        if [ -f "$UFW_CONF" ] && grep -qi "^ENABLED=yes" "$UFW_CONF"; then
-            for exe in iptables ip6tables
-            do
-                if which $exe > /dev/null 2>&1; then
-                    $exe -P INPUT ACCEPT 2>/dev/null || true
-                    $exe -P OUTPUT ACCEPT 2>/dev/null || true
-                    $exe -P FORWARD ACCEPT 2>/dev/null || true
-                    $exe -F 2>/dev/null || true
-                    $exe -X 2>/dev/null || true
-                fi
-            done
-        fi
-
         rm -f "$UFW_CONF"
         ;;
 

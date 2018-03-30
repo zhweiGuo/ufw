@@ -1,3 +1,15 @@
+ufw (0.31.1-2) unstable; urgency=low
+
+  * Simplify unload of firewall and play nicely with other firewall tools by
+    using ufw-init instead of iptables directly. 'ufw-init stop' by design
+    leaves a few empty chains around, but they won't get in the way of
+    anything and are gone after the next reboot. Using upstream's ufw-init has
+    the important benefit of always cleaning what it needs. (Closes: 672439).
+    - debian/prerm: call '/lib/ufw/ufw-init stop' on removal
+    - debian/postrm: don't flush the chains on purge
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 20 Jul 2012 15:05:39 -0500
+
 ufw (0.31.1-1) unstable; urgency=low
 
   * New upstream release (Closes: 663677, Closes: 625681)
