@@ -1,3 +1,18 @@
+ufw (0.35-3) unstable; urgency=medium
+
+  * 0002-bug849628.patch: adjust testsuite for recent changes to netbase
+    (Closes: 849628)
+  * 0003-use-default-tcp-syncookies.patch: don't override distribution default
+    for TCP syncookies
+  * 0004-lp1633698.patch: adjust ufw6-before-output rules for echo-reply and
+    echo-request (LP: #1633698)
+  * update debian/before6.rules.md5sum
+  * fix lintian errors:
+    - debian/control: Build-Depends on dh-python and debhelper >= 9
+    - debian/compat: use compatibility level 9
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 08 Jan 2017 16:33:45 +0000
+
 ufw (0.35-2) unstable; urgency=medium
 
   [ Adam Conrad ]
