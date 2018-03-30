@@ -1,3 +1,10 @@
+ufw (0.35-2) unstable; urgency=medium
+
+  [ Adam Conrad ]
+  * Switch the ufw trigger to interest-noawait to avoid trigger loops.
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 May 2016 10:04:46 -0500
+
 ufw (0.35-1) unstable; urgency=medium
 
   * New upstream release (LP: #448503, LP: #728128)

@@ -1,1 +1,1 @@
-interest /etc/ufw/applications.d
+interest-noawait /etc/ufw/applications.d
