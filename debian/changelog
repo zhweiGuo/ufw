@@ -1,3 +1,10 @@
+ufw (0.33-0ubuntu4) saucy; urgency=low
+
+  * debian/patches/0005-lp1191197.patch: add check for -m rt --rt-type 0
+    (LP: #1191197)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 15 Jun 2013 07:48:37 -0500
+
 ufw (0.33-0ubuntu3) raring-proposed; urgency=low
 
   * debian/patches/0004-lp1039729.patch: Skip get_netfilter_capabilities()
