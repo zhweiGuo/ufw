@@ -1,3 +1,22 @@
+ufw (0.34~rc-0ubuntu4) utopic; urgency=medium
+
+  * Install the SysV init and upstart script for both Debian and Ubuntu.
+    Debian has upstart too, and in Ubuntu we need the init script for LSB
+    dependencies and for systemd. (LP: #1341083)
+    - Rename debian/ufw.init.debian to debian/ufw.init
+    - Rename debian/ufw.upstart.ubuntu to debian/ufw.upstart
+    - Remove all the distro specific code from debian/rules and just call
+      dh_installinit.
+  * Drop the distro specific logrotate configs, and use the ubuntu one with
+    "rotate" instead of "reload" everywhere, as Debian's rsyslog init also
+    supports "rotate".
+  * Add a systemd unit:
+    - Add debian/ufw.service
+    - Add dh-systemd build dep.
+    - debian/rulles: Call dh_systemd_{enable,start}.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 30 Jul 2014 15:06:25 +0200
+
 ufw (0.34~rc-0ubuntu3) utopic; urgency=medium
 
   * debian/patches/0005-lp573461.patch: adjust man page for libvirt

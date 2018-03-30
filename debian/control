@@ -6,11 +6,11 @@ Priority: optional
 Maintainer: Jamie Strandboge <jamie@ubuntu.com>
 Build-Depends-Indep:
  iptables,
- lsb-release,
  netbase,
  sed (>= 3.95)
 Build-Depends:
  debhelper (>= 7.3.15ubuntu2),
+ dh-systemd,
  po-debconf,
  python (>= 2.6.6-3~),
  python3 (>= 3.2)

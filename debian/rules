@@ -8,12 +8,6 @@ PYTHON  := /usr/bin/python3
 PYVERS  := $(shell py3versions -vr)
 PYTHON2 := /usr/bin/python2
 PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
-DISTRIB := $(shell lsb_release -i -s)
-
-ifneq (,$(filter $(DISTRIB),Ubuntu))
-  DISTRIB_VERSION_MAJOR := $(shell lsb_release -s -r | cut -d '.' -f 1)
-  DISTRIB_VERSION_MINOR := $(shell lsb_release -s -r | cut -d '.' -f 2)
-endif
 
 build-arch: build-stamp
 
@@ -30,7 +24,6 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 	make clean
-	rm -f $(CURDIR)/debian/ufw.init $(CURDIR)/debian/ufw.upstart $(CURDIR)/debian/ufw.logrotate
 	-find . -name '*.py[co]' | xargs rm -f
 	dh_clean
 	debconf-updatepo
@@ -76,24 +69,9 @@ binary-indep: build install
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
 	dh_install
-
-	: # only use upstart in Ubuntu 9.10 and higher
-	if [ "$(DISTRIB)" != "Ubuntu" ]; then \
-		cp $(CURDIR)/debian/ufw.logrotate.debian $(CURDIR)/debian/ufw.logrotate ; \
-		cp $(CURDIR)/debian/ufw.init.debian $(CURDIR)/debian/ufw.init ; \
-		dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1 ." ; \
-	else \
-		cp $(CURDIR)/debian/ufw.logrotate.ubuntu $(CURDIR)/debian/ufw.logrotate ; \
-		if [ "$(DISTRIB_VERSION_MAJOR)" = "9" ] && \
-			[ "$(DISTRIB_VERSION_MINOR)" = "10" ] || \
-			[ "$(DISTRIB_VERSION_MAJOR)" -gt "9" ]; then \
-			cp $(CURDIR)/debian/ufw.upstart.ubuntu $(CURDIR)/debian/ufw.upstart ; \
-			dh_installinit --no-start --no-restart-on-upgrade ; \
-		else \
-			cp $(CURDIR)/debian/ufw.init.debian $(CURDIR)/debian/ufw.init ; \
-			dh_installinit --no-start --no-restart-on-upgrade --update-rcd-params="start 39 S . stop 39 1 ." ; \
-		fi \
-	fi
+	dh_systemd_enable
+	dh_installinit --no-start --no-restart-on-upgrade
+	dh_systemd_start --no-start --no-restart-on-upgrade
 	dh_installlogrotate
 	dh_installman
 	dh_installdebconf
@@ -113,7 +91,7 @@ binary-indep: build install
 		fi; \
 	done
 	# Don't install profiles on Ubuntu
-	if [ "$(DISTRIB)" = "Ubuntu" ]; then \
+	if dpkg-vendor --is ubuntu; then \
 		rm -f $(CURDIR)/debian/ufw/etc/ufw/applications.d/ufw-* ; \
 	fi
 	dh_python2 -p python-ufw
