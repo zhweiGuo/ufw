@@ -79,6 +79,14 @@ class ParserTestCase(unittest.TestCase):
         pr = c.parse(['status'])
         self.assertEquals('status', pr.action, "%s != 'status'" % (pr.action))
 
+    def test_ufwcommandbasic_parse_with_arg(self):
+        '''Test UFWCommand.parse() - basic with arg'''
+        parser = ufw.parser.UFWParser()
+        c = ufw.parser.UFWCommandBasic('enable')
+        tests.unit.support.check_for_exception(self, ValueError, \
+                                                   c.parse,
+                                                   ['enable', 'OpenSSH'])
+
     def test_ufwparser_response(self):
         '''Test UFWParserResponse.str()'''
         cmd = 'rule allow 22'
@@ -383,9 +391,17 @@ class ParserTestCase(unittest.TestCase):
                 ['rule', 'delete', 'allow', '22'],
                 ['rule', 'deny', 'from', 'any', 'port', 'domain', 'to', \
                  'any', 'port', 'tftp'],
+                ['rule', 'allow', 'to', 'any', 'proto', 'gre'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ipv6'],
-                ['rule', 'deny', 'to', 'any', 'proto', 'esp'],
+                ['rule', 'allow', 'to', 'any', 'proto', 'igmp'],
+                ['rule', 'reject', 'to', 'any', 'proto', 'esp'],
+                ['rule', 'deny', 'to', '224.0.0.1', 'proto', 'igmp'],
+                ['rule', 'deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', \
+                 'proto', 'igmp'],
+                ['rule', 'allow', 'in', 'on', 'eth0', 'to', '192.168.0.1', \
+                 'proto', 'gre'],
                 ['rule', 'deny', 'to', 'any', 'proto', 'ah'],
+                ['rule', 'allow', 'out', 'on', 'br_lan'],
                ]
         count = 0
         for cmd in cmds:
@@ -459,11 +475,17 @@ class ParserTestCase(unittest.TestCase):
                   'proto', 'tcp'], ufw.common.UFWError),
                 (['rule', 'deny', 'to', '::1', 'proto', 'ipv6'],
                  ufw.common.UFWError),
+                (['rule', 'deny', 'to', '::1', 'proto', 'igmp'],
+                 ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ipv6'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'igmp'],
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'esp'],
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'gre'],
                  ufw.common.UFWError),
                 (['rule', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],

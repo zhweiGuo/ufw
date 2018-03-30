@@ -1,4 +1,4 @@
-.TH "UFW FRAMEWORK" "8" "" "October 2011" "October 2011"
+.TH "UFW FRAMEWORK" "8" "" "April 2014" "April 2014"
 
 .SH NAME
 ufw\-framework \- using the ufw framework
@@ -21,10 +21,10 @@ files:
 #STATE_PREFIX#/ufw\-init
 initialization script
 .TP
-#CONFIG_PREFIX#/before.init
+#CONFIG_PREFIX#/ufw/before.init
 initialization customization script run before ufw is initialized
 .TP
-#CONFIG_PREFIX#/after.init
+#CONFIG_PREFIX#/ufw/after.init
 initialization customization script run after ufw is initialized
 .TP
 #CONFIG_PREFIX#/ufw/before[6].rules
@@ -52,7 +52,8 @@ standard SysV style initscript used by the \fBufw\fR command and should not be
 modified. The #CONFIG_PREFIX#/before.init and #CONFIG_PREFIX#/after.init
 scripts may be used to perform any additional firewall configuration that is
 not yet supported in ufw itself and if they exist and are executable, ufw\-init
-will execute these scripts. ufw\-init supports the following arguments:
+will execute these scripts. ufw\-init will exit with error if either of these
+scripts exit with error. ufw\-init supports the following arguments:
 .TP
 start:
 loads the firewall
@@ -237,6 +238,27 @@ Add the necessary \fBufw\fR rules:
  ufw route allow in on eth1 out on eth0 from 10.0.0.0/8
  ufw route allow in on eth0 to 10.0.0.2 port 80 proto tcp
  ufw allow in on eth1 from 10.0.0.100 to any port 22 proto tcp
+
+.SH NOTES
+.PP
+When using ufw with libvirt and bridging, packets may be blocked. The
+libvirt team recommends that the following sysctl's be set to disable netfilter
+on the bridge:
+
+  net.bridge.bridge-nf-call-ip6tables = 0
+  net.bridge.bridge-nf-call-iptables = 0
+  net.bridge.bridge-nf-call-arptables = 0
+
+Note that the bridge module must be loaded in to the kernel before these values
+are set. One way to ensure this works properly with ufw is to add 'bridge' to
+IPT_MODULES in #CONFIG_PREFIX#/default/ufw, and then add the above rules to
+#CONFIG_PREFIX#/ufw/sysctl.conf.
+
+Alternatively to disabling netfilter on the bridge, you can configure iptables
+to allow all traffic to be forwarded across the bridge. Eg, add to
+#CONFIG_PREFIX#/ufw/before.rules within the *filter section:
+
+  -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
 
 .SH SEE ALSO
 .PP

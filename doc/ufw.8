@@ -1,4 +1,4 @@
-.TH UFW: "8" "" "January 2013" "January 2013"
+.TH UFW: "8" "" "July 2015" "July 2015"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -21,11 +21,11 @@ ufw [\fB\-\-dry\-run\fR] \fBstatus\fR [verbose|numbered]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBshow\fR REPORT
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] PORT[/PROTOCOL]
+ufw [\fB\-\-dry\-run\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR] [\fBlog|log\-all\fR] [ PORT[/PROTOCOL] | APPNAME ]
 .TP
-ufw [\fB\-\-dry\-run\fR] [\fBrule\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR [\fBon\fR INTERFACE]] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] [\fBrule\fR] [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR [\fBon\fR INTERFACE]] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME ]] [\fBto\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME ]]
 .TP
-ufw [\fB\-\-dry\-run\fR] \fBroute\fR [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR \fBon\fR INTERFACE] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT]] [\fBto\fR ADDRESS [\fBport\fR PORT]]
+ufw [\fB\-\-dry\-run\fR] \fBroute\fR [\fBdelete\fR] [\fBinsert\fR NUM] \fBallow|deny|reject|limit\fR [\fBin|out\fR \fBon\fR INTERFACE] [\fBlog|log\-all\fR] [\fBproto\fR PROTOCOL] [\fBfrom\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME]] [\fBto\fR ADDRESS [\fBport\fR PORT | \fBapp\fR APPNAME]]
 .TP
 ufw [\fB\-\-dry\-run\fR] \fBdelete\fR NUM
 .TP
@@ -116,7 +116,10 @@ insert the corresponding RULE as rule number NUM
 .PP
 Users can specify rules using either a simple syntax or a full syntax. The
 simple syntax only specifies the port and optionally the protocol to be
-allowed or denied on the host. For example:
+allowed or denied on the host.
+
+
+For example:
 
   ufw allow 53
 
@@ -158,6 +161,14 @@ This will deny all traffic from the IPv6 2001:db8::/32 to tcp port 25 on this
 host. IPv6 must be enabled in #CONFIG_PREFIX#/default/ufw for IPv6 firewalling
 to work.
 
+  ufw deny in on eth0 to 224.0.0.1 proto igmp
+
+This will deny all igmp traffic to 224.0.0.1 on the eth0 interface.
+
+  ufw allow in on eth0 to 192.168.0.1 proto gre
+
+This will allow all gre traffic to 192.168.0.1 on the eth0 interface.
+
   ufw allow proto tcp from any to any port 80,443,8080:8090
 
 The above will allow all traffic to tcp ports 80, 443 and 8080\-8090 inclusive.
@@ -165,6 +176,21 @@ When specifying multiple ports, the ports list must be numeric, cannot contain
 spaces and must be modified as a whole. Eg, in the above example you cannot
 later try to delete just the '443' port. You cannot specify more than 15 ports
 (ranges count as 2 ports, so the port count in the above example is 4).
+
+\fBufw\fR supports several different protocols. The following are valid in any
+rule and enabled when the protocol is not specified:
+
+  tcp
+  udp
+
+The following have certain restrictions and are not enabled when the protocol
+is not specified:
+
+  ah      valid without port number
+  esp     valid without port number
+  gre     valid without port number
+  ipv6    valid for IPv4 addresses and without port number
+  igmp    valid for IPv4 addresses and without port number
 
 Rules for traffic not destined for the host itself but instead for traffic that
 should be routed/forwarded through the firewall should specify the \fBroute\fR
@@ -335,6 +361,26 @@ where '<name>' is one of the applications seen with the \fFapp list\fR command.
 User's may also specify \fBall\fR to see the profiles for all known
 applications.
 
+Syntax for the application profiles is a simple .INI format:
+
+  [<name>]
+  title=<title>
+  description=<description>
+  ports=<ports>
+
+The 'ports' field may specify a '|'-separated list of ports/protocols where
+the protocol is optional. A comma-separated list or a range (specified
+with 'start:end') may also be used to specify multiple ports, in which case the
+protocol is required. For example:
+
+  [SomeService]
+  title=Some title
+  desctiption=Some description
+  ports=12/udp|34|56,78:90/tcp
+
+In the above example, 'SomeService' may be used in app rules and it specifies
+UDP port 12, TCP and UDP on port 34 and TCP ports 56 and 78-90 inclusive.
+
 After creating or editing an application profile, user's can run:
 
   ufw app update <name>
@@ -371,11 +417,11 @@ as:
 disables ufw managed logging
 .TP
 \fBlow\fR
-logs all blocked packets not matching the default policy (with rate limiting),
+logs all blocked packets not matching the defined policy (with rate limiting),
 as well as packets matching logged rules
 .TP
 \fBmedium\fR
-log level low, plus all allowed packets not matching the default policy, all
+log level low, plus all allowed packets not matching the defined policy, all
 INVALID packets, and all new connections.  All logging is done with rate
 limiting.
 .TP
@@ -431,7 +477,27 @@ IPv6\-only rules after other rules.
 .PP
 On installation, \fBufw\fR is disabled with a default incoming policy of deny,
 a default forward policy of deny, and a default outgoing policy of allow, with
-stateful tracking for NEW connections.
+stateful tracking for NEW connections for incoming and forwarded connections.
+In addition to the above, a default ruleset is put in place that does the
+following:
+.TP
+- DROP packets with RH0 headers
+.TP
+- DROP INVALID packets
+.TP
+- ACCEPT certain icmp packets (INPUT and FORWARD): destination-unreachable, source-quench, time-exceeded, parameter-problem, and echo-request for IPv4. destination-unreachable, packet-too-big, time-exceeded, parameter-problem, and echo-request for IPv6.
+.TP
+- ACCEPT icmpv6 packets for stateless autoconfiguration (INPUT)
+.TP
+- ACCEPT ping replies from IPv6 link-local (ffe8::/10) addresses (INPUT)
+.TP
+- ACCEPT DHCP client traffic (INPUT)
+.TP
+- DROP non-local traffic (INPUT)
+.TP
+- ACCEPT mDNS (zeroconf/bonjour/avahi 224.0.0.251 for IPv4 and ff02::fb for IPv6) for service discovery (INPUT)
+.TP
+- ACCEPT UPnP (239.255.255.250 for IPv4 and ff02::f for IPv6) for service discovery (INPUT)
 
 .PP
 Rule ordering is important and the first match wins. Therefore when adding
@@ -439,7 +505,7 @@ rules, add the more specific rules first with more general rules later.
 .PP
 \fBufw\fR is not intended to provide complete firewall functionality via
 its command interface, but instead provides an easy way to add or remove
-simple rules. It is currently mainly used for host\-based firewalls.
+simple rules.
 .PP
 The status command shows basic information about the state of the firewall, as
 well as rules managed via the \fBufw\fR command. It does not show rules from the
@@ -480,8 +546,9 @@ protocols can only be used with the full syntax. For example:
   ufw allow to 10.0.0.1 from 10.4.0.0/16 proto ah
 .PP
 In addition to the command\-line interface, \fBufw\fR also provides a
-framework which allows administrators to take full advantage of netfilter.
-See the \fBufw\-framework\fR manual page for more information.
+framework which allows administrators to modify default behavior as well as
+take full advantage of netfilter. See the \fBufw\-framework\fR manual page for
+more information.
 
 .SH SEE ALSO
 .PP

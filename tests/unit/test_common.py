@@ -334,7 +334,7 @@ class CommonTestCase(unittest.TestCase):
         '''Test set_interface()'''
         r = self.rules["any"]
         for if_type in ["in", "out"]:
-            for interface in ["eth0", "wlan1"]:
+            for interface in ["eth0", "wlan1", "br_lan"]:
                 r.set_interface(if_type, interface)
                 if if_type == "in":
                     self.assertEquals(interface, r.interface_in, "%s != %s" %
@@ -701,6 +701,20 @@ class CommonTestCase(unittest.TestCase):
         self.assertEquals(self.rules['sapp'].src, t[3])
         self.assertEquals("out_eth0", t[4])
 
+        # also test with '_' in the name (LP: #1098472)
+        r = self.rules['sapp'].dup_rule()
+        t = r.get_app_tuple().split()
+        self.assertEquals("any", t[0])
+        self.assertEquals("0.0.0.0/0", t[1])
+        self.assertEquals(self.rules['sapp'].sapp, t[2])
+        self.assertEquals(self.rules['sapp'].src, t[3])
+        r.set_interface("out", "br_lan")
+        t = r.get_app_tuple().split()
+        self.assertEquals("any", t[0])
+        self.assertEquals("0.0.0.0/0", t[1])
+        self.assertEquals(self.rules['sapp'].sapp, t[2])
+        self.assertEquals(self.rules['sapp'].src, t[3])
+        self.assertEquals("out_br_lan", t[4])
 
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(

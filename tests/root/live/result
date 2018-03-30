@@ -104,10 +104,10 @@ Anywhere                   ALLOW       192.168.0.0/16
 514/udp                    DENY        1.2.3.4
 1.2.3.4 5469/udp           ALLOW       1.2.3.5 5469/udp
 22/tcp                     LIMIT       Anywhere
-53                         ALLOW       Anywhere (v6)
-23/tcp                     ALLOW       Anywhere (v6)
-25/tcp                     ALLOW       Anywhere (v6)
-80/tcp                     DENY        Anywhere (v6)
+53 (v6)                    ALLOW       Anywhere (v6)
+23/tcp (v6)                ALLOW       Anywhere (v6)
+25/tcp (v6)                ALLOW       Anywhere (v6)
+80/tcp (v6)                DENY        Anywhere (v6)
 25/tcp                     DENY        2001:db8::/32
 2001:db8:3:4:5:6:7:8       DENY        2001:db8::/32 26
 
@@ -476,9 +476,9 @@ To                         Action      From
 113                        REJECT      Anywhere
 114/tcp                    REJECT      Anywhere
 115/udp                    REJECT      Anywhere
-113                        REJECT      Anywhere (v6)
-114/tcp                    REJECT      Anywhere (v6)
-115/udp                    REJECT      Anywhere (v6)
+113 (v6)                   REJECT      Anywhere (v6)
+114/tcp (v6)               REJECT      Anywhere (v6)
+115/udp (v6)               REJECT      Anywhere (v6)
 
 
 
@@ -700,10 +700,10 @@ Status: active
 [ 9] 514/udp                    DENY IN     1.2.3.4
 [10] 1.2.3.4 5469/udp           ALLOW IN    1.2.3.5 5469/udp
 [11] 22/tcp                     LIMIT IN    Anywhere
-[12] 53                         ALLOW IN    Anywhere (v6)
-[13] 23/tcp                     ALLOW IN    Anywhere (v6)
-[14] 25/tcp                     ALLOW IN    Anywhere (v6)
-[15] 80/tcp                     DENY IN     Anywhere (v6)
+[12] 53 (v6)                    ALLOW IN    Anywhere (v6)
+[13] 23/tcp (v6)                ALLOW IN    Anywhere (v6)
+[14] 25/tcp (v6)                ALLOW IN    Anywhere (v6)
+[15] 80/tcp (v6)                DENY IN     Anywhere (v6)
 [16] 25/tcp                     DENY IN     2001:db8::/32
 [17] 2001:db8:3:4:5:6:7:8       DENY IN     2001:db8::/32 26
 

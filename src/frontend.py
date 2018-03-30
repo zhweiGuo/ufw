@@ -101,6 +101,9 @@ Usage: %(progname)s %(command)s
  %(limit)-31s add limit %(rule)s
  %(delete)-31s delete %(urule)s
  %(insert)-31s insert %(urule)s at %(number)s
+ %(route)-31s add route %(urule)s
+ %(route-delete)-31s delete route %(urule)s
+ %(route-insert)-31s insert route %(urule)s at %(number)s
  %(reload)-31s reload firewall
  %(reset)-31s reset firewall
  %(status)-31s show firewall status
@@ -130,6 +133,9 @@ Usage: %(progname)s %(command)s
          'delete': "delete RULE|NUM", \
          'urule': "RULE", \
          'insert': "insert NUM RULE", \
+         'route': "route RULE", \
+         'route-delete': "route delete RULE|NUM", \
+         'route-insert': "route insert NUM RULE", \
          'number': "NUM", \
          'reload': "reload", \
          'reset': "reset", \
@@ -586,7 +592,8 @@ class UFWFrontend:
                                                  'no': self.no})
             msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
-            if ans != "y" and ans != self.yes and ans != self.yes_full:
+            if ans != "y" and ans != self.yes.lower() and \
+               ans != self.yes_full.lower():
                 proceed = False
 
         res = ""

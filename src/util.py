@@ -34,6 +34,11 @@ from tempfile import mkstemp
 DEBUGGING = False
 msg_output = None # for redirecting stdout in msg() and write_to_file()
 
+# We support different protocols these days and only come combinations are
+# valid
+supported_protocols = [ 'tcp', 'udp', 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
+portless_protocols = [ 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
+ipv4_only_protocols = [ 'ipv6', 'igmp' ]
 
 def get_services_proto(port):
     '''Get the protocol for a specified port from /etc/services'''
@@ -72,8 +77,12 @@ def parse_port_proto(p_str):
     elif len(tmp) == 2:
         port = tmp[0]
         proto = tmp[1]
+        if proto in portless_protocols:
+            err_msg = _("Invalid port with protocol '%s'" % proto)
+            raise ValueError(err_msg)
     else:
-        raise ValueError
+        err_msg = _("Bad port")
+        raise ValueError(err_msg)
     return (port, proto)
 
 

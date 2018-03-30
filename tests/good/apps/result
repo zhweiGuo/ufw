@@ -56,7 +56,7 @@ Available applications:
   XMPP
   Yahoo
   a aZ9 _-.+
-  qBittorent
+  qBittorrent
   svnserve
 
 
@@ -636,8 +636,9 @@ Profile: XMPP
 Title: XMPP Chat
 Description: XMPP protocol (Jabber and Google Talk)
 
-Port:
+Ports:
   5222/tcp
+  5269/tcp
 
 --
 
@@ -659,9 +660,9 @@ Port:
 
 --
 
-Profile: qBittorent
-Title: qBittorent
-Description: qBittorent BitTorrent client
+Profile: qBittorrent
+Title: qBittorrent
+Description: qBittorrent BitTorrent client
 
 Port:
   6881/tcp
@@ -12556,10 +12557,10 @@ TESTING SHIPPED APPLICATION PROFILES
 297: allow KTorrent
 
 
-298: app info qBittorent
+298: app info qBittorrent
 
 
-299: allow qBittorent
+299: allow qBittorrent
 
 
 300: app info PeopleNearby

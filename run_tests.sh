@@ -156,6 +156,7 @@ done
 # clean up before functional tests
 rm -f "$CUR/src/*.pyc"
 rm -rf "$CUR/src/__pycache__"
+make clean
 
 # Functional tests
 echo "= Functional Tests ="

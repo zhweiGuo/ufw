@@ -364,6 +364,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if show_proto and r.protocol != "any" and \
                            r.dport == r.sport:
                             location[loc] += "/" + r.protocol
+                elif r.v6 and r.src == "::/0" and r.dst == "::/0" \
+                   and ' (v6)' not in location[loc]:
+                    # Add v6 if have port but no addresses so it doesn't look
+                    # a duplicate of the v4 rule
+                    location[loc] += " (v6)"
 
                 # Reporting the interfaces is different in route rules and
                 # non-route rules. With route rules, the reporting should be

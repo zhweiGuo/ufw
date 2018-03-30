@@ -63,9 +63,9 @@ script (eg rc.local for systems that use it):
 # /lib/ufw/ufw-init start
 
 For systems that use SysV initscripts, an example script is provided in
-doc/initscript.example. See doc/upstart.example for an Upstart example. Consult
-your distribution's documentation for the proper way to modify your boot
-process.
+doc/initscript.example. See doc/upstart.example for an Upstart example and
+doc/systemd.example as a systemd example. Consult your distribution's
+documentation for the proper way to modify your boot process.
 
 
 Basic Layout
@@ -239,22 +239,19 @@ terminology):
 - ACCEPT all RELATED and ESTABLISHED on FORWARD (ip forwarding must be enabled
   via sysctl for this to be in effect)
 - DROP INVALID packets (packets not associated with a known connection)
-- ACCEPT certain icmp packets:
+- ACCEPT certain icmp packets (INPUT and FORWARD):
   - destination-unreachable, source-quench, time-exceeded, parameter-problem,
     and echo-request for IPv4
-  - neighbor-solicitation, neighbor-advertisement, router-solicitation,
-    destination-unreachable, packet-too-big, time-exceeded, parameter-problem,
+  - destination-unreachable, packet-too-big, time-exceeded, parameter-problem,
     and echo-request
+- ACCEPT certain icmpv6 packets for stateless autoconfiguration (INPUT):
+  neighbor-solicitation, neighbor-advertisement, router-solicitation
 - ACCEPT mDNS (zeroconf/bonjour/avahi 224.0.0.251 for IPv4 and ff02::fb for
-  IPv6) for service discovery
+  IPv6) for service discovery (INPUT)
 - ACCEPT UPnP (239.255.255.250 for IPv4 and ff02::f for IPv6) for service
-  discovery
-- ACCEPT ping replies from IPv6 link-local (ffe8::/10) addresses
-- DROP non-local, broadcast and multicast traffic
-- ACCEPT DHCP client traffic
-- Silently DROP SMB/CIFS traffic
-- Silently DROP DHCP traffic not associated with host's use of DHCP client
-- Silently DROP BROADCAST (IPv4) traffic
+  discovery (INPUT)
+- ACCEPT ping replies from IPv6 link-local (ffe8::/10) addresses (INPUT)
+- ACCEPT DHCP client traffic (INPUT)
 - Log all blocked packets not matching the default policy with rate limiting
 
 If you are using a packaged version of ufw supplied by your distribution, the

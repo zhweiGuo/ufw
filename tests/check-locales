@@ -2,7 +2,7 @@
 # check-locales: verify ufw with the existing locales. This is Ubuntu/Debian
 # specific
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2015 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -201,7 +201,10 @@ if [ "$install" = "yes" ] && [ "$ufw_locale" != "C" ]; then
                 continue
             fi
             if ! has_locale "$loc" ; then
-                gen_locale "$loc"
+                if ! gen_locale "$loc" ; then
+                    echo "Could not generate locale '$loc'. Skipping"
+                    continue
+                fi
             fi
         done
     else
@@ -210,7 +213,10 @@ if [ "$install" = "yes" ] && [ "$ufw_locale" != "C" ]; then
             continue
         fi
         if ! has_locale "$ufw_locale" ; then
-            gen_locale "$ufw_locale"
+            if ! gen_locale "$ufw_locale" ; then
+                echo "Could not generate locale '$ufw_locale'. Skipping"
+                continue
+            fi
         fi
     fi
     echo "Done configuring locales"
