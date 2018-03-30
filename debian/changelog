@@ -1,3 +1,9 @@
+ufw (0.35-5) unstable; urgency=medium
+
+  * Remove upstart system job.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 17 Aug 2017 17:34:49 +0100
+
 ufw (0.35-4) unstable; urgency=medium
 
   * debian/ufw.lintian-overrides:
