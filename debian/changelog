@@ -1,60 +1,27 @@
-ufw (0.33-0ubuntu4) saucy; urgency=low
+ufw (0.33-1) unstable; urgency=low
 
-  * debian/patches/0005-lp1191197.patch: add check for -m rt --rt-type 0
-    (LP: #1191197)
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 15 Jun 2013 07:48:37 -0500
-
-ufw (0.33-0ubuntu3) raring-proposed; urgency=low
-
-  * debian/patches/0004-lp1039729.patch: Skip get_netfilter_capabilities()
-    with ipv6 if ipv6 is disabled (LP: #1039729)
+  * New upstream release (Closes: 711711, Closes: 691135, Closes: 704728).
+    Sync back up with Ubuntu (all changes here except for Polish debconf
+    translation and Standards-Version already in Ubuntu). Add the following
+    patches from Ubuntu which can be dropped in 0.34:
+    - debian/patches/0002-lp1044361.patch: move netfilter capabilities
+      checking into initcaps(), and call initcaps() only when we need it
+    - 0003-fix-typeerror-on-error.patch: fix TypeError on error when using
+      zh_CN
+    - debian/patches/0004-lp1039729.patch: Skip get_netfilter_capabilities()
+      with ipv6 if ipv6 is disabled
+    - debian/patches/0005-lp1191197.patch: add check for -m rt --rt-type 0
+  * debian/po/pl.po: add Polish translation of debconf templates. Thanks to
+    Michal Kulach (Closes: 667942)
   * debian/watch: use https instead of http
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 04 Dec 2012 07:56:34 -0600
-
-ufw (0.33-0ubuntu2) quantal; urgency=low
-
-  * debian/patches/0002-lp1044361.patch: move netfilter capabilities checking
-    into initcaps(), and call initcaps() only when we need it (LP: #1044361)
-  * 0003-fix-typeerror-on-error.patch: fix TypeError on error when using zh_CN
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 24 Sep 2012 08:52:57 -0500
-
-ufw (0.33-0ubuntu1) quantal; urgency=low
-
-  * New upstream release. Fixes the following bugs:
-    - also use correct ports for DHCPv6. Thanks to Marco Davids (LP: #1007326)
-    - add IPv6 limit support (LP: #951462)
-    - add zh_TW translation (LP: #868195)
-    - add 'show added' report (LP: #987784)
-    - remove ACCEPT_NO_TRACK option since it never worked (LP: #787955)
   * debian/(after|before)6.rules.md5sum: adjust for recently missed shipped
     configurations
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 17 Aug 2012 14:32:01 -0500
-
-ufw (0.32-0ubuntu2) quantal; urgency=low
-
-  * Simplify unload of firewall and play nicely with other firewall tools by
-    using ufw-init instead of iptables directly. 'ufw-init stop' by design
-    leaves a few empty chains around, but they won't get in the way of
-    anything and are gone after the next reboot. Using upstream's ufw-init has
-    the important benefit of always cleaning what it needs. (Closes: 672439).
-    - debian/ufw.prerm: call '/lib/ufw/ufw-init stop' on removal
-    - debian/ufw.postrm: don't flush the chains on purge
-
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 20 Jul 2012 13:00:35 -0500
-
-ufw (0.32-0ubuntu1) quantal; urgency=low
-
-  * New upstream release featuring Python 3 port (LP: #1001657)
   * debian/control:
     - clean up Depends and Build-Depends
     - Build-Depends on python3
     - add python-ufw for installing python2 modules
     - add X-Python3-Version: >= 3.2
-    - update Vcs-Bzr
+    - update Standards-Version to 3.9.4
   * add debian/python-ufw.install
   * debian/rules:
     - use --install-layout=deb
@@ -71,7 +38,19 @@ ufw (0.32-0ubuntu1) quantal; urgency=low
       debhelper adds code to postinst that does nothing on Ubuntu, but doesn't
       add the corresponding code to postrm
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 Jul 2012 11:44:48 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 26 Nov 2013 12:51:51 -0600
+
+ufw (0.31.1-2) unstable; urgency=low
+
+  * Simplify unload of firewall and play nicely with other firewall tools by
+    using ufw-init instead of iptables directly. 'ufw-init stop' by design
+    leaves a few empty chains around, but they won't get in the way of
+    anything and are gone after the next reboot. Using upstream's ufw-init has
+    the important benefit of always cleaning what it needs. (Closes: 672439).
+    - debian/prerm: call '/lib/ufw/ufw-init stop' on removal
+    - debian/postrm: don't flush the chains on purge
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 20 Jul 2012 15:05:39 -0500
 
 ufw (0.31.1-1) unstable; urgency=low
 
