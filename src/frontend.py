@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -21,7 +21,7 @@ import warnings
 
 from ufw.common import UFWError
 import ufw.util
-from ufw.util import error, warn
+from ufw.util import error, warn, msg
 from ufw.backend_iptables import UFWBackendIptables
 import ufw.parser
 
@@ -71,23 +71,21 @@ def parse_command(argv):
             argv.insert(idx, 'rule')
 
     if len(argv) < 2 or ('--dry-run' in argv and len(argv) < 3):
-        print >> sys.stderr, "ERROR: not enough args"
-        sys.exit(1)
+        error("not enough args")
 
     try:
         pr = p.parse_command(argv[1:])
-    except UFWError, e:
-        print >> sys.stderr, "ERROR: %s" % (e.value)
-        sys.exit(1)
+    except UFWError as e:
+        error("%s" % (e.value))
     except Exception:
-        print >> sys.stderr, "Invalid syntax"
+        error("Invalid syntax", do_exit=False)
         raise
 
     return pr
 
 def get_command_help():
     '''Print help message'''
-    msg = _('''
+    help_msg = _('''
 Usage: %(progname)s %(command)s
 
 %(commands)s:
@@ -144,7 +142,7 @@ Usage: %(progname)s %(command)s
          'appupdate': "app update PROFILE", \
          'appdefault': "app default ARG"}))
 
-    return (msg)
+    return (help_msg)
 
 
 class UFWFrontend:
@@ -183,14 +181,14 @@ class UFWFrontend:
             try:
                 self.backend.set_default(self.backend.files['conf'], \
                                          "ENABLED", config_str)
-            except UFWError, e:
+            except UFWError as e:
                 error(e.value)
 
         error_str = ""
         if enabled:
             try:
                 self.backend.start_firewall()
-            except UFWError, e:
+            except UFWError as e:
                 if changed:
                     error_str = e.value
 
@@ -200,7 +198,7 @@ class UFWFrontend:
                 try:
                     self.backend.set_default(self.backend.files['conf'], \
                                              "ENABLED", "no")
-                except UFWError, e:
+                except UFWError as e:
                     error(e.value)
 
                 # Report the error
@@ -210,7 +208,7 @@ class UFWFrontend:
         else:
             try:
                 self.backend.stop_firewall()
-            except UFWError, e:
+            except UFWError as e:
                 error(e.value)
 
             res = _("Firewall stopped and disabled on system startup")
@@ -225,7 +223,7 @@ class UFWFrontend:
             if self.backend.is_enabled():
                 self.backend.stop_firewall()
                 self.backend.start_firewall()
-        except UFWError, e:
+        except UFWError as e:
             error(e.value)
 
         return res
@@ -235,7 +233,7 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_loglevel(level)
-        except UFWError, e:
+        except UFWError as e:
             error(e.value)
 
         return res
@@ -244,7 +242,7 @@ class UFWFrontend:
         '''Shows status of firewall'''
         try:
             out = self.backend.get_status(verbose, show_count)
-        except UFWError, e:
+        except UFWError as e:
             error(e.value)
 
         return out
@@ -253,7 +251,7 @@ class UFWFrontend:
         '''Shows raw output of firewall'''
         try:
             out = self.backend.get_running_raw(rules_type)
-        except UFWError, e:
+        except UFWError as e:
             error(e.value)
 
         return out
@@ -269,13 +267,13 @@ class UFWFrontend:
 
         rules = self.backend.get_rules()
 
-        protocols = d.keys()
+        protocols = list(d.keys())
         protocols.sort()
         for proto in protocols:
             if not self.backend.use_ipv6() and proto in ['tcp6', 'udp6']:
                 continue
             res += "%s:\n" % (proto)
-            ports = d[proto].keys()
+            ports = list(d[proto].keys())
             ports.sort()
             for port in ports:
                 for item in d[proto][port]:
@@ -465,7 +463,7 @@ class UFWFrontend:
                     else:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
-            except UFWError, e:
+            except UFWError as e:
                 err_msg = e.value
                 set_error = True
                 break
@@ -484,7 +482,7 @@ class UFWFrontend:
 	    # If error and more than one rule, delete the successfully added
 	    # rules in reverse order
             undo_error = False
-            indexes = range(count+1)
+            indexes = list(range(count+1))
             indexes.reverse()
             for j in indexes:
                 if count > 0 and rules[j]:
@@ -540,7 +538,7 @@ class UFWFrontend:
                        "(%(yes)s|%(no)s)? ") % ({'rule': rstr, \
                                                  'yes': self.yes, \
                                                  'no': self.no})
-            os.write(sys.stdout.fileno(), prompt)
+            msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
                 proceed = False
@@ -608,7 +606,7 @@ class UFWFrontend:
                     if tmp != rule.dapp:
                         rule.dapp = tmp
                         rule.set_port(tmp, "dst")
-                except UFWError, e:
+                except UFWError as e:
                     # allow for the profile being deleted (LP: #407810)
                     if not rule.remove:
                         error(e.value)
@@ -622,7 +620,7 @@ class UFWFrontend:
                     if tmp != rule.sapp:
                         rule.sapp = tmp
                         rule.set_port(tmp, "dst")
-                except UFWError, e:
+                except UFWError as e:
                     # allow for the profile being deleted (LP: #407810)
                     if not rule.remove:
                         error(e.value)
@@ -642,14 +640,14 @@ class UFWFrontend:
         res = ""
         try:
             res = self.backend.set_default_application_policy(policy)
-        except UFWError, e:
+        except UFWError as e:
             error(e.value)
 
         return res
 
     def get_application_list(self):
         '''Display list of known application profiles'''
-        names = self.backend.profiles.keys()
+        names = list(self.backend.profiles.keys())
         names.sort()
         rstr = _("Available applications:")
         for n in names:
@@ -660,7 +658,7 @@ class UFWFrontend:
         '''Display information on profile'''
         names = []
         if pname == "all":
-            names = self.backend.profiles.keys()
+            names = list(self.backend.profiles.keys())
             names.sort()
         else:
             if not ufw.applications.valid_profile_name(pname):
@@ -670,7 +668,7 @@ class UFWFrontend:
 
         rstr = ""
         for name in names:
-            if not self.backend.profiles.has_key(name) or \
+            if name not in self.backend.profiles or \
                not self.backend.profiles[name]:
                 err_msg = _("Could not find profile '%s'") % (name)
                 raise UFWError(err_msg)
@@ -719,7 +717,7 @@ class UFWFrontend:
             allow_reload = False
 
         if profile == "all":
-            profiles = self.backend.profiles.keys()
+            profiles = list(self.backend.profiles.keys())
             profiles.sort()
             for p in profiles:
                 (tmp, found) = self.backend.update_app_rule(p)
@@ -779,7 +777,7 @@ class UFWFrontend:
         except Exception:
             raise
 
-        if pr.data.has_key('rule'):
+        if 'rule' in pr.data:
             rstr = self.do_action(pr.action, pr.data['rule'], \
                                   pr.data['iptype'])
         else:
@@ -826,7 +824,7 @@ class UFWFrontend:
             prompt = _("Command may disrupt existing ssh connections. " \
                        "Proceed with operation (%(yes)s|%(no)s)? ") % \
                        ({'yes': self.yes, 'no': self.no})
-            os.write(sys.stdout.fileno(), prompt)
+            msg(prompt, output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
                 proceed = False
@@ -846,7 +844,7 @@ class UFWFrontend:
                        ({'yes': self.yes, 'no': self.no})
 
         if self.backend.do_checks and not force:
-            os.write(sys.stdout.fileno(), ufw.util.wrap_text(prompt))
+            msg(ufw.util.wrap_text(prompt), output=sys.stdout, newline=False)
             ans = sys.stdin.readline().lower().strip()
             if ans != "y" and ans != self.yes and ans != self.yes_full:
                 res = _("Aborted")
