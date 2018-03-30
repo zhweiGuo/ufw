@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -16,6 +16,9 @@
 
 source "$TESTPATH/../testlib.sh"
 
+# Don't display tracebacks
+sed -i 's/problem running ufw-init\\n%s" % out)/problem running ufw-init")/' $TESTPATH/lib/python/ufw/backend_iptables.py
+
 echo "These tests are destructive and should only be run in a virtual machine"
 echo -n "Continue (y|N)? "
 read ans
@@ -26,32 +29,33 @@ else
     exit 0
 fi
 
-trap "/sbin/iptables.bak /sbin/iptables" EXIT HUP INT QUIT TERM
+trap "mv -f /sbin/iptables.bak /sbin/iptables" EXIT HUP INT QUIT TERM
 echo "Bug #262451 (part 2)" >> $TESTTMP/result
 do_cmd "0"  disable
 do_cmd "0"  status
 mv /sbin/iptables /sbin/iptables.bak || true
 do_cmd "1"  enable
-do_cmd "0"  status
+do_cmd "1"  status
 mv /sbin/iptables.bak /sbin/iptables
 trap - EXIT HUP INT QUIT TERM
 
-trap "mount -t proc /proc /proc ; sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.py" EXIT HUP INT QUIT TERM
+trap "mount -t proc /proc /proc" EXIT HUP INT QUIT TERM
 echo "Bug #268084" >> $TESTTMP/result
-sed -i 's/do_checks = False/do_checks = True/' $TESTPATH/lib/python/ufw/backend.py
 do_cmd "0"  disable
 umount /proc
 
-mount | egrep -q '^/proc '
+mount | egrep -q '^(|/)proc '
 if [ "$?" == "0" ]; then
     echo "  Skipping (/proc still mounted)" >> $TESTTMP/result
 else
-    do_cmd "1"  enable
+    do_cmd "0"  enable
     do_cmd "0"  status
     do_cmd "0"  app update all
     mount -t proc /proc /proc
+    do_cmd "0"  disable
+    do_cmd "0"  enable
+    do_cmd "0"  status
 fi
-sed -i 's/do_checks = True/do_checks = False/' $TESTPATH/lib/python/ufw/backend.py
 trap - EXIT HUP INT QUIT TERM
 
 # teardown

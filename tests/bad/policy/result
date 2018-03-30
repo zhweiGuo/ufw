@@ -125,9 +125,3 @@ WARN: Checks disabled
 ERROR: Invalid policy 'limit' for 'forward'
 
 
-Setting DEFAULT_FORWARD_POLICY to ACCEPT_NO_TRACK
-21: --dry-run status
-WARN: Checks disabled
-ERROR: Invalid policy 'accept_no_track' for 'forward'
-
-

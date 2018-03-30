@@ -322,13 +322,17 @@ $ sudo sh -c "PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw .
 Can also just run from the source directory:
 $ ./run_tests.sh -s
 
+You may also specify an interpreter for the tests. Eg:
+$ ./run_tests.sh -s -i /usr/local/bin/python2.7
+
 Or for the root tests (these are iptables version dependent, will modify your
 existing firewall and insert kernel modules, so they require root privileges
 and aren't run by default):
 # ./run_tests.sh -s root
 
-You may also specify an interpreter for the tests. Eg:
-$ ./run_tests.sh -s -i /usr/local/bin/python2.7
+Finally, ufw's behavior may differ based on available kernel features. The
+root_kern tests assume all kernel features supported by check-requirements
+are enabled. They behave just like the root tests.
 
 
 Copyright 2008-2012 Canonical Ltd.

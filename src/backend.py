@@ -62,7 +62,34 @@ class UFWBackend:
         self.ip6tables_restore = os.path.join(iptables_dir, \
                                               "ip6tables-restore")
 
-        self.iptables_version = ufw.util.get_iptables_version(self.iptables)
+        try:
+            self.iptables_version = ufw.util.get_iptables_version(self.iptables)
+        except OSError:
+            err_msg = _("Couldn't determine iptables version")
+            raise UFWError(err_msg)
+
+        self.caps = {}
+        self.caps['limit'] = {}
+
+        # Set defaults for dryrun, non-root, etc
+        self.caps['limit']['4'] = True
+        self.caps['limit']['6'] = False # historical default for the testsuite
+
+        # Try to get capabilities from the running system if root
+        if self.do_checks and os.getuid() == 0 and not self.dryrun:
+            # v4
+            nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
+            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                self.caps['limit']['4'] = True
+            else:
+                self.caps['limit']['4'] = False
+
+            # v6
+            nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                self.caps['limit']['6'] = True
+            else:
+                self.caps['limit']['6'] = False
 
     def is_enabled(self):
         '''Is firewall configured as enabled'''
@@ -86,8 +113,6 @@ class UFWBackend:
         rstr = ""
         if self.defaults[policy] == "accept":
             rstr = "allow"
-        elif self.defaults[policy] == "accept_no_track":
-            rstr = "allow-without-tracking"
         elif self.defaults[policy] == "reject":
             rstr = "reject"
         else:
@@ -142,8 +167,11 @@ class UFWBackend:
                 if not pat.search(profile):
                     profiles.append(os.path.join(self.files['apps'], profile))
 
-        for path in list(self.files.values()) + [ os.path.abspath(sys.argv[0]) ] + \
+        for path in list(self.files.values()) + \
+                [ os.path.abspath(sys.argv[0]) ] + \
                 profiles:
+            if not path.startswith('/'):
+                path = "%s/%s" % (os.getcwd(), path)
             while True:
                 debug("Checking " + path)
                 if path == self.files['apps'] and \
@@ -178,9 +206,12 @@ class UFWBackend:
                 if path == "/":
                     break
 
+                last_path = path
                 path = os.path.dirname(path)
                 if not path:
-                    raise OSError(errno.ENOENT, "Could not find '%s'" % (path))
+                    raise OSError(errno.ENOENT, \
+                                  "Could not find parent for '%s'" % \
+                                  (last_path))
 
         for f in self.files:
             if f != 'apps' and not os.path.isfile(self.files[f]):
@@ -206,14 +237,13 @@ class UFWBackend:
             orig.close()
 
         # do some default policy sanity checking
-        policies = ['accept', 'accept_no_track', 'drop', 'reject']
+        policies = ['accept', 'drop', 'reject']
         for c in [ 'input', 'output', 'forward' ]:
             if 'default_%s_policy' % (c) not in self.defaults:
                 err_msg = _("Missing policy for '%s'" % (c))
                 raise UFWError(err_msg)
             p = self.defaults['default_%s_policy' % (c)]
-            if p not in policies or \
-               (p == 'accept_no_track' and c == 'forward'):
+            if p not in policies:
                 err_msg = _("Invalid policy '%(policy)s' for '%(chain)s'" % \
                             ({'policy': p, 'chain': c}))
                 raise UFWError(err_msg)

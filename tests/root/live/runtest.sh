@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -15,6 +15,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 source "$TESTPATH/../testlib.sh"
+
+# This isn't available everywhere, so we will test it later
+sed -i "s/self.caps\['limit'\]\['6'\] = True/self.caps['limit']['6'] = False/" $TESTPATH/lib/python/ufw/backend.py
 
 for ipv6 in yes no
 do
@@ -433,8 +436,30 @@ do
 	grep -A2 "tuple" $TESTSTATE/user6.rules >> $TESTTMP/result
     done
 done
-
 do_cmd "0" nostats disable
+
+echo "Show added" >> $TESTTMP/result
+for ipv6 in yes no
+do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
+    do_cmd "0" nostats limit 22/tcp
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    fi
+    do_cmd "0" nostats deny Samba
+    do_cmd "0" show added
+    do_cmd "0" nostats delete limit 22/tcp
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+    fi
+    do_cmd "0" nostats delete deny Samba
+    do_cmd "0" show added
+done
+do_cmd "0" nostats disable
+
 cleanup
 
 exit 0

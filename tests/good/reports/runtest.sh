@@ -246,4 +246,16 @@ do_cmd "0" null show listening
 do_cmd "0" null delete allow 22/tcp
 do_cmd "0" null delete allow 123/udp
 
+echo "show added" >> $TESTTMP/result
+do_cmd "0" null limit 22/tcp
+do_cmd "0" null allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+do_cmd "0" null deny Samba
+do_cmd "0" show added
+do_cmd "0" null delete limit 22/tcp
+do_cmd "0" show added
+do_cmd "0" null delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+do_cmd "0" show added
+do_cmd "0" null delete deny Samba
+do_cmd "0" show added
+
 exit 0

@@ -1,3 +1,25 @@
+ufw (0.33) RELEASED; urgency=low
+
+  * conf/after6.rules: also use correct ports for DHCPv6. Thanks to Marco
+    Davids (LP: #1007326)
+  * src/util.py: add get_netfilter_capabilities() for getting the capabilities
+    set for things we want to support but may not be in all kernels/iptables
+    versions
+  * add IPv6 limit support (LP: #951462)
+  * import new and updated Launchpad translations:
+    - po/ast.po, po/bs.po, po/cs.po, po/de.po, po/el.po, po/en_AU.po,
+      po/en_GB.po, po/es.po, po/fi.po, po/fr.po, po/he.po, po/hu.po, po/it.po,
+      po/nb.po, po/nl.po, po/pt_BR.po, po/pt.po, po/sk.po, po/sl.po, po/sv.po,
+      po/zh_CN.po, po/zh_TW.po (new, LP: #868195)
+    - thanks to all contributors: https://translations.launchpad.net/ufw
+  * README.translations: updated for paths and testing
+  * add 'show added' report (LP: #987784)
+  * remove ACCEPT_NO_TRACK option since it never worked (LP: #787955)
+  * src/backend_iptables.py: display output of ufw-init if it fails
+  * don't traceback if can't determine iptables version
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 12 Aug 2012 10:58:04 -0500
+
 ufw (0.32) RELEASED; urgency=low
 
   * Obsolete python2.5 in preparation for python3 support

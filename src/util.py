@@ -709,6 +709,53 @@ def get_iptables_version(exe="/sbin/iptables"):
     return re.sub('^v', '', tmp[1])
 
 
+def get_netfilter_capabilities(exe="/sbin/iptables"):
+    '''Return capabilities set for netfilter to support new features. Callers
+       must be root.'''
+    def test_cap(exe, chain, rule):
+        args = [exe, '-A', chain]
+        (rc, out) = cmd(args + rule)
+        if rc == 0:
+            return True
+        return False
+
+    if os.getuid() != 0:
+        raise OSError(errno.EPERM, "Must be root")
+
+    caps = []
+
+    chain = "ufw-caps-test"
+    if exe.endswith("ip6tables"):
+        chain = "ufw6-caps-test"
+
+    # First install a test chain
+    (rc, out) = cmd([exe, '-N', chain])
+    if rc != 0:
+        raise OSError(errno.ENOENT, out)
+
+    # Now test for various capabilities. We won't test for everything, just
+    # the stuff we know isn't supported everywhere but we want to support.
+
+    # recent-set
+    if test_cap(exe, chain, ['-m', 'state', '--state', 'NEW', \
+                             '-m', 'recent', '--set']):
+        caps.append('recent-set')
+
+    # recent-update
+    if test_cap(exe, chain, ['-m', 'state', '--state', 'NEW', \
+                             '-m', 'recent', '--update', \
+                             '--seconds', '30', \
+                             '--hitcount', '6']):
+        caps.append('recent-update')
+
+    # Cleanup
+    cmd([exe, '-F', chain])
+    (rc, out) = cmd([exe, '-X', chain])
+    if rc != 0:
+        raise OSError(errno.ENOENT, out)
+
+    return caps
+
 def parse_netstat_output(v6):
     '''Get and parse netstat the output from get_netstat_outout()'''
 
