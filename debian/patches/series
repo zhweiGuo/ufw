@@ -2,3 +2,5 @@
 0002-lp1078665.patch
 0003-manpage-hook-path.patch
 0004-add-safe-icmp-to-forward.patch
+0005-lp573461.patch
+0006-check-for-newer-py3.patch

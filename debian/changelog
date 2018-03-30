@@ -1,3 +1,12 @@
+ufw (0.34~rc-0ubuntu3) utopic; urgency=medium
+
+  * debian/patches/0005-lp573461.patch: adjust man page for libvirt
+    (LP: #573461)
+  * debian/patches/0006-check-for-newer-py3.patch: tests/check-requirements
+    updated for newer python3
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 16 May 2014 15:08:08 -0500
+
 ufw (0.34~rc-0ubuntu2) trusty; urgency=medium
 
   * debian/patches/0002-lp1078665.patch: distinguish between v4 and v6 rules
