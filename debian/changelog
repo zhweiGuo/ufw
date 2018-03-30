@@ -1,3 +1,11 @@
+ufw (0.33-0ubuntu2) quantal; urgency=low
+
+  * debian/patches/0002-lp1044361.patch: move netfilter capabilities checking
+    into initcaps(), and call initcaps() only when we need it (LP: #1044361)
+  * 0003-fix-typeerror-on-error.patch: fix TypeError on error when using zh_CN
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 24 Sep 2012 08:52:57 -0500
+
 ufw (0.33-0ubuntu1) quantal; urgency=low
 
   * New upstream release. Fixes the following bugs:
