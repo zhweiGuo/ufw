@@ -1,3 +1,17 @@
+ufw (0.35-1) unstable; urgency=medium
+
+  * New upstream release (LP: #448503, LP: #728128)
+    - drop 0002-update-testsuite-for-empty-proc-net.patch (included upstream)
+    - refresh 0001-optimize-boot.patch
+  * update rsyslog example to use 'stop' instead of the deprecated '~'. Patch
+    from Ognyan Kulev. (Closes: 798100)
+  * debian/rules: use dh_prep instead of dh_clean -k
+  * debian/ufw.postinst: migrate /lib/ufw/user*rules to /etc/ufw on upgrade
+    and add symlinks from /lib/ufw/user*rules to /etc/ufw (Closes: 818000)
+  * debian/ufw.postrm: remove /lib/ufw/user*rules symlinks on purge
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 12 Apr 2016 14:35:47 -0500
+
 ufw (0.34-2) unstable; urgency=medium
 
   * 0002-update-testsuite-for-empty-proc-net.patch: update unit tests to not
