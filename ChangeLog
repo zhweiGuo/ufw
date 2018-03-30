@@ -1,3 +1,40 @@
+ufw (0.34) UNRELEASED; urgency=low
+
+  * refactor capabilities checks and only call when needed
+  * error out early instead of tracing back with iptables errors in
+    get_netfilter_capabilities() (LP: #1044361)
+  * fix TypeError which somehow only manifested itself when using zh_CN
+  * add 'reload' to help (LP: #1059060)
+  * check-requirements now gives iptables output on failure. Patch thanks to
+    S. Nizio.
+  * use conntrack instead of state module. Patch based on work by S. Nizio.
+    (LP: #1065297)
+  * don't use get_netfilter_capabilities() with ipv6 if ipv6 is disabled
+    (LP: #1039729, LP: #1062521)
+  * fix parse error when finding PPID (LP: #1101304)
+  * implement before and after hooks in /etc/ufw/(before|after).init
+    (LP: #1075975) TODO: add tests
+  * add unit test framework and cleanup, remove dead and refactor some code
+  * honor UFW_SKIP_CHECKS=1 environment variable with setup.py, which eases
+    testing
+  * tests/check-requirements: add a check for -m rt --rt-type 0 (LP: #1191197)
+  * match simple rule syntax and don't allow ports with esp and ah protocols
+    with extended rule syntax
+  * when displaying extended rules via parser.get_command(), show "out" if the
+    direction is "out" and there is no corresponding interface
+  * fix return of various invalid extended rules in parser.get_command()
+  * clarify 'limit' command in man page (LP: #1089262)
+  * implement route rules (ie, manage FORWARD, LP: #262421). See man page for
+    details.
+  * add state RELATED,ESTABLISHED rule to ufw-before-forward in before*.rules
+    like we do with ufw-before-input and ufw-before-forward. This will only
+    affect systems with ip forwarding enabled via sysctl
+  * add ufw[6]-track-forward chain and handle it the same as for
+    ufw[6]track-input and ufw[6]-track-output
+  * document ufw[6]-track-* in README (dropped in previous commit)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 19 Feb 2014 07:03:06 -0600
+
 ufw (0.33) RELEASED; urgency=low
 
   * conf/after6.rules: also use correct ports for DHCPv6. Thanks to Marco

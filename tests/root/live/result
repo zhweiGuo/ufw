@@ -145,8 +145,8 @@ Anywhere                   ALLOW       192.168.0.0/16
 -A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 ### tuple ### allow any 53 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 53 -j ACCEPT
 -A ufw6-user-input -p udp --dport 53 -j ACCEPT
@@ -368,8 +368,8 @@ Anywhere                   ALLOW       192.168.0.0/16
 -A ufw-user-input -p udp -d 1.2.3.4 --dport 5469 -s 1.2.3.5 --sport 5469 -j ACCEPT
 
 ### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 TESTING ARGS (delete allow/deny to/from)
 48: delete allow 53
 WARN: Checks disabled
@@ -1057,8 +1057,8 @@ Status: active
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
 --
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth1
--A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 in_eth1
 -A ufw-user-input -i eth1 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
@@ -1072,8 +1072,8 @@ Status: active
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 --
 ### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 in_eth1
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
 -A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
@@ -1082,11 +1082,11 @@ Status: active
 -A ufw-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
--A ufw-user-logging-input -i eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i eth0 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -i eth0 -j RETURN
 --
 ### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 in_eth0
--A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
 --
 ### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 in_eth0
@@ -1109,7 +1109,7 @@ Status: active
 -A ufw6-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### allow_log any any ::/0 any ::/0 in_eth0
--A ufw6-user-logging-input -i eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-input -i eth0 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-input -i eth0 -j RETURN
 --
 ### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in_eth0
@@ -1312,8 +1312,8 @@ Status: active
 -A ufw-user-output -o eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
 --
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth1
--A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth1
 -A ufw-user-output -o eth1 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
@@ -1327,8 +1327,8 @@ Status: active
 -A ufw-user-output -o eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 --
 ### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 out_eth1
--A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
 -A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
@@ -1337,11 +1337,11 @@ Status: active
 -A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
--A ufw-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-output -o eth0 -j RETURN
 --
 ### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 out_eth0
--A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
 --
 ### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 out_eth0
@@ -1364,7 +1364,7 @@ Status: active
 -A ufw6-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### allow_log any any ::/0 any ::/0 out_eth0
--A ufw6-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw6-user-logging-output -o eth0 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw6-user-logging-output -o eth0 -j RETURN
 --
 ### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - out_eth0
@@ -1556,8 +1556,8 @@ Status: active
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
 --
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth1
--A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 in_eth1
 -A ufw-user-input -i eth1 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
@@ -1571,8 +1571,8 @@ Status: active
 -A ufw-user-input -i eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 --
 ### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 in_eth1
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in_eth2
 -A ufw-user-input -i eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
@@ -1581,11 +1581,11 @@ Status: active
 -A ufw-user-input -i eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
--A ufw-user-logging-input -i eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i eth0 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -i eth0 -j RETURN
 --
 ### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 in_eth0
--A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-input -i eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
 --
 ### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 in_eth0
@@ -1777,8 +1777,8 @@ Status: active
 -A ufw-user-output -o eth1 -p udp -d 192.168.0.1 --dport 22 -j REJECT
 --
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth1
--A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth1
 -A ufw-user-output -o eth1 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
@@ -1792,8 +1792,8 @@ Status: active
 -A ufw-user-output -o eth1 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 --
 ### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 out_eth1
--A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --set
--A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth1 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 --
 ### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - out_eth2
 -A ufw-user-output -o eth2 -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
@@ -1802,11 +1802,11 @@ Status: active
 -A ufw-user-output -o eth2 -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
 
 ### tuple ### allow_log any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
--A ufw-user-logging-output -o eth0 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-output -o eth0 -j RETURN
 --
 ### tuple ### allow_log tcp 24 10.0.0.1 any 192.168.0.1 out_eth0
--A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
 -A ufw-user-logging-output -o eth0 -p tcp -d 10.0.0.1 --dport 24 -s 192.168.0.1 -j RETURN
 --
 ### tuple ### deny_log-all tcp 25 10.0.0.1 any 192.168.0.1 out_eth0
@@ -1974,645 +1974,645 @@ Verify toplevel chains
 289: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-290: logging on
+290: iptables -L FORWARD -n | egrep -q 'ufw-track-forward'
 
 
-291: disable
+291: logging on
 
 
-292: enable
+292: disable
 
 
-293: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+293: enable
 
 
-294: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+294: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-295: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+295: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-296: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+296: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-297: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+297: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-298: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+298: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-299: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+299: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-300: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+300: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-301: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+301: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-302: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+302: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-303: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+303: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-304: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+304: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-305: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+305: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-306: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+306: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-307: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+307: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-308: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+308: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-309: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+309: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-310: logging low
+310: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-311: disable
+311: iptables -L FORWARD -n | egrep -q 'ufw-track-forward'
 
 
-312: enable
+312: logging low
 
 
-313: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+313: disable
 
 
-314: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+314: enable
 
 
-315: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+315: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-316: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+316: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-317: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+317: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-318: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+318: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-319: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+319: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-320: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+320: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-321: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+321: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-322: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+322: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-323: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+323: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-324: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+324: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-325: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+325: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-326: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+326: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-327: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+327: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-328: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+328: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-329: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+329: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-330: logging medium
+330: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-331: disable
+331: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-332: enable
+332: iptables -L FORWARD -n | egrep -q 'ufw-track-forward'
 
 
-333: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+333: logging medium
 
 
-334: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+334: disable
 
 
-335: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+335: enable
 
 
-336: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+336: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-337: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+337: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-338: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+338: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-339: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+339: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-340: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+340: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-341: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+341: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-342: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+342: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-343: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+343: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-344: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+344: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-345: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+345: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-346: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+346: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-347: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+347: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-348: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+348: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-349: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+349: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-350: logging high
+350: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-351: disable
+351: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-352: enable
+352: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-353: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+353: iptables -L FORWARD -n | egrep -q 'ufw-track-forward'
 
 
-354: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+354: logging high
 
 
-355: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+355: disable
 
 
-356: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+356: enable
 
 
-357: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+357: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-358: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+358: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-359: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+359: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-360: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+360: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-361: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+361: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-362: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+362: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-363: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+363: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-364: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+364: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-365: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+365: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-366: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+366: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-367: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+367: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-368: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+368: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
 
 
-369: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+369: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
 
 
-370: logging full
+370: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
 
 
-371: disable
+371: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
 
 
-372: enable
+372: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
 
 
-373: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
+373: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
 
 
-374: iptables -L INPUT -n | egrep -q 'ufw-before-input'
+374: iptables -L FORWARD -n | egrep -q 'ufw-track-forward'
 
 
-375: iptables -L INPUT -n | egrep -q 'ufw-after-input'
+375: logging full
 
 
-376: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
+376: disable
 
 
-377: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
+377: enable
 
 
-378: iptables -L INPUT -n | egrep -q 'ufw-track-input'
+378: iptables -L INPUT -n | egrep -q 'ufw-before-logging-input'
 
 
-379: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
+379: iptables -L INPUT -n | egrep -q 'ufw-before-input'
 
 
-380: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
+380: iptables -L INPUT -n | egrep -q 'ufw-after-input'
 
 
-381: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
+381: iptables -L INPUT -n | egrep -q 'ufw-after-logging-input'
 
 
-382: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
+382: iptables -L INPUT -n | egrep -q 'ufw-reject-input'
 
 
-383: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
+383: iptables -L INPUT -n | egrep -q 'ufw-track-input'
 
 
-384: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+384: iptables -L OUTPUT -n | egrep -q 'ufw-before-logging-output'
 
 
-385: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+385: iptables -L OUTPUT -n | egrep -q 'ufw-before-output'
 
 
-386: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+386: iptables -L OUTPUT -n | egrep -q 'ufw-after-output'
 
 
-387: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+387: iptables -L OUTPUT -n | egrep -q 'ufw-after-logging-output'
 
 
-388: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+388: iptables -L OUTPUT -n | egrep -q 'ufw-reject-output'
 
 
-389: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+389: iptables -L OUTPUT -n | egrep -q 'ufw-track-output'
+
+
+390: iptables -L FORWARD -n | egrep -q 'ufw-before-logging-forward'
+
+
+391: iptables -L FORWARD -n | egrep -q 'ufw-before-forward'
+
+
+392: iptables -L FORWARD -n | egrep -q 'ufw-after-forward'
+
+
+393: iptables -L FORWARD -n | egrep -q 'ufw-after-logging-forward'
+
+
+394: iptables -L FORWARD -n | egrep -q 'ufw-reject-forward'
+
+
+395: iptables -L FORWARD -n | egrep -q 'ufw-track-forward'
 
 
 Verify secondary chains
-390: logging off
+396: logging off
 
 
-391: disable
+397: disable
 
 
-392: enable
+398: enable
 
 
-393: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+399: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
 
 
-394: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+400: ! iptables -L ufw-not-local -n | egrep -q '0 references'
 
 
-395: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+401: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
 
 
-396: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+402: ! iptables -L ufw-user-input -n | egrep -q '0 references'
 
 
-397: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+403: ! iptables -L ufw-user-output -n | egrep -q '0 references'
 
 
-398: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
+404: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
 
 
-399: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+405: iptables -L ufw-logging-allow -n | egrep -q '0 references'
 
 
-400: iptables -L ufw-user-limit -n | egrep -q '0 references'
+406: iptables -L ufw-user-limit -n | egrep -q '0 references'
 
 
-401: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+407: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
 
 
-402: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+408: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
 
 
-403: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+409: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
 
 
-404: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+410: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
 
 
-405: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
+411: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
 
 
-406: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
+412: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-407: logging on
+413: logging on
 
 
-408: disable
+414: disable
 
 
-409: enable
+415: enable
 
 
-410: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+416: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
 
 
-411: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+417: ! iptables -L ufw-not-local -n | egrep -q '0 references'
 
 
-412: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+418: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
 
 
-413: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+419: ! iptables -L ufw-user-input -n | egrep -q '0 references'
 
 
-414: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+420: ! iptables -L ufw-user-output -n | egrep -q '0 references'
 
 
-415: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
+421: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
 
 
-416: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+422: iptables -L ufw-logging-allow -n | egrep -q '0 references'
 
 
-417: iptables -L ufw-user-limit -n | egrep -q '0 references'
+423: iptables -L ufw-user-limit -n | egrep -q '0 references'
 
 
-418: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+424: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
 
 
-419: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+425: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
 
 
-420: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+426: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
 
 
-421: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+427: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
 
 
-422: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
+428: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
 
 
-423: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
+429: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-424: logging low
+430: logging low
 
 
-425: disable
+431: disable
 
 
-426: enable
+432: enable
 
 
-427: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+433: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
 
 
-428: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+434: ! iptables -L ufw-not-local -n | egrep -q '0 references'
 
 
-429: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+435: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
 
 
-430: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+436: ! iptables -L ufw-user-input -n | egrep -q '0 references'
 
 
-431: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+437: ! iptables -L ufw-user-output -n | egrep -q '0 references'
 
 
-432: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
+438: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
 
 
-433: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+439: iptables -L ufw-logging-allow -n | egrep -q '0 references'
 
 
-434: iptables -L ufw-user-limit -n | egrep -q '0 references'
+440: iptables -L ufw-user-limit -n | egrep -q '0 references'
 
 
-435: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+441: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
 
 
-436: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+442: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
 
 
-437: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+443: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
 
 
-438: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+444: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
 
 
-439: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
+445: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
 
 
-440: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
+446: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-441: logging medium
+447: logging medium
 
 
-442: disable
+448: disable
 
 
-443: enable
+449: enable
 
 
-444: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+450: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
 
 
-445: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+451: ! iptables -L ufw-not-local -n | egrep -q '0 references'
 
 
-446: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+452: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
 
 
-447: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+453: ! iptables -L ufw-user-input -n | egrep -q '0 references'
 
 
-448: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+454: ! iptables -L ufw-user-output -n | egrep -q '0 references'
 
 
-449: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
+455: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
 
 
-450: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+456: iptables -L ufw-logging-allow -n | egrep -q '0 references'
 
 
-451: iptables -L ufw-user-limit -n | egrep -q '0 references'
+457: iptables -L ufw-user-limit -n | egrep -q '0 references'
 
 
-452: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+458: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
 
 
-453: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+459: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
 
 
-454: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+460: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
 
 
-455: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+461: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
 
 
-456: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
+462: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
 
 
-457: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
+463: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-458: logging high
+464: logging high
 
 
-459: disable
+465: disable
 
 
-460: enable
+466: enable
 
 
-461: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+467: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
 
 
-462: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+468: ! iptables -L ufw-not-local -n | egrep -q '0 references'
 
 
-463: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+469: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
 
 
-464: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+470: ! iptables -L ufw-user-input -n | egrep -q '0 references'
 
 
-465: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+471: ! iptables -L ufw-user-output -n | egrep -q '0 references'
 
 
-466: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
+472: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
 
 
-467: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+473: iptables -L ufw-logging-allow -n | egrep -q '0 references'
 
 
-468: iptables -L ufw-user-limit -n | egrep -q '0 references'
+474: iptables -L ufw-user-limit -n | egrep -q '0 references'
 
 
-469: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+475: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
 
 
-470: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+476: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
 
 
-471: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+477: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
 
 
-472: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+478: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
 
 
-473: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
+479: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
 
 
-474: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
+480: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-475: logging full
+481: logging full
 
 
-476: disable
+482: disable
 
 
-477: enable
+483: enable
 
 
-478: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
+484: ! iptables -L ufw-logging-deny -n | egrep -q '0 references'
 
 
-479: ! iptables -L ufw-not-local -n | egrep -q '0 references'
+485: ! iptables -L ufw-not-local -n | egrep -q '0 references'
 
 
-480: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
+486: ! iptables -L ufw-user-forward -n | egrep -q '0 references'
 
 
-481: ! iptables -L ufw-user-input -n | egrep -q '0 references'
+487: ! iptables -L ufw-user-input -n | egrep -q '0 references'
 
 
-482: ! iptables -L ufw-user-output -n | egrep -q '0 references'
+488: ! iptables -L ufw-user-output -n | egrep -q '0 references'
 
 
-483: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
+489: ! iptables -L ufw-skip-to-policy-input -n | egrep -q '0 references'
 
 
-484: iptables -L ufw-logging-allow -n | egrep -q '0 references'
+490: iptables -L ufw-logging-allow -n | egrep -q '0 references'
 
 
-485: iptables -L ufw-user-limit -n | egrep -q '0 references'
+491: iptables -L ufw-user-limit -n | egrep -q '0 references'
 
 
-486: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
+492: iptables -L ufw-user-limit-accept -n | egrep -q '0 references'
 
 
-487: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
+493: iptables -L ufw-user-logging-forward -n | egrep -q '0 references'
 
 
-488: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
+494: iptables -L ufw-user-logging-input -n | egrep -q '0 references'
 
 
-489: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
+495: iptables -L ufw-user-logging-output -n | egrep -q '0 references'
 
 
-490: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
+496: iptables -L ufw-skip-to-policy-output -n | egrep -q '0 references'
 
 
-491: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
+497: iptables -L ufw-skip-to-policy-forward -n | egrep -q '0 references'
 
 
-492: logging on
+498: logging on
 
 
-493: disable
+499: disable
 
 
 'Resource temporarily unavailable' test
-494: disable
+500: disable
 
 
-495: allow 22/tcp
+501: allow 22/tcp
 
 
-496: enable
-
-
-497: ufw-init start/flush-all
-
-
-498: ufw-init start/flush-all
-
-
-499: ufw-init start/flush-all
-
-
-500: ufw-init start/flush-all
-
-
-501: ufw-init start/flush-all
-
-
-502: ufw-init start/flush-all
+502: enable
 
 
 503: ufw-init start/flush-all
@@ -2672,100 +2672,118 @@ Verify secondary chains
 521: ufw-init start/flush-all
 
 
-522: enable
+522: ufw-init start/flush-all
 
 
-523: delete allow 22/tcp
+523: ufw-init start/flush-all
 
 
-Reset test
-524: enable
+524: ufw-init start/flush-all
 
 
-525: allow 12345
+525: ufw-init start/flush-all
 
 
-526: reset
+526: ufw-init start/flush-all
 
 
-Show
-Setting IPV6 to yes
-527: disable
+527: ufw-init start/flush-all
 
 
 528: enable
 
 
-529: show raw
+529: delete allow 22/tcp
 
 
-530: show builtins
+Reset test
+530: enable
 
 
-531: show before-rules
+531: allow 12345
 
 
-532: show user-rules
+532: reset
 
 
-533: show after-rules
+Show
+Setting IPV6 to yes
+533: disable
 
 
-534: show logging-rules
+534: enable
 
 
-535: show listening
+535: show raw
+
+
+536: show builtins
+
+
+537: show before-rules
+
+
+538: show user-rules
+
+
+539: show after-rules
+
+
+540: show logging-rules
+
+
+541: show listening
 
 
 Setting IPV6 to no
-536: disable
+542: disable
 
 
-537: enable
+543: enable
 
 
-538: show raw
+544: show raw
 
 
-539: show builtins
+545: show builtins
 
 
-540: show before-rules
+546: show before-rules
 
 
-541: show user-rules
+547: show user-rules
 
 
-542: show after-rules
+548: show after-rules
 
 
-543: show logging-rules
+549: show logging-rules
 
 
-544: show listening
+550: show listening
 
 
-545: disable
+551: disable
 
 
 Delete by number
 Setting IPV6 to yes
-546: disable
+552: disable
 
 
-547: enable
+553: enable
 
 
-548: allow 1
+554: allow 1
 
 
-549: allow 2
+555: allow 2
 
 
-550: allow 3
+556: allow 3
 
 
-551: allow 4
+557: allow 4
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
@@ -2798,7 +2816,7 @@ Setting IPV6 to yes
 ### tuple ### allow any 4 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 4 -j ACCEPT
 -A ufw6-user-input -p udp --dport 4 -j ACCEPT
-552: --force delete 8
+558: --force delete 8
 
 
 ### tuple ### allow any 1 ::/0 any ::/0 in
@@ -2812,7 +2830,7 @@ Setting IPV6 to yes
 ### tuple ### allow any 3 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 3 -j ACCEPT
 -A ufw6-user-input -p udp --dport 3 -j ACCEPT
-553: --force delete 4
+559: --force delete 4
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
@@ -2826,7 +2844,7 @@ Setting IPV6 to yes
 ### tuple ### allow any 3 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 3 -j ACCEPT
 -A ufw-user-input -p udp --dport 3 -j ACCEPT
-554: --force delete 6
+560: --force delete 6
 
 
 ### tuple ### allow any 1 ::/0 any ::/0 in
@@ -2836,7 +2854,7 @@ Setting IPV6 to yes
 ### tuple ### allow any 2 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 2 -j ACCEPT
 -A ufw6-user-input -p udp --dport 2 -j ACCEPT
-555: --force delete 3
+561: --force delete 3
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
@@ -2846,41 +2864,41 @@ Setting IPV6 to yes
 ### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 2 -j ACCEPT
 -A ufw-user-input -p udp --dport 2 -j ACCEPT
-556: --force delete 4
+562: --force delete 4
 
 
 ### tuple ### allow any 1 ::/0 any ::/0 in
 -A ufw6-user-input -p tcp --dport 1 -j ACCEPT
 -A ufw6-user-input -p udp --dport 1 -j ACCEPT
-557: --force delete 2
+563: --force delete 2
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 1 -j ACCEPT
 -A ufw-user-input -p udp --dport 1 -j ACCEPT
-558: --force delete 2
+564: --force delete 2
 
 
-559: --force delete 1
+565: --force delete 1
 
 
 Setting IPV6 to no
-560: disable
+566: disable
 
 
-561: enable
+567: enable
 
 
-562: allow 1
+568: allow 1
 
 
-563: allow 2
+569: allow 2
 
 
-564: allow 3
+570: allow 3
 
 
-565: allow 4
+571: allow 4
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
@@ -2898,7 +2916,7 @@ Setting IPV6 to no
 ### tuple ### allow any 4 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 4 -j ACCEPT
 -A ufw-user-input -p udp --dport 4 -j ACCEPT
-566: --force delete 4
+572: --force delete 4
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
@@ -2912,7 +2930,7 @@ Setting IPV6 to no
 ### tuple ### allow any 3 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 3 -j ACCEPT
 -A ufw-user-input -p udp --dport 3 -j ACCEPT
-567: --force delete 3
+573: --force delete 3
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
@@ -2922,24 +2940,24 @@ Setting IPV6 to no
 ### tuple ### allow any 2 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 2 -j ACCEPT
 -A ufw-user-input -p udp --dport 2 -j ACCEPT
-568: --force delete 2
+574: --force delete 2
 
 
 ### tuple ### allow any 1 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 1 -j ACCEPT
 -A ufw-user-input -p udp --dport 1 -j ACCEPT
-569: --force delete 1
+575: --force delete 1
 
 
 Testing interface with '+'
 Setting IPV6 to yes
-570: disable
+576: disable
 
 
-571: enable
+577: enable
 
 
-572: allow in on lo+
+578: allow in on lo+
 WARN: Checks disabled
 Rule added
 Rule added (v6)
@@ -2951,20 +2969,20 @@ Rule added (v6)
 ### tuple ### allow any any ::/0 any ::/0 in_lo+
 -A ufw6-user-input -i lo+ -j ACCEPT
 
-573: delete allow in on lo+
+579: delete allow in on lo+
 WARN: Checks disabled
 Rule deleted
 Rule deleted (v6)
 
 
 Setting IPV6 to yes
-574: disable
+580: disable
 
 
-575: enable
+581: enable
 
 
-576: allow out on lo+
+582: allow out on lo+
 WARN: Checks disabled
 Rule added
 Rule added (v6)
@@ -2976,20 +2994,20 @@ Rule added (v6)
 ### tuple ### allow any any ::/0 any ::/0 out_lo+
 -A ufw6-user-output -o lo+ -j ACCEPT
 
-577: delete allow out on lo+
+583: delete allow out on lo+
 WARN: Checks disabled
 Rule deleted
 Rule deleted (v6)
 
 
 Setting IPV6 to no
-578: disable
+584: disable
 
 
-579: enable
+585: enable
 
 
-580: allow in on lo+
+586: allow in on lo+
 WARN: Checks disabled
 Rule added
 
@@ -2997,19 +3015,19 @@ Rule added
 ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_lo+
 -A ufw-user-input -i lo+ -j ACCEPT
 
-581: delete allow in on lo+
+587: delete allow in on lo+
 WARN: Checks disabled
 Rule deleted
 
 
 Setting IPV6 to no
-582: disable
+588: disable
 
 
-583: enable
+589: enable
 
 
-584: allow out on lo+
+590: allow out on lo+
 WARN: Checks disabled
 Rule added
 
@@ -3017,32 +3035,32 @@ Rule added
 ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_lo+
 -A ufw-user-output -o lo+ -j ACCEPT
 
-585: delete allow out on lo+
+591: delete allow out on lo+
 WARN: Checks disabled
 Rule deleted
 
 
-586: disable
+592: disable
 
 
 Show added
 Setting IPV6 to yes
-587: disable
+593: disable
 
 
-588: enable
+594: enable
 
 
-589: limit 22/tcp
+595: limit 22/tcp
 
 
-590: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+596: allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 
 
-591: deny Samba
+597: deny Samba
 
 
-592: show added
+598: show added
 WARN: Checks disabled
 Added user rules (see 'ufw status' for running firewall):
 ufw limit 22/tcp
@@ -3050,56 +3068,56 @@ ufw deny Samba
 ufw allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 
 
-593: delete limit 22/tcp
+599: delete limit 22/tcp
 
 
-594: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
+600: delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
 
 
-595: delete deny Samba
+601: delete deny Samba
 
 
-596: show added
+602: show added
 WARN: Checks disabled
 Added user rules (see 'ufw status' for running firewall):
 (None)
 
 
 Setting IPV6 to no
-597: disable
+603: disable
 
 
-598: enable
+604: enable
 
 
-599: limit 22/tcp
+605: limit 22/tcp
 
 
-600: deny Samba
+606: deny Samba
 
 
-601: show added
+607: show added
 WARN: Checks disabled
 Added user rules (see 'ufw status' for running firewall):
 ufw limit 22/tcp
 ufw deny Samba
 
 
-602: delete limit 22/tcp
+608: delete limit 22/tcp
 
 
-603: delete deny Samba
+609: delete deny Samba
 
 
-604: show added
+610: show added
 WARN: Checks disabled
 Added user rules (see 'ufw status' for running firewall):
 (None)
 
 
-605: disable
+611: disable
 
 
-606: disable
+612: disable
 
 

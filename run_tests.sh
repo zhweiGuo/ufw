@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#    Copyright 2008-2009 Canonical Ltd.
+#    Copyright 2008-2014 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -17,7 +17,7 @@
 export LANG=C
 
 testdir="tests"
-tests="installation bad bugs good util"
+tests="unit installation bad bugs good util"
 
 set -e
 # Some systems may not have iptables in their PATH. Try to account for that.
@@ -125,8 +125,58 @@ trap "rm -rf $statsdir" EXIT HUP INT QUIT TERM
 export statsdir
 echo "0" > $statsdir/individual
 
+# Unit tests
 for class in $tests
 do
+    if [ "$class" != "unit" ]; then
+        # Functional tests handled separately (see below)
+        continue
+    fi
+
+    if [ ! -z "$subclass" ]; then
+        if [ ! -f "$testdir/$class/$subclass" ]; then
+            echo "Could not find '$testdir/$class/$subclass'"
+            exit 1
+        fi
+    fi
+    echo "= Unit Tests ="
+    if ! $interpreter ./tests/unit/runner.py $subclass ; then
+        echo ""
+        echo "Found unit test failures. Aborting and skipping functional tests"
+        exit 1
+    fi
+    # Exit early if only running unit tests
+    if [ "$tests" = "unit" ]; then
+        exit 0
+    fi
+    echo ""
+    echo ""
+done
+
+# clean up before functional tests
+rm -f "$CUR/src/*.pyc"
+rm -rf "$CUR/src/__pycache__"
+
+# Functional tests
+echo "= Functional Tests ="
+
+# Explicitly disable IP forwarding here, since some tests assume it is
+# disabled. IP forwarding will be re-enabled in the individual tests
+# that require it.
+orig_ip_forward=`sysctl net.ipv4.ip_forward 2>/dev/null | cut -d ' ' -f 3`
+orig_ipv6_forwarding_default=`sysctl net.ipv6.conf.default.forwarding 2>/dev/null | cut -d ' ' -f 3`
+orig_ipv6_forwarding_all=`sysctl net.ipv6.conf.all.forwarding 2>/dev/null | cut -d ' ' -f 3`
+sysctl -w net.ipv4.ip_forward=0 2>/dev/null || true
+sysctl -w net.ipv6.conf.default.forwarding=0 2>/dev/null || true
+sysctl -w net.ipv6.conf.all.forwarding=0 2>/dev/null || true
+
+for class in $tests
+do
+    if [ "$class" = "unit" ]; then
+        # Unit tests handled separately (see above)
+        continue
+    fi
+
     for d in `ls -d -1 $testdir/$class/* 2>/dev/null`
     do
         if [ ! -z "$subclass" ]; then
@@ -162,6 +212,11 @@ do
         mkdir -p "$TESTPATH/usr/sbin" "$TESTPATH/etc" "$TESTPATH/tmp" || exit 1
 
         install_dir="$TESTPATH"
+
+        # this is to allow root to run the tests without error.  I don't
+        # like building things as root, but some people do...
+        export UFW_SKIP_CHECKS="1"
+
         setup_output=`$interpreter ./setup.py install --home="$install_dir" 2>&1`
         if [ "$?" != "0" ]; then
             echo "$setup_output"
@@ -170,10 +225,6 @@ do
 
         # make the installed user rules files available to tests
         find "$TESTPATH" -name "user*.rules" -exec cp {} {}.orig \;
-
-        # this is to allow root to run the tests without error.  I don't
-        # like building things as root, but some people do...
-        sed -i 's/self.do_checks = True/self.do_checks = False/' "$TESTPATH/lib/python/ufw/backend.py"
 
         cp -rL $testdir/$class/$thistest/orig/* "$TESTPATH/etc" || exit 1
         cp -f $testdir/$class/$thistest/runtest.sh "$TESTPATH" || exit 1
@@ -228,6 +279,14 @@ do
     done
 done
 
+# Restore IP forwarding
+test -n "$orig_ip_forward" && \
+    sysctl -w net.ipv4.ip_forward="$orig_ip_forward" 2>/dev/null || true
+test -n "$orig_ipv6_forwarding_default" && \
+    sysctl -w net.ipv6.conf.default.forwarding="$orig_ipv6_forwarding_default" 2>/dev/null || true
+test -n "$orig_ipv6_forwarding_all" && \
+    sysctl -w net.ipv6.conf.all.forwarding="$orig_ipv6_forwarding_all" 2>/dev/null || true
+
 if [ -d "$TESTPATH" ]; then
     rm -rf "$TESTPATH"
 fi
@@ -235,9 +294,9 @@ fi
 individual=$(cat $statsdir/individual)
 
 echo ""
-echo "-------"
-echo "Results"
-echo "-------"
+echo "------------------------"
+echo "Functional tests summary"
+echo "------------------------"
 echo "Attempted:           $numtests ($individual individual tests)"
 echo "Skipped:             $skipped"
 echo "Errors:              $errors"

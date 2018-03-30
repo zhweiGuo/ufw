@@ -30,6 +30,19 @@ mo:
 test:
 	./run_tests.sh -s -i $(PYTHON)
 
+unittest:
+	./run_tests.sh -s -i $(PYTHON) unit
+
+coverage:
+	# No python3 coverage yet
+	#$(PYTHON) ./tests/unit/runner.py
+	python -m coverage run ./tests/unit/runner.py
+
+coverage-report:
+	# No python3 coverage yet
+	#$(PYTHON) ./tests/unit/runner.py
+	python -m coverage report --show-missing --omit="tests/*"
+
 syntax-check: clean
 	$(shell mkdir $(TMPDIR) && $(PYFLAKES_EXE) src 2>&1 | grep -v "undefined name '_'" > $(PYFLAKES))
 	cat "$(PYFLAKES)"
@@ -47,21 +60,24 @@ man-check: clean
 		echo "PASS"; \
 	done; \
 
-check: syntax-check man-check test
+check: syntax-check man-check test unittest
 
 # These are only used in development
 clean:
 	rm -rf ./build
 	rm -rf ./staging
-	rm -rf ./tests/testarea
+	rm -rf ./tests/testarea ./tests/unit/tmp
 	rm -rf $(TMPDIR)
 	rm -f ./locales/mo/*.mo
+	rm -f ./tests/unit/*.pyc ./tests/*.pyc ./src/*.pyc
+	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__ ./src/__pycache__
+	rm -rf ./.coverage
+	rm -f ./ufw               # unittest symlink
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
-	$(PYTHON) ./setup.py install --home=$(TMPDIR)/ufw
+	UFW_SKIP_CHECKS=1 $(PYTHON) ./setup.py install --home=$(TMPDIR)/ufw
 	PYTHONPATH=$(PYTHONPATH):$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw version
-	sed -i 's/self.do_checks = True/self.do_checks = False/' $(TMPDIR)/ufw/lib/python/ufw/backend.py
 	cp ./examples/* $(TMPDIR)/ufw/etc/ufw/applications.d
 	# Test with:
 	# PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw ...

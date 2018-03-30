@@ -1670,8 +1670,8 @@ Rules updated
 
 
 ### tuple ### limit ah any 10.0.0.1 any 0.0.0.0/0 in
--A ufw-user-input -p ah -d 10.0.0.1 -m state --state NEW -m recent --set
--A ufw-user-input -p ah -d 10.0.0.1 -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p ah -d 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p ah -d 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 249: delete limit to 10.0.0.1 proto ah
 WARN: Checks disabled
 Rules updated

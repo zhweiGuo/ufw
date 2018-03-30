@@ -1,6 +1,6 @@
 '''common.py: common classes for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2013 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -27,6 +27,7 @@ trans_dir = share_dir
 config_dir = "#CONFIG_PREFIX#"
 prefix_dir = "#PREFIX#"
 iptables_dir = "#IPTABLES_DIR#"
+do_checks = True
 
 class UFWError(Exception):
     '''This class represents ufw exceptions'''
@@ -40,7 +41,7 @@ class UFWError(Exception):
 class UFWRule:
     '''This class represents firewall rules'''
     def __init__(self, action, protocol, dport="any", dst="0.0.0.0/0",
-                 sport="any", src="0.0.0.0/0", direction="in"):
+                 sport="any", src="0.0.0.0/0", direction="in", forward=False):
         # Be sure to update dup_rule accordingly...
         self.remove = False
         self.updated = False
@@ -59,6 +60,7 @@ class UFWRule:
         self.interface_in = ""
         self.interface_out = ""
         self.direction = ""
+        self.forward = forward
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -76,7 +78,9 @@ class UFWRule:
     def _get_attrib(self):
         '''Print rule to stdout'''
         res = "'%s'" % (self)
-        for k in self.__dict__:
+        keys = list(self.__dict__)
+        keys.sort()
+        for k in keys:
             res += ", %s=%s" % (k, self.__dict__[k])
         return res
 
@@ -98,6 +102,7 @@ class UFWRule:
         rule.interface_in = self.interface_in
         rule.interface_out = self.interface_out
         rule.direction = self.direction
+        rule.forward = self.forward 
 
         return rule
 
@@ -197,9 +202,7 @@ class UFWRule:
             raise UFWError(err_msg)
         else:
             ports = port.split(',')
-            if len(ports) < 1:
-                raise UFWError(err_msg)
-            elif len(ports) > 1:
+            if len(ports) > 1:
                 self.multi = True
 
             tmp = ""
@@ -208,8 +211,6 @@ class UFWRule:
                     # Port range
                     self.multi = True
                     ran = p.split(':')
-                    if len(ran) != 2:
-                        raise UFWError(err_msg)
                     for q in ran:
                         if int(q) < 1 or int(q) > 65535:
                             raise UFWError(err_msg)
@@ -297,6 +298,10 @@ class UFWRule:
             err_msg = _("Bad interface type")
             raise UFWError(err_msg)
 
+        if '!' in str(name):
+            err_msg = _("Bad interface name: reserved character: '!'")
+            raise UFWError(err_msg)
+
         if not re.match(r'^[a-zA-Z][a-zA-Z0-9:]*[a-zA-Z0-9]', str(name)):
             err_msg = _("Bad interface name")
             raise UFWError(err_msg)
@@ -342,10 +347,11 @@ class UFWRule:
                 (self.src, changed) = ufw.util.normalize_address(self.src, \
                                                                  self.v6)
             except Exception:
-                raise
+                err_msg = _("Could not normalize source address")
+                raise UFWError(err_msg)
 
-        if changed:
-            self.updated = changed
+            if changed:
+                self.updated = changed
 
         if self.dst:
             try:
@@ -354,6 +360,9 @@ class UFWRule:
             except Exception:
                 err_msg = _("Could not normalize destination address")
                 raise UFWError(err_msg)
+
+            if changed:
+                self.updated = changed
 
         if self.dport:
             ports = self.dport.split(',')
@@ -364,9 +373,6 @@ class UFWRule:
             ports = self.sport.split(',')
             ufw.util.human_sort(ports)
             self.sport = ','.join(ports)
-
-        if changed:
-            self.updated = changed
 
     def match(x, y):
         '''Check if rules match
@@ -412,6 +418,9 @@ class UFWRule:
         if x.direction != y.direction:
             debug(dbg_msg)
             return 1
+        if x.forward != y.forward:
+            debug(dbg_msg)
+            return 1
         if x.action == y.action and x.logtype == y.logtype:
             dbg_msg = _("Found exact match")
             debug(dbg_msg)
@@ -438,6 +447,11 @@ class UFWRule:
         '''
         def _match_ports(test_p, to_match):
             '''Returns True if p is an exact match or within a multi rule'''
+            if ',' in test_p or ':' in test_p:
+                if test_p == to_match:
+                    return True
+                return False
+
             for port in to_match.split(','):
                 if test_p == port:
                     return True
@@ -461,6 +475,11 @@ class UFWRule:
         # Direction must match
         if y.direction != "in":
             debug("(direction) " + dbg_msg + " (not incoming)")
+            return 1
+
+        # forward must match
+        if y.forward != x.forward:
+            debug(dbg_msg + " (forward does not match)")
             return 1
 
         # Protocols must match or y 'any'
@@ -505,8 +524,7 @@ class UFWRule:
                 debug("(interface) " + dbg_msg + " %s does not exist" % \
                       (y.interface_in))
                 return 1
-            except Exception:
-                raise
+
             if y.dst != if_ip and '/' not in y.dst:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % \
                       (y.dst, if_ip))
