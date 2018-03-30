@@ -53,13 +53,31 @@ allow_service() {
     fi
 }
 
+# If a primary chain is added to upstream, we should add it on upgrade so
+# reload works correctly
+add_primary_chain() {
+    chain="$1"
+    builtin="$2"
+    ver="$3"
+
+    exe="iptables"
+    if [ "$ver" = "6" ]; then
+        exe="ip6tables"
+    fi
+    if $exe -L "$chain" -n >/dev/null 2>&1 ; then
+        return
+    fi
+    $exe -N "$chain" || true
+    $exe -A "$builtin" -j "$chain" || true
+}
+
 case "$1" in
     configure)
         # these files are required, but don't want to change them if
         # the user modified them
         for f in before.rules before6.rules after.rules after6.rules
         do
-            ucf --debconf-ok $TEMPLATE_PATH/$f $RULES_PATH/$f
+            ucf --debconf-ok $TEMPLATE_PATH/iptables/$f $RULES_PATH/$f
             test -f $RULES_PATH/$f && chmod 640 $RULES_PATH/$f
         done
 
@@ -67,8 +85,16 @@ case "$1" in
         do
             if [ ! -e "$USER_PATH/$f" ]; then
                 # if no config, copy the template
-                cp $TEMPLATE_PATH/$f $USER_PATH/$f
+                cp $TEMPLATE_PATH/iptables/$f $USER_PATH/$f
                 chmod 640 $USER_PATH/$f
+            fi
+        done
+
+        for f in before.init after.init
+        do
+            if [ ! -e "/etc/ufw/$f" ]; then
+                cp $TEMPLATE_PATH/$f /etc/ufw
+                chmod 640 /etc/ufw/$f
             fi
         done
 
@@ -102,10 +128,10 @@ case "$1" in
         # try to use iptables, which breaks the installer
         enable_ufw "$enabled"
 
-        # reload the firewall for IPv6 enabled by default
-        if [ "$enabled" = "true" ] && [ ! -z "$2" ] && dpkg --compare-versions "$2" lt "0.30.1-2" ; then
-            /lib/ufw/ufw-init stop || true
-            /lib/ufw/ufw-init start || true
+        # add new primary chains on upgrade
+        if [ "$enabled" = "true" ] && [ ! -z "$2" ] && dpkg --compare-versions "$2" lt "0.34~rc-0ubuntu2" ; then
+            add_primary_chain ufw-track-forward FORWARD
+            add_primary_chain ufw6-track-forward FORWARD 6
         fi
         ;;
     triggered)

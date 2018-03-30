@@ -1,3 +1,48 @@
+ufw (0.34-1) unstable; urgency=low
+
+  * New upstream release (LP: #1434525, LP: #1438647, LP: #1155292,
+    Closes: 792753). Drop following patches included upstream:
+    - 0002-lp1044361.patch
+    - 0003-fix-typeerror-on-error.patch
+    - 0004-lp1039729.patch
+    - 0005-lp1191197.patch
+  * Merge in Ubuntu packaging:
+    - debian/ufw.postinst:
+      + drop old reload of policy for upgrades to 0.30.1-2
+      + add new ufw[6]-track-forward primary chains on upgrade
+    - Install the SysV init and upstart script for both Debian and Ubuntu.
+      Debian has upstart too, and in Ubuntu we need the init script for LSB
+      dependencies and for systemd. (LP: #1341083)
+      + Rename debian/ufw.init.debian to debian/ufw.init
+      + Rename debian/ufw.upstart.ubuntu to debian/ufw.upstart
+      + Remove all the distro specific code from debian/rules and just call
+        dh_installinit (thus removing lsb-release from Build-Depends-Indep).
+    - Drop the distro specific logrotate configs, and use the ubuntu one with
+      "rotate" instead of "reload" everywhere, as Debian's rsyslog init also
+      supports "rotate".
+    - Add a systemd unit:
+      + Add debian/ufw.service
+      + Add dh-systemd build dep.
+      + debian/rulles: Call dh_systemd_{enable,start}.
+    - Don't include Debian version in the python module version (LP: #1465549)
+  * debian/copyright: follow copyright-format/1.0
+  * debian/po/pt_BR.po: add Brazilian Portuguese of debconf templates. Thanks
+    to Adriano Rafael Gomes (Closes: 770453)
+  * update debian/before[6].rules.md5sum
+  * debian/ufw.lintian-overrides:
+    - usr/share/ufw/after.init and before.init are intentionally not
+      executable
+    - we intentionally do not stop the firewall with init.d script
+  * debian/control: Build-Depends-Indep on procps (needed by testsuite for
+    sysctl)
+  * debian/ufw.dirs, debian/rules: copy bash completions to
+    /usr/share/bash-completion/completions
+  * debian/rules: run 'make clean' after running the testsuite since the
+    testsuite creates a build/ directory not that would be reused
+  * debian/ufw.postrm: remove after.init and before.init on purge
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 20 Aug 2015 14:10:54 -0500
+
 ufw (0.33-2) unstable; urgency=low
 
   * debian/control: python-ufw should Breaks/Replaces on ufw << 0.32-0ubuntu1
