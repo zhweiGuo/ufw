@@ -28,6 +28,7 @@ Available applications:
   Kerberos KDC
   Kerberos Password
   LDAP
+  LDAPS
   LPD
   MSN
   MSN SSL
@@ -61,7 +62,6 @@ Available applications:
 
 Bug #337705
 1: help
-ERROR: Could not find required libraries. Aborting.
 
 
 Bug #430053
@@ -162,5 +162,9 @@ Bug #568877
 Bug #946332
 29: --dry-run
 ERROR: not enough args
+
+
+Bug #787955
+30: --dry-run status
 
 

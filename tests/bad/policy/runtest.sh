@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2009 Canonical Ltd.
+#    Copyright 2009-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -28,11 +28,5 @@ for i in INPUT OUTPUT FORWARD; do
         sed -i "s/DEFAULT_${i}_POLICY=.*/DEFAULT_${i}_POLICY=DROP/" $TESTPATH/etc/default/ufw
     done
 done
-
-echo "Setting DEFAULT_FORWARD_POLICY to ACCEPT_NO_TRACK" >> $TESTTMP/result
-sed -i "s/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY=ACCEPT_NO_TRACK/" $TESTPATH/etc/default/ufw
-#do_cmd "1" null --dry-run status
-do_cmd "1" --dry-run status
-sed -i "s/DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY=DROP/" $TESTPATH/etc/default/ufw
 
 exit 0

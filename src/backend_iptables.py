@@ -1,6 +1,6 @@
 '''backend_iptables.py: iptables backend for ufw'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -60,8 +60,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             self.chains['misc'].append(chain_prefix + "-logging-deny")
             self.chains['misc'].append(chain_prefix + "-logging-allow")
 
-        # The default log rate limiting rule
-        self.ufw_user_limit_log = ['ufw-user-limit', '-m', 'limit', \
+        # The default log rate limiting rule ('ufw[6]-user-limit chain should
+        # be prepended before use)
+        self.ufw_user_limit_log = ['-m', 'limit', \
                                    '--limit', '3/minute', '-j', 'LOG', \
                                    '--log-prefix']
         self.ufw_user_limit_log_text = "[UFW LIMIT BLOCK]"
@@ -188,8 +189,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             for b in ['input', 'forward', 'output']:
                 items.append('ufw-user-%s' % b)
                 items6.append('ufw6-user-%s' % b)
-            items.append('ufw-user-limit-accept')
-            items.append('ufw-user-limit')
+            if self.caps['limit']['4']:
+                items.append('ufw-user-limit-accept')
+                items.append('ufw-user-limit')
+            if self.caps['limit']['6']:
+                items6.append('ufw6-user-limit-accept')
+                items6.append('ufw6-user-limit')
         elif rules_type == "after":
             for b in ['input', 'forward', 'output']:
                 items.append('ufw-after-%s' % b)
@@ -277,7 +282,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 show_proto = False
                 tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tupl):
+                if tupl in app_rules:
                     debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:
@@ -392,17 +397,18 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             str_to = _("To")
             str_from = _("From")
             str_action = _("Action")
-            rules_header = "%-26s %-12s%s\n" % \
-                            (str_to.decode("utf-8", 'ignore'), \
-                             str_action.decode("utf-8", 'ignore'), \
-                             str_from.decode("utf-8", 'ignore'))
+            rules_header_fmt = "%-26s %-12s%s\n"
+
+            rules_header = rules_header_fmt % (str_to, str_action, str_from)
             if show_count:
                 rules_header += "     "
-            rules_header += "%-26s %-12s%s\n" % \
-                            ("-" * len(str_to.decode("utf-8", 'ignore')), \
-                             "-" * len(str_action.decode("utf-8", 'ignore')), \
-                             "-" * len(str_from.decode("utf-8", 'ignore')))
-            full_str += rules_header.encode('utf-8', 'ignore')
+            rules_header += rules_header_fmt % \
+                            ("-" * len(str_to), \
+                             "-" * len(str_action), \
+                             "-" * len(str_from))
+
+            full_str += rules_header
+
             if s != "":
                 full_str += s
             if s != "" and str_out != "":
@@ -426,28 +432,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
     def stop_firewall(self):
         '''Stop the firewall'''
-        err_msg = _("problem running")
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
             (rc, out) = cmd([self.files['init'], 'force-stop'])
             if rc != 0:
-                debug(out)
-                raise UFWError(err_msg + " ufw-init")
+                err_msg = _("problem running ufw-init\n%s" % out)
+                raise UFWError(err_msg)
 
     def start_firewall(self):
         '''Start the firewall'''
-        err_msg = _("problem running")
         if self.dryrun:
             msg("> " + _("running ufw-init"))
         else:
             (rc, out) = cmd([self.files['init'], 'start'])
             if rc != 0:
-                debug(out)
-                raise UFWError(err_msg + " ufw-init")
+                err_msg = _("problem running ufw-init\n%s" % out)
+                raise UFWError(err_msg)
 
-            if not self.defaults.has_key('loglevel') or \
-               self.defaults['loglevel'] not in self.loglevels.keys():
+            if 'loglevel' not in self.defaults or \
+               self.defaults['loglevel'] not in list(self.loglevels.keys()):
                 # Add the loglevel if not valid
                 try:
                     self.set_loglevel("low")
@@ -473,8 +477,11 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             exe = self.ip6tables
 
         for chain in [ 'input', 'output', 'forward', 'limit', 'limit-accept' ]:
-            if v6 and (chain == "limit" or chain == "limit-accept"):
-                continue
+            if chain == "limit" or chain == "limit-accept":
+                if v6 and not self.caps['limit']['6']:
+                    continue
+                elif not v6 and not self.caps['limit']['4']:
+                    continue
 
             (rc, out) = cmd([exe, '-n', '-L', prefix + "-user-" + chain])
             if rc != 0:
@@ -719,8 +726,9 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         ufw.util.write_to_file(fd, ":" + chain_prefix + \
                                          "-logging-allow - [0:0]\n")
 
-        if chain_prefix == "ufw":
-            # Rate limiting only supported with IPv4
+        # Rate limiting is runtime supported
+        if (chain_prefix == "ufw" and self.caps['limit']['4']) or \
+           (chain_prefix == "ufw6" and self.caps['limit']['6']):
             ufw.util.write_to_file(fd, ":" + chain_prefix + \
                                              "-user-limit - [0:0]\n")
             ufw.util.write_to_file(fd, ":" + chain_prefix + \
@@ -789,11 +797,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                     "\n")
         ufw.util.write_to_file(fd, "### END LOGGING ###\n")
 
-        # Rate limiting only supported with IPv4
-        if chain_prefix == "ufw":
+        # Rate limiting is runtime supported
+        if (chain_prefix == "ufw" and self.caps['limit']['4']) or \
+           (chain_prefix == "ufw6" and self.caps['limit']['6']):
             ufw.util.write_to_file(fd, "\n### RATE LIMITING ###\n")
             if self.defaults['loglevel'] != "off":
                 ufw.util.write_to_file(fd, "-A " + \
+                         chain_prefix + "-user-limit " + \
                          " ".join(self.ufw_user_limit_log) + \
                          " \"" + self.ufw_user_limit_log_text + " \"\n")
             ufw.util.write_to_file(fd, "-A " + chain_prefix + \
@@ -826,9 +836,13 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             if not self.use_ipv6():
                 err_msg = _("Adding IPv6 rule failed: IPv6 not enabled")
                 raise UFWError(err_msg)
-            if rule.action == 'limit':
-                # Netfilter doesn't have ip6t_recent yet, so skip
+            if rule.action == 'limit' and not self.caps['limit']['6']:
+                # Rate limiting is runtime supported
                 return _("Skipping unsupported IPv6 '%s' rule") % (rule.action)
+        else:
+            if rule.action == 'limit' and not self.caps['limit']['4']:
+                # Rate limiting is runtime supported
+                return _("Skipping unsupported IPv4 '%s' rule") % (rule.action)
 
         if rule.multi and rule.protocol != "udp" and rule.protocol != "tcp":
             err_msg = _("Must specify 'tcp' or 'udp' with multiple ports")
@@ -1110,22 +1124,26 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             except Exception:
                 raise UFWError(err_msg)
 
-        # Always delete this and re-add it so that we don't have extras
-        self._chain_cmd('ufw-user-limit', ['-D'] + self.ufw_user_limit_log + \
-                            [self.ufw_user_limit_log_text + " "], \
-                            fail_ok=True)
-
-        if self.defaults["loglevel"] != "off":
-            self._chain_cmd('ufw-user-limit', ['-I'] + \
-                            self.ufw_user_limit_log + \
-                            [self.ufw_user_limit_log_text + " "], \
-                            fail_ok=True)
+        # Rate limiting is runtime supported
+        # Always delete these and re-add them so that we don't have extras
+        for chain in ['ufw-user-limit', 'ufw6-user-limit']:
+            if (self.caps['limit']['4'] and chain == 'ufw-user-limit') or \
+               (self.caps['limit']['6'] and chain == 'ufw6-user-limit'):
+                self._chain_cmd(chain, ['-D', chain] + \
+                                self.ufw_user_limit_log + \
+                                [self.ufw_user_limit_log_text + " "], \
+                                fail_ok=True)
+                if self.defaults["loglevel"] != "off":
+                    self._chain_cmd(chain, ['-I', chain] + \
+                                    self.ufw_user_limit_log + \
+                                    [self.ufw_user_limit_log_text + " "], \
+                                    fail_ok=True)
 
     def _get_logging_rules(self, level):
         '''Get rules for specified logging level'''
         rules_t = []
 
-        if level not in self.loglevels.keys():
+        if level not in list(self.loglevels.keys()):
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 

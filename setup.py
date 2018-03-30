@@ -1,7 +1,7 @@
 #
 # ufw: front-end for Linux firewalling
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -25,6 +25,7 @@
 # python2.7 ./setup.py install --root="/tmp/ufw"
 #
 
+from __future__ import print_function
 from distutils.command.install import install as _install
 from distutils.core import setup
 import errno
@@ -34,13 +35,13 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.31.1'
+ufw_version = '0.33'
 
 def cmd(command):
     '''Try to execute the given command.'''
     try:
         sp = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    except OSError, e:
+    except OSError as e:
         return [127, str(e)]
 
     out = sp.communicate()[0]
@@ -50,7 +51,7 @@ class Install(_install, object):
     '''Override distutils to install the files where we want them.'''
     def run(self):
         if self.home != None and self.root != None:
-            print "Don't specify --home and --root at same time"
+            print("Don't specify --home and --root at same time")
             return
 
         real_confdir = os.path.join('/etc')
@@ -64,7 +65,7 @@ class Install(_install, object):
 
         # Update the modules' paths
         for file in [ 'common.py' ]:
-            print "Updating " + file
+            print("Updating " + file)
             subprocess.call(["sed",
                              "-i",
                              "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
@@ -107,7 +108,7 @@ class Install(_install, object):
             self.mkpath(os.path.dirname(f))
 
         # update the interpreter to that of the one the user specified for setup
-        print "Updating staging/ufw to use %s" % (sys.executable)
+        print("Updating staging/ufw to use %s" % (sys.executable))
         subprocess.call(["sed",
                          "-i",
                          "1s%^#.*python.*%#! /usr/bin/env " + sys.executable + "%g",
@@ -174,14 +175,14 @@ class Install(_install, object):
         # Update the installed rules files' permissions
         for file in [ before_rules, after_rules, before6_rules, after6_rules, \
                       user_rules, user6_rules ]:
-            os.chmod(file, 0640)
+            os.chmod(file, 0o640)
 
         # Update the installed files' paths
         for file in [ defaults, ufwconf, before_rules, after_rules, \
                       before6_rules, after6_rules, script, \
                       manpage, manpage_f, sysctl, init_helper, \
                       init_helper_functions ]:
-            print "Updating " + file
+            print("Updating " + file)
             subprocess.call(["sed",
                              "-i",
                              "s%#CONFIG_PREFIX#%" + real_confdir + "%g",
@@ -214,8 +215,8 @@ class Install(_install, object):
             self.copy_file(file, rulesdir)
 
 if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 5):
-    print >> sys.stderr, "ERROR: Need at least python 2.5"
+   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
+    print("ERROR: Need at least python 2.6", file=sys.stderr)
     sys.exit(1)
 
 if os.path.exists('staging'):
@@ -234,7 +235,7 @@ for e in ['iptables']:
             if os.path.exists(os.path.join(dir, e)):
                 iptables_dir = dir
                 iptables_exe = os.path.join(iptables_dir, "iptables")
-                print "Found '%s'" % iptables_exe
+                print("Found '%s'" % iptables_exe)
             else:
                 continue
 
@@ -243,22 +244,22 @@ for e in ['iptables']:
 
 
 if iptables_exe == '':
-    print >> sys.stderr, "ERROR: could not find required binary 'iptables'"
+    print("ERROR: could not find required binary 'iptables'", file=sys.stderr)
     sys.exit(1)
 
 for e in ['ip6tables', 'iptables-restore', 'ip6tables-restore']:
     if not os.path.exists(os.path.join(iptables_dir, e)):
-        print >> sys.stderr, "ERROR: could not find required binary '%s'" % (e)
+        print("ERROR: could not find required binary '%s'" % (e), file=sys.stderr)
         sys.exit(1)
 
 (rc, out) = cmd([iptables_exe, '-V'])
 if rc != 0:
     raise OSError(errno.ENOENT, "Could not find version for '%s'" % \
                   (iptables_exe))
-version = re.sub('^v', '', re.split('\s', out)[1])
-print "Found '%s' version '%s'" % (iptables_exe, version)
+version = re.sub('^v', '', re.split('\s', str(out))[1])
+print("Found '%s' version '%s'" % (iptables_exe, version))
 if version < "1.4":
-    print >> sys.stderr, "WARN: version '%s' has limited IPv6 support. See README for details." % (version)
+    print("WARN: version '%s' has limited IPv6 support. See README for details." % (version), file=sys.stderr)
 
 setup (name='ufw',
       version=ufw_version,

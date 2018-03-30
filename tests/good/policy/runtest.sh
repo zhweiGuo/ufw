@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#    Copyright 2009 Canonical Ltd.
+#    Copyright 2009-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -18,10 +18,7 @@ source "$TESTPATH/../testlib.sh"
 
 echo "TESTING GOOD DEFAULT POLICY" >> $TESTTMP/result
 for i in INPUT OUTPUT FORWARD; do
-    for j in ACCEPT ACCEPT_NO_TRACK DROP REJECT; do
-        if [ "$i" = "FORWARD" ] && [ "$j" = "ACCEPT_NO_TRACK" ]; then
-            continue
-        fi
+    for j in ACCEPT DROP REJECT; do
         echo "Setting DEFAULT_${i}_POLICY to $j" >> $TESTTMP/result
         sed -i "s/DEFAULT_${i}_POLICY=.*/DEFAULT_${i}_POLICY=$j/" $TESTPATH/etc/default/ufw
         do_cmd "0" null --dry-run status

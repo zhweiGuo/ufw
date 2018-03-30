@@ -1,6 +1,6 @@
 '''backend.py: interface for ufw backends'''
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -62,18 +62,45 @@ class UFWBackend:
         self.ip6tables_restore = os.path.join(iptables_dir, \
                                               "ip6tables-restore")
 
-        self.iptables_version = ufw.util.get_iptables_version(self.iptables)
+        try:
+            self.iptables_version = ufw.util.get_iptables_version(self.iptables)
+        except OSError:
+            err_msg = _("Couldn't determine iptables version")
+            raise UFWError(err_msg)
+
+        self.caps = {}
+        self.caps['limit'] = {}
+
+        # Set defaults for dryrun, non-root, etc
+        self.caps['limit']['4'] = True
+        self.caps['limit']['6'] = False # historical default for the testsuite
+
+        # Try to get capabilities from the running system if root
+        if self.do_checks and os.getuid() == 0 and not self.dryrun:
+            # v4
+            nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
+            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                self.caps['limit']['4'] = True
+            else:
+                self.caps['limit']['4'] = False
+
+            # v6
+            nf_caps = ufw.util.get_netfilter_capabilities(self.ip6tables)
+            if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
+                self.caps['limit']['6'] = True
+            else:
+                self.caps['limit']['6'] = False
 
     def is_enabled(self):
         '''Is firewall configured as enabled'''
-        if self.defaults.has_key('enabled') and \
+        if 'enabled' in self.defaults and \
            self.defaults['enabled'] == 'yes':
             return True
         return False
 
     def use_ipv6(self):
         '''Is firewall configured to use IPv6'''
-        if self.defaults.has_key('ipv6') and \
+        if 'ipv6' in self.defaults and \
            self.defaults['ipv6'] == 'yes' and \
            os.path.exists("/proc/sys/net/ipv6"):
             return True
@@ -86,8 +113,6 @@ class UFWBackend:
         rstr = ""
         if self.defaults[policy] == "accept":
             rstr = "allow"
-        elif self.defaults[policy] == "accept_no_track":
-            rstr = "allow-without-tracking"
         elif self.defaults[policy] == "reject":
             rstr = "reject"
         else:
@@ -142,8 +167,11 @@ class UFWBackend:
                 if not pat.search(profile):
                     profiles.append(os.path.join(self.files['apps'], profile))
 
-        for path in self.files.values() + [ os.path.abspath(sys.argv[0]) ] + \
+        for path in list(self.files.values()) + \
+                [ os.path.abspath(sys.argv[0]) ] + \
                 profiles:
+            if not path.startswith('/'):
+                path = "%s/%s" % (os.getcwd(), path)
             while True:
                 debug("Checking " + path)
                 if path == self.files['apps'] and \
@@ -159,18 +187,18 @@ class UFWBackend:
                 except Exception:
                     raise
 
-                if statinfo.st_uid != 0 and not warned_owner.has_key(path):
+                if statinfo.st_uid != 0 and path not in warned_owner:
                     warn_msg = _("uid is %(uid)s but '%(path)s' is owned by " \
                                  "%(st_uid)s") % ({'uid': str(uid), \
                                                'path': path, \
                                                'st_uid': str(statinfo.st_uid)})
                     warn(warn_msg)
                     warned_owner[path] = True
-                if mode & stat.S_IWOTH and not warned_world_write.has_key(path):
+                if mode & stat.S_IWOTH and path not in warned_world_write:
                     warn_msg = _("%s is world writable!") % (path)
                     warn(warn_msg)
                     warned_world_write[path] = True
-                if mode & stat.S_IWGRP and not warned_group_write.has_key(path):
+                if mode & stat.S_IWGRP and path not in warned_group_write:
                     warn_msg = _("%s is group writable!") % (path)
                     warn(warn_msg)
                     warned_group_write[path] = True
@@ -178,9 +206,12 @@ class UFWBackend:
                 if path == "/":
                     break
 
+                last_path = path
                 path = os.path.dirname(path)
                 if not path:
-                    raise OSError(errno.ENOENT, "Could not find '%s'" % (path))
+                    raise OSError(errno.ENOENT, \
+                                  "Could not find parent for '%s'" % \
+                                  (last_path))
 
         for f in self.files:
             if f != 'apps' and not os.path.isfile(self.files[f]):
@@ -206,14 +237,13 @@ class UFWBackend:
             orig.close()
 
         # do some default policy sanity checking
-        policies = ['accept', 'accept_no_track', 'drop', 'reject']
+        policies = ['accept', 'drop', 'reject']
         for c in [ 'input', 'output', 'forward' ]:
-            if not self.defaults.has_key('default_%s_policy' % (c)):
+            if 'default_%s_policy' % (c) not in self.defaults:
                 err_msg = _("Missing policy for '%s'" % (c))
                 raise UFWError(err_msg)
             p = self.defaults['default_%s_policy' % (c)]
-            if p not in policies or \
-               (p == 'accept_no_track' and c == 'forward'):
+            if p not in policies:
                 err_msg = _("Invalid policy '%(policy)s' for '%(chain)s'" % \
                             ({'policy': p, 'chain': c}))
                 raise UFWError(err_msg)
@@ -299,7 +329,7 @@ class UFWBackend:
     def get_app_rules_from_template(self, template):
         '''Return a list of UFWRules based on the template rule'''
         rules = []
-        profile_names = self.profiles.keys()
+        profile_names = list(self.profiles.keys())
 
         if template.dport in profile_names and template.sport in profile_names:
             dports = ufw.applications.get_ports(self.profiles[template.dport])
@@ -446,12 +476,12 @@ class UFWBackend:
 
     def find_application_name(self, profile_name):
         '''Find the application profile name for profile_name'''
-        if self.profiles.has_key(profile_name):
+        if profile_name in self.profiles:
             return profile_name
 
         match = ""
         matches = 0
-        for n in self.profiles.keys():
+        for n in list(self.profiles.keys()):
             if n.lower() == profile_name.lower():
                 match = n
                 matches += 1
@@ -503,7 +533,7 @@ class UFWBackend:
             if r.dapp != "" or r.sapp != "":
                 tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tupl):
+                if tupl in app_rules:
                     tuple_offset += 1
                 else:
                     app_rules[tupl] = True
@@ -530,8 +560,8 @@ class UFWBackend:
         '''Gets current log level of firewall'''
         level = 0
         rstr = _("Logging: ")
-        if not self.defaults.has_key('loglevel') or \
-           self.defaults['loglevel'] not in self.loglevels.keys():
+        if 'loglevel' not in self.defaults or \
+           self.defaults['loglevel'] not in list(self.loglevels.keys()):
             level = -1
             rstr += _("unknown")
         else:
@@ -544,13 +574,13 @@ class UFWBackend:
 
     def set_loglevel(self, level):
         '''Sets log level of firewall'''
-        if level not in self.loglevels.keys() + ['on']:
+        if level not in list(self.loglevels.keys()) + ['on']:
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
 
         new_level = level
         if level == "on":
-            if not self.defaults.has_key('loglevel') or \
+            if 'loglevel' not in self.defaults or \
                self.defaults['loglevel'] == "off":
                 new_level = "low"
             else:
@@ -586,7 +616,7 @@ class UFWBackend:
             if r.dapp != "" or r.sapp != "":
                 tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tupl):
+                if tupl in app_rules:
                     debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:
@@ -606,7 +636,7 @@ class UFWBackend:
             if r.dapp != "" or r.sapp != "":
                 tupl = r.get_app_tuple()
 
-                if app_rules.has_key(tupl):
+                if tupl in app_rules:
                     debug("Skipping found tuple '%s'" % (tupl))
                     continue
                 else:

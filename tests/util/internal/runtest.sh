@@ -50,11 +50,12 @@ script="tests/testarea/test_normalization.py"
 cat > $script << EOM
 #! /usr/bin/env $interpreter
 
+from __future__ import print_function
 import sys
 import ufw.util
 
 if len(sys.argv) != 3:
-    print >> sys.stderr, "Wrong number of args: %d" % (len(sys.argv))
+    print("Wrong number of args: %d" % (len(sys.argv)), file=sys.stderr)
     sys.exit(1)
 
 v6 = False
@@ -65,7 +66,7 @@ orig = sys.argv[2]
 dotted = ufw.util._cidr_to_dotted_netmask(orig, v6)
 reverse = ufw.util._dotted_netmask_to_cidr(dotted, v6)
 
-print "orig = '%s', dotted = '%s', reverse = '%s'" % (orig, dotted, reverse)
+print("orig = '%s', dotted = '%s', reverse = '%s'" % (orig, dotted, reverse))
 if orig != reverse:
     sys.exit(1)
 

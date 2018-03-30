@@ -3,7 +3,7 @@
 # check-requirements: verify all the required iptables functionality is
 # available
 #
-# Copyright 2008-2011 Canonical Ltd.
+# Copyright 2008-2012 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -21,26 +21,41 @@ set -e
 
 chain="ufw-check-requirements"
 error=""
+error_runtime=""
 
 runcmd() {
+    runtime="no"
+    if [ "$1" = "runtime" ]; then
+        runtime="yes"
+        shift 1
+    fi
     if $@ >/dev/null 2>&1 ; then
         echo pass
     else
-        echo FAIL
-        error="yes"
+        if [ "$runtime" = "yes" ]; then
+            echo "FAIL (no runtime support)"
+            error_runtime="yes"
+        else
+            echo FAIL
+            error="yes"
+        fi
     fi
 }
 
 # check python
 found_python="no"
 echo -n "Has python: "
-for exe in python2.7 python2.6 python2.5 python; do
+for exe in python2.7 python2.6 python2.5 python3.2 python; do
     if ! which $exe >/dev/null 2>&1; then
         continue
     fi
     v=`$exe --version 2>&1 | cut -f 2 -d ' '`
     if echo "$v" | grep -q "^2.[567]"; then
-        echo "pass (binary: $exe, version: $v)"
+        echo "pass (binary: $exe, version: $v, py2)"
+        found_python="yes"
+        break
+    elif echo "$v" | grep -q "^3.[2]"; then
+        echo "pass (binary: $exe, version: $v, py3)"
         found_python="yes"
         break
     fi
@@ -163,18 +178,10 @@ for i in "" 6; do
     done
 
     echo -n "state (new, recent set): "
-    if [ "$i" = "6" ]; then
-        echo "skipped -- IPv6 'limit' not supported by ufw yet"
-    else
-        runcmd $exe -A $c -m state --state NEW -m recent --set
-    fi
+    runcmd runtime $exe -A $c -m state --state NEW -m recent --set
 
     echo -n "state (new, recent update): "
-    if [ "$i" = "6" ]; then
-        echo "skipped -- IPv6 'limit' not supported by ufw yet"
-    else
-        runcmd $exe -A $c -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
-    fi
+    runcmd runtime $exe -A $c -m state --state NEW -m recent --update --seconds 30 --hitcount 6 -j ACCEPT
 
     echo -n "state (new, limit): "
     runcmd $exe -A $c -m state --state NEW -m limit --limit 3/min --limit-burst 10 -j ACCEPT
@@ -238,8 +245,13 @@ for i in "" 6; do
     }
 done
 
-if [ -n "$error" ]; then
-    echo "FAIL: check your kernel and that you have iptables >= 1.4.0"
+if [ -n "$error" ] || [ -n "$error_runtime" ]; then
+    if [ -n "$error" ]; then
+        echo "FAIL: check your kernel and that you have iptables >= 1.4.0"
+    fi
+    if [ -n "$error_runtime" ]; then
+        echo "FAIL: check your kernel and iptables for additional runtime support"
+    fi
     exit 1
 fi
 echo "All tests passed"

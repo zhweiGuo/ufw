@@ -23,7 +23,7 @@ title=LDAP server
 description=LDAP server
 ports=389/tcp
 
-[LDAP]
+[LDAPS]
 title=LDAP server (LDAPS)
 description=LDAP server (LDAPS)
 ports=636/tcp

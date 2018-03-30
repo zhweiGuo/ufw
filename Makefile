@@ -10,6 +10,10 @@ TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 PYFLAKES = $(TMPDIR)/pyflakes.out
 PYFLAKES_EXE = pyflakes
 
+ifndef $(PYTHON)
+export PYTHON=python
+endif
+
 all:
 	# Use setup.py to install. See README for details
 	exit 1
@@ -24,7 +28,7 @@ mo:
 	make -C locales all
 
 test:
-	./run_tests.sh -s
+	./run_tests.sh -s -i $(PYTHON)
 
 syntax-check: clean
 	$(shell mkdir $(TMPDIR) && $(PYFLAKES_EXE) src 2>&1 | grep -v "undefined name '_'" > $(PYFLAKES))
@@ -55,13 +59,13 @@ clean:
 
 evaluate: clean
 	mkdir -p $(TMPDIR)/ufw/usr $(TMPDIR)/ufw/etc
-	python ./setup.py install --home=$(TMPDIR)/ufw
-	PYTHONPATH=$(PYTHONPATH):$(TMPDIR)/ufw/lib/python $(TMPDIR)/ufw/usr/sbin/ufw version
+	$(PYTHON) ./setup.py install --home=$(TMPDIR)/ufw
+	PYTHONPATH=$(PYTHONPATH):$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw version
 	sed -i 's/self.do_checks = True/self.do_checks = False/' $(TMPDIR)/ufw/lib/python/ufw/backend.py
 	cp ./examples/* $(TMPDIR)/ufw/etc/ufw/applications.d
 	# Test with:
-	# PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(TMPDIR)/ufw/usr/sbin/ufw ...
-	# sudo sh -c "PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(TMPDIR)/ufw/usr/sbin/ufw ..."
+	# PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw ...
+	# sudo sh -c "PYTHONPATH=$$PYTHONPATH:$(TMPDIR)/ufw/lib/python $(PYTHON) $(TMPDIR)/ufw/usr/sbin/ufw ..."
 
 devel: evaluate
 	cp -f ./tests/defaults/profiles/* $(TMPDIR)/ufw/etc/ufw/applications.d
