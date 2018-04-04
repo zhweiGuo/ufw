@@ -2,7 +2,7 @@ ufw (0.35.1) UNRELEASED; urgency=medium
 
   * don't disable syncookies and instead use the system's value by default
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 08 Jan 2017 09:31:13 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Apr 2018 16:41:35 -0500
 
 ufw (0.35) RELEASED; urgency=medium
 
