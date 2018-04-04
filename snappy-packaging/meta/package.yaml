@@ -1,5 +1,5 @@
 name: ufw
-version: 0.35-0snappy1
+version: 0.35.1-0snappy1
 architectures: [all]
 vendor: Jamie Strandboge <jamie@strandboge.com>
 icon: icon.png
