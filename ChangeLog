@@ -1,6 +1,7 @@
 ufw (0.35.1) UNRELEASED; urgency=medium
 
   * don't disable syncookies and instead use the system's value by default
+  * conf/ufw.defaults,doc/ufw-framework.8: update for connection helpers
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Apr 2018 16:41:35 -0500
 
