@@ -136,7 +136,32 @@ For more information, see CONNECTION HELPERS.
 
 .SH "ANTI-SPOOFING"
 .PP
-TODO
+Spoofing is when packets claim to come from the local network and can be used
+to circumvent the firewall. Anti\-spoofing mechanisms can be used to thwart
+this:
+.IP 1.
+IPv4 reverse path filtering via rp_filter. See
+<https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt> for
+details.
+.IP 2.
+Reverse path netfilter module (since Linux 3.3 and iptables 1.4.13). See the
+\fBiptables\-extensions\fR man page for details.
+.IP 3.
+Setting anti\-spoofing rules via the ruleset.
+.PP
+By default, \fBufw\fR sets IPv4 rp_filter to '1' (strict mode). The kernel does
+not offer IPv6 supporting via rp_filter. To set an anti\-spoofing rule for a
+standalone system (eg, especially for an IPv6 address), use:
+ ufw deny in on <external interface> from <external IP>
+.PP
+For a router, similar rules can be added like so:
+ ufw deny in on <external interface> to <external IP>
+ ufw route deny in on <external interface> from <internal network 1>
+ ufw route deny in on <external interface> from <internal network 2>
+ ...
+.PP
+See <https://home.regit.org/netfilter-en/secure-use-of-helpers/> for more
+details on anti\-spoofing.
 
 .SH "KERNEL PARAMETERS"
 .PP
@@ -221,12 +246,13 @@ the functionality of the \fBufw\fR framework in a concise and simple manner
 and should not be used in production without understanding what each part
 does and does not do. Your firewall will undoubtedly want to be less open.
 .PP
-This router/firewall has two interfaces: eth0 (Internet facing) and eth1
-(internal LAN). Internal clients have addresses on the 10.0.0.0/8 network
-and should be able to connect to anywhere on the Internet. Connections
-to port 80 from the Internet should be forwarded to 10.0.0.2. Access to
-ssh port 22 from the administrative workstation (10.0.0.100) to this machine
-should be allowed. Also make sure no internal traffic goes to the Internet.
+This router/firewall has two interfaces: eth0 (Internet facing, IP address
+1.2.3.4) and eth1 (internal LAN). Internal clients have addresses on the
+10.0.0.0/8 network and should be able to connect to anywhere on the Internet.
+Connections to port 80 from the Internet should be forwarded to 10.0.0.2.
+Access to ssh port 22 from the administrative workstation (10.0.0.100) to this
+machine should be allowed. Also make sure no internal traffic goes to the
+Internet and deny spoofing internal clients and out public IP on eth0.
 .TP
 Edit #CONFIG_PREFIX#/ufw/sysctl.conf to have:
   net.ipv4.ip_forward=1
@@ -244,8 +270,10 @@ Add the necessary \fBufw\fR rules:
  ufw route reject out on eth0 to 10.0.0.0/8
  ufw route reject out on eth0 to 172.16.0.0/12
  ufw route reject out on eth0 to 192.168.0.0/16
+ ufw route drop in on eth0 from 10.0.0.0/8
  ufw route allow in on eth1 out on eth0 from 10.0.0.0/8
  ufw route allow in on eth0 to 10.0.0.2 port 80 proto tcp
+ ufw drop in on eth0 from 1.2.3.4
  ufw allow in on eth1 from 10.0.0.100 to any port 22 proto tcp
 
 .SH "CONNECTION HELPERS"
@@ -286,9 +314,9 @@ if needed, add the corresponding nf_conntrack_* module to IPT_MODULES
 optionally add the corresponding nf_nat_* module to IPT_MODULES
 .PP
 In general it is desirable to make connection helper rules as specific as
-possible and ensure ANTI\-SPOOFING is correctly setup for your site to avoid
-security issues in your ruleset. For more information, see
-<https://home.regit.org/netfilter-en/secure-use-of-helpers/>.
+possible and ensure anti\-spoofing is correctly setup for your site to avoid
+security issues in your ruleset. For more information, see ANTI\-SPOOFING,
+above, and <https://home.regit.org/netfilter-en/secure-use-of-helpers/>.
 
 .SH "CONNECTION HELPER EXAMPLES"
 .PP
@@ -443,7 +471,7 @@ to allow all traffic to be forwarded across the bridge. Eg, add to
 
 .SH SEE ALSO
 .PP
-\fBufw\fR(8), \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables\-restore\fR(8), \fBip6tables\-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5), \fBconntrack\fR(8), <https://home.regit.org/netfilter-en/secure-use-of-helpers/>
+\fBufw\fR(8), \fBiptables\fR(8), \fBip6tables\fR(8), \fBiptables\-restore\fR(8), \fBip6tables\-restore\fR(8), \fBsysctl\fR(8), \fBsysctl.conf\fR(5), \fBconntrack\fR(8), \fBiptables\-extensions\fR(8), <https://home.regit.org/netfilter-en/secure-use-of-helpers/>, <https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt>
 
 .SH AUTHOR
 .PP
