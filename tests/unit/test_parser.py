@@ -297,6 +297,7 @@ class ParserTestCase(unittest.TestCase):
             # remove 'to any' if no 'from' clause (ie, convert extended to
             # simple)
             if 'to' in cmd_compare and 'from' not in cmd_compare and \
+               'helper' not in cmd_compare and \
                cmd_compare[cmd_compare.index('to') + 1] == 'any' and \
                cmd_compare.index('to') + 2 < len(cmd_compare) and \
                'on' not in cmd_compare:
@@ -454,7 +455,7 @@ class ParserTestCase(unittest.TestCase):
                  ufw.common.UFWError),
                 (['rule', 'allow', 'in', 'on', 'eth0', 'log', 'to', 'any', \
                   'port', '22', 'from', 'any', 'port', '123', 'proto', 'udp', \
-                  'extra'], ValueError),
+                  'helper', 'ct:ftp', 'extra'], ValueError),
                 (['rule', 'allow', '22/udp/p'], ufw.common.UFWError),
                 (['rule', 'allow', '22:2e'], ufw.common.UFWError),
                 (['rule', 'allow', '22/ipv6'], ufw.common.UFWError),
@@ -521,6 +522,20 @@ class ParserTestCase(unittest.TestCase):
                 (['route', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],
                   ufw.common.UFWError),
+                (['rule', 'allow', '21/tcp', 'helper', 'ct:ftp'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '21', 'helper', 'ct:ftp'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '21', 'proto', 'tcp', 'helper', 'ct:nonexistent'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '21', 'proto', 'udp', 'helper', 'flow:ftp'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '21', 'proto', 'udp', 'helper', 'nonexistent:ftp'],
+                  ufw.common.UFWError),
+                (['rule', 'allow', 'to', 'any', 'port', '21', 'proto', 'tcp', 'helper', 'ftp:flow'],
+                  ufw.common.UFWError),
+                (['rule', 'limit', 'to', 'any', 'port', '21', 'proto', 'tcp', 'helper', 'flow:ftp'],
+                  ufw.common.UFWError),
                ]
         for cmd, exception in cmds:
             #print(" ".join(cmd))
@@ -530,7 +545,7 @@ class ParserTestCase(unittest.TestCase):
                                                    self.parser.parse_command,
                                                    cmd + [])
 
-    def test_extended_parse(self):
+    def _test_extended_parse(self):
         '''Test extended rule syntax'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_extended()

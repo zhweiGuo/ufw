@@ -183,7 +183,7 @@ class UFWCommandRule(UFWCommand):
             del argv[comment_idx]
             nargs = len(argv)
 
-        if nargs < 2 or nargs > 13:
+        if nargs < 2 or nargs > 15:
             raise ValueError()
 
         rule_action = action
@@ -238,17 +238,20 @@ class UFWCommandRule(UFWCommand):
             raise UFWError(err_msg)
         else:
             # Full form with PF-style syntax
-            keys = [ 'proto', 'from', 'to', 'port', 'app', 'in', 'out' ]
+            keys = ['proto', 'from', 'to', 'port', 'app', 'in', 'out',
+                    'helper']
 
             # quick check
             if argv.count("to") > 1 or \
                argv.count("from") > 1 or \
                argv.count("proto") > 1 or \
+               argv.count("helper") > 1 or \
                argv.count("port") > 2 or \
                argv.count("in") > 1 or \
                argv.count("out") > 1 or \
                argv.count("app") > 2 or \
-               argv.count("app") > 0 and argv.count("proto") > 0:
+               (argv.count("app") > 0 and argv.count("proto") > 0) or \
+               (argv.count("app") > 0 and argv.count("helper") > 0):
                 err_msg = _("Improper rule syntax")
                 raise UFWError(err_msg)
 
@@ -269,6 +272,18 @@ class UFWCommandRule(UFWCommand):
                         # checks above, but leave it here in case our parsing
                         # changes
                         err_msg = _("Invalid 'proto' clause")
+                        raise UFWError(err_msg)
+                elif arg == "helper":
+                    if i+1 < nargs:
+                        try:
+                            rule.set_helper(argv[i+1])
+                        except Exception:
+                            raise
+                    else: # pragma: no cover
+                        # This can't normally be reached because of nargs
+                        # checks above, but leave it here in case our parsing
+                        # changes
+                        err_msg = _("Invalid 'helper' clause")
                         raise UFWError(err_msg)
                 elif arg == "in" or arg == "out":
                     if i+1 < nargs:
@@ -450,7 +465,8 @@ class UFWCommandRule(UFWCommand):
            r.sapp == "" and \
            r.interface_in == "" and \
            r.interface_out == "" and \
-           r.dport != "any":
+           r.dport != "any" and \
+           r.helper == "":
             # Short syntax
             if r.direction == "out":
                 res += " %s" % r.direction
@@ -512,6 +528,9 @@ class UFWCommandRule(UFWCommand):
 
             if r.protocol != "any" and r.dapp == "" and r.sapp == "":
                 res += " proto %s" % r.protocol
+
+            if r.helper != "" and r.dapp == "" and r.sapp == "":
+                res += " helper %s" % r.helper
 
             if r.comment != "":
                 res += " comment '%s'" % r.get_comment()

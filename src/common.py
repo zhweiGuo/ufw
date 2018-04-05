@@ -63,6 +63,7 @@ class UFWRule:
         self.direction = ""
         self.forward = forward
         self.comment = ""
+        self.helper = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -107,6 +108,7 @@ class UFWRule:
         rule.direction = self.direction
         rule.forward = self.forward
         rule.comment = self.comment
+        rule.helper = self.helper
 
         return rule
 
@@ -250,6 +252,25 @@ class UFWRule:
         else:
             err_msg = _("Unsupported protocol '%s'") % (protocol)
             raise UFWError(err_msg)
+
+    def set_helper(self, helper):
+        '''Sets helper of the rule'''
+        if not re.match(r'^(ct|flow):[a-z\-]+$', helper):
+            err_msg = _("Unsupported helper '%s'") % (helper)
+            raise UFWError(err_msg)
+        self.helper = helper
+
+    def get_helper_type(self):
+        '''Get the helper type'''
+        if self.helper == "":
+            return ""
+        return self.helper.split(":")[0]
+
+    def get_helper_proto(self):
+        '''Get the helper proto'''
+        if self.helper == "":
+            return ""
+        return self.helper.split(":")[1]
 
     def _fix_anywhere(self):
         '''Adjusts src and dst based on v6'''
@@ -402,6 +423,9 @@ class UFWRule:
         if x.protocol != y.protocol:
             debug(dbg_msg)
             return 1
+        if x.helper != y.helper:
+            debug(dbg_msg)
+            return 1
         if x.src != y.src:
             debug(dbg_msg)
             return 1
@@ -495,6 +519,11 @@ class UFWRule:
         # forward must match
         if y.forward != x.forward:
             debug(dbg_msg + " (forward does not match)")
+            return 1
+
+        # Helper must match
+        if y.helper != x.helper:
+            debug(dbg_msg + " (helper does not match)")
             return 1
 
         # Protocols must match or y 'any'
@@ -613,4 +642,40 @@ class UFWRule:
             if self.dport != "any" or self.sport != "any":
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (self.protocol)
+                raise UFWError(err_msg)
+
+        # Verify helper not specified with application rule
+        if self.helper != "" and (self.sapp != "" or self.dapp != ""):
+            err_msg = _("Improper rule syntax ('%s' specified with app rule)") \
+                        % (self.helper)
+            raise UFWError(err_msg)
+
+        # Verify protocol is set with helper rule
+        helper_protocols = {
+            "amanda": ["udp"],
+            "ftp": ["tcp"],
+            "h323": ["tcp", "udp"],
+            "irc": ["tcp"],
+            "netbios-ns": ["udp"],
+            "pptp": ["tcp"],
+            "sane": ["tcp"],
+            "sip": ["udp"],
+            "snmp": ["udp"],
+            "tftp": ["udp"],
+        }
+        if self.helper != "":
+            helper = self.get_helper_proto()
+            if self.protocol == "any":
+                err_msg = _("Must specify protocol with '%s')") % (self.helper)
+                raise UFWError(err_msg)
+            elif helper not in helper_protocols:
+                err_msg = _("Invalid helper '%s')") % (self.helper)
+                raise UFWError(err_msg)
+            elif self.protocol not in helper_protocols[helper]:
+                err_msg = _("Invalid protocol '%s' with '%s')") \
+                            % (self.protocol, self.helper)
+                raise UFWError(err_msg)
+
+            if self.action != "allow":
+                err_msg = _("Must specify 'allow' with '%s')") % (self.helper)
                 raise UFWError(err_msg)

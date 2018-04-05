@@ -373,6 +373,27 @@ def get_sample_rule_commands_extended(v6=False):
 
                                     cmds.append([rule_type, action] + c)
 
+    helper_cmds = ['rule allow out to any port 21 proto tcp helper ct:ftp']
+    if v6:
+        helper_v6 = [
+            'route allow to 1234:db8::/32 port 1024:65535 proto tcp helper flow:ftp',
+            'route allow to 1234:db8::/32 port 1024:65535 proto tcp helper flow:ftp',
+            'route allow in on eth0 to 5678:db8::/32 port 21 proto tcp helper ct:ftp',
+            'route allow from 5678:db8::/32 port 1024:65535 proto tcp helper flow:ftp',
+            ]
+        helper_cmds += helper_v6
+    else:
+        helper_v4 = [
+            'route allow to 10.0.0.2 port 1024:65535 proto tcp helper flow:ftp',
+            'route allow to 10.0.0.2 port 1024:65535 proto tcp helper flow:ftp',
+            'route allow in on eth0 to 1.2.3.4 port 21 proto tcp helper ct:ftp',
+            'route allow from 1.2.3.4 port 1024:65535 proto tcp helper flow:ftp',
+            ]
+        helper_cmds += helper_v4
+
+    for c in helper_cmds:
+        cmds.append(c.split())
+
     return cmds
 
 def has_proc_net_output():
