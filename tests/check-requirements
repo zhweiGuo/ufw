@@ -136,7 +136,7 @@ for i in "" 6; do
         echo "== IPv4 =="
     fi
 
-    for table in "" mangle nat raw ; do
+    for table in "" mangle nat ; do
         table_str=
         table_args=
         if [ -n "$table" ]; then
@@ -252,7 +252,7 @@ for i in "" 6; do
         c="${chain}6"
     fi
 
-    for table in "" mangle nat raw ; do
+    for table in "" mangle nat ; do
         table_str=
         table_args=
         if [ -n "$table" ]; then
