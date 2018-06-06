@@ -82,6 +82,57 @@ flush_builtins() {
     fi
 }
 
+valid_for_table() {
+    chain="$1"
+    table="$2"
+    if [ -z "$table" ]; then
+        echo "ASSERT: table is not set"
+        exit 1
+    fi
+    if [ -z "$chain" ]; then
+        echo "ASSERT: table is not set"
+        exit 1
+    fi
+
+    # TODO: verify
+    case "$table" in
+        filter)
+            [ "$chain" != "${chain%pre}" ] && return 1
+            [ "$chain" != "${chain%post}" ] && return 1
+            ;;
+        mangle)
+            [ "$chain" != "${chain#ufw-user}" ] && return 1
+            [ "$chain" != "${chain#ufw6-user}" ] && return 1
+            [ "$chain" != "${chain#ufw-reject}" ] && return 1
+            [ "$chain" != "${chain#ufw6-reject}" ] && return 1
+
+            [ "$chain" != "${chain%local}" ] && return 1
+            ;;
+        nat)
+            [ "$chain" != "${chain#ufw-user}" ] && return 1
+            [ "$chain" != "${chain#ufw6-user}" ] && return 1
+            [ "$chain" != "${chain#ufw-reject}" ] && return 1
+            [ "$chain" != "${chain#ufw6-reject}" ] && return 1
+
+            [ "$chain" != "${chain%forward}" ] && return 1
+            [ "$chain" != "${chain%local}" ] && return 1
+            ;;
+        raw)
+            [ "$chain" != "${chain#ufw-user}" ] && return 1
+            [ "$chain" != "${chain#ufw6-user}" ] && return 1
+            [ "$chain" != "${chain#ufw-reject}" ] && return 1
+            [ "$chain" != "${chain#ufw6-reject}" ] && return 1
+
+            [ "$chain" != "${chain%input}" ] && return 1
+            [ "$chain" != "${chain%forward}" ] && return 1
+            [ "$chain" != "${chain%post}" ] && return 1
+            [ "$chain" != "${chain%local}" ] && return 1
+            ;;
+    esac
+
+    return 0
+}
+
 chains_command() {
     flag="$1"
     table="$2"
@@ -136,6 +187,9 @@ chains_command() {
         ufw$type-before-post \
         ufw$type-before-logging-post ; do
 
+        # skip any chains that aren't valid for a particular table
+#        valid_for_table "$c" "$table" || continue
+
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe -t $table $flag $c" >&2
             $exe -t "$table" $flag $c || true
@@ -170,6 +224,9 @@ delete_chains() {
         ufw$type-skip-to-policy-input \
         ufw$type-skip-to-policy-output \
         ufw$type-skip-to-policy-forward ; do
+
+        # skip any chains that aren't valid for a particular table
+#        valid_for_table "$c" "$table" || continue
 
         if [ "$UFW_INIT_DEBUG" = "yes" ]; then
             echo "$exe -t $table -X $c" >&2
