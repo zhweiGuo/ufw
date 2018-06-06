@@ -1529,7 +1529,7 @@ TESTING ARGS (interfaces)
 496: --dry-run allow in on eth0:1
 
 
-497: --dry-run allow in on e?th0
+497: --dry-run allow in on e%th0
 
 
 498: --dry-run allow on eth0
@@ -1568,7 +1568,7 @@ TESTING ARGS (interfaces)
 509: --dry-run deny in on eth0:1
 
 
-510: --dry-run deny in on e?th0
+510: --dry-run deny in on e%th0
 
 
 511: --dry-run deny on eth0
@@ -1607,7 +1607,7 @@ TESTING ARGS (interfaces)
 522: --dry-run limit in on eth0:1
 
 
-523: --dry-run limit in on e?th0
+523: --dry-run limit in on e%th0
 
 
 524: --dry-run limit on eth0
@@ -1646,7 +1646,7 @@ TESTING ARGS (interfaces)
 535: --dry-run allow out on eth0:1
 
 
-536: --dry-run allow out on e?th0
+536: --dry-run allow out on e%th0
 
 
 537: --dry-run allow on eth0
@@ -1685,7 +1685,7 @@ TESTING ARGS (interfaces)
 548: --dry-run deny out on eth0:1
 
 
-549: --dry-run deny out on e?th0
+549: --dry-run deny out on e%th0
 
 
 550: --dry-run deny on eth0
@@ -1724,7 +1724,7 @@ TESTING ARGS (interfaces)
 561: --dry-run limit out on eth0:1
 
 
-562: --dry-run limit out on e?th0
+562: --dry-run limit out on e%th0
 
 
 563: --dry-run limit on eth0
