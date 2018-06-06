@@ -10,7 +10,6 @@ ufw (0.36) UNRELEASED; urgency=medium
   * conf/before6.rules: adjust ufw6-before-output rules for echo-reply and
     echo-request (LP: #1633698)
   * conf/ufw.defaults: mention nf_conntrack_sane
-  * support mangle, nat and raw tables with before/after mechanism
   * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
     everywhere and adjust to use daytime/port 13 instead of http/port 80 and
     https/port 443 in good/logging and ipv6/bad_args6 (Closes: 849628)
