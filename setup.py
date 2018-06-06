@@ -167,22 +167,6 @@ class Install(_install, object):
         after6_rules = os.path.join(confdir, 'ufw', 'after6.rules')
         user_rules = os.path.join(confdir, 'ufw', 'user.rules')
         user6_rules = os.path.join(confdir, 'ufw', 'user6.rules')
-        before_mangle_rules = os.path.join(confdir, 'ufw',
-                                           'before-mangle.rules')
-        after_mangle_rules = os.path.join(confdir, 'ufw',
-                                          'after-mangle.rules')
-        before6_mangle_rules = os.path.join(confdir, 'ufw',
-                                            'before6-mangle.rules')
-        after6_mangle_rules = os.path.join(confdir, 'ufw',
-                                           'after6-mangle.rules')
-        before_nat_rules = os.path.join(confdir, 'ufw', 'before-nat.rules')
-        after_nat_rules = os.path.join(confdir, 'ufw', 'after-nat.rules')
-        before6_nat_rules = os.path.join(confdir, 'ufw', 'before6-nat.rules')
-        after6_nat_rules = os.path.join(confdir, 'ufw', 'after6-nat.rules')
-        before_raw_rules = os.path.join(confdir, 'ufw', 'before-raw.rules')
-        after_raw_rules = os.path.join(confdir, 'ufw', 'after-raw.rules')
-        before6_raw_rules = os.path.join(confdir, 'ufw', 'before6-raw.rules')
-        after6_raw_rules = os.path.join(confdir, 'ufw', 'after6-raw.rules')
 
         apps_dir = os.path.join(confdir, 'ufw', 'applications.d')
         init_before_hook = os.path.join(confdir, 'ufw', 'before.init')
@@ -206,41 +190,17 @@ class Install(_install, object):
         self.copy_file('conf/user6.rules', user6_rules)
         self.copy_file('src/before.init', init_before_hook)
         self.copy_file('src/after.init', init_after_hook)
-        self.copy_file('conf/before-mangle.rules', before_mangle_rules)
-        self.copy_file('conf/after-mangle.rules', after_mangle_rules)
-        self.copy_file('conf/before6-mangle.rules', before6_mangle_rules)
-        self.copy_file('conf/after6-mangle.rules', after6_mangle_rules)
-        self.copy_file('conf/before-nat.rules', before_nat_rules)
-        self.copy_file('conf/after-nat.rules', after_nat_rules)
-        self.copy_file('conf/before6-nat.rules', before6_nat_rules)
-        self.copy_file('conf/after6-nat.rules', after6_nat_rules)
-        self.copy_file('conf/before-raw.rules', before_raw_rules)
-        self.copy_file('conf/after-raw.rules', after_raw_rules)
-        self.copy_file('conf/before6-raw.rules', before6_raw_rules)
-        self.copy_file('conf/after6-raw.rules', after6_raw_rules)
 
         # Update the installed rules files' permissions
         for f in [ before_rules, after_rules, before6_rules, after6_rules, \
-                      before_mangle_rules, after_mangle_rules,
-                      before6_mangle_rules, after6_mangle_rules,
-                      before_nat_rules, after_nat_rules,
-                      before6_nat_rules, after6_nat_rules,
-                      before_raw_rules, after_raw_rules,
-                      before6_raw_rules, after6_raw_rules,
                       user_rules, user6_rules, init_before_hook, \
                       init_after_hook ]:
             os.chmod(f, 0o640)
 
         # Update the installed files' paths
         for f in [ defaults, ufwconf, before_rules, after_rules, \
-                      before6_rules, after6_rules,
-                      before_mangle_rules, after_mangle_rules,
-                      before6_mangle_rules, after6_mangle_rules,
-                      before_nat_rules, after_nat_rules,
-                      before6_nat_rules, after6_nat_rules,
-                      before_raw_rules, after_raw_rules,
-                      before6_raw_rules, after6_raw_rules,
-                      script, manpage, manpage_f, sysctl, init_helper, \
+                      before6_rules, after6_rules, script, \
+                      manpage, manpage_f, sysctl, init_helper, \
                       init_helper_functions, init_before_hook, \
                       init_after_hook ]:
             print("Updating " + f)
@@ -272,12 +232,6 @@ class Install(_install, object):
         self.mkpath(rulesdir)
         for f in [ before_rules, after_rules, \
                       before6_rules, after6_rules, \
-                      before_mangle_rules, after_mangle_rules,
-                      before6_mangle_rules, after6_mangle_rules,
-                      before_nat_rules, after_nat_rules,
-                      before6_nat_rules, after6_nat_rules,
-                      before_raw_rules, after_raw_rules,
-                      before6_raw_rules, after6_raw_rules,
                       user_rules, user6_rules ]:
             self.copy_file(f, rulesdir)
 
