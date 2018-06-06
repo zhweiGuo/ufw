@@ -169,12 +169,12 @@ for ipv6 in no yes ; do
     cat $TESTCONFIG/user.rules >> $TESTTMP/result
     cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
-    iptables-save -t filter | egrep -v '^(#|:)' > $TESTTMP/save.1
-    ip6tables-save -t filter | egrep -v '^(#|:)' >> $TESTTMP/save.1
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
     do_cmd "0" nostats disable
     do_cmd "0" nostats enable
-    iptables-save -t filter | egrep -v '^(#|:)' > $TESTTMP/save.2
-    ip6tables-save -t filter | egrep -v '^(#|:)' >> $TESTTMP/save.2
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
     diff $TESTTMP/save.1 $TESTTMP/save.2 || {
         echo "ip(6)tables-restore different for '$i'"
         exit 1
@@ -197,12 +197,12 @@ for ipv6 in no yes ; do
     cat $TESTCONFIG/user.rules >> $TESTTMP/result
     cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
-    iptables-save -t filter | egrep -v '^(#|:)' > $TESTTMP/save.1
-    ip6tables-save -t filter | egrep -v '^(#|:)' >> $TESTTMP/save.1
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.1
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.1
     do_cmd "0" nostats disable
     do_cmd "0" nostats enable
-    iptables-save -t filter | egrep -v '^(#|:)' > $TESTTMP/save.2
-    ip6tables-save -t filter | egrep -v '^(#|:)' >> $TESTTMP/save.2
+    iptables-save | egrep -v '^(#|:)' > $TESTTMP/save.2
+    ip6tables-save | egrep -v '^(#|:)' >> $TESTTMP/save.2
     diff $TESTTMP/save.1 $TESTTMP/save.2 || {
         echo "ip(6)tables-restore different for '$i'"
         exit 1

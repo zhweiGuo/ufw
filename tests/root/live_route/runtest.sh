@@ -212,21 +212,21 @@ do_cmd "0" nostats disable
 do_cmd "0" nostats route allow 23/tcp
 do_cmd "0" nostats logging medium
 do_cmd "0" null enable
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.enable
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.enable
+iptables-save | grep '^-' > $TESTTMP/ipt.enable
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
 
 do_cmd "0" null disable
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.disable
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.disable
+iptables-save | grep '^-' > $TESTTMP/ipt.disable
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.disable
 
 sed -i 's/^ENABLED=no/ENABLED=yes/' $TESTPATH/etc/ufw/ufw.conf
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.start
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.start
+iptables-save | grep '^-' > $TESTTMP/ipt.start
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
 
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.stop
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.stop
+iptables-save | grep '^-' > $TESTTMP/ipt.stop
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.stop
 
 diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
 	echo "'ufw enable' and 'ufw-init start' are different"

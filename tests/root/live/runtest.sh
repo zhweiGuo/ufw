@@ -28,9 +28,9 @@ do
 
 	echo "TESTING ARGS (logging)" >> $TESTTMP/result
 	do_cmd "0"  logging on
-	grep -h "LOG" `ls $TESTPATH/etc/ufw/{after,before,user}{,6}.rules` >> $TESTTMP/result
+	grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 	do_cmd "0"  logging off
-	grep -h "LOG" `ls $TESTPATH/etc/ufw/{after,before,user}{,6}.rules` >> $TESTTMP/result
+	grep -h "LOG" `ls $TESTPATH/etc/ufw/*.rules` >> $TESTTMP/result
 
 	echo "TESTING ARGS (allow/deny to/from)" >> $TESTTMP/result
 	do_cmd "0" allow 53
@@ -213,21 +213,21 @@ do_cmd "0" nostats disable
 do_cmd "0" nostats allow 23/tcp
 do_cmd "0" nostats logging medium
 do_cmd "0" null enable
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.enable
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.enable
+iptables-save | grep '^-' > $TESTTMP/ipt.enable
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
 
 do_cmd "0" null disable
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.disable
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.disable
+iptables-save | grep '^-' > $TESTTMP/ipt.disable
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.disable
 
 sed -i 's/^ENABLED=no/ENABLED=yes/' $TESTPATH/etc/ufw/ufw.conf
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.start
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.start
+iptables-save | grep '^-' > $TESTTMP/ipt.start
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
 
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
-iptables-save -t filter | grep '^-' > $TESTTMP/ipt.stop
-ip6tables-save -t filter | grep '^-' > $TESTTMP/ip6t.stop
+iptables-save | grep '^-' > $TESTTMP/ipt.stop
+ip6tables-save | grep '^-' > $TESTTMP/ip6t.stop
 
 diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
 	echo "'ufw enable' and 'ufw-init start' are different"
@@ -329,7 +329,7 @@ echo "Reset test" >> $TESTTMP/result
 do_cmd "0" nostats enable
 do_cmd "0" nostats allow 12345
 let rules_num="0"
-for i in `ls $TESTPATH/etc/ufw/{after,before,user}{,6}.rules` ; do
+for i in `ls $TESTPATH/etc/ufw/*.rules` ; do
     let rules_num=rules_num+1
 done
 do_cmd "0" null reset
@@ -454,56 +454,6 @@ do
     do_cmd "0" nostats delete deny Samba
     do_cmd "0" show added
 done
-do_cmd "0" nostats disable
-
-$TESTSTATE/ufw-init flush-all >/dev/null
-for table in mangle nat raw ; do
-    echo "Compare enable and ufw-init for $table" >> $TESTTMP/result
-    for ipv6 in yes no ; do
-        sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
-        do_cmd "0" nostats disable
-        do_cmd "0" null enable
-        iptables-save -t $table | grep '^-' >> $TESTTMP/result
-        ip6tables-save -t $table | grep '^-' >> $TESTTMP/result
-
-        iptables-save -t $table | grep '^-' > $TESTTMP/ipt.enable
-        ip6tables-save -t $table | grep '^-' > $TESTTMP/ip6t.enable
-
-        do_cmd "0" null disable
-        iptables-save -t $table | grep '^-' > $TESTTMP/ipt.disable
-        ip6tables-save -t $table | grep '^-' > $TESTTMP/ip6t.disable
-
-        sed -i 's/^ENABLED=no/ENABLED=yes/' $TESTPATH/etc/ufw/ufw.conf
-        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-        iptables-save -t $table | grep '^-' > $TESTTMP/ipt.start
-        ip6tables-save -t $table | grep '^-' > $TESTTMP/ip6t.start
-
-        do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
-        iptables-save -t $table | grep '^-' > $TESTTMP/ipt.stop
-        ip6tables-save -t $table | grep '^-' > $TESTTMP/ip6t.stop
-
-        diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
-        	echo "'ufw enable' and 'ufw-init start' are different"
-        	exit 1
-        }
-
-        diff $TESTTMP/ip6t.enable $TESTTMP/ip6t.start || {
-        	echo "'ufw enable' and 'ufw-init start' are different (ipv6)"
-        	exit 1
-        }
-
-        diff $TESTTMP/ipt.disable $TESTTMP/ipt.stop || {
-        	echo "'ufw disable' and 'ufw-init stop' are different"
-        	exit 1
-        }
-
-        diff $TESTTMP/ip6t.disable $TESTTMP/ip6t.stop || {
-        	echo "'ufw disable' and 'ufw-init stop' are different (ipv6)"
-        	exit 1
-        }
-    done
-done
-
 do_cmd "0" nostats disable
 
 cleanup
