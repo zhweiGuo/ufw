@@ -63,10 +63,6 @@ class UFWRule:
         self.direction = ""
         self.forward = forward
         self.comment = ""
-        self.dnat = ""
-        self.dnat_port = ""
-        self.snat = ""
-        self.snat_port = ""
         try:
             self.set_action(action)
             self.set_protocol(protocol)
@@ -110,10 +106,6 @@ class UFWRule:
         rule.interface_out = self.interface_out
         rule.direction = self.direction
         rule.forward = self.forward
-        rule.dnat = self.dnat
-        rule.dnat_port = self.dnat_port
-        rule.snat = self.snat
-        rule.snat_port = self.snat_port
         rule.comment = self.comment
 
         return rule
@@ -370,26 +362,6 @@ class UFWRule:
         else:
             err_msg = _("Unsupported direction '%s'") % (direction)
             raise UFWError(err_msg)
-
-    def set_dnat(self, dnat):
-        '''Sets dnat of the rule'''
-        # TODO: verify
-        self.dnat = dnat
-
-    def set_dnat_port(self, dnat_port):
-        '''Sets dnat_port of the rule'''
-        # TODO: verify
-        self.dnat_port = dnat_port
-
-    def set_snat(self, snat):
-        '''Sets snat of the rule'''
-        # TODO: verify
-        self.snat = snat
-
-    def set_snat_port(self, snat_port):
-        '''Sets snat_port of the rule'''
-        # TODO: verify
-        self.snat_port = snat_port
 
     def get_comment(self):
         '''Get decoded comment of the rule'''
@@ -667,19 +639,3 @@ class UFWRule:
                 err_msg = _("Invalid port with protocol '%s'") % \
                             (self.protocol)
                 raise UFWError(err_msg)
-
-        # verify dnat/snat with matching rule
-        if self.dnat != "" or self.snat != "":
-            if self.action != "allow":
-                err_msg = _("Invalid action '%s' with nat clause" % \
-                            self.action)
-                raise UFWError(err_msg)
-
-            if self.dnat_port != "" or self.snat_port != "":
-                if self.protocol not in ['tcp', 'udp']:
-                    err_msg = _("Invalid protocol '%s' with nat clause" % \
-                                self.protocol)
-                    raise UFWError(err_msg)
-
-            # TODO:
-            # if self.interface_in != "" and self
