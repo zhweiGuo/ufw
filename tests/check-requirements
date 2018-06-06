@@ -136,35 +136,23 @@ for i in "" 6; do
         echo "== IPv4 =="
     fi
 
-    for table in "" mangle nat ; do
-        table_str=
-        table_args=
-        if [ -n "$table" ]; then
-            table_str=" for $table"
-            table_args="-t $table"
-        fi
-        echo -n "Creating '$c'$table_str... "
-        $exe $table_args -N "$c" || {
-            echo "ERROR: could not create '$c'$table_str. Aborting" >&2
-            error="yes"
-            continue
-        }
-        echo "done"
+    echo -n "Creating '$c'... "
+    $exe -N "$c" || {
+        echo "ERROR: could not create '$c'. Aborting" >&2
+        error="yes"
+        break
+    }
+    echo "done"
 
-        # set up a RETURN rule right at the top, so we don't open anything up
-        # when running the script. Isn't attached to INPUT, but better safe
-        # than sorry.
-        echo -n "Inserting RETURN at top of '$c'$table_str... "
-        $exe $table_args -I "$c" -j RETURN || {
-            echo "ERROR: could insert RETURN rule into '$c'$table_str. Aborting" >&2
-            error="yes"
-            continue
-        }
-        echo "done"
-    done
-#    if [ -n "$error" ]; then
-#        break
-#    fi
+    # set up a RETURN rule right at the top, so we don't open anything up when
+    # running the script. Isn't attached to INPUT, but better safe than sorry.
+    echo -n "Inserting RETURN at top of '$c'... "
+    $exe -I "$c" -j RETURN || {
+        echo "ERROR: could insert RETURN rule into '$c'. Aborting" >&2
+        error="yes"
+        break
+    }
+    echo "done"
 
     echo -n "TCP: "
     runcmd $exe -A $c -p tcp -j ACCEPT
@@ -251,27 +239,18 @@ for i in "" 6; do
         exe="ip6tables"
         c="${chain}6"
     fi
-
-    for table in "" mangle nat ; do
-        table_str=
-        table_args=
-        if [ -n "$table" ]; then
-            table_str=" for $table"
-            table_args="-t $table"
+    $exe -F $c >/dev/null 2>&1 || {
+        if [ -z "$error" ]; then
+            echo "ERROR: could not flush '$c'" >&2
+            error="yes"
         fi
-        $exe $table_args -F $c >/dev/null 2>&1 || {
-            if [ -z "$error" ]; then
-                echo "ERROR: could not flush '$c' $table_str" >&2
-                error="yes"
-            fi
-        }
-        $exe $table_args -X $c >/dev/null 2>&1 || {
-            if [ -z "$error" ]; then
-                echo "ERROR: could not remove '$c' $table_str" >&2
-                error="yes"
-            fi
-        }
-    done
+    }
+    $exe -X $c >/dev/null 2>&1 || {
+        if [ -z "$error" ]; then
+            error="yes"
+            echo "ERROR: could not remove '$c'" >&2
+        fi
+    }
 done
 
 if [ -n "$error" ] || [ -n "$error_runtime" ]; then
