@@ -3,7 +3,10 @@ ufw (0.36) UNRELEASED; urgency=medium
   * doc/ufw-framework.8:
     - fix path for user[6].rules
     - reference nf_conntrack_sane
-  * adjust snappy packaging for series 16 and to use snapcraft
+  * snap packaging:
+    - adjust snappy packaging for series 16 and to use snapcraft
+    - add bash completer to snap packaging
+    - add ipset and conntrack
   * doc/ufw-on-snappy.8: update for series 16
   * src/backend_iptables.py: properly calculate the path to state_dir when
     specifying --rootdir and --datadir (ie, fix regression in 0.35 final)
@@ -22,9 +25,9 @@ ufw (0.36) UNRELEASED; urgency=medium
       names (LP: #1719211)
     - don't allow interfaces longer than 15 characters
   * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
-    Nowak
+    Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 08 Oct 2017 21:03:42 -0400
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 09 Jun 2018 15:54:23 -0500
 
 ufw (0.35) RELEASED; urgency=medium
 
