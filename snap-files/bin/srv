@@ -16,6 +16,16 @@ copy_if_same() {
     inuse="$SNAP_DATA/etc/$bn"
     new_shipped="$SNAP/etc/$bn"
 
+    if [ ! -e "$prev_etc/$bn" ]; then
+        # If we don't yet have a previous file, just report if there is a diff
+        # between what we ship now and what is in use
+        if ! diff "$new_shipped"  "$inuse" > /dev/null ; then
+            echo "'$bn' has changes that cannot be merged. For details, see:"
+            echo "$ diff -Nau '$new_shipped' '$inuse'"
+        fi
+        return
+    fi
+
     # if the old shipped rules are the same as the rules in use (ie, the admin
     # didn't change them), then if the new rules are different, copy them over
     if diff "$prev_shipped" "$inuse" >/dev/null ; then
@@ -27,7 +37,7 @@ copy_if_same() {
         fi
     else
         echo "'$bn' has changes that cannot be merged. For details, see:"
-        echo "$ diff -Nau $new_shipped $inuse"
+        echo "$ diff -Nau '$new_shipped' '$inuse'"
     fi
 }
 
@@ -41,13 +51,18 @@ if [ ! -e "$SNAP_DATA/etc" ]; then
     chmod 640 "$SNAP_DATA"/etc/ufw/*.init
 fi
 
+# migrate the old preserved location to the new
+if [ -e "$SNAP_DATA/.rules.orig" ]; then
+    mkdir -p "$prev_etc/ufw"
+    cp -f --preserve=mode "$SNAP_DATA/.rules.orig"/*.rules "$prev_etc/ufw"
+    rm -rf "$SNAP_DATA/.rules.orig"
+fi
+
 # On upgrades, detect if the rules file matches the shipped file, and if
 # so, apply any changes to the rules file (ie, emulate ucf)
 if [ ! -e "$upgrade_path" ]; then
     for fn in $files_to_merge ; do
-        if [ -e "$prev_etc/$fn" ]; then
-            copy_if_same "$fn"
-        fi
+        copy_if_same "$fn"
     done
 
     # remove old for housekeeping
@@ -64,4 +79,6 @@ fi
 mkdir "$prev_etc"
 cp -rf --preserve=mode "$SNAP/etc/"* "$prev_etc"
 
-"$SNAP"/lib/ufw/ufw-init --rootdir "$SNAP" --datadir "$SNAP_DATA" start
+if [ -z "$SNAP_SKIP_INIT" ]; then
+    "$SNAP"/lib/ufw/ufw-init --rootdir "$SNAP" --datadir "$SNAP_DATA" start
+fi
