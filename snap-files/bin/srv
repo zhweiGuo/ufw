@@ -59,6 +59,7 @@ fi
 
 # On upgrades, detect if the rules file matches the shipped file, and if
 # so, apply any changes to the rules file (ie, emulate ucf)
+upgraded=
 if [ ! -e "$upgrade_path" ]; then
     for fn in $files_to_merge $profiles_to_merge ; do
         copy_if_same "$fn"
@@ -69,6 +70,7 @@ if [ ! -e "$upgrade_path" ]; then
 
     # add new
     touch "$upgrade_path"
+    upgraded="yes"
 fi
 
 # Next, make sure these files are available for upgrade comparisons
@@ -79,5 +81,13 @@ mkdir "$prev_etc"
 cp -rf --preserve=mode "$SNAP/etc/"* "$prev_etc"
 
 if [ -z "$SNAP_SKIP_INIT" ]; then
-    "$SNAP"/lib/ufw/ufw-init --rootdir "$SNAP" --datadir "$SNAP_DATA" start
+    # This is used only with 'oneshot'. We don't want to perform reloads on
+    # upgrade since that might break existing connections. We don't want to
+    # perform stop/start on upgrade since we don't want to tear down the
+    # firewall or since it might also break existing connections.
+    if [ "$upgraded" = "yes" ]; then
+        echo "skipping start/reload on upgrade"
+    else
+        "$SNAP"/lib/ufw/ufw-init --rootdir "$SNAP" --datadir "$SNAP_DATA" start
+    fi
 fi
