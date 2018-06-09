@@ -101,7 +101,11 @@ man-check: clean
 		echo "PASS"; \
 	done; \
 
-check: syntax-check man-check test unittest
+snap-test:
+	$(shell mkdir $(TMPDIR) 2>/dev/null)
+	./tests/test-srv-upgrades.sh > $(TMPDIR)/test-srv-upgrades.out 2>&1 && diff -Naur ./tests/test-srv-upgrades.sh.expected $(TMPDIR)/test-srv-upgrades.out
+
+check: syntax-check man-check test unittest snap-test
 
 # These are only used in development
 clean:
