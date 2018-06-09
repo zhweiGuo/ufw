@@ -1,20 +1,20 @@
 #!/bin/sh
 set -e
 
-if [ -z "$SNAP" ]; then
-    echo "SNAP not set"
+if [ -z "$SNAP" ] || [ -z "$SNAP_DATA" ] || [ -z "$SNAP_REVISION" ]; then
+    echo "One of SNAP, SNAP_DATA or SNAP_REVISION not set"
     exit 1
 fi
 
-files_to_merge="before.rules before6.rules after.rules after6.rules"
+files_to_merge="default/ufw ufw/before.rules ufw/before6.rules ufw/after.rules ufw/after6.rules ufw/sysctl.conf"
 upgrade_path="$SNAP_DATA/.upgraded_${SNAP_REVISION}"
-prev_rules="$SNAP_DATA/.rules.orig"
+prev_etc="$SNAP_DATA/.etc.last"
 
 copy_if_same() {
     bn="$1"
-    prev_shipped="$prev_rules/$bn"
-    inuse="$SNAP_DATA/etc/ufw/$bn"
-    new_shipped="$SNAP/usr/share/ufw/iptables/$bn"
+    prev_shipped="$prev_etc/$bn"
+    inuse="$SNAP_DATA/etc/$bn"
+    new_shipped="$SNAP/etc/$bn"
 
     # if the old shipped rules are the same as the rules in use (ie, the admin
     # didn't change them), then if the new rules are different, copy them over
@@ -41,21 +41,13 @@ if [ ! -e "$SNAP_DATA/etc" ]; then
     chmod 640 "$SNAP_DATA"/etc/ufw/*.init
 fi
 
-# Next, make sure these files are available for upgrade comparisons
-if [ ! -e "$prev_rules" ]; then
-    mkdir "$prev_rules"
-fi
-
 # On upgrades, detect if the rules file matches the shipped file, and if
 # so, apply any changes to the rules file (ie, emulate ucf)
 if [ ! -e "$upgrade_path" ]; then
     for fn in $files_to_merge ; do
-        if [ -e "$prev_rules/$fn" ]; then
+        if [ -e "$prev_etc/$fn" ]; then
             copy_if_same "$fn"
         fi
-        # unconditionally create/overwrite the new, upgraded rules for
-        # comparison on next upgrade
-        cp -f --preserve=mode "$SNAP/usr/share/ufw/iptables/$fn" "$prev_rules"
     done
 
     # remove old for housekeeping
@@ -64,5 +56,12 @@ if [ ! -e "$upgrade_path" ]; then
     # add new
     touch "$upgrade_path"
 fi
+
+# Next, make sure these files are available for upgrade comparisons
+if [ -e "$prev_etc" ]; then
+    rm -rf "$prev_etc"
+fi
+mkdir "$prev_etc"
+cp -rf --preserve=mode "$SNAP/etc/"* "$prev_etc"
 
 "$SNAP"/lib/ufw/ufw-init --rootdir "$SNAP" --datadir "$SNAP_DATA" start
