@@ -7,6 +7,7 @@ if [ -z "$SNAP" ] || [ -z "$SNAP_DATA" ] || [ -z "$SNAP_REVISION" ]; then
 fi
 
 files_to_merge="default/ufw ufw/before.rules ufw/before6.rules ufw/after.rules ufw/after6.rules ufw/sysctl.conf"
+profiles_to_merge="ufw/applications.d/ufw-bittorent ufw/applications.d/ufw-chat ufw/applications.d/ufw-directoryserver ufw/applications.d/ufw-dnsserver ufw/applications.d/ufw-fileserver ufw/applications.d/ufw-loginserver ufw/applications.d/ufw-mailserver ufw/applications.d/ufw-printserver ufw/applications.d/ufw-proxyserver ufw/applications.d/ufw-webserver"
 upgrade_path="$SNAP_DATA/.upgraded_${SNAP_REVISION}"
 prev_etc="$SNAP_DATA/.etc.last"
 
@@ -20,8 +21,7 @@ copy_if_same() {
         # If we don't yet have a previous file, just report if there is a diff
         # between what we ship now and what is in use
         if ! diff "$new_shipped"  "$inuse" > /dev/null ; then
-            echo "'$bn' has changes that cannot be merged. For details, see:"
-            echo "$ diff -Nau '$new_shipped' '$inuse'"
+            echo "'$inuse' not updated for snap revision $SNAP_REVISION (changes cannot be merged). For details, see: $ diff -Nau '$new_shipped' '$inuse'"
         fi
         return
     fi
@@ -30,14 +30,13 @@ copy_if_same() {
     # didn't change them), then if the new rules are different, copy them over
     if diff "$prev_shipped" "$inuse" >/dev/null ; then
         if ! diff "$new_shipped" "$prev_shipped" > /dev/null ; then
-            echo "Updating '$bn'"
             cp -f --preserve=mode "$new_shipped" "$inuse"
-        else
-            echo "'$bn' is unchanged"
+            echo "'$inuse' updated to contain version from snap revision $SNAP_REVISION"
+        #else
+        #    echo "'$bn' is unchanged"
         fi
     else
-        echo "'$bn' has changes that cannot be merged. For details, see:"
-        echo "$ diff -Nau '$new_shipped' '$inuse'"
+        echo "'$inuse' not updated for snap revision $SNAP_REVISION (changes cannot be merged). For details, see: $ diff -Nau '$new_shipped' '$inuse'"
     fi
 }
 
@@ -61,7 +60,7 @@ fi
 # On upgrades, detect if the rules file matches the shipped file, and if
 # so, apply any changes to the rules file (ie, emulate ucf)
 if [ ! -e "$upgrade_path" ]; then
-    for fn in $files_to_merge ; do
+    for fn in $files_to_merge $profiles_to_merge ; do
         copy_if_same "$fn"
     done
 

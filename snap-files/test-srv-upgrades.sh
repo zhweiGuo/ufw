@@ -10,7 +10,7 @@ trap "rm -rf '$testdir'" EXIT HUP INT QUIT TERM
 
 curdir="$(pwd)"
 cd "$testdir"
-tar -zxvf "$curdir/test-srv-upgrades-data.tar.gz"
+tar -zxf "$curdir/test-srv-upgrades-data.tar.gz"
 
 echo "== Clean out everything"
 rm -rf "$testdir"/var/snap/ufw/*/* "$testdir"/var/snap/ufw/*/.[eru]* "$testdir"/var/snap/ufw/8*
@@ -33,6 +33,15 @@ cp -a "$testdir"/var/snap/ufw/23 "$testdir"/var/snap/ufw/85
 echo
 echo "== Run srv on 85"
 SNAP="$testdir"/snap/ufw/85 SNAP_DATA="$testdir"/var/snap/ufw/85 SNAP_REVISION=85 "$curdir"/bin/srv
+
+echo
+echo "== Simulate the user merged everything from 85"
+rm -rf "$testdir"/var/snap/ufw/85/etc
+cp -a "$testdir"/snap/ufw/85/etc "$testdir"/var/snap/ufw/85
+
+echo
+echo "== Simulate user change to after.rules"
+echo "# some change" >> "$testdir"/var/snap/ufw/85/etc/ufw/after.rules
 
 echo
 echo "== Simulate upgrade from 85 to 86"
