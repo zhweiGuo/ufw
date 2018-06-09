@@ -12,6 +12,7 @@ apps:
     plugs: [ firewall-control ]
   ufw:
     command: bin/cli
+    completer: ufw.completer.bash
     plugs: [ firewall-control ]
   init:
     command: bin/init
