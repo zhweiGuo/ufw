@@ -16,11 +16,11 @@ apps:
   init:
     command: bin/init
     plugs: [ firewall-control ]
-  shell:
-    command: bin/shell
-    plugs: [ firewall-control ]
   ipset:
     command: sbin/ipset
+    plugs: [ firewall-control ]
+  conntrack:
+    command: usr/sbin/conntrack
     plugs: [ firewall-control ]
   doc:
     command: bin/doc
@@ -30,6 +30,7 @@ parts:
     plugin: dump
     source: snap-files/
     stage-packages:
+    - conntrack
     - ipset
   make-project:
     plugin: make
