@@ -8,7 +8,7 @@ grade: stable
 apps:
   srv:
     command: bin/srv
-    daemon: simple
+    daemon: oneshot
     plugs: [ firewall-control ]
   ufw:
     command: bin/cli
