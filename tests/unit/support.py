@@ -86,9 +86,13 @@ def run_setup():
                            'install',
                            '--home=%s' % install_dir],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
+                           stderr=subprocess.PIPE,
                            universal_newlines=True)
-    sp.communicate()[0]
+    out, err = sp.communicate()
+
+    if sp.returncode != 0:
+        print("setup.py failed: %s" % err)
+        sys.exit(1)
 
     return install_dir
 
