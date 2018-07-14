@@ -10,6 +10,8 @@ ufw (0.35.1) UNRELEASED; urgency=medium
     - don't allow interfaces longer than 15 characters
   * Bittorrent can also use UDP (LP: #1695718)
 
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Apr 2018 16:41:35 -0500
+
 ufw (0.35) RELEASED; urgency=medium
 
   * update check-requirements and README for python 3.5
