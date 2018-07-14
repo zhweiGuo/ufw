@@ -13,5 +13,3 @@ tests/__pycache__
 tests/unit/__pycache__
 snap
 *.snap
-ufw_source.tar.bz2
-*.pyc
