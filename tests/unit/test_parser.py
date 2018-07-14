@@ -545,7 +545,7 @@ class ParserTestCase(unittest.TestCase):
                                                    self.parser.parse_command,
                                                    cmd + [])
 
-    def _test_extended_parse(self):
+    def test_extended_parse(self):
         '''Test extended rule syntax'''
         count = 0
         cmds = tests.unit.support.get_sample_rule_commands_extended()
