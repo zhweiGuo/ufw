@@ -13,3 +13,8 @@ tests/__pycache__
 tests/unit/__pycache__
 snap
 *.snap
+parts/
+stage/
+prime/
+ufw_source.tar.bz2
+*.pyc
