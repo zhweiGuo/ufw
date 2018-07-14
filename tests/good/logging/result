@@ -66,7 +66,7 @@ TESTING LOG RULES
 16: allow log tftp
 
 
-17: allow log https
+17: allow log daytime
 
 
 18: allow log Samba
@@ -123,15 +123,15 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 69 -j ACCEPT
 
-### tuple ### allow_log any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -j ACCEPT
--A ufw-user-logging-input -p udp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -j ACCEPT
+### tuple ### allow_log any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-logging-input -p udp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### tuple ### allow_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
@@ -204,7 +204,7 @@ COMMIT
 24: delete allow log tftp
 
 
-25: delete allow log https
+25: delete allow log daytime
 
 
 26: delete allow log Samba
@@ -274,7 +274,7 @@ COMMIT
 32: allow log-all tftp
 
 
-33: allow log-all https
+33: allow log-all daytime
 
 
 34: allow log-all Samba
@@ -331,15 +331,15 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 69 -j ACCEPT
 
-### tuple ### allow_log-all any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -j ACCEPT
--A ufw-user-logging-input -p udp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -j ACCEPT
+### tuple ### allow_log-all any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-logging-input -p udp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### tuple ### allow_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
@@ -412,7 +412,7 @@ COMMIT
 40: delete allow log-all tftp
 
 
-41: delete allow log-all https
+41: delete allow log-all daytime
 
 
 42: delete allow log-all Samba
@@ -482,7 +482,7 @@ COMMIT
 48: deny log tftp
 
 
-49: deny log https
+49: deny log daytime
 
 
 50: deny log Samba
@@ -539,15 +539,15 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 69 -j DROP
 
-### tuple ### deny_log any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -j DROP
--A ufw-user-logging-input -p udp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -j DROP
+### tuple ### deny_log any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -j DROP
+-A ufw-user-logging-input -p udp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -j DROP
 
 ### tuple ### deny_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
@@ -620,7 +620,7 @@ COMMIT
 56: delete deny log tftp
 
 
-57: delete deny log https
+57: delete deny log daytime
 
 
 58: delete deny log Samba
@@ -690,7 +690,7 @@ COMMIT
 64: deny log-all tftp
 
 
-65: deny log-all https
+65: deny log-all daytime
 
 
 66: deny log-all Samba
@@ -747,15 +747,15 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 69 -j DROP
 
-### tuple ### deny_log-all any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -j DROP
--A ufw-user-logging-input -p udp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -j DROP
+### tuple ### deny_log-all any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -j DROP
+-A ufw-user-logging-input -p udp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -j DROP
 
 ### tuple ### deny_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
@@ -828,7 +828,7 @@ COMMIT
 72: delete deny log-all tftp
 
 
-73: delete deny log-all https
+73: delete deny log-all daytime
 
 
 74: delete deny log-all Samba
@@ -898,7 +898,7 @@ COMMIT
 80: limit log tftp
 
 
-81: limit log https
+81: limit log daytime
 
 
 82: limit log Samba
@@ -963,19 +963,19 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp --dport 69 -j ufw-user-limit-accept
 
-### tuple ### limit_log any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept
--A ufw-user-logging-input -p udp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p udp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p udp --dport 443 -j ufw-user-limit-accept
+### tuple ### limit_log any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-limit-accept
+-A ufw-user-logging-input -p udp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 13 -j ufw-user-limit-accept
 
 ### tuple ### limit_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
@@ -1060,7 +1060,7 @@ COMMIT
 88: delete limit log tftp
 
 
-89: delete limit log https
+89: delete limit log daytime
 
 
 90: delete limit log Samba
@@ -1130,7 +1130,7 @@ COMMIT
 96: limit log-all tftp
 
 
-97: limit log-all https
+97: limit log-all daytime
 
 
 98: limit log-all Samba
@@ -1195,19 +1195,19 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -p udp --dport 69 -j ufw-user-limit-accept
 
-### tuple ### limit_log-all any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept
--A ufw-user-logging-input -p udp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p udp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p udp --dport 443 -j ufw-user-limit-accept
+### tuple ### limit_log-all any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-limit-accept
+-A ufw-user-logging-input -p udp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 13 -j ufw-user-limit-accept
 
 ### tuple ### limit_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW LIMIT] "
@@ -1292,7 +1292,7 @@ COMMIT
 104: delete limit log-all tftp
 
 
-105: delete limit log-all https
+105: delete limit log-all daytime
 
 
 106: delete limit log-all Samba
@@ -1362,7 +1362,7 @@ COMMIT
 112: reject log tftp
 
 
-113: reject log https
+113: reject log daytime
 
 
 114: reject log Samba
@@ -1419,15 +1419,15 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 69 -j REJECT
 
-### tuple ### reject_log any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -j REJECT --reject-with tcp-reset
--A ufw-user-logging-input -p udp --dport 443 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -j REJECT
+### tuple ### reject_log any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -j REJECT --reject-with tcp-reset
+-A ufw-user-logging-input -p udp --dport 13 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -j REJECT
 
 ### tuple ### reject_log udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
@@ -1500,7 +1500,7 @@ COMMIT
 120: delete reject log tftp
 
 
-121: delete reject log https
+121: delete reject log daytime
 
 
 122: delete reject log Samba
@@ -1570,7 +1570,7 @@ COMMIT
 128: reject log-all tftp
 
 
-129: reject log-all https
+129: reject log-all daytime
 
 
 130: reject log-all Samba
@@ -1627,15 +1627,15 @@ contents of user*.rules:
 -A ufw-user-input -p udp --dport 69 -j ufw-user-logging-input
 -A ufw-user-input -p udp --dport 69 -j REJECT
 
-### tuple ### reject_log-all any 443 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-logging-input -p tcp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p tcp --dport 443 -j RETURN
--A ufw-user-input -p tcp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p tcp --dport 443 -j REJECT --reject-with tcp-reset
--A ufw-user-logging-input -p udp --dport 443 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
--A ufw-user-logging-input -p udp --dport 443 -j RETURN
--A ufw-user-input -p udp --dport 443 -j ufw-user-logging-input
--A ufw-user-input -p udp --dport 443 -j REJECT
+### tuple ### reject_log-all any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p tcp --dport 13 -j RETURN
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 13 -j REJECT --reject-with tcp-reset
+-A ufw-user-logging-input -p udp --dport 13 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
+-A ufw-user-logging-input -p udp --dport 13 -j RETURN
+-A ufw-user-input -p udp --dport 13 -j ufw-user-logging-input
+-A ufw-user-input -p udp --dport 13 -j REJECT
 
 ### tuple ### reject_log-all udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
 -A ufw-user-logging-input -p udp -m multiport --dports 137,138 -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW BLOCK] "
@@ -1708,7 +1708,7 @@ COMMIT
 136: delete reject log-all tftp
 
 
-137: delete reject log-all https
+137: delete reject log-all daytime
 
 
 138: delete reject log-all Samba
@@ -2089,7 +2089,7 @@ TESTING WRITING LOGLEVELS
 160: logging off
 
 
-161: --dry-run allow 22
+161: --dry-run allow 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -2110,9 +2110,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -2133,7 +2133,7 @@ Rules updated
 162: logging low
 
 
-163: --dry-run allow 22
+163: --dry-run allow 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -2154,9 +2154,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -2180,7 +2180,7 @@ Rules updated
 164: logging medium
 
 
-165: --dry-run allow 22
+165: --dry-run allow 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -2201,9 +2201,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -2231,7 +2231,7 @@ Rules updated
 166: logging high
 
 
-167: --dry-run allow 22
+167: --dry-run allow 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -2252,9 +2252,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -2282,7 +2282,7 @@ Rules updated
 168: logging full
 
 
-169: --dry-run allow 22
+169: --dry-run allow 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -2303,9 +2303,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -2333,7 +2333,7 @@ Rules updated
 170: logging on
 
 
-171: --dry-run allow 22
+171: --dry-run allow 13
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -2354,9 +2354,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 

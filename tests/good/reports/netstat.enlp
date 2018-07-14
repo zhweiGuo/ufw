@@ -1,6 +1,6 @@
-tcp   0.0.0.0:22                                     LISTEN      0     4301        1029/sshd
+tcp   0.0.0.0:13                                     LISTEN      0     4301        1029/daytime
 tcp   127.0.0.1:631                                  LISTEN      0     5242        1334/cupsd
-tcp6  :::22                                          LISTEN      0     4303        1029/sshd
+tcp6  :::13                                          LISTEN      0     4303        1029/daytime
 tcp6  ::1:631                                        LISTEN      0     5241        1334/cupsd
 udp   0.0.0.0:68                                     NA          0     9482        1925/dhclient3
 udp   0.0.0.0:68                                     NA          0     4938        1149/dhclient3

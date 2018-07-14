@@ -54,7 +54,7 @@ for target in allow deny limit ; do
             do_cmd "1" null --dry-run $target $i $loc app Apache proto udp
             do_cmd "1" null --dry-run $target $i $loc app 'No Protocol Multi'
             do_cmd "1" null http-or-www --dry-run $target $i $loc app Samba $k $loc port http
-            do_cmd "1" null --dry-run $target $i $loc app Samba $k $loc port 22 proto tcp
+            do_cmd "1" null --dry-run $target $i $loc app Samba $k $loc port 13 proto tcp
         done
     done
 done

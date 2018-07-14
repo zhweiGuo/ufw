@@ -56,12 +56,12 @@ do
 		do_cmd "0" --dry-run delete $x to $to port 25 proto $y from $from port 80
 	done
 
-	do_cmd "0" --dry-run $x to $to port smtp from $from port ssh
-	do_cmd "0" --dry-run delete $x to $to port smtp from $from port ssh
-	do_cmd "0" --dry-run $x to $to port tftp from $from port ssh
-	do_cmd "0" --dry-run delete $x to $to port tftp from $from port ssh
-	do_cmd "0" --dry-run $x to $to port ssh from $from port domain
-	do_cmd "0" --dry-run delete $x to $to port ssh from $from port domain
+	do_cmd "0" --dry-run $x to $to port smtp from $from port daytime
+	do_cmd "0" --dry-run delete $x to $to port smtp from $from port daytime
+	do_cmd "0" --dry-run $x to $to port tftp from $from port daytime
+	do_cmd "0" --dry-run delete $x to $to port tftp from $from port daytime
+	do_cmd "0" --dry-run $x to $to port daytime from $from port domain
+	do_cmd "0" --dry-run delete $x to $to port daytime from $from port domain
 done
 
 echo "Netmasks" >> $TESTTMP/result
@@ -90,15 +90,15 @@ for i in 2001:db8:85a3:8d3:1319:8a2e:370:734 any; do
         do_cmd "0" --dry-run allow $j $m port 34,35 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 210,23,21,15:19,22 proto udp
+        do_cmd "0" --dry-run allow $j $m port 210,23,21,15:19,13 proto udp
         do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24 proto udp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,13 $k $n port 24 proto udp
         do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24:26 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24:26 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24:26 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24:26 proto udp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,13 $k $n port 24:26 proto udp
     done
 done
 
@@ -106,7 +106,7 @@ echo "Interfaces" >> $TESTTMP/result
 for i in "in" "out" ; do
     for j in allow deny reject ; do
         do_cmd "0" null --dry-run $j $i on eth0 to 2001:db8:85a3:8d3:1319:8a2e:370:734
-        do_cmd "0" null --dry-run $j $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 22 proto tcp
+        do_cmd "0" null --dry-run $j $i on eth0 from 2001:db8:85a3:8d3:1319:8a2e:370:734 port 13 proto tcp
     done
 done
 
