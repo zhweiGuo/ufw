@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -22,6 +22,7 @@
 from __future__ import print_function
 import os
 import sys
+
 
 def find_tests(testdir=None, testscripts=[]):
     '''Find tests'''
@@ -45,9 +46,10 @@ def find_tests(testdir=None, testscripts=[]):
     tests.sort()
     return tests
 
+
 def runtest(test):
     '''Run test'''
-    pkg =  __import__("tests.unit." + test, globals(), locals(), [])
+    pkg = __import__("tests.unit." + test, globals(), locals(), [])
     unit_pkg = getattr(pkg, "unit")
     mod = getattr(unit_pkg, test)
     print(test)
@@ -89,7 +91,7 @@ if __name__ == '__main__':
             break
         except TestFailed as e:
             failed.append(test)
-        except:
+        except Exception:
             raise
 
         # cleanup

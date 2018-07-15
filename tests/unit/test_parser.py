@@ -1,5 +1,5 @@
 #
-# Copyright 2013-2016 Canonical Ltd.
+# Copyright 2013-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -19,6 +19,7 @@ import sys
 import unittest
 import tests.unit.support
 import ufw.parser
+
 
 class ParserTestCase(unittest.TestCase):
     def setUp(self):
@@ -51,7 +52,7 @@ class ParserTestCase(unittest.TestCase):
             self.parser.register_command(ufw.parser.UFWCommandShow(i))
 
         # Rule commands
-        rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', \
+        rule_commands = ['allow', 'limit', 'deny', 'reject', 'insert', \
                          'delete']
         for i in rule_commands:
             self.parser.register_command(ufw.parser.UFWCommandRule(i))
@@ -221,8 +222,10 @@ class ParserTestCase(unittest.TestCase):
             # Note, cmd_compare contains the rules we get from
             # tests.unit.support.get_sample_rule_commands*
             cmd_compare = []
-            comment = ""  # store off command so we can add it at the end after
-                          # the massaging
+
+            # store off command so we can add it at the end after the massaging
+            comment = ""
+
             if 'comment' in cmd:
                 comment_idx = cmd.index('comment')
                 comment = cmd[comment_idx + 1]
@@ -322,9 +325,9 @@ class ParserTestCase(unittest.TestCase):
             # rule
             generics = ['in', 'out', 'allow', 'deny', 'reject', 'limit']
             if 'to' not in cmd_compare and 'from' not in cmd_compare and \
-               'on' not in cmd_compare and ('proto' in cmd_compare or \
-               cmd_compare[-1].startswith('log') or \
-               cmd_compare[-1] in generics):
+                    'on' not in cmd_compare and ('proto' in cmd_compare or \
+                    cmd_compare[-1].startswith('log') or \
+                    cmd_compare[-1] in generics):
                 if 'proto' in cmd_compare:
                     cmd_compare.insert(cmd_compare.index('proto'), "to")
                     cmd_compare.insert(cmd_compare.index('proto'), "any")
@@ -335,16 +338,16 @@ class ParserTestCase(unittest.TestCase):
             # flip 'in on' and 'out on' for route rules ('in on' is always
             # listed first
             if cmd_compare[0] == 'route' and \
-               'out' in cmd_compare and 'in' in cmd_compare and \
-               cmd_compare.index('out') < cmd_compare.index('in'):
-                   tmp_out_idx = cmd_compare.index('out')
-                   tmp_outif = cmd_compare[tmp_out_idx + 2]
-                   tmp_in_idx = cmd_compare.index('in')
-                   tmp_inif = cmd_compare[tmp_in_idx + 2]
-                   cmd_compare[tmp_out_idx] = 'in'
-                   cmd_compare[tmp_out_idx + 2] = tmp_inif
-                   cmd_compare[tmp_in_idx] = 'out'
-                   cmd_compare[tmp_in_idx + 2] = tmp_outif
+                    'out' in cmd_compare and 'in' in cmd_compare and \
+                    cmd_compare.index('out') < cmd_compare.index('in'):
+                tmp_out_idx = cmd_compare.index('out')
+                tmp_outif = cmd_compare[tmp_out_idx + 2]
+                tmp_in_idx = cmd_compare.index('in')
+                tmp_inif = cmd_compare[tmp_in_idx + 2]
+                cmd_compare[tmp_out_idx] = 'in'
+                cmd_compare[tmp_out_idx + 2] = tmp_inif
+                cmd_compare[tmp_in_idx] = 'out'
+                cmd_compare[tmp_in_idx + 2] = tmp_outif
 
             # add comment back
             if comment != "":
@@ -769,10 +772,12 @@ class ParserTestCase(unittest.TestCase):
                 self.assertEquals(action, pr.action, "%s != %s" % (action, \
                                                                    pr.action))
 
+
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             ParserTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2013 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -28,6 +28,7 @@ try: # python 2
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
+
 
 class BackendIptablesTestCase(unittest.TestCase):
     def setUp(self):
@@ -95,12 +96,12 @@ class BackendIptablesTestCase(unittest.TestCase):
 
     def _test__do_checks(self):
         '''Test _do_checks()'''
-        print ("  setting self.backend.do_checks to 'True'")
+        print("  setting self.backend.do_checks to 'True'")
         self.backend.do_checks = True
         tests.unit.support.check_for_exception(self,
                               ufw.common.UFWError,
                               self.backend._do_checks)
-        print ("  setting self.backend.do_checks to 'False'")
+        print("  setting self.backend.do_checks to 'False'")
         self.backend.do_checks = False
         self.backend._do_checks()
 
@@ -157,7 +158,6 @@ class BackendIptablesTestCase(unittest.TestCase):
         self.assertEquals(len(rules), 1)
         for r in rules:
             self.assertEquals(r.sapp, 'IPP')
-
 
         pr = ufw.frontend.parse_command(['rule', 'allow', '12345'])
         tests.unit.support.check_for_exception(self,
@@ -269,7 +269,6 @@ ports=80/tcp
         res = self.backend.find_other_position(2, v6=True)
         self.assertEquals(res, 0)
 
-
         res = self.backend.find_other_position(1, v6=False)
         self.assertEquals(res, 2)
 
@@ -318,12 +317,12 @@ ports=80/tcp
 
     def test_set_loglevel(self):
         '''Test set_loglevel()'''
-        for l in ['off', 'on', 'low', 'medium', 'high']:
-            self.backend.set_loglevel(l)
+        for ll in ['off', 'on', 'low', 'medium', 'high']:
+            self.backend.set_loglevel(ll)
             (level, s) = self.backend.get_loglevel()
-            if l == 'on':
-                l = 'low'
-            self.assertTrue(l in s, "Could not find '%s' in:\n%s" % (l, s))
+            if ll == 'on':
+                ll = 'low'
+            self.assertTrue(ll in s, "Could not find '%s' in:\n%s" % (ll, s))
 
         tests.unit.support.check_for_exception(self,
                               ufw.common.UFWError,
@@ -550,7 +549,6 @@ ports=80/tcp
                                         "Could not find '%s' in:\n%s" % (search,
                                                                      res))
 
-
     def test_stop_firewall(self):
         '''Test stop_firewall()'''
         self.backend.stop_firewall()
@@ -668,14 +666,14 @@ ports=80/tcp
     def test_reset(self):
         '''Test reset()'''
         res = self.backend.reset()
-        print (res)
+        print(res)
 
         # we only have 1 second resolution on the backup, so sleep is needed
         time.sleep(1)
 
         self.backend.dryrun = False
         res = self.backend.reset()
-        print (res)
+        print(res)
         # TODO: verify output
 
 
@@ -683,6 +681,7 @@ def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             BackendIptablesTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

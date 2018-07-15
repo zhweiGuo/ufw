@@ -1,6 +1,6 @@
 '''backend_iptables.py: iptables backend for ufw'''
 #
-# Copyright 2008-2016 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -1384,7 +1384,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         ext = time.strftime("%Y%m%d_%H%M%S")
 
-	# This implementation will intentionally traceback if someone tries to
+        # This implementation will intentionally traceback if someone tries to
         # do something to take advantage of the race conditions here.
 
         # Don't do anything if the files already exist
@@ -1423,4 +1423,3 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 res += _("WARN: '%s' is world readable") % (i)
 
         return res
-

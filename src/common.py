@@ -1,6 +1,6 @@
 '''common.py: common classes for ufw'''
 #
-# Copyright 2008-2016 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -28,6 +28,7 @@ config_dir = "#CONFIG_PREFIX#"
 prefix_dir = "#PREFIX#"
 iptables_dir = "#IPTABLES_DIR#"
 do_checks = True
+
 
 class UFWError(Exception):
     '''This class represents ufw exceptions'''
@@ -475,7 +476,7 @@ class UFWRule:
 
     def fuzzy_dst_match(x, y):
         '''This will match if x is more specific than y. Eg, for protocol if x
-	   is tcp and y is all or for address if y is a network and x is a
+           is tcp and y is all or for address if y is a network and x is a
            subset of y (where x is either an address or network). Returns:
 
             0  match
@@ -533,11 +534,11 @@ class UFWRule:
             return 1
 
         if y.interface_in == "":
-	    # If destination interface is not specified, destination addresses
+            # If destination interface is not specified, destination addresses
             # must match or x must be contained in y
 
             if x.interface_in == "" and x._is_anywhere(x.dst):
-		# if x and y interfaces are not specified, and x.dst is
+                # if x and y interfaces are not specified, and x.dst is
                 # anywhere then ok
                 pass
             elif x.dst != y.dst and '/' not in y.dst:
@@ -549,10 +550,10 @@ class UFWRule:
                       (x.dst, y.dst))
                 return 1
         else:
-	    # If destination interface is specified, then:
+            # If destination interface is specified, then:
             #  if specified, both interfaces must match or
             #  the IP of the interface must match the IP of y or
-	    #  the IP of the interface must be contained in y
+            #  the IP of the interface must be contained in y
             if x.interface_in != "" and x.interface_in != y.interface_in:
                 debug("(interface) " + dbg_msg + " (%s != %s)" % \
                       (x.interface_in, y.interface_in))
