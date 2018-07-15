@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -24,6 +24,7 @@ import ufw.util
 from ufw.util import error, warn, msg
 from ufw.backend_iptables import UFWBackendIptables
 import ufw.parser
+
 
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
@@ -56,7 +57,7 @@ def parse_command(argv):
         p.register_command(ufw.parser.UFWCommandShow(i))
 
     # Rule commands
-    rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
+    rule_commands = ['allow', 'limit', 'deny', 'reject', 'insert', 'delete']
     for i in rule_commands:
         p.register_command(ufw.parser.UFWCommandRule(i))
         p.register_command(ufw.parser.UFWCommandRouteRule(i))
@@ -78,12 +79,13 @@ def parse_command(argv):
     try:
         pr = p.parse_command(argv[1:])
     except UFWError as e:
-        error("%s" % (e.value)) #  pragma: no cover
+        error("%s" % (e.value)) # pragma: no cover
     except Exception:
         error("Invalid syntax", do_exit=False)
         raise
 
     return pr
+
 
 def get_command_help():
     '''Print help message'''
@@ -408,7 +410,7 @@ class UFWFrontend:
 
                     # Don't process removal of non-existing application rules
                     if len(tmprules) == 0 and not self.backend.dryrun:
-                        tmp =  _("Could not delete non-existent rule")
+                        tmp = _("Could not delete non-existent rule")
                         if ip_version == "v4":
                             res = tmp
                         elif ip_version == "v6":
@@ -462,8 +464,8 @@ class UFWFrontend:
                         user_pos = r.position # user specified position
                         r.set_v6(False)
                         if not r.remove and user_pos > num_v4:
-			    # The user specified a v6 rule, so try to find a
-			    # match in the v4 rules and use its position.
+                            # The user specified a v6 rule, so try to find a
+                            # match in the v4 rules and use its position.
                             p = self.backend.find_other_position( \
                                 user_pos - num_v4 + count, True)
                             if p > 0:
@@ -482,8 +484,8 @@ class UFWFrontend:
                         r.set_v6(True)
                         if not r.remove and r.position > 0 and \
                            r.position <= num_v4:
-			    # The user specified a v4 rule, so try to find a
-			    # match in the v6 rules and use its position.
+                            # The user specified a v4 rule, so try to find a
+                            # match in the v6 rules and use its position.
                             p = self.backend.find_other_position(r.position, \
                                                                  False)
                             if p > 0:
@@ -529,8 +531,8 @@ class UFWFrontend:
             # If no error, and just one rule, error out
             error(err_msg) # pragma: no cover
         else:
-	    # If error and more than one rule, delete the successfully added
-	    # rules in reverse order
+            # If error and more than one rule, delete the successfully added
+            # rules in reverse order
             undo_error = False
             indexes = list(range(count+1))
             indexes.reverse()

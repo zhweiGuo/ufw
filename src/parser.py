@@ -1,7 +1,7 @@
 #
 # parser.py: parser class for ufw
 #
-# Copyright 2009-2016 Canonical Ltd.
+# Copyright 2009-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -40,6 +40,7 @@ import ufw.applications
 from ufw.common import UFWError
 from ufw.util import debug
 
+
 class UFWCommand:
     '''Generic class for parser commands.'''
     def __init__(self, type, command):
@@ -59,6 +60,7 @@ class UFWCommand:
 
     def help(self, args):
         raise UFWError("UFWCommand.help: need to override")
+
 
 class UFWCommandRule(UFWCommand):
     '''Class for parsing ufw rule commands'''
@@ -93,7 +95,7 @@ class UFWCommandRule(UFWCommand):
                     action = argv[0]
 
                 # return quickly if deleting by rule number
-                if rule_num != None:
+                if rule_num is not None:
                     r = UFWParserResponse('delete-%d' % rule_num)
                     return r
 
@@ -103,7 +105,7 @@ class UFWCommandRule(UFWCommand):
                 insert_pos = argv[1]
 
                 # Using position '0' adds rule at end, which is potentially
-	        # confusing for the end user
+                # confusing for the end user
                 if insert_pos == "0":
                     err_msg = _("Cannot insert rule at position '%s'") % \
                                 (insert_pos)
@@ -232,8 +234,8 @@ class UFWCommandRule(UFWCommand):
         elif (nargs + 1) % 2 != 0:
             err_msg = _("Wrong number of arguments")
             raise UFWError(err_msg)
-        elif not 'from' in argv and not 'to' in argv and not 'in' in argv and \
-             not 'out' in argv:
+        elif 'from' not in argv and 'to' not in argv and 'in' not in argv and \
+             'out' not in argv:
             err_msg = _("Need 'to' or 'from' clause")
             raise UFWError(err_msg)
         else:
@@ -582,6 +584,7 @@ class UFWCommandRouteRule(UFWCommandRule):
 
         return r
 
+
 class UFWCommandApp(UFWCommand):
     '''Class for parsing ufw application commands'''
     def __init__(self, command):
@@ -652,6 +655,7 @@ class UFWCommandBasic(UFWCommand):
             raise ValueError()
         return UFWCommand.parse(self, argv)
 
+
 class UFWCommandDefault(UFWCommand):
     '''Class for parsing ufw default commands'''
     def __init__(self, command):
@@ -697,6 +701,7 @@ class UFWCommandDefault(UFWCommand):
 
         return UFWParserResponse(action)
 
+
 class UFWCommandLogging(UFWCommand):
     '''Class for parsing ufw logging commands'''
     def __init__(self, command):
@@ -720,6 +725,7 @@ class UFWCommandLogging(UFWCommand):
 
         return UFWParserResponse(action)
 
+
 class UFWCommandStatus(UFWCommand):
     '''Class for parsing ufw status commands'''
     def __init__(self, command):
@@ -738,6 +744,7 @@ class UFWCommandStatus(UFWCommand):
             else:
                 raise ValueError()
         return r
+
 
 class UFWCommandShow(UFWCommand):
     '''Class for parsing ufw show commands'''
@@ -770,6 +777,7 @@ class UFWCommandShow(UFWCommand):
 
         return UFWParserResponse(action)
 
+
 class UFWParserResponse:
     '''Class for ufw parser response'''
     def __init__(self, action):
@@ -783,10 +791,11 @@ class UFWParserResponse:
         keys = list(self.data.keys())
         keys.sort()
         for i in keys:
-            s += ",%s='%s'" % (i,self.data[i])
+            s += ",%s='%s'" % (i, self.data[i])
         s += "\n"
 
         return repr(s)
+
 
 class UFWParser:
     '''Class for ufw parser'''
@@ -821,7 +830,7 @@ class UFWParser:
 
         tmp = args[0].lower()
         if len(args) > 1 and tmp in list(self.commands.keys()) and \
-            args[1].lower() in list(self.commands[tmp].keys()):
+                args[1].lower() in list(self.commands[tmp].keys()):
             type = tmp
             cmd = args[1].lower()
         else:
@@ -851,7 +860,7 @@ class UFWParser:
 
     def register_command(self, c):
         '''Register a command with the parser'''
-        if c.command == None or c.command == '':
+        if c.command is None or c.command == '':
             # If the command is empty, then use 'type' as command
             key = "%s" % (c.type)
         else:
@@ -863,4 +872,3 @@ class UFWParser:
             err_msg = _("Command '%s' already exists") % (key)
             raise UFWError(err_msg)
         self.commands[c.type][key] = c
-

@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -17,6 +17,7 @@
 import unittest
 import tests.unit.support
 
+
 class SkeletonTestCase(unittest.TestCase):
     def setUp(self):
 
@@ -33,10 +34,12 @@ class SkeletonTestCase(unittest.TestCase):
         except ufw.common.UFWError:
             pass
 
+
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             SkeletonTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

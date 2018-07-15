@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2016 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -17,6 +17,7 @@
 import unittest
 import tests.unit.support
 import ufw.common
+
 
 class CommonTestCase(unittest.TestCase):
     def setUp(self):
@@ -50,7 +51,7 @@ class CommonTestCase(unittest.TestCase):
                     dport="80,443,8080:8090", sport="23"),
                 "log":  ufw.common.UFWRule("allow", "tcp", dport="22"),
                 "log-all":  ufw.common.UFWRule("allow", "tcp", dport="22"),
-                }
+               }
         self.rules['dapp'].dapp = "Apache"
         self.rules['dapp'].dport = "80"
         self.rules['dapp'].proto = "tcp"
@@ -669,6 +670,7 @@ class CommonTestCase(unittest.TestCase):
         tests.unit.support.check_for_exception(self, ValueError,
                                                x.fuzzy_dst_match,
                                                None)
+
     def test__is_anywhere(self):
         '''Test _is_anywhere()'''
         r = self.rules['any']
@@ -724,10 +726,12 @@ class CommonTestCase(unittest.TestCase):
         self.assertEquals(self.rules['sapp'].src, t[3])
         self.assertEquals("out_br_lan", t[4])
 
+
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             CommonTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

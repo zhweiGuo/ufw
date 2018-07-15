@@ -1,6 +1,6 @@
 '''backend.py: interface for ufw backends'''
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -26,6 +26,7 @@ from ufw.util import error, warn, debug, _findpath
 from ufw.common import UFWError, UFWRule
 import ufw.applications
 
+
 class UFWBackend:
     '''Interface for backends'''
     def __init__(self, name, dryrun, extra_files=None,
@@ -40,14 +41,14 @@ class UFWBackend:
         self.files = {'defaults': os.path.join(p, 'default/ufw'),
                       'conf': os.path.join(p, 'ufw/ufw.conf'),
                       'apps': os.path.join(p, 'ufw/applications.d') }
-        if extra_files != None:
+        if extra_files is not None:
             self.files.update(extra_files)
 
-        self.loglevels = {'off':       0,
-                          'low':     100,
-                          'medium':  200,
-                          'high':    300,
-                          'full':    400 }
+        self.loglevels = {'off': 0,
+                          'low': 100,
+                          'medium': 200,
+                          'high': 300,
+                          'full': 400 }
 
         self.do_checks = ufw.common.do_checks
         self._do_checks()
@@ -77,7 +78,7 @@ class UFWBackend:
            before accessing the database.'''
 
         # Only initialize if not initialized already
-        if self.caps != None:
+        if self.caps is not None:
             return
 
         self.caps = {}
@@ -523,8 +524,8 @@ class UFWBackend:
 
     def find_other_position(self, position, v6):
         '''Return the absolute position in the other list of the rule with the
-	   user position of the given list. For example, find_other_position(4,
-	   True) will return the absolute position of the rule in the ipv4 list
+           user position of the given list. For example, find_other_position(4,
+           True) will return the absolute position of the rule in the ipv4 list
            matching the user specified '4' rule in the ipv6 list.
         '''
         # Invalid search (v6 rule with too low position)

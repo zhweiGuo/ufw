@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2013 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -21,6 +21,7 @@ import tests.unit.support
 import ufw.backend
 import ufw.backend_iptables
 import ufw.common
+
 
 class BackendTestCase(unittest.TestCase):
     def setUp(self):
@@ -54,6 +55,7 @@ def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             BackendTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()
