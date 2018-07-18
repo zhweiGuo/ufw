@@ -12,11 +12,7 @@ ufw (0.36rc~20180718) UNRELEASED; urgency=medium
     - update debian/rules to use dh_link
   * run tests with -s
   * remove debian/patches/0001-optimize-boot.patch
-  * Build-Depends on python3-distutils | python3-distutils-extra. On 18.04 and
-    higher we need python3-distutils, but earlier versions don't have this
-    package, so specify python3-distutils-extra instead since it is installable
-    (even though we won't use the functionality in that package) to avoid
-    introducing a debian/control.in approach
+  * Build-Depends on dh-python (which will pull in python3-distutils)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Jul 2018 10:36:21 -0400
 
