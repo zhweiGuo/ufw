@@ -31,7 +31,7 @@ import subprocess
 import sys
 
 from functools import reduce
-from tempfile import mkstemp
+from tempfile import mkstemp, mktemp
 
 DEBUGGING = False
 msg_output = None # for redirecting stdout in msg() and write_to_file()
@@ -757,6 +757,12 @@ def get_netfilter_capabilities(exe="/sbin/iptables", do_checks=True):
     chain = "ufw-caps-test"
     if exe.endswith("ip6tables"):
         chain = "ufw6-caps-test"
+
+    # Use a unique chain name (with our locking code, this shouldn't be
+    # needed, but this is a cheap safeguard in case the chain happens to
+    # still be lying around. We do this to avoid a separate call to
+    # iptables to check for existence)
+    chain += mktemp(prefix='', dir='')
 
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
