@@ -35,7 +35,7 @@ clean:
 	dh_clean
 	debconf-updatepo
 
-build:
+install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -49,7 +49,6 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	./run_tests.sh -i $(PYTHON)
 endif
 
-install: build
 	$(PYTHON2) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 
@@ -127,4 +126,4 @@ binary-indep: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: clean binary install
+.PHONY: build clean binary install
