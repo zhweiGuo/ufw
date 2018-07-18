@@ -758,6 +758,12 @@ def get_netfilter_capabilities(exe="/sbin/iptables", do_checks=True):
     if exe.endswith("ip6tables"):
         chain = "ufw6-caps-test"
 
+    # Use a unique chain name (with our locking code, this shouldn't be
+    # needed, but this is a cheap safeguard in case the chain happens to
+    # still be lying around. We do this to avoid a separate call to
+    # iptables to check for existence)
+    chain += tempfile.mktemp(prefix='', dir='')
+
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
     if rc != 0:
