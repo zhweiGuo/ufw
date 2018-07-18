@@ -28,7 +28,7 @@ ufw (0.36) UNRELEASED; urgency=medium
     Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
   * support concurrent updates (LP: #1204579, Closes: 686248)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 09 Jun 2018 15:54:23 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Jul 2018 10:49:53 -0400
 
 ufw (0.35) RELEASED; urgency=medium
 
