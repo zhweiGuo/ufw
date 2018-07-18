@@ -35,8 +35,9 @@ clean:
 	dh_clean
 	debconf-updatepo
 
-build: build-arch build-indep
+build:
 	dh_testdir
+	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
