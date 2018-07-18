@@ -9,7 +9,7 @@ ufw (0.35.1) UNRELEASED; urgency=medium
       names (LP: #1719211)
     - don't allow interfaces longer than 15 characters
   * Bittorrent can also use UDP (LP: #1695718)
-  * support concurrent updates (LP: #1204579)
+  * support concurrent updates (LP: #1204579, Closes: 686248)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 04 Apr 2018 16:41:35 -0500
 
