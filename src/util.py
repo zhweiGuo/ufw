@@ -1070,3 +1070,25 @@ def hex_decode(h):
     if sys.version_info[0] < 3:
         return h.decode(encoding='hex').decode('utf-8')
     return binascii.unhexlify(h).decode('utf-8')
+
+
+def create_lock(lockfile='/run/ufw.lock', dryrun=False):
+    '''Create a blocking lockfile'''
+    lock = None
+    if not dryrun:
+        lock = open(lockfile, 'w')
+        fcntl.lockf(lock, fcntl.LOCK_EX)
+    return lock
+
+
+def release_lock(lock):
+    '''Free lockfile created with create_lock()'''
+    if lock is None:
+        return
+    try:  # pragma: no cover
+        fcntl.lockf(lock, fcntl.LOCK_UN)
+        lock.close()
+    except ValueError:  # pragma: nocover
+        # If the lock is already closed, ignore the exception. This should
+        # never happen but let's guard against it in case something changes
+        pass

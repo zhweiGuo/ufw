@@ -26,6 +26,7 @@ ufw (0.36) UNRELEASED; urgency=medium
     - don't allow interfaces longer than 15 characters
   * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
     Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
+  * support concurrent updates (LP: #1204579)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 09 Jun 2018 15:54:23 -0500
 

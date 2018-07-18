@@ -18,13 +18,14 @@
 #
 
 from __future__ import print_function
+import fcntl
 import os
 import sys
 import warnings
 
 import ufw.frontend
 from ufw.common import UFWError
-from ufw.util import error, warn, msg, _findpath
+from ufw.util import error, warn, msg, _findpath, create_lock, release_lock
 
 import gettext
 kwargs = {}
@@ -117,6 +118,15 @@ if __name__ == "__main__":
     except Exception:
         raise
 
+    if datadir is None:
+        lockfile = '/run/ufw.lock'
+        if os.getuid() != 0:
+            lockfile = os.path.join(ufw.common.state_dir, 'ufw.lock')
+    else:
+        lockfile = os.path.join(_findpath(ufw.common.state_dir, datadir),
+                                'ufw.lock')
+
+    lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
     res = ""
     try:
         if app_action and 'type' in pr.data and pr.data['type'] == 'app':
@@ -142,5 +152,7 @@ if __name__ == "__main__":
         error(e.value)
     except Exception:
         raise
+    finally:
+        release_lock(lock)
 
     sys.exit(0)
