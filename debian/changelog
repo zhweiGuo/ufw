@@ -1,4 +1,4 @@
-ufw (0.36rc-0) UNRELEASED; urgency=medium
+ufw (0.36rc~20180718) UNRELEASED; urgency=medium
 
   * Sync with current packaging where we can:
     - debian/control:
@@ -12,8 +12,13 @@ ufw (0.36rc-0) UNRELEASED; urgency=medium
     - update debian/rules to use dh_link
   * run tests with -s
   * remove debian/patches/0001-optimize-boot.patch
+  * Build-Depends on python3-distutils | python3-distutils-extra. On 18.04 and
+    higher we need python3-distutils, but earlier versions don't have this
+    package, so specify python3-distutils-extra instead since it is installable
+    (even though we won't use the functionality in that package) to avoid
+    introducing a debian/control.in approach
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 14 Jan 2018 21:36:50 +0200
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Jul 2018 10:36:21 -0400
 
 ufw (0.33~20131117) UNRELEASED; urgency=low
 
