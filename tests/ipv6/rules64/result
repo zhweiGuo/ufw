@@ -7608,3 +7608,797 @@ COMMIT
 -A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
 ### END LOGGING ###
 COMMIT
+Prepend
+332: allow 22/tcp
+
+
+333: allow from 1.2.3.4
+
+
+334: allow from 2001:db8::/32
+
+
+335: prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+
+
+336: prepend deny from 6.7.8.9
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
+-A ufw-user-input -s 6.7.8.9 -j DROP
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### deny any any ::/0 any 2a02:2210:12:a:b820:fff:fea2:25d1 in
+-A ufw6-user-input -s 2a02:2210:12:a:b820:fff:fea2:25d1 -j DROP
+
+### tuple ### allow tcp 22 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any ::/0 any 2001:db8::/32 in
+-A ufw6-user-input -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+337: delete allow 22/tcp
+
+
+338: delete allow from 1.2.3.4
+
+
+339: delete allow from 2001:db8::/32
+
+
+340: delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+
+
+341: delete deny from 6.7.8.9
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Prepend (no rules)
+342: prepend allow 22/tcp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 22 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 22 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+343: delete allow 22/tcp
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+344: prepend allow to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### allow udp 137,138 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### tuple ### allow tcp 139,445 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j ACCEPT -m comment --comment 'dapp_Samba'
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+345: delete allow to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Prepend (multi rules)
+346: allow 22/tcp
+
+
+347: prepend deny 23
+
+
+348: prepend deny to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny udp 137,138 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny tcp 139,445 0.0.0.0/0 any 0.0.0.0/0 Samba - in
+-A ufw-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny any 23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 23 -j DROP
+-A ufw-user-input -p udp --dport 23 -j DROP
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### deny udp 137,138 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p udp -m multiport --dports 137,138 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny tcp 139,445 ::/0 any ::/0 Samba - in
+-A ufw6-user-input -p tcp -m multiport --dports 139,445 -j DROP -m comment --comment 'dapp_Samba'
+
+### tuple ### deny any 23 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 23 -j DROP
+-A ufw6-user-input -p udp --dport 23 -j DROP
+
+### tuple ### allow tcp 22 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 22 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+349: delete allow 22/tcp
+
+
+350: delete deny 23
+
+
+351: delete deny to any app Samba
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+Prepend (example rules)
+352: allow 22/tcp
+
+
+353: allow from 1.2.3.4
+
+
+354: allow from 2001:db8::/32
+
+
+355: prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+
+
+356: prepend deny from 6.7.8.9
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
+-A ufw-user-input -s 6.7.8.9 -j DROP
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### tuple ### deny any any ::/0 any 2a02:2210:12:a:b820:fff:fea2:25d1 in
+-A ufw6-user-input -s 2a02:2210:12:a:b820:fff:fea2:25d1 -j DROP
+
+### tuple ### allow tcp 22 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any ::/0 any 2001:db8::/32 in
+-A ufw6-user-input -s 2001:db8::/32 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT
+357: delete allow 22/tcp
+
+
+358: delete allow from 1.2.3.4
+
+
+359: delete allow from 2001:db8::/32
+
+
+360: delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+
+
+361: delete deny from 6.7.8.9
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+:ufw6-before-logging-input - [0:0]
+:ufw6-before-logging-output - [0:0]
+:ufw6-before-logging-forward - [0:0]
+:ufw6-user-logging-input - [0:0]
+:ufw6-user-logging-output - [0:0]
+:ufw6-user-logging-forward - [0:0]
+:ufw6-after-logging-input - [0:0]
+:ufw6-after-logging-output - [0:0]
+:ufw6-after-logging-forward - [0:0]
+:ufw6-logging-deny - [0:0]
+:ufw6-logging-allow - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw6-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw6-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw6-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+COMMIT

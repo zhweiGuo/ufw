@@ -3148,6 +3148,108 @@ Added user rules (see 'ufw status' for running firewall):
 611: disable
 
 
+Prepend
+Setting IPV6 to yes
 612: disable
+
+
+613: enable
+
+
+614: allow 22/tcp
+
+
+615: allow from 1.2.3.4
+
+
+616: allow from 2001:db8::/32
+
+
+617: prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+WARN: Checks disabled
+Rule inserted (v6)
+
+
+618: prepend deny from 6.7.8.9
+WARN: Checks disabled
+Rule inserted
+
+
+### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
+-A ufw-user-input -s 6.7.8.9 -j DROP
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+### tuple ### deny any any ::/0 any 2a02:2210:12:a:b820:fff:fea2:25d1 in
+-A ufw6-user-input -s 2a02:2210:12:a:b820:fff:fea2:25d1 -j DROP
+
+### tuple ### allow tcp 22 ::/0 any ::/0 in
+-A ufw6-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any ::/0 any 2001:db8::/32 in
+-A ufw6-user-input -s 2001:db8::/32 -j ACCEPT
+
+619: delete allow 22/tcp
+
+
+620: delete allow from 1.2.3.4
+
+
+621: delete allow from 2001:db8::/32
+
+
+622: delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+WARN: Checks disabled
+Rule deleted (v6)
+
+
+623: delete deny from 6.7.8.9
+WARN: Checks disabled
+Rule deleted
+
+
+Setting IPV6 to no
+624: disable
+
+
+625: enable
+
+
+626: allow 22/tcp
+
+
+627: allow from 1.2.3.4
+
+
+628: prepend deny from 6.7.8.9
+WARN: Checks disabled
+Rule inserted
+
+
+### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
+-A ufw-user-input -s 6.7.8.9 -j DROP
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+629: delete allow 22/tcp
+
+
+630: delete allow from 1.2.3.4
+
+
+631: delete deny from 6.7.8.9
+WARN: Checks disabled
+Rule deleted
+
+
+632: disable
 
 

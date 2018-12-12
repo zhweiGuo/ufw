@@ -219,4 +219,56 @@ do_cmd "0" delete allow to 10.0.0.1 from 10.4.0.0/16 comment \"SSH\ port\"
 do_cmd "0" delete allow to 2001:db8:85a3:8d3:1319:8a2e:370:734 from 2001:db8::/32 proto ah comment \"SSH\ port\"
 cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
 
+echo "Prepend" >> $TESTTMP/result
+do_cmd "0" null allow 22/tcp
+do_cmd "0" null allow from 1.2.3.4
+do_cmd "0" null allow from 2001:db8::/32
+
+do_cmd "0" null prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+do_cmd "0" null prepend deny from 6.7.8.9
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete allow from 1.2.3.4
+do_cmd "0" null delete allow from 2001:db8::/32
+do_cmd "0" null delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+do_cmd "0" null delete deny from 6.7.8.9
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+echo "Prepend (no rules)" >> $TESTTMP/result
+do_cmd "0" null prepend allow 22/tcp
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+do_cmd "0" null delete allow 22/tcp
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+do_cmd "0" null prepend allow to any app Samba
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+do_cmd "0" null delete allow to any app Samba
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+echo "Prepend (multi rules)" >> $TESTTMP/result
+do_cmd "0" null allow 22/tcp
+do_cmd "0" null prepend deny 23
+do_cmd "0" null prepend deny to any app Samba
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete deny 23
+do_cmd "0" null delete deny to any app Samba
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+echo "Prepend (example rules)" >> $TESTTMP/result
+do_cmd "0" null allow 22/tcp
+do_cmd "0" null allow from 1.2.3.4
+do_cmd "0" null allow from 2001:db8::/32
+do_cmd "0" null prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+do_cmd "0" null prepend deny from 6.7.8.9
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete allow from 1.2.3.4
+do_cmd "0" null delete allow from 2001:db8::/32
+do_cmd "0" null delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+do_cmd "0" null delete deny from 6.7.8.9
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
+
 exit 0

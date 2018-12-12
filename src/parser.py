@@ -104,15 +104,19 @@ class UFWCommandRule(UFWCommand):
                     raise ValueError()
                 insert_pos = argv[1]
 
-                # Using position '0' adds rule at end, which is potentially
-                # confusing for the end user
-                if insert_pos == "0":
+                # Using position '0' appends the rule while '-1' prepends,
+                # which is potentially confusing for the end user
+                if insert_pos == "0" or insert_pos == "-1":
                     err_msg = _("Cannot insert rule at position '%s'") % \
                                 (insert_pos)
                     raise UFWError(err_msg)
 
                 # strip out 'insert NUM' and parse as normal
                 del argv[1]
+                del argv[0]
+
+            elif argv[0].lower() == "prepend":
+                insert_pos = -1
                 del argv[0]
 
             action = argv[0]

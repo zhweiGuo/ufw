@@ -456,6 +456,36 @@ do
 done
 do_cmd "0" nostats disable
 
+echo "Prepend" >> $TESTTMP/result
+for ipv6 in yes no
+do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
+
+    do_cmd "0" nostats allow 22/tcp
+    do_cmd "0" nostats allow from 1.2.3.4
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats allow from 2001:db8::/32
+        do_cmd "0" prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+    fi
+    do_cmd "0" prepend deny from 6.7.8.9
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+    # delete what we added
+    do_cmd "0" nostats delete allow 22/tcp
+    do_cmd "0" nostats delete allow from 1.2.3.4
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats delete allow from 2001:db8::/32
+        do_cmd "0" delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+    fi
+    do_cmd "0" delete deny from 6.7.8.9
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
+done
+
 cleanup
 
 exit 0

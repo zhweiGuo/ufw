@@ -53,7 +53,7 @@ class ParserTestCase(unittest.TestCase):
 
         # Rule commands
         rule_commands = ['allow', 'limit', 'deny', 'reject', 'insert', \
-                         'delete']
+                         'delete', 'prepend']
         for i in rule_commands:
             self.parser.register_command(ufw.parser.UFWCommandRule(i))
             self.parser.register_command(ufw.parser.UFWCommandRouteRule(i))
@@ -453,6 +453,7 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'insert', '1', 'allow'], ValueError),
                 (['rule', 'insert', 'a', 'allow', '22'], ufw.common.UFWError),
                 (['rule', 'insert', '0', 'allow', '22'], ufw.common.UFWError),
+                (['rule', 'prepend', 'allow'], ValueError),
                 (['rule', 'allow'], ValueError),
                 (['rule'], ValueError),
                 (['rule', 'allow', '22', 'in', 'on', 'eth0'],

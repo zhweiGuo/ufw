@@ -342,7 +342,10 @@ class UFWRule:
 
     def set_position(self, num):
         '''Sets the position of the rule'''
-        if not re.match(r'^[0-9]+', str(num)):
+        # -1 prepend
+        #  0 append
+        # >0 insert
+        if str(num) != "-1" and not re.match(r'^[0-9]+', str(num)):
             err_msg = _("Insert position '%s' is not a valid position") % (num)
             raise UFWError(err_msg)
         self.position = int(num)

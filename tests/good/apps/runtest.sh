@@ -182,4 +182,18 @@ while read line ; do
 done
 cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
 
+echo "Prepend" >> $TESTTMP/result
+do_cmd "0" null allow to any app Samba
+do_cmd "0" null prepend deny to any app Samba from 10.0.0.1
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0" null delete allow to any app Samba
+do_cmd "0" null delete deny to any app Samba from 10.0.0.1
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+echo "Prepend (no rules)" >> $TESTTMP/result
+do_cmd "0" null prepend allow to any app Samba from 10.0.0.1
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0" null delete allow to any app Samba from 10.0.0.1
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
 exit 0

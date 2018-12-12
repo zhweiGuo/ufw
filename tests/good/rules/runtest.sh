@@ -308,4 +308,30 @@ do_cmd "0" delete deny out log-all to any port 53 from any proto udp comment \"d
 do_cmd "0" delete allow 2222/tcp
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
+echo "Prepend" >> $TESTTMP/result
+do_cmd "0" null allow 22/tcp
+do_cmd "0" null allow from 1.2.3.4
+
+do_cmd "0" null prepend deny from 6.7.8.9
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete allow from 1.2.3.4
+do_cmd "0" null delete deny from 6.7.8.9
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+echo "Prepend (no rules)" >> $TESTTMP/result
+do_cmd "0" null prepend allow from 1.2.3.4
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0" null delete allow from 1.2.3.4
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+echo "Prepend (multi rules)" >> $TESTTMP/result
+do_cmd "0" null allow from 1.2.3.4
+do_cmd "0" null prepend deny 23
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0" null delete allow from 1.2.3.4
+do_cmd "0" null delete deny 23
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
 exit 0
