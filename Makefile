@@ -35,14 +35,10 @@ unittest:
 	./run_tests.sh -s -i $(PYTHON) unit
 
 coverage:
-	# No python3 coverage yet
-	#$(PYTHON) ./tests/unit/runner.py
-	python -m coverage run ./tests/unit/runner.py
+	$(PYTHON) -m coverage run ./tests/unit/runner.py
 
 coverage-report:
-	# No python3 coverage yet
-	#$(PYTHON) ./tests/unit/runner.py
-	python -m coverage report --show-missing --omit="tests/*"
+	$(PYTHON) -m coverage report --show-missing --omit="tests/*"
 
 syntax-check: clean
 	$(shell mkdir $(TMPDIR) && $(PYFLAKES_EXE) src 2>&1 | grep -v "undefined name '_'" > $(PYFLAKES))
