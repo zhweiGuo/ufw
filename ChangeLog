@@ -27,8 +27,9 @@ ufw (0.36) UNRELEASED; urgency=medium
   * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
     Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
   * support concurrent updates (LP: #1204579, Closes: 686248)
+  * add 'prepend' command to better support IPS (fail2ban, etc. LP: #1368411)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 18 Jul 2018 10:49:53 -0400
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Dec 2018 16:58:24 -0600
 
 ufw (0.35) RELEASED; urgency=medium
 
