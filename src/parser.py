@@ -536,12 +536,8 @@ class UFWCommandRouteRule(UFWCommandRule):
             idx = argv.index('delete')
             err_msg = ""
             if len(argv) > idx:
-                try:
-                    int(argv[idx + 1])
-                    err_msg = _("'route delete NUM' unsupported. Use 'delete NUM' instead.")
-                    raise UFWError(err_msg)
-                except ValueError:
-                    pass
+                err_msg = _("'route delete NUM' unsupported. Use 'delete NUM' instead.")
+                raise UFWError(err_msg)
 
         # Let's use as much as UFWCommandRule.parse() as possible. The only
         # difference with our rules is that argv[0] is 'route' and we support
@@ -843,7 +839,7 @@ class UFWParser:
                     # argument to be valid and used
                     if isinstance(self.commands[i][cmd], UFWCommandRule) and \
                        getattr(self.commands[i][cmd], 'type') != 'rule':
-                        continue
+                        continue  # pragma: nocover
                     type = i
                     break
             if type == "":

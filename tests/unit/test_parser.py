@@ -75,6 +75,12 @@ class ParserTestCase(unittest.TestCase):
                                                    c.help,
                                                    [])
 
+    def test_ufwcommand_parse_basic_help(self):
+        '''Test parser.parse_command() - help'''
+        pr = self.parser.parse_command(['help'])
+        search = repr("action='help'\n")
+        self.assertTrue(str(pr) == search, "'%s' != '%s'" % (str(pr), search))
+
     def test_ufwcommand_parse(self):
         '''Test UFWCommand.parse()'''
         c = ufw.parser.UFWCommand('basic', 'status')
@@ -524,6 +530,8 @@ class ParserTestCase(unittest.TestCase):
                 (['route', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],
                   ufw.common.UFWError),
+                (['rule', 'allow', '22', 'comment'], ufw.common.UFWError),
+                (['route', 'delete', '1'], ufw.common.UFWError),
                ]
         for cmd, exception in cmds:
             #print(" ".join(cmd))
