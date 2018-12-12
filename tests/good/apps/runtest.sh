@@ -178,6 +178,8 @@ grep '^\[' $TESTPATH/etc/ufw/applications.d/ufw-* | cut -f 2 -d ':' | sed -e 's/
 while read line ; do
     do_cmd "0" null app info "$line"
     do_cmd "0" null allow "$line"
+    do_cmd "0" null delete allow "$line"
 done
+cat $TESTCONFIG/user.rules $TESTCONFIG/user6.rules >> $TESTTMP/result
 
 exit 0

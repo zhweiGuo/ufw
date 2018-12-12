@@ -12545,225 +12545,380 @@ TESTING SHIPPED APPLICATION PROFILES
 293: allow Transmission
 
 
-294: app info Deluge
+294: delete allow Transmission
 
 
-295: allow Deluge
+295: app info Deluge
 
 
-296: app info KTorrent
+296: allow Deluge
 
 
-297: allow KTorrent
+297: delete allow Deluge
 
 
-298: app info qBittorrent
+298: app info KTorrent
 
 
-299: allow qBittorrent
+299: allow KTorrent
 
 
-300: app info PeopleNearby
+300: delete allow KTorrent
 
 
-301: allow PeopleNearby
+301: app info qBittorrent
 
 
-302: app info Bonjour
+302: allow qBittorrent
 
 
-303: allow Bonjour
+303: delete allow qBittorrent
 
 
-304: app info MSN
+304: app info PeopleNearby
 
 
-305: allow MSN
+305: allow PeopleNearby
 
 
-306: app info MSN SSL
+306: delete allow PeopleNearby
 
 
-307: allow MSN SSL
+307: app info Bonjour
 
 
-308: app info AIM
+308: allow Bonjour
 
 
-309: allow AIM
+309: delete allow Bonjour
 
 
-310: app info Yahoo
+310: app info MSN
 
 
-311: allow Yahoo
+311: allow MSN
 
 
-312: app info XMPP
+312: delete allow MSN
 
 
-313: allow XMPP
+313: app info MSN SSL
 
 
-314: app info Kerberos KDC
+314: allow MSN SSL
 
 
-315: allow Kerberos KDC
+315: delete allow MSN SSL
 
 
-316: app info Kerberos Admin
+316: app info AIM
 
 
-317: allow Kerberos Admin
+317: allow AIM
 
 
-318: app info Kerberos Password
+318: delete allow AIM
 
 
-319: allow Kerberos Password
+319: app info Yahoo
 
 
-320: app info Kerberos Full
+320: allow Yahoo
 
 
-321: allow Kerberos Full
+321: delete allow Yahoo
 
 
-322: app info LDAP
+322: app info XMPP
 
 
-323: allow LDAP
+323: allow XMPP
 
 
-324: app info LDAPS
+324: delete allow XMPP
 
 
-325: allow LDAPS
+325: app info Kerberos KDC
 
 
-326: app info DNS
+326: allow Kerberos KDC
 
 
-327: allow DNS
+327: delete allow Kerberos KDC
 
 
-328: app info CIFS
+328: app info Kerberos Admin
 
 
-329: allow CIFS
+329: allow Kerberos Admin
 
 
-330: app info NFS
+330: delete allow Kerberos Admin
 
 
-331: allow NFS
+331: app info Kerberos Password
 
 
-332: app info svnserve
+332: allow Kerberos Password
 
 
-333: allow svnserve
+333: delete allow Kerberos Password
 
 
-334: app info Telnet
+334: app info Kerberos Full
 
 
-335: allow Telnet
+335: allow Kerberos Full
 
 
-336: app info SSH
+336: delete allow Kerberos Full
 
 
-337: allow SSH
+337: app info LDAP
 
 
-338: app info VNC
+338: allow LDAP
 
 
-339: allow VNC
+339: delete allow LDAP
 
 
-340: app info POP3
+340: app info LDAPS
 
 
-341: allow POP3
+341: allow LDAPS
 
 
-342: app info POP3S
+342: delete allow LDAPS
 
 
-343: allow POP3S
+343: app info DNS
 
 
-344: app info IMAP
+344: allow DNS
 
 
-345: allow IMAP
+345: delete allow DNS
 
 
-346: app info IMAPS
+346: app info CIFS
 
 
-347: allow IMAPS
+347: allow CIFS
 
 
-348: app info SMTP
+348: delete allow CIFS
 
 
-349: allow SMTP
+349: app info NFS
 
 
-350: app info Mail submission
+350: allow NFS
 
 
-351: allow Mail submission
+351: delete allow NFS
 
 
-352: app info IPP
+352: app info svnserve
 
 
-353: allow IPP
+353: allow svnserve
 
 
-354: app info LPD
+354: delete allow svnserve
 
 
-355: allow LPD
+355: app info Telnet
 
 
-356: app info Socks
+356: allow Telnet
 
 
-357: allow Socks
+357: delete allow Telnet
 
 
-358: app info Transparent Proxy
+358: app info SSH
 
 
-359: allow Transparent Proxy
+359: allow SSH
 
 
-360: app info WWW
+360: delete allow SSH
 
 
-361: allow WWW
+361: app info VNC
 
 
-362: app info WWW Secure
+362: allow VNC
 
 
-363: allow WWW Secure
+363: delete allow VNC
 
 
-364: app info WWW Full
+364: app info POP3
 
 
-365: allow WWW Full
+365: allow POP3
 
 
-366: app info WWW Cache
+366: delete allow POP3
 
 
-367: allow WWW Cache
+367: app info POP3S
 
 
+368: allow POP3S
+
+
+369: delete allow POP3S
+
+
+370: app info IMAP
+
+
+371: allow IMAP
+
+
+372: delete allow IMAP
+
+
+373: app info IMAPS
+
+
+374: allow IMAPS
+
+
+375: delete allow IMAPS
+
+
+376: app info SMTP
+
+
+377: allow SMTP
+
+
+378: delete allow SMTP
+
+
+379: app info Mail submission
+
+
+380: allow Mail submission
+
+
+381: delete allow Mail submission
+
+
+382: app info IPP
+
+
+383: allow IPP
+
+
+384: delete allow IPP
+
+
+385: app info LPD
+
+
+386: allow LPD
+
+
+387: delete allow LPD
+
+
+388: app info Socks
+
+
+389: allow Socks
+
+
+390: delete allow Socks
+
+
+391: app info Transparent Proxy
+
+
+392: allow Transparent Proxy
+
+
+393: delete allow Transparent Proxy
+
+
+394: app info WWW
+
+
+395: allow WWW
+
+
+396: delete allow WWW
+
+
+397: app info WWW Secure
+
+
+398: allow WWW Secure
+
+
+399: delete allow WWW Secure
+
+
+400: app info WWW Full
+
+
+401: allow WWW Full
+
+
+402: delete allow WWW Full
+
+
+403: app info WWW Cache
+
+
+404: allow WWW Cache
+
+
+405: delete allow WWW Cache
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+*filter
+:ufw6-user-input - [0:0]
+:ufw6-user-output - [0:0]
+:ufw6-user-forward - [0:0]
+### RULES ###
+COMMIT
