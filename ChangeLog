@@ -26,9 +26,9 @@ ufw (0.36) UNRELEASED; urgency=medium
     - don't allow interfaces longer than 15 characters
   * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
     Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
-  * support concurrent updates (LP: #1204579, Closes: 686248)
+  * support concurrent updates (LP: #1204579, LP: #1652163, Closes: 686248)
   * add 'prepend' command to better support IPS (fail2ban, etc. LP: #1368411,
-    Closes: 909163)
+    LP: #1586258, Closes: 909163)
   * backend.py: only warn if initcaps() fails is disabled (Closes: 884932)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Dec 2018 16:58:24 -0600
