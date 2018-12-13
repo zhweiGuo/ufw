@@ -45,3 +45,4 @@ parts:
     - sed
     - bsdmainutils
     - man-db
+    - git

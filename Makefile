@@ -26,6 +26,7 @@ ifneq ($(SNAP),yes)
 	# Use setup.py to install. See README for details
 	exit 1
 endif
+	git log --oneline -n 1
 	mkdir $(SNAPDIR)
 	python3 ./setup.py install --root=$(SNAPDIR) --install-layout=deb
 	chmod 644 $(SNAPDIR)/etc/ufw/*.rules $(SNAPDIR)/etc/ufw/*.init $(SNAPDIR)/usr/share/ufw/iptables/*.rules
