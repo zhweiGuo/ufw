@@ -94,7 +94,12 @@ class UFWBackend:
             try:
                 nf_caps = ufw.util.get_netfilter_capabilities(self.iptables)
             except OSError as e:
-                error("initcaps\n%s" % e)
+                msg = "initcaps\n%s" % e
+                if self.is_enabled():
+                    error(msg)
+                warn(msg)
+                return
+
             if 'recent-set' in nf_caps and 'recent-update' in nf_caps:
                 self.caps['limit']['4'] = True
             else:
