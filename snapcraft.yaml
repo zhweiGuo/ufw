@@ -4,6 +4,8 @@ summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
 confinement: strict
 grade: stable
+passthrough:
+  license: GPL-3.0, GPL-2.0-or-later
 
 apps:
   srv:
