@@ -24,7 +24,7 @@ echo "Bug #247352" >> $TESTTMP/result
 do_cmd "0" --dry-run allow http/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
 do_cmd "0" delete allow http/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
@@ -48,10 +48,10 @@ do_cmd "0" nostats enable
 do_cmd "0"  allow Apache
 do_cmd "0"  delete deny Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
 do_cmd "0"  delete allow Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
 
 echo "Bug #263308" >> $TESTTMP/result
 echo "Setting IPV6 to yes" >> $TESTTMP/result
@@ -93,11 +93,11 @@ sed -i "s/IPV6=.*/IPV6=yes/" $TESTPATH/etc/default/ufw
 do_cmd "0" nostats disable
 do_cmd "0" nostats enable
 do_cmd "0"  status
-do_cmd "0"  delete allow 22
+do_cmd "0"  delete allow 13
 do_cmd "0"  delete allow Apache
-do_cmd "0"  delete allow to 127.0.0.1 port 22
+do_cmd "0"  delete allow to 127.0.0.1 port 13
 do_cmd "0"  delete allow to 127.0.0.1 app Apache
-do_cmd "0"  delete allow to ::1 port 22
+do_cmd "0"  delete allow to ::1 port 13
 do_cmd "0"  delete allow to ::1 app Apache
 do_cmd "0"  status
 

@@ -43,7 +43,7 @@ do
 	do_cmd "0" allow from 192.168.0.0/16
 	do_cmd "0" deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" limit 22/tcp
+	do_cmd "0" limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -63,7 +63,7 @@ do
 	do_cmd "0" delete allow from 192.168.0.0/16
 	do_cmd "0" delete deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" delete limit 22/tcp
+	do_cmd "0" delete limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" delete deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -132,7 +132,7 @@ do
 	do_cmd "0" allow from 192.168.0.0/16
 	do_cmd "0" deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" limit 22/tcp
+	do_cmd "0" limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -149,7 +149,7 @@ do
 	do_cmd "0" delete allow from 192.168.0.0/16
 	do_cmd "0" delete deny proto udp from 1.2.3.4 to any port 514
 	do_cmd "0" delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
-	do_cmd "0" delete limit 22/tcp
+	do_cmd "0" delete limit 13/tcp
 	if [ "$ipv6" = "yes" ]; then
 		do_cmd "0" delete deny proto tcp from 2001:db8::/32 to any port 25
 		do_cmd "0" delete deny from 2001:db8::/32 port 26 to 2001:db8:3:4:5:6:7:8
@@ -168,12 +168,12 @@ do
 
         do_cmd "0" allow $i on eth1
         do_cmd "1" null deny $i on eth1:1
-        do_cmd "0" reject $i on eth1 to 192.168.0.1 port 22
+        do_cmd "0" reject $i on eth1 to 192.168.0.1 port 13
         do_cmd "0" limit $i on eth1 from 10.0.0.1 port 80
         do_cmd "0" allow $i on eth1 to 192.168.0.1 from 10.0.0.1
-        do_cmd "0" deny $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" deny $i on eth1 to 192.168.0.1 port 13 from 10.0.0.1
         do_cmd "0" reject $i on eth1 to 192.168.0.1 from 10.0.0.1 port 80
-        do_cmd "0" limit $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+        do_cmd "0" limit $i on eth1 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 	do_cmd "0" allow $i on eth0 log
 	do_cmd "0" allow $i on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
@@ -189,12 +189,12 @@ do
 
 	# delete what we added
         do_cmd "0" delete allow $i on eth1
-        do_cmd "0" delete reject $i on eth1 to 192.168.0.1 port 22
+        do_cmd "0" delete reject $i on eth1 to 192.168.0.1 port 13
         do_cmd "0" delete limit $i on eth1 from 10.0.0.1 port 80
         do_cmd "0" delete allow $i on eth1 to 192.168.0.1 from 10.0.0.1
-        do_cmd "0" delete deny $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" delete deny $i on eth1 to 192.168.0.1 port 13 from 10.0.0.1
         do_cmd "0" delete reject $i on eth1 to 192.168.0.1 from 10.0.0.1 port 80
-        do_cmd "0" delete limit $i on eth1 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+        do_cmd "0" delete limit $i on eth1 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 	do_cmd "0" delete allow $i on eth0 log
 	do_cmd "0" delete allow $i on eth0 log from 192.168.0.1 to 10.0.0.1 port 24 proto tcp
@@ -308,7 +308,7 @@ do_cmd "0" nostats disable
 echo "'Resource temporarily unavailable' test" >> $TESTTMP/result
 do_cmd "0" nostats disable
 $TESTSTATE/ufw-init flush-all >/dev/null
-do_cmd "0" nostats allow 22/tcp
+do_cmd "0" nostats allow 13/tcp
 do_cmd "0" nostats enable
 $TESTSTATE/ufw-init stop >/dev/null
 for i in `seq 1 25`; do
@@ -323,7 +323,7 @@ for i in `seq 1 25`; do
     let count=count+1
 done
 do_cmd "0" nostats enable
-do_cmd "0" nostats delete allow 22/tcp
+do_cmd "0" nostats delete allow 13/tcp
 
 echo "Reset test" >> $TESTTMP/result
 do_cmd "0" nostats enable
@@ -441,13 +441,13 @@ do
     sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
     do_cmd "0" nostats disable
     do_cmd "0" nostats enable
-    do_cmd "0" nostats limit 22/tcp
+    do_cmd "0" nostats limit 13/tcp
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" nostats allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
     fi
     do_cmd "0" nostats deny Samba
     do_cmd "0" show added
-    do_cmd "0" nostats delete limit 22/tcp
+    do_cmd "0" nostats delete limit 13/tcp
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" nostats delete allow in on eth0 to 2001::211:aaaa:bbbb:d54c port 123 proto tcp
     fi
@@ -455,6 +455,36 @@ do
     do_cmd "0" show added
 done
 do_cmd "0" nostats disable
+
+echo "Prepend" >> $TESTTMP/result
+for ipv6 in yes no
+do
+    echo "Setting IPV6 to $ipv6" >> $TESTTMP/result
+    sed -i "s/IPV6=.*/IPV6=$ipv6/" $TESTPATH/etc/default/ufw
+    do_cmd "0" nostats disable
+    do_cmd "0" nostats enable
+
+    do_cmd "0" nostats allow 22/tcp
+    do_cmd "0" nostats allow from 1.2.3.4
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats allow from 2001:db8::/32
+        do_cmd "0" prepend deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+    fi
+    do_cmd "0" prepend deny from 6.7.8.9
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
+
+    # delete what we added
+    do_cmd "0" nostats delete allow 22/tcp
+    do_cmd "0" nostats delete allow from 1.2.3.4
+    if [ "$ipv6" = "yes" ]; then
+        do_cmd "0" nostats delete allow from 2001:db8::/32
+        do_cmd "0" delete deny from 2a02:2210:12:a:b820:fff:fea2:25d1
+    fi
+    do_cmd "0" delete deny from 6.7.8.9
+    grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
+    grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
+done
 
 cleanup
 

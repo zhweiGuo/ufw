@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2016 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -26,6 +26,7 @@ import tests.unit.support
 import ufw.common
 import ufw.frontend
 import ufw.util
+
 
 class FrontendTestCase(unittest.TestCase):
     def setUp(self):
@@ -251,7 +252,7 @@ class FrontendTestCase(unittest.TestCase):
                                     "Could not find '%s' in:\n%s" % \
                                      (search, out))
 
-        print ("TODO: verify output of rules in do_action()")
+        print("TODO: verify output of rules in do_action()")
 
     def test_do_action_remove_bad_appname(self):
         '''Test do_action() remove bad appname'''
@@ -358,6 +359,7 @@ def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             FrontendTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

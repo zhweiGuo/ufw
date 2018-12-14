@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ -n "$SNAP_APP_PATH" ]; then
-    export PATH="$SNAP_APP_PATH/bin:$SNAP_APP_PATH/sbin:$SNAP_APP_PATH/usr/bin:$SNAP_APP_PATH/usr/sbin:/bin:/sbin:/usr/bin:/usr/sbin"
-fi
-
-echo "Temporary shell for ufw"
-exec /bin/bash -i

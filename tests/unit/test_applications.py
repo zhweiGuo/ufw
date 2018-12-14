@@ -1,5 +1,5 @@
 #
-# Copyright 2012 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -18,6 +18,7 @@ import os
 import unittest
 import tests.unit.support
 import ufw.applications
+
 
 class ApplicationsTestCase(unittest.TestCase):
     def setUp(self):
@@ -140,10 +141,12 @@ class ApplicationsTestCase(unittest.TestCase):
         self.assertEquals(ufw.applications.get_ports(self.profiles['WWW']),
                 expected_ports)
 
+
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             ApplicationsTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

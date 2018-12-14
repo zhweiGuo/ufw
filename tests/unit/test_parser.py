@@ -1,5 +1,5 @@
 #
-# Copyright 2013-2016 Canonical Ltd.
+# Copyright 2013-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -19,6 +19,7 @@ import sys
 import unittest
 import tests.unit.support
 import ufw.parser
+
 
 class ParserTestCase(unittest.TestCase):
     def setUp(self):
@@ -51,8 +52,8 @@ class ParserTestCase(unittest.TestCase):
             self.parser.register_command(ufw.parser.UFWCommandShow(i))
 
         # Rule commands
-        rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', \
-                         'delete']
+        rule_commands = ['allow', 'limit', 'deny', 'reject', 'insert', \
+                         'delete', 'prepend']
         for i in rule_commands:
             self.parser.register_command(ufw.parser.UFWCommandRule(i))
             self.parser.register_command(ufw.parser.UFWCommandRouteRule(i))
@@ -73,6 +74,12 @@ class ParserTestCase(unittest.TestCase):
         tests.unit.support.check_for_exception(self, ufw.common.UFWError, \
                                                    c.help,
                                                    [])
+
+    def test_ufwcommand_parse_basic_help(self):
+        '''Test parser.parse_command() - help'''
+        pr = self.parser.parse_command(['help'])
+        search = repr("action='help'\n")
+        self.assertTrue(str(pr) == search, "'%s' != '%s'" % (str(pr), search))
 
     def test_ufwcommand_parse(self):
         '''Test UFWCommand.parse()'''
@@ -221,8 +228,10 @@ class ParserTestCase(unittest.TestCase):
             # Note, cmd_compare contains the rules we get from
             # tests.unit.support.get_sample_rule_commands*
             cmd_compare = []
-            comment = ""  # store off command so we can add it at the end after
-                          # the massaging
+
+            # store off command so we can add it at the end after the massaging
+            comment = ""
+
             if 'comment' in cmd:
                 comment_idx = cmd.index('comment')
                 comment = cmd[comment_idx + 1]
@@ -322,9 +331,9 @@ class ParserTestCase(unittest.TestCase):
             # rule
             generics = ['in', 'out', 'allow', 'deny', 'reject', 'limit']
             if 'to' not in cmd_compare and 'from' not in cmd_compare and \
-               'on' not in cmd_compare and ('proto' in cmd_compare or \
-               cmd_compare[-1].startswith('log') or \
-               cmd_compare[-1] in generics):
+                    'on' not in cmd_compare and ('proto' in cmd_compare or \
+                    cmd_compare[-1].startswith('log') or \
+                    cmd_compare[-1] in generics):
                 if 'proto' in cmd_compare:
                     cmd_compare.insert(cmd_compare.index('proto'), "to")
                     cmd_compare.insert(cmd_compare.index('proto'), "any")
@@ -335,16 +344,16 @@ class ParserTestCase(unittest.TestCase):
             # flip 'in on' and 'out on' for route rules ('in on' is always
             # listed first
             if cmd_compare[0] == 'route' and \
-               'out' in cmd_compare and 'in' in cmd_compare and \
-               cmd_compare.index('out') < cmd_compare.index('in'):
-                   tmp_out_idx = cmd_compare.index('out')
-                   tmp_outif = cmd_compare[tmp_out_idx + 2]
-                   tmp_in_idx = cmd_compare.index('in')
-                   tmp_inif = cmd_compare[tmp_in_idx + 2]
-                   cmd_compare[tmp_out_idx] = 'in'
-                   cmd_compare[tmp_out_idx + 2] = tmp_inif
-                   cmd_compare[tmp_in_idx] = 'out'
-                   cmd_compare[tmp_in_idx + 2] = tmp_outif
+                    'out' in cmd_compare and 'in' in cmd_compare and \
+                    cmd_compare.index('out') < cmd_compare.index('in'):
+                tmp_out_idx = cmd_compare.index('out')
+                tmp_outif = cmd_compare[tmp_out_idx + 2]
+                tmp_in_idx = cmd_compare.index('in')
+                tmp_inif = cmd_compare[tmp_in_idx + 2]
+                cmd_compare[tmp_out_idx] = 'in'
+                cmd_compare[tmp_out_idx + 2] = tmp_inif
+                cmd_compare[tmp_in_idx] = 'out'
+                cmd_compare[tmp_in_idx + 2] = tmp_outif
 
             # add comment back
             if comment != "":
@@ -412,29 +421,31 @@ class ParserTestCase(unittest.TestCase):
     def test_misc_rules_parse(self):
         '''Test rule syntax - miscellaneous'''
         cmds = [
-                ['rule', 'delete', '1'],
-                ['rule', 'delete', 'allow', '22'],
-                ['rule', 'deny', 'from', 'any', 'port', 'domain', 'to', \
-                 'any', 'port', 'tftp'],
-                ['rule', 'allow', 'to', 'any', 'proto', 'gre'],
-                ['rule', 'deny', 'to', 'any', 'proto', 'ipv6'],
-                ['rule', 'allow', 'to', 'any', 'proto', 'igmp'],
-                ['rule', 'reject', 'to', 'any', 'proto', 'esp'],
-                ['rule', 'deny', 'to', '224.0.0.1', 'proto', 'igmp'],
-                ['rule', 'deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', \
-                 'proto', 'igmp'],
-                ['rule', 'allow', 'in', 'on', 'eth0', 'to', '192.168.0.1', \
-                 'proto', 'gre'],
-                ['rule', 'deny', 'to', 'any', 'proto', 'ah'],
-                ['rule', 'allow', 'out', 'on', 'br_lan'],
+                ['delete', 'allow', '22'],
+                ['deny', 'from', 'any', 'port', 'domain', 'to', 'any', \
+                 'port', 'tftp'],
+                ['allow', 'to', 'any', 'proto', 'gre'],
+                ['deny', 'to', 'any', 'proto', 'ipv6'],
+                ['allow', 'to', 'any', 'proto', 'igmp'],
+                ['reject', 'to', 'any', 'proto', 'esp'],
+                ['deny', 'to', '224.0.0.1', 'proto', 'igmp'],
+                ['deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', 'proto', \
+                 'igmp'],
+                ['allow', 'in', 'on', 'eth0', 'to', '192.168.0.1', 'proto', \
+                 'gre'],
+                ['deny', 'to', 'any', 'proto', 'ah'],
+                ['allow', 'out', 'on', 'br_lan'],
                ]
         count = 0
-        for cmd in cmds:
-            #print(" ".join(cmd))
-            count += 1
-            # Note, parser.parse_command() modifies its arg, so pass a copy of
-            # the cmd, not a reference
-            self.parser.parse_command(cmd + [])
+        for rtype in ['route', 'rule']:
+            if rtype == 'rule':
+                cmds.append(['delete', '1'])
+            for cmd in cmds:
+                #print(" ".join(cmd))
+                count += 1
+                # Note, parser.parse_command() modifies its arg, so pass a copy of
+                # the cmd, not a reference
+                self.parser.parse_command([rtype] + cmd)
 
     def test_rule_bad_syntax(self):
         '''Test rule syntax - bad'''
@@ -442,6 +453,7 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'insert', '1', 'allow'], ValueError),
                 (['rule', 'insert', 'a', 'allow', '22'], ufw.common.UFWError),
                 (['rule', 'insert', '0', 'allow', '22'], ufw.common.UFWError),
+                (['rule', 'prepend', 'allow'], ValueError),
                 (['rule', 'allow'], ValueError),
                 (['rule'], ValueError),
                 (['rule', 'allow', '22', 'in', 'on', 'eth0'],
@@ -521,6 +533,9 @@ class ParserTestCase(unittest.TestCase):
                 (['route', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],
                   ufw.common.UFWError),
+                (['rule', 'allow', '22', 'comment', "foo'bar"], ValueError),
+                (['rule', 'allow', '22', 'comment'], ufw.common.UFWError),
+                (['route', 'delete', '1'], ufw.common.UFWError),
                ]
         for cmd, exception in cmds:
             #print(" ".join(cmd))
@@ -768,10 +783,12 @@ class ParserTestCase(unittest.TestCase):
                 self.assertEquals(action, pr.action, "%s != %s" % (action, \
                                                                    pr.action))
 
+
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             ParserTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

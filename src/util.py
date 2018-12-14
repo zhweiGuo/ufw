@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -31,7 +31,7 @@ import subprocess
 import sys
 
 from functools import reduce
-from tempfile import mkstemp
+from tempfile import mkstemp, mktemp
 
 DEBUGGING = False
 msg_output = None # for redirecting stdout in msg() and write_to_file()
@@ -41,6 +41,7 @@ msg_output = None # for redirecting stdout in msg() and write_to_file()
 supported_protocols = [ 'tcp', 'udp', 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
 portless_protocols = [ 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
 ipv4_only_protocols = [ 'ipv6', 'igmp' ]
+
 
 def get_services_proto(port):
     '''Get the protocol for a specified port from /etc/services'''
@@ -268,7 +269,7 @@ def write_to_file(fd, out):
         raise OSError(errno.EIO, "Could not write to file descriptor")
 
 
-def close_files(fns, update = True):
+def close_files(fns, update=True):
     '''Closes the specified files (as returned by open_files), and update
        original file with the temporary file.
     '''
@@ -313,6 +314,7 @@ def cmd_pipe(command1, command2):
     out = sp2.communicate()[0]
     return [sp2.returncode, str(out)]
 
+
 # TODO: this is pretty horrible. We should be using only unicode strings
 #       internally and decode() when printing rather than doing this.
 def _print(output, s):
@@ -320,13 +322,13 @@ def _print(output, s):
        appropriate.'''
     try: # python3
         writer = output.buffer
-    except:
+    except Exception:
         writer = output
 
     try:
         out = s.encode('utf-8', 'ignore')
     # Depends on python version
-    except: # pragma: no cover
+    except Exception: # pragma: no cover
         out = s
 
     if msg_output and inspect.isclass(io.StringIO):
@@ -386,9 +388,8 @@ def word_wrap(text, width):
     '''
     return reduce(lambda line, word, width=width: '%s%s%s' %
                   (line,
-                   ' \n'[(len(line)-line.rfind('\n')-1
-                         + len(word.split('\n',1)[0]
-                              ) >= width)],
+                   ' \n'[(len(line)-line.rfind('\n') - 1 +
+                          len(word.split('\n', 1)[0]) >= width)],
                    word),
                   text.split(' ')
                  )
@@ -622,6 +623,7 @@ def _address4_to_network(addr):
 
     return "%s/%s" % (network, orig_nm)
 
+
 def _address6_to_network(addr):
     '''Convert an IPv6 address and netmask to a network address'''
     def dec2bin(num, count):
@@ -651,7 +653,7 @@ def _address6_to_network(addr):
     for i in range(8):
         n = dec2bin(unpacked[i], 16)
         for j in range(16):
-            host_bits |= (1 & int(n[j])) <<(127-j-i*16)
+            host_bits |= (1 & int(n[j])) << (127-j-i*16)
 
     # Create netmask bits
     try: # python3 doesn't have long()
@@ -756,6 +758,12 @@ def get_netfilter_capabilities(exe="/sbin/iptables", do_checks=True):
     if exe.endswith("ip6tables"):
         chain = "ufw6-caps-test"
 
+    # Use a unique chain name (with our locking code, this shouldn't be
+    # needed, but this is a cheap safeguard in case the chain happens to
+    # still be lying around. We do this to avoid a separate call to
+    # iptables to check for existence)
+    chain += mktemp(prefix='', dir='')
+
     # First install a test chain
     (rc, out) = cmd([exe, '-N', chain])
     if rc != 0:
@@ -784,6 +792,7 @@ def get_netfilter_capabilities(exe="/sbin/iptables", do_checks=True):
 
     return caps
 
+
 def parse_netstat_output(v6):
     '''Get and parse netstat the output from get_netstat_output()'''
 
@@ -800,11 +809,11 @@ def parse_netstat_output(v6):
         tmp = line.split()
 
         proto = tmp[0]
-        port  = tmp[1].split(':')[-1]
+        port = tmp[1].split(':')[-1]
 
         item = dict()
         item['laddr'] = ':'.join(tmp[1].split(':')[:-1])
-        item['uid']   = tmp[3]
+        item['uid'] = tmp[3]
         item['pid'] = tmp[5].split('/')[0]
         if item['pid'] == '-':
             item['exe'] = item['pid']
@@ -836,7 +845,7 @@ def get_ip_from_if(ifname, v6=False):
             tmp = line.split()
             if ifname == tmp[5]:
                 addr = ":".join( \
-                           [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
+                           [tmp[0][i:i+4] for i in range(0, len(tmp[0]), 4)])
 
                 if tmp[2].lower() != "80":
                     addr = "%s/%s" % (addr, int(tmp[2].lower(), 16))
@@ -875,7 +884,7 @@ def get_if_from_ip(addr):
             ifname = tmp[5].strip()
 
             tmp_addr = ":".join( \
-                           [ tmp[0][i:i+4] for i in range(0,len(tmp[0]),4) ])
+                           [tmp[0][i:i+4] for i in range(0, len(tmp[0]), 4)])
             if tmp[2].lower() != "80":
                 tmp_addr = "%s/%s" % (tmp_addr, int(tmp[2].lower(), 16))
 
@@ -925,7 +934,7 @@ def _get_proc_inodes():
 
         try:
             dirs = os.listdir(fd_path)
-        except: # pragma: no cover
+        except Exception: # pragma: no cover
             continue
 
         for j in dirs:
@@ -993,7 +1002,7 @@ def convert_proc_address(paddr):
         for i in range(0, 32, 8):
             tmp += "".join([ paddr[j-2:j] for j in range(i+8, i, -2) ])
         converted = normalize_address(":".join( \
-               [ tmp[j:j+4].lower() for j in range(0,len(tmp),4) ]), \
+               [tmp[j:j+4].lower() for j in range(0, len(tmp), 4)]), \
                True)[0]
     else:
         tmp = []
@@ -1038,6 +1047,7 @@ def get_netstat_output(v6):
 
     return s
 
+
 def _findpath(dir, prefix):
     '''Add prefix to dir'''
     if prefix is None:
@@ -1051,6 +1061,7 @@ def _findpath(dir, prefix):
         newdir = os.path.join(prefix, dir)
     return newdir
 
+
 def hex_encode(s):
     '''Take a string and convert it to a hex string'''
     if sys.version_info[0] < 3:
@@ -1059,8 +1070,31 @@ def hex_encode(s):
     # to have identical output as python2
     return binascii.hexlify(s.encode('utf-8', errors='ignore')).decode('ascii')
 
+
 def hex_decode(h):
     '''Take a hex string and convert it to a string'''
     if sys.version_info[0] < 3:
         return h.decode(encoding='hex').decode('utf-8')
     return binascii.unhexlify(h).decode('utf-8')
+
+
+def create_lock(lockfile='/run/ufw.lock', dryrun=False):
+    '''Create a blocking lockfile'''
+    lock = None
+    if not dryrun:
+        lock = open(lockfile, 'w')
+        fcntl.lockf(lock, fcntl.LOCK_EX)
+    return lock
+
+
+def release_lock(lock):
+    '''Free lockfile created with create_lock()'''
+    if lock is None:
+        return
+    try:  # pragma: no cover
+        fcntl.lockf(lock, fcntl.LOCK_UN)
+        lock.close()
+    except ValueError:  # pragma: nocover
+        # If the lock is already closed, ignore the exception. This should
+        # never happen but let's guard against it in case something changes
+        pass

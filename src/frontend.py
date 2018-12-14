@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2013 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -24,6 +24,7 @@ import ufw.util
 from ufw.util import error, warn, msg
 from ufw.backend_iptables import UFWBackendIptables
 import ufw.parser
+
 
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
@@ -56,7 +57,8 @@ def parse_command(argv):
         p.register_command(ufw.parser.UFWCommandShow(i))
 
     # Rule commands
-    rule_commands = ['allow', 'limit', 'deny' , 'reject', 'insert', 'delete']
+    rule_commands = ['allow', 'limit', 'deny', 'reject', 'insert', 'delete',
+                     'prepend']
     for i in rule_commands:
         p.register_command(ufw.parser.UFWCommandRule(i))
         p.register_command(ufw.parser.UFWCommandRouteRule(i))
@@ -78,12 +80,13 @@ def parse_command(argv):
     try:
         pr = p.parse_command(argv[1:])
     except UFWError as e:
-        error("%s" % (e.value)) #  pragma: no cover
+        error("%s" % (e.value)) # pragma: no cover
     except Exception:
         error("Invalid syntax", do_exit=False)
         raise
 
     return pr
+
 
 def get_command_help():
     '''Print help message'''
@@ -133,6 +136,7 @@ Usage: %(progname)s %(command)s
          'delete': "delete RULE|NUM", \
          'urule': "RULE", \
          'insert': "insert NUM RULE", \
+         'prepend': "prepend RULE", \
          'route': "route RULE", \
          'route-delete': "route delete RULE|NUM", \
          'route-insert': "route insert NUM RULE", \
@@ -408,7 +412,7 @@ class UFWFrontend:
 
                     # Don't process removal of non-existing application rules
                     if len(tmprules) == 0 and not self.backend.dryrun:
-                        tmp =  _("Could not delete non-existent rule")
+                        tmp = _("Could not delete non-existent rule")
                         if ip_version == "v4":
                             res = tmp
                         elif ip_version == "v6":
@@ -425,9 +429,9 @@ class UFWFrontend:
                         rules.append(r)
                 else:
                     rules = self.backend.get_app_rules_from_template(rule)
-                    # Reverse the order of rules for inserted rules, so they
-                    # are inserted in the right order
-                    if rule.position > 0:
+                    # Reverse the order of rules for inserted or prepended
+                    # rules, so they are inserted in the right order
+                    if rule.position != 0:
                         rules.reverse()
             except Exception:
                 raise
@@ -445,13 +449,19 @@ class UFWFrontend:
             try:
                 if self.backend.use_ipv6():
                     if ip_version == "v4":
-                        if r.position > num_v4:
+                        if r.position == -1:  # prepend
+                            begin = 0 if count == 0 and num_v4 == 0 else 1
+                            r.set_position(begin)
+                        elif r.position > num_v4:
                             pos_err_msg += str(r.position) + "'"
                             raise UFWError(pos_err_msg)
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
                     elif ip_version == "v6":
-                        if r.position > num_v4:
+                        if r.position == -1:  # prepend
+                            begin = 0 if count == 0 and num_v6 == 0 else 1
+                            r.set_position(begin)
+                        elif r.position > num_v4:
                             r.set_position(r.position - num_v4)
                         elif r.position != 0 and r.position <= num_v4:
                             pos_err_msg += str(r.position) + "'"
@@ -461,9 +471,12 @@ class UFWFrontend:
                     elif ip_version == "both":
                         user_pos = r.position # user specified position
                         r.set_v6(False)
-                        if not r.remove and user_pos > num_v4:
-			    # The user specified a v6 rule, so try to find a
-			    # match in the v4 rules and use its position.
+                        if user_pos == -1:  # prepend
+                            begin = 0 if count == 0 and num_v4 == 0 else 1
+                            r.set_position(begin)
+                        elif not r.remove and user_pos > num_v4:
+                            # The user specified a v6 rule, so try to find a
+                            # match in the v4 rules and use its position.
                             p = self.backend.find_other_position( \
                                 user_pos - num_v4 + count, True)
                             if p > 0:
@@ -474,16 +487,19 @@ class UFWFrontend:
                         tmp = self.backend.set_rule(r)
 
                         # We need to readjust the position since the number
-                        # the number of ipv4 rules increased
+                        # of ipv4 rules increased
                         if not r.remove and user_pos > 0:
                             num_v4 = self.backend.get_rules_count(False)
                             r.set_position(user_pos + 1)
 
                         r.set_v6(True)
-                        if not r.remove and r.position > 0 and \
+                        if user_pos == -1:  # prepend
+                            begin = 0 if count == 0 and num_v6 == 0 else 1
+                            r.set_position(begin)
+                        elif not r.remove and r.position > 0 and \
                            r.position <= num_v4:
-			    # The user specified a v4 rule, so try to find a
-			    # match in the v6 rules and use its position.
+                            # The user specified a v4 rule, so try to find a
+                            # match in the v6 rules and use its position.
                             p = self.backend.find_other_position(r.position, \
                                                                  False)
                             if p > 0:
@@ -496,7 +512,8 @@ class UFWFrontend:
                             tmp += "\n"
 
                         # Readjust position to send to set_rule
-                        if not r.remove and r.position > num_v4:
+                        if not r.remove and r.position > num_v4 and \
+                           user_pos != -1:
                             r.set_position(r.position - num_v4)
 
                         tmp += self.backend.set_rule(r)
@@ -504,6 +521,9 @@ class UFWFrontend:
                         err_msg = _("Invalid IP version '%s'") % (ip_version)
                         raise UFWError(err_msg)
                 else:
+                    if r.position == -1:  # prepend
+                        begin = 0 if count == 0 and num_v4 == 0 else 1
+                        r.set_position(begin)
                     if ip_version == "v4" or ip_version == "both":
                         r.set_v6(False)
                         tmp = self.backend.set_rule(r)
@@ -529,8 +549,8 @@ class UFWFrontend:
             # If no error, and just one rule, error out
             error(err_msg) # pragma: no cover
         else:
-	    # If error and more than one rule, delete the successfully added
-	    # rules in reverse order
+            # If error and more than one rule, delete the successfully added
+            # rules in reverse order
             undo_error = False
             indexes = list(range(count+1))
             indexes.reverse()

@@ -1,1 +1,2 @@
 rm_conffile /etc/init/ufw.conf 0.35-5~ ufw
+rm_conffile /etc/bash_completion.d/ufw 0.34-1~ ufw

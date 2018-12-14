@@ -94,9 +94,8 @@ Could not delete non-existent rule
 
 
 iptables -L -n:
-ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0           tcp dpt:80 /* 'dapp_Apache' */ 
+ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80 /* 'dapp_Apache' */
 
-Chain ufw-user-limit (0 references)
 10: delete allow Apache
 WARN: Checks disabled
 Rule deleted
@@ -149,14 +148,14 @@ Status: active
 
 To                         Action      From
 --                         ------      ----
-Anywhere                   ALLOW       Anywhere
-Anywhere/tcp               ALLOW       Anywhere/tcp
-192.168.1.1                ALLOW       Anywhere
-Anywhere                   ALLOW       192.168.1.1/udp
-192.168.1.2                ALLOW       192.168.1.1
-192.168.1.2/udp            ALLOW       192.168.1.1/udp
-Anywhere (v6)              ALLOW       Anywhere (v6)
-Anywhere/tcp (v6)          ALLOW       Anywhere/tcp (v6)
+Anywhere                   ALLOW       Anywhere                  
+Anywhere/tcp               ALLOW       Anywhere/tcp              
+192.168.1.1                ALLOW       Anywhere                  
+Anywhere                   ALLOW       192.168.1.1/udp           
+192.168.1.2                ALLOW       192.168.1.1               
+192.168.1.2/udp            ALLOW       192.168.1.1/udp           
+Anywhere (v6)              ALLOW       Anywhere (v6)             
+Anywhere/tcp (v6)          ALLOW       Anywhere/tcp (v6)         
 
 
 
@@ -254,7 +253,7 @@ WARN: Checks disabled
 Status: active
 
 
-37: delete allow 22
+37: delete allow 13
 WARN: Checks disabled
 Could not delete non-existent rule
 Could not delete non-existent rule (v6)
@@ -266,7 +265,7 @@ Could not delete non-existent rule
 Could not delete non-existent rule (v6)
 
 
-39: delete allow to 127.0.0.1 port 22
+39: delete allow to 127.0.0.1 port 13
 WARN: Checks disabled
 Could not delete non-existent rule
 
@@ -276,7 +275,7 @@ WARN: Checks disabled
 Could not delete non-existent rule
 
 
-41: delete allow to ::1 port 22
+41: delete allow to ::1 port 13
 WARN: Checks disabled
 Could not delete non-existent rule (v6)
 
@@ -329,14 +328,14 @@ Status: active
 
      To                         Action      From
      --                         ------      ----
-[ 1] 1                          ALLOW IN    Anywhere
-[ 2] 2                          ALLOW IN    Anywhere
-[ 3] 3                          ALLOW IN    Anywhere
-[ 4] 4                          ALLOW IN    Anywhere
-[ 5] 1 (v6)                     ALLOW IN    Anywhere (v6)
-[ 6] 2 (v6)                     ALLOW IN    Anywhere (v6)
-[ 7] 3 (v6)                     ALLOW IN    Anywhere (v6)
-[ 8] 4 (v6)                     ALLOW IN    Anywhere (v6)
+[ 1] 1                          ALLOW IN    Anywhere                  
+[ 2] 2                          ALLOW IN    Anywhere                  
+[ 3] 3                          ALLOW IN    Anywhere                  
+[ 4] 4                          ALLOW IN    Anywhere                  
+[ 5] 1 (v6)                     ALLOW IN    Anywhere (v6)             
+[ 6] 2 (v6)                     ALLOW IN    Anywhere (v6)             
+[ 7] 3 (v6)                     ALLOW IN    Anywhere (v6)             
+[ 8] 4 (v6)                     ALLOW IN    Anywhere (v6)             
 
 
 

@@ -51,7 +51,7 @@ do
 		do_cmd "0"  allow to $loc app Samba
 		do_cmd "0"  allow from $loc app Samba
 		do_cmd "0"  allow to $loc app Samba from $loc app Bind9
-		do_cmd "0"  allow to $loc app Samba from $loc port 22
+		do_cmd "0"  allow to $loc app Samba from $loc port 13
 		do_cmd "0"  allow to $loc app Apache from $loc port 88
 	done
 	do_cmd "0" status
@@ -78,7 +78,7 @@ do
 		do_cmd "0"  delete allow to $loc app Samba
 		do_cmd "0"  delete allow from $loc app Samba
 		do_cmd "0"  delete allow to $loc app Samba from $loc app Bind9
-		do_cmd "0"  delete allow to $loc app Samba from $loc port 22
+		do_cmd "0"  delete allow to $loc app Samba from $loc port 13
 		do_cmd "0"  delete allow to $loc app Apache from $loc port 88
 	done
 	do_cmd "0" status
@@ -188,7 +188,7 @@ for ipv6 in no yes ; do
     cat $TESTCONFIG/user6.rules >> $TESTTMP/result
 
     do_cmd "0" allow Samba
-    do_cmd "0" allow 22
+    do_cmd "0" allow 13
     do_cmd "0" insert 2 allow from any to any app Samba
     do_cmd "0" insert 2 allow from 192.168.0.1 to 10.0.0.1 app Samba
     do_cmd "0" insert 2 allow from 192.168.0.1 to any app Samba
@@ -209,7 +209,7 @@ for ipv6 in no yes ; do
     }
 
     do_cmd "0" delete allow Samba
-    do_cmd "0" delete allow 22
+    do_cmd "0" delete allow 13
     do_cmd "0" delete allow from any to any app Samba
     do_cmd "0" delete allow from 192.168.0.1 to 10.0.0.1 app Samba
     do_cmd "0" delete allow from 192.168.0.1 to any app Samba
@@ -258,7 +258,7 @@ do
 
     do_cmd "0" nostats allow from any app Samba
     do_cmd "0" nostats allow Samba
-    do_cmd "0" nostats allow 22/tcp
+    do_cmd "0" nostats allow 13/tcp
 
     grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
     if [ "$ipv6" = "yes" ]; then
@@ -267,16 +267,16 @@ do
 
     if [ "$ipv6" = "yes" ]; then
         do_cmd "0" null --force delete 6
-        grep -v -q "^### tuple ### allow any 22 " $TESTCONFIG/user6.rules || {
-            echo "Failed: Found port '22' in user6.rules" >> $TESTTMP/result
+        grep -v -q "^### tuple ### allow any 13 " $TESTCONFIG/user6.rules || {
+            echo "Failed: Found port '13' in user6.rules" >> $TESTTMP/result
             exit 1
         }
         grep -A2 "tuple" $TESTCONFIG/user6.rules >> $TESTTMP/result
     fi
 
     do_cmd "0" null --force delete 3
-    grep -v -q "^### tuple ### allow any 22 " $TESTCONFIG/user.rules || {
-        echo "Failed: Found port '22' in user.rules" >> $TESTTMP/result
+    grep -v -q "^### tuple ### allow any 13 " $TESTCONFIG/user.rules || {
+        echo "Failed: Found port '13' in user.rules" >> $TESTTMP/result
         exit 1
     }
     grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result

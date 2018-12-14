@@ -1,3 +1,26 @@
+ufw (0.36-1) unstable; urgency=medium
+
+  * New upstream release (LP: #1782384, LP: #1664133, LP: #1509725,
+    LP: #1695718, LP: #1719211, LP: #1775043, LP: #1204579, LP: #1652163,
+    LP: #1377600, Closes: 686248, LP: #1368411, LP: #1586258, Closes: 909163,
+    Closes: 884932, LP: #1558068)
+    - drop 0002-bug849628.patch (included upstream)
+    - drop 0003-use-default-tcp-syncookies.patch (included upstream)
+    - drop 0004-lp1633698.patch (included upstream)
+  * Remaining changes:
+    - 0001-optimize-boot.patch
+  * debian/ufw.maintscript: remove /etc/bash_completion.d/ufw on upgrade
+    (LP: #1602834)
+  * debian/control: remove no longer needed xs-python-version and
+    x-python3-version fields
+    (for trusty rebuilds)
+  * update debian/before6.rules.md5sum for file shipped in 0.35-6. While both
+    before.rules and before6.rules were updated in this new upstream release,
+    0.35-6 mistakenly already had its own md5sum for before.rules, so we don't
+    need to add it now.
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 14 Dec 2018 17:50:47 +0000
+
 ufw (0.35-6) unstable; urgency=medium
 
   * debian/control:

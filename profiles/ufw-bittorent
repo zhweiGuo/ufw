@@ -1,7 +1,7 @@
 [Transmission]
 title=Transmission
 description=Transmission BitTorrent client
-ports=51413/tcp
+ports=51413
 
 [Deluge]
 title=Deluge

@@ -1,7 +1,8 @@
 [Unit]
 Description=Uncomplicated firewall
 DefaultDependencies=no
-Before=network.target
+Wants=network-pre.target
+Before=network-pre.target
 
 [Service]
 Type=oneshot

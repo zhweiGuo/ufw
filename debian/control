@@ -1,7 +1,5 @@
 Source: ufw
 Section: admin
-XS-Python-Version: >= 2.5
-X-Python3-Version: >= 3.2
 Priority: optional
 Maintainer: Jamie Strandboge <jamie@ubuntu.com>
 Build-Depends-Indep:

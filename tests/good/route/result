@@ -166,7 +166,7 @@ Rules updated
 
 
 SIMPLE
-4: --dry-run route allow ssh
+4: --dry-run route allow daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -187,9 +187,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### route:allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-forward -p tcp --dport 22 -j ACCEPT
--A ufw-user-forward -p udp --dport 22 -j ACCEPT
+### tuple ### route:allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-forward -p tcp --dport 13 -j ACCEPT
+-A ufw-user-forward -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -210,90 +210,7 @@ COMMIT
 Rules updated
 
 
-5: --dry-run route delete allow ssh
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-6: --dry-run route allow ssh/tcp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### tuple ### route:allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-forward -p tcp --dport 22 -j ACCEPT
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-7: --dry-run route delete allow ssh/tcp
+5: --dry-run route delete allow daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -333,7 +250,7 @@ COMMIT
 Rules updated
 
 
-8: --dry-run route allow ssh/udp
+6: --dry-run route allow daytime/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -354,8 +271,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### route:allow udp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-forward -p udp --dport 22 -j ACCEPT
+### tuple ### route:allow tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-forward -p tcp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -376,7 +293,90 @@ COMMIT
 Rules updated
 
 
-9: --dry-run route delete allow ssh/udp
+7: --dry-run route delete allow daytime/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+8: --dry-run route allow daytime/udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### route:allow udp 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-forward -p udp --dport 13 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+9: --dry-run route delete allow daytime/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1591,7 +1591,7 @@ Rules updated
 
 
 Multiports:
-38: --dry-run route limit 23,21,15:19,22/tcp
+38: --dry-run route limit 23,21,15:19,13/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1612,10 +1612,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### route:limit tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-forward -p tcp -m multiport --dports 15:19,21,22,23 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-forward -p tcp -m multiport --dports 15:19,21,22,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-forward -p tcp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
+### tuple ### route:limit tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-forward -p tcp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-forward -p tcp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-forward -p tcp -m multiport --dports 13,15:19,21,23 -j ufw-user-limit-accept
 
 ### END RULES ###
 
@@ -1636,7 +1636,7 @@ COMMIT
 Rules updated
 
 
-39: --dry-run route delete limit 23,21,15:19,22/tcp
+39: --dry-run route delete limit 23,21,15:19,13/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1676,7 +1676,7 @@ COMMIT
 Rules updated
 
 
-40: --dry-run route allow in on fake0 out on fake1 from 192.168.0.1 port 23,21,15:19,22 to 10.0.0.0/8 port 24:26 proto tcp
+40: --dry-run route allow in on fake0 out on fake1 from 192.168.0.1 port 23,21,15:19,13 to 10.0.0.0/8 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1697,8 +1697,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### route:allow tcp 24:26 10.0.0.0/8 15:19,21,22,23 192.168.0.1 in_fake0!out_fake1
--A ufw-user-forward -i fake0 -o fake1 -p tcp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -d 10.0.0.0/8 -s 192.168.0.1 -j ACCEPT
+### tuple ### route:allow tcp 24:26 10.0.0.0/8 13,15:19,21,23 192.168.0.1 in_fake0!out_fake1
+-A ufw-user-forward -i fake0 -o fake1 -p tcp -m multiport --dports 24:26 -m multiport --sports 13,15:19,21,23 -d 10.0.0.0/8 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 
@@ -1719,7 +1719,7 @@ COMMIT
 Rules updated
 
 
-41: --dry-run route delete allow in on fake0 out on fake1 from 192.168.0.1 port 23,21,15:19,22 to 10.0.0.0/8 port 24:26 proto tcp
+41: --dry-run route delete allow in on fake0 out on fake1 from 192.168.0.1 port 23,21,15:19,13 to 10.0.0.0/8 port 24:26 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1843,7 +1843,7 @@ Rules updated
 
 
 Insert
-44: route allow 22
+44: route allow 13
 
 
 45: route allow 23
@@ -1894,9 +1894,9 @@ Insert
 -A ufw-user-forward -p tcp --dport 9999 -j ACCEPT
 -A ufw-user-forward -p udp --dport 9999 -j ACCEPT
 
-### tuple ### route:allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-forward -p tcp --dport 22 -j ACCEPT
--A ufw-user-forward -p udp --dport 22 -j ACCEPT
+### tuple ### route:allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-forward -p tcp --dport 13 -j ACCEPT
+-A ufw-user-forward -p udp --dport 13 -j ACCEPT
 
 ### tuple ### route:allow any 23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-forward -p tcp --dport 23 -j ACCEPT
@@ -1918,7 +1918,7 @@ Insert
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
 COMMIT
-49: route delete allow 22
+49: route delete allow 13
 
 
 50: route delete allow 23
