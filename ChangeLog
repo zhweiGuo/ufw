@@ -1,4 +1,4 @@
-ufw (0.36) UNRELEASED; urgency=medium
+ufw (0.36) RELEASED; urgency=medium
 
   * doc/ufw-framework.8:
     - fix path for user[6].rules
@@ -37,7 +37,7 @@ ufw (0.36) UNRELEASED; urgency=medium
   * backend.py: only warn if initcaps() fails is disabled (Closes: 884932)
   * conf/before.rules: remove extraneous source quench rule (LP: #1558068)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Dec 2018 16:58:24 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 14 Dec 2018 12:01:29 -0600
 
 ufw (0.35) RELEASED; urgency=medium
 
