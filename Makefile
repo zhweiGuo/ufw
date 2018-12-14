@@ -2,7 +2,7 @@ SRCS     = src/ufw $(wildcard src/*.py)
 POTFILES = locales/po/ufw.pot
 TMPDIR   = ./tmp
 SNAPDIR  = ./snap-build
-EXCLUDES = --exclude='.bzr*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
+EXCLUDES = --exclude='.git*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
 SRCVER   = ufw-$(VERSION)
 TARBALLS = ../tarballs
@@ -137,6 +137,6 @@ debug: devel
 	sed -i 's/DEBUGGING = False/DEBUGGING = True/' $(TMPDIR)/ufw/lib/python/ufw/util.py
 
 tarball: syntax-check clean translations
-	bzr export --format dir $(TARSRC)
+	cp -a . $(TARSRC)
 	tar -zcv -C $(TARBALLS) $(EXCLUDES) -f $(TARDST) $(SRCVER)
 	rm -rf $(TARSRC)
