@@ -24,7 +24,7 @@ echo "Bug #247352" >> $TESTTMP/result
 do_cmd "0" --dry-run allow http/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
 do_cmd "0" delete allow http/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
@@ -48,10 +48,10 @@ do_cmd "0" nostats enable
 do_cmd "0"  allow Apache
 do_cmd "0"  delete deny Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
 do_cmd "0"  delete allow Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A2 "80" >> $TESTTMP/result 2>&1
+iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
 
 echo "Bug #263308" >> $TESTTMP/result
 echo "Setting IPV6 to yes" >> $TESTTMP/result

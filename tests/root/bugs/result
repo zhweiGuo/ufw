@@ -96,7 +96,6 @@ Could not delete non-existent rule
 iptables -L -n:
 ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80 /* 'dapp_Apache' */
 
-Chain ufw-user-limit (0 references)
 10: delete allow Apache
 WARN: Checks disabled
 Rule deleted
