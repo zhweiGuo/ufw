@@ -2,7 +2,7 @@ SRCS     = src/ufw $(wildcard src/*.py)
 POTFILES = locales/po/ufw.pot
 TMPDIR   = ./tmp
 SNAPDIR  = ./snap-build
-EXCLUDES = --exclude='.git*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu'
+EXCLUDES = --exclude='.git*' --exclude='*~' --exclude='*.swp' --exclude='*.pyc' --exclude='debian' --exclude='ubuntu' --exclude='ufw_source.*' --exclude='tmp'
 VERSION  = $(shell egrep '^ufw_version' ./setup.py | cut -d "'" -f 2)
 SRCVER   = ufw-$(VERSION)
 TARBALLS = ../tarballs
