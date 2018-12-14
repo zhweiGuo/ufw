@@ -1,5 +1,5 @@
 name: ufw
-version: 0.36rc
+version: 0.36
 summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
 confinement: strict
