@@ -1,4 +1,45 @@
-ufw (0.35) UNRELEASED; urgency=medium
+ufw (0.36) RELEASED; urgency=medium
+
+  * doc/ufw-framework.8:
+    - fix path for user[6].rules
+    - reference nf_conntrack_sane
+    - fix syntax error in example rule (LP: #1782384)
+  * snap packaging:
+    - adjust snappy packaging for series 16 and to use snapcraft
+    - add bash completer to snap packaging
+    - add ipset and conntrack
+  * doc/ufw-on-snappy.8: update for series 16
+  * src/backend_iptables.py: properly calculate the path to state_dir when
+    specifying --rootdir and --datadir (ie, fix regression in 0.35 final)
+  * conf/before6.rules:
+    - adjust ufw6-before-output rules for echo-reply and echo-request
+      (LP: #1633698)
+    - move echo-reply for ufw6-before-input before INVALID (LP: #1664133,
+      LP: #1509725)
+  * conf/ufw.defaults: mention nf_conntrack_sane
+  * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
+    everywhere and adjust to use daytime/port 13 instead of http/port 80 and
+    https/port 443 in good/logging and ipv6/bad_args6 (Closes: 849628)
+  * don't disable syncookies and instead use the system's value by default
+  * Bittorrent can also use UDP (LP: #1695718)
+  * doc/ufw.8: remove spurious apostrophes from man page. Thanks to Tom
+    Spurling
+  * common.py:
+    - adjust regex to be more liberal with non-meta characters in interface
+      names (LP: #1719211)
+    - don't allow interfaces longer than 15 characters
+  * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
+    Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
+  * support concurrent updates (LP: #1204579, LP: #1652163, LP: #1377600,
+    Closes: 686248)
+  * add 'prepend' command to better support IPS (fail2ban, etc. LP: #1368411,
+    LP: #1586258, Closes: 909163)
+  * backend.py: only warn if initcaps() fails is disabled (Closes: 884932)
+  * conf/before.rules: remove extraneous source quench rule (LP: #1558068)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 14 Dec 2018 12:01:29 -0600
+
+ufw (0.35) RELEASED; urgency=medium
 
   * update check-requirements and README for python 3.5
   * update unit tests to not fail when /proc/net/* has no useful information

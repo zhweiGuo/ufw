@@ -24,7 +24,7 @@ do_cmd "0" --dry-run deny proto tcp to any port 80
 do_cmd "0" --dry-run deny proto tcp from 10.0.0.0/8 to 192.168.0.1 port 25
 do_cmd "0" --dry-run deny 80/tcp
 do_cmd "0" --dry-run delete deny 80/tcp
-do_cmd "0" --dry-run limit ssh/tcp
+do_cmd "0" --dry-run limit daytime/tcp
 do_cmd "0" --dry-run deny 53
 do_cmd "0" --dry-run allow 80/tcp
 do_cmd "0" --dry-run allow from 10.0.0.0/8
@@ -50,12 +50,12 @@ do_cmd "0" --dry-run allow tftp
 do_cmd "0" --dry-run delete allow tftp
 do_cmd "0" --dry-run allow tftp/udp
 do_cmd "0" --dry-run delete allow tftp/udp
-do_cmd "0" --dry-run allow ssh
-do_cmd "0" --dry-run delete allow ssh
-do_cmd "0" --dry-run allow ssh/tcp
-do_cmd "0" --dry-run delete allow ssh/tcp
-do_cmd "0" --dry-run allow ssh/udp
-do_cmd "0" --dry-run delete allow ssh/udp
+do_cmd "0" --dry-run allow daytime
+do_cmd "0" --dry-run delete allow daytime
+do_cmd "0" --dry-run allow daytime/tcp
+do_cmd "0" --dry-run delete allow daytime/tcp
+do_cmd "0" --dry-run allow daytime/udp
+do_cmd "0" --dry-run delete allow daytime/udp
 
 echo "TO/FROM" >> $TESTTMP/result
 from="192.168.0.1"
@@ -98,63 +98,63 @@ done
 echo "Services" >> $TESTTMP/result
 do_cmd "0" --dry-run allow to any port smtp from any port smtp
 do_cmd "0" --dry-run delete allow to any port smtp from any port smtp
-do_cmd "0" --dry-run allow to any port smtp from any port ssh
-do_cmd "0" --dry-run delete allow to any port smtp from any port ssh
-do_cmd "0" --dry-run allow to any port ssh from any port smtp
-do_cmd "0" --dry-run delete allow to any port ssh from any port smtp
+do_cmd "0" --dry-run allow to any port smtp from any port daytime
+do_cmd "0" --dry-run delete allow to any port smtp from any port daytime
+do_cmd "0" --dry-run allow to any port daytime from any port smtp
+do_cmd "0" --dry-run delete allow to any port daytime from any port smtp
 do_cmd "0" --dry-run allow to any port smtp from any port 23
 do_cmd "0" --dry-run delete allow to any port smtp from any port 23
 do_cmd "0" --dry-run allow to any port 23 from any port smtp
 do_cmd "0" --dry-run delete allow to any port 23 from any port smtp
 do_cmd "0" --dry-run allow to any port tftp from any port tftp
 do_cmd "0" --dry-run delete allow to any port tftp from any port tftp
-do_cmd "0" --dry-run allow to any port tftp from any port ssh
-do_cmd "0" --dry-run delete allow to any port tftp from any port ssh
-do_cmd "0" --dry-run allow to any port ssh from any port tftp
-do_cmd "0" --dry-run delete allow to any port ssh from any port tftp
+do_cmd "0" --dry-run allow to any port tftp from any port daytime
+do_cmd "0" --dry-run delete allow to any port tftp from any port daytime
+do_cmd "0" --dry-run allow to any port daytime from any port tftp
+do_cmd "0" --dry-run delete allow to any port daytime from any port tftp
 do_cmd "0" --dry-run allow to any port tftp from any port 23
 do_cmd "0" --dry-run delete allow to any port tftp from any port 23
 do_cmd "0" --dry-run allow to any port 23 from any port tftp
 do_cmd "0" --dry-run delete allow to any port 23 from any port tftp
-do_cmd "0" --dry-run allow to any port ssh from any port 23
-do_cmd "0" --dry-run delete allow to any port ssh from any port 23
-do_cmd "0" --dry-run allow to any port 23 from any port ssh
-do_cmd "0" --dry-run delete allow to any port 23 from any port ssh
-do_cmd "0" --dry-run allow to any port ssh from any port domain
-do_cmd "0" --dry-run delete allow to any port ssh from any port domain
+do_cmd "0" --dry-run allow to any port daytime from any port 23
+do_cmd "0" --dry-run delete allow to any port daytime from any port 23
+do_cmd "0" --dry-run allow to any port 23 from any port daytime
+do_cmd "0" --dry-run delete allow to any port 23 from any port daytime
+do_cmd "0" --dry-run allow to any port daytime from any port domain
+do_cmd "0" --dry-run delete allow to any port daytime from any port domain
 
 do_cmd "0" --dry-run allow to any port smtp from any port smtp proto tcp
 do_cmd "0" --dry-run delete allow to any port smtp from any port smtp proto tcp
-do_cmd "0" --dry-run allow to any port smtp from any port ssh proto tcp
-do_cmd "0" --dry-run delete allow to any port smtp from any port ssh proto tcp
-do_cmd "0" --dry-run allow to any port ssh from any port smtp proto tcp
-do_cmd "0" --dry-run delete allow to any port ssh from any port smtp proto tcp
+do_cmd "0" --dry-run allow to any port smtp from any port daytime proto tcp
+do_cmd "0" --dry-run delete allow to any port smtp from any port daytime proto tcp
+do_cmd "0" --dry-run allow to any port daytime from any port smtp proto tcp
+do_cmd "0" --dry-run delete allow to any port daytime from any port smtp proto tcp
 do_cmd "0" --dry-run allow to any port smtp from any port 23 proto tcp
 do_cmd "0" --dry-run delete allow to any port smtp from any port 23 proto tcp
 do_cmd "0" --dry-run allow to any port 23 from any port smtp proto tcp
 do_cmd "0" --dry-run delete allow to any port 23 from any port smtp proto tcp
 do_cmd "0" --dry-run allow to any port tftp from any port tftp proto udp
 do_cmd "0" --dry-run delete allow to any port tftp from any port tftp proto udp
-do_cmd "0" --dry-run allow to any port tftp from any port ssh proto udp
-do_cmd "0" --dry-run delete allow to any port tftp from any port ssh proto udp
-do_cmd "0" --dry-run allow to any port ssh from any port tftp proto udp
-do_cmd "0" --dry-run delete allow to any port ssh from any port tftp proto udp
+do_cmd "0" --dry-run allow to any port tftp from any port daytime proto udp
+do_cmd "0" --dry-run delete allow to any port tftp from any port daytime proto udp
+do_cmd "0" --dry-run allow to any port daytime from any port tftp proto udp
+do_cmd "0" --dry-run delete allow to any port daytime from any port tftp proto udp
 do_cmd "0" --dry-run allow to any port tftp from any port 23 proto udp
 do_cmd "0" --dry-run delete allow to any port tftp from any port 23 proto udp
 do_cmd "0" --dry-run allow to any port 23 from any port tftp proto udp
 do_cmd "0" --dry-run delete allow to any port 23 from any port tftp proto udp
-do_cmd "0" --dry-run allow to any port ssh from any port 23 proto tcp
-do_cmd "0" --dry-run delete allow to any port ssh from any port 23 proto tcp
-do_cmd "0" --dry-run allow to any port 23 from any port ssh proto tcp
-do_cmd "0" --dry-run delete allow to any port 23 from any port ssh proto tcp
-do_cmd "0" --dry-run allow to any port ssh from any port domain proto tcp
-do_cmd "0" --dry-run delete allow to any port ssh from any port domain proto tcp
-do_cmd "0" --dry-run allow to any port ssh from any port 23 proto udp
-do_cmd "0" --dry-run delete allow to any port ssh from any port 23 proto udp
-do_cmd "0" --dry-run allow to any port 23 from any port ssh proto udp
-do_cmd "0" --dry-run delete allow to any port 23 from any port ssh proto udp
-do_cmd "0" --dry-run allow to any port ssh from any port domain proto udp
-do_cmd "0" --dry-run delete allow to any port ssh from any port domain proto udp
+do_cmd "0" --dry-run allow to any port daytime from any port 23 proto tcp
+do_cmd "0" --dry-run delete allow to any port daytime from any port 23 proto tcp
+do_cmd "0" --dry-run allow to any port 23 from any port daytime proto tcp
+do_cmd "0" --dry-run delete allow to any port 23 from any port daytime proto tcp
+do_cmd "0" --dry-run allow to any port daytime from any port domain proto tcp
+do_cmd "0" --dry-run delete allow to any port daytime from any port domain proto tcp
+do_cmd "0" --dry-run allow to any port daytime from any port 23 proto udp
+do_cmd "0" --dry-run delete allow to any port daytime from any port 23 proto udp
+do_cmd "0" --dry-run allow to any port 23 from any port daytime proto udp
+do_cmd "0" --dry-run delete allow to any port 23 from any port daytime proto udp
+do_cmd "0" --dry-run allow to any port daytime from any port domain proto udp
+do_cmd "0" --dry-run delete allow to any port daytime from any port domain proto udp
 
 echo "Netmasks" >> $TESTTMP/result
 do_cmd "0" --dry-run allow to 192.168.0.0/0
@@ -184,15 +184,15 @@ for i in 192.168.0 any; do
         do_cmd "0" --dry-run allow $j $m port 34,35 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 221,23,21,15:19,22 proto udp
+        do_cmd "0" --dry-run allow $j $m port 221,23,21,15:19,13 proto udp
         do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24 proto udp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,13 $k $n port 24 proto udp
         do_cmd "0" --dry-run allow $j $m port 34,35 $k $n port 24:26 proto tcp
         do_cmd "0" --dry-run allow $j $m port 34,35:39 $k $n port 24:26 proto udp
         do_cmd "0" --dry-run allow $j $m port 35:39 $k $n port 24:26 proto tcp
-        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,22 $k $n port 24:26 proto udp
+        do_cmd "0" --dry-run allow $j $m port 23,21,15:19,13 $k $n port 24:26 proto udp
     done
 done
 
@@ -202,7 +202,7 @@ for i in allow deny limit; do
 	do_cmd "0" --dry-run $i 34,35/$j
 	do_cmd "0" --dry-run $i 34,35:39/$j
 	do_cmd "0" --dry-run $i 35:39/$j
-	do_cmd "0" --dry-run $i 23,21,15:19,22/$j
+	do_cmd "0" --dry-run $i 23,21,15:19,13/$j
 	do_cmd "0" --dry-run $i 1,9/$j
     done
 done
@@ -222,13 +222,13 @@ for i in any tcp udp ; do
     if [ "$i" = "any" ]; then
         p=""
     else
-        do_cmd "0" --dry-run reject 23,21,15:19,22$p
+        do_cmd "0" --dry-run reject 23,21,15:19,13$p
     fi
     do_cmd "0" --dry-run reject 116$p
 done
 
 echo "Insert" >> $TESTTMP/result
-do_cmd "0" null allow 22
+do_cmd "0" null allow 13
 do_cmd "0" null allow 23
 
 do_cmd "0" null insert 1 allow 9999
@@ -236,7 +236,7 @@ do_cmd "0" null insert 1 allow log 9998
 do_cmd "0" null insert 2 reject to 192.168.0.1 from 10.0.0.1
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
-do_cmd "0" null delete allow 22
+do_cmd "0" null delete allow 13
 do_cmd "0" null delete allow 23
 do_cmd "0" null delete allow 9999
 do_cmd "0" null delete allow log 9998
@@ -250,33 +250,33 @@ echo "Interfaces" >> $TESTTMP/result
 for i in "in" "out" ; do
     for j in allow deny limit reject ; do
         do_cmd "0" null $j $i on eth0
-        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 13
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 port 80
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1
-        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80
-        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
-        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 proto tcp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 13 proto tcp
         do_cmd "0" null $j $i on eth0 from 10.0.0.1 port 80 proto tcp
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
-        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
         do_cmd "0" null $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+        do_cmd "0" null $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
         cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
         do_cmd "0" null delete $j $i on eth0
-        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 13
         do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 port 80
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1
-        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80
-        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
-        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 proto tcp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 13 proto tcp
         do_cmd "0" null delete $j $i on eth0 from 10.0.0.1 port 80 proto tcp
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
-        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
         do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
-        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+        do_cmd "0" null delete $j $i on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
         cat $TESTCONFIG/user.rules >> $TESTTMP/result
     done
     do_cmd "0" null allow $i on eth0
@@ -300,12 +300,38 @@ echo "Interface with '+'" >> $TESTTMP/result
 do_cmd "0" null --dry-run allow in on eth+ to any port 80 proto tcp
 
 echo "Comments" >> $TESTTMP/result || exit 1
-do_cmd "0" allow 2222/tcp comment \'SSH\ port\'
-do_cmd "0" deny out log-all to any port 53 from any proto udp comment \'dns\ port\'
+do_cmd "0" allow 2222/tcp comment \"SSH\ port\"
+do_cmd "0" deny out log-all to any port 53 from any proto udp comment \"dns\ port\"
 # delete exact
-do_cmd "0" delete deny out log-all to any port 53 from any proto udp comment \'dns\ port\'
+do_cmd "0" delete deny out log-all to any port 53 from any proto udp comment \"dns\ port\"
 # delete without comment
 do_cmd "0" delete allow 2222/tcp
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+echo "Prepend" >> $TESTTMP/result
+do_cmd "0" null allow 22/tcp
+do_cmd "0" null allow from 1.2.3.4
+
+do_cmd "0" null prepend deny from 6.7.8.9
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+do_cmd "0" null delete allow 22/tcp
+do_cmd "0" null delete allow from 1.2.3.4
+do_cmd "0" null delete deny from 6.7.8.9
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+echo "Prepend (no rules)" >> $TESTTMP/result
+do_cmd "0" null prepend allow from 1.2.3.4
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0" null delete allow from 1.2.3.4
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+
+echo "Prepend (multi rules)" >> $TESTTMP/result
+do_cmd "0" null allow from 1.2.3.4
+do_cmd "0" null prepend deny 23
+cat $TESTCONFIG/user.rules >> $TESTTMP/result
+do_cmd "0" null delete allow from 1.2.3.4
+do_cmd "0" null delete deny 23
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
 exit 0

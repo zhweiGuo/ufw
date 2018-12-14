@@ -1,5 +1,5 @@
 #
-# Copyright 2009 Canonical Ltd.
+# Copyright 2009-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -18,13 +18,13 @@
 
 _ufw_commands()
 {
-    commands=$(ufw --help | sed -e '1,/^Commands:/d' -e '/^Application profile commands:/Q' -e 's/^[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g' -e 's/|/ /g' | uniq)
+    commands=$("$SNAP"/command-ufw.wrapper --help | sed -e '1,/^Commands:/d' -e '/^Application profile commands:/Q' -e 's/^[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g' -e 's/|/ /g' | uniq)
     echo "$commands app"
 }
 
 _ufw_app_commands()
 {
-    ufw --help | sed -e '1,/^Application profile commands:/d' -e '/^ [^ ]/!d' -e 's/[ \t]\+app[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g'
+    "$SNAP"/command-ufw.wrapper --help | sed -e '1,/^Application profile commands:/d' -e '/^ [^ ]/!d' -e 's/[ \t]\+app[ \t]\+\([a-z|]\+\)[ \t]\+.*/\1/g'
 }
 
 _ufw_logging_commands()
@@ -57,7 +57,8 @@ _ufw_status_commands()
     echo "numbered verbose"
 }
 
-_have ufw &&
+# Don't use '_have' with snaps
+# _have ufw &&
 _ufw()
 {
     cur=${COMP_WORDS[COMP_CWORD]}
@@ -91,4 +92,6 @@ _ufw()
     fi
 }
 
-_have ufw && complete -F _ufw ufw
+# Don't use '_have' with snaps
+#_have ufw && complete -F _ufw ufw
+complete -F _ufw ufw

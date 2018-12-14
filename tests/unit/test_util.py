@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012-2016 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -30,6 +30,7 @@ except ImportError:
 
 import sys
 import tempfile
+
 
 class UtilTestCase(unittest.TestCase):
     def setUp(self):
@@ -69,7 +70,6 @@ class UtilTestCase(unittest.TestCase):
         tests.unit.support.check_for_exception(self, socket.error, \
                                                ufw.util.get_services_proto, \
                                                "ufw-nonexistent")
-
 
     def test_parse_port_proto(self):
         '''Test parse_port_proto()'''
@@ -140,7 +140,6 @@ class UtilTestCase(unittest.TestCase):
         for g in good:
             self.assertTrue(ufw.util.valid_address6(g), g)
 
-
     def test_valid_address4(self):
         '''Test valid_address4()'''
         bad = [
@@ -181,14 +180,13 @@ class UtilTestCase(unittest.TestCase):
 
     def test_valid_netmask(self):
         '''Test valid_netmask()'''
-
         # v4
         bad = [
                'a',
                '-1',
                '33',
-                '255.255.255.255.0',
-                '255.255.255.256',
+               '255.255.255.255.0',
+               '255.255.255.256',
               ]
 
         for b in bad:
@@ -208,7 +206,6 @@ class UtilTestCase(unittest.TestCase):
 
         for g in good:
             self.assertTrue(ufw.util.valid_netmask(g, v6=False), g)
-
 
         # v6
         bad = [
@@ -233,7 +230,6 @@ class UtilTestCase(unittest.TestCase):
 
         for g in good:
             self.assertTrue(ufw.util.valid_netmask(g, v6=True), g)
-
 
     def test_valid_address(self):
         '''Test valid_address()'''
@@ -278,14 +274,13 @@ class UtilTestCase(unittest.TestCase):
         for b in ['129', 's55', '-1']:
             self.assertFalse(ufw.util.valid_address("::1/%s" % b, "6"))
 
-        for b in [ ':::1', 'fe80::-1', '.168.0.1',]:
+        for b in [':::1', 'fe80::-1', '.168.0.1']:
             self.assertFalse(ufw.util.valid_address(b, "any"), b)
             self.assertFalse(ufw.util.valid_address(b, "4"), b)
             self.assertFalse(ufw.util.valid_address(b, "6"), b)
         tests.unit.support.check_for_exception(self, ValueError, \
                                                ufw.util.valid_address,
                                                '::1', "7")
-
 
         # VALID ADDRESSES
         for v in ['4', 'any']:
@@ -314,7 +309,6 @@ class UtilTestCase(unittest.TestCase):
         for i in range(0, 129):
             self.assertTrue(ufw.util.valid_address("::1/%s" % i, "6"))
 
-
         good = [
                 '192.168.128.128/255.255.255.129',
                 '192.168.0.1',
@@ -333,7 +327,6 @@ class UtilTestCase(unittest.TestCase):
             else:
                 self.assertTrue(ufw.util.valid_address(g, "4"), g)
 
-
     def _run_normalize_address(self, data):
         '''Run ufw.util.normalize_address() on data. Data should be in form
            of:
@@ -349,12 +342,12 @@ class UtilTestCase(unittest.TestCase):
     def test_normalize_address_host_netmask(self):
         '''Test normalize_address() with host_netmask'''
         data = [
-                 (False, '192.168.0.1', '192.168.0.1'),
-                 (False, '192.168.0.1/32', '192.168.0.1'),
-                 (False, '192.168.0.1/255.255.255.255', '192.168.0.1'),
-                 (True, '::1', '::1'),
-                 (True, '::1/128' ,'::1'),
-                ]
+                (False, '192.168.0.1', '192.168.0.1'),
+                (False, '192.168.0.1/32', '192.168.0.1'),
+                (False, '192.168.0.1/255.255.255.255', '192.168.0.1'),
+                (True, '::1', '::1'),
+                (True, '::1/128', '::1'),
+               ]
 
         error_str = self._run_normalize_address(data)
         self.assertEquals(error_str, "", error_str)
@@ -533,7 +526,6 @@ class UtilTestCase(unittest.TestCase):
         error_str = self._run_normalize_address(data)
         self.assertEquals(error_str, "", error_str)
 
-
     def test_normalize_address_ipv6_short_notation(self):
         '''Test normalize_address() with ipv6_short_notation'''
         data = [
@@ -634,7 +626,6 @@ class UtilTestCase(unittest.TestCase):
         fns = ufw.util.open_files(tmp)
         ufw.util.close_files(fns, update=False)
 
-
         self.tmpdir = tempfile.mkdtemp()
         tmp = os.path.join(self.tmpdir, "foo")
         f = open(tmp, 'w')
@@ -719,10 +710,10 @@ class UtilTestCase(unittest.TestCase):
 
     def test_wrap_text(self):
         '''Test wrap_text()'''
-        t ='''
+        t = '''
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAA
 '''
-        expected ='''
+        expected = '''
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAA
 '''
@@ -813,13 +804,13 @@ AAA
 
     def test_cidr_to_dotted_to_cidr(self):
         '''Test _cidr_to_dotted_netmask() and _dotted_netmask_to_cidr()'''
-        for m in range(0,33):
+        for m in range(0, 33):
             cidr = str(m)
             dotted = ufw.util._cidr_to_dotted_netmask(cidr, False)
             reverse = ufw.util._dotted_netmask_to_cidr(dotted, False)
             self.assertEquals(cidr, reverse,
                             "cidr=%s, dotted=%s, reverse=%s" % (cidr,
-                                                                dotted, 
+                                                                dotted,
                                                                 reverse))
 
     def test__address4_to_network(self):
@@ -841,7 +832,6 @@ AAA
         tests.unit.support.check_for_exception(self, ValueError, \
                                                ufw.util._address6_to_network,
                                                'ff80::1/16/16')
-
 
     def test_in_network(self):
         '''Test in_network()'''
@@ -912,7 +902,6 @@ AAA
         self.assertTrue(ufw.util.in_network("::/0",
                                             "ff80::1/64",
                                             True))
-
 
     def test_get_iptables_version(self):
         '''Test get_iptables_version()'''
@@ -1036,10 +1025,24 @@ AAA
         result = ufw.util.hex_decode(s)
         self.assertEquals(expected, result)
 
+    def test_create_lock(self):
+        '''Test create_lock()'''
+        lock = ufw.util.create_lock(dryrun=True)
+        self.assertTrue(lock is None)
+        ufw.util.release_lock(lock)
+
+        self.tmpdir = tempfile.mkdtemp()
+        fn = os.path.join(self.tmpdir, "lock")
+        lock = ufw.util.create_lock(lockfile=fn, dryrun=False)
+        self.assertTrue(lock is not None)
+        ufw.util.release_lock(lock)
+
+
 def test_main(): # used by runner.py
     tests.unit.support.run_unittest(
             UtilTestCase
     )
+
 
 if __name__ == "__main__": # used when standalone
     unittest.main()

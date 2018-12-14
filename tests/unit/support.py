@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012-2016 Canonical Ltd.
+# Copyright 2012-2018 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -24,6 +24,7 @@ import sys
 _ = None
 
 topdir = "./tests/unit/tmp"
+
 
 class Error(Exception):
     '''Error'''
@@ -50,7 +51,7 @@ def recursive_rm(dirPath, contents_only=False):
             os.unlink(path)
         else:
             recursive_rm(path)
-    if contents_only == False:
+    if contents_only is False:
         os.rmdir(dirPath)
 
 
@@ -86,9 +87,13 @@ def run_setup():
                            'install',
                            '--home=%s' % install_dir],
                            stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT,
+                           stderr=subprocess.PIPE,
                            universal_newlines=True)
-    sp.communicate()[0]
+    out, err = sp.communicate()
+
+    if sp.returncode != 0:
+        print("setup.py failed: %s" % err)
+        sys.exit(1)
 
     return install_dir
 
@@ -158,6 +163,7 @@ def check_for_exception(t, expectedException, func, *args):
     else:
         t.fail('%s not thrown' % str(expectedException))
 
+
 def get_sample_rule_commands_simple():
     '''Return a list of sample rule commands for simple rules.
        Format:
@@ -213,6 +219,7 @@ def get_sample_rule_commands_simple():
 
     return cmds
 
+
 def get_sample_rule_commands_extended(v6=False):
     '''Return a list of sample rule commands for extended rules.
        Format:
@@ -241,7 +248,6 @@ def get_sample_rule_commands_extended(v6=False):
                 '5678:fff::/64!tcpmux', 'any!fsp', \
                 '2001:db8:85a3:8d3:1319:8a2e:370:7342!WWW Full', \
                 '5678:fff::/64!CIFS', 'any!DNS']
-
 
     cmds = []
     for rule_type in ['rule', 'route']:
@@ -298,7 +304,7 @@ def get_sample_rule_commands_extended(v6=False):
                                         and proto == 'tcp') or \
                                        ((dport == 'tcpmux' or
                                          sport == 'tcpmux') \
-                                        and proto == 'udp'):
+                                         and proto == 'udp'):
                                         continue
 
                                     # Now start building up the command
@@ -374,6 +380,7 @@ def get_sample_rule_commands_extended(v6=False):
                                     cmds.append([rule_type, action] + c)
 
     return cmds
+
 
 def has_proc_net_output():
     '''Determine if /proc/net/tcp|udp[6] have useful information'''

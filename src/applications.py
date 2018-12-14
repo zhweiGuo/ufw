@@ -1,6 +1,6 @@
 '''applications.py: common classes for ufw'''
 #
-# Copyright 2008-2012 Canonical Ltd.
+# Copyright 2008-2018 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -27,6 +27,7 @@ if sys.version_info[0] < 3:  # pragma: no cover
     import ConfigParser
 else:  # pragma: no cover
     import configparser
+
 
 def get_profiles(profiles_dir):
     '''Get profiles found in profiles database.  Returns dictionary with
@@ -59,7 +60,7 @@ def get_profiles(profiles_dir):
             debug("Skipping '%s'" % (f))
             continue
 
-	# Try to gracefully handle huge files for the user (no security
+        # Try to gracefully handle huge files for the user (no security
         # benefit, just usability)
         size = 0
         try:
@@ -147,6 +148,7 @@ def get_profiles(profiles_dir):
 
     return profiles
 
+
 def valid_profile_name(name):
     '''Only accept a limited set of characters for name'''
     # Reserved profile name
@@ -157,7 +159,7 @@ def valid_profile_name(name):
     try:
         int(name)
         return False
-    except:
+    except Exception:
         pass
 
     # Require first character be alpha, so we can avoid collisions with port
@@ -165,6 +167,7 @@ def valid_profile_name(name):
     if re.match(r'^[a-zA-Z0-9][a-zA-Z0-9 _\-\.+]*$', name):
         return True
     return False
+
 
 def verify_profile(name, profile):
     '''Make sure profile has everything needed'''
@@ -197,6 +200,7 @@ def verify_profile(name, profile):
 
     return True
 
+
 def get_title(profile):
     '''Retrieve the title from the profile'''
     s = ""
@@ -204,6 +208,7 @@ def get_title(profile):
     if field in profile and profile[field]:
         s = profile[field]
     return s
+
 
 def get_description(profile):
     '''Retrieve the description from the profile'''
@@ -213,6 +218,7 @@ def get_description(profile):
         s = profile[field]
     return s
 
+
 def get_ports(profile):
     '''Retrieve a list of ports from a profile'''
     ports = []
@@ -221,4 +227,3 @@ def get_ports(profile):
         ports = profile[field].split('|')
 
     return ports
-

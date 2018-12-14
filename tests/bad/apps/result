@@ -77,7 +77,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 24: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
 
 
-25: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
+25: --dry-run allow to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 13 proto tcp
 
 
 26: --dry-run allow to any app NONEXISTENT
@@ -95,7 +95,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 30: --dry-run allow to any app Samba from any port http
 
 
-31: --dry-run allow to any app Samba from any port 22 proto tcp
+31: --dry-run allow to any app Samba from any port 13 proto tcp
 
 
 32: --dry-run allow from 192.168.0.0/16 app NONEXISTENT
@@ -113,7 +113,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 36: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
 
 
-37: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
+37: --dry-run allow from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 13 proto tcp
 
 
 38: --dry-run allow from any app NONEXISTENT
@@ -131,7 +131,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 42: --dry-run allow from any app Samba to any port http
 
 
-43: --dry-run allow from any app Samba to any port 22 proto tcp
+43: --dry-run allow from any app Samba to any port 13 proto tcp
 
 
 44: --dry-run deny to 192.168.0.0/16 app NONEXISTENT
@@ -149,7 +149,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 48: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
 
 
-49: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
+49: --dry-run deny to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 13 proto tcp
 
 
 50: --dry-run deny to any app NONEXISTENT
@@ -167,7 +167,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 54: --dry-run deny to any app Samba from any port http
 
 
-55: --dry-run deny to any app Samba from any port 22 proto tcp
+55: --dry-run deny to any app Samba from any port 13 proto tcp
 
 
 56: --dry-run deny from 192.168.0.0/16 app NONEXISTENT
@@ -185,7 +185,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 60: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
 
 
-61: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
+61: --dry-run deny from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 13 proto tcp
 
 
 62: --dry-run deny from any app NONEXISTENT
@@ -203,7 +203,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 66: --dry-run deny from any app Samba to any port http
 
 
-67: --dry-run deny from any app Samba to any port 22 proto tcp
+67: --dry-run deny from any app Samba to any port 13 proto tcp
 
 
 68: --dry-run limit to 192.168.0.0/16 app NONEXISTENT
@@ -221,7 +221,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 72: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port http
 
 
-73: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 22 proto tcp
+73: --dry-run limit to 192.168.0.0/16 app Samba from 192.168.0.0/16 port 13 proto tcp
 
 
 74: --dry-run limit to any app NONEXISTENT
@@ -239,7 +239,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 78: --dry-run limit to any app Samba from any port http
 
 
-79: --dry-run limit to any app Samba from any port 22 proto tcp
+79: --dry-run limit to any app Samba from any port 13 proto tcp
 
 
 80: --dry-run limit from 192.168.0.0/16 app NONEXISTENT
@@ -257,7 +257,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 84: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port http
 
 
-85: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 22 proto tcp
+85: --dry-run limit from 192.168.0.0/16 app Samba to 192.168.0.0/16 port 13 proto tcp
 
 
 86: --dry-run limit from any app NONEXISTENT
@@ -275,7 +275,7 @@ TESTING APPLICATION INTEGRATION (bad extended rules)
 90: --dry-run limit from any app Samba to any port http
 
 
-91: --dry-run limit from any app Samba to any port 22 proto tcp
+91: --dry-run limit from any app Samba to any port 13 proto tcp
 
 
 TESTING APPLICATION INTEGRATION (case sensitive)

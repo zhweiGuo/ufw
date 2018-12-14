@@ -859,7 +859,7 @@ TESTING BAD MULTIPORTS
 
 
 TESTING BAD INTERFACES
-283: --dry-run allow in on e%th0 to 2001:db8:3:4:5:6:7:8
+283: --dry-run allow in on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 284: --dry-run allow in eth0 to 2001:db8:3:4:5:6:7:8
@@ -874,7 +874,7 @@ TESTING BAD INTERFACES
 287: --dry-run allow log in on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-288: --dry-run deny in on e%th0 to 2001:db8:3:4:5:6:7:8
+288: --dry-run deny in on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 289: --dry-run deny in eth0 to 2001:db8:3:4:5:6:7:8
@@ -889,7 +889,7 @@ TESTING BAD INTERFACES
 292: --dry-run deny log in on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-293: --dry-run limit in on e%th0 to 2001:db8:3:4:5:6:7:8
+293: --dry-run limit in on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 294: --dry-run limit in eth0 to 2001:db8:3:4:5:6:7:8
@@ -904,7 +904,7 @@ TESTING BAD INTERFACES
 297: --dry-run limit log in on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-298: --dry-run reject in on e%th0 to 2001:db8:3:4:5:6:7:8
+298: --dry-run reject in on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 299: --dry-run reject in eth0 to 2001:db8:3:4:5:6:7:8
@@ -919,7 +919,7 @@ TESTING BAD INTERFACES
 302: --dry-run reject log in on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-303: --dry-run allow out on e%th0 to 2001:db8:3:4:5:6:7:8
+303: --dry-run allow out on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 304: --dry-run allow out eth0 to 2001:db8:3:4:5:6:7:8
@@ -934,7 +934,7 @@ TESTING BAD INTERFACES
 307: --dry-run allow log out on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-308: --dry-run deny out on e%th0 to 2001:db8:3:4:5:6:7:8
+308: --dry-run deny out on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 309: --dry-run deny out eth0 to 2001:db8:3:4:5:6:7:8
@@ -949,7 +949,7 @@ TESTING BAD INTERFACES
 312: --dry-run deny log out on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-313: --dry-run limit out on e%th0 to 2001:db8:3:4:5:6:7:8
+313: --dry-run limit out on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 314: --dry-run limit out eth0 to 2001:db8:3:4:5:6:7:8
@@ -964,7 +964,7 @@ TESTING BAD INTERFACES
 317: --dry-run limit log out on eth0 to 2001:db8:3:4:5:6:7:8
 
 
-318: --dry-run reject out on e%th0 to 2001:db8:3:4:5:6:7:8
+318: --dry-run reject out on e?th0 to 2001:db8:3:4:5:6:7:8
 
 
 319: --dry-run reject out eth0 to 2001:db8:3:4:5:6:7:8

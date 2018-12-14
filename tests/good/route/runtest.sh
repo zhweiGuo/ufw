@@ -23,12 +23,12 @@ do_cmd "0" --dry-run route allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 por
 do_cmd "0" --dry-run route delete allow proto udp from 1.2.3.5 port 5469 to 1.2.3.4 port 5469
 
 echo "SIMPLE" >> $TESTTMP/result
-do_cmd "0" --dry-run route allow ssh
-do_cmd "0" --dry-run route delete allow ssh
-do_cmd "0" --dry-run route allow ssh/tcp
-do_cmd "0" --dry-run route delete allow ssh/tcp
-do_cmd "0" --dry-run route allow ssh/udp
-do_cmd "0" --dry-run route delete allow ssh/udp
+do_cmd "0" --dry-run route allow daytime
+do_cmd "0" --dry-run route delete allow daytime
+do_cmd "0" --dry-run route allow daytime/tcp
+do_cmd "0" --dry-run route delete allow daytime/tcp
+do_cmd "0" --dry-run route allow daytime/udp
+do_cmd "0" --dry-run route delete allow daytime/udp
 
 echo "Interfaces" >> $TESTTMP/result
 in_if="fake0"
@@ -73,15 +73,15 @@ do_cmd "0" --dry-run route reject from 192.168.0.1/32 to 192.168.0.0/16
 do_cmd "0" --dry-run route delete reject from 192.168.0.1/32 to 192.168.0.0/16
 
 echo "Multiports:" >> $TESTTMP/result
-do_cmd "0" --dry-run route limit 23,21,15:19,22/tcp
-do_cmd "0" --dry-run route delete limit 23,21,15:19,22/tcp
-do_cmd "0" --dry-run route allow in on $in_if out on $out_if from 192.168.0.1 port 23,21,15:19,22 to 10.0.0.0/8 port 24:26 proto tcp
-do_cmd "0" --dry-run route delete allow in on $in_if out on $out_if from 192.168.0.1 port 23,21,15:19,22 to 10.0.0.0/8 port 24:26 proto tcp
+do_cmd "0" --dry-run route limit 23,21,15:19,13/tcp
+do_cmd "0" --dry-run route delete limit 23,21,15:19,13/tcp
+do_cmd "0" --dry-run route allow in on $in_if out on $out_if from 192.168.0.1 port 23,21,15:19,13 to 10.0.0.0/8 port 24:26 proto tcp
+do_cmd "0" --dry-run route delete allow in on $in_if out on $out_if from 192.168.0.1 port 23,21,15:19,13 to 10.0.0.0/8 port 24:26 proto tcp
 do_cmd "0" --dry-run route deny in on $in_if to any port 34,35:39 from any port 24 proto udp
 do_cmd "0" --dry-run route delete deny in on $in_if to any port 34,35:39 from any port 24 proto udp
 
 echo "Insert" >> $TESTTMP/result
-do_cmd "0" null route allow 22
+do_cmd "0" null route allow 13
 do_cmd "0" null route allow 23
 
 do_cmd "0" null route insert 1 allow 9999
@@ -89,7 +89,7 @@ do_cmd "0" null route insert 1 allow log 9998
 do_cmd "0" null route insert 2 reject to 192.168.0.1 from 10.0.0.1
 cat $TESTCONFIG/user.rules >> $TESTTMP/result
 
-do_cmd "0" null route delete allow 22
+do_cmd "0" null route delete allow 13
 do_cmd "0" null route delete allow 23
 do_cmd "0" null route delete allow 9999
 do_cmd "0" null route delete allow log 9998

@@ -298,7 +298,7 @@ COMMIT
 Rules updated
 
 
-7: --dry-run limit ssh/tcp
+7: --dry-run limit daytime/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -319,10 +319,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p tcp --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p tcp --dport 22 -j ufw-user-limit-accept
+### tuple ### limit tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 13 -j ufw-user-limit-accept
 
 ### END RULES ###
 
@@ -1315,7 +1315,7 @@ COMMIT
 Rules updated
 
 
-31: --dry-run allow ssh
+31: --dry-run allow daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1336,9 +1336,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -1359,90 +1359,7 @@ COMMIT
 Rules updated
 
 
-32: --dry-run delete allow ssh
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-33: --dry-run allow ssh/tcp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-34: --dry-run delete allow ssh/tcp
+32: --dry-run delete allow daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1482,7 +1399,7 @@ COMMIT
 Rules updated
 
 
-35: --dry-run allow ssh/udp
+33: --dry-run allow daytime/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -1503,8 +1420,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow tcp 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -1525,7 +1442,90 @@ COMMIT
 Rules updated
 
 
-36: --dry-run delete allow ssh/udp
+34: --dry-run delete allow daytime/tcp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+35: --dry-run allow daytime/udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+36: --dry-run delete allow daytime/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6193,7 +6193,7 @@ COMMIT
 Rules updated
 
 
-147: --dry-run allow to any port smtp from any port ssh
+147: --dry-run allow to any port smtp from any port daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6214,8 +6214,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 25 --sport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -6236,7 +6236,7 @@ COMMIT
 Rules updated
 
 
-148: --dry-run delete allow to any port smtp from any port ssh
+148: --dry-run delete allow to any port smtp from any port daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6276,7 +6276,7 @@ COMMIT
 Rules updated
 
 
-149: --dry-run allow to any port ssh from any port smtp
+149: --dry-run allow to any port daytime from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6297,8 +6297,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 22 0.0.0.0/0 25 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 --sport 25 -j ACCEPT
+### tuple ### allow tcp 13 0.0.0.0/0 25 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 --sport 25 -j ACCEPT
 
 ### END RULES ###
 
@@ -6319,7 +6319,7 @@ COMMIT
 Rules updated
 
 
-150: --dry-run delete allow to any port ssh from any port smtp
+150: --dry-run delete allow to any port daytime from any port smtp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6608,7 +6608,7 @@ COMMIT
 Rules updated
 
 
-157: --dry-run allow to any port tftp from any port ssh
+157: --dry-run allow to any port tftp from any port daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6629,8 +6629,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 69 --sport 22 -j ACCEPT
+### tuple ### allow udp 69 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 69 --sport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -6651,7 +6651,7 @@ COMMIT
 Rules updated
 
 
-158: --dry-run delete allow to any port tftp from any port ssh
+158: --dry-run delete allow to any port tftp from any port daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6691,7 +6691,7 @@ COMMIT
 Rules updated
 
 
-159: --dry-run allow to any port ssh from any port tftp
+159: --dry-run allow to any port daytime from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6712,8 +6712,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 69 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 22 --sport 69 -j ACCEPT
+### tuple ### allow udp 13 0.0.0.0/0 69 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 13 --sport 69 -j ACCEPT
 
 ### END RULES ###
 
@@ -6734,7 +6734,7 @@ COMMIT
 Rules updated
 
 
-160: --dry-run delete allow to any port ssh from any port tftp
+160: --dry-run delete allow to any port daytime from any port tftp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6940,7 +6940,7 @@ COMMIT
 Rules updated
 
 
-165: --dry-run allow to any port ssh from any port 23
+165: --dry-run allow to any port daytime from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -6961,9 +6961,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 23 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 --sport 23 -j ACCEPT
--A ufw-user-input -p udp --dport 22 --sport 23 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 23 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 --sport 23 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 --sport 23 -j ACCEPT
 
 ### END RULES ###
 
@@ -6984,91 +6984,7 @@ COMMIT
 Rules updated
 
 
-166: --dry-run delete allow to any port ssh from any port 23
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-167: --dry-run allow to any port 23 from any port ssh
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### tuple ### allow any 23 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 23 --sport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 23 --sport 22 -j ACCEPT
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-168: --dry-run delete allow to any port 23 from any port ssh
+166: --dry-run delete allow to any port daytime from any port 23
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7108,7 +7024,7 @@ COMMIT
 Rules updated
 
 
-169: --dry-run allow to any port ssh from any port domain
+167: --dry-run allow to any port 23 from any port daytime
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7129,9 +7045,9 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow any 22 0.0.0.0/0 53 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
--A ufw-user-input -p udp --dport 22 --sport 53 -j ACCEPT
+### tuple ### allow any 23 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 23 --sport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 23 --sport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -7152,7 +7068,91 @@ COMMIT
 Rules updated
 
 
-170: --dry-run delete allow to any port ssh from any port domain
+168: --dry-run delete allow to any port 23 from any port daytime
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+169: --dry-run allow to any port daytime from any port domain
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any 13 0.0.0.0/0 53 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 --sport 53 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 --sport 53 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+170: --dry-run delete allow to any port daytime from any port domain
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7275,7 +7275,7 @@ COMMIT
 Rules updated
 
 
-173: --dry-run allow to any port smtp from any port ssh proto tcp
+173: --dry-run allow to any port smtp from any port daytime proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7296,8 +7296,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 25 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 25 --sport 22 -j ACCEPT
+### tuple ### allow tcp 25 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 25 --sport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -7318,7 +7318,7 @@ COMMIT
 Rules updated
 
 
-174: --dry-run delete allow to any port smtp from any port ssh proto tcp
+174: --dry-run delete allow to any port smtp from any port daytime proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7358,7 +7358,7 @@ COMMIT
 Rules updated
 
 
-175: --dry-run allow to any port ssh from any port smtp proto tcp
+175: --dry-run allow to any port daytime from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7379,8 +7379,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 22 0.0.0.0/0 25 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 --sport 25 -j ACCEPT
+### tuple ### allow tcp 13 0.0.0.0/0 25 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 --sport 25 -j ACCEPT
 
 ### END RULES ###
 
@@ -7401,7 +7401,7 @@ COMMIT
 Rules updated
 
 
-176: --dry-run delete allow to any port ssh from any port smtp proto tcp
+176: --dry-run delete allow to any port daytime from any port smtp proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7690,7 +7690,7 @@ COMMIT
 Rules updated
 
 
-183: --dry-run allow to any port tftp from any port ssh proto udp
+183: --dry-run allow to any port tftp from any port daytime proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7711,8 +7711,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 69 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 69 --sport 22 -j ACCEPT
+### tuple ### allow udp 69 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 69 --sport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -7733,7 +7733,7 @@ COMMIT
 Rules updated
 
 
-184: --dry-run delete allow to any port tftp from any port ssh proto udp
+184: --dry-run delete allow to any port tftp from any port daytime proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7773,7 +7773,7 @@ COMMIT
 Rules updated
 
 
-185: --dry-run allow to any port ssh from any port tftp proto udp
+185: --dry-run allow to any port daytime from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -7794,8 +7794,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 69 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 22 --sport 69 -j ACCEPT
+### tuple ### allow udp 13 0.0.0.0/0 69 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 13 --sport 69 -j ACCEPT
 
 ### END RULES ###
 
@@ -7816,7 +7816,7 @@ COMMIT
 Rules updated
 
 
-186: --dry-run delete allow to any port ssh from any port tftp proto udp
+186: --dry-run delete allow to any port daytime from any port tftp proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8022,7 +8022,7 @@ COMMIT
 Rules updated
 
 
-191: --dry-run allow to any port ssh from any port 23 proto tcp
+191: --dry-run allow to any port daytime from any port 23 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8043,8 +8043,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 22 0.0.0.0/0 23 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 --sport 23 -j ACCEPT
+### tuple ### allow tcp 13 0.0.0.0/0 23 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 --sport 23 -j ACCEPT
 
 ### END RULES ###
 
@@ -8065,90 +8065,7 @@ COMMIT
 Rules updated
 
 
-192: --dry-run delete allow to any port ssh from any port 23 proto tcp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-193: --dry-run allow to any port 23 from any port ssh proto tcp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### tuple ### allow tcp 23 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 23 --sport 22 -j ACCEPT
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-194: --dry-run delete allow to any port 23 from any port ssh proto tcp
+192: --dry-run delete allow to any port daytime from any port 23 proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8188,7 +8105,7 @@ COMMIT
 Rules updated
 
 
-195: --dry-run allow to any port ssh from any port domain proto tcp
+193: --dry-run allow to any port 23 from any port daytime proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8209,8 +8126,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 22 0.0.0.0/0 53 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 --sport 53 -j ACCEPT
+### tuple ### allow tcp 23 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 23 --sport 13 -j ACCEPT
 
 ### END RULES ###
 
@@ -8231,90 +8148,7 @@ COMMIT
 Rules updated
 
 
-196: --dry-run delete allow to any port ssh from any port domain proto tcp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-197: --dry-run allow to any port ssh from any port 23 proto udp
-WARN: Checks disabled
-*filter
-:ufw-user-input - [0:0]
-:ufw-user-output - [0:0]
-:ufw-user-forward - [0:0]
-:ufw-before-logging-input - [0:0]
-:ufw-before-logging-output - [0:0]
-:ufw-before-logging-forward - [0:0]
-:ufw-user-logging-input - [0:0]
-:ufw-user-logging-output - [0:0]
-:ufw-user-logging-forward - [0:0]
-:ufw-after-logging-input - [0:0]
-:ufw-after-logging-output - [0:0]
-:ufw-after-logging-forward - [0:0]
-:ufw-logging-deny - [0:0]
-:ufw-logging-allow - [0:0]
-:ufw-user-limit - [0:0]
-:ufw-user-limit-accept - [0:0]
-### RULES ###
-
-### tuple ### allow udp 22 0.0.0.0/0 23 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 22 --sport 23 -j ACCEPT
-
-### END RULES ###
-
-### LOGGING ###
--A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
--A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
--A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
-### END LOGGING ###
-
-### RATE LIMITING ###
--A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
--A ufw-user-limit -j REJECT
--A ufw-user-limit-accept -j ACCEPT
-### END RATE LIMITING ###
-COMMIT
-Rules updated
-
-
-198: --dry-run delete allow to any port ssh from any port 23 proto udp
+194: --dry-run delete allow to any port 23 from any port daytime proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8354,7 +8188,7 @@ COMMIT
 Rules updated
 
 
-199: --dry-run allow to any port 23 from any port ssh proto udp
+195: --dry-run allow to any port daytime from any port domain proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8375,8 +8209,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 23 0.0.0.0/0 22 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 23 --sport 22 -j ACCEPT
+### tuple ### allow tcp 13 0.0.0.0/0 53 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 --sport 53 -j ACCEPT
 
 ### END RULES ###
 
@@ -8397,7 +8231,7 @@ COMMIT
 Rules updated
 
 
-200: --dry-run delete allow to any port 23 from any port ssh proto udp
+196: --dry-run delete allow to any port daytime from any port domain proto tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8437,7 +8271,7 @@ COMMIT
 Rules updated
 
 
-201: --dry-run allow to any port ssh from any port domain proto udp
+197: --dry-run allow to any port daytime from any port 23 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8458,8 +8292,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 22 0.0.0.0/0 53 0.0.0.0/0 in
--A ufw-user-input -p udp --dport 22 --sport 53 -j ACCEPT
+### tuple ### allow udp 13 0.0.0.0/0 23 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 13 --sport 23 -j ACCEPT
 
 ### END RULES ###
 
@@ -8480,7 +8314,173 @@ COMMIT
 Rules updated
 
 
-202: --dry-run delete allow to any port ssh from any port domain proto udp
+198: --dry-run delete allow to any port daytime from any port 23 proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+199: --dry-run allow to any port 23 from any port daytime proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 23 0.0.0.0/0 13 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 23 --sport 13 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+200: --dry-run delete allow to any port 23 from any port daytime proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+201: --dry-run allow to any port daytime from any port domain proto udp
+WARN: Checks disabled
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow udp 13 0.0.0.0/0 53 0.0.0.0/0 in
+-A ufw-user-input -p udp --dport 13 --sport 53 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Rules updated
+
+
+202: --dry-run delete allow to any port daytime from any port domain proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -8998,7 +8998,7 @@ COMMIT
 Rules updated
 
 
-214: --dry-run allow from 192.168.0.1 port 221,23,21,15:19,22 proto udp
+214: --dry-run allow from 192.168.0.1 port 221,23,21,15:19,13 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9019,8 +9019,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23,221 192.168.0.1 in
--A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23,221 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow udp any 0.0.0.0/0 13,15:19,21,23,221 192.168.0.1 in
+-A ufw-user-input -p udp -m multiport --sports 13,15:19,21,23,221 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 
@@ -9170,7 +9170,7 @@ COMMIT
 Rules updated
 
 
-218: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 to 192.168.0.2 port 24 proto udp
+218: --dry-run allow from 192.168.0.1 port 23,21,15:19,13 to 192.168.0.2 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9191,8 +9191,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24 192.168.0.2 15:19,21,22,23 192.168.0.1 in
--A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow udp 24 192.168.0.2 13,15:19,21,23 192.168.0.1 in
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 13,15:19,21,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 
@@ -9342,7 +9342,7 @@ COMMIT
 Rules updated
 
 
-222: --dry-run allow from 192.168.0.1 port 23,21,15:19,22 to 192.168.0.2 port 24:26 proto udp
+222: --dry-run allow from 192.168.0.1 port 23,21,15:19,13 to 192.168.0.2 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9363,8 +9363,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24:26 192.168.0.2 15:19,21,22,23 192.168.0.1 in
--A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
+### tuple ### allow udp 24:26 192.168.0.2 13,15:19,21,23 192.168.0.1 in
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 13,15:19,21,23 -d 192.168.0.2 -s 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 
@@ -9514,7 +9514,7 @@ COMMIT
 Rules updated
 
 
-226: --dry-run allow to 192.168.0.1 port 221,23,21,15:19,22 proto udp
+226: --dry-run allow to 192.168.0.1 port 221,23,21,15:19,13 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9535,8 +9535,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23,221 192.168.0.1 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23,221 -d 192.168.0.1 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23,221 192.168.0.1 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23,221 -d 192.168.0.1 -j ACCEPT
 
 ### END RULES ###
 
@@ -9686,7 +9686,7 @@ COMMIT
 Rules updated
 
 
-230: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 from 192.168.0.2 port 24 proto udp
+230: --dry-run allow to 192.168.0.1 port 23,21,15:19,13 from 192.168.0.2 port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9707,8 +9707,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 192.168.0.1 24 192.168.0.2 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23 192.168.0.1 24 192.168.0.2 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 
@@ -9858,7 +9858,7 @@ COMMIT
 Rules updated
 
 
-234: --dry-run allow to 192.168.0.1 port 23,21,15:19,22 from 192.168.0.2 port 24:26 proto udp
+234: --dry-run allow to 192.168.0.1 port 23,21,15:19,13 from 192.168.0.2 port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -9879,8 +9879,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 192.168.0.1 24:26 192.168.0.2 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23 192.168.0.1 24:26 192.168.0.2 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24:26 -d 192.168.0.1 -s 192.168.0.2 -j ACCEPT
 
 ### END RULES ###
 
@@ -10030,7 +10030,7 @@ COMMIT
 Rules updated
 
 
-238: --dry-run allow from any port 221,23,21,15:19,22 proto udp
+238: --dry-run allow from any port 221,23,21,15:19,13 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10051,8 +10051,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp any 0.0.0.0/0 15:19,21,22,23,221 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --sports 15:19,21,22,23,221 -j ACCEPT
+### tuple ### allow udp any 0.0.0.0/0 13,15:19,21,23,221 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --sports 13,15:19,21,23,221 -j ACCEPT
 
 ### END RULES ###
 
@@ -10202,7 +10202,7 @@ COMMIT
 Rules updated
 
 
-242: --dry-run allow from any port 23,21,15:19,22 to any port 24 proto udp
+242: --dry-run allow from any port 23,21,15:19,13 to any port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10223,8 +10223,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 15:19,21,22,23 -j ACCEPT
+### tuple ### allow udp 24 0.0.0.0/0 13,15:19,21,23 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 24 -m multiport --sports 13,15:19,21,23 -j ACCEPT
 
 ### END RULES ###
 
@@ -10374,7 +10374,7 @@ COMMIT
 Rules updated
 
 
-246: --dry-run allow from any port 23,21,15:19,22 to any port 24:26 proto udp
+246: --dry-run allow from any port 23,21,15:19,13 to any port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10395,8 +10395,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 24:26 0.0.0.0/0 15:19,21,22,23 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 15:19,21,22,23 -j ACCEPT
+### tuple ### allow udp 24:26 0.0.0.0/0 13,15:19,21,23 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 24:26 -m multiport --sports 13,15:19,21,23 -j ACCEPT
 
 ### END RULES ###
 
@@ -10546,7 +10546,7 @@ COMMIT
 Rules updated
 
 
-250: --dry-run allow to any port 221,23,21,15:19,22 proto udp
+250: --dry-run allow to any port 221,23,21,15:19,13 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10567,8 +10567,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23,221 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23,221 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23,221 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23,221 -j ACCEPT
 
 ### END RULES ###
 
@@ -10718,7 +10718,7 @@ COMMIT
 Rules updated
 
 
-254: --dry-run allow to any port 23,21,15:19,22 from any port 24 proto udp
+254: --dry-run allow to any port 23,21,15:19,13 from any port 24 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10739,8 +10739,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 24 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24 -j ACCEPT
 
 ### END RULES ###
 
@@ -10890,7 +10890,7 @@ COMMIT
 Rules updated
 
 
-258: --dry-run allow to any port 23,21,15:19,22 from any port 24:26 proto udp
+258: --dry-run allow to any port 23,21,15:19,13 from any port 24:26 proto udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -10911,8 +10911,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 24:26 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m multiport --sports 24:26 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 24:26 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m multiport --sports 24:26 -j ACCEPT
 
 ### END RULES ###
 
@@ -11062,7 +11062,7 @@ COMMIT
 Rules updated
 
 
-262: --dry-run allow 23,21,15:19,22/tcp
+262: --dry-run allow 23,21,15:19,13/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -11083,8 +11083,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ACCEPT
+### tuple ### allow tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j ACCEPT
 
 ### END RULES ###
 
@@ -11277,7 +11277,7 @@ COMMIT
 Rules updated
 
 
-267: --dry-run allow 23,21,15:19,22/udp
+267: --dry-run allow 23,21,15:19,13/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -11298,8 +11298,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### allow udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ACCEPT
+### tuple ### allow udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j ACCEPT
 
 ### END RULES ###
 
@@ -11492,7 +11492,7 @@ COMMIT
 Rules updated
 
 
-272: --dry-run deny 23,21,15:19,22/tcp
+272: --dry-run deny 23,21,15:19,13/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -11513,8 +11513,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j DROP
+### tuple ### deny tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j DROP
 
 ### END RULES ###
 
@@ -11707,7 +11707,7 @@ COMMIT
 Rules updated
 
 
-277: --dry-run deny 23,21,15:19,22/udp
+277: --dry-run deny 23,21,15:19,13/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -11728,8 +11728,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### deny udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j DROP
+### tuple ### deny udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j DROP
 
 ### END RULES ###
 
@@ -11928,7 +11928,7 @@ COMMIT
 Rules updated
 
 
-282: --dry-run limit 23,21,15:19,22/tcp
+282: --dry-run limit 23,21,15:19,13/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -11949,10 +11949,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
+### tuple ### limit tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j ufw-user-limit-accept
 
 ### END RULES ###
 
@@ -12153,7 +12153,7 @@ COMMIT
 Rules updated
 
 
-287: --dry-run limit 23,21,15:19,22/udp
+287: --dry-run limit 23,21,15:19,13/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -12174,10 +12174,10 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### limit udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j ufw-user-limit-accept
+### tuple ### limit udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j ufw-user-limit-accept
 
 ### END RULES ###
 
@@ -12498,7 +12498,7 @@ COMMIT
 Rules updated
 
 
-295: --dry-run reject 23,21,15:19,22/tcp
+295: --dry-run reject 23,21,15:19,13/tcp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -12519,8 +12519,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject tcp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp -m multiport --dports 15:19,21,22,23 -j REJECT --reject-with tcp-reset
+### tuple ### reject tcp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp -m multiport --dports 13,15:19,21,23 -j REJECT --reject-with tcp-reset
 
 ### END RULES ###
 
@@ -12584,7 +12584,7 @@ COMMIT
 Rules updated
 
 
-297: --dry-run reject 23,21,15:19,22/udp
+297: --dry-run reject 23,21,15:19,13/udp
 WARN: Checks disabled
 *filter
 :ufw-user-input - [0:0]
@@ -12605,8 +12605,8 @@ WARN: Checks disabled
 :ufw-user-limit-accept - [0:0]
 ### RULES ###
 
-### tuple ### reject udp 15:19,21,22,23 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p udp -m multiport --dports 15:19,21,22,23 -j REJECT
+### tuple ### reject udp 13,15:19,21,23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p udp -m multiport --dports 13,15:19,21,23 -j REJECT
 
 ### END RULES ###
 
@@ -12671,7 +12671,7 @@ Rules updated
 
 
 Insert
-299: allow 22
+299: allow 13
 
 
 300: allow 23
@@ -12722,9 +12722,9 @@ Insert
 -A ufw-user-input -p tcp --dport 9999 -j ACCEPT
 -A ufw-user-input -p udp --dport 9999 -j ACCEPT
 
-### tuple ### allow any 22 0.0.0.0/0 any 0.0.0.0/0 in
--A ufw-user-input -p tcp --dport 22 -j ACCEPT
--A ufw-user-input -p udp --dport 22 -j ACCEPT
+### tuple ### allow any 13 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 13 -j ACCEPT
+-A ufw-user-input -p udp --dport 13 -j ACCEPT
 
 ### tuple ### allow any 23 0.0.0.0/0 any 0.0.0.0/0 in
 -A ufw-user-input -p tcp --dport 23 -j ACCEPT
@@ -12746,7 +12746,7 @@ Insert
 -A ufw-user-limit-accept -j ACCEPT
 ### END RATE LIMITING ###
 COMMIT
-304: delete allow 22
+304: delete allow 13
 
 
 305: delete allow 23
@@ -12804,7 +12804,7 @@ Interfaces
 310: allow in on eth0
 
 
-311: allow in on eth0 to 192.168.0.1 port 22
+311: allow in on eth0 to 192.168.0.1 port 13
 
 
 312: allow in on eth0 from 10.0.0.1 port 80
@@ -12813,16 +12813,16 @@ Interfaces
 313: allow in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-314: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+314: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 315: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-316: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+316: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-317: allow in on eth0 to 192.168.0.1 port 22 proto tcp
+317: allow in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 318: allow in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -12831,13 +12831,13 @@ Interfaces
 319: allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-320: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+320: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 321: allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-322: allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+322: allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -12862,9 +12862,9 @@ Interfaces
 ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j ACCEPT
 
-### tuple ### allow any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -j ACCEPT
+### tuple ### allow any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j ACCEPT
 
 ### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
@@ -12873,20 +12873,20 @@ Interfaces
 ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
 
-### tuple ### allow any 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+### tuple ### allow any 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
 
 ### tuple ### allow any any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
 
-### tuple ### allow any 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+### tuple ### allow any 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
 
-### tuple ### allow tcp 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
+### tuple ### allow tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
 
 ### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
@@ -12894,14 +12894,14 @@ Interfaces
 ### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
 
-### tuple ### allow udp 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+### tuple ### allow udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
 
 ### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
 
-### tuple ### allow udp 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+### tuple ### allow udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 
@@ -12922,7 +12922,7 @@ COMMIT
 323: delete allow in on eth0
 
 
-324: delete allow in on eth0 to 192.168.0.1 port 22
+324: delete allow in on eth0 to 192.168.0.1 port 13
 
 
 325: delete allow in on eth0 from 10.0.0.1 port 80
@@ -12931,16 +12931,16 @@ COMMIT
 326: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-327: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+327: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 328: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-329: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+329: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-330: delete allow in on eth0 to 192.168.0.1 port 22 proto tcp
+330: delete allow in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 331: delete allow in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -12949,13 +12949,13 @@ COMMIT
 332: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-333: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+333: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 334: delete allow in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-335: delete allow in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+335: delete allow in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -12996,7 +12996,7 @@ COMMIT
 336: deny in on eth0
 
 
-337: deny in on eth0 to 192.168.0.1 port 22
+337: deny in on eth0 to 192.168.0.1 port 13
 
 
 338: deny in on eth0 from 10.0.0.1 port 80
@@ -13005,16 +13005,16 @@ COMMIT
 339: deny in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-340: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+340: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 341: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-342: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+342: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-343: deny in on eth0 to 192.168.0.1 port 22 proto tcp
+343: deny in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 344: deny in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13023,13 +13023,13 @@ COMMIT
 345: deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-346: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+346: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 347: deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-348: deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+348: deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13054,9 +13054,9 @@ COMMIT
 ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j DROP
 
-### tuple ### deny any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -j DROP
+### tuple ### deny any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j DROP
 
 ### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
@@ -13065,20 +13065,20 @@ COMMIT
 ### tuple ### deny any any 192.168.0.1 any 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
 
-### tuple ### deny any 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+### tuple ### deny any 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
 
 ### tuple ### deny any any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
 
-### tuple ### deny any 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+### tuple ### deny any 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
 
-### tuple ### deny tcp 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
+### tuple ### deny tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
 
 ### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
@@ -13086,14 +13086,14 @@ COMMIT
 ### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
 
-### tuple ### deny udp 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+### tuple ### deny udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
 
 ### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
 
-### tuple ### deny udp 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+### tuple ### deny udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
 
 ### END RULES ###
 
@@ -13114,7 +13114,7 @@ COMMIT
 349: delete deny in on eth0
 
 
-350: delete deny in on eth0 to 192.168.0.1 port 22
+350: delete deny in on eth0 to 192.168.0.1 port 13
 
 
 351: delete deny in on eth0 from 10.0.0.1 port 80
@@ -13123,16 +13123,16 @@ COMMIT
 352: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-353: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+353: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 354: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-355: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+355: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-356: delete deny in on eth0 to 192.168.0.1 port 22 proto tcp
+356: delete deny in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 357: delete deny in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13141,13 +13141,13 @@ COMMIT
 358: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-359: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+359: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 360: delete deny in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-361: delete deny in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+361: delete deny in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13188,7 +13188,7 @@ COMMIT
 362: limit in on eth0
 
 
-363: limit in on eth0 to 192.168.0.1 port 22
+363: limit in on eth0 to 192.168.0.1 port 13
 
 
 364: limit in on eth0 from 10.0.0.1 port 80
@@ -13197,16 +13197,16 @@ COMMIT
 365: limit in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-366: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+366: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 367: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-368: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+368: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-369: limit in on eth0 to 192.168.0.1 port 22 proto tcp
+369: limit in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 370: limit in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13215,13 +13215,13 @@ COMMIT
 371: limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-372: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+372: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 373: limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-374: limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+374: limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13248,13 +13248,13 @@ COMMIT
 -A ufw-user-input -i eth0 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -i eth0 -j ufw-user-limit-accept
 
-### tuple ### limit any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+### tuple ### limit any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
 
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
@@ -13269,13 +13269,13 @@ COMMIT
 -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
 
-### tuple ### limit any 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+### tuple ### limit any 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
 
 ### tuple ### limit any any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
@@ -13285,18 +13285,18 @@ COMMIT
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
-### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+### tuple ### limit any 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
-### tuple ### limit tcp 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+### tuple ### limit tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
 
 ### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
@@ -13308,20 +13308,20 @@ COMMIT
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
 
-### tuple ### limit udp 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+### tuple ### limit udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
 
 ### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
-### tuple ### limit udp 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+### tuple ### limit udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
 ### END RULES ###
 
@@ -13342,7 +13342,7 @@ COMMIT
 375: delete limit in on eth0
 
 
-376: delete limit in on eth0 to 192.168.0.1 port 22
+376: delete limit in on eth0 to 192.168.0.1 port 13
 
 
 377: delete limit in on eth0 from 10.0.0.1 port 80
@@ -13351,16 +13351,16 @@ COMMIT
 378: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-379: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+379: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 380: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-381: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+381: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-382: delete limit in on eth0 to 192.168.0.1 port 22 proto tcp
+382: delete limit in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 383: delete limit in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13369,13 +13369,13 @@ COMMIT
 384: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-385: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+385: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 386: delete limit in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-387: delete limit in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+387: delete limit in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13416,7 +13416,7 @@ COMMIT
 388: reject in on eth0
 
 
-389: reject in on eth0 to 192.168.0.1 port 22
+389: reject in on eth0 to 192.168.0.1 port 13
 
 
 390: reject in on eth0 from 10.0.0.1 port 80
@@ -13425,16 +13425,16 @@ COMMIT
 391: reject in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-392: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+392: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 393: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-394: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+394: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-395: reject in on eth0 to 192.168.0.1 port 22 proto tcp
+395: reject in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 396: reject in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13443,13 +13443,13 @@ COMMIT
 397: reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-398: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+398: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 399: reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-400: reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+400: reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13474,9 +13474,9 @@ COMMIT
 ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 in_eth0
 -A ufw-user-input -i eth0 -j REJECT
 
-### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -j REJECT
+### tuple ### reject any 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -j REJECT
 
 ### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
@@ -13485,20 +13485,20 @@ COMMIT
 ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
 
-### tuple ### reject any 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT
+### tuple ### reject any 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
 
 ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 
-### tuple ### reject any 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT
+### tuple ### reject any 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
 
-### tuple ### reject tcp 22 192.168.0.1 any 0.0.0.0/0 in_eth0
--A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
+### tuple ### reject tcp 13 192.168.0.1 any 0.0.0.0/0 in_eth0
+-A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
 
 ### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
@@ -13506,14 +13506,14 @@ COMMIT
 ### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
 
-### tuple ### reject udp 22 192.168.0.1 any 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT
+### tuple ### reject udp 13 192.168.0.1 any 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
 
 ### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 in_eth0
 -A ufw-user-input -i eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 
-### tuple ### reject udp 22 192.168.0.1 80 10.0.0.1 in_eth0
--A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT
+### tuple ### reject udp 13 192.168.0.1 80 10.0.0.1 in_eth0
+-A ufw-user-input -i eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
 
 ### END RULES ###
 
@@ -13534,7 +13534,7 @@ COMMIT
 401: delete reject in on eth0
 
 
-402: delete reject in on eth0 to 192.168.0.1 port 22
+402: delete reject in on eth0 to 192.168.0.1 port 13
 
 
 403: delete reject in on eth0 from 10.0.0.1 port 80
@@ -13543,16 +13543,16 @@ COMMIT
 404: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-405: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+405: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 406: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-407: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+407: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-408: delete reject in on eth0 to 192.168.0.1 port 22 proto tcp
+408: delete reject in on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 409: delete reject in on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13561,13 +13561,13 @@ COMMIT
 410: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-411: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+411: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 412: delete reject in on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-413: delete reject in on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+413: delete reject in on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13690,7 +13690,7 @@ COMMIT
 417: allow out on eth0
 
 
-418: allow out on eth0 to 192.168.0.1 port 22
+418: allow out on eth0 to 192.168.0.1 port 13
 
 
 419: allow out on eth0 from 10.0.0.1 port 80
@@ -13699,16 +13699,16 @@ COMMIT
 420: allow out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-421: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+421: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 422: allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-423: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+423: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-424: allow out on eth0 to 192.168.0.1 port 22 proto tcp
+424: allow out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 425: allow out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13717,13 +13717,13 @@ COMMIT
 426: allow out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-427: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+427: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 428: allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-429: allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+429: allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13748,9 +13748,9 @@ COMMIT
 ### tuple ### allow any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
 -A ufw-user-output -o eth0 -j ACCEPT
 
-### tuple ### allow any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j ACCEPT
+### tuple ### allow any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j ACCEPT
 
 ### tuple ### allow any any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
@@ -13759,20 +13759,20 @@ COMMIT
 ### tuple ### allow any any 192.168.0.1 any 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
 
-### tuple ### allow any 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+### tuple ### allow any 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
 
 ### tuple ### allow any any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
 
-### tuple ### allow any 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+### tuple ### allow any 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
 
-### tuple ### allow tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ACCEPT
+### tuple ### allow tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ACCEPT
 
 ### tuple ### allow tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j ACCEPT
@@ -13780,14 +13780,14 @@ COMMIT
 ### tuple ### allow tcp any 192.168.0.1 any 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ACCEPT
 
-### tuple ### allow udp 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ACCEPT
+### tuple ### allow udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ACCEPT
 
 ### tuple ### allow udp any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ACCEPT
 
-### tuple ### allow udp 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ACCEPT
+### tuple ### allow udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ACCEPT
 
 ### END RULES ###
 
@@ -13808,7 +13808,7 @@ COMMIT
 430: delete allow out on eth0
 
 
-431: delete allow out on eth0 to 192.168.0.1 port 22
+431: delete allow out on eth0 to 192.168.0.1 port 13
 
 
 432: delete allow out on eth0 from 10.0.0.1 port 80
@@ -13817,16 +13817,16 @@ COMMIT
 433: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-434: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+434: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 435: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-436: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+436: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-437: delete allow out on eth0 to 192.168.0.1 port 22 proto tcp
+437: delete allow out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 438: delete allow out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13835,13 +13835,13 @@ COMMIT
 439: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-440: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+440: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 441: delete allow out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-442: delete allow out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+442: delete allow out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13882,7 +13882,7 @@ COMMIT
 443: deny out on eth0
 
 
-444: deny out on eth0 to 192.168.0.1 port 22
+444: deny out on eth0 to 192.168.0.1 port 13
 
 
 445: deny out on eth0 from 10.0.0.1 port 80
@@ -13891,16 +13891,16 @@ COMMIT
 446: deny out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-447: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+447: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 448: deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-449: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+449: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-450: deny out on eth0 to 192.168.0.1 port 22 proto tcp
+450: deny out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 451: deny out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -13909,13 +13909,13 @@ COMMIT
 452: deny out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-453: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+453: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 454: deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-455: deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+455: deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -13940,9 +13940,9 @@ COMMIT
 ### tuple ### deny any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
 -A ufw-user-output -o eth0 -j DROP
 
-### tuple ### deny any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j DROP
+### tuple ### deny any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j DROP
 
 ### tuple ### deny any any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
@@ -13951,20 +13951,20 @@ COMMIT
 ### tuple ### deny any any 192.168.0.1 any 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j DROP
 
-### tuple ### deny any 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+### tuple ### deny any 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
 
 ### tuple ### deny any any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
 
-### tuple ### deny any 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+### tuple ### deny any 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
 
-### tuple ### deny tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j DROP
+### tuple ### deny tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j DROP
 
 ### tuple ### deny tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j DROP
@@ -13972,14 +13972,14 @@ COMMIT
 ### tuple ### deny tcp any 192.168.0.1 any 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j DROP
 
-### tuple ### deny udp 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j DROP
+### tuple ### deny udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j DROP
 
 ### tuple ### deny udp any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j DROP
 
-### tuple ### deny udp 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j DROP
+### tuple ### deny udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j DROP
 
 ### END RULES ###
 
@@ -14000,7 +14000,7 @@ COMMIT
 456: delete deny out on eth0
 
 
-457: delete deny out on eth0 to 192.168.0.1 port 22
+457: delete deny out on eth0 to 192.168.0.1 port 13
 
 
 458: delete deny out on eth0 from 10.0.0.1 port 80
@@ -14009,16 +14009,16 @@ COMMIT
 459: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-460: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+460: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 461: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-462: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+462: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-463: delete deny out on eth0 to 192.168.0.1 port 22 proto tcp
+463: delete deny out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 464: delete deny out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -14027,13 +14027,13 @@ COMMIT
 465: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-466: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+466: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 467: delete deny out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-468: delete deny out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+468: delete deny out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -14074,7 +14074,7 @@ COMMIT
 469: limit out on eth0
 
 
-470: limit out on eth0 to 192.168.0.1 port 22
+470: limit out on eth0 to 192.168.0.1 port 13
 
 
 471: limit out on eth0 from 10.0.0.1 port 80
@@ -14083,16 +14083,16 @@ COMMIT
 472: limit out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-473: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+473: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 474: limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-475: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+475: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-476: limit out on eth0 to 192.168.0.1 port 22 proto tcp
+476: limit out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 477: limit out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -14101,13 +14101,13 @@ COMMIT
 478: limit out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-479: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+479: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 480: limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-481: limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+481: limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -14134,13 +14134,13 @@ COMMIT
 -A ufw-user-output -o eth0 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-output -o eth0 -j ufw-user-limit-accept
 
-### tuple ### limit any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+### tuple ### limit any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
 
 ### tuple ### limit any any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
@@ -14155,13 +14155,13 @@ COMMIT
 -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
 
-### tuple ### limit any 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+### tuple ### limit any 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
 
 ### tuple ### limit any any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
@@ -14171,18 +14171,18 @@ COMMIT
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
-### tuple ### limit any 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+### tuple ### limit any 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
-### tuple ### limit tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j ufw-user-limit-accept
+### tuple ### limit tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j ufw-user-limit-accept
 
 ### tuple ### limit tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
@@ -14194,20 +14194,20 @@ COMMIT
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j ufw-user-limit-accept
 
-### tuple ### limit udp 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j ufw-user-limit-accept
+### tuple ### limit udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j ufw-user-limit-accept
 
 ### tuple ### limit udp any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
-### tuple ### limit udp 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
+### tuple ### limit udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 6 -j ufw-user-limit
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j ufw-user-limit-accept
 
 ### END RULES ###
 
@@ -14228,7 +14228,7 @@ COMMIT
 482: delete limit out on eth0
 
 
-483: delete limit out on eth0 to 192.168.0.1 port 22
+483: delete limit out on eth0 to 192.168.0.1 port 13
 
 
 484: delete limit out on eth0 from 10.0.0.1 port 80
@@ -14237,16 +14237,16 @@ COMMIT
 485: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-486: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+486: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 487: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-488: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+488: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-489: delete limit out on eth0 to 192.168.0.1 port 22 proto tcp
+489: delete limit out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 490: delete limit out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -14255,13 +14255,13 @@ COMMIT
 491: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-492: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+492: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 493: delete limit out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-494: delete limit out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+494: delete limit out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -14302,7 +14302,7 @@ COMMIT
 495: reject out on eth0
 
 
-496: reject out on eth0 to 192.168.0.1 port 22
+496: reject out on eth0 to 192.168.0.1 port 13
 
 
 497: reject out on eth0 from 10.0.0.1 port 80
@@ -14311,16 +14311,16 @@ COMMIT
 498: reject out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-499: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+499: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 500: reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-501: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+501: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-502: reject out on eth0 to 192.168.0.1 port 22 proto tcp
+502: reject out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 503: reject out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -14329,13 +14329,13 @@ COMMIT
 504: reject out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-505: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+505: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 506: reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-507: reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+507: reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -14360,9 +14360,9 @@ COMMIT
 ### tuple ### reject any any 0.0.0.0/0 any 0.0.0.0/0 out_eth0
 -A ufw-user-output -o eth0 -j REJECT
 
-### tuple ### reject any 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -j REJECT
+### tuple ### reject any 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -j REJECT
 
 ### tuple ### reject any any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
@@ -14371,20 +14371,20 @@ COMMIT
 ### tuple ### reject any any 192.168.0.1 any 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -d 192.168.0.1 -s 10.0.0.1 -j REJECT
 
-### tuple ### reject any 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT
+### tuple ### reject any 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
 
 ### tuple ### reject any any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 
-### tuple ### reject any 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT
+### tuple ### reject any 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
 
-### tuple ### reject tcp 22 192.168.0.1 any 0.0.0.0/0 out_eth0
--A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 22 -j REJECT --reject-with tcp-reset
+### tuple ### reject tcp 13 192.168.0.1 any 0.0.0.0/0 out_eth0
+-A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 --dport 13 -j REJECT --reject-with tcp-reset
 
 ### tuple ### reject tcp any 0.0.0.0/0 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -s 10.0.0.1 --sport 80 -j REJECT --reject-with tcp-reset
@@ -14392,14 +14392,14 @@ COMMIT
 ### tuple ### reject tcp any 192.168.0.1 any 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p tcp -d 192.168.0.1 -s 10.0.0.1 -j REJECT --reject-with tcp-reset
 
-### tuple ### reject udp 22 192.168.0.1 any 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 -j REJECT
+### tuple ### reject udp 13 192.168.0.1 any 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 -j REJECT
 
 ### tuple ### reject udp any 192.168.0.1 80 10.0.0.1 out_eth0
 -A ufw-user-output -o eth0 -p udp -d 192.168.0.1 -s 10.0.0.1 --sport 80 -j REJECT
 
-### tuple ### reject udp 22 192.168.0.1 80 10.0.0.1 out_eth0
--A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 22 -s 10.0.0.1 --sport 80 -j REJECT
+### tuple ### reject udp 13 192.168.0.1 80 10.0.0.1 out_eth0
+-A ufw-user-output -o eth0 -p udp -d 192.168.0.1 --dport 13 -s 10.0.0.1 --sport 80 -j REJECT
 
 ### END RULES ###
 
@@ -14420,7 +14420,7 @@ COMMIT
 508: delete reject out on eth0
 
 
-509: delete reject out on eth0 to 192.168.0.1 port 22
+509: delete reject out on eth0 to 192.168.0.1 port 13
 
 
 510: delete reject out on eth0 from 10.0.0.1 port 80
@@ -14429,16 +14429,16 @@ COMMIT
 511: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1
 
 
-512: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1
+512: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1
 
 
 513: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80
 
 
-514: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80
+514: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80
 
 
-515: delete reject out on eth0 to 192.168.0.1 port 22 proto tcp
+515: delete reject out on eth0 to 192.168.0.1 port 13 proto tcp
 
 
 516: delete reject out on eth0 from 10.0.0.1 port 80 proto tcp
@@ -14447,13 +14447,13 @@ COMMIT
 517: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 proto tcp
 
 
-518: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 proto udp
+518: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 proto udp
 
 
 519: delete reject out on eth0 to 192.168.0.1 from 10.0.0.1 port 80 proto udp
 
 
-520: delete reject out on eth0 to 192.168.0.1 port 22 from 10.0.0.1 port 80 proto udp
+520: delete reject out on eth0 to 192.168.0.1 port 13 from 10.0.0.1 port 80 proto udp
 
 
 *filter
@@ -14838,17 +14838,17 @@ Interface with '+'
 
 
 Comments
-531: allow 2222/tcp comment 'SSH port'
+531: allow 2222/tcp comment "SSH port"
 WARN: Checks disabled
 Rules updated
 
 
-532: deny out log-all to any port 53 from any proto udp comment 'dns port'
+532: deny out log-all to any port 53 from any proto udp comment "dns port"
 WARN: Checks disabled
 Rules updated
 
 
-533: delete deny out log-all to any port 53 from any proto udp comment 'dns port'
+533: delete deny out log-all to any port 53 from any proto udp comment "dns port"
 WARN: Checks disabled
 Rules updated
 
@@ -14856,6 +14856,274 @@ Rules updated
 534: delete allow 2222/tcp
 WARN: Checks disabled
 Rules updated
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Prepend
+535: allow 22/tcp
+
+
+536: allow from 1.2.3.4
+
+
+537: prepend deny from 6.7.8.9
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny any any 0.0.0.0/0 any 6.7.8.9 in
+-A ufw-user-input -s 6.7.8.9 -j DROP
+
+### tuple ### allow tcp 22 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 22 -j ACCEPT
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+538: delete allow 22/tcp
+
+
+539: delete allow from 1.2.3.4
+
+
+540: delete deny from 6.7.8.9
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Prepend (no rules)
+541: prepend allow from 1.2.3.4
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+542: delete allow from 1.2.3.4
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+Prepend (multi rules)
+543: allow from 1.2.3.4
+
+
+544: prepend deny 23
+
+
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### deny any 23 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 23 -j DROP
+-A ufw-user-input -p udp --dport 23 -j DROP
+
+### tuple ### allow any any 0.0.0.0/0 any 1.2.3.4 in
+-A ufw-user-input -s 1.2.3.4 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+545: delete allow from 1.2.3.4
+
+
+546: delete deny 23
 
 
 *filter
