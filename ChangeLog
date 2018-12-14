@@ -3,6 +3,7 @@ ufw (0.36) UNRELEASED; urgency=medium
   * doc/ufw-framework.8:
     - fix path for user[6].rules
     - reference nf_conntrack_sane
+    - fix syntax error in example rule (LP: #1782384)
   * snap packaging:
     - adjust snappy packaging for series 16 and to use snapcraft
     - add bash completer to snap packaging

@@ -172,7 +172,7 @@ Add to the end of #CONFIG_PREFIX#/ufw/before.rules, after the *filter section:
 If your firewall is using IPv6 tunnels or 6to4 and is also doing NAT, then you should not usually masquerade protocol '41' (ipv6) packets. For example, instead of the above, #CONFIG_PREFIX#/ufw/before.rules can be adjusted to have:
  *nat
  :POSTROUTING ACCEPT [0:0]
- \-A POSTROUTING \-s 10.0.0.0/8 \-\-protocol ! 41 \-o eth0 \-j MASQUERADE
+ \-A POSTROUTING \-s 10.0.0.0/8 ! \-\-protocol 41 \-o eth0 \-j MASQUERADE
  COMMIT
 .TP
 Add the \fBufw route\fR to allow the traffic:
