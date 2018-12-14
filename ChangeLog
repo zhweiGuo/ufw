@@ -10,8 +10,10 @@ ufw (0.36) UNRELEASED; urgency=medium
   * doc/ufw-on-snappy.8: update for series 16
   * src/backend_iptables.py: properly calculate the path to state_dir when
     specifying --rootdir and --datadir (ie, fix regression in 0.35 final)
-  * conf/before6.rules: adjust ufw6-before-output rules for echo-reply and
-    echo-request (LP: #1633698)
+  * conf/before6.rules:
+    - adjust ufw6-before-output rules for echo-reply and echo-request
+      (LP: #1633698)
+    - move echo-reply for ufw6-before-input before INVALID (LP: #1664133)
   * conf/ufw.defaults: mention nf_conntrack_sane
   * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
     everywhere and adjust to use daytime/port 13 instead of http/port 80 and
