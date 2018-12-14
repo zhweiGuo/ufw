@@ -14,7 +14,8 @@ ufw (0.36) UNRELEASED; urgency=medium
   * conf/before6.rules:
     - adjust ufw6-before-output rules for echo-reply and echo-request
       (LP: #1633698)
-    - move echo-reply for ufw6-before-input before INVALID (LP: #1664133)
+    - move echo-reply for ufw6-before-input before INVALID (LP: #1664133,
+      LP: #1509725)
   * conf/ufw.defaults: mention nf_conntrack_sane
   * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
     everywhere and adjust to use daytime/port 13 instead of http/port 80 and
@@ -29,7 +30,8 @@ ufw (0.36) UNRELEASED; urgency=medium
     - don't allow interfaces longer than 15 characters
   * shell-completion/bash: use _have() instead of have(). Thanks to Andrew
     Nowak and Paulo Marcel Coelho Aragao (LP: #1775043)
-  * support concurrent updates (LP: #1204579, LP: #1652163, Closes: 686248)
+  * support concurrent updates (LP: #1204579, LP: #1652163, LP: #1377600,
+    Closes: 686248)
   * add 'prepend' command to better support IPS (fail2ban, etc. LP: #1368411,
     LP: #1586258, Closes: 909163)
   * backend.py: only warn if initcaps() fails is disabled (Closes: 884932)
