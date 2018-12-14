@@ -32,6 +32,7 @@ ufw (0.36) UNRELEASED; urgency=medium
   * add 'prepend' command to better support IPS (fail2ban, etc. LP: #1368411,
     LP: #1586258, Closes: 909163)
   * backend.py: only warn if initcaps() fails is disabled (Closes: 884932)
+  * conf/before.rules: remove extraneous source quench rule (LP: #1558068)
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 12 Dec 2018 16:58:24 -0600
 
