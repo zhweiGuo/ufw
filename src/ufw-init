@@ -20,12 +20,12 @@ set -e
 
 # FIXME: this shouldn't be ordered
 rootdir=
-if [ "$1" = "--rootdir" ] && [ -s "$2" ]; then
+if [ "$1" = "--rootdir" ] && [ -n "$2" ]; then
     rootdir="$2/" # ensure trailing slash
     shift 2
 fi
 datadir=
-if [ "$1" = "--datadir" ] && [ -s "$2" ]; then
+if [ "$1" = "--datadir" ] && [ -n "$2" ]; then
     datadir="$2/" # ensure trailing slash
     shift 2
 fi
