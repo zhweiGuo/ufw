@@ -45,7 +45,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         files['rules6'] = os.path.join(config_dir, 'ufw/user6.rules')
         files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
         files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
-        files['init'] = os.path.join(state_dir, 'ufw-init')
+        # when rootdir/datadir are not set, ufw-init is in the same area as
+        # the lock files (ufw.common.state_dir, aka /lib/ufw), but when set,
+        # ufw-init is in rootdir/lib/ufw (ro) and the lockfiles in
+        # datadir/lib/ufw (rw)
+        files['init'] = os.path.join(_findpath(ufw.common.state_dir, rootdir),
+                                     'ufw-init')
 
         ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files,
                                         rootdir=rootdir, datadir=datadir)
