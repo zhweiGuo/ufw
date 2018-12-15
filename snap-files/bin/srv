@@ -40,10 +40,12 @@ copy_if_same() {
     fi
 }
 
-# First run, none of this exists, so just copy over wholesale
-if [ ! -e "$SNAP_DATA/lib" ]; then
-    cp -fr --preserve=mode "$SNAP/lib" "$SNAP_DATA"
+# Create the lockfile directory
+if [ ! -e "$SNAP_DATA/lib/ufw" ]; then
+    mkdir -p "$SNAP_DATA/lib/ufw"
 fi
+
+# First run, none of this exists, so just copy over wholesale
 if [ ! -e "$SNAP_DATA/etc" ]; then
     cp -fr --preserve=mode "$SNAP/etc" "$SNAP_DATA"
     chmod 640 "$SNAP_DATA"/etc/ufw/*.rules
