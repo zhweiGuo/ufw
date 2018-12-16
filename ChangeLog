@@ -1,7 +1,14 @@
 ufw (0.37) UNRELEASED; urgency=medium
 
-  * ufw-init: use '-n' instead of '-s' with --rootdir and --datadir
-    (LP: #1808463)
+  * snap packaging updates:
+    - ufw-init: use '-n' instead of '-s' with --rootdir and --datadir
+      (LP: #1808463)
+    - backend_iptables.py: ufw-init is in --rootdir (which is SNAP, not
+      SNAP_DATA for the snap)
+    - snap-files/bin/srv:
+      + don't copy $SNAP/lib/ufw; create $SNAP_DATA/lib/ufw
+      + cleanup $SNAP_DATA after old snap revisions
+    - snap-files/bin/init: use SNAP_REVISION to match snap-files/bin/srv
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 15 Dec 2018 09:20:48 -0600
 
