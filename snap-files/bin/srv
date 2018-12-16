@@ -59,8 +59,6 @@ fi
 # First run, none of this exists, so just copy over wholesale
 if [ ! -e "$SNAP_DATA/etc" ]; then
     cp -fr --preserve=mode "$SNAP/etc" "$SNAP_DATA"
-    chmod 640 "$SNAP_DATA"/etc/ufw/*.rules
-    chmod 640 "$SNAP_DATA"/etc/ufw/*.init
 fi
 
 # migrate the old preserved location to the new
@@ -85,6 +83,10 @@ if [ ! -e "$upgrade_path" ]; then
     touch "$upgrade_path"
     upgraded="yes"
 fi
+
+# Ensure the ruleset is private
+chmod 640 "$SNAP_DATA"/etc/ufw/*.rules
+chmod 640 "$SNAP_DATA"/etc/ufw/*.init
 
 # Next, make sure these files are available for upgrade comparisons
 if [ -e "$prev_etc" ]; then
