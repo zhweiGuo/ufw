@@ -46,14 +46,18 @@ if [ ! -e "$SNAP_DATA/lib/ufw" ]; then
 fi
 
 # Cleanup after older ufw snaps. TODO: eventually drop this
-if [ -n "$SNAP_DATA" ] && [ -d "$SNAP_DATA/lib/xtables" ]; then
-    for i in "$SNAP_DATA"/lib/[a-z]* ; do
-        if [ "$i" != "$SNAP_DATA/lib/ufw" ]; then
-            rm -rf "$i"
-        fi
-    done
-    rm -f "$SNAP_DATA"/lib/ufw/ufw-init
-    rm -f "$SNAP_DATA"/lib/ufw/ufw-init-functions
+if [ -n "$SNAP_DATA" ]; then
+    if [ -d "$SNAP_DATA/lib/xtables" ]; then
+        for i in "$SNAP_DATA"/lib/[a-z]* ; do
+            if [ "$i" != "$SNAP_DATA/lib/ufw" ]; then
+                rm -rf "$i"
+            fi
+        done
+    fi
+    if [ -e "$SNAP_DATA/lib/ufw/ufw-init" ]; then
+        rm -f "$SNAP_DATA"/lib/ufw/ufw-init
+        rm -f "$SNAP_DATA"/lib/ufw/ufw-init-functions
+    fi
 fi
 
 # First run, none of this exists, so just copy over wholesale
