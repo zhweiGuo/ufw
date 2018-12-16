@@ -5,7 +5,7 @@ if [ -z "$SNAP" ]; then
     exit 1
 fi
 
-upgrade_path="$SNAP_DATA/.upgraded_${SNAP_VERSION}"
+upgrade_path="$SNAP_DATA/.upgraded_${SNAP_REVISION}"
 
 # ufw.srv will have already done this on install.
 if [ ! -e "$upgrade_path" ]; then
