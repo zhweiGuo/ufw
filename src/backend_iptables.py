@@ -37,7 +37,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         files = {}
         config_dir = _findpath(ufw.common.config_dir, datadir)
-        state_dir = _findpath(ufw.common.state_dir, datadir)
 
         files['rules'] = os.path.join(config_dir, 'ufw/user.rules')
         files['before_rules'] = os.path.join(config_dir, 'ufw/before.rules')
