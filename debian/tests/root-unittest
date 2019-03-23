@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+if ! ./run_tests.sh root -i python3 ; then
+    set
+    exit 1
+fi

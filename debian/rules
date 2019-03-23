@@ -7,7 +7,6 @@
 PYTHON  := /usr/bin/python3
 PYVERS  := $(shell py3versions -vr)
 PYTHON2 := /usr/bin/python2
-PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2 | sed -r -e 's/-.*//' -e 's/~rc/rc/')
 
 build-arch: build-stamp
 
@@ -33,9 +32,6 @@ install: build
 	dh_testroot
 	dh_prep
 	dh_installdirs
-
-	# make sure the version is in sync with our changelog
-	sed -i "s/^ufw_version = .*/ufw_version = '$(PKGVERS)'/" ./setup.py
 
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	./run_tests.sh -i $(PYTHON2)
