@@ -82,6 +82,7 @@ def run_setup():
     if os.path.exists(topdir):
         recursive_rm(topdir)
     os.mkdir(topdir)
+    # FIXME: this should either be configurable or at least try python3 first
     sp = subprocess.Popen(['python',
                            './setup.py',
                            'install',
