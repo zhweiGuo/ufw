@@ -20,4 +20,4 @@ $ cd <source dir>
 $ autopkgtest -BUl /tmp/ufw.log ./ ../binary/*.deb -- autopkgtest-virt-qemu ~/autopkgtests/autopkgtest-disco-amd64.img || echo "** AUTOPKGTESTS FAILED"
 
 # keep the VM up to date
-$ $ kvm -M pc -m 512 -smp 1 -monitor pty -nographic -hda ~/autopkgtests/autopkgtest-disco-amd64.img
+$ kvm -M pc -m 512 -smp 1 -monitor pty -nographic -hda ~/autopkgtests/autopkgtest-disco-amd64.img
