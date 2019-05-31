@@ -9,8 +9,10 @@ ufw (0.37) UNRELEASED; urgency=medium
       + don't copy $SNAP/lib/ufw; create $SNAP_DATA/lib/ufw
       + cleanup $SNAP_DATA after old snap revisions
     - snap-files/bin/init: use SNAP_REVISION to match snap-files/bin/srv
+  * update man page for limit since IPv6 has been supported since 0.33
+    (LP: #1831186)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 15 Dec 2018 09:20:48 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 31 May 2019 07:41:08 -0500
 
 ufw (0.36) RELEASED; urgency=medium
 
