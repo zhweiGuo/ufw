@@ -55,16 +55,23 @@ class BackendIptablesTestCase(unittest.TestCase):
         # update ufw-init-functions to use our fake iptables* commands
         f = os.path.join(ufw.common.state_dir, "ufw-init-functions")
         contents = ""
-        for line in open(f).readlines():
+        fd = open(f, 'r')
+        for line in fd.readlines():
             if re.search("^PATH=", line):
                 line = "#" + line
                 line += 'PATH="%s:%s"\n' % (ufw.common.iptables_dir,
                                             line.split('"')[1])
             contents += line
-        open(f + '.new', 'w').write(contents)
+        fd.close()
+
+        fd_new = open(f + '.new', 'w')
+        fd_new.write(contents)
+        fd_new.close()
+
         os.rename(f + '.new', f)
 
     def tearDown(self):
+        self.ui.backend = None
         self.ui = None
         self.backend = None
         os.environ['PATH'] = self.prevpath
@@ -607,13 +614,16 @@ ports=80/tcp
 
         f = self.backend.files['defaults']
         contents = ""
-        for line in open(f).readlines():
+        fd = open(f, 'r')
+        for line in fd.readlines():
             if re.search("^DEFAULT_INPUT_POLICY=", line):
                 line = "#" + line
             contents += line
-        fd = open(f + '.new', 'w')
-        fd.write(contents)
         fd.close()
+
+        fd_new = open(f + '.new', 'w')
+        fd_new.write(contents)
+        fd_new.close()
         os.rename(f + '.new', f)
 
         tests.unit.support.check_for_exception(self,
@@ -622,13 +632,16 @@ ports=80/tcp
 
         f = self.backend.files['defaults']
         contents = ""
-        for line in open(f).readlines():
+        fd = open(f, 'r')
+        for line in fd.readlines():
             if re.search("^#DEFAULT_INPUT_POLICY=", line):
                 line = "DEFAULT_INPUT_POLICY=bad" + line
             contents += line
-        fd = open(f + '.new', 'w')
-        fd.write(contents)
         fd.close()
+
+        fd_new = open(f + '.new', 'w')
+        fd_new.write(contents)
+        fd_new.close()
         os.rename(f + '.new', f)
 
         tests.unit.support.check_for_exception(self,
