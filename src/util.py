@@ -220,20 +220,12 @@ def normalize_address(orig, v6):
 
 def open_file_read(fn):
     '''Opens the specified file read-only'''
-    try:
-        orig = open(fn, 'r')
-    except Exception:
-        raise
-
-    return orig
+    return open(fn, 'r')
 
 
 def open_files(fn):
     '''Opens the specified file read-only and a tempfile read-write.'''
-    try:
-        orig = open_file_read(fn)
-    except Exception:
-        raise
+    orig = open_file_read(fn)
 
     try:
         (tmp, tmpname) = mkstemp()
@@ -277,16 +269,10 @@ def close_files(fns, update=True):
     os.close(fns['tmp'])
 
     if update:
-        try:
-            shutil.copystat(fns['origname'], fns['tmpname'])
-            shutil.copy(fns['tmpname'], fns['origname'])
-        except Exception:
-            raise
+        shutil.copystat(fns['origname'], fns['tmpname'])
+        shutil.copy(fns['tmpname'], fns['origname'])
 
-    try:
-        os.unlink(fns['tmpname'])
-    except OSError:
-        raise
+    os.unlink(fns['tmpname'])
 
 
 def cmd(command):
@@ -427,13 +413,10 @@ def get_ppid(mypid=os.getpid()):
     if not os.path.isfile(name):
         raise IOError("Couldn't find '%s'" % (name))
 
-    try:
-        # LP: #1101304
-        # 9983 (cmd) S 923 ...
-        # 9983 (cmd with spaces) S 923 ...
-        ppid = open(name).readlines()[0].split(')')[1].split()[1]
-    except Exception: # pragma: no cover
-        raise
+    # LP: #1101304
+    # 9983 (cmd) S 923 ...
+    # 9983 (cmd with spaces) S 923 ...
+    ppid = open(name).readlines()[0].split(')')[1].split()[1]
 
     return int(ppid)
 
