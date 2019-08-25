@@ -34,27 +34,43 @@ echo "TESTING ARGS (default)" >> $TESTTMP/result
 do_cmd "0"  enable
 do_cmd "0"  default allow
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    ip6tables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  default deny
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    ip6tables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT ALLOW
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    ip6tables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT DENY
 echo "ipv4:" >> $TESTTMP/result
-iptables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 echo "ipv6:" >> $TESTTMP/result
-ip6tables -L -n | grep 'policy ' >> $TESTTMP/result
+for i in INPUT FORWARD OUTPUT ; do
+    ip6tables -n -L $i | grep 'policy ' >> $TESTTMP/result
+done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 
 do_cmd "0"  default deny
