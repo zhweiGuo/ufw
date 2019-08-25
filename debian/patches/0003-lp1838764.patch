@@ -1,0 +1,135 @@
+commit 569edf283bd18c5816f980b8480cf02f1d1ead03
+Author: Jamie Strandboge <jamie@ubuntu.com>
+Date:   Sun Aug 25 13:20:45 2019 -0500
+
+    common: add direction when no interfaces specified in get_app_tuple()
+    
+    Reference:
+    https://launchpad.net/bugs/1838764
+
+Index: ufw-0.36/src/common.py
+===================================================================
+--- ufw-0.36.orig/src/common.py
++++ ufw-0.36/src/common.py
+@@ -595,14 +595,15 @@ class UFWRule:
+ 
+     def get_app_tuple(self):
+         '''Returns a tuple to identify an app rule. Tuple is:
+-             dapp dst sapp src
++             dapp dst sapp src direction_iface|direction
+            or
+-             dport dst sapp src
++             dport dst sapp src direction_iface|direction
+            or
+-             dapp dst sport src
++             dapp dst sport src direction_iface|direction
+ 
+-           All of these might have in_eth0 out_eth0 (or similar) if an
+-           interface is also defined.
++           where direction_iface is of form 'in_eth0', 'out_eth0' or
++           'in_eth0 out_eth0' (ie, both interfaces used). If no interfaces are
++           specified, then tuple ends with the direction instead.
+         '''
+         tupl = ""
+         if self.dapp != "" or self.sapp != "":
+@@ -614,11 +615,15 @@ class UFWRule:
+                 tupl = "%s %s %s %s" % (self.dapp, self.dst, self.sport, \
+                                          self.src)
+ 
+-            # add interfaces to the end, if they exist
+-            if self.interface_in != "":
+-                tupl += " in_%s" % (self.interface_in)
+-            if self.interface_out != "":
+-                tupl += " out_%s" % (self.interface_out)
++            # if neither interface exists, add the direction
++            if self.interface_in == "" and self.interface_out == "":
++                tupl += " %s" % (self.direction)
++            # otherwise, add the interfaces
++            else:
++                if self.interface_in != "":
++                    tupl += " in_%s" % (self.interface_in)
++                if self.interface_out != "":
++                    tupl += " out_%s" % (self.interface_out)
+ 
+         return tupl
+ 
+Index: ufw-0.36/tests/unit/test_backend_iptables.py
+===================================================================
+--- ufw-0.36.orig/tests/unit/test_backend_iptables.py
++++ ufw-0.36/tests/unit/test_backend_iptables.py
+@@ -549,6 +549,43 @@ ports=80/tcp
+                                         "Could not find '%s' in:\n%s" % (search,
+                                                                      res))
+ 
++    def test_lp1838764(self):
++        '''Test get_status() - LP: #1838764'''
++        # build up some rules
++        cmds = [
++            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'app', 'SSH'],
++            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'app', 'SSH'],
++            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22'],
++            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22'],
++            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22', 'proto', 'tcp'],
++            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22', 'proto', 'tcp'],
++        ]
++
++        pat_exp = re.compile(r'192\.168\.1\.0/24\s+SSH\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+SSH\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW OUT\s+192\.168\.1\.0/24\s+')
++        pat_verbose = re.compile(r'192\.168\.1\.0/24\s+SSH \(SSH\)\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+SSH \(SSH\)\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW OUT\s+192\.168\.1\.0/24\s+')
++
++        self.backend.rules = []
++        self.backend.rules6 = []
++        for cmd in cmds:
++            pr = ufw.frontend.parse_command(cmd + [])
++            action = cmd[1]
++            self.assertEquals(action, pr.action, "%s != %s" % (action, \
++                                                               pr.action))
++            if 'rule' in pr.data:
++                if pr.data['rule'].v6:
++                    self.backend.rules6.append(pr.data['rule'])
++                else:
++                    self.backend.rules.append(pr.data['rule'])
++
++        self.backend.dryrun = False
++        for v in [False, True]:
++            res = self.backend.get_status(verbose=v, show_count=False)
++            pat = pat_exp
++            if v:
++                pat = pat_verbose
++            self.assertTrue(pat.search(res), "Could not find '%s' in:\n%s" %
++                                             (pat, res))
++
+     def test_stop_firewall(self):
+         '''Test stop_firewall()'''
+         self.backend.stop_firewall()
+Index: ufw-0.36/tests/unit/test_common.py
+===================================================================
+--- ufw-0.36.orig/tests/unit/test_common.py
++++ ufw-0.36/tests/unit/test_common.py
+@@ -689,6 +689,13 @@ class CommonTestCase(unittest.TestCase):
+         self.assertEquals(self.rules['dapp'].dst, t[1])
+         self.assertEquals("any", t[2])
+         self.assertEquals("0.0.0.0/0", t[3])
++        r.set_direction("in")
++        t = r.get_app_tuple().split()
++        self.assertEquals(self.rules['dapp'].dapp, t[0])
++        self.assertEquals(self.rules['dapp'].dst, t[1])
++        self.assertEquals("any", t[2])
++        self.assertEquals("0.0.0.0/0", t[3])
++        self.assertEquals("in", t[4])
+         r.set_interface("in", "eth0")
+         t = r.get_app_tuple().split()
+         self.assertEquals(self.rules['dapp'].dapp, t[0])
+@@ -703,6 +710,13 @@ class CommonTestCase(unittest.TestCase):
+         self.assertEquals("0.0.0.0/0", t[1])
+         self.assertEquals(self.rules['sapp'].sapp, t[2])
+         self.assertEquals(self.rules['sapp'].src, t[3])
++        r.set_direction("out")
++        t = r.get_app_tuple().split()
++        self.assertEquals("any", t[0])
++        self.assertEquals("0.0.0.0/0", t[1])
++        self.assertEquals(self.rules['sapp'].sapp, t[2])
++        self.assertEquals(self.rules['sapp'].src, t[3])
++        self.assertEquals("out", t[4])
+         r.set_interface("out", "eth0")
+         t = r.get_app_tuple().split()
+         self.assertEquals("any", t[0])

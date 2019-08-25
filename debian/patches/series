@@ -1,3 +1,4 @@
 0001-optimize-boot.patch
 0002-fix-check-requirements.patch
-0003-fix-test-iptables1.8.patch
+0003-lp1838764.patch
+0004-make-root-tests-chain-order-agnostic.patch
