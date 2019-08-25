@@ -1,3 +1,11 @@
+ufw (0.36-1ubuntu2) eoan; urgency=medium
+
+  * d/p/0003-fix-test-iptables1.8.patch: fix the tests to work with
+    iptables 1.8 that changed the output order of the reported default
+    chains
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Fri, 16 Aug 2019 10:20:35 +0200
+
 ufw (0.36-1ubuntu1) disco; urgency=medium
 
   * 0002-fix-check-requirements.patch: work with later python3
