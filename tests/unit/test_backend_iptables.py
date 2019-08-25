@@ -556,6 +556,43 @@ ports=80/tcp
                                         "Could not find '%s' in:\n%s" % (search,
                                                                      res))
 
+    def test_lp1838764(self):
+        '''Test get_status() - LP: #1838764'''
+        # build up some rules
+        cmds = [
+            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'app', 'SSH'],
+            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'app', 'SSH'],
+            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22'],
+            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22'],
+            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22', 'proto', 'tcp'],
+            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22', 'proto', 'tcp'],
+        ]
+
+        pat_exp = re.compile(r'192\.168\.1\.0/24\s+SSH\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+SSH\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW OUT\s+192\.168\.1\.0/24\s+')
+        pat_verbose = re.compile(r'192\.168\.1\.0/24\s+SSH \(SSH\)\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+SSH \(SSH\)\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW OUT\s+192\.168\.1\.0/24\s+')
+
+        self.backend.rules = []
+        self.backend.rules6 = []
+        for cmd in cmds:
+            pr = ufw.frontend.parse_command(cmd + [])
+            action = cmd[1]
+            self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                               pr.action))
+            if 'rule' in pr.data:
+                if pr.data['rule'].v6:
+                    self.backend.rules6.append(pr.data['rule'])
+                else:
+                    self.backend.rules.append(pr.data['rule'])
+
+        self.backend.dryrun = False
+        for v in [False, True]:
+            res = self.backend.get_status(verbose=v, show_count=False)
+            pat = pat_exp
+            if v:
+                pat = pat_verbose
+            self.assertTrue(pat.search(res), "Could not find '%s' in:\n%s" %
+                                             (pat, res))
+
     def test_stop_firewall(self):
         '''Test stop_firewall()'''
         self.backend.stop_firewall()
