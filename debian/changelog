@@ -1,3 +1,14 @@
+ufw (0.36-1ubuntu3) eoan; urgency=medium
+
+  * 0003-lp1838764.patch: common: add direction when no interfaces specified
+    in get_app_tuple() (LP: #1838764)
+  * drop 0003-fix-test-iptables1.8.patch: while this patch works, the
+    testsuite can be adjusted to accommodate the new ordering
+  * 0004-make-root-tests-chain-order-agnostic.patch: call iptables -n -L
+    <primary> to account for newer iptables
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 25 Aug 2019 16:37:44 -0500
+
 ufw (0.36-1ubuntu2) eoan; urgency=medium
 
   * d/p/0003-fix-test-iptables1.8.patch: fix the tests to work with
