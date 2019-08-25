@@ -41,8 +41,8 @@ system has all the required iptables/netfilter functionality.
 Install
 -------
 Users can install with:
-# python ./setup.py install
-$ python ./setup.py install --home=PREFIX
+# python3 ./setup.py install
+$ python3 ./setup.py install --home=PREFIX
 
 The interpreter used for setup.py is the one used for ufw. So if your system
 python is 2.6, but you have python2.7 available, use something like:
@@ -50,10 +50,10 @@ $ python2.7 ./setup.py install --home=PREFIX
 
 Distributions which install to a build directory for packaging can install
 with:
-$ python ./setup.py install --root=PREFIX
+$ python3 ./setup.py install --root=PREFIX
 
 Eg:
-$ python ./setup.py install --root=/tmp/ufw
+$ python3 ./setup.py install --root=/tmp/ufw
 
 When installing ufw from source, you will also need to integrate it into your
 boot process for the firewall to start when you restart your system. Depending
@@ -314,7 +314,7 @@ Simple rules for rsyslog support can be found in doc/rsyslog.example.
 Testing
 -------
 $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
-$ UFW_SKIP_CHECKS=1 python ./setup.py install --home=/tmp/ufw
+$ UFW_SKIP_CHECKS=1 python3 ./setup.py install --home=/tmp/ufw
 
 (ufw does a number of checks since it is normally run as root. When testing,
 this is usually not the case, so you can use UFW_SKIP_CHECKS=1 with setup.py
@@ -324,7 +324,7 @@ Now do:
 $ /tmp/ufw/usr/sbin/ufw help
 
 Here is a command to do it all at once:
-$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && UFW_SKIP_CHECKS=1 python ./setup.py install --home=/tmp/ufw
+$ rm -rf /tmp/ufw && mkdir -p /tmp/ufw/usr /tmp/ufw/etc && UFW_SKIP_CHECKS=1 python3 ./setup.py install --home=/tmp/ufw
 
 Then test with:
 $ PYTHONPATH=$PYTHONPATH:/tmp/ufw/lib/python /tmp/ufw/usr/sbin/ufw ...
@@ -353,13 +353,19 @@ ufw unit tests are in tests/unit and can be called like so:
 $ make unittest
 
 This is equivalent to something like:
-$ python ./tests/unit/runner.py
+$ python3 ./tests/unit/runner.py
 
 Alternatively, can install python-coverage and do:
 $ make coverage         # like 'unittest', but with -m coverage
 $ make coverage-report
 
-To run an individual test, use:
-$ python ./tests/unit/runner.py test_<individual test script>.py
+To run an individual test script, use:
+$ python3 ./tests/unit/runner.py test_<individual test script>.py
 
-Copyright 2008-2014 Canonical Ltd.
+Or to run an individual test, use:
+$ python3 -m unittest tests.unit.<filename>.<class>.<test>
+
+Eg:
+$ python3 -m unittest tests.unit.test_backend_iptables.BackendIptablesTestCase.test_get_status
+
+Copyright 2008-2019 Canonical Ltd.
