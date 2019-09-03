@@ -311,6 +311,22 @@ implementation that can be adapted to your distribution.
 Simple rules for rsyslog support can be found in doc/rsyslog.example.
 
 
+Reporting bugs
+--------------
+Please report bugs at:
+https://bugs.launchpad.net/ufw/+filebug
+
+Sometimes it is useful to provide the ufw configuration and attach it to the
+bug. Eg:
+
+$ mkdir /tmp/ufw
+$ sudo ufw show raw > /tmp/ufw/raw
+$ sudo tar -zcvf /tmp/NNN.tar.gz /tmp/ufw /etc/default/ufw /etc/ufw /lib/ufw
+
+then attach to this bug /tmp/NNN.tar.gz (where NNN corresponds to the bug
+number.
+
+
 Testing
 -------
 $ mkdir -p /tmp/ufw/usr /tmp/ufw/etc
