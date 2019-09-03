@@ -12,13 +12,12 @@ Depends: iptables,
          python3-distutils
 Restrictions: needs-root, allow-stderr, isolation-machine, build-needed, rw-build-tree
 
-# unittests under python3 (FIXME: python needed for tests/unit/support.py)
+# unittests under python3
 Tests: unittest
 Depends: iptables,
          netbase,
          procps,
          sed,
          python3,
-         python3-distutils,
-         python
+         python3-distutils
 Restrictions: allow-stderr, build-needed, rw-build-tree

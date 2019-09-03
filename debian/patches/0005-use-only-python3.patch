@@ -1,0 +1,17 @@
+Author: Jamie Strandboge <jamie@canonical.com>
+Description: use python3 with setup.py
+Bug-Debian: bugs.debian.org/cgi-bin/bugreport.cgi?bug=938746
+Forwarded: no
+Index: ufw.git/tests/unit/support.py
+===================================================================
+--- ufw.git.orig/tests/unit/support.py
++++ ufw.git/tests/unit/support.py
+@@ -82,7 +82,7 @@ def run_setup():
+     if os.path.exists(topdir):
+         recursive_rm(topdir)
+     os.mkdir(topdir)
+-    sp = subprocess.Popen(['python',
++    sp = subprocess.Popen(['python3',
+                            './setup.py',
+                            'install',
+                            '--home=%s' % install_dir],

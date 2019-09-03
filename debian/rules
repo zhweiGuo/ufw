@@ -6,7 +6,6 @@
 
 PYTHON  := /usr/bin/python3
 PYVERS  := $(shell py3versions -vr)
-PYTHON2 := /usr/bin/python2
 
 build-arch: build-stamp
 
@@ -34,14 +33,12 @@ install: build
 	dh_installdirs
 
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	./run_tests.sh -i $(PYTHON2)
 	./run_tests.sh -i $(PYTHON)
 	# the testsuite creates the build/ directory with test values that we
 	# don't want to use
 	make clean
 endif
 
-	$(PYTHON2) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 
 	# these shouldn't be conffiles
@@ -93,7 +90,6 @@ binary-indep: build install
 	if dpkg-vendor --is ubuntu; then \
 		rm -f $(CURDIR)/debian/ufw/etc/ufw/applications.d/ufw-* ; \
 	fi
-	dh_python2 -p python-ufw
 	dh_python3 -p ufw
 	dh_compress
 	dh_fixperms

@@ -8,8 +8,15 @@ ufw (0.36-2) UNRELEASED; urgency=medium
     in get_app_tuple() (LP: #1838764)
   * 0004-make-root-tests-chain-order-agnostic.patch: call iptables -n -L
     <primary> to account for newer iptables
+  * remove python2 support:
+    - debian/control:
+      + Drop Build-Deps on python
+      + remove python-ufw
+    - debian/rules: drop python2 support and tests
+    - debian/tests/control: update unittest target for Depends and comment
+    - 0005-use-only-python3.patch: use python3 with setup.py
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 25 Aug 2019 17:41:07 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 03 Sep 2019 13:24:21 -0500
 
 ufw (0.36-1) unstable; urgency=medium
 
