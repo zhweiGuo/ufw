@@ -69,10 +69,10 @@ Disables and resets firewall to installation defaults. Can also give the
 .TP
 \fBstatus\fR
 show status of firewall and ufw managed rules. Use \fBstatus verbose\fR for
-extra information. In the status output, 'Anywhere' is synonymous with 'any'
-and '0.0.0.0/0'. Note that when using \fBstatus\fR, there is a subtle
-difference when reporting interfaces. For example, if the following rules are
-added:
+extra information. In the status output, 'Anywhere' is synonymous with 'any',
+0.0.0.0/0 (IPv4) and ::/0 (IPv6). Note that when using \fBstatus\fR, there is a
+subtle difference when reporting interfaces. For example, if the following
+rules are added:
 
   ufw allow in on eth0 from 192.168.0.0/16
   ufw allow out on eth1 to 10.0.0.0/8
