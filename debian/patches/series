@@ -3,3 +3,4 @@
 0003-lp1838764.patch
 0004-make-root-tests-chain-order-agnostic.patch
 0005-use-only-python3.patch
+0006-bug921680.patch
