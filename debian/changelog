@@ -1,7 +1,8 @@
 ufw (0.36-2) UNRELEASED; urgency=medium
 
   * 0002-fix-check-requirements.patch: work with later python3
-  * add preliminary autopkgtest
+  * add preliminary autopkgtest (with dh-python Depends thanks to Matthias
+    Klose)
   * debian/rules: don't fiddle with setup.py's version
   * add debian/README.autopkgtest
   * 0003-lp1838764.patch: common: add direction when no interfaces specified

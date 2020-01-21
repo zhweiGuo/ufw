@@ -19,5 +19,6 @@ Depends: iptables,
          procps,
          sed,
          python3,
-         python3-distutils
+         python3-distutils,
+         dh-python,
 Restrictions: allow-stderr, build-needed, rw-build-tree
