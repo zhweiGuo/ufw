@@ -250,7 +250,11 @@ iptables_exe = ''
 iptables_dir = ''
 
 for e in ['iptables']:
-    for dir in ['/sbin', '/bin', '/usr/sbin', '/usr/bin', '/usr/local/sbin', \
+    # Historically iptables was in /sbin, then later also symlinked from
+    # /usr/sbin/iptables to /sbin/iptables. Debian bullseye moves iptables
+    # to /usr/sbin with no symlink in /sbin except on upgrades. To accomodate
+    # buildds that may still have the old iptables, search /usr/sbin first
+    for dir in ['/usr/sbin', '/sbin', '/usr/bin', '/bin', '/usr/local/sbin', \
                 '/usr/local/bin']:
         if e == "iptables":
             if os.path.exists(os.path.join(dir, e)):
