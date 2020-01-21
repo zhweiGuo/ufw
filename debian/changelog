@@ -8,7 +8,7 @@ ufw (0.36-2) UNRELEASED; urgency=medium
     in get_app_tuple() (LP: #1838764, Closes: 931125)
   * 0004-make-root-tests-chain-order-agnostic.patch: call iptables -n -L
     <primary> to account for newer iptables
-  * remove python2 support:
+  * remove python2 support (Closes: 938746):
     - debian/control:
       + Drop Build-Deps on python
       + remove python-ufw
