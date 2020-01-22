@@ -16,8 +16,10 @@ ufw (0.36-2) UNRELEASED; urgency=medium
     - debian/rules: drop python2 support and tests
     - debian/tests/control: update unittest target for Depends and comment
     - 0005-use-only-python3.patch: use python3 with setup.py
-  * 0006-bug921680.patch: update path search order to look in /usr/sbin first
-    (Closes: 921680)
+  * update path search order to look in /usr/sbin first (Closes: 921680)
+    - 0006-bug921680.patch: setup.py: look for iptables in /usr/sbin first
+    - 0007-bug921680-pt2.patch: src/util.py: search for iptables when exe is
+      not specified
   * debian/source/lintian-overrides: 'ufw source: no-dh-sequencer' to continue
     support for building on older releases
 
