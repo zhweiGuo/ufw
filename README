@@ -13,7 +13,7 @@ perhaps 'Unbearable Firewall'. Have fun!
 
 Requirements
 ------------
-python 2.6-2.7, 3.4-3.5 (known to work with 2.6.2+, 2.7.0+, 3.4+, 3.5*)*
+python 2.6-2.7, 3.4-3.5 (known to work with 2.6.2+, 2.7.0+, 3.4+)*
 iptables 1.4**
 gettext
 /proc filesystem support

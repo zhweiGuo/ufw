@@ -17,11 +17,10 @@
 #
 #
 # Install with:
-# python ./setup.py install --root="/tmp/ufw"
+# python3 ./setup.py install --root="/tmp/ufw"
 #
 # To specify a different interpreter for ufw:
-# python2.5 ./setup.py install --root="/tmp/ufw"
-# python2.6 ./setup.py install --root="/tmp/ufw"
+# python3.7 ./setup.py install --root="/tmp/ufw"
 # python2.7 ./setup.py install --root="/tmp/ufw"
 #
 

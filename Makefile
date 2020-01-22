@@ -12,7 +12,7 @@ PYFLAKES = $(TMPDIR)/pyflakes.out
 PYFLAKES_EXE = pyflakes
 
 ifndef $(PYTHON)
-export PYTHON=python
+export PYTHON=python3
 endif
 
 all: snap-build
