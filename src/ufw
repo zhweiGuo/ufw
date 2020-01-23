@@ -27,13 +27,15 @@ from ufw.common import UFWError
 from ufw.util import error, warn, msg, _findpath, create_lock, release_lock
 
 import gettext
+
 kwargs = {}
 if sys.version_info[0] < 3:
     # In Python 2, ensure that the _() that gets installed into built-ins
     # always returns unicodes.  This matches the default behavior under Python
     # 3, although that keyword argument is not present in the Python 3 API.
     kwargs['unicode'] = True
-gettext.install(ufw.common.programName, **kwargs)
+domain = gettext.textdomain(ufw.common.programName)
+gettext.install(domain, **kwargs)
 
 version = "#VERSION#"
 
@@ -56,10 +58,8 @@ for i in sys.argv:
         args.append(i)
 
 # Internationalization
-gettext.bindtextdomain(ufw.common.programName, \
-                       os.path.join(_findpath(ufw.common.trans_dir, rootdir),
-                                    'messages'))
-gettext.textdomain(ufw.common.programName)
+gettext.bindtextdomain(domain, os.path.join(_findpath(ufw.common.trans_dir,
+                                                      rootdir), 'messages'))
 try:
     # BAW: I'm not sure why both this and the .install() above is here, but
     # let's roll with it for now.  This is the Python 2 version, which ensures
