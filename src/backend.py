@@ -27,6 +27,13 @@ from ufw.common import UFWError, UFWRule
 import ufw.applications
 
 
+# satisy flake8: our setup of gettext in src/ufw makes the assignment of '_'
+# show up as undefined under flake8. Add a noop conditional to assign it to
+# something reasonable under flake8 checks. Thanks Dan Ryan.
+if False:
+    _ = str
+
+
 class UFWBackend:
     '''Interface for backends'''
     def __init__(self, name, dryrun, extra_files=None,

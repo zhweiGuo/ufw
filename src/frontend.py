@@ -26,6 +26,13 @@ from ufw.backend_iptables import UFWBackendIptables
 import ufw.parser
 
 
+# satisy flake8: our setup of gettext in src/ufw makes the assignment of '_'
+# show up as undefined under flake8. Add a noop conditional to assign it to
+# something reasonable under flake8 checks. Thanks Dan Ryan.
+if False:
+    _ = str
+
+
 def parse_command(argv):
     '''Parse command. Returns tuple for action, rule, ip_version and dryrun.'''
     p = ufw.parser.UFWParser()

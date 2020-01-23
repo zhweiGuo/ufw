@@ -20,6 +20,14 @@ import socket
 import ufw.util
 from ufw.util import debug
 
+
+# satisy flake8: our setup of gettext in src/ufw makes the assignment of '_'
+# show up as undefined under flake8. Add a noop conditional to assign it to
+# something reasonable under flake8 checks. Thanks Dan Ryan.
+if False:
+    _ = str
+
+
 programName = "ufw"
 state_dir = "#STATE_PREFIX#"
 share_dir = "#SHARE_DIR#"
