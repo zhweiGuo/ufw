@@ -15,7 +15,7 @@ Build-Depends:
  python3-distutils
 Standards-Version: 4.4.1
 Homepage: https://launchpad.net/ufw
-Vcs-Git: https://git.launchpad.net/ufw?h=debian%2Fmaster
+Vcs-Git: https://git.launchpad.net/ufw?h=debian/master
 
 Package: ufw
 Architecture: all
