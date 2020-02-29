@@ -1,3 +1,9 @@
+ufw (0.36-3) unstable; urgency=medium
+
+  * 0008-fix-check-requirements-again.patch: update for python3.8
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 29 Feb 2020 19:59:37 +0000
+
 ufw (0.36-2) unstable; urgency=medium
 
   * 0002-fix-check-requirements.patch: work with later python3
