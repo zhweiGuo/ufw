@@ -24,6 +24,9 @@ import sys
 import unittest
 
 
+running_in_container = False
+
+
 # http://www.chiark.greenend.org.uk/ucgi/~cjwatson/blosxom/2009-07-02-python-sigpipe.html
 # This is needed so that the subprocesses that produce endless output
 # actually quit when the reader goes away.
@@ -63,10 +66,12 @@ class UfwCommon(unittest.TestCase):
         for exe in ['iptables', 'ip6tables']:
             cmd([exe, '-I', 'INPUT', '-p', 'tcp',
                  '--dport', '22', '-j', 'ACCEPT'])
-        # prevent module auto-load in test environment
-        shutil.copy("/etc/default/ufw", "/etc/default/ufw.autopkgtest")
-        cmd(['sed', '-i', 's/^IPT_MODULES=.*/IPT_MODULES=/',
-             '/etc/default/ufw'])
+        global running_in_container
+        if running_in_container:
+            # prevent module auto-load in test environment
+            shutil.copy("/etc/default/ufw", "/etc/default/ufw.autopkgtest")
+            cmd(['sed', '-i', 's/^IPT_MODULES=.*/IPT_MODULES=/',
+                 '/etc/default/ufw'])
 
     def _tearDown(self):
         '''Clean up after each test_* function'''
@@ -105,7 +110,9 @@ class UfwCommon(unittest.TestCase):
         '''Flush firewall'''
         self._flush_firewall()
         cmd(['ufw', 'disable'])
-        shutil.move("/etc/default/ufw.autopkgtest", "/etc/default/ufw")
+        global running_in_container
+        if running_in_container:
+            shutil.move("/etc/default/ufw.autopkgtest", "/etc/default/ufw")
         self._update_alternatives("auto")
 
     def _update_alternatives(self, backend):
@@ -253,6 +260,15 @@ class UfwTestLegacy(UfwTestAuto):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1] == "--container":
+        rc, res = cmd(["uname", "-m"])
+        if res.strip() == "x86_64":
+            running_in_container = True
+            print("Adjusting tests for x86_64 container")
+        else:
+            print("Skipping running tests in non-x86_64 container")
+            sys.exit(0)
+
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UfwTestAuto))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UfwTestNft))

@@ -1,3 +1,16 @@
+ufw (0.36-5) unstable; urgency=medium
+
+  * debian/control: really fix Vcs-Git (use -b debian/master) and add
+    Vcs-Browser
+  * debian/tests/control:
+    - add back isolation-machine for test-ufw.py since isolation-container
+      doesn't work in Debian CI on arm64
+    - use test-ufw.py --container with isolation-container that will only run
+      on amd64. May need to revert if this is flaky
+  * debian/tests/test-ufw.py: support --container
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Mon, 02 Mar 2020 13:01:18 +0000
+
 ufw (0.36-4) unstable; urgency=medium
 
   * debian/control: fix Vcs url

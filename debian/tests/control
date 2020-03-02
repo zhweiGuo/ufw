@@ -1,5 +1,16 @@
 # smoke tests
 Tests: test-ufw.py
+Restrictions: needs-root, allow-stderr, isolation-machine
+
+# smoke tests for running in a container. Note: as of 2020-03-02, Debian
+# CI does not provide isolation-machine, but isolation-container doesn't work
+# on (at least) arm64. While we can simply run tests in a VM prior to upload,
+# attempt running modified tests (ie, where ip_tables and ip6_tables are
+# are loaded in the kernel) with isolation-container on amd64 (the test will
+# verify the arch) since isolation-container appears to work there. If this
+# results in a flaky test, we might need to remove this and wait for
+# isolation-machine to become available
+Test-Command: python3 debian/tests/test-ufw.py --container
 Restrictions: needs-root, allow-stderr, isolation-container
 
 # root unittests under python3
