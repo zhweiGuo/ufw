@@ -17,6 +17,7 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 import os
+import shutil
 import signal
 import subprocess
 import sys
@@ -61,7 +62,11 @@ class UfwCommon(unittest.TestCase):
         # useful for running in a VM
         for exe in ['iptables', 'ip6tables']:
             cmd([exe, '-I', 'INPUT', '-p', 'tcp',
-                         '--dport', '22', '-j', 'ACCEPT'])
+                 '--dport', '22', '-j', 'ACCEPT'])
+        # prevent module auto-load in test environment
+        shutil.copy("/etc/default/ufw", "/etc/default/ufw.autopkgtest")
+        cmd(['sed', '-i', 's/^IPT_MODULES=.*/IPT_MODULES=/',
+             '/etc/default/ufw'])
 
     def _tearDown(self):
         '''Clean up after each test_* function'''
@@ -88,7 +93,7 @@ class UfwCommon(unittest.TestCase):
                                      'PREROUTING', 'POSTROUTING']:
                     cmd([exe, '-t', 'mangle', '-F', mangle_chain])
                     cmd([exe, '-t', 'mangle', '-P', mangle_chain,
-                                 'ACCEPT'])
+                         'ACCEPT'])
 
                 # Nat table
                 rc, report = cmd([exe, '-L', '-t', 'nat'])
@@ -100,9 +105,48 @@ class UfwCommon(unittest.TestCase):
         '''Flush firewall'''
         self._flush_firewall()
         cmd(['ufw', 'disable'])
+        shutil.move("/etc/default/ufw.autopkgtest", "/etc/default/ufw")
+        self._update_alternatives("auto")
+
+    def _update_alternatives(self, backend):
+        '''Run update-alternatives'''
+        if backend == "legacy":
+            rc, report = cmd(['update-alternatives', '--set', 'iptables',
+                              '/usr/sbin/iptables-legacy'])
+            expected = 0
+            result = 'Got exit code %d, expected %d\n' % (rc, expected)
+            self.assertEqual(expected, rc, result + report)
+
+            rc, report = cmd(['update-alternatives', '--set', 'ip6tables',
+                              '/usr/sbin/ip6tables-legacy'])
+            expected = 0
+            result = 'Got exit code %d, expected %d\n' % (rc, expected)
+            self.assertEqual(expected, rc, result + report)
+        elif backend == "nft":
+            rc, report = cmd(['update-alternatives', '--set', 'iptables',
+                              '/usr/sbin/iptables-nft'])
+            expected = 0
+            result = 'Got exit code %d, expected %d\n' % (rc, expected)
+            self.assertEqual(expected, rc, result + report)
+
+            rc, report = cmd(['update-alternatives', '--set', 'ip6tables',
+                              '/usr/sbin/ip6tables-nft'])
+            expected = 0
+            result = 'Got exit code %d, expected %d\n' % (rc, expected)
+            self.assertEqual(expected, rc, result + report)
+        else:
+            rc, report = cmd(['update-alternatives', '--auto', 'iptables'])
+            expected = 0
+            result = 'Got exit code %d, expected %d\n' % (rc, expected)
+            self.assertEqual(expected, rc, result + report)
+
+            rc, report = cmd(['update-alternatives', '--auto', 'ip6tables'])
+            expected = 0
+            result = 'Got exit code %d, expected %d\n' % (rc, expected)
+            self.assertEqual(expected, rc, result + report)
 
 
-class UfwTest(UfwCommon):
+class UfwTestAuto(UfwCommon):
     '''Test ufw (basic functions-- most covered by the test suites)'''
     def setUp(self):
         '''Set up prior to each test_* function'''
@@ -192,9 +236,27 @@ class UfwTest(UfwCommon):
         self.assertEqual(expected, rc, result + report)
 
 
+class UfwTestNft(UfwTestAuto):
+    '''Test ufw - nft'''
+    def setUp(self):
+        '''Set up prior to each test_* function'''
+        self._setUp()
+        self._update_alternatives("nft")
+
+
+class UfwTestLegacy(UfwTestAuto):
+    '''Test ufw - legacy'''
+    def setUp(self):
+        '''Set up prior to each test_* function'''
+        self._setUp()
+        self._update_alternatives("legacy")
+
+
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UfwTest))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UfwTestAuto))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UfwTestNft))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(UfwTestLegacy))
     ret = unittest.TextTestRunner(verbosity=2).run(suite)
     if not ret.wasSuccessful():
         sys.exit(1)

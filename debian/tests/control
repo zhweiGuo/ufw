@@ -1,6 +1,6 @@
-# TODO: iptables-legacy, possibly py2
+# smoke tests
 Tests: test-ufw.py
-Restrictions: needs-root, allow-stderr, isolation-machine
+Restrictions: needs-root, allow-stderr, isolation-container
 
 # root unittests under python3
 Tests: root-unittest

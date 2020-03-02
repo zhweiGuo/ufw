@@ -1,8 +1,11 @@
-ufw (0.36-4) UNRELEASED; urgency=medium
+ufw (0.36-4) unstable; urgency=medium
 
   * debian/control: fix Vcs url
+  * debian/tests/control: use isolation-container instead of isolation-machine
+    for test-ufw.py
+  * debian/tests/test-ufw.py: test auto, nft and legacy backends
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Sat, 29 Feb 2020 15:39:17 -0600
+ -- Jamie Strandboge <jamie@ubuntu.com>  Sun, 01 Mar 2020 14:36:12 +0000
 
 ufw (0.36-3) unstable; urgency=medium
 
