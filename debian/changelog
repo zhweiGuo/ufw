@@ -1,3 +1,22 @@
+ufw (0.36-6) unstable; urgency=medium
+
+  * 0009-empty-non-functioning-ipt-modules.patch: empty out IPT_MODULES and
+    update documentation regarding modern use of connection tracking modules.
+    ufw historically used IPT_MODULES in /etc/defaults/ufw to
+    load various connection tracking modules, but use of this mechanism has
+    been deprecated for some time. These days, the kernel defaults to
+    deactivating flows for various connection tracking modules so users have
+    to perform an extra sysctl step to use this old mechanism anyway, so empty
+    IPT_MODULES and better document use of connection tracking modules. A
+    future upload will introduce rule syntax for working with connection
+    tracking helper rules. (LP: #1556419)
+  * 0010-add-other-firewall-checks.patch: adjust the check-requirements
+    diagnostic tool to warn about other installed firewall software
+  * 0011-suppress-legacy-warnings-in-tests.patch: suppress iptables warnings
+    about legacy rules being present in root functional tests
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 02 Apr 2020 12:05:30 +0000
+
 ufw (0.36-5) unstable; urgency=medium
 
   * debian/control: really fix Vcs-Git (use -b debian/master) and add
