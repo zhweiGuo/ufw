@@ -11,8 +11,17 @@ ufw (0.37) UNRELEASED; urgency=medium
     - snap-files/bin/init: use SNAP_REVISION to match snap-files/bin/srv
   * update man page for limit since IPv6 has been supported since 0.33
     (LP: #1831186)
+  * add direction when no interfaces specified in get_app_tuple()
+    (LP: #1838764)
+  * various testsuite adjustments for iptables 1.8
+  * doc/ufw.8:
+    - ::/0 is also a synonym for 'Anywhere'
+    - document --force with 'ufw delete NUM'
+  * prefer python3
+  * empty out IPT_MODULES and update documentation (LP: #1556419)
+  * adjust check-requirements to look for other firewall software
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 31 May 2019 07:41:08 -0500
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 22 Apr 2020 10:23:08 -0500
 
 ufw (0.36) RELEASED; urgency=medium
 
