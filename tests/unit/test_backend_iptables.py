@@ -635,8 +635,7 @@ ports=80/tcp
     def test__get_defaults(self):
         '''Test _get_defaults()'''
         self.backend._get_defaults()
-        for k in ['ipt_modules',
-                  'default_output_policy',
+        for k in ['default_output_policy',
                   'default_input_policy',
                   'default_forward_policy',
                   'loglevel',
