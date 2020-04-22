@@ -30,22 +30,22 @@ echo "TESTING ARGS (default)" >> $TESTTMP/result
 do_cmd "0"  enable
 do_cmd "0"  default allow
 for i in INPUT FORWARD OUTPUT ; do
-    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+    iptables -n -L $i 2>/dev/null | grep 'policy ' >> $TESTTMP/result
 done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  default deny
 for i in INPUT FORWARD OUTPUT ; do
-    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+    iptables -n -L $i 2>/dev/null | grep 'policy ' >> $TESTTMP/result
 done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT ALLOW
 for i in INPUT FORWARD OUTPUT ; do
-    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+    iptables -n -L $i 2>/dev/null | grep 'policy ' >> $TESTTMP/result
 done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 do_cmd "0"  DEFAULT DENY
 for i in INPUT FORWARD OUTPUT ; do
-    iptables -n -L $i | grep 'policy ' >> $TESTTMP/result
+    iptables -n -L $i 2>/dev/null | grep 'policy ' >> $TESTTMP/result
 done
 grep -h "DEFAULT" $TESTPATH/etc/default/ufw >> $TESTTMP/result
 

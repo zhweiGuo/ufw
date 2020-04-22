@@ -110,7 +110,7 @@ do
         echo iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         do_cmd "0" nostats enable
-        iptables -n -L INPUT | grep "$str" >> $TESTTMP/result
+        iptables -n -L INPUT 2>/dev/null | grep "$str" >> $TESTTMP/result
         iptables -D INPUT -j ACCEPT -m comment --comment $str 2>/dev/null
 done
 
@@ -213,21 +213,21 @@ do_cmd "0" nostats disable
 do_cmd "0" nostats allow 23/tcp
 do_cmd "0" nostats logging medium
 do_cmd "0" null enable
-iptables-save | grep '^-' > $TESTTMP/ipt.enable
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.enable
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.enable
 
 do_cmd "0" null disable
-iptables-save | grep '^-' > $TESTTMP/ipt.disable
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.disable
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.disable
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.disable
 
 sed -i 's/^ENABLED=no/ENABLED=yes/' $TESTPATH/etc/ufw/ufw.conf
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-iptables-save | grep '^-' > $TESTTMP/ipt.start
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.start
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.start
 
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
-iptables-save | grep '^-' > $TESTTMP/ipt.stop
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.stop
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.stop
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.stop
 
 diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
 	echo "'ufw enable' and 'ufw-init start' are different"
@@ -264,7 +264,7 @@ for l in off on low medium high full; do
         for c in before-logging before after after-logging reject track ; do
             suffix=`echo $b | tr [A-Z] [a-z]`
             echo "$count: iptables -L $b -n | egrep -q 'ufw-$c-$suffix'" >> $TESTTMP/result
-            iptables -L $b -n | egrep -q "ufw-$c-$suffix" || {
+            iptables -L $b -n 2>/dev/null | egrep -q "ufw-$c-$suffix" || {
                 echo "'iptables -L $b -n' does not contain 'ufw-$c-$suffix'"
                 exit 1
             }
@@ -283,7 +283,7 @@ for l in off on low medium high full; do
     do_cmd "0" nostats enable
     for c in logging-deny not-local user-forward user-input user-output skip-to-policy-input ; do
         echo "$count: ! iptables -L ufw-$c -n | egrep -q '0 references'" >> $TESTTMP/result
-        iptables -L ufw-$c -n | egrep -q '0 references' && {
+        iptables -L ufw-$c -n 2>/dev/null | egrep -q '0 references' && {
             echo "'iptables -L ufw-user-input -n' had 0 references"
             exit 1
         }
@@ -293,7 +293,7 @@ for l in off on low medium high full; do
     done
     for c in logging-allow user-limit user-limit-accept user-logging-forward user-logging-input user-logging-output skip-to-policy-output skip-to-policy-forward ; do
         echo "$count: iptables -L ufw-$c -n | egrep -q '0 references'" >> $TESTTMP/result
-        iptables -L ufw-$c -n | egrep -q '0 references' || {
+        iptables -L ufw-$c -n 2>/dev/null | egrep -q '0 references' || {
             echo "'iptables -L ufw-user-input -n' had more than 0 references"
             exit 1
         }
