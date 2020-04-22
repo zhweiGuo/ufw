@@ -16,13 +16,14 @@ export PYTHON=python3
 endif
 
 all: snap-build
-ifneq ($(SNAP),yes)
+ifneq ($(SNAPCRAFT_PROJECT_NAME),ufw)
 	# Use setup.py to install. See README for details
+	set | grep SNAP
 	exit 1
 endif
 
 snap-build: clean
-ifneq ($(SNAP),yes)
+ifneq ($(SNAPCRAFT_PROJECT_NAME),ufw)
 	# Use setup.py to install. See README for details
 	exit 1
 endif
@@ -50,12 +51,12 @@ endif
 	rmdir $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/
 
 install: snap-build
-ifneq ($(SNAP),yes)
+ifneq ($(SNAPCRAFT_PROJECT_NAME),ufw)
 	# Use setup.py to install. See README for details
 	exit 1
 endif
 ifndef DESTDIR
-	# When SNAP=yes, DESTDIR must be set
+	# When SNAPCRAFT_PROJECT_NAME=ufw, DESTDIR must be set
 	exit 1
 endif
 	cp -a $(SNAPDIR)/* $(DESTDIR)

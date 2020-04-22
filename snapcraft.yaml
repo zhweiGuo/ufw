@@ -6,7 +6,6 @@ license: GPL-3.0 AND GPL-2.0+
 confinement: strict
 grade: stable
 base: core20
-build-base: core18
 
 apps:
   srv:
@@ -54,7 +53,7 @@ parts:
   stage-libipset:
     plugin: nil
     stage-packages:
-    - libipset3
+    - libipset13
     stage:
     - -usr/share/doc
     - -usr/share/man
