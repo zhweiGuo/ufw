@@ -3,7 +3,7 @@
 # check-requirements: verify all the required iptables functionality is
 # available
 #
-# Copyright 2008-2014 Canonical Ltd.
+# Copyright 2008-2020 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -79,7 +79,7 @@ for i in "" 6; do
     fi
 
     echo -n "Has $exe: "
-    if ! which $exe >/dev/null 2>&1; then
+    if ! PATH=/sbin:/usr/sbin:/bin:/usr/bin which $exe >/dev/null 2>&1; then
         echo "ERROR: could not find '$exe'" >&2
         error="yes"
     else
@@ -252,6 +252,20 @@ for i in "" 6; do
         fi
     }
 done
+
+# check and warn if various firewall applications are installed
+found=
+for exe in apf arno-iptables-firewall ferm firehol firewalld ipkungfu iptables-persistent netfilter-persistent pyroman uruk ; do
+    if PATH=/sbin:/usr/sbin:/bin:/usr/bin which "$exe" >/dev/null 2>&1; then
+        found="$found $exe"
+    fi
+done
+if [ ! -z "$found" ]; then
+    echo "WARN: detected other firewall applications:"
+    echo "$found"
+    echo "(if enabled, these applications may interfere with ufw)"
+    echo ""
+fi
 
 if [ -n "$error" ] || [ -n "$error_runtime" ]; then
     if [ -n "$error" ]; then
