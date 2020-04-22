@@ -41,8 +41,7 @@ class BackendTestCase(unittest.TestCase):
                           "drop")
         self.assertEquals(self.backend.defaults['default_output_policy'],
                           "accept")
-        self.assertEquals(self.backend.defaults['ipt_modules'],
-                        'nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns')
+        self.assertTrue("ipt_modules" not in self.backend.defaults)
         self.assertEquals(self.backend.defaults['loglevel'], 'low')
         self.assertEquals(self.backend.defaults['manage_builtins'], 'no')
         self.assertEquals(self.backend.defaults['enabled'], 'no')
