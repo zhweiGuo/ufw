@@ -6,6 +6,7 @@ license: GPL-3.0 AND GPL-2.0+
 confinement: strict
 grade: stable
 base: core20
+build-base: core18  # remove once LP support 20.04
 
 apps:
   srv:
@@ -53,7 +54,7 @@ parts:
   stage-libipset:
     plugin: nil
     stage-packages:
-    - libipset13
+    - libipset3  # use libipset13 when moving to 20.04
     stage:
     - -usr/share/doc
     - -usr/share/man
