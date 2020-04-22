@@ -24,7 +24,7 @@ echo "Bug #247352" >> $TESTTMP/result
 do_cmd "0" --dry-run allow http/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
+iptables -L -n 2>/dev/null | grep -A1 "80" >> $TESTTMP/result
 do_cmd "0" delete allow http/tcp
 grep -A2 "tuple" $TESTCONFIG/user.rules >> $TESTTMP/result
 
@@ -33,12 +33,12 @@ echo "Setting IPV6 to no" >> $TESTTMP/result
 sed -i "s/IPV6=.*/IPV6=no/" $TESTPATH/etc/default/ufw
 do_cmd "0" nostats disable
 echo "/lib/ufw/ufw-init flush-all:" >> $TESTTMP/result
-$TESTSTATE/ufw-init flush-all >> $TESTTMP/result 2>&1
+$TESTSTATE/ufw-init flush-all 2>/dev/null >> $TESTTMP/result
 do_cmd "0" nostats enable
 echo "/lib/ufw/ufw-init force-reload:" >> $TESTTMP/result
-$TESTSTATE/ufw-init force-reload >> $TESTTMP/result 2>&1
+$TESTSTATE/ufw-init force-reload 2>/dev/null >> $TESTTMP/result
 echo "ip6tables -L -n:" >> $TESTTMP/result
-ip6tables -L -n >> $TESTTMP/result 2>&1
+ip6tables -L -n 2>/dev/null >> $TESTTMP/result
 
 echo "Bug #260881" >> $TESTTMP/result
 echo "Setting IPV6 to no" >> $TESTTMP/result
@@ -48,10 +48,10 @@ do_cmd "0" nostats enable
 do_cmd "0"  allow Apache
 do_cmd "0"  delete deny Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
+iptables -L -n 2>/dev/null | grep -A1 "80" >> $TESTTMP/result
 do_cmd "0"  delete allow Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n | grep -A1 "80" >> $TESTTMP/result 2>&1
+iptables -L -n 2>/dev/null | grep -A1 "80" >> $TESTTMP/result
 
 echo "Bug #263308" >> $TESTTMP/result
 echo "Setting IPV6 to yes" >> $TESTTMP/result
@@ -138,13 +138,13 @@ for ipv6 in yes no ; do
             do_cmd "0" null logging $i
         fi
         do_cmd "0" null enable
-        iptables-save | grep '^-' > $TESTTMP/ipt.enable
-        ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
+        iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.enable
+        ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.enable
 
         do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
         do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-        iptables-save | grep '^-' > $TESTTMP/ipt.start
-        ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
+        iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.start
+        ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.start
 
         diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
             echo "'ufw enable' and 'ufw-init start' are different for loglevel '$i'"
@@ -166,7 +166,7 @@ for i in low on medium high full off off ; do
     if [ "$i" = "off" ]; then
         e="1"
     fi
-    iptables-save | grep -q 'UFW LIMIT BLOCK' $TESTCONFIG/user.rules
+    iptables-save 2>/dev/null | grep -q 'UFW LIMIT BLOCK' $TESTCONFIG/user.rules
     rc="$?"
     if [ "$rc" != "$e" ]; then
         echo "$i: got '$rc', expected '$e'"
@@ -181,7 +181,7 @@ do_cmd "0" nostats enable
 for b in INPUT OUTPUT FORWARD; do
     suffix=`echo $b | tr [A-Z] [a-z]`
     echo "$count: iptables -L $b -n | egrep -q 'ufw-after-logging-$suffix'" >> $TESTTMP/result
-    iptables -L "$b" -n | egrep -q "ufw-after-logging-$suffix" || {
+    iptables -L "$b" -n 2>/dev/null | egrep -q "ufw-after-logging-$suffix" || {
         echo "'iptables -L $b -n' does not contain 'ufw-after-logging-$suffix'"
         exit 1
     }
