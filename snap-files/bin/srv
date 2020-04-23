@@ -100,6 +100,10 @@ fi
 mkdir "$prev_etc"
 cp -rf --preserve=mode "$SNAP/etc/"* "$prev_etc"
 
+# Update our symlinks when invoking the service (the symlinks are initially
+# setup in the install hook so we only need to update on reboots, etc).
+"$SNAP"/bin/detect-iptables
+
 if [ -z "$SNAP_SKIP_INIT" ]; then
     # This is used only with 'oneshot'. We don't want to perform reloads on
     # upgrade since that might break existing connections. We don't want to

@@ -49,6 +49,10 @@ endif
 	done; \
 	rm -f $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/*
 	rmdir $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/
+	# temporary until can build with core20
+	sed -i 's#^iptables_dir = .*#iptables_dir = "/var/snap/ufw/current/bin"#g' $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/common.py
+	sed -i 's#for d in \["/sbin", "/bin",#for d in \["/var/snap/ufw/current/bin", "/sbin", "/bin",#g' $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/util.py
+	sed -i 's#^PATH="#PATH="$${DATA_DIR}/bin:#g' $(SNAPDIR)/lib/ufw/ufw-init-functions
 
 install: snap-build
 ifneq ($(SNAPCRAFT_PROJECT_NAME),ufw)
