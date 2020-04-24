@@ -1,0 +1,116 @@
+#!/bin/sh
+set -e
+
+# test script for basic snap functionality
+myuid=$(id -u)
+if [ "$myuid" != "0" ]; then
+    echo "Please run this script as root"
+    exit 1
+fi
+
+if [ -n "$SNAP" ]; then
+    echo "Please run this script outside of snap confinement"
+    exit 1
+fi
+
+run() {
+    echo "# Running: $*"
+    "$@" || {
+        echo
+        echo "FAIL"
+        exit 1
+    }
+    echo pass
+    echo
+}
+
+test_ufw() {
+    # ufw
+    run snap list ufw
+    run snap run --shell ufw -c 'snapctl is-connected firewall-control'
+    run ufw status
+    run ufw allow 22
+    run ufw allow telnet
+    run ufw --force enable
+    run ufw logging off
+    run ufw logging on
+    run ufw status
+    run ufw status verbose
+    run ufw status numbered
+}
+
+test_ufw_init() {
+    # ufw.init
+    run ufw.init status # note, this returns non-zero if stopped
+    run ufw.init stop
+    run ufw.init start
+    run ufw.init restart
+    run ufw.init force-reload
+    run ufw.init flush-all
+    run ufw.init start
+    run ufw.init status
+}
+
+test_ufw_doc() {
+    # ufw.doc
+    for i in ufw-on-snappy ufw ufw-framework iptables ip6tables iptables-restore ip6tables-restore ; do
+        run ufw.doc $i
+    done
+}
+
+test_conntrack() {
+    run ufw.conntrack --version
+    run ufw.conntrack -L
+}
+
+test_ipset() {
+    run ufw.ipset version
+    ufw.ipset destroy test >/dev/null 2>&1 || true # clear it out
+    run ufw.ipset list
+    run ufw.ipset create test hash:ip family inet hashsize 8192 maxelem 65536
+    run ufw.ipset add test 1.1.1.1
+    tmp=/var/snap/ufw/common/ipset.test
+    run ufw.ipset save | grep -v "pass" > "$tmp"
+    run ufw.ipset list
+    run ufw.ipset destroy test
+    run ufw.ipset restore -file "$tmp"
+    rm -f "$tmp"
+    run ufw.ipset list
+    run ufw.ipset destroy test
+    run ufw.ipset list
+}
+
+cleanup() {
+    # cleanup
+    ufw delete allow telnet >/dev/null
+    ufw delete allow 22 >/dev/null
+    ufw status >/dev/null
+    ufw disable >/dev/null
+    ufw.init flush-all
+    echo
+    ufw status
+    ufw version # for info at end
+}
+
+if [ "$1" = "help" ]; then
+    cat <<EOM
+Run this snap as root outside of snap confinement to smoke test the snap. Eg:
+
+  $ sudo $(basename "$0")
+
+or to capture the outputs:
+
+  $ sudo $(basename "$0") 2> ./test.err | tee ./test.out || cat ./test.err
+EOM
+    exit
+fi
+
+test_ufw
+test_ufw_init
+test_ufw_doc
+test_conntrack
+test_ipset
+
+cleanup
+
+echo "SUCCESS"
