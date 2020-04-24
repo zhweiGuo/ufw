@@ -7,7 +7,7 @@ if [ -z "$SNAP" ]; then
 fi
 
 snapctl is-connected firewall-control || {
-    logger -t "$SNAP_NAME" "please run: snap connect $SNAP_NAME:firewall-control"
+    echo "Please run 'sudo snap connect $SNAP_NAME:firewall-control'"
     exit 1
 }
 
