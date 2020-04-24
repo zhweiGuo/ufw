@@ -69,6 +69,8 @@ test_snap_service() {
         echo FAIL
         exit 1
     }
+    echo "# Logs after enable"
+    cat "$tmp"
     rm -f "$tmp"
     run ufw disable
 }
