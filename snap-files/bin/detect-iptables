@@ -16,6 +16,9 @@ detect() {
         return
     fi
 
+    # If iptables_filter is not compiled in the kernel or auto-loading, this
+    # iptables call will output an error string that won't match the grep. If
+    # we don't have iptables_filter support, we can't claim to support legacy.
     has_legacy=
     for t in filter nat mangle raw ; do
         iptables-legacy -S -t "$t" 2>&1 | grep -Eq '^-[ARIN] ' && {
@@ -24,6 +27,9 @@ detect() {
         }
     done
 
+    # If iptables_filter is not compiled in the kernel or auto-loading, this
+    # iptables call will output an error string that won't match the grep. If
+    # we don't have iptables_filter support, we can't claim to support nft.
     has_nft=
     for t in filter nat mangle raw ; do
         iptables-nft -S -t "$t" 2>&1 | grep -Eq '^-[ARIN] ' && {
@@ -31,6 +37,12 @@ detect() {
             break
         }
     done
+
+    if [ -z "$has_nft" ] && [ -z "$has_legacy" ]; then
+        logger -t "$SNAP_NAME" "could not detect iptables backend; please check kernel configuration"
+        echo "unsupported"
+        return
+    fi
 
     # if only legacy in use, then use it. Otherwise, prefer nft for:
     # - neither in use
@@ -49,8 +61,12 @@ if [ "$myuid" != "0" ]; then
     exit 1
 fi
 
-backend=$(detect) || backend="unknown"
+# if detection failed for any reason, fallback to legacy
+backend=$(detect) || backend="error"
 if [ "$backend" != "nft" ] && [ "$backend" != "legacy" ]; then
+    if [ "$backend" = "error" ]; then
+        logger -t "$SNAP_NAME" "error detecting iptables backend, falling back to legacy"
+    fi
     backend="legacy"
 fi
 
