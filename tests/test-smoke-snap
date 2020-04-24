@@ -24,10 +24,17 @@ run() {
     echo
 }
 
-test_ufw() {
+test_required_and_packaging() {
     # ufw
     run snap list ufw
     run snap run --shell ufw -c 'snapctl is-connected firewall-control'
+    run snap run --shell ufw -c 'ls -l /usr/lib/python3/dist-packages/ufw/__pycache__'
+    run snap run --shell ufw -c 'ls -l /var/snap/ufw/current/usr/lib/python3/dist-packages/ufw/__pycache__'
+    run snap run --shell ufw -c 'ls -l /var/snap/ufw/current/bin/iptables'
+}
+
+test_ufw() {
+    # ufw
     run ufw status
     run ufw allow 22
     run ufw allow telnet
@@ -37,10 +44,38 @@ test_ufw() {
     run ufw status
     run ufw status verbose
     run ufw status numbered
+    run ufw disable
+}
+
+test_snap_service() {
+    run snap stop ufw
+    run snap start ufw
+    run snap restart ufw
+    run snap services ufw
+    run snap logs ufw
+
+    tmp=/var/snap/ufw/common/snap_service.test
+    snap logs ufw > "$tmp" 2>&1
+    grep -i "fail" "$tmp" && {
+        echo
+        echo FAIL
+        exit 1
+    }
+
+    run ufw --force enable
+    snap logs ufw > "$tmp" 2>&1
+    grep -i "fail" "$tmp" && {
+        echo
+        echo FAIL
+        exit 1
+    }
+    rm -f "$tmp"
+    run ufw disable
 }
 
 test_ufw_init() {
     # ufw.init
+    run ufw --force enable
     run ufw.init status # note, this returns non-zero if stopped
     run ufw.init stop
     run ufw.init start
@@ -49,6 +84,7 @@ test_ufw_init() {
     run ufw.init flush-all
     run ufw.init start
     run ufw.init status
+    run ufw disable
 }
 
 test_ufw_doc() {
@@ -105,7 +141,9 @@ EOM
     exit
 fi
 
+test_required_and_packaging
 test_ufw
+test_snap_service
 test_ufw_init
 test_ufw_doc
 test_conntrack

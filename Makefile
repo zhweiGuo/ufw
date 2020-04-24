@@ -47,6 +47,7 @@ endif
 		echo "Creating $$manfile ... "; \
 		LANG='C' MANWIDTH=80 man --warnings -E ascii $$manfile | col -b > "$$manout"; \
 	done; \
+	cp -f ./tests/test-smoke-snap $(SNAPDIR)
 	rm -f $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/*
 	rmdir $(SNAPDIR)/usr/lib/python3/dist-packages/ufw/__pycache__/
 	# temporary until can build with core20
