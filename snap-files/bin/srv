@@ -102,7 +102,9 @@ cp -rf --preserve=mode "$SNAP/etc/"* "$prev_etc"
 
 # Update our symlinks when invoking the service (the symlinks are initially
 # setup in the install hook so we only need to update on reboots, etc).
-"$SNAP"/bin/detect-iptables
+# detect-iptables failure is fatal, so don't start, but it will log errors
+# via logger, so exit 0 so the snap can be installed.
+"$SNAP"/bin/detect-iptables || exit 0
 
 if [ -z "$SNAP_SKIP_INIT" ]; then
     # This is used only with 'oneshot'. We don't want to perform reloads on

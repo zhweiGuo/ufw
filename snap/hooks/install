@@ -6,4 +6,5 @@ if [ -z "$SNAP" ]; then
     exit 1
 fi
 
-"$SNAP"/bin/detect-iptables
+# detect-iptables will error via logger
+"$SNAP"/bin/detect-iptables || true
