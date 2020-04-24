@@ -13,6 +13,7 @@ build-base: core18  # remove once LP supports 20.04
 
 environment:
   PATH: $SNAP_DATA/bin:$PATH
+  PYTHONPATH: $SNAP/usr/lib/python3/dist-packages
 
 apps:
   srv:
@@ -34,6 +35,10 @@ apps:
     plugs: [ firewall-control ]
   doc:
     command: bin/doc
+
+layout:
+  /usr/lib/python3/dist-packages/ufw/__pycache__:
+    symlink: $SNAP_DATA/usr/lib/python3/dist-packages/ufw/__pycache__
 
 parts:
   wrapper:

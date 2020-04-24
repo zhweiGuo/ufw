@@ -6,5 +6,8 @@ if [ -z "$SNAP" ]; then
     exit 1
 fi
 
-# detect-iptables will error via logger
-"$SNAP"/bin/detect-iptables || true
+PYCACHE="$SNAP_DATA/usr/lib/python3/dist-packages/ufw/__pycache__"
+test -d "$PYCACHE" || mkdir -p "$PYCACHE" 2>/dev/null || true
+
+dir=$(dirname "$0")
+exec "$dir/connect-plug-firewall-control"
