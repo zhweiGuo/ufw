@@ -4,11 +4,12 @@ summary: ufw (Uncomplicated Firewall)
 description: ufw as a snap
 license: GPL-3.0 AND GPL-2.0+
 confinement: strict
-grade: stable
+#grade: stable
+#assumes:
+#- snapd2.45  # for *time64 syscalls
+grade: devel
 base: core20
 build-base: core18  # remove once LP supports 20.04
-assumes:
-- snapd2.45  # for *time64 syscalls
 
 environment:
   PATH: $SNAP_DATA/bin:$PATH
