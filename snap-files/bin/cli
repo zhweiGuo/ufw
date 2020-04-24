@@ -6,11 +6,10 @@ if [ -z "$SNAP" ]; then
     exit 1
 fi
 
-if ! iptables --version >/dev/null 2>&1 ; then
-    echo "Could not use iptables. Please run:"
-    echo "'sudo snap connect ufw:firewall-control ubuntu-core:firewall-control'"
+snapctl is-connected firewall-control || {
+    logger -t "$SNAP_NAME" "please run: snap connect $SNAP_NAME:firewall-control"
     exit 1
-fi
+}
 
 PPATH=
 if [ -z "$PYTHONPATH" ]; then

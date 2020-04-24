@@ -6,6 +6,11 @@ if [ -z "$SNAP" ]; then
     exit 1
 fi
 
+snapctl is-connected firewall-control || {
+    logger -t "$SNAP_NAME" "please run: snap connect $SNAP_NAME:firewall-control"
+    exit 1
+}
+
 detect() {
     kernel_maj=$(uname -r | cut -d '.' -f 1)
     req=$((kernel_maj + 0))
