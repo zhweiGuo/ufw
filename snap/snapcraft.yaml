@@ -9,7 +9,6 @@ confinement: strict
 #- snapd2.45  # for *time64 syscalls
 grade: devel
 base: core20
-build-base: core18  # remove once LP supports 20.04
 
 environment:
   PATH: $SNAP_DATA/bin:$PATH
