@@ -64,7 +64,7 @@ parts:
   stage-libipset:
     plugin: nil
     stage-packages:
-    - libipset3  # use libipset13 when moving to 20.04
+    - libipset13
     stage:
     - -usr/share/doc
     - -usr/share/man
