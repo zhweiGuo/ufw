@@ -77,7 +77,7 @@ fi
 
 BINPATH="$SNAP_DATA/bin"
 if [ ! -d "$BINPATH" ]; then
-    mkdir -p "$SNAP_DATA/bin"
+    mkdir -p "$BINPATH"
 fi
 for i in ip6tables ip6tables-restore ip6tables-save iptables iptables-restore iptables-save ; do
     ln -sf /usr/sbin/xtables-"$backend"-multi "$BINPATH/$i"
