@@ -1,3 +1,16 @@
+ufw (0.36-7) unstable; urgency=medium
+
+  * 0012-pyflakes3.patch: Makefile: base pyflakes executable on PYTHON
+  * 0013-add-prepend-to-help.patch: fix pyflakes error and add prepend to
+    help
+  * debian/control: use Build-Depends on debhelper-compat (=13) and remove
+    debian/compat
+  * debian/rules:
+    - use dh_installsystemd instead of dh_systemd_enable and dh_systemd_start
+    - use --no-stop-on-upgrade with dh_installinit
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Sep 2020 13:11:29 +0000
+
 ufw (0.36-6) unstable; urgency=medium
 
   * 0009-empty-non-functioning-ipt-modules.patch: empty out IPT_MODULES and

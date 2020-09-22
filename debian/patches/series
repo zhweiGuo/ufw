@@ -9,3 +9,5 @@
 0009-empty-non-functioning-ipt-modules.patch
 0010-add-other-firewall-checks.patch
 0011-suppress-legacy-warnings-in-tests.patch
+0012-pyflakes3.patch
+0013-add-prepend-to-help.patch

@@ -1,0 +1,27 @@
+Author: Jamie Strandboge <jamie@ubuntu.com>
+Description: Makefile: base pyflakes executable on PYTHON
+ commit 9a457ce95cd1c901886a3d40a2c19e797f89bf10
+
+Index: ufw-0.36/Makefile
+===================================================================
+--- ufw-0.36.orig/Makefile
++++ ufw-0.36/Makefile
+@@ -9,12 +9,17 @@ TARBALLS = ../tarballs
+ TARSRC   = $(TARBALLS)/$(SRCVER)
+ TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
+ PYFLAKES = $(TMPDIR)/pyflakes.out
+-PYFLAKES_EXE = pyflakes
+ 
+ ifndef $(PYTHON)
+ export PYTHON=python3
+ endif
+ 
++ifeq ($(PYTHON),python3)
++export PYFLAKES_EXE = pyflakes3
++else
++export PYFLAKES_EXE = pyflakes
++endif
++
+ all: snap-build
+ ifneq ($(SNAP),yes)
+ 	# Use setup.py to install. See README for details

@@ -65,9 +65,10 @@ binary-indep: build install
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
 	dh_install
-	dh_systemd_enable
-	dh_installinit --no-start --no-restart-on-upgrade
-	dh_systemd_start --no-start --no-restart-on-upgrade
+	dh_installinit --no-start --no-stop-on-upgrade
+	# don't start the service on on install/upgrade and don't stop the
+	# service on upgrade
+	dh_installsystemd --no-start --no-stop-on-upgrade --no-restart-on-upgrade
 	dh_installlogrotate
 	dh_installman
 	dh_installdebconf
