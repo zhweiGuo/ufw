@@ -9,10 +9,15 @@ TARBALLS = ../tarballs
 TARSRC   = $(TARBALLS)/$(SRCVER)
 TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 PYFLAKES = $(TMPDIR)/pyflakes.out
-PYFLAKES_EXE = pyflakes
 
 ifndef $(PYTHON)
 export PYTHON=python3
+endif
+
+ifeq ($(PYTHON),python3)
+export PYFLAKES_EXE = pyflakes3
+else
+export PYFLAKES_EXE = pyflakes
 endif
 
 all: snap-build
