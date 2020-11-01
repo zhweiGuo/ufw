@@ -1,10 +1,14 @@
 ufw (0.36-8) UNRELEASED; urgency=medium
 
+  [ Jamie Strandboge ]
   * ufw.lintian-overrides:
     - remove init.d-script-possible-missing-stop override
     - adjust "allow to" override
     - override spare-manual-page for ufw-framework as it gives additional
       details for the ufw command
+
+  [ Debian Janitor ]
+  * Use secure copyright file specification URI.
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Sep 2020 11:50:27 -0500
 
