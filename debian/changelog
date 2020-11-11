@@ -11,6 +11,7 @@ ufw (0.36-8) UNRELEASED; urgency=medium
   * Use secure copyright file specification URI.
   * Use set -e rather than passing -e on the shebang-line.
   * Set upstream metadata fields: Repository, Repository-Browse.
+  * Update watch file format version to 4.
 
  -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 22 Sep 2020 11:50:27 -0500
 
