@@ -17,6 +17,8 @@ ufw (0.37) UNRELEASED; urgency=medium
   * doc/ufw.8:
     - ::/0 is also a synonym for 'Anywhere'
     - document --force with 'ufw delete NUM'
+    - document 'insert' and 'prepend' can't be used to update comments
+      (LP: #1927737)
   * prefer python3
   * empty out IPT_MODULES and update documentation (LP: #1556419)
   * adjust check-requirements to look for other firewall software
