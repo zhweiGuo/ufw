@@ -20,8 +20,10 @@ ufw (0.37) UNRELEASED; urgency=medium
   * prefer python3
   * empty out IPT_MODULES and update documentation (LP: #1556419)
   * adjust check-requirements to look for other firewall software
+  * conf/sysctl.conf: remove tcp_sack=1 and non-firewall sysctls
+    (LP: #1884821)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 22 Apr 2020 10:23:08 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 16:06:50 -0500
 
 ufw (0.36) RELEASED; urgency=medium
 
