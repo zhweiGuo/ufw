@@ -22,6 +22,7 @@ ufw (0.37) UNRELEASED; urgency=medium
   * adjust check-requirements to look for other firewall software
   * conf/sysctl.conf: remove tcp_sack=1 and non-firewall sysctls
     (LP: #1884821)
+  * src/backend_iptables.py: remove unreachable code (LP: #1927734)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 16:06:50 -0500
 
