@@ -59,7 +59,7 @@ for exe in python3 python2 python ; do
         echo "pass (binary: $exe, version: $v, py2)"
         found_python="yes"
         break
-    elif echo "$v" | grep -q "^3.[2-8]"; then
+    elif echo "$v" | grep -q "^3.[1-9][0-9]*"; then
         echo "pass (binary: $exe, version: $v, py3)"
         found_python="yes"
         break
