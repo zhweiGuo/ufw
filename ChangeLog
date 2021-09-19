@@ -1,4 +1,4 @@
-ufw (0.35.1) UNRELEASED; urgency=medium
+ufw (0.35.1) RELEASED; urgency=medium
 
   * don't disable syncookies and instead use the system's value by default
   * adjust runtime tests to use daytime/port 13 instead of ssh/port 22
@@ -15,7 +15,7 @@ ufw (0.35.1) UNRELEASED; urgency=medium
   * src/backend_iptables.py: unconditionally reload user rules with 'delete'
     (LP: #1933117)
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 19:46:03 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 23:47:18 -0500
 
 ufw (0.35) RELEASED; urgency=medium
 
