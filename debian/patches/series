@@ -11,3 +11,4 @@
 0011-suppress-legacy-warnings-in-tests.patch
 0012-pyflakes3.patch
 0013-add-prepend-to-help.patch
+python3-versions.diff

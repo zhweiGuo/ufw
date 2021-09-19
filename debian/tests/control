@@ -10,6 +10,7 @@ Restrictions: needs-root, allow-stderr, isolation-machine
 # verify the arch) since isolation-container appears to work there. If this
 # results in a flaky test, we might need to remove this and wait for
 # isolation-machine to become available
+Architecture: amd64
 Test-Command: python3 debian/tests/test-ufw.py --container
 Restrictions: needs-root, allow-stderr, isolation-container
 

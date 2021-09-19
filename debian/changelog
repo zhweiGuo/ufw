@@ -1,3 +1,12 @@
+ufw (0.36-7.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix python version check for Python >= 3.9. Closes: #975912.
+  * Annotate test-ufw.py autopkgtest with Architecture: amd64 (Paul Gevers).
+    Closes: #975907.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 28 Nov 2020 20:02:12 +0100
+
 ufw (0.36-7) unstable; urgency=medium
 
   * 0012-pyflakes3.patch: Makefile: base pyflakes executable on PYTHON
