@@ -1,4 +1,22 @@
-ufw (0.36-8) UNRELEASED; urgency=medium
+ufw (0.36.1-1) unstable; urgency=medium
+
+  * New upstream release (LP: #1808463, LP: #1831186, LP: #1838764,
+    LP: #1556419, LP: #1933117). Drop the following (included upstream):
+    - 0002-fix-check-requirements.patch
+    - 0003-lp1838764.patch
+    - 0004-make-root-tests-chain-order-agnostic.patch
+    - 0005-use-only-python3.patch
+    - 0006-bug921680.patch
+    - 0007-bug921680-pt2.patch
+    - 0008-fix-check-requirements-again.patch
+    - 0009-empty-non-functioning-ipt-modules.patch
+    - 0010-add-other-firewall-checks.patch
+    - 0011-suppress-legacy-warnings-in-tests.patch
+    - 0012-pyflakes3.patch
+    - 0013-add-prepend-to-help.patch
+  * Remaining changes:
+    - 0001-optimize-boot.patch
+    - python3-versions.diff
 
   [ Jamie Strandboge ]
   * ufw.lintian-overrides:
@@ -6,6 +24,8 @@ ufw (0.36-8) UNRELEASED; urgency=medium
     - adjust "allow to" override
     - override spare-manual-page for ufw-framework as it gives additional
       details for the ufw command
+  * 0002-fix-copyright.patch: src/ufw: update copyright year
+  * debian/*: use my jdstrand@ubuntu.com email address
 
   [ Debian Janitor ]
   * Use secure copyright file specification URI.
@@ -13,7 +33,11 @@ ufw (0.36-8) UNRELEASED; urgency=medium
   * Set upstream metadata fields: Repository, Repository-Browse.
   * Update watch file format version to 4.
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 13 Feb 2021 19:31:06 -0600
+  [ Bastian Triller ]
+  * debian/ufw.logrotate: use rsyslog-rotate instead of invoke-rc.d
+    (Closes: 993525)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sun, 19 Sep 2021 05:46:12 +0000
 
 ufw (0.36-7.1) unstable; urgency=medium
 
