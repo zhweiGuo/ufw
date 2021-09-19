@@ -1130,6 +1130,20 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             elif found and rule.remove:
                 flag = '-D'
                 rstr = _("Rule deleted")
+                # TODO: we only need to reload on delete when there are
+                # overlapping proto-specific and 'proto any' rules, but for
+                # now, unconditionally reload with all deletes. LP: #1933117
+                if rule.v6:
+                    rstr += " (v6)"
+                if allow_reload:
+                    # Reload the chain
+                    try:
+                        self._reload_user_rules()
+                    except Exception:
+                        raise
+                    flag = ""
+                else:
+                    rstr += _(" (skipped reloading firewall)")
             elif not found and not modified and not rule.remove:
                 flag = '-A'
                 rstr = _("Rule added")
