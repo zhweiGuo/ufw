@@ -20,8 +20,10 @@ ufw (0.36.1) UNRELEASED; urgency=medium
   * prefer python3
   * empty out IPT_MODULES and update documentation (LP: #1556419)
   * adjust check-requirements to look for other firewall software
+  * src/backend_iptables.py: unconditionally reload user rules with 'delete'
+    (LP: #1933117)
 
- -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 22 Apr 2020 10:25:25 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 19:41:55 -0500
 
 ufw (0.36) RELEASED; urgency=medium
 
