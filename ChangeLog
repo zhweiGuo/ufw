@@ -1,4 +1,4 @@
-ufw (0.36.1) UNRELEASED; urgency=medium
+ufw (0.36.1) RELEASED; urgency=medium
 
   * snap packaging updates:
     - ufw-init: use '-n' instead of '-s' with --rootdir and --datadir
