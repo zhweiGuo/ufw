@@ -1,6 +1,7 @@
 ufw (0.36.2) UNRELEASED; urgency=medium
 
-  * 
+  * src/ufw-init-functions: set default policy after loading rules. Thanks to
+    Mauricio Faria de Oliveira. (LP: #1946804)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 20:38:45 -0500
 
