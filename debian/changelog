@@ -6,6 +6,7 @@ ufw (0.36.1-2) unstable; urgency=medium
 
   [ Jamie Strandboge ]
   * rename python3-versions.diff as 0003-python3-versions.patch
+  * debian/upstream/metadata: add Bug-Submit and Bug-Database
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 13 Oct 2021 19:02:20 +0000
 
