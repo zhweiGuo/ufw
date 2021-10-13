@@ -104,6 +104,7 @@ Usage: %(progname)s %(command)s
  %(limit)-31s add limit %(rule)s
  %(delete)-31s delete %(urule)s
  %(insert)-31s insert %(urule)s at %(number)s
+ %(prepend)-31s prepend %(urule)s
  %(route)-31s add route %(urule)s
  %(route-delete)-31s delete route %(urule)s
  %(route-insert)-31s insert route %(urule)s at %(number)s

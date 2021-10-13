@@ -55,16 +55,23 @@ class BackendIptablesTestCase(unittest.TestCase):
         # update ufw-init-functions to use our fake iptables* commands
         f = os.path.join(ufw.common.state_dir, "ufw-init-functions")
         contents = ""
-        for line in open(f).readlines():
+        fd = open(f, 'r')
+        for line in fd.readlines():
             if re.search("^PATH=", line):
                 line = "#" + line
                 line += 'PATH="%s:%s"\n' % (ufw.common.iptables_dir,
                                             line.split('"')[1])
             contents += line
-        open(f + '.new', 'w').write(contents)
+        fd.close()
+
+        fd_new = open(f + '.new', 'w')
+        fd_new.write(contents)
+        fd_new.close()
+
         os.rename(f + '.new', f)
 
     def tearDown(self):
+        self.ui.backend = None
         self.ui = None
         self.backend = None
         os.environ['PATH'] = self.prevpath
@@ -549,6 +556,43 @@ ports=80/tcp
                                         "Could not find '%s' in:\n%s" % (search,
                                                                      res))
 
+    def test_lp1838764(self):
+        '''Test get_status() - LP: #1838764'''
+        # build up some rules
+        cmds = [
+            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'app', 'SSH'],
+            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'app', 'SSH'],
+            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22'],
+            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22'],
+            ['rule', 'allow', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22', 'proto', 'tcp'],
+            ['rule', 'allow', 'out', 'from', '192.168.1.0/24', 'to', '192.168.1.0/24', 'port', '22', 'proto', 'tcp'],
+        ]
+
+        pat_exp = re.compile(r'192\.168\.1\.0/24\s+SSH\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+SSH\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW OUT\s+192\.168\.1\.0/24\s+')
+        pat_verbose = re.compile(r'192\.168\.1\.0/24\s+SSH \(SSH\)\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW IN\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+SSH \(SSH\)\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22\s+ALLOW OUT\s+192\.168\.1\.0/24\s+192\.168\.1\.0/24\s+22/tcp\s+ALLOW OUT\s+192\.168\.1\.0/24\s+')
+
+        self.backend.rules = []
+        self.backend.rules6 = []
+        for cmd in cmds:
+            pr = ufw.frontend.parse_command(cmd + [])
+            action = cmd[1]
+            self.assertEquals(action, pr.action, "%s != %s" % (action, \
+                                                               pr.action))
+            if 'rule' in pr.data:
+                if pr.data['rule'].v6:
+                    self.backend.rules6.append(pr.data['rule'])
+                else:
+                    self.backend.rules.append(pr.data['rule'])
+
+        self.backend.dryrun = False
+        for v in [False, True]:
+            res = self.backend.get_status(verbose=v, show_count=False)
+            pat = pat_exp
+            if v:
+                pat = pat_verbose
+            self.assertTrue(pat.search(res), "Could not find '%s' in:\n%s" %
+                                             (pat, res))
+
     def test_stop_firewall(self):
         '''Test stop_firewall()'''
         self.backend.stop_firewall()
@@ -591,8 +635,7 @@ ports=80/tcp
     def test__get_defaults(self):
         '''Test _get_defaults()'''
         self.backend._get_defaults()
-        for k in ['ipt_modules',
-                  'default_output_policy',
+        for k in ['default_output_policy',
                   'default_input_policy',
                   'default_forward_policy',
                   'loglevel',
@@ -607,13 +650,16 @@ ports=80/tcp
 
         f = self.backend.files['defaults']
         contents = ""
-        for line in open(f).readlines():
+        fd = open(f, 'r')
+        for line in fd.readlines():
             if re.search("^DEFAULT_INPUT_POLICY=", line):
                 line = "#" + line
             contents += line
-        fd = open(f + '.new', 'w')
-        fd.write(contents)
         fd.close()
+
+        fd_new = open(f + '.new', 'w')
+        fd_new.write(contents)
+        fd_new.close()
         os.rename(f + '.new', f)
 
         tests.unit.support.check_for_exception(self,
@@ -622,13 +668,16 @@ ports=80/tcp
 
         f = self.backend.files['defaults']
         contents = ""
-        for line in open(f).readlines():
+        fd = open(f, 'r')
+        for line in fd.readlines():
             if re.search("^#DEFAULT_INPUT_POLICY=", line):
                 line = "DEFAULT_INPUT_POLICY=bad" + line
             contents += line
-        fd = open(f + '.new', 'w')
-        fd.write(contents)
         fd.close()
+
+        fd_new = open(f + '.new', 'w')
+        fd_new.write(contents)
+        fd_new.close()
         os.rename(f + '.new', f)
 
         tests.unit.support.check_for_exception(self,

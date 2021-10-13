@@ -595,14 +595,15 @@ class UFWRule:
 
     def get_app_tuple(self):
         '''Returns a tuple to identify an app rule. Tuple is:
-             dapp dst sapp src
+             dapp dst sapp src direction_iface|direction
            or
-             dport dst sapp src
+             dport dst sapp src direction_iface|direction
            or
-             dapp dst sport src
+             dapp dst sport src direction_iface|direction
 
-           All of these might have in_eth0 out_eth0 (or similar) if an
-           interface is also defined.
+           where direction_iface is of form 'in_eth0', 'out_eth0' or
+           'in_eth0 out_eth0' (ie, both interfaces used). If no interfaces are
+           specified, then tuple ends with the direction instead.
         '''
         tupl = ""
         if self.dapp != "" or self.sapp != "":
@@ -614,11 +615,15 @@ class UFWRule:
                 tupl = "%s %s %s %s" % (self.dapp, self.dst, self.sport, \
                                          self.src)
 
-            # add interfaces to the end, if they exist
-            if self.interface_in != "":
-                tupl += " in_%s" % (self.interface_in)
-            if self.interface_out != "":
-                tupl += " out_%s" % (self.interface_out)
+            # if neither interface exists, add the direction
+            if self.interface_in == "" and self.interface_out == "":
+                tupl += " %s" % (self.direction)
+            # otherwise, add the interfaces
+            else:
+                if self.interface_in != "":
+                    tupl += " in_%s" % (self.interface_in)
+                if self.interface_out != "":
+                    tupl += " out_%s" % (self.interface_out)
 
         return tupl
 

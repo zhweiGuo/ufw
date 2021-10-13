@@ -9,10 +9,15 @@ TARBALLS = ../tarballs
 TARSRC   = $(TARBALLS)/$(SRCVER)
 TARDST   = $(TARBALLS)/$(SRCVER).tar.gz
 PYFLAKES = $(TMPDIR)/pyflakes.out
-PYFLAKES_EXE = pyflakes
 
 ifndef $(PYTHON)
-export PYTHON=python
+export PYTHON=python3
+endif
+
+ifeq ($(PYTHON),python3)
+export PYFLAKES_EXE = pyflakes3
+else
+export PYFLAKES_EXE = pyflakes
 endif
 
 all: snap-build
@@ -59,7 +64,6 @@ ifndef DESTDIR
 	exit 1
 endif
 	cp -a $(SNAPDIR)/* $(DESTDIR)
-	#ln -sf /var/snap/ufw/current/usr/lib/python3/dist-packages/ufw/__pycache__ ./snappy-packaging/prime/usr/lib/python3/dist-packages/ufw/__pycache__
 	ln -sf /var/snap/ufw/current/usr/lib/python3/dist-packages/ufw/__pycache__ $(DESTDIR)/usr/lib/python3/dist-packages/ufw/__pycache__
 
 translations: $(POTFILES)
@@ -112,8 +116,6 @@ clean:
 	rm -rf $(TMPDIR)
 	rm -rf $(SNAPDIR)
 	rm -rf ./parts ./stage ./prime
-	rm -rf ./snappy-packaging/files/* ./snappy-packaging/parts ./snappy-packaging/prime ./snappy-packaging/stage
-	rm -f ./snappy-packaging/*.snap
 	rm -f ./locales/mo/*.mo
 	rm -f ./tests/unit/*.pyc ./tests/*.pyc ./src/*.pyc
 	rm -rf ./tests/unit/__pycache__ ./tests/__pycache__ ./src/__pycache__

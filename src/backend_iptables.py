@@ -37,7 +37,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         files = {}
         config_dir = _findpath(ufw.common.config_dir, datadir)
-        state_dir = _findpath(ufw.common.state_dir, datadir)
 
         files['rules'] = os.path.join(config_dir, 'ufw/user.rules')
         files['before_rules'] = os.path.join(config_dir, 'ufw/before.rules')
@@ -45,7 +44,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         files['rules6'] = os.path.join(config_dir, 'ufw/user6.rules')
         files['before6_rules'] = os.path.join(config_dir, 'ufw/before6.rules')
         files['after6_rules'] = os.path.join(config_dir, 'ufw/after6.rules')
-        files['init'] = os.path.join(state_dir, 'ufw-init')
+        # when rootdir/datadir are not set, ufw-init is in the same area as
+        # the lock files (ufw.common.state_dir, aka /lib/ufw), but when set,
+        # ufw-init is in rootdir/lib/ufw (ro) and the lockfiles in
+        # datadir/lib/ufw (rw)
+        files['init'] = os.path.join(_findpath(ufw.common.state_dir, rootdir),
+                                     'ufw-init')
 
         ufw.backend.UFWBackend.__init__(self, "iptables", dryrun, files,
                                         rootdir=rootdir, datadir=datadir)
@@ -1122,6 +1126,20 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
             elif found and rule.remove:
                 flag = '-D'
                 rstr = _("Rule deleted")
+                # TODO: we only need to reload on delete when there are
+                # overlapping proto-specific and 'proto any' rules, but for
+                # now, unconditionally reload with all deletes. LP: #1933117
+                if rule.v6:
+                    rstr += " (v6)"
+                if allow_reload:
+                    # Reload the chain
+                    try:
+                        self._reload_user_rules()
+                    except Exception:
+                        raise
+                    flag = ""
+                else:
+                    rstr += _(" (skipped reloading firewall)")
             elif not found and not modified and not rule.remove:
                 flag = '-A'
                 rstr = _("Rule added")

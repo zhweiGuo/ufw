@@ -1,3 +1,30 @@
+ufw (0.36.1) RELEASED; urgency=medium
+
+  * snap packaging updates:
+    - ufw-init: use '-n' instead of '-s' with --rootdir and --datadir
+      (LP: #1808463)
+    - backend_iptables.py: ufw-init is in --rootdir (which is SNAP, not
+      SNAP_DATA for the snap)
+    - snap-files/bin/srv:
+      + don't copy $SNAP/lib/ufw; create $SNAP_DATA/lib/ufw
+      + cleanup $SNAP_DATA after old snap revisions
+    - snap-files/bin/init: use SNAP_REVISION to match snap-files/bin/srv
+  * update man page for limit since IPv6 has been supported since 0.33
+    (LP: #1831186)
+  * add direction when no interfaces specified in get_app_tuple()
+    (LP: #1838764)
+  * various testsuite adjustments for iptables 1.8
+  * doc/ufw.8:
+    - ::/0 is also a synonym for 'Anywhere'
+    - document --force with 'ufw delete NUM'
+  * prefer python3
+  * empty out IPT_MODULES and update documentation (LP: #1556419)
+  * adjust check-requirements to look for other firewall software
+  * src/backend_iptables.py: unconditionally reload user rules with 'delete'
+    (LP: #1933117)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 19:41:55 -0500
+
 ufw (0.36) RELEASED; urgency=medium
 
   * doc/ufw-framework.8:
