@@ -356,9 +356,8 @@ ufw_start() {
                 error="yes"
             fi
 
-            # set the default policy
-            # (do this after loading rules so not to break
-            # network rootfs w/ INPUT DROP during ufw init.)
+            # set the default policy (do this after loading rules so not to
+            # break network rootfs w/ INPUT DROP during ufw init. LP: 1946804)
             input_pol="$DEFAULT_INPUT_POLICY"
             if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
                 input_pol="DROP"
@@ -374,6 +373,8 @@ ufw_start() {
                 forward_pol="DROP"
             fi
 
+            # Since we're setting the default policy last, '-n/--noflush' is
+            # important here so we don't undo what we've loaded so far.
             printf "*filter\n"\
 "# builtin chains\n"\
 ":INPUT %s [0:0]\n"\
