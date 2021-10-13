@@ -27,8 +27,10 @@ ufw (0.37) UNRELEASED; urgency=medium
   * src/backend_iptables.py:
     - remove unreachable code (LP: #1927734)
     - unconditionally reload user rules with 'delete' (LP: #1933117)
+  * src/ufw-init-functions: set default policy after loading rules. Thanks to
+    Mauricio Faria de Oliveira. (LP: #1946804)
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 18 Sep 2021 16:06:50 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 13 Oct 2021 11:44:00 -0500
 
 ufw (0.36) RELEASED; urgency=medium
 
