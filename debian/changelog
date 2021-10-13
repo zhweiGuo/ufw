@@ -4,6 +4,9 @@ ufw (0.36.1-2) unstable; urgency=medium
   * 0004-set-default-policy-after-load.patch: fix boot stall on iscsi/network
     root filesystem when starting ufw (LP: #1946804)
 
+  [ Jamie Strandboge ]
+  * rename python3-versions.diff as 0003-python3-versions.patch
+
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 13 Oct 2021 19:02:20 +0000
 
 ufw (0.36.1-1) unstable; urgency=medium
