@@ -1,8 +1,9 @@
 [Unit]
 Description=Uncomplicated firewall
+Documentation=man:ufw(8)
 DefaultDependencies=no
-Wants=network-pre.target
 Before=network-pre.target
+Wants=network-pre.target
 
 [Service]
 Type=oneshot
