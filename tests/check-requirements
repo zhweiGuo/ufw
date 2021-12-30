@@ -254,18 +254,21 @@ for i in "" 6; do
 done
 
 # check and warn if various firewall applications are installed
+echo "== System =="
+echo -n "Other firewall applications:"
 found=
 for exe in apf arno-iptables-firewall ferm firehol firewalld ipkungfu iptables-persistent netfilter-persistent pyroman uruk ; do
     if PATH=/sbin:/usr/sbin:/bin:/usr/bin which "$exe" >/dev/null 2>&1; then
         found="$found $exe"
     fi
 done
-if [ ! -z "$found" ]; then
-    echo "WARN: detected other firewall applications:"
-    echo "$found"
-    echo "(if enabled, these applications may interfere with ufw)"
-    echo ""
+if [ -z "$found" ]; then
+    echo " pass"
+else
+    echo -n "$found"
+    echo -n " (if enabled, may interfere with ufw)"
 fi
+echo ""
 
 if [ -n "$error" ] || [ -n "$error_runtime" ]; then
     if [ -n "$error" ]; then
