@@ -1,6 +1,18 @@
-# TODO: iptables-legacy, possibly py2
+# smoke tests
 Tests: test-ufw.py
 Restrictions: needs-root, allow-stderr, isolation-machine
+
+# smoke tests for running in a container. Note: as of 2020-03-02, Debian
+# CI does not provide isolation-machine, but isolation-container doesn't work
+# on (at least) arm64. While we can simply run tests in a VM prior to upload,
+# attempt running modified tests (ie, where ip_tables and ip6_tables are
+# are loaded in the kernel) with isolation-container on amd64 (the test will
+# verify the arch) since isolation-container appears to work there. If this
+# results in a flaky test, we might need to remove this and wait for
+# isolation-machine to become available
+Architecture: amd64
+Test-Command: python3 debian/tests/test-ufw.py --container
+Restrictions: needs-root, allow-stderr, isolation-container
 
 # root unittests under python3
 Tests: root-unittest
@@ -12,7 +24,7 @@ Depends: iptables,
          python3-distutils
 Restrictions: needs-root, allow-stderr, isolation-machine, build-needed, rw-build-tree
 
-# unittests under python3 (FIXME: python needed for tests/unit/support.py)
+# unittests under python3
 Tests: unittest
 Depends: iptables,
          netbase,
@@ -20,5 +32,5 @@ Depends: iptables,
          sed,
          python3,
          python3-distutils,
-         python
+         dh-python,
 Restrictions: allow-stderr, build-needed, rw-build-tree

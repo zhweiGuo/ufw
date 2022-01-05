@@ -2,3 +2,13 @@
 0002-fix-check-requirements.patch
 0003-lp1838764.patch
 0004-make-root-tests-chain-order-agnostic.patch
+0005-use-only-python3.patch
+0006-bug921680.patch
+0007-bug921680-pt2.patch
+0008-fix-check-requirements-again.patch
+0009-empty-non-functioning-ipt-modules.patch
+0010-add-other-firewall-checks.patch
+0011-suppress-legacy-warnings-in-tests.patch
+0012-pyflakes3.patch
+0013-add-prepend-to-help.patch
+python3-versions.diff

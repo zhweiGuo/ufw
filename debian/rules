@@ -6,7 +6,6 @@
 
 PYTHON  := /usr/bin/python3
 PYVERS  := $(shell py3versions -vr)
-PYTHON2 := /usr/bin/python2
 
 build-arch: build-stamp
 
@@ -34,14 +33,12 @@ install: build
 	dh_installdirs
 
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	./run_tests.sh -i $(PYTHON2)
 	./run_tests.sh -i $(PYTHON)
 	# the testsuite creates the build/ directory with test values that we
 	# don't want to use
 	make clean
 endif
 
-	$(PYTHON2) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 	$(PYTHON) ./setup.py install --root=$(CURDIR)/debian/tmp --install-layout=deb
 
 	# these shouldn't be conffiles
@@ -68,9 +65,10 @@ binary-indep: build install
 	dh_installdocs README
 	dh_installexamples doc/skel-ui.example
 	dh_install
-	dh_systemd_enable
-	dh_installinit --no-start --no-restart-on-upgrade
-	dh_systemd_start --no-start --no-restart-on-upgrade
+	dh_installinit --no-start --no-stop-on-upgrade
+	# don't start the service on on install/upgrade and don't stop the
+	# service on upgrade
+	dh_installsystemd --no-start --no-stop-on-upgrade --no-restart-on-upgrade
 	dh_installlogrotate
 	dh_installman
 	dh_installdebconf
@@ -93,7 +91,6 @@ binary-indep: build install
 	if dpkg-vendor --is ubuntu; then \
 		rm -f $(CURDIR)/debian/ufw/etc/ufw/applications.d/ufw-* ; \
 	fi
-	dh_python2 -p python-ufw
 	dh_python3 -p ufw
 	dh_compress
 	dh_fixperms

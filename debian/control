@@ -8,15 +8,15 @@ Build-Depends-Indep:
  procps,
  sed (>= 3.95)
 Build-Depends:
- debhelper (>= 9.20160709),
+ debhelper-compat (= 13),
  dh-python,
  po-debconf,
- python (>= 2.6.6-3~),
  python3 (>= 3.2),
  python3-distutils
-Standards-Version: 4.3.0
+Standards-Version: 4.5.0
 Homepage: https://launchpad.net/ufw
-Vcs-Git: https://git.launchpad.net/ufw?h=ubuntu%2Fmaster
+Vcs-Browser: https://git.launchpad.net/ufw?h=debian/master
+Vcs-Git: https://git.launchpad.net/ufw -b debian/master
 
 Package: ufw
 Architecture: all
@@ -33,17 +33,3 @@ Description: program for managing a Netfilter firewall
  Netfilter firewall easier. It provides a command line interface with syntax
  similar to OpenBSD's Packet Filter. It is particularly well-suited as a
  host-based firewall.
-
-Package: python-ufw
-Section: python
-Architecture: all
-Depends:
- ${python:Depends},
- ${misc:Depends}
-XB-Python-Version: ${python:Versions}
-Breaks: ufw (<< 0.32-0ubuntu1)
-Replaces: ufw (<< 0.32-0ubuntu1)
-Description: Uncomplicated FireWall Python modules
- The Uncomplicated FireWall is a front-end for iptables, to make managing a
- Netfilter firewall easier. This package includes the Python modules for the
- Uncomplicated FireWall.

@@ -1,0 +1,74 @@
+Author: Jamie Strandboge <jamie@canonical.com>
+Description: use python3 with setup.py
+Bug-Debian: bugs.debian.org/cgi-bin/bugreport.cgi?bug=938746
+Forwarded: no
+Index: ufw-0.36/tests/unit/support.py
+===================================================================
+--- ufw-0.36.orig/tests/unit/support.py
++++ ufw-0.36/tests/unit/support.py
+@@ -82,7 +82,7 @@ def run_setup():
+     if os.path.exists(topdir):
+         recursive_rm(topdir)
+     os.mkdir(topdir)
+-    sp = subprocess.Popen(['python',
++    sp = subprocess.Popen(['python3',
+                            './setup.py',
+                            'install',
+                            '--home=%s' % install_dir],
+Index: ufw-0.36/Makefile
+===================================================================
+--- ufw-0.36.orig/Makefile
++++ ufw-0.36/Makefile
+@@ -12,7 +12,7 @@ PYFLAKES = $(TMPDIR)/pyflakes.out
+ PYFLAKES_EXE = pyflakes
+ 
+ ifndef $(PYTHON)
+-export PYTHON=python
++export PYTHON=python3
+ endif
+ 
+ all: snap-build
+Index: ufw-0.36/README
+===================================================================
+--- ufw-0.36.orig/README
++++ ufw-0.36/README
+@@ -13,7 +13,7 @@ perhaps 'Unbearable Firewall'. Have fun!
+ 
+ Requirements
+ ------------
+-python 2.6-2.7, 3.4-3.5 (known to work with 2.6.2+, 2.7.0+, 3.4+, 3.5*)*
++python 2.6-2.7, 3.4-3.5 (known to work with 2.6.2+, 2.7.0+, 3.4+)*
+ iptables 1.4**
+ gettext
+ /proc filesystem support
+Index: ufw-0.36/run_tests.sh
+===================================================================
+--- ufw-0.36.orig/run_tests.sh
++++ ufw-0.36/run_tests.sh
+@@ -79,7 +79,7 @@ if [ "$1" = "-i" ]; then
+     shift
+ fi
+ if [ -z "$interpreter" ]; then
+-    for exe in python python2.7 python2.6 python3 python3.2 python3.1; do
++    for exe in python3 python2 python ; do
+         if which $exe >/dev/null 2>&1; then
+             interpreter="$exe"
+             break
+Index: ufw-0.36/setup.py
+===================================================================
+--- ufw-0.36.orig/setup.py
++++ ufw-0.36/setup.py
+@@ -17,11 +17,10 @@
+ #
+ #
+ # Install with:
+-# python ./setup.py install --root="/tmp/ufw"
++# python3 ./setup.py install --root="/tmp/ufw"
+ #
+ # To specify a different interpreter for ufw:
+-# python2.5 ./setup.py install --root="/tmp/ufw"
+-# python2.6 ./setup.py install --root="/tmp/ufw"
++# python3.7 ./setup.py install --root="/tmp/ufw"
+ # python2.7 ./setup.py install --root="/tmp/ufw"
+ #
+ 
