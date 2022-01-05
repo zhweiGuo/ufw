@@ -1,3 +1,12 @@
+ufw (0.36.1-3ubuntu1) jammy; urgency=medium
+
+  * debian/ufw.service: add back DefaultDependencies=no and instead add
+    Wants/After local-fs.target. This will avoid a dependency on sysinit while
+    ensuring that filesystems (including cryptsetup) are ready (the reason for
+    removing DefaultDependencies=no in the first place). LP: #1950039
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 05 Jan 2022 15:20:44 +0000
+
 ufw (0.36.1-3) unstable; urgency=medium
 
   * debian/ufw.service (LP: #1726856, Closes: 990834):
