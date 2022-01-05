@@ -1,7 +1,7 @@
 Source: ufw
 Section: admin
 Priority: optional
-Maintainer: Jamie Strandboge <jamie@ubuntu.com>
+Maintainer: Jamie Strandboge <jdstrand@ubuntu.com>
 Build-Depends-Indep:
  iptables,
  netbase,
@@ -13,7 +13,7 @@ Build-Depends:
  po-debconf,
  python3 (>= 3.2),
  python3-distutils
-Standards-Version: 4.5.0
+Standards-Version: 4.6.0.1
 Homepage: https://launchpad.net/ufw
 Vcs-Browser: https://git.launchpad.net/ufw?h=debian/master
 Vcs-Git: https://git.launchpad.net/ufw -b debian/master

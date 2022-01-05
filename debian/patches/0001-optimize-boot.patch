@@ -1,12 +1,12 @@
-Author: Jamie Strandboge <jamie@canonical.com>
+Author: Jamie Strandboge <jdstrand@ubuntu.com>
 Description: to improve boot speed when disabled, don't source all of
  ufw-init-functions (which also sources in other files).
 
-Index: ufw-0.35/src/ufw-init
+Index: ufw-0.36.1/src/ufw-init
 ===================================================================
---- ufw-0.35.orig/src/ufw-init
-+++ ufw-0.35/src/ufw-init
-@@ -31,6 +31,12 @@ if [ "$1" = "--datadir" ] && [ -s "$2" ]
+--- ufw-0.36.1.orig/src/ufw-init
++++ ufw-0.36.1/src/ufw-init
+@@ -31,6 +31,12 @@ if [ "$1" = "--datadir" ] && [ -n "$2" ]
  fi
  export DATA_DIR="$datadir"
  

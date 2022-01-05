@@ -1,3 +1,7 @@
+Author: Matthias Klose <doko@debian.org>
+Description: Fix python version check for Python >= 3.9
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=975912
+Forwarded: yes
 --- a/tests/check-requirements
 +++ b/tests/check-requirements
 @@ -59,7 +59,7 @@ for exe in python3 python2 python ; do

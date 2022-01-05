@@ -108,7 +108,7 @@ if __name__ == "__main__":
         sys.exit(0)
     elif pr.action == "version" or pr.action == "--version":
         msg(ufw.common.programName + " " + version)
-        msg("Copyright 2008-2015 Canonical Ltd.")
+        msg("Copyright 2008-2018 Canonical Ltd.")
         sys.exit(0)
 
     try:

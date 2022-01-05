@@ -3,7 +3,7 @@
 # check-requirements: verify all the required iptables functionality is
 # available
 #
-# Copyright 2008-2014 Canonical Ltd.
+# Copyright 2008-2020 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -50,16 +50,16 @@ runcmd() {
 # check python
 found_python="no"
 echo -n "Has python: "
-for exe in python2.7 python2.6 python2.5 python3.2 python3.3 python3.4 python3.5 python python3 ; do
+for exe in python3 python2 python ; do
     if ! which $exe >/dev/null 2>&1; then
         continue
     fi
     v=`$exe --version 2>&1 | cut -f 2 -d ' '`
-    if echo "$v" | grep -q "^2.[567]"; then
+    if echo "$v" | grep -q "^2.[5-7]"; then
         echo "pass (binary: $exe, version: $v, py2)"
         found_python="yes"
         break
-    elif echo "$v" | grep -q "^3.[234]"; then
+    elif echo "$v" | grep -q "^3.[2-8]"; then
         echo "pass (binary: $exe, version: $v, py3)"
         found_python="yes"
         break
@@ -79,7 +79,7 @@ for i in "" 6; do
     fi
 
     echo -n "Has $exe: "
-    if ! which $exe >/dev/null 2>&1; then
+    if ! PATH=/sbin:/usr/sbin:/bin:/usr/bin which $exe >/dev/null 2>&1; then
         echo "ERROR: could not find '$exe'" >&2
         error="yes"
     else
@@ -252,6 +252,20 @@ for i in "" 6; do
         fi
     }
 done
+
+# check and warn if various firewall applications are installed
+found=
+for exe in apf arno-iptables-firewall ferm firehol firewalld ipkungfu iptables-persistent netfilter-persistent pyroman uruk ; do
+    if PATH=/sbin:/usr/sbin:/bin:/usr/bin which "$exe" >/dev/null 2>&1; then
+        found="$found $exe"
+    fi
+done
+if [ ! -z "$found" ]; then
+    echo "WARN: detected other firewall applications:"
+    echo "$found"
+    echo "(if enabled, these applications may interfere with ufw)"
+    echo ""
+fi
 
 if [ -n "$error" ] || [ -n "$error_runtime" ]; then
     if [ -n "$error" ]; then

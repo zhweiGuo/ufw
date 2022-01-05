@@ -1,0 +1,93 @@
+Origin: upstream, https://git.launchpad.net/ufw/commit/?id=4d25bd6635a493ae10c1984bfe16fb31e3903198
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1946804
+From: Mauricio Faria de Oliveira <mfo@canonical.com>
+Date: Tue, 12 Oct 2021 18:57:40 -0300
+Subject: [PATCH] src/ufw-init-functions: set default policy after loading
+ rules
+
+If default input policy of DROP (default setting in ufw) is set
+before loading rules to allow a network root filesystem to work,
+it freezes before loading them, and the boot process stalls.
+
+Just set default policy after loading rules, as the snippet for
+ip[6]tables-restore has -n/--noflush, which doesn't flush other
+rules in the builtin chains.
+
+The output of iptables -L is identical before/after.
+
+https://bugs.launchpad.net/bugs/1946804
+
+Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
+---
+ src/ufw-init-functions | 48 ++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
+
+diff --git a/src/ufw-init-functions b/src/ufw-init-functions
+index feac8e203c1d..f0dd7f59f4c2 100755
+--- a/src/ufw-init-functions
++++ b/src/ufw-init-functions
+@@ -168,29 +168,6 @@ ufw_start() {
+             AFTER_RULES="$RULES_PATH/after${type}.rules"
+             USER_RULES="$USER_PATH/user${type}.rules"
+ 
+-            # set the default policy
+-            input_pol="$DEFAULT_INPUT_POLICY"
+-            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
+-                input_pol="DROP"
+-            fi
+-
+-            output_pol="$DEFAULT_OUTPUT_POLICY"
+-            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
+-                output_pol="DROP"
+-            fi
+-
+-            forward_pol="$DEFAULT_FORWARD_POLICY"
+-            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
+-                forward_pol="DROP"
+-            fi
+-
+-            printf "*filter\n"\
+-"# builtin chains\n"\
+-":INPUT %s [0:0]\n"\
+-":FORWARD %s [0:0]\n"\
+-":OUTPUT %s [0:0]\n"\
+-"COMMIT\n" $input_pol $forward_pol $output_pol | $exe-restore -n || error="yes"
+-
+             # flush the chains (if they exist)
+             if $exe -L ufw${type}-before-logging-input -n >/dev/null 2>&1 ; then
+                 delete_chains $type || error="yes"
+@@ -378,6 +355,31 @@ ufw_start() {
+                 out="${out}\nCouldn't find '$USER_RULES'"
+                 error="yes"
+             fi
++
++            # set the default policy
++            # (do this after loading rules so not to break
++            # network rootfs w/ INPUT DROP during ufw init.)
++            input_pol="$DEFAULT_INPUT_POLICY"
++            if [ "$DEFAULT_INPUT_POLICY" = "REJECT" ]; then
++                input_pol="DROP"
++            fi
++
++            output_pol="$DEFAULT_OUTPUT_POLICY"
++            if [ "$DEFAULT_OUTPUT_POLICY" = "REJECT" ]; then
++                output_pol="DROP"
++            fi
++
++            forward_pol="$DEFAULT_FORWARD_POLICY"
++            if [ "$DEFAULT_FORWARD_POLICY" = "REJECT" ]; then
++                forward_pol="DROP"
++            fi
++
++            printf "*filter\n"\
++"# builtin chains\n"\
++":INPUT %s [0:0]\n"\
++":FORWARD %s [0:0]\n"\
++":OUTPUT %s [0:0]\n"\
++"COMMIT\n" $input_pol $forward_pol $output_pol | $exe-restore -n || error="yes"
+         done
+ 
+         if [ ! -z "$IPT_SYSCTL" ] && [ -s "$IPT_SYSCTL" ]; then
+-- 
+2.30.2
+

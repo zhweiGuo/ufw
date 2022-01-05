@@ -17,11 +17,10 @@
 #
 #
 # Install with:
-# python ./setup.py install --root="/tmp/ufw"
+# python3 ./setup.py install --root="/tmp/ufw"
 #
 # To specify a different interpreter for ufw:
-# python2.5 ./setup.py install --root="/tmp/ufw"
-# python2.6 ./setup.py install --root="/tmp/ufw"
+# python3.7 ./setup.py install --root="/tmp/ufw"
 # python2.7 ./setup.py install --root="/tmp/ufw"
 #
 
@@ -35,7 +34,7 @@ import sys
 import shutil
 import subprocess
 
-ufw_version = '0.36'
+ufw_version = '0.36.1'
 
 def cmd(command):
     '''Try to execute the given command.'''
@@ -250,7 +249,11 @@ iptables_exe = ''
 iptables_dir = ''
 
 for e in ['iptables']:
-    for dir in ['/sbin', '/bin', '/usr/sbin', '/usr/bin', '/usr/local/sbin', \
+    # Historically iptables was in /sbin, then later also symlinked from
+    # /usr/sbin/iptables to /sbin/iptables. Debian bullseye moves iptables
+    # to /usr/sbin with no symlink in /sbin except on upgrades. To accomodate
+    # buildds that may still have the old iptables, search /usr/sbin first
+    for dir in ['/usr/sbin', '/sbin', '/usr/bin', '/bin', '/usr/local/sbin', \
                 '/usr/local/bin']:
         if e == "iptables":
             if os.path.exists(os.path.join(dir, e)):

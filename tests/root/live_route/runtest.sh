@@ -99,7 +99,7 @@ do
         echo iptables -I FORWARD -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         iptables -I FORWARD -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         do_cmd "0" nostats enable
-        iptables -n -L FORWARD | grep "$str" >> $TESTTMP/result
+        iptables -n -L FORWARD 2>/dev/null | grep "$str" >> $TESTTMP/result
         iptables -D FORWARD -j ACCEPT -m comment --comment $str 2>/dev/null
 done
 
@@ -212,21 +212,21 @@ do_cmd "0" nostats disable
 do_cmd "0" nostats route allow 23/tcp
 do_cmd "0" nostats logging medium
 do_cmd "0" null enable
-iptables-save | grep '^-' > $TESTTMP/ipt.enable
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.enable
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.enable
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.enable
 
 do_cmd "0" null disable
-iptables-save | grep '^-' > $TESTTMP/ipt.disable
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.disable
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.disable
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.disable
 
 sed -i 's/^ENABLED=no/ENABLED=yes/' $TESTPATH/etc/ufw/ufw.conf
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init start
-iptables-save | grep '^-' > $TESTTMP/ipt.start
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.start
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.start
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.start
 
 do_extcmd "0" null $TESTPATH/lib/ufw/ufw-init stop
-iptables-save | grep '^-' > $TESTTMP/ipt.stop
-ip6tables-save | grep '^-' > $TESTTMP/ip6t.stop
+iptables-save 2>/dev/null | grep '^-' > $TESTTMP/ipt.stop
+ip6tables-save 2>/dev/null | grep '^-' > $TESTTMP/ip6t.stop
 
 diff $TESTTMP/ipt.enable $TESTTMP/ipt.start || {
 	echo "'ufw enable' and 'ufw-init start' are different"
