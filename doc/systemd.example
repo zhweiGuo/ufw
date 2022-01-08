@@ -1,8 +1,10 @@
 [Unit]
 Description=Uncomplicated firewall
 Documentation=man:ufw(8)
+DefaultDependencies=no
 Before=network-pre.target
-Wants=network-pre.target
+Wants=network-pre.target local-fs.target
+After=local-fs.target
 Conflicts=iptables.service ip6tables.service nftables.service firewalld.service
 
 [Service]
