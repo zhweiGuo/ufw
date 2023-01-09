@@ -79,10 +79,30 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # The default log rate limiting rule ('ufw[6]-user-limit chain should
         # be prepended before use)
-        self.ufw_user_limit_log = ['-m', 'limit', \
-                                   '--limit', '3/minute', '-j', 'LOG', \
-                                   '--log-prefix']
+        self.ufw_user_limit_log = [
+            "-m",
+            "limit",
+            "--limit",
+            "3/minute",
+            "-j",
+            self.log_backend.get_log_target(),
+        ]
+        self.ufw_user_limit_log.extend(self.log_backend.get_logging_options())
         self.ufw_user_limit_log_text = "[UFW LIMIT BLOCK]"
+
+        all_log_backends = self.get_all_logging_backends()
+        self.ufw_user_limit_other_log = []
+        for backend in all_log_backends:
+            limit_log = [
+                "-m",
+                "limit",
+                "--limit",
+                "3/minute",
+                "-j",
+                backend.get_log_target(),
+            ]
+            limit_log.extend(backend.get_logging_options())
+            self.ufw_user_limit_other_log.append(limit_log)
 
     def get_default_application_policy(self):
         '''Get current policy'''
@@ -639,8 +659,12 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 else:
                     policy = "BLOCK"
 
-                lstr = '%s -j LOG --log-prefix "[UFW %s] "' % (limit_args, \
-                       policy)
+                lstr = '%s -j %s %s "[UFW %s] "' % (
+                    limit_args,
+                    self.log_backend.get_log_target(),
+                    " ".join(self.log_backend.get_logging_options()),
+                    policy,
+                )
                 if not pat_logall.search(s):
                     lstr = '-m conntrack --ctstate NEW ' + lstr
                 snippets[i] = pat_log.sub(r'\1-j \2\4', s)
@@ -678,13 +702,17 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         str_snippets = self._get_rules_from_formatted(frule, prefix, suffix)
 
         # split the string such that the log prefix can contain spaces
-        pat = re.compile(r'(.*) --log-prefix (".* ")(.*)')
+        pat = re.compile(
+            r'(.*) {} (".* ")(.*)'.format(
+                " ".join(self.log_backend.get_logging_options())
+            )
+        )
         for i, s in enumerate(str_snippets):
             snippets.append(pat.sub(r'\1', s).split())
             if pat.match(s):
-                snippets[i].append("--log-prefix")
-                snippets[i].append(pat.sub(r'\2', s).replace('"', ''))
-                snippets[i] += pat.sub(r'\3', s).split()
+                snippets[i].extend(self.log_backend.get_logging_options())
+                snippets[i].append(pat.sub(r"\2", s).replace('"', ""))
+                snippets[i] += pat.sub(r"\3", s).split()
 
         return snippets
 
@@ -1285,13 +1313,21 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
 
         # Rate limiting is runtime supported
         # Always delete these and re-add them so that we don't have extras
-        for chain in ['ufw-user-limit', 'ufw6-user-limit']:
-            if (self.caps['limit']['4'] and chain == 'ufw-user-limit') or \
-               (self.caps['limit']['6'] and chain == 'ufw6-user-limit'):
-                self._chain_cmd(chain, ['-D', chain] + \
-                                self.ufw_user_limit_log + \
-                                [self.ufw_user_limit_log_text + " "], \
-                                fail_ok=True)
+        # Try to delete logging rules from all logging backends. If you change
+        # the backend on the first start/reload you will have a lingering
+        # rule from the previous backend otherwise
+        for chain in ["ufw-user-limit", "ufw6-user-limit"]:
+            if (self.caps["limit"]["4"] and chain == "ufw-user-limit") or (
+                self.caps["limit"]["6"] and chain == "ufw6-user-limit"
+            ):
+                for limit_log_rule in self.ufw_user_limit_other_log:
+                    self._chain_cmd(
+                        chain,
+                        ["-D", chain]
+                        + limit_log_rule
+                        + [self.ufw_user_limit_log_text + " "],
+                        fail_ok=True,
+                    )
                 if self.defaults["loglevel"] != "off":
                     self._chain_cmd(chain, ['-I', chain] + \
                                     self.ufw_user_limit_log + \
@@ -1302,6 +1338,7 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         '''Get rules for specified logging level'''
         rules_t = []
 
+        log_options = self.log_backend.get_logging_options()
         if level not in list(self.loglevels.keys()):
             err_msg = _("Invalid log level '%s'") % (level)
             raise UFWError(err_msg)
@@ -1333,14 +1370,38 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                         if self._get_default_policy(t) == "reject" or \
                            self._get_default_policy(t) == "deny":
                             prefix = "[UFW BLOCK] "
-                            rules_t.append([c, ['-A', c, '-j', 'LOG', \
-                                                '--log-prefix', prefix] +
-                                                largs, ''])
+                            rules_t.append(
+                                [
+                                    c,
+                                    [
+                                        "-A",
+                                        c,
+                                        "-j",
+                                        self.log_backend.get_log_target(),
+                                        *log_options,
+                                        prefix,
+                                    ]
+                                    + largs,
+                                    "",
+                                ]
+                            )
                         elif self.loglevels[level] >= self.loglevels["medium"]:
                             prefix = "[UFW ALLOW] "
-                            rules_t.append([c, ['-A', c, '-j', 'LOG', \
-                                                '--log-prefix', prefix] + \
-                                                largs, ''])
+                            rules_t.append(
+                                [
+                                    c,
+                                    [
+                                        "-A",
+                                        c,
+                                        "-j",
+                                        self.log_backend.get_log_target(),
+                                        *log_options,
+                                        prefix,
+                                    ]
+                                    + largs,
+                                    "",
+                                ]
+                            )
 
             # Setup the miscellaneous logging chains
             largs = []
@@ -1359,14 +1420,40 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                                             '--ctstate', 'INVALID', \
                                             '-j', 'RETURN'] + largs, ''])
                     else:
-                        rules_t.append([c, ['-A', c, '-m', 'conntrack', \
-                                            '--ctstate', 'INVALID', \
-                                            '-j', 'LOG', \
-                                            '--log-prefix', \
-                                            "[UFW AUDIT INVALID] "] + \
-                                        largs, ''])
-                rules_t.append([c, ['-A', c, '-j', 'LOG', \
-                                    '--log-prefix', prefix] + largs, ''])
+                        rules_t.append(
+                            [
+                                c,
+                                [
+                                    "-A",
+                                    c,
+                                    "-m",
+                                    "conntrack",
+                                    "--ctstate",
+                                    "INVALID",
+                                    "-j",
+                                    self.log_backend.get_log_target(),
+                                    *log_options,
+                                    "[UFW AUDIT INVALID] ",
+                                ]
+                                + largs,
+                                "",
+                            ]
+                        )
+                rules_t.append(
+                    [
+                        c,
+                        [
+                            "-A",
+                            c,
+                            "-j",
+                            self.log_backend.get_log_target(),
+                            *log_options,
+                            prefix,
+                        ]
+                        + largs,
+                        "",
+                    ]
+                )
 
         # Setup the audit logging chains
         if self.loglevels[level] >= self.loglevels["medium"]:
@@ -1382,9 +1469,22 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
                 largs = ['-m', 'conntrack', '--ctstate', 'NEW'] + limit_args
 
             prefix = "[UFW AUDIT] "
-            for c in self.chains['before']:
-                rules_t.append([c, ['-I', c, '-j', 'LOG', \
-                                    '--log-prefix', prefix] + largs, ''])
+            for c in self.chains["before"]:
+                rules_t.append(
+                    [
+                        c,
+                        [
+                            "-I",
+                            c,
+                            "-j",
+                            self.log_backend.get_log_target(),
+                            *log_options,
+                            prefix,
+                        ]
+                        + largs,
+                        "",
+                    ]
+                )
 
         return rules_t
 

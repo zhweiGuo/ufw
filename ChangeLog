@@ -29,6 +29,8 @@ ufw (0.37) UNRELEASED; urgency=medium
     - unconditionally reload user rules with 'delete' (LP: #1933117)
   * src/ufw-init-functions: set default policy after loading rules. Thanks to
     Mauricio Faria de Oliveira. (LP: #1946804)
+  * allow logging backend to be configured and additional logging options to
+    be specified
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 13 Oct 2021 11:44:00 -0500
 

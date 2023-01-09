@@ -295,7 +295,9 @@ setup (name='ufw',
       license='GPL-3',
       cmdclass={'install': Install},
       package_dir={'ufw': 'staging'},
-      py_modules=['ufw.backend', 'ufw.backend_iptables', 'ufw.common', 'ufw.frontend', 'ufw.util', 'ufw.applications', 'ufw.parser']
+      py_modules=['ufw.backend', 'ufw.backend_iptables', 'ufw.common', 'ufw.frontend', 'ufw.util',
+                  'ufw.applications', 'ufw.parser', 'ufw.kernel_log_backend',
+                  'ufw.netfilter_log_backend', 'ufw.log_backend']
 )
 
 shutil.rmtree('staging')
