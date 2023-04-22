@@ -96,6 +96,13 @@ syntax-check: clean
 	cat "$(PYFLAKES)"
 	test ! -s "$(PYFLAKES)"
 
+style-check: clean
+ifeq (, $(shell which black))
+	@echo "No black in '$(PATH)', skipping style check"
+else
+	black --check --diff --quiet ./src/*py ./src/ufw ./setup.py
+endif
+
 man-check: clean
 	$(shell mkdir $(TMPDIR) 2>/dev/null)
 	for manfile in `ls doc/*.8`; do \
@@ -112,7 +119,7 @@ snap-test:
 	$(shell mkdir $(TMPDIR) 2>/dev/null)
 	./tests/test-srv-upgrades.sh > $(TMPDIR)/test-srv-upgrades.out 2>&1 && diff -Naur ./tests/test-srv-upgrades.sh.expected $(TMPDIR)/test-srv-upgrades.out
 
-check: syntax-check man-check test unittest snap-test
+check: style-check syntax-check man-check test unittest snap-test
 
 # These are only used in development
 clean:
