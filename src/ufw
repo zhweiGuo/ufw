@@ -33,7 +33,7 @@ if sys.version_info[0] < 3:
     # In Python 2, ensure that the _() that gets installed into built-ins
     # always returns unicodes.  This matches the default behavior under Python
     # 3, although that keyword argument is not present in the Python 3 API.
-    kwargs['unicode'] = True
+    kwargs["unicode"] = True
 domain = gettext.textdomain(ufw.common.programName)
 gettext.install(domain, **kwargs)
 
@@ -44,22 +44,23 @@ args = []
 rootdir = None
 datadir = None
 for i in sys.argv:
-    if i.startswith('--rootdir='):
-        if len(i.split('=')) == 2:
-            rootdir = i.split('=')[1]
+    if i.startswith("--rootdir="):
+        if len(i.split("=")) == 2:
+            rootdir = i.split("=")[1]
         else:
-            error('--rootdir is empty')
-    elif i.startswith('--datadir='):
-        if len(i.split('=')) == 2:
-            datadir = i.split('=')[1]
+            error("--rootdir is empty")
+    elif i.startswith("--datadir="):
+        if len(i.split("=")) == 2:
+            datadir = i.split("=")[1]
         else:
-            error('--datadir is empty')
+            error("--datadir is empty")
     else:
         args.append(i)
 
 # Internationalization
-gettext.bindtextdomain(domain, os.path.join(_findpath(ufw.common.trans_dir,
-                                                      rootdir), 'messages'))
+gettext.bindtextdomain(
+    domain, os.path.join(_findpath(ufw.common.trans_dir, rootdir), "messages")
+)
 try:
     # BAW: I'm not sure why both this and the .install() above is here, but
     # let's roll with it for now.  This is the Python 2 version, which ensures
@@ -69,10 +70,8 @@ except AttributeError:
     # Python 3 always returns unicodes.
     _ = gettext.gettext
 
-if sys.version_info[0] < 2 or \
-   (sys.version_info[0] == 2 and sys.version_info[1] < 6):
-    msg(ufw.common.programName + _(": Need at least python 2.6)\n"), \
-        sys.stderr)
+if sys.version_info[0] < 2 or (sys.version_info[0] == 2 and sys.version_info[1] < 6):
+    msg(ufw.common.programName + _(": Need at least python 2.6)\n"), sys.stderr)
     sys.exit(1)
 
 
@@ -112,37 +111,35 @@ if __name__ == "__main__":
         sys.exit(0)
 
     try:
-        ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir,
-                                      datadir=datadir)
+        ui = ufw.frontend.UFWFrontend(pr.dryrun, rootdir=rootdir, datadir=datadir)
     except UFWError as e:
         error(e.value)
     except Exception:
         raise
 
     if datadir is None:
-        lockfile = '/run/ufw.lock'
-        if os.getuid() != 0 or 'TESTSTATE' in os.environ:
-            lockfile = os.path.join(ufw.common.state_dir, 'ufw.lock')
+        lockfile = "/run/ufw.lock"
+        if os.getuid() != 0 or "TESTSTATE" in os.environ:
+            lockfile = os.path.join(ufw.common.state_dir, "ufw.lock")
     else:
-        lockfile = os.path.join(_findpath(ufw.common.state_dir, datadir),
-                                'ufw.lock')
+        lockfile = os.path.join(_findpath(ufw.common.state_dir, datadir), "ufw.lock")
 
     lock = create_lock(lockfile=lockfile, dryrun=pr.dryrun)
     res = ""
     try:
-        if app_action and 'type' in pr.data and pr.data['type'] == 'app':
-            res = ui.do_application_action(pr.action, pr.data['name'])
+        if app_action and "type" in pr.data and pr.data["type"] == "app":
+            res = ui.do_application_action(pr.action, pr.data["name"])
         else:
             bailout = False
-            if pr.action == "enable" and not pr.force and \
-               not ui.continue_under_ssh():
+            if pr.action == "enable" and not pr.force and not ui.continue_under_ssh():
                 res = _("Aborted")
                 bailout = True
 
             if not bailout:
-                if 'rule' in pr.data:
-                    res = ui.do_action(pr.action, pr.data['rule'], \
-                                       pr.data['iptype'], pr.force)
+                if "rule" in pr.data:
+                    res = ui.do_action(
+                        pr.action, pr.data["rule"], pr.data["iptype"], pr.force
+                    )
                 else:
                     res = ui.do_action(pr.action, "", "", pr.force)
 

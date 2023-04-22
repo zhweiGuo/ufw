@@ -1,4 +1,4 @@
-'''applications.py: common classes for ufw'''
+"""applications.py: common classes for ufw"""
 #
 # Copyright 2008-2018 Canonical Ltd.
 #
@@ -23,6 +23,7 @@ from ufw.util import debug, warn
 from ufw.common import UFWError
 
 import sys
+
 if sys.version_info[0] < 3:  # pragma: no cover
     import ConfigParser
 else:  # pragma: no cover
@@ -37,9 +38,9 @@ if False:
 
 
 def get_profiles(profiles_dir):
-    '''Get profiles found in profiles database.  Returns dictionary with
+    """Get profiles found in profiles database.  Returns dictionary with
        profile name as key and tuples for fields
-    '''
+    """
     if not os.path.isdir(profiles_dir):
         err_msg = _("Profiles directory does not exist")
         raise UFWError(err_msg)
@@ -51,7 +52,7 @@ def get_profiles(profiles_dir):
     files.sort()
 
     total_size = 0
-    pat = re.compile(r'^\.')
+    pat = re.compile(r"^\.")
     for f in files:
         abs_path = profiles_dir + "/" + f
         if not os.path.isfile(abs_path):
@@ -61,9 +62,14 @@ def get_profiles(profiles_dir):
             debug("Skipping '%s': hidden file" % (f))
             continue
 
-        if f.endswith('.dpkg-new') or f.endswith('.dpkg-old') or \
-           f.endswith('.dpkg-dist') or f.endswith('.rpmnew') or \
-           f.endswith('.rpmsave') or f.endswith('~'):
+        if (
+            f.endswith(".dpkg-new")
+            or f.endswith(".dpkg-old")
+            or f.endswith(".dpkg-dist")
+            or f.endswith(".rpmnew")
+            or f.endswith(".rpmsave")
+            or f.endswith("~")
+        ):
             debug("Skipping '%s'" % (f))
             continue
 
@@ -129,9 +135,9 @@ def get_profiles(profiles_dir):
                     skip = True
                     break
                 if len(value) > 1024:
-                    warn_msg = _("Skipping '%(value)s': value too long for " \
-                                 "'%(field)s'") % \
-                                 ({'value': p, 'field': key})
+                    warn_msg = _(
+                        "Skipping '%(value)s': value too long for " "'%(field)s'"
+                    ) % ({"value": p, "field": key})
                     warn(warn_msg)
                     skip = True
                     break
@@ -144,7 +150,7 @@ def get_profiles(profiles_dir):
 
             pdict = {}
             for key, value in cdict.items(p):
-                #debug("add '%s' = '%s' to '%s'" % (key, value, p))
+                # debug("add '%s' = '%s' to '%s'" % (key, value, p))
                 pdict[key] = value
 
             try:
@@ -157,7 +163,7 @@ def get_profiles(profiles_dir):
 
 
 def valid_profile_name(name):
-    '''Only accept a limited set of characters for name'''
+    """Only accept a limited set of characters for name"""
     # Reserved profile name
     if name == "all":
         return False
@@ -171,32 +177,34 @@ def valid_profile_name(name):
 
     # Require first character be alpha, so we can avoid collisions with port
     # numbers.
-    if re.match(r'^[a-zA-Z0-9][a-zA-Z0-9 _\-\.+]*$', name):
+    if re.match(r"^[a-zA-Z0-9][a-zA-Z0-9 _\-\.+]*$", name):
         return True
     return False
 
 
 def verify_profile(name, profile):
-    '''Make sure profile has everything needed'''
-    app_fields = ['title', 'description', 'ports']
+    """Make sure profile has everything needed"""
+    app_fields = ["title", "description", "ports"]
 
     for f in app_fields:
         if f not in profile:
-            err_msg = _("Profile '%(fn)s' missing required field '%(f)s'") % \
-                        ({'fn': name, 'f': f})
+            err_msg = _("Profile '%(fn)s' missing required field '%(f)s'") % (
+                {"fn": name, "f": f}
+            )
 
             raise UFWError(err_msg)
         elif not profile[f]:
-            err_msg = _("Profile '%(fn)s' has empty required field '%(f)s'") \
-                        % ({'fn': name, 'f': f})
+            err_msg = _("Profile '%(fn)s' has empty required field '%(f)s'") % (
+                {"fn": name, "f": f}
+            )
             raise UFWError(err_msg)
 
-    ports = profile['ports'].split('|')
+    ports = profile["ports"].split("|")
     try:
         for p in ports:
             (port, proto) = ufw.util.parse_port_proto(p)
             # quick checks if error in profile
-            if proto == "any" and (':' in port or ',' in port):
+            if proto == "any" and (":" in port or "," in port):
                 raise UFWError(err_msg)
             rule = ufw.common.UFWRule("ACCEPT", proto, port)
             debug(rule)
@@ -209,28 +217,28 @@ def verify_profile(name, profile):
 
 
 def get_title(profile):
-    '''Retrieve the title from the profile'''
+    """Retrieve the title from the profile"""
     s = ""
-    field = 'title'
+    field = "title"
     if field in profile and profile[field]:
         s = profile[field]
     return s
 
 
 def get_description(profile):
-    '''Retrieve the description from the profile'''
+    """Retrieve the description from the profile"""
     s = ""
-    field = 'description'
+    field = "description"
     if field in profile and profile[field]:
         s = profile[field]
     return s
 
 
 def get_ports(profile):
-    '''Retrieve a list of ports from a profile'''
+    """Retrieve a list of ports from a profile"""
     ports = []
-    field = 'ports'
+    field = "ports"
     if field in profile and profile[field]:
-        ports = profile[field].split('|')
+        ports = profile[field].split("|")
 
     return ports
