@@ -88,8 +88,9 @@ indent-string='    '
 # Tells whether we should check for unused import in __init__ files.
 init-import=no
 
-# A regular expression matching the beginning of the name of dummy variables
+# A regular expression matching the beginning of the name of sample variables
 # (i.e. not used).
+# wokeignore:rule=dummy
 dummy-variables-rgx=_|dummy
 
 # List of additional names supposed to be defined in builtins. Remember that

@@ -714,7 +714,7 @@ class UFWCommandDefault(UFWCommand):
         UFWCommand.__init__(self, type, command)
 
     def parse(self, argv):
-        # Basic sanity check
+        # Basic quick check
         if len(argv) < 2:
             raise ValueError()
 

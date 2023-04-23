@@ -103,6 +103,13 @@ else
 	black --check --diff --quiet ./src/*py ./src/ufw ./setup.py
 endif
 
+inclusivity-check: clean
+ifeq (, $(shell which woke))
+	@echo "No woke in '$(PATH)', skipping inclusivity check"
+else
+	woke --exit-1-on-failure .
+endif
+
 man-check: clean
 	$(shell mkdir $(TMPDIR) 2>/dev/null)
 	for manfile in `ls doc/*.8`; do \
@@ -119,7 +126,7 @@ snap-test:
 	$(shell mkdir $(TMPDIR) 2>/dev/null)
 	./tests/test-srv-upgrades.sh > $(TMPDIR)/test-srv-upgrades.out 2>&1 && diff -Naur ./tests/test-srv-upgrades.sh.expected $(TMPDIR)/test-srv-upgrades.out
 
-check: style-check syntax-check man-check test unittest snap-test
+check: style-check syntax-check inclusivity-check man-check test unittest snap-test
 
 # These are only used in development
 clean:

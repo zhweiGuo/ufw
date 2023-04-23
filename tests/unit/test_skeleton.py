@@ -27,7 +27,7 @@ class SkeletonTestCase(unittest.TestCase):
         pass
 
     def test_example(self):
-        '''Test example dummy test'''
+        '''Test example sample test'''
         import ufw.common
         try:
             raise ufw.common.UFWError("test")
