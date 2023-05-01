@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2018 Canonical Ltd.
+# Copyright 2008-2023 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -416,7 +416,9 @@ def get_ppid(mypid=os.getpid()):
     # LP: #1101304
     # 9983 (cmd) S 923 ...
     # 9983 (cmd with spaces) S 923 ...
-    ppid = open(name).readlines()[0].split(')')[1].split()[1]
+    # LP: #2015645
+    # 229 (cmd(withparen)) S 228 ...
+    ppid = open(name).readlines()[0].rsplit(")", 1)[1].split()[1]
 
     return int(ppid)
 

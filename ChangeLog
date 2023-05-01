@@ -6,6 +6,8 @@ ufw (0.36.2) UNRELEASED; urgency=medium
     - document 'insert' and 'prepend' can't be used to update comments
       (LP: #1927737)
   * src/backend_iptables.py: remove unreachable code (LP: #1927734)
+  * src/util.py:
+    - properly parse /proc/pid/stat for WSL (LP: #2015645)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Tue, 16 May 2023 07:58:56 -0500
 
