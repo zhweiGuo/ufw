@@ -1,6 +1,12 @@
 ufw (0.36.1-5) UNRELEASED; urgency=medium
 
   * add new debian/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1033758)
+  * debian/control: Breaks with iptables-persistent and netfilter-persistent.
+    When ufw is installed, it is not enabled by default, so it doesn't
+    interfere with other firewall software (until it is enabled). In contrast,
+    iptables-persistent and netfilter-persistent install enabled, which
+    interferes with ufw. Add a breaks on these to avoid them being
+    co-installed with ufw (and causing problems for users).
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 17:24:17 -0500
 
