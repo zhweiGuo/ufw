@@ -800,6 +800,42 @@ AAA
         tests.unit.support.check_for_exception(self, ValueError, ufw.util.get_ppid, "a")
         tests.unit.support.check_for_exception(self, IOError, ufw.util.get_ppid, 0)
 
+    def test_get_ppid_no_space(self):
+        """Test get_ppid() no space"""
+        if sys.version_info[0] < 3:
+            return tests.unit.support.skipped(self, "skipping with python2")
+        import unittest.mock
+
+        m = unittest.mock.mock_open(read_data="9983 (cmd) S 923 9983 ...\n")
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch("os.path.isfile", return_value=True):
+                ppid = ufw.util.get_ppid(9983)
+                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+
+    def test_get_ppid_with_space(self):
+        """Test get_ppid() with space"""
+        if sys.version_info[0] < 3:
+            return tests.unit.support.skipped(self, "skipping with python2")
+        import unittest.mock
+
+        m = unittest.mock.mock_open(read_data="9983 (cmd with space) S 923 9983 ...\n")
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch("os.path.isfile", return_value=True):
+                ppid = ufw.util.get_ppid(9983)
+                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+
+    def test_get_ppid_with_parens(self):
+        """Test get_ppid() with parens"""
+        if sys.version_info[0] < 3:
+            return tests.unit.support.skipped(self, "skipping with python2")
+        import unittest.mock
+
+        m = unittest.mock.mock_open(read_data="9983 (cmd(paren)) S 923 9983 ...\n")
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch("os.path.isfile", return_value=True):
+                ppid = ufw.util.get_ppid(9983)
+                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+
     def test_under_ssh(self):
         """Test under_ssh()"""
         # this test could be running under ssh, so can't do anything more
