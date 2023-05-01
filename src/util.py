@@ -1130,7 +1130,15 @@ def hex_decode(h):
     """Take a hex string and convert it to a string"""
     if sys.version_info[0] < 3:
         return h.decode(encoding="hex").decode("utf-8")
-    return binascii.unhexlify(h).decode("utf-8")
+    # unhexlify requires an even length string, which should normally happen
+    # since hex_encode() will create a string and decode to ascii, which has 2
+    # bytes per character. If we happen to get an odd length string, instead of
+    # tracing back, truncate it by one character and move on. This works
+    # reasonably well in some cases, but might result in a UnicodeDecodeError,
+    # so use backslashreplace in that case.
+    return binascii.unhexlify("%s" % (h[:-1] if len(h) % 2 else h)).decode(
+        "utf-8", "backslashreplace"
+    )
 
 
 def create_lock(lockfile="/run/ufw.lock", dryrun=False):
