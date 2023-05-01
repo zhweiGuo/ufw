@@ -1,6 +1,7 @@
 ufw (0.37rc-0) UNRELEASED; urgency=medium
 
   * drop python2 packages and tests since it isn't available in jammy
+  * debian/compat: use 7
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 17:00:06 -0500
 
