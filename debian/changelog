@@ -1,3 +1,9 @@
+ufw (0.37rc-0) UNRELEASED; urgency=medium
+
+  * drop python2 packages and tests since it isn't available in jammy
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 17:00:06 -0500
+
 ufw (0.36rc-0) UNRELEASED; urgency=medium
 
   * Sync with current packaging where we can:
