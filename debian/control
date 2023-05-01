@@ -27,6 +27,7 @@ Depends:
  ucf,
  ${python3:Depends},
  ${misc:Depends}
+Breaks: iptables-persistent, netfilter-persistent
 XB-Python-Version: ${python3:Versions}
 Description: program for managing a Netfilter firewall
  The Uncomplicated FireWall is a front-end for iptables, to make managing a
