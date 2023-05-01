@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2018 Canonical Ltd.
+# Copyright 2012-2023 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -27,19 +27,18 @@ class SkeletonTestCase(unittest.TestCase):
         pass
 
     def test_example(self):
-        '''Test example sample test'''
+        """Test example sample test"""
         import ufw.common
+
         try:
             raise ufw.common.UFWError("test")
         except ufw.common.UFWError:
             pass
 
 
-def test_main(): # used by runner.py
-    tests.unit.support.run_unittest(
-            SkeletonTestCase
-    )
+def test_main():  # used by runner.py
+    tests.unit.support.run_unittest(SkeletonTestCase)
 
 
-if __name__ == "__main__": # used when standalone
+if __name__ == "__main__":  # used when standalone
     unittest.main()

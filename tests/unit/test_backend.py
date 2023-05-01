@@ -1,5 +1,5 @@
 #
-# Copyright 2012-2018 Canonical Ltd.
+# Copyright 2012-2023 Canonical Ltd.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3,
@@ -34,27 +34,21 @@ class BackendTestCase(unittest.TestCase):
         pass
 
     def test_installation_defaults(self):
-        '''Test installation defaults'''
-        self.assertEquals(self.backend.defaults['default_input_policy'],
-                          "drop")
-        self.assertEquals(self.backend.defaults['default_forward_policy'],
-                          "drop")
-        self.assertEquals(self.backend.defaults['default_output_policy'],
-                          "accept")
+        """Test installation defaults"""
+        self.assertEquals(self.backend.defaults["default_input_policy"], "drop")
+        self.assertEquals(self.backend.defaults["default_forward_policy"], "drop")
+        self.assertEquals(self.backend.defaults["default_output_policy"], "accept")
         self.assertTrue("ipt_modules" not in self.backend.defaults)
-        self.assertEquals(self.backend.defaults['loglevel'], 'low')
-        self.assertEquals(self.backend.defaults['manage_builtins'], 'no')
-        self.assertEquals(self.backend.defaults['enabled'], 'no')
-        self.assertEquals(self.backend.defaults['ipv6'], 'yes')
-        self.assertEquals(self.backend.defaults['default_application_policy'],
-                          'skip')
+        self.assertEquals(self.backend.defaults["loglevel"], "low")
+        self.assertEquals(self.backend.defaults["manage_builtins"], "no")
+        self.assertEquals(self.backend.defaults["enabled"], "no")
+        self.assertEquals(self.backend.defaults["ipv6"], "yes")
+        self.assertEquals(self.backend.defaults["default_application_policy"], "skip")
 
 
-def test_main(): # used by runner.py
-    tests.unit.support.run_unittest(
-            BackendTestCase
-    )
+def test_main():  # used by runner.py
+    tests.unit.support.run_unittest(BackendTestCase)
 
 
-if __name__ == "__main__": # used when standalone
+if __name__ == "__main__":  # used when standalone
     unittest.main()
