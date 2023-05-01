@@ -29,7 +29,9 @@ ufw (0.37) UNRELEASED; urgency=medium
     - unconditionally reload user rules with 'delete' (LP: #1933117)
   * src/ufw-init-functions: set default policy after loading rules. Thanks to
     Mauricio Faria de Oliveira. (LP: #1946804)
-  * src/util.py: properly parse /proc/pid/stat for WSL (LP: #2015645)
+  * src/util.py:
+    - properly parse /proc/pid/stat for WSL (LP: #2015645)
+    - mitigate odd length string with unhexlify (Closes: 1034568)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 16:02:23 -0500
 
