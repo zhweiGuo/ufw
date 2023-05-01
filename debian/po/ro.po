@@ -1,0 +1,125 @@
+# Mesajele în limba română pentru pachetul ufw.
+# Romanian translation of ufw.
+# Copyright © 2023 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ufw package.
+#
+# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2023.
+#
+# Cronologia traducerii fișierului „ufw”:
+# Traducerea inițială, făcută de R-GC, pentru versiunea ufw 0.36.1-4.1(2009-06-16).
+# Actualizare a traducerii pentru versiunea Y, făcută de X, Y(anul).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ufw 0.36.1-4.1\n"
+"Report-Msgid-Bugs-To: ufw@packages.debian.org\n"
+"POT-Creation-Date: 2009-06-16 23:11+0100\n"
+"PO-Revision-Date: 2023-03-26 21:16+0200\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
+"Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
+"n%100<=19) ? 1 : 2);\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid "Existing configuration found"
+msgstr "S-a găsit o configurație existentă"
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid ""
+"An existing configuration for ufw has been found. Existing rules must be "
+"managed manually."
+msgstr ""
+"O configurație existentă pentru «ufw» a fost găsită. Regulile existente trebuie "
+"gestionate manual."
+
+#. Type: error
+#. Description
+#: ../templates:2001
+msgid "You should read the ufw(8) manpage for details about ufw configuration."
+msgstr ""
+"Ar trebui să citiți pagina de manual ufw(8) pentru detalii despre configurarea "
+"„ufw”."
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid "Start ufw automatically?"
+msgstr "Doriți să porniți automat serviciul «ufw»?"
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid ""
+"If you choose this option, the rules you are about to set will be enabled "
+"during system startup so that this host is protected as early as possible."
+msgstr ""
+"Dacă alegeți această opțiune, regulile pe care urmează să le stabiliți vor fi "
+"activate în timpul pornirii sistemului, astfel încât această gazdă să fie "
+"protejată cât mai curând posibil."
+
+#. Type: boolean
+#. Description
+#: ../templates:3001
+msgid "To protect this host immediately, you must start ufw manually."
+msgstr ""
+"Pentru a proteja această gazdă imediat, trebuie să porniți manual serviciul "
+"«ufw»."
+
+#. Type: multiselect
+#. Description
+#: ../templates:4001
+msgid "Authorized services:"
+msgstr "Servicii autorizate:"
+
+#. Type: multiselect
+#. Description
+#: ../templates:4001
+msgid ""
+"Please choose the services that should be available for incoming connections."
+msgstr ""
+"Alegeți serviciile care ar trebui să fie disponibile pentru conexiunile de "
+"intrare."
+
+#. Type: multiselect
+#. Description
+#: ../templates:4001
+msgid "Other services may be specified in the next configuration step."
+msgstr "Alte servicii pot fi specificate în următorul pas de configurare."
+
+#. Type: string
+#. Description
+#: ../templates:5001
+msgid "Additional authorized services:"
+msgstr "Servicii suplimentare autorizate:"
+
+#. Type: string
+#. Description
+#: ../templates:5001
+msgid ""
+"Please enter a space separated list of any additional ports you would like to "
+"open. You may use a service name (as found in /etc/services), a port number, or "
+"a port number with protocol."
+msgstr ""
+"Introduceți o listă separată de spații cu porturile suplimentare pe care doriți "
+"să le deschideți. Puteți utiliza un nume de serviciu (cum se găsește în „/etc/"
+"services”), un număr de port sau un număr de port cu protocol."
+
+#. Type: string
+#. Description
+#: ../templates:5001
+msgid ""
+"Example: to allow a web server, port 53 and tcp port 22, you should enter \"www "
+"53 22/tcp\"."
+msgstr ""
+"Exemplu: pentru a permite un server web, portul 53 și portul tcp 22, ar trebui "
+"să introduceți „www 53 22/tcp”."
