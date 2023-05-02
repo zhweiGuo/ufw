@@ -32,6 +32,7 @@ ufw (0.37) UNRELEASED; urgency=medium
   * src/util.py:
     - properly parse /proc/pid/stat for WSL (LP: #2015645)
     - mitigate odd length string with unhexlify (Closes: 1034568)
+  * add locales/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1034119)
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 16:02:23 -0500
 
