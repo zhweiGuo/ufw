@@ -33,8 +33,9 @@ ufw (0.37) UNRELEASED; urgency=medium
     - properly parse /proc/pid/stat for WSL (LP: #2015645)
     - mitigate odd length string with unhexlify (Closes: 1034568)
   * add locales/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1034119)
+  * add '-h' and show help with no args (LP: #1965462)
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 16:02:23 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Tue, 16 May 2023 07:04:50 -0500
 
 ufw (0.36) RELEASED; urgency=medium
 
