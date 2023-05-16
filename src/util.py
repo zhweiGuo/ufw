@@ -46,8 +46,8 @@ msg_output = None  # for redirecting stdout in msg() and write_to_file()
 
 # We support different protocols these days and only come combinations are
 # valid
-supported_protocols = ["tcp", "udp", "ipv6", "esp", "ah", "igmp", "gre"]
-portless_protocols = ["ipv6", "esp", "ah", "igmp", "gre"]
+supported_protocols = ["tcp", "udp", "ipv6", "esp", "ah", "igmp", "gre", "vrrp"]
+portless_protocols = ["ipv6", "esp", "ah", "igmp", "gre", "vrrp"]
 ipv4_only_protocols = ["ipv6", "igmp"]
 
 

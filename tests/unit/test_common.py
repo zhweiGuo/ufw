@@ -294,7 +294,7 @@ class CommonTestCase(unittest.TestCase):
     def test_set_protocol(self):
         """Test set_protocol()"""
         r = self.rules["any"]
-        for proto in ["any", "tcp", "udp", "ipv6", "esp", "ah"]:
+        for proto in ["any", "tcp", "udp", "ipv6", "esp", "ah", "vrrp"]:
             r.set_protocol(proto)
             self.assertEquals(proto, r.protocol, "%s != %s" % (proto, r.protocol))
 
