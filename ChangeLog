@@ -21,7 +21,9 @@ ufw (0.37) UNRELEASED; urgency=medium
       (LP: #1927737)
   * prefer python3
   * empty out IPT_MODULES and update documentation (LP: #1556419)
-  * adjust check-requirements to look for other firewall software
+  * check-requirements:
+    - adjust check-requirements to look for other firewall software
+    - update for python 3.10+
   * conf/sysctl.conf: remove tcp_sack=1 and non-firewall sysctls
     (LP: #1884821)
   * src/backend_iptables.py:
