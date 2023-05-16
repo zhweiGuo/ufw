@@ -428,6 +428,7 @@ class ParserTestCase(unittest.TestCase):
                 ['deny', 'to', 'any', 'proto', 'ipv6'],
                 ['allow', 'to', 'any', 'proto', 'igmp'],
                 ['reject', 'to', 'any', 'proto', 'esp'],
+                ['allow', 'to', 'any', 'proto', 'vrrp'],
                 ['deny', 'to', '224.0.0.1', 'proto', 'igmp'],
                 ['deny', 'in', 'on', 'eth0', 'to', '224.0.0.1', 'proto', \
                  'igmp'],
@@ -435,6 +436,8 @@ class ParserTestCase(unittest.TestCase):
                  'gre'],
                 ['deny', 'to', 'any', 'proto', 'ah'],
                 ['allow', 'out', 'on', 'br_lan'],
+                ['allow', 'in', 'on', 'eth0', 'to', '192.168.0.1', 'from', \
+                 '224.0.0.0/24', 'proto', 'vrrp'],
                ]
         count = 0
         for rtype in ['route', 'rule']:
@@ -523,6 +526,8 @@ class ParserTestCase(unittest.TestCase):
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'ah'],
                  ufw.common.UFWError),
                 (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'gre'],
+                 ufw.common.UFWError),
+                (['rule', 'deny', 'to', 'any', 'port', '22', 'proto', 'vrrp'],
                  ufw.common.UFWError),
                 (['rule', 'allow', 'to', '192.168.0.0/16', 'app', 'Samba',
                   'from', '192.168.0.0/16', 'port', 'tcpmux'],

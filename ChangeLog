@@ -9,6 +9,7 @@ ufw (0.36.2) UNRELEASED; urgency=medium
   * src/util.py:
     - properly parse /proc/pid/stat for WSL (LP: #2015645)
     - mitigate odd length string with unhexlify (Closes: 1034568)
+    - support vrrp protocol (LP: #1996636)
   * add locales/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1034119)
   * add '-h' and show help with no args (LP: #1965462)
   * src/backend.py: add get_rules_ipv4() and get_rules_ipv6() (LP: #1951018)
