@@ -67,14 +67,14 @@ Setting IPV6 to no
 ip6tables -L -n:
 Chain INPUT (policy DROP)
 target     prot opt source               destination         
-ACCEPT     all      ::/0                 ::/0                
+ACCEPT     TST  --  ::/0                 ::/0                
 
 Chain FORWARD (policy DROP)
 target     prot opt source               destination         
 
 Chain OUTPUT (policy DROP)
 target     prot opt source               destination         
-ACCEPT     all      ::/0                 ::/0                
+ACCEPT     TST  --  ::/0                 ::/0                
 Bug #260881
 Setting IPV6 to no
 6: disable
@@ -94,7 +94,7 @@ Could not delete non-existent rule
 
 
 iptables -L -n:
-ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80 /* 'dapp_Apache' */
+ACCEPT     TST    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80 /* 'dapp_Apache' */
 
 10: delete allow Apache
 WARN: Checks disabled
