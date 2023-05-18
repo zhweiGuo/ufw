@@ -1,14 +1,29 @@
-ufw (0.36.1-5) UNRELEASED; urgency=medium
+ufw (0.36.2-1) unstable; urgency=medium
 
+  * New upstream release (LP: #1946804, LP: #1927737, LP: #1927734,
+    LP: #2015645, LP: #1996636, LP: #1965462, LP: #1951018, Closes: 1034568,
+    Closes: 1034119). Drop the following (included upstream):
+    - 0002-fix-copyright.patch
+    - 0003-python3-versions.patch
+    - 0004-set-default-policy-after-load.patch
+  * Remaining changes:
+    - 0001-optimize-boot.patch
   * add new debian/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1033758)
-  * debian/control: Breaks with iptables-persistent and netfilter-persistent.
-    When ufw is installed, it is not enabled by default, so it doesn't
-    interfere with other firewall software (until it is enabled). In contrast,
-    iptables-persistent and netfilter-persistent install enabled, which
-    interferes with ufw. Add a breaks on these to avoid them being
-    co-installed with ufw (and causing problems for users).
+  * debian/control:
+    - Breaks with iptables-persistent and netfilter-persistent. When ufw is
+      installed, it is not enabled by default, so it doesn't interfere with
+      other firewall software (until it is enabled). In contrast,
+      iptables-persistent and netfilter-persistent install enabled, which
+      interferes with ufw. Add a breaks on these to avoid them being
+      co-installed with ufw (and causing problems for users).
+    - use Python-Version instead of XB-Python-Version
+    - remove Depends on obsolete lsb-base
+  * ufw.lintian-overrides:
+    - update for breaks-without-version iptables-persistent and
+      netfilter-persistent
+    - update for newer lintian
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 01 May 2023 17:24:17 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 18 May 2023 14:03:07 +0000
 
 ufw (0.36.1-4.1) unstable; urgency=medium
 
