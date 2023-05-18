@@ -741,6 +741,42 @@ AAA
         tests.unit.support.check_for_exception(self, IOError, \
                                                ufw.util.get_ppid, 0)
 
+    def test_get_ppid_no_space(self):
+        """Test get_ppid() no space"""
+        if sys.version_info[0] < 3:
+            return tests.unit.support.skipped(self, "skipping with python2")
+        import unittest.mock
+
+        m = unittest.mock.mock_open(read_data="9983 (cmd) S 923 9983 ...\n")
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch("os.path.isfile", return_value=True):
+                ppid = ufw.util.get_ppid(9983)
+                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+
+    def test_get_ppid_with_space(self):
+        """Test get_ppid() with space"""
+        if sys.version_info[0] < 3:
+            return tests.unit.support.skipped(self, "skipping with python2")
+        import unittest.mock
+
+        m = unittest.mock.mock_open(read_data="9983 (cmd with space) S 923 9983 ...\n")
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch("os.path.isfile", return_value=True):
+                ppid = ufw.util.get_ppid(9983)
+                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+
+    def test_get_ppid_with_parens(self):
+        """Test get_ppid() with parens"""
+        if sys.version_info[0] < 3:
+            return tests.unit.support.skipped(self, "skipping with python2")
+        import unittest.mock
+
+        m = unittest.mock.mock_open(read_data="9983 (cmd(paren)) S 923 9983 ...\n")
+        with unittest.mock.patch("builtins.open", m):
+            with unittest.mock.patch("os.path.isfile", return_value=True):
+                ppid = ufw.util.get_ppid(9983)
+                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+
     def test_under_ssh(self):
         '''Test under_ssh()'''
         # this test could be running under ssh, so can't do anything more
@@ -1023,6 +1059,25 @@ AAA
             expected = u'foo👍bar字baz'
 
         result = ufw.util.hex_decode(s)
+        self.assertEquals(expected, result)
+
+        # test odd length string mitigation by truncating one hex-digit. This
+        # should result in the last (odd) hex digit being dropped and a decoded
+        # string of one less character
+        expected = "foo👍bar字ba"
+        if sys.version_info[0] < 3:
+            expected = u"foo👍bar字ba"
+        result = ufw.util.hex_decode(s[:-1])
+        self.assertEquals(expected, result)
+
+        # test odd length string mitigation by removing first hex-digit. This
+        # should result in the last (odd) hex digit being dropped, but since
+        # the first hex digit was removed, the byte sequence is shifted by one
+        # which causes the whole string to be 'backslashreplace'd.
+        expected = "f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
+        if sys.version_info[0] < 3:
+            expected = u"f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
+        result = ufw.util.hex_decode(s[1:])
         self.assertEquals(expected, result)
 
     def test_create_lock(self):

@@ -110,7 +110,8 @@ do
         echo iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         iptables -I INPUT -j ACCEPT -m comment --comment $str >> $TESTTMP/result
         do_cmd "0" nostats enable
-        iptables -n -L INPUT 2>/dev/null | grep "$str" >> $TESTTMP/result
+        # normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for old/new kernel/iptables
+        iptables -n -L INPUT | sed 's/^ACCEPT \+[a-z0-9]\+ [ -]\+/ACCEPT     TST  --  /' 2>/dev/null | grep "$str" >> $TESTTMP/result
         iptables -D INPUT -j ACCEPT -m comment --comment $str 2>/dev/null
 done
 

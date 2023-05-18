@@ -572,7 +572,7 @@ iptables -I FORWARD -j ACCEPT -m comment --comment ufw_test_builtins
 79: enable
 
 
-ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            /* ufw_test_builtins */
+ACCEPT     TST  --  0.0.0.0/0            0.0.0.0/0            /* ufw_test_builtins */
 Testing status numbered
 Setting IPV6 to yes
 80: disable

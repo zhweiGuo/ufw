@@ -1,6 +1,6 @@
 '''backend.py: interface for ufw backends'''
 #
-# Copyright 2008-2018 Canonical Ltd.
+# Copyright 2008-2023 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -628,7 +628,15 @@ class UFWBackend:
 
     def get_rules(self):
         '''Return list of all rules'''
-        return self.rules + self.rules6
+        return self.get_rules_ipv4() + self.get_rules_ipv6()
+
+    def get_rules_ipv4(self):
+        '''Return list of IPv4 rules'''
+        return self.rules
+
+    def get_rules_ipv6(self):
+        '''Return list of IPv6 rules'''
+        return self.rules6
 
     def get_rules_count(self, v6):
         '''Return number of ufw rules (not iptables rules)'''

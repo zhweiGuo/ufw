@@ -634,7 +634,7 @@ iptables -I INPUT -j ACCEPT -m comment --comment ufw_test_builtins
 86: enable
 
 
-ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            /* ufw_test_builtins */
+ACCEPT     TST  --  0.0.0.0/0            0.0.0.0/0            /* ufw_test_builtins */
 Testing status numbered
 Setting IPV6 to yes
 87: disable

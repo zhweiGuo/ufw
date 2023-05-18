@@ -1,4 +1,4 @@
-.TH UFW: "8" "" "September 2021" "September 2021"
+.TH UFW: "8" "" "May 2023" "May 2023"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -125,7 +125,8 @@ allowed or denied on the host.
 
 Both syntaxes support specifying a comment for the rule. For existing rules,
 specifying a different comment updates the comment and specifying '' removes
-the comment.
+the comment (note, 'insert' and 'prepend' cannot be used to update the
+comment).
 
 Example rules using the simple syntax:
 
@@ -199,6 +200,7 @@ is not specified:
   ah      valid without port number
   esp     valid without port number
   gre     valid without port number
+  vrrp    valid without port number
   ipv6    valid for IPv4 addresses and without port number
   igmp    valid for IPv4 addresses and without port number
 
@@ -565,6 +567,11 @@ protocols can only be used with the full syntax. For example:
   ufw allow to 10.0.0.1 proto ah
   ufw allow to 10.0.0.1 from 10.4.0.0/16 proto ah
 .PP
+keepalived is supported by using the 'vrrp' ('112') protocol. This protocol
+can only be used with the full syntax. For example:
+
+  ufw allow to 224.0.0.0/24 from 10.0.0.1 proto vrrp
+.PP
 In addition to the command\-line interface, \fBufw\fR also provides a
 framework which allows administrators to modify default behavior as well as
 take full advantage of netfilter. See the \fBufw\-framework\fR manual page for
@@ -576,4 +583,4 @@ more information.
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2021, Canonical Ltd.
+ufw is Copyright 2008-2023, Canonical Ltd.

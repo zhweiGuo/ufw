@@ -1,6 +1,6 @@
 '''util.py: utility functions for ufw'''
 #
-# Copyright 2008-2018 Canonical Ltd.
+# Copyright 2008-2023 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -38,9 +38,9 @@ msg_output = None # for redirecting stdout in msg() and write_to_file()
 
 # We support different protocols these days and only come combinations are
 # valid
-supported_protocols = [ 'tcp', 'udp', 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
-portless_protocols = [ 'ipv6', 'esp', 'ah', 'igmp', 'gre' ]
-ipv4_only_protocols = [ 'ipv6', 'igmp' ]
+supported_protocols = ["tcp", "udp", "ipv6", "esp", "ah", "igmp", "gre", "vrrp"]
+portless_protocols = ["ipv6", "esp", "ah", "igmp", "gre", "vrrp"]
+ipv4_only_protocols = ["ipv6", "igmp"]
 
 
 def get_services_proto(port):
@@ -416,7 +416,9 @@ def get_ppid(mypid=os.getpid()):
     # LP: #1101304
     # 9983 (cmd) S 923 ...
     # 9983 (cmd with spaces) S 923 ...
-    ppid = open(name).readlines()[0].split(')')[1].split()[1]
+    # LP: #2015645
+    # 229 (cmd(withparen)) S 228 ...
+    ppid = open(name).readlines()[0].rsplit(")", 1)[1].split()[1]
 
     return int(ppid)
 
@@ -1083,8 +1085,16 @@ def hex_encode(s):
 def hex_decode(h):
     '''Take a hex string and convert it to a string'''
     if sys.version_info[0] < 3:
-        return h.decode(encoding='hex').decode('utf-8')
-    return binascii.unhexlify(h).decode('utf-8')
+        return h.decode(encoding="hex").decode("utf-8")
+    # unhexlify requires an even length string, which should normally happen
+    # since hex_encode() will create a string and decode to ascii, which has 2
+    # bytes per character. If we happen to get an odd length string, instead of
+    # tracing back, truncate it by one character and move on. This works
+    # reasonably well in some cases, but might result in a UnicodeDecodeError,
+    # so use backslashreplace in that case.
+    return binascii.unhexlify("%s" % (h[:-1] if len(h) % 2 else h)).decode(
+        "utf-8", "backslashreplace"
+    )
 
 
 def create_lock(lockfile='/run/ufw.lock', dryrun=False):

@@ -1,6 +1,6 @@
 '''frontend.py: frontend interface for ufw'''
 #
-# Copyright 2008-2018 Canonical Ltd.
+# Copyright 2008-2023 Canonical Ltd.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
@@ -31,8 +31,17 @@ def parse_command(argv):
     p = ufw.parser.UFWParser()
 
     # Basic commands
-    for i in ['enable', 'disable', 'help', '--help', 'version', '--version', \
-              'reload', 'reset' ]:
+    for i in [
+        "enable",
+        "disable",
+        "help",
+        "--help",
+        "-h",
+        "version",
+        "--version",
+        "reload",
+        "reset",
+    ]:
         p.register_command(ufw.parser.UFWCommandBasic(i))
 
     # Application commands
@@ -74,8 +83,9 @@ def parse_command(argv):
            argv[idx].lower() in rule_commands:
             argv.insert(idx, 'rule')
 
-    if len(argv) < 2 or ('--dry-run' in argv and len(argv) < 3):
-        error("not enough args") # pragma: no cover
+    if len(argv) < 2 or ("--dry-run" in argv and len(argv) < 3):
+        error("not enough args", do_exit=False)  # pragma: no cover
+        raise ValueError()
 
     try:
         pr = p.parse_command(argv[1:])

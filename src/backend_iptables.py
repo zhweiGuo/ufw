@@ -1001,9 +1001,6 @@ class UFWBackendIptables(ufw.backend.UFWBackend):
         if position > 0 and rule.remove:
             err_msg = _("Cannot specify insert and delete")
             raise UFWError(err_msg)
-        if position > len(rules):
-            err_msg = _("Cannot insert rule at position '%d'") % position
-            raise UFWError(err_msg)
 
         # First construct the new rules list
         try:

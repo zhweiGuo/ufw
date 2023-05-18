@@ -1,3 +1,23 @@
+ufw (0.36.2) RELEASED; urgency=medium
+
+  * src/ufw-init-functions: set default policy after loading rules. Thanks to
+    Mauricio Faria de Oliveira. (LP: #1946804)
+  * doc/ufw.8:
+    - document 'insert' and 'prepend' can't be used to update comments
+      (LP: #1927737)
+  * src/backend_iptables.py: remove unreachable code (LP: #1927734)
+  * src/util.py:
+    - properly parse /proc/pid/stat for WSL (LP: #2015645)
+    - mitigate odd length string with unhexlify (Closes: 1034568)
+    - support vrrp protocol (LP: #1996636)
+  * add locales/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1034119)
+  * add '-h' and show help with no args (LP: #1965462)
+  * src/backend.py: add get_rules_ipv4() and get_rules_ipv6() (LP: #1951018)
+  * tests/check-requirements: update for python 3.10+
+  * tests/root: normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for newer systems
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 18 May 2023 08:45:30 -0500
+
 ufw (0.36.1) RELEASED; urgency=medium
 
   * snap packaging updates:
