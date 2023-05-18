@@ -1,4 +1,4 @@
-ufw (0.36.2) UNRELEASED; urgency=medium
+ufw (0.36.2) RELEASED; urgency=medium
 
   * src/ufw-init-functions: set default policy after loading rules. Thanks to
     Mauricio Faria de Oliveira. (LP: #1946804)
@@ -16,7 +16,7 @@ ufw (0.36.2) UNRELEASED; urgency=medium
   * tests/check-requirements: update for python 3.10+
   * tests/root: normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for newer systems
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Tue, 16 May 2023 07:58:56 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 18 May 2023 08:45:30 -0500
 
 ufw (0.36.1) RELEASED; urgency=medium
 
