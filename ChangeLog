@@ -38,6 +38,7 @@ ufw (0.37) UNRELEASED; urgency=medium
   * add locales/po/ro.po. Thanks Remus-Gabriel Chelu (Closes: 1034119)
   * add '-h' and show help with no args (LP: #1965462)
   * src/backend.py: add get_rules_ipv4() and get_rules_ipv6() (LP: #1951018)
+  * tests/root: normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for newer systems
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Tue, 16 May 2023 07:04:50 -0500
 
