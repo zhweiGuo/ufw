@@ -38,7 +38,8 @@ do_cmd "0" nostats enable
 echo "/lib/ufw/ufw-init force-reload:" >> $TESTTMP/result
 $TESTSTATE/ufw-init force-reload 2>/dev/null >> $TESTTMP/result
 echo "ip6tables -L -n:" >> $TESTTMP/result
-ip6tables -L -n 2>/dev/null >> $TESTTMP/result
+# normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for old/new kernel/iptables
+ip6tables -L -n | sed 's/^ACCEPT \+[a-z0-9]\+ [ -]\+/ACCEPT     TST  --  /' 2>/dev/null >> $TESTTMP/result
 
 echo "Bug #260881" >> $TESTTMP/result
 echo "Setting IPV6 to no" >> $TESTTMP/result
@@ -48,7 +49,8 @@ do_cmd "0" nostats enable
 do_cmd "0"  allow Apache
 do_cmd "0"  delete deny Apache
 echo "iptables -L -n:" >> $TESTTMP/result
-iptables -L -n 2>/dev/null | grep -A1 "80" >> $TESTTMP/result
+# normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for old/new kernel/iptables
+iptables -L -n | sed 's/^ACCEPT \+[a-z0-9]\+ [ -]\+/ACCEPT     TST  --  /' 2>/dev/null | grep -A1 "80" >> $TESTTMP/result
 do_cmd "0"  delete allow Apache
 echo "iptables -L -n:" >> $TESTTMP/result
 iptables -L -n 2>/dev/null | grep -A1 "80" >> $TESTTMP/result
