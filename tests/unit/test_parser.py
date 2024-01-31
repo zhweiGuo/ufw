@@ -104,7 +104,7 @@ class ParserTestCase(unittest.TestCase):
         """Test UFWCommand.parse()"""
         c = ufw.parser.UFWCommand("basic", "status")
         pr = c.parse(["status"])
-        self.assertEquals("status", pr.action, "%s != 'status'" % (pr.action))
+        self.assertEqual("status", pr.action, "%s != 'status'" % (pr.action))
 
     def test_ufwcommandbasic_parse_with_arg(self):
         """Test UFWCommand.parse() - basic with arg"""
@@ -424,7 +424,7 @@ class ParserTestCase(unittest.TestCase):
 
             # print("Result: rule %s" % res)
 
-        self.assertEquals(
+        self.assertEqual(
             len(errors),
             0,
             "Rules did not match:\n%s\n(%d of %d)"
@@ -445,7 +445,7 @@ class ParserTestCase(unittest.TestCase):
 
             # TODO: more tests here by sending the cmd and the pr to a helper
             action = cmd[1]
-            self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+            self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
             del_cmd = cmd + []
             del_cmd.insert(1, "delete")
@@ -456,7 +456,7 @@ class ParserTestCase(unittest.TestCase):
 
             # TODO: more tests here by sending the cmd and the pr to a helper
             action = del_cmd[2]
-            self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+            self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
             ins_cmd = cmd + []
             ins_cmd.insert(1, "insert")
             ins_cmd.insert(2, "1")
@@ -467,7 +467,7 @@ class ParserTestCase(unittest.TestCase):
 
             # TODO: more tests here by sending the cmd and the pr to a helper
             action = ins_cmd[3]
-            self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+            self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
         print("%d rules checked" % count)
 
     def test_misc_rules_parse(self):
@@ -699,7 +699,7 @@ class ParserTestCase(unittest.TestCase):
 
             # TODO: more tests here by sending the cmd and the pr to a helper
             action = cmd[1]
-            self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+            self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
         print("%d rules checked" % count)
 
@@ -789,7 +789,7 @@ class ParserTestCase(unittest.TestCase):
                     action = "update-with-new"
                 elif action == "default":
                     action = "default-%s" % cmd[2]
-                self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+                self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
     def test_default_parse(self):
         """Test UFWCommandDefault.parse()"""
@@ -824,7 +824,7 @@ class ParserTestCase(unittest.TestCase):
                 if len(cmd) >= 3:
                     pol = cmd[2]
                 action = "default-%s-%s" % (cmd[1], pol)
-                self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+                self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
     def test_logging_parse(self):
         """Test UFWCommandLogging.parse()"""
@@ -856,7 +856,7 @@ class ParserTestCase(unittest.TestCase):
                 action = "logging-%s" % (cmd[1])
                 if cmd[1] != "on" and cmd[1] != "off":
                     action = "logging-on_%s" % (cmd[1])
-                self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+                self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
     def test_status_parse(self):
         """Test UFWCommandStatus.parse()"""
@@ -884,7 +884,7 @@ class ParserTestCase(unittest.TestCase):
                 action = cmd[0]
                 if len(cmd) > 1:
                     action = "%s-%s" % (cmd[0], cmd[1])
-                self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+                self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
     def test_show_parse(self):
         """Test UFWCommandShow.parse()"""
@@ -915,7 +915,7 @@ class ParserTestCase(unittest.TestCase):
 
                 # TODO: more tests here by sending the cmd and the pr to a
                 # helper
-                self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+                self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
 
 
 def test_main():  # used by runner.py

@@ -37,9 +37,9 @@ class ApplicationsTestCase(unittest.TestCase):
             pass
 
         self.assertTrue("WWW" in self.profiles.keys(), "Could not find 'WWW'")
-        self.assertEquals(self.profiles["WWW"]["ports"], "80/tcp")
-        self.assertEquals(self.profiles["WWW"]["title"], "Web Server")
-        self.assertEquals(self.profiles["WWW"]["description"], "Web server")
+        self.assertEqual(self.profiles["WWW"]["ports"], "80/tcp")
+        self.assertEqual(self.profiles["WWW"]["title"], "Web Server")
+        self.assertEqual(self.profiles["WWW"]["description"], "Web server")
 
     def test_valid_profile_name(self):
         """Test valid_profile_name()"""
@@ -118,20 +118,20 @@ class ApplicationsTestCase(unittest.TestCase):
 
     def test_get_title(self):
         """Test get_title()"""
-        self.assertEquals(
+        self.assertEqual(
             ufw.applications.get_title(self.profiles["WWW"]), "Web Server"
         )
 
     def test_get_description(self):
         """Test get_description()"""
-        self.assertEquals(
+        self.assertEqual(
             ufw.applications.get_description(self.profiles["WWW"]), "Web server"
         )
 
     def test_get_ports(self):
         """Test get_ports()"""
         expected_ports = ["80/tcp"]
-        self.assertEquals(
+        self.assertEqual(
             ufw.applications.get_ports(self.profiles["WWW"]), expected_ports
         )
 

@@ -361,7 +361,7 @@ class UtilTestCase(unittest.TestCase):
         ]
 
         error_str = self._run_normalize_address(data)
-        self.assertEquals(error_str, "", error_str)
+        self.assertEqual(error_str, "", error_str)
 
     def test_normalize_address_netmask_to_cidr(self):
         """Test normalize_address() with netmask_to_cidr"""
@@ -401,7 +401,7 @@ class UtilTestCase(unittest.TestCase):
         ]
 
         error_str = self._run_normalize_address(data)
-        self.assertEquals(error_str, "", error_str)
+        self.assertEqual(error_str, "", error_str)
 
     def test_normalize_address_ipv6_cidr(self):
         """Test normalize_address() with ipv6_cidr"""
@@ -409,7 +409,7 @@ class UtilTestCase(unittest.TestCase):
         for cidr in range(0, 128):
             data.append((True, "::1/%d" % cidr, "::1/%d" % cidr))
         error_str = self._run_normalize_address(data)
-        self.assertEquals(error_str, "", error_str)
+        self.assertEqual(error_str, "", error_str)
 
     def test_normalize_address_valid_netmask_to_non_cidr(self):
         """Test normalize_address() with valid_netmask_to_non_cidr"""
@@ -575,7 +575,7 @@ class UtilTestCase(unittest.TestCase):
                 )
 
         error_str = self._run_normalize_address(data)
-        self.assertEquals(error_str, "", error_str)
+        self.assertEqual(error_str, "", error_str)
 
     def test_normalize_address_ipv6_short_notation(self):
         """Test normalize_address() with ipv6_short_notation"""
@@ -592,7 +592,7 @@ class UtilTestCase(unittest.TestCase):
             ),
         ]
         error_str = self._run_normalize_address(data)
-        self.assertEquals(error_str, "", error_str)
+        self.assertEqual(error_str, "", error_str)
 
     def test_normalize_address_invalid_netmask(self):
         """Test normalize_address() with invalid_netmask"""
@@ -665,7 +665,7 @@ class UtilTestCase(unittest.TestCase):
         if sys.version_info[0] >= 3:
             search = bytes(search, "ascii")
             out = bytes(out, "ascii")
-        self.assertEquals(out, search)
+        self.assertEqual(out, search)
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
@@ -712,19 +712,19 @@ class UtilTestCase(unittest.TestCase):
     def test_cmd(self):
         """Test cmd()"""
         (rc, report) = ufw.util.cmd(["ls", "/"])
-        self.assertEquals(rc, 0, "Unexpected return code: %d" % rc)
+        self.assertEqual(rc, 0, "Unexpected return code: %d" % rc)
         self.assertTrue("etc" in report, "Could not find 'etc'in:\n%s" % report)
         (rc, report) = ufw.util.cmd(["./nonexistent-command"])
-        self.assertEquals(rc, 127, "Unexpected return code: %d" % rc)
+        self.assertEqual(rc, 127, "Unexpected return code: %d" % rc)
 
     def test_cmd_pipe(self):
         """Test cmd_pipe()"""
         (rc, report) = ufw.util.cmd_pipe(["ls", "/"], ["grep", "-q", "etc"])
-        self.assertEquals(rc, 0, "Unexpected return code: %d" % rc)
+        self.assertEqual(rc, 0, "Unexpected return code: %d" % rc)
         (rc, report) = ufw.util.cmd_pipe(
             ["./nonexistent-command"], ["grep", "-q", "etc"]
         )
-        self.assertEquals(rc, 127, "Unexpected return code: %d" % rc)
+        self.assertEqual(rc, 127, "Unexpected return code: %d" % rc)
 
     def test_error(self):
         """Test error()"""
@@ -751,7 +751,7 @@ class UtilTestCase(unittest.TestCase):
         if sys.version_info[0] >= 3:
             search = bytes(search, "ascii")
             out = bytes(out, "ascii")
-        self.assertEquals(out, search)
+        self.assertEqual(out, search)
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
@@ -767,7 +767,7 @@ class UtilTestCase(unittest.TestCase):
         """Test word_wrap()"""
         s = ufw.util.word_wrap("foo\nbar baz", 3)
         expected = "foo\nbar\nbaz"
-        self.assertEquals(s, expected, "'%s' != '%s'" % (s, expected))
+        self.assertEqual(s, expected, "'%s' != '%s'" % (s, expected))
 
     def test_wrap_text(self):
         """Test wrap_text()"""
@@ -779,7 +779,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAA
 """
         s = ufw.util.wrap_text(t)
-        self.assertEquals(s, expected, "'%s' != '%s'" % (s, expected))
+        self.assertEqual(s, expected, "'%s' != '%s'" % (s, expected))
 
     def test_human_sort(self):
         """Test human_sort()"""
@@ -789,13 +789,13 @@ AAA
         tmp = s.split(",")
         ufw.util.human_sort(tmp)
         res = ",".join(tmp)
-        self.assertEquals(str(res), expected)
+        self.assertEqual(str(res), expected)
 
     def test_get_ppid(self):
         """Test get_ppid()"""
         ufw.util.get_ppid()
         ppid = ufw.util.get_ppid(1)
-        self.assertEquals(ppid, 0, "%d' != '0'" % ppid)
+        self.assertEqual(ppid, 0, "%d' != '0'" % ppid)
 
         tests.unit.support.check_for_exception(self, ValueError, ufw.util.get_ppid, "a")
         tests.unit.support.check_for_exception(self, IOError, ufw.util.get_ppid, 0)
@@ -810,7 +810,7 @@ AAA
         with unittest.mock.patch("builtins.open", m):
             with unittest.mock.patch("os.path.isfile", return_value=True):
                 ppid = ufw.util.get_ppid(9983)
-                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+                self.assertEqual(ppid, 923, "%d' != '923'" % ppid)
 
     def test_get_ppid_with_space(self):
         """Test get_ppid() with space"""
@@ -822,7 +822,7 @@ AAA
         with unittest.mock.patch("builtins.open", m):
             with unittest.mock.patch("os.path.isfile", return_value=True):
                 ppid = ufw.util.get_ppid(9983)
-                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+                self.assertEqual(ppid, 923, "%d' != '923'" % ppid)
 
     def test_get_ppid_with_parens(self):
         """Test get_ppid() with parens"""
@@ -834,7 +834,7 @@ AAA
         with unittest.mock.patch("builtins.open", m):
             with unittest.mock.patch("os.path.isfile", return_value=True):
                 ppid = ufw.util.get_ppid(9983)
-                self.assertEquals(ppid, 923, "%d' != '923'" % ppid)
+                self.assertEqual(ppid, 923, "%d' != '923'" % ppid)
 
     def test_under_ssh(self):
         """Test under_ssh()"""
@@ -904,7 +904,7 @@ AAA
             cidr = str(m)
             dotted = ufw.util._cidr_to_dotted_netmask(cidr, False)
             reverse = ufw.util._dotted_netmask_to_cidr(dotted, False)
-            self.assertEquals(
+            self.assertEqual(
                 cidr,
                 reverse,
                 "cidr=%s, dotted=%s, reverse=%s" % (cidr, dotted, reverse),
@@ -913,9 +913,9 @@ AAA
     def test__address4_to_network(self):
         """Test _address4_to_network()"""
         n = ufw.util._address4_to_network("192.168.1.1/16")
-        self.assertEquals(n, "192.168.0.0/16")
+        self.assertEqual(n, "192.168.0.0/16")
         n = "192.168.1.1"
-        self.assertEquals(n, ufw.util._address4_to_network(n))
+        self.assertEqual(n, ufw.util._address4_to_network(n))
         tests.unit.support.check_for_exception(
             self, ValueError, ufw.util._address4_to_network, "192.168.1.1/16/16"
         )
@@ -923,9 +923,9 @@ AAA
     def test__address6_to_network(self):
         """Test _address6_to_network()"""
         n = ufw.util._address6_to_network("ff81::1/15")
-        self.assertEquals(n, "ff80::/15")
+        self.assertEqual(n, "ff80::/15")
         n = "ff80::1"
-        self.assertEquals(n, ufw.util._address6_to_network(n))
+        self.assertEqual(n, ufw.util._address6_to_network(n))
         tests.unit.support.check_for_exception(
             self, ValueError, ufw.util._address6_to_network, "ff80::1/16/16"
         )
@@ -1082,7 +1082,7 @@ AAA
         expected = "666f6ff09f918d626172e5ad9762617a"
 
         result = ufw.util.hex_encode(s)
-        self.assertEquals(expected, result)
+        self.assertEqual(expected, result)
 
     def test_hex_decode(self):
         """Test hex_decode() output"""
@@ -1092,7 +1092,7 @@ AAA
             expected = u"foo👍bar字baz"
 
         result = ufw.util.hex_decode(s)
-        self.assertEquals(expected, result)
+        self.assertEqual(expected, result)
 
         # test odd length string mitigation by truncating one hex-digit. This
         # should result in the last (odd) hex digit being dropped and a decoded
@@ -1101,7 +1101,7 @@ AAA
         if sys.version_info[0] < 3:
             expected = u"foo👍bar字ba"
         result = ufw.util.hex_decode(s[:-1])
-        self.assertEquals(expected, result)
+        self.assertEqual(expected, result)
 
         # test odd length string mitigation by removing first hex-digit. This
         # should result in the last (odd) hex digit being dropped, but since
@@ -1111,7 +1111,7 @@ AAA
         if sys.version_info[0] < 3:
             expected = u"f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
         result = ufw.util.hex_decode(s[1:])
-        self.assertEquals(expected, result)
+        self.assertEqual(expected, result)
 
     def test_create_lock(self):
         """Test create_lock()"""

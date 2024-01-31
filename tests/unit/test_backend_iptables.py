@@ -126,24 +126,24 @@ class BackendIptablesTestCase(unittest.TestCase):
         """Test get_app_rules_from_template()"""
         pr = ufw.frontend.parse_command(["rule", "allow", "CIFS"])
         rules = self.backend.get_app_rules_from_template(pr.data["rule"])
-        self.assertEquals(len(rules), 2)
+        self.assertEqual(len(rules), 2)
         for r in rules:
-            self.assertEquals(r.dapp, "CIFS")
+            self.assertEqual(r.dapp, "CIFS")
 
         pr = ufw.frontend.parse_command(["rule", "deny", "from", "any", "app", "CIFS"])
         rules = self.backend.get_app_rules_from_template(pr.data["rule"])
-        self.assertEquals(len(rules), 2)
+        self.assertEqual(len(rules), 2)
         for r in rules:
-            self.assertEquals(r.sapp, "CIFS")
+            self.assertEqual(r.sapp, "CIFS")
 
         pr = ufw.frontend.parse_command(
             ["rule", "reject", "to", "any", "app", "CIFS", "from", "any", "app", "CIFS"]
         )
         rules = self.backend.get_app_rules_from_template(pr.data["rule"])
-        self.assertEquals(len(rules), 2)
+        self.assertEqual(len(rules), 2)
         for r in rules:
-            self.assertEquals(r.dapp, "CIFS")
-            self.assertEquals(r.sapp, "CIFS")
+            self.assertEqual(r.dapp, "CIFS")
+            self.assertEqual(r.sapp, "CIFS")
 
         pr = ufw.frontend.parse_command(
             [
@@ -160,18 +160,18 @@ class BackendIptablesTestCase(unittest.TestCase):
             ]
         )
         rules = self.backend.get_app_rules_from_template(pr.data["rule"])
-        self.assertEquals(len(rules), 1)
+        self.assertEqual(len(rules), 1)
         for r in rules:
-            self.assertEquals(r.dapp, "WWW")
-            self.assertEquals(r.sapp, "WWW Secure")
+            self.assertEqual(r.dapp, "WWW")
+            self.assertEqual(r.sapp, "WWW Secure")
 
         pr = ufw.frontend.parse_command(
             ["rule", "allow", "from", "any", "app", "IPP", "to", "any", "app", "WWW"]
         )
         rules = self.backend.get_app_rules_from_template(pr.data["rule"])
-        self.assertEquals(len(rules), 1)
+        self.assertEqual(len(rules), 1)
         for r in rules:
-            self.assertEquals(r.sapp, "IPP")
+            self.assertEqual(r.sapp, "IPP")
 
         pr = ufw.frontend.parse_command(["rule", "allow", "12345"])
         tests.unit.support.check_for_exception(
@@ -189,13 +189,13 @@ class BackendIptablesTestCase(unittest.TestCase):
 
         (s, res) = self.backend.update_app_rule("WWW")
         self.assertFalse(res)
-        self.assertEquals(s, "")
+        self.assertEqual(s, "")
 
         pr = ufw.frontend.parse_command([] + ["rule", "allow", "CIFS"])
         self.backend.rules.append(pr.data["rule"])
         (s, res) = self.backend.update_app_rule("WWW")
         self.assertFalse(res)
-        self.assertEquals(s, "")
+        self.assertEqual(s, "")
         (s, res) = self.backend.update_app_rule("CIFS")
         self.assertTrue(res)
         self.assertTrue("CIFS" in s)
@@ -207,7 +207,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         self.backend.rules6.append(pr.data["rule"])
         (s, res) = self.backend.update_app_rule("WWW")
         self.assertFalse(res)
-        self.assertEquals(s, "")
+        self.assertEqual(s, "")
         (s, res) = self.backend.update_app_rule("WWW Secure")
         self.assertTrue(res)
         self.assertTrue("WWW Secure" in s)
@@ -231,7 +231,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         self.backend.rules6.append(pr.data["rule"])
         (s, res) = self.backend.update_app_rule("WWW")
         self.assertFalse(res)
-        self.assertEquals(s, "")
+        self.assertEqual(s, "")
         (s, res) = self.backend.update_app_rule("WWW Full")
         self.assertTrue(res)
         self.assertTrue("WWW Full" in s)
@@ -242,7 +242,7 @@ class BackendIptablesTestCase(unittest.TestCase):
         self.backend.rules6.append(pr.data["rule"])
         (s, res) = self.backend.update_app_rule("WWW")
         self.assertFalse(res)
-        self.assertEquals(s, "")
+        self.assertEqual(s, "")
         (s, res) = self.backend.update_app_rule("NFS")
         self.assertTrue(res)
         self.assertTrue("NFS" in s)
@@ -250,10 +250,10 @@ class BackendIptablesTestCase(unittest.TestCase):
     def test_find_application_name(self):
         """Test find_application_name()"""
         res = self.backend.find_application_name("WWW")
-        self.assertEquals(res, "WWW")
+        self.assertEqual(res, "WWW")
 
         res = self.backend.find_application_name("WwW")
-        self.assertEquals(res, "WWW")
+        self.assertEqual(res, "WWW")
 
         f = os.path.join(self.backend.files["apps"], "testapp")
         contents = """
@@ -302,10 +302,10 @@ ports=80/tcp
         self.backend.rules6.append(pr.data["rule"])
 
         res = self.backend.find_other_position(2, v6=True)
-        self.assertEquals(res, 0)
+        self.assertEqual(res, 0)
 
         res = self.backend.find_other_position(1, v6=False)
-        self.assertEquals(res, 2)
+        self.assertEqual(res, 2)
 
         tests.unit.support.check_for_exception(
             self, ValueError, self.backend.find_other_position, 3, True
@@ -331,7 +331,7 @@ ports=80/tcp
         self.backend.rules6.append(pr.data["rule"])
 
         res = self.backend.find_other_position(3, v6=True)
-        self.assertEquals(res, 0)
+        self.assertEqual(res, 0)
 
     def test_get_loglevel(self):
         """Test get_loglevel()"""
@@ -360,7 +360,7 @@ ports=80/tcp
     def test_get_rules_count(self):
         """Test get_rules_count()"""
         res = self.backend.get_rules_count(v6=False)
-        self.assertEquals(res, 0)
+        self.assertEqual(res, 0)
 
         pr = ufw.frontend.parse_command(
             []
@@ -386,10 +386,10 @@ ports=80/tcp
         self.backend.rules6.append(pr.data["rule"])
 
         res = self.backend.get_rules_count(v6=False)
-        self.assertEquals(res, 1)
+        self.assertEqual(res, 1)
 
         res = self.backend.get_rules_count(v6=True)
-        self.assertEquals(res, 2)
+        self.assertEqual(res, 2)
 
     def test_get_rule_by_number(self):
         """Test get_rule_by_number()"""
@@ -419,31 +419,31 @@ ports=80/tcp
         self.backend.rules6.append(pr3.data["rule"])
 
         res = self.backend.get_rule_by_number(1)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr1.data["rule"]), 0)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr2.data["rule"]), 1)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr3.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr1.data["rule"]), 0)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr2.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr3.data["rule"]), 1)
 
         res = self.backend.get_rule_by_number(2)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr2.data["rule"]), 0)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr1.data["rule"]), 1)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr3.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr2.data["rule"]), 0)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr1.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr3.data["rule"]), 1)
 
         res = self.backend.get_rule_by_number(3)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr3.data["rule"]), 0)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr1.data["rule"]), 1)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr2.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr3.data["rule"]), 0)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr1.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr2.data["rule"]), 1)
 
         res = self.backend.get_rule_by_number(4)
-        self.assertEquals(res, None)
+        self.assertEqual(res, None)
 
         pr4 = ufw.frontend.parse_command([] + ["rule", "allow", "CIFS"])
         self.backend.rules.append(pr4.data["rule"])
         pr4.data["rule"].set_v6(True)
         self.backend.rules6.append(pr4.data["rule"])
         res = self.backend.get_rule_by_number(6)
-        self.assertEquals(res, None)
+        self.assertEqual(res, None)
         res = self.backend.get_rule_by_number(4)
-        self.assertEquals(ufw.common.UFWRule.match(res, pr4.data["rule"]), 1)
+        self.assertEqual(ufw.common.UFWRule.match(res, pr4.data["rule"]), 1)
 
     def test_get_matching(self):
         """Test get_matching()"""
@@ -455,7 +455,7 @@ ports=80/tcp
 
         test_rule = pr1.data["rule"].dup_rule()
         res = self.backend.get_matching(test_rule)
-        self.assertEquals(len(res), 2)
+        self.assertEqual(len(res), 2)
 
     def test_set_bad_default_application_policy(self):
         """Test bad set_default_application_policy()"""
@@ -496,7 +496,7 @@ ports=80/tcp
                     res = self.backend._get_default_policy("input")
                 else:
                     res = self.backend._get_default_policy("output")
-                self.assertEquals(res, policy)
+                self.assertEqual(res, policy)
 
         #  no dryrun for routed
         self.backend.dryrun = False
@@ -514,14 +514,14 @@ ports=80/tcp
                 res = self.backend._get_default_policy("forward", check_forward=True)
                 if not forward_enabled:
                     policy = "disabled"
-                self.assertEquals(res, policy)
+                self.assertEqual(res, policy)
 
     def test_set_default(self):
         """Test set_default()"""
         self.backend.set_default(
             self.backend.files["defaults"], "NEW_INPUT_POLICY", "accept"
         )
-        self.assertEquals(self.backend.defaults["new_input_policy"], "accept")
+        self.assertEqual(self.backend.defaults["new_input_policy"], "accept")
 
     def test_set_bad_default(self):
         """Test bad set_default_policy()"""
@@ -572,7 +572,7 @@ ports=80/tcp
             for cmd in cmds:
                 pr = ufw.frontend.parse_command(cmd + [])
                 action = cmd[1]
-                self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+                self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
                 if "rule" in pr.data:
                     if pr.data["rule"].v6:
                         self.backend.rules6.append(pr.data["rule"])
@@ -690,7 +690,7 @@ ports=80/tcp
         for cmd in cmds:
             pr = ufw.frontend.parse_command(cmd + [])
             action = cmd[1]
-            self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+            self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
             if "rule" in pr.data:
                 if pr.data["rule"].v6:
                     self.backend.rules6.append(pr.data["rule"])
@@ -807,7 +807,7 @@ ports=80/tcp
         for cmd in cmds_sim:
             pr = ufw.frontend.parse_command(cmd + [])
             action = cmd[1]
-            self.assertEquals(action, pr.action, "%s != %s" % (action, pr.action))
+            self.assertEqual(action, pr.action, "%s != %s" % (action, pr.action))
             if "rule" in pr.data:
                 self.ui.do_action(pr.action, pr.data["rule"], pr.data["iptype"], True)
             # TODO: verify output
