@@ -1,3 +1,10 @@
+ufw (0.36.2-2) unstable; urgency=medium
+
+  * 0002-fix-tests-with-python312.patch: tests/unit: update to use assertEqual
+    for python 3.12 (LP: #2051540, Closes: 1061763)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 31 Jan 2024 14:22:06 +0000
+
 ufw (0.36.2-1) unstable; urgency=medium
 
   * New upstream release (LP: #1946804, LP: #1927737, LP: #1927734,
