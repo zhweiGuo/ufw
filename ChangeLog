@@ -39,8 +39,10 @@ ufw (0.37) UNRELEASED; urgency=medium
   * add '-h' and show help with no args (LP: #1965462)
   * src/backend.py: add get_rules_ipv4() and get_rules_ipv6() (LP: #1951018)
   * tests/root: normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for newer systems
+  * tests/unit: update to use assertEqual for python 3.12. Thanks to Alex
+    Murrary (LP: #2051540, Closes: 1061763)
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Tue, 16 May 2023 07:04:50 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 31 Jan 2024 08:06:51 -0600
 
 ufw (0.36) RELEASED; urgency=medium
 
