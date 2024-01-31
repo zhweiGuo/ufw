@@ -1,8 +1,9 @@
 ufw (0.36.3) UNRELEASED; urgency=medium
 
-  * 
+  * tests/unit: update to use assertEqual for python 3.12 (LP: #2051540,
+    Closes: 1061763)
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Thu, 18 May 2023 09:45:32 -0500
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 31 Jan 2024 08:15:44 -0600
 
 ufw (0.36.2) RELEASED; urgency=medium
 

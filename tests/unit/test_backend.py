@@ -35,18 +35,18 @@ class BackendTestCase(unittest.TestCase):
 
     def test_installation_defaults(self):
         '''Test installation defaults'''
-        self.assertEquals(self.backend.defaults['default_input_policy'],
+        self.assertEqual(self.backend.defaults['default_input_policy'],
                           "drop")
-        self.assertEquals(self.backend.defaults['default_forward_policy'],
+        self.assertEqual(self.backend.defaults['default_forward_policy'],
                           "drop")
-        self.assertEquals(self.backend.defaults['default_output_policy'],
+        self.assertEqual(self.backend.defaults['default_output_policy'],
                           "accept")
         self.assertTrue("ipt_modules" not in self.backend.defaults)
-        self.assertEquals(self.backend.defaults['loglevel'], 'low')
-        self.assertEquals(self.backend.defaults['manage_builtins'], 'no')
-        self.assertEquals(self.backend.defaults['enabled'], 'no')
-        self.assertEquals(self.backend.defaults['ipv6'], 'yes')
-        self.assertEquals(self.backend.defaults['default_application_policy'],
+        self.assertEqual(self.backend.defaults['loglevel'], 'low')
+        self.assertEqual(self.backend.defaults['manage_builtins'], 'no')
+        self.assertEqual(self.backend.defaults['enabled'], 'no')
+        self.assertEqual(self.backend.defaults['ipv6'], 'yes')
+        self.assertEqual(self.backend.defaults['default_application_policy'],
                           'skip')
 
 
