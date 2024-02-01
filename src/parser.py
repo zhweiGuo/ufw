@@ -228,7 +228,7 @@ class UFWCommandRule(UFWCommand):
                 except ValueError as e:
                     raise UFWError(e)
 
-                if not re.match('^\d([0-9,:]*\d+)*$', port):
+                if not re.match(r'^\d([0-9,:]*\d+)*$', port):
                     if ',' in port or ':' in port:
                         err_msg = _("Port ranges must be numeric")
                         raise UFWError(err_msg)
@@ -354,7 +354,7 @@ class UFWCommandRule(UFWCommand):
                                 rule.sapp = tmp
                             else:
                                 rule.dapp = tmp
-                        elif not re.match('^\d([0-9,:]*\d+)*$', tmp):
+                        elif not re.match(r'^\d([0-9,:]*\d+)*$', tmp):
                             if ',' in tmp or ':' in tmp:
                                 err_msg = _("Port ranges must be numeric")
                                 raise UFWError(err_msg)

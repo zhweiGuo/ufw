@@ -280,7 +280,7 @@ for e in ['ip6tables', 'iptables-restore', 'ip6tables-restore']:
 if rc != 0:
     raise OSError(errno.ENOENT, "Could not find version for '%s'" % \
                   (iptables_exe))
-version = re.sub('^v', '', re.split('\s', str(out))[1])
+version = re.sub('^v', '', str(out).split()[1])
 print("Found '%s' version '%s'" % (iptables_exe, version))
 if version < "1.4":
     print("WARN: version '%s' has limited IPv6 support. See README for details." % (version), file=sys.stderr)
