@@ -498,7 +498,7 @@ def _valid_dotted_quads(nm, v6):
         return False
     else:
         if re.match(r"^[0-9]+\.[0-9\.]+$", nm):
-            quads = re.split("\.", nm)
+            quads = nm.split(".")
             if len(quads) != 4:
                 return False
             for q in quads:
@@ -767,7 +767,7 @@ def get_iptables_version(exe=None):
     (rc, out) = cmd([exe, "-V"])
     if rc != 0:
         raise OSError(errno.ENOENT, "Error running '%s'" % (exe))
-    tmp = re.split("\s", out)
+    tmp = out.split()
     return re.sub("^v", "", tmp[1])
 
 

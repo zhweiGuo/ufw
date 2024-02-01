@@ -240,7 +240,7 @@ class UFWRule:
                             raise UFWError(err_msg)
                     if int(ran[0]) >= int(ran[1]):
                         raise UFWError(err_msg)
-                elif re.match("^\d+$", p):
+                elif re.match(r"^\d+$", p):
                     if int(p) < 1 or int(p) > 65535:
                         raise UFWError(err_msg)
                 elif re.match(r"^\w[\w\-]+", p):

@@ -301,7 +301,7 @@ for e in ["ip6tables", "iptables-restore", "ip6tables-restore"]:
 (rc, out) = cmd([iptables_exe, "-V"])
 if rc != 0:
     raise OSError(errno.ENOENT, "Could not find version for '%s'" % (iptables_exe))
-version = re.sub("^v", "", re.split("\s", str(out))[1])
+version = re.sub("^v", "", str(out).split()[1])
 print("Found '%s' version '%s'" % (iptables_exe, version))
 if version < "1.4":
     print(
