@@ -1,3 +1,11 @@
+ufw (0.36.2-3) unstable; urgency=medium
+
+  * 0003-fix-syntax-warnings-with-python312.patch: fix syntax warnings from
+    python 3.12
+  * 0004-fix-manpage-font.patch: adjust doc/ufw.8 to properly use bold font
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 31 Jan 2024 23:44:31 +0000
+
 ufw (0.36.2-2) unstable; urgency=medium
 
   * 0002-fix-tests-with-python312.patch: tests/unit: update to use assertEqual

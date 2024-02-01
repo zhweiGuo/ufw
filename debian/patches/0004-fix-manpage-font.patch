@@ -1,0 +1,19 @@
+commit f095c83f1ed9f87c08d599ca4874ca0c76e11537
+Author: Jamie Strandboge <jdstrand@ubuntu.com>
+Date:   Thu Feb 1 09:39:08 2024 -0600
+
+    fix: adjust doc/ufw.8 os properly use bold font
+
+diff --git a/doc/ufw.8 b/doc/ufw.8
+index e58b9ad..6e37b5a 100644
+--- a/doc/ufw.8
++++ b/doc/ufw.8
+@@ -379,7 +379,7 @@ Details on the firewall profile for a given application can be seen with:
+ 
+   ufw app info <name>
+ 
+-where '<name>' is one of the applications seen with the \fFapp list\fR command.
++where '<name>' is one of the applications seen with the \fBapp list\fR command.
+ Users may also specify \fBall\fR to see the profiles for all known
+ applications.
+ 
