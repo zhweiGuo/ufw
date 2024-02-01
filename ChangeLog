@@ -41,6 +41,7 @@ ufw (0.37) UNRELEASED; urgency=medium
   * tests/root: normalize 'ACCEPT {all,tcp}' and 'ACCEPT N' for newer systems
   * tests/unit: update to use assertEqual for python 3.12. Thanks to Alex
     Murrary (LP: #2051540, Closes: 1061763)
+  * fix: update 're' invocations for 3.12 syntax warnings
 
  -- Jamie Strandboge <jdstrand@ubuntu.com>  Wed, 31 Jan 2024 08:06:51 -0600
 
