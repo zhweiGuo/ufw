@@ -140,7 +140,7 @@ ufw_start() {
             fi
         else
             if ip6tables -L INPUT -n >/dev/null 2>&1; then
-                # IPv6 support disabled but available in the kernel, so
+                # IPv6 support disabled in ufw but available in the kernel, so
                 # default DROP and accept all on loopback
                 delete_chains 6 || error="yes"
 
@@ -153,7 +153,8 @@ ufw_start() {
 "COMMIT\n" | ip6tables-restore || error="yes"
 
                 if [ "$error" = "yes" ]; then
-                    out="${out}\nProblem loading ipv6 (skipping)"
+                    # https://bugs.launchpad.net/ufw/+bug/2025532
+                    out="${out}\nProblem loading ipv6 (skipping; kernel missing features?)"
                 fi
             fi
         fi
