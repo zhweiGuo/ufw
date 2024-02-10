@@ -1,3 +1,10 @@
+ufw (0.36.2-4) unstable; urgency=medium
+
+  * debian/test/control: install python3-setuptools instead of
+    python3-distutils (LP: #2051540)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 10 Feb 2024 23:34:53 +0000
+
 ufw (0.36.2-3) unstable; urgency=medium
 
   * 0003-fix-syntax-warnings-with-python312.patch: fix syntax warnings from

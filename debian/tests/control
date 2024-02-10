@@ -21,7 +21,7 @@ Depends: iptables,
          procps,
          sed,
          python3,
-         python3-distutils
+         python3-setuptools,
 Restrictions: needs-root, allow-stderr, isolation-machine, build-needed, rw-build-tree
 
 # unittests under python3
@@ -31,6 +31,6 @@ Depends: iptables,
          procps,
          sed,
          python3,
-         python3-distutils,
+         python3-setuptools,
          dh-python,
 Restrictions: allow-stderr, build-needed, rw-build-tree
