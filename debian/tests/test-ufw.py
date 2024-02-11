@@ -79,10 +79,10 @@ class UfwCommon(unittest.TestCase):
 
     def _flush_firewall(self):
         '''Flush firewall'''
-        if os.path.exists('/lib/ufw/ufw-init'):
-            cmd(['/lib/ufw/ufw-init', 'flush-all'])
+        if os.path.exists('/usr/lib/ufw/ufw-init'):
+            cmd(['/usr/lib/ufw/ufw-init', 'flush-all'])
         else:
-            # based on '/lib/ufw/ufw-init flush-all'
+            # based on '/usr/lib/ufw/ufw-init flush-all'
             for exe in ['iptables', 'ip6tables']:
                 cmd([exe, '-F'])
                 cmd([exe, '-X'])

@@ -1,3 +1,24 @@
+ufw (0.36.2-4+exp1) experimental; urgency=medium
+
+  [ Helmut Grohne ]
+  * Install aliased files to /usr. (Closes: #1063695)
+
+  [ Jamie Strandboge ]
+  * debian/config
+    - remove ancient check for /var/lib/ufw
+    - set USER_PATH to /etc/ufw (user*.rules have been in /etc since 0.35-1
+      which broke the has_existing() check)
+  * debian/ufw.postinst: remove no longer needed OLD_USER_PATH migration from
+    /lib/ufw to /etc/ufw (user*.rules have been in /etc since 0.35-1)
+  * debian/ufw.postrm: remove no longer needed OLD_USER_PATH removal from
+    /lib/ufw (user*.rules have been in /etc since 0.35-1)
+  * debian/ufw.prerm: /lib/ufw -> /usr/lib/ufw
+  * debian/ufw.init: /lib/ufw -> /usr/lib/ufw
+  * debian/ufw.service: /lib/ufw -> /usr/lib/ufw
+  * debian/tests/test-ufw.py: /lib/ufw -> /usr/lib/ufw
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sun, 11 Feb 2024 13:20:32 +0000
+
 ufw (0.36.2-4) unstable; urgency=medium
 
   * debian/test/control: install python3-setuptools instead of

@@ -3,8 +3,8 @@
 case "$1" in
     remove)
         # Unload ufw (will only happen if enabled)
-        if [ -x /lib/ufw/ufw-init ]; then
-            /lib/ufw/ufw-init stop || true
+        if [ -x /usr/lib/ufw/ufw-init ]; then
+            /usr/lib/ufw/ufw-init stop || true
         fi
         ;;
 esac

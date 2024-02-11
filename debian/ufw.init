@@ -14,11 +14,11 @@ set -e
 
 PATH="/sbin:/bin"
 
-[ -d /lib/ufw ] || exit 0
+[ -d /usr/lib/ufw ] || exit 0
 
 . /lib/lsb/init-functions
 
-for s in "/lib/ufw/ufw-init-functions" "/etc/ufw/ufw.conf" "/etc/default/ufw" ; do
+for s in "/usr/lib/ufw/ufw-init-functions" "/etc/ufw/ufw.conf" "/etc/default/ufw" ; do
     if [ -s "$s" ]; then
         . "$s"
     else
