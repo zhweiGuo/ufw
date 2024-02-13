@@ -3,7 +3,7 @@ etc/init.d
 etc/logrotate.d
 etc/rsyslog.d
 etc/ufw/applications.d/
-lib/ufw
+usr/lib/ufw
 usr/sbin
 usr/share/bash-completion/completions
 usr/share/doc/ufw

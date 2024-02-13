@@ -7,7 +7,6 @@ if [ "$1" != "triggered" ]; then
 fi
 
 RULES_PATH="/etc/ufw"
-OLD_USER_PATH="/lib/ufw"
 USER_PATH="$RULES_PATH"
 TEMPLATE_PATH="/usr/share/ufw"
 
@@ -81,15 +80,6 @@ case "$1" in
             ucf --debconf-ok $TEMPLATE_PATH/iptables/$f $RULES_PATH/$f
             test -f $RULES_PATH/$f && chmod 640 $RULES_PATH/$f
         done
-
-        # migrate user rules on upgrade
-        if [ ! -z "$2" ] && dpkg --compare-versions "$2" lt "0.35~" ; then
-            for f in user.rules user6.rules
-            do
-                mv $OLD_USER_PATH/$f $USER_PATH/$f
-                ln -s $USER_PATH/$f $OLD_USER_PATH/$f
-            done
-        fi
 
         for f in user.rules user6.rules
         do

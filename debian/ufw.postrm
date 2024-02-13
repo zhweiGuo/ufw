@@ -2,7 +2,6 @@
 
 RULES_PATH="/etc/ufw"
 USER_PATH="$RULES_PATH"
-OLD_USER_PATH="/lib/ufw"
 UFW_CONF="/etc/ufw/ufw.conf"
 case "$1" in
     remove)
@@ -24,7 +23,6 @@ case "$1" in
         done
         rm -f $RULES_PATH/ufw.rules $RULES_PATH/ufw.rules.dpkg-old
         rm -f $USER_PATH/user.rules $USER_PATH/user6.rules
-        rm -f $OLD_USER_PATH/user.rules $OLD_USER_PATH/user6.rules
         rm -f "$UFW_CONF"
         rm -f $RULES_PATH/after.init $RULES_PATH/before.init
         ;;

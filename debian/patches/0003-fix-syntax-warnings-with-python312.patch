@@ -1,8 +1,6 @@
-commit 58220106da29a1530699483bebf78f7e8da8cda1
-Author: Jamie Strandboge <jdstrand@ubuntu.com>
-Date:   Thu Feb 1 09:25:43 2024 -0600
-
-    fix: update 're' invocations for 3.12 syntax warnings
+Origin: 58220106da29a1530699483bebf78f7e8da8cda1
+Applied-Upstream: 58220106da29a1530699483bebf78f7e8da8cda1
+Description: fix: update 're' invocations for 3.12 syntax warnings
 
 diff --git a/setup.py b/setup.py
 index 11b446e..97ce5a6 100644
