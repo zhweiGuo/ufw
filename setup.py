@@ -330,6 +330,9 @@ setup(
         "ufw.util",
         "ufw.applications",
         "ufw.parser",
+        "ufw.kernel_log_backend",
+        "ufw.netfilter_log_backend",
+        "ufw.log_backend",
     ],
 )
 

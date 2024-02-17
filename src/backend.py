@@ -22,6 +22,8 @@ import re
 import stat
 import sys
 import ufw.util
+import ufw.kernel_log_backend
+import ufw.netfilter_log_backend
 from ufw.util import error, warn, debug, _findpath
 from ufw.common import UFWError, UFWRule
 import ufw.applications
@@ -59,6 +61,7 @@ class UFWBackend:
         self._do_checks()
         self._get_defaults()
         self._read_rules()
+        self.log_backend = self.get_logging_backend()
 
         self.profiles = ufw.applications.get_profiles(self.files["apps"])
 
@@ -125,6 +128,36 @@ class UFWBackend:
                     self.caps["limit"]["6"] = True
                 else:
                     self.caps["limit"]["6"] = False
+
+    def get_logging_backend(self):
+        """Return an instance of the logging backend
+        given how it was configured in the config"""
+        logging_backend = self.defaults.get("logging_backend", "kernel_log")
+        if logging_backend == "kernel_log":
+            return ufw.kernel_log_backend.UFWLogBackendKernel(
+                self.defaults.get("additional_logging_options")
+            )
+        elif logging_backend == "netfilter_log":
+            return ufw.netfilter_log_backend.UFWLogBackendNetfilter(
+                self.defaults.get("additional_logging_options")
+            )
+        else:
+            raise UFWError("Unknown %s logging backend" % logging_backend)
+
+    def get_all_logging_backends(self):
+        """Return an instance of all the logging backends"""
+        ret = []
+        ret.append(
+            ufw.kernel_log_backend.UFWLogBackendKernel(
+                self.defaults.get("additional_logging_options")
+            )
+        )
+        ret.append(
+            ufw.netfilter_log_backend.UFWLogBackendNetfilter(
+                self.defaults.get("additional_logging_options")
+            )
+        )
+        return ret
 
     def is_enabled(self):
         """Is firewall configured as enabled"""
