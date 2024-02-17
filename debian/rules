@@ -7,8 +7,8 @@
 PYTHON  := /usr/bin/python3
 PYVERS  := $(shell py3versions -vr)
 #PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2)
-# strip off ~ubuntu* update for daily builds and PEP 440
-PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2 | cut -d '~' -f 1)
+# strip off +git.* update for daily builds and PEP 440
+PKGVERS := $(shell dpkg-parsechangelog | grep ^Version: | cut -d ' ' -f 2 | cut -d '+' -f 1)
 DISTRIB := $(shell lsb_release -i -s)
 
 ifneq (,$(filter $(DISTRIB),Ubuntu))
