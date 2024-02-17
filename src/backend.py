@@ -134,29 +134,17 @@ class UFWBackend:
         given how it was configured in the config"""
         logging_backend = self.defaults.get("logging_backend", "kernel")
         if logging_backend == "kernel":
-            return ufw.kernel_log_backend.UFWLogBackendKernel(
-                self.defaults.get("logging_additional")
-            )
+            return ufw.kernel_log_backend.UFWLogBackendKernel()
         elif logging_backend == "netfilter":
-            return ufw.netfilter_log_backend.UFWLogBackendNetfilter(
-                self.defaults.get("logging_additional")
-            )
+            return ufw.netfilter_log_backend.UFWLogBackendNetfilter()
         else:
             raise UFWError("Unknown %s logging backend" % logging_backend)
 
     def get_all_logging_backends(self):
         """Return an instance of all the logging backends"""
         ret = []
-        ret.append(
-            ufw.kernel_log_backend.UFWLogBackendKernel(
-                self.defaults.get("logging_additional")
-            )
-        )
-        ret.append(
-            ufw.netfilter_log_backend.UFWLogBackendNetfilter(
-                self.defaults.get("logging_additional")
-            )
-        )
+        ret.append(ufw.kernel_log_backend.UFWLogBackendKernel())
+        ret.append(ufw.netfilter_log_backend.UFWLogBackendNetfilter())
         return ret
 
     def is_enabled(self):

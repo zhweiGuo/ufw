@@ -20,8 +20,8 @@ class UFWLogBackendNetfilter(ufw.log_backend.UFWLogBackend):
 
     own_logging_options = "--nflog-prefix"
 
-    def __init__(self, logging_additional=None):
-        ufw.log_backend.UFWLogBackend.__init__(self, logging_additional)
+    def __init__(self):
+        ufw.log_backend.UFWLogBackend.__init__(self)
 
     def get_log_target(self):
         return "NFLOG"
