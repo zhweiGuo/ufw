@@ -26,7 +26,7 @@ class UFWLogBackend:
             self.additional_options = []
         else:
             self.additional_options = filter(
-                lambda x: x != self.own_logggin_options,
+                lambda x: x != self.own_logging_options,
                 additional_logging_options.split(","),
             )
 
