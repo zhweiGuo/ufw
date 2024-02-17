@@ -1,4 +1,4 @@
-.TH UFW: "8" "" "May 2023" "May 2023"
+.TH UFW: "8" "" "Feb 2024" "Feb 2024"
 
 .SH NAME
 ufw \- program for managing a netfilter firewall
@@ -427,6 +427,13 @@ consider the security ramifications before using a default \fBallow\fR policy.
 
 .SH LOGGING
 .PP
+\fBufw\fR may be configured to log using the traditional kernel LOG target
+(\fBkernel\fR, the default) or the netfilter NFLOG target (\fBnetfilter\fR).
+This is configurable via the \fBLOGGING_BACKEND\fR option in
+#CONFIG_PREFIX#/default/ufw. Additonal logging options may be specified via
+\fBLOGGING_ADDITIONAL\fR.
+
+.PP
 \fBufw\fR supports multiple logging levels. \fBufw\fR defaults to a loglevel
 of 'low' when a loglevel is not specified. Users may specify a loglevel with:
 
@@ -583,4 +590,4 @@ more information.
 
 .SH AUTHOR
 .PP
-ufw is Copyright 2008-2023, Canonical Ltd.
+ufw is Copyright 2008-2024, Canonical Ltd.
