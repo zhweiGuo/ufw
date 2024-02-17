@@ -25,6 +25,7 @@
 #
 
 from __future__ import print_function
+# Removed in 3.12 but continues to work with python3-setuptools
 from distutils.command.install import install as _install
 from distutils.core import setup
 import errno
