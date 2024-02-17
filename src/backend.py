@@ -135,11 +135,11 @@ class UFWBackend:
         logging_backend = self.defaults.get("logging_backend", "kernel")
         if logging_backend == "kernel":
             return ufw.kernel_log_backend.UFWLogBackendKernel(
-                self.defaults.get("additional_logging_options")
+                self.defaults.get("logging_additional")
             )
         elif logging_backend == "netfilter":
             return ufw.netfilter_log_backend.UFWLogBackendNetfilter(
-                self.defaults.get("additional_logging_options")
+                self.defaults.get("logging_additional")
             )
         else:
             raise UFWError("Unknown %s logging backend" % logging_backend)
@@ -149,12 +149,12 @@ class UFWBackend:
         ret = []
         ret.append(
             ufw.kernel_log_backend.UFWLogBackendKernel(
-                self.defaults.get("additional_logging_options")
+                self.defaults.get("logging_additional")
             )
         )
         ret.append(
             ufw.netfilter_log_backend.UFWLogBackendNetfilter(
-                self.defaults.get("additional_logging_options")
+                self.defaults.get("logging_additional")
             )
         )
         return ret
@@ -343,7 +343,7 @@ class UFWBackend:
             except Exception:  # pragma: no coverage
                 err_msg = _("Couldn't open '%s' for reading") % (f)
                 raise UFWError(err_msg)
-            pat = re.compile(r'^\w+="?\w+"?')
+            pat = re.compile(r'^\w+="?[\w-]+"?')
             for line in orig:
                 if pat.search(line):
                     tmp = re.split(r"=", line.strip())

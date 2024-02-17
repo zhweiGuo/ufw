@@ -32,7 +32,10 @@ MANAGE_BUILTINS=no
 # the firewall for the changes to take effect.
 # - kernel - use the traditional LOG logging target
 # - netfilter - use the NFLOG logging target
+# Additional logging options may be specified with LOGGING_ADDITIONAL and
+# comma-separated. Eg, LOGGING_ADDITIONAL="--log-uid,--log-ip-options"
 LOGGING_BACKEND="kernel"
+LOGGING_ADDITIONAL=""
 
 #
 # IPT backend

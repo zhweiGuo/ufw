@@ -21,13 +21,12 @@ class UFWLogBackend:
 
     own_logging_options = ""
 
-    def __init__(self, additional_logging_options=None):
-        if additional_logging_options is None:
+    def __init__(self, logging_additional=None):
+        if logging_additional is None:
             self.additional_options = []
         else:
             self.additional_options = filter(
-                lambda x: x != self.own_logging_options,
-                additional_logging_options.split(","),
+                lambda x: x != self.own_logging_options, logging_additional.split(","),
             )
 
     def get_log_target(self):
