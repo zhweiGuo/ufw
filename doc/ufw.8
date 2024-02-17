@@ -428,9 +428,8 @@ consider the security ramifications before using a default \fBallow\fR policy.
 .SH LOGGING
 .PP
 \fBufw\fR may be configured to log using the traditional kernel LOG target
-(\fBkernel\fR, the default) or the netfilter NFLOG target (\fBnetfilter\fR).
-This is configurable via the \fBLOGGING_BACKEND\fR option in
-#CONFIG_PREFIX#/default/ufw.
+(the default) or the netfilter NFLOG target. This is configurable via the
+\fBLOGGING_BACKEND\fR option in #CONFIG_PREFIX#/default/ufw.
 
 .PP
 \fBufw\fR supports multiple logging levels. \fBufw\fR defaults to a loglevel
