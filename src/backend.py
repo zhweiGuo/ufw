@@ -132,12 +132,12 @@ class UFWBackend:
     def get_logging_backend(self):
         """Return an instance of the logging backend
         given how it was configured in the config"""
-        logging_backend = self.defaults.get("logging_backend", "kernel_log")
-        if logging_backend == "kernel_log":
+        logging_backend = self.defaults.get("logging_backend", "kernel")
+        if logging_backend == "kernel":
             return ufw.kernel_log_backend.UFWLogBackendKernel(
                 self.defaults.get("additional_logging_options")
             )
-        elif logging_backend == "netfilter_log":
+        elif logging_backend == "netfilter":
             return ufw.netfilter_log_backend.UFWLogBackendNetfilter(
                 self.defaults.get("additional_logging_options")
             )

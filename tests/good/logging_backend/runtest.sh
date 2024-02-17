@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#    Copyright 2009 Canonical Ltd.
-#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 3,
 #    as published by the Free Software Foundation.
@@ -14,11 +12,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#set -x
-
 source "$TESTPATH/../testlib.sh"
-sed -i '/LOGGING_BACKEND/d' $TESTPATH/etc/default/ufw
-echo "LOGGING_BACKEND=netfilter_log" >>$TESTPATH/etc/default/ufw
+sed -i 's/LOGGING_BACKEND=.*/LOGGING_BACKEND="netfilter"/' $TESTPATH/etc/default/ufw
 
 echo "TESTING NFLOG RULES" >> $TESTTMP/result
 for i in allow deny limit reject ; do
