@@ -1,3 +1,3 @@
-# git-build-recipe format 0.4 deb-version {debupstream}+git{git-commit}+{revno:packaging}+{revtime}
+# git-build-recipe format 0.4 deb-version {debupstream}+git{revno:packaging}+{git-commit}+{revtime}
 https://git.launchpad.net/ufw main
 nest-part packaging https://git.launchpad.net/ufw debian debian recipe-build
