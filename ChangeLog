@@ -43,10 +43,10 @@ ufw (0.37) UNRELEASED; urgency=medium
     Murrary (LP: #2051540, Closes: 1061763)
   * fix: update 're' invocations for 3.12 syntax warnings
   * improve ip6tables-restore error when applying IPv6 safety rules
-  * allow logging backend to be configured and additional logging options to
-    be specified
+  * allow logging backend to be configurable and support traditional LOG as
+    well as NFLOG targets (LP: #1475676). Patch thanks to Matthieu Patou
 
- -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 10 Feb 2024 15:31:51 -0600
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Sat, 17 Feb 2024 10:21:34 -0600
 
 ufw (0.36) RELEASED; urgency=medium
 
