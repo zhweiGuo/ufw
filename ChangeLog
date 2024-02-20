@@ -19,7 +19,7 @@ ufw (0.37) UNRELEASED; urgency=medium
     - document --force with 'ufw delete NUM'
     - document 'insert' and 'prepend' can't be used to update comments
       (LP: #1927737)
-  * prefer python3
+  * remove python2 support
   * empty out IPT_MODULES and update documentation (LP: #1556419)
   * check-requirements:
     - adjust check-requirements to look for other firewall software

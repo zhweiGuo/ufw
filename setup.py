@@ -20,8 +20,7 @@
 # python3 ./setup.py install --root="/tmp/ufw"
 #
 # To specify a different interpreter for ufw:
-# python3.7 ./setup.py install --root="/tmp/ufw"
-# python2.7 ./setup.py install --root="/tmp/ufw"
+# python3.8 ./setup.py install --root="/tmp/ufw"
 #
 
 from __future__ import print_function
@@ -252,10 +251,6 @@ class Install(_install, object):
         ]:
             self.copy_file(f, rulesdir)
 
-
-if sys.version_info[0] < 2 or (sys.version_info[0] == 2 and sys.version_info[1] < 6):
-    print("ERROR: Need at least python 2.6", file=sys.stderr)
-    sys.exit(1)
 
 if os.path.exists("staging"):
     shutil.rmtree("staging")

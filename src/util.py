@@ -17,7 +17,6 @@
 
 from __future__ import print_function
 import binascii
-import codecs
 import errno
 import fcntl
 import io
@@ -259,11 +258,7 @@ def write_to_file(fd, out):
         return
 
     rc = -1
-    # cover not in python3, so can't test for this
-    if sys.version_info[0] >= 3:  # pragma: no cover
-        rc = os.write(fd, bytes(out, "ascii"))
-    else:
-        rc = os.write(fd, out)
+    rc = os.write(fd, bytes(out, "ascii"))
 
     if rc <= 0:  # pragma: no cover
         raise OSError(errno.EIO, "Could not write to file descriptor")
@@ -527,14 +522,7 @@ def _dotted_netmask_to_cidr(nm, v6):
             raise ValueError
 
         mbits = 0
-
-        # python3 doesn't have long(). We could technically use int() here
-        # since python2 guarantees at least 32 bits for int(), but this helps
-        # future-proof.
-        try:  # pragma: no cover
-            bits = long(struct.unpack(">L", socket.inet_aton(nm))[0])
-        except NameError:  # pragma: no cover
-            bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
+        bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
 
         found_one = False
         for n in range(32):
@@ -572,14 +560,7 @@ def _cidr_to_dotted_netmask(cidr, v6):
         if not _valid_cidr_netmask(cidr, v6):
             raise ValueError
 
-        # python3 doesn't have long(). We could technically use int() here
-        # since python2 guarantees at least 32 bits for int(), but this helps
-        # future-proof.
-        try:  # pragma: no cover
-            bits = long(0)
-        except NameError:  # pragma: no cover
-            bits = 0
-
+        bits = 0
         for n in range(32):
             if n < int(cidr):
                 bits |= 1 << 31 - n
@@ -610,16 +591,8 @@ def _address4_to_network(addr):
         nm = _cidr_to_dotted_netmask(nm, False)
 
     # Now have dotted quad host and nm, find the network
-
-    # python3 doesn't have long(). We could technically use int() here
-    # since python2 guarantees at least 32 bits for int(), but this helps
-    # future-proof.
-    try:  # pragma: no cover
-        host_bits = long(struct.unpack(">L", socket.inet_aton(host))[0])
-        nm_bits = long(struct.unpack(">L", socket.inet_aton(nm))[0])
-    except NameError:  # pragma: no cover
-        host_bits = int(struct.unpack(">L", socket.inet_aton(host))[0])
-        nm_bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
+    host_bits = int(struct.unpack(">L", socket.inet_aton(host))[0])
+    nm_bits = int(struct.unpack(">L", socket.inet_aton(nm))[0])
 
     network_bits = host_bits & nm_bits
     network = socket.inet_ntoa(struct.pack(">L", network_bits))
@@ -1119,8 +1092,6 @@ def _findpath(dir, prefix):
 
 def hex_encode(s):
     """Take a string and convert it to a hex string"""
-    if sys.version_info[0] < 3:
-        return codecs.encode(s, "hex")
     # hexlify returns a bytes string (eg, b'ab12cd') so decode that to ascii
     # to have identical output as python2
     return binascii.hexlify(s.encode("utf-8", errors="ignore")).decode("ascii")
@@ -1128,8 +1099,6 @@ def hex_encode(s):
 
 def hex_decode(h):
     """Take a hex string and convert it to a string"""
-    if sys.version_info[0] < 3:
-        return h.decode(encoding="hex").decode("utf-8")
     # unhexlify requires an even length string, which should normally happen
     # since hex_encode() will create a string and decode to ascii, which has 2
     # bytes per character. If we happen to get an odd length string, instead of

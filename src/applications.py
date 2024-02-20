@@ -15,19 +15,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import configparser
 import os
 import re
 import stat
 import ufw.util
 from ufw.util import debug, warn
 from ufw.common import UFWError
-
-import sys
-
-if sys.version_info[0] < 3:  # pragma: no cover
-    import ConfigParser
-else:  # pragma: no cover
-    import configparser
 
 
 # satisy flake8: our setup of gettext in src/ufw makes the assignment of '_'
@@ -94,11 +88,7 @@ def get_profiles(profiles_dir):
             continue
 
         total_size += size
-
-        if sys.version_info[0] < 3:  # pragma: no cover
-            cdict = ConfigParser.RawConfigParser()
-        else:  # pragma: no cover
-            cdict = configparser.RawConfigParser()
+        cdict = configparser.RawConfigParser()
 
         try:
             cdict.read(abs_path)

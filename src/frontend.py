@@ -895,7 +895,7 @@ class UFWFrontend:
 
     def do_application_action(self, action, profile):
         """Perform action on profile. action and profile are usually based on
-           return values from parse_command().
+        return values from parse_command().
         """
         res = ""
         if action == "default-allow":

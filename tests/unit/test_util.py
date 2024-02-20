@@ -662,10 +662,7 @@ class UtilTestCase(unittest.TestCase):
         ufw.util.msg_output = StringIO()
         ufw.util.write_to_file(sys.stdout.fileno(), search)
         out = ufw.util.msg_output.getvalue()
-        if sys.version_info[0] >= 3:
-            search = bytes(search, "ascii")
-            out = bytes(out, "ascii")
-        self.assertEqual(out, search)
+        self.assertEqual(bytes(out, "ascii"), bytes(search, "ascii"))
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
@@ -748,10 +745,7 @@ class UtilTestCase(unittest.TestCase):
         ufw.util.msg_output = StringIO()
         ufw.util.msg(search, newline=False)
         out = ufw.util.msg_output.getvalue()
-        if sys.version_info[0] >= 3:
-            search = bytes(search, "ascii")
-            out = bytes(out, "ascii")
-        self.assertEqual(out, search)
+        self.assertEqual(bytes(out, "ascii"), bytes(search, "ascii"))
         ufw.util.msg_output.close()
         ufw.util.msg_output = None
 
@@ -802,8 +796,6 @@ AAA
 
     def test_get_ppid_no_space(self):
         """Test get_ppid() no space"""
-        if sys.version_info[0] < 3:
-            return tests.unit.support.skipped(self, "skipping with python2")
         import unittest.mock
 
         m = unittest.mock.mock_open(read_data="9983 (cmd) S 923 9983 ...\n")
@@ -814,8 +806,6 @@ AAA
 
     def test_get_ppid_with_space(self):
         """Test get_ppid() with space"""
-        if sys.version_info[0] < 3:
-            return tests.unit.support.skipped(self, "skipping with python2")
         import unittest.mock
 
         m = unittest.mock.mock_open(read_data="9983 (cmd with space) S 923 9983 ...\n")
@@ -826,8 +816,6 @@ AAA
 
     def test_get_ppid_with_parens(self):
         """Test get_ppid() with parens"""
-        if sys.version_info[0] < 3:
-            return tests.unit.support.skipped(self, "skipping with python2")
         import unittest.mock
 
         m = unittest.mock.mock_open(read_data="9983 (cmd(paren)) S 923 9983 ...\n")
@@ -1088,8 +1076,6 @@ AAA
         """Test hex_decode() output"""
         s = "666f6ff09f918d626172e5ad9762617a"
         expected = "foo👍bar字baz"
-        if sys.version_info[0] < 3:
-            expected = u"foo👍bar字baz"
 
         result = ufw.util.hex_decode(s)
         self.assertEqual(expected, result)
@@ -1098,8 +1084,6 @@ AAA
         # should result in the last (odd) hex digit being dropped and a decoded
         # string of one less character
         expected = "foo👍bar字ba"
-        if sys.version_info[0] < 3:
-            expected = u"foo👍bar字ba"
         result = ufw.util.hex_decode(s[:-1])
         self.assertEqual(expected, result)
 
@@ -1108,8 +1092,6 @@ AAA
         # the first hex digit was removed, the byte sequence is shifted by one
         # which causes the whole string to be 'backslashreplace'd.
         expected = "f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
-        if sys.version_info[0] < 3:
-            expected = u"f\\xf6\\xff\t\\xf9\x18\\xd6&\x17.Z\\xd9v&\x17"
         result = ufw.util.hex_decode(s[1:])
         self.assertEqual(expected, result)
 

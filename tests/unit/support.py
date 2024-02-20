@@ -81,8 +81,6 @@ def run_setup():
     os.mkdir(topdir)
 
     exe = "python%d" % sys.version_info[0]
-    if sys.version_info[0] == 2:
-        exe = "python"
 
     sp = subprocess.Popen(
         [exe, "./setup.py", "install", "--home=%s" % install_dir],
@@ -131,12 +129,6 @@ def init_gettext():
     import gettext
 
     kwargs = {}
-    if sys.version_info[0] < 3:
-        # In Python 2, ensure that the _() that gets installed into built-ins
-        # always returns unicodes.  This matches the default behavior under
-        # Python 3, although that keyword argument is not present in the Python
-        # 3 API.
-        kwargs["unicode"] = True
     gettext.install("ufw", **kwargs)
 
     # Internationalization
