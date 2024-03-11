@@ -1,3 +1,10 @@
+ufw (0.36.2-6) unstable; urgency=medium
+
+  * debian/control: Build-Depends on python3-setuptools instead of
+    python3-distutils (Closes: 1065992)
+
+ -- Jamie Strandboge <jdstrand@ubuntu.com>  Mon, 11 Mar 2024 13:18:21 +0000
+
 ufw (0.36.2-5) unstable; urgency=medium
 
   [ Helmut Grohne ]

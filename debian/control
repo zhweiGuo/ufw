@@ -12,11 +12,11 @@ Build-Depends:
  dh-python,
  po-debconf,
  python3 (>= 3.2),
- python3-distutils
+ python3-setuptools
 Standards-Version: 4.6.2
 Homepage: https://launchpad.net/ufw
-Vcs-Browser: https://git.launchpad.net/ufw?h=debian/main
-Vcs-Git: https://git.launchpad.net/ufw -b debian/main
+Vcs-Browser: https://git.launchpad.net/ufw?h=debian/master
+Vcs-Git: https://git.launchpad.net/ufw -b debian/master
 
 Package: ufw
 Architecture: all
