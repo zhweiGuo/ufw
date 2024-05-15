@@ -105,7 +105,7 @@ def run_unittest(*classes):
 
     suite = unittest.TestSuite()
     for cls in classes:
-        suite.addTest(unittest.makeSuite(cls))
+        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(cls))
 
     runner = unittest.TextTestRunner(sys.stdout, verbosity=2)
     result = runner.run(suite)
